@@ -45,3 +45,8 @@ Use Cases
 38. Saving upon reaching a new level / checkpoint (possibly using autosave)
 39. Saving at any arbitrary point within a level
 40. Loading a game state
+
+### Game Data
+41. Allow for blank data entries for partially built games to be added onto later
+42. Allow for missing data entries to be filled with default settings if user elects to do so
+43. Allow for incorrect data entries to be replaced by default valid entries, while alerting user of error
