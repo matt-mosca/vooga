@@ -13,5 +13,5 @@ public interface PlayPersistence {
 	 * 
 	 * @param fileName file name for game to be loaded
 	 */
-	public void loadGameState(String fileName);
+	public String loadGameState(String fileName);
 }
