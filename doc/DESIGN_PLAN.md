@@ -36,9 +36,15 @@ On the engine side of things, the engine is comprised of two key modules. First,
 
 When the user starts the program, an opening window will appear that will allow the user to choose to create a new game, load and edit an existing game, or play an existing game. 
 
+![Open Screen](doc/Vooga_Open_Screen.png "The opening window")
+
 The first and second options will open an editing window. In this window, there will be panes on either side of and below a game display window. The left pane will allow the user to modify static aspects of the game, essentially aspects of the game that are present at the start of the game. These include the background, path, size of the map, and static objects, such as rocks, trees or other aspects of scenery that will be displayed when the game is initialized. The right pane will deal with aspects of the game that change after the game begins, such as towers/enemies added by the user and towers/enemies added by the opponent or computer. In this right pane, the user will first need to select the type of game (standard, flipped, multiplayer), and then the user will be able to (in a standard game) select and modify the towers available in-game to the user and the enemies that attack in each wave, as well as the number of waves and wave timing. In the bottom pane, the towers and enemies added to the game will be displayed, and there the user will be able to easily interact with them to change their properties.
 
+![Edit Screen](doc/Vooga_Edit_Screen.png "The editing window") 
+
 The option that allows the user to play an existing game will open a window in which the game will be played. This window will primarily consist of the game map, and there will be a pane on the right side containing the options for the towers or enemies the user can play. Towers/enemies can be dragged from this pane onto the map.
+
+![Play Screen](doc/Vooga_Play_Screen.png "The playing window")
 
 If there is bad data input into the program or a file in the wrong format is selected as an image, a popup will display the error to the user.
 
