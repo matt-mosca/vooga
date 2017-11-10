@@ -127,8 +127,8 @@ The networking module will handle the infrastructure and logic for supporting mu
 
 However, the design challenge lies in the encoding and decoding of player actions before sending and after receiving through the sockets, as well as in the direction of data flow. On a high-level, the plan is for the Networking module to consist of 2 main parts:
 
-1) Dataflow : a peer-to-peer broadcast system where a given player's action is broadcasted through the websockets to other players
-2) Data representation: a serialization protocol for any update (movement of an element, placement of a tower, etc) which can be used to transmit a string representation of every player's update
+1. Dataflow: a peer-to-peer broadcast system where a given player's action is broadcasted through the websockets to other players
+2. Data representation: a serialization protocol for any update (movement of an element, placement of a tower, etc) which can be used to transmit a string representation of every player's update
 
 When the networking module is complete and ready for integration, its API methods will be called by the Behavior module's interface methods, thus modifying implementation without changing signatures or breaking any client code. For instance, once an update is calculated by the behavior module, it is synchronized to other clients by calling the Networking module's methods.
 
