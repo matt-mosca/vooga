@@ -1,14 +1,21 @@
 package voogasalad_duvallinthistogether;
 
+import SaveGameEnvUseCase.MockAuthoringEngine.MockIOEngine;
+
 /**
- * Demonstrates use-case of saving the current game env from front end
+ * Demonstrates use-case of loading the current game env from front end
  * @author radithya
  *
  */
-public class LoadGameEnvUseCase  {
+public class SaveGameEnvUseCase {
 
 	private MockAuthoringEngine mockAuthoringEngine;
 	
+	/**
+	 * Mock authoring engine for this use-case
+	 * @author radithya
+	 *
+	 */
 	public class MockAuthoringEngine implements AuthoringIOController {
 		
 		private MockIOEngine mockIOEngine;
@@ -24,40 +31,41 @@ public class LoadGameEnvUseCase  {
 			/**
 			 * Mock implementation
 			 * @param gameName
+			 * @param serializedRepresentation
 			 */
 			@Override
-			public void loadGameSettings(String gameName) {
+			public void saveGameSettings(String gameName, String serializedRepresentation) {
 			}
 			
 		}
 		
-		/**
-		 * constructor for mock object
-		 */
-		public MockAuthoringEngine() {
+		public MockIOEngine() {
 			mockIOEngine = new MockIOEngine();
 		}
-		
+	
 		/**
-		 * Mocked implementation of engine's saving game settings
+		 * Mocked implementation
 		 */
 		@Override
-		public void loadGameSettings() {
+		public void saveGameSettings() {
 			// Mock game name
 			String gameName = "GAME"; 
-			mockIOEngine.saveGameSettings(gameName);
+			// Mock serialization - will call a serializing method in reality
+			String serializedRepresentation = "";
+			mockIOEngine.saveGameSettings(gameName, serializedRepresentation);
 		}
+		
 	}
-	
-	public LoadGameEnvUseCase() {
+
+	public SaveGameEnvUseCase() {
 		mockAuthoringEngine = new MockAuthoringEngine();
 	}
 	
 	/**
-	 * Method called from GameAuthoringEnv front end
+	 * Called by authoring to save current game env
 	 */
-	private void loadGameEnv() {
-		mockAuthoringEngine.loadGameSettings();
+	private void saveGameEnv() {
+		mockAuthoringEngine.saveGameSettings();
 	}
-	
+
 }

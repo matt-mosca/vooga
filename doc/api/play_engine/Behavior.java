@@ -44,6 +44,12 @@ public interface Behavior {
 	 * @return the integer corresponding to the game's current level
 	 */
 	public int getCurrentLevel();
+	
+	/**
+	 * Query current play status (lives, kills, resources, all top-level metrics)
+	 * @return map of parameter name to value
+	 */
+	public Map<String, String> getStatus();
 
 	/**
 	 * Query whether the game is currently in play
@@ -75,9 +81,7 @@ public interface Behavior {
 	public boolean isLevelCleared();
 
 	/**
-	 * Called to get current collection of events, usually only at the start of
-	 * every game and every level by player to get elements for level, for
-	 * efficiency
+	 * Called to get current collection of events
 	 * 
 	 * @return current collection of elements
 	 */

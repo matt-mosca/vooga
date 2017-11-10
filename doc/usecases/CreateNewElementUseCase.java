@@ -10,14 +10,20 @@ import java.util.Map;
  */
 public class CreateNewElementUseCase {
 
-	private MockPlayEngine mockPlayEngine;
+	private MockAuthoringEngine mockAuthoringEngine;
 
-	public class MockPlayEngine implements EditController {
+	/**
+	 * Mock authoring engine for this use-case
+	 * 
+	 * @author radithya
+	 *
+	 */
+	public class MockAuthoringEngine implements EditController {
 		// Will add element to instance map of element type names to properties
 		private Map<String, Map<String, String>> newlyCreatedElements;
 
 		// Mock play engine
-		public MockPlayEngine() {
+		public MockAuthoringEngine() {
 			newlyCreatedElements = new HashMap<>();
 		}
 
@@ -36,16 +42,21 @@ public class CreateNewElementUseCase {
 
 	// Mock constructor
 	public CreateNewElementUseCase() {
-		mockPlayEngine = new MockPlayEngine();
+		mockAuthoringEngine = new MockAuthoringEngine();
 	}
 
-	// Called by front end after aggregating properties through a series of prompts
-	// dialogs
+	/**
+	 * Called by front end after aggregating properties through a series of prompts
+	 * dialogs
+	 * 
+	 * @param name for element type to create
+	 * @param properties a map of property name to value, i.e. {"image_url: <image_url>, "attack_damage": <attack_damage> ...}
+	 */
 	private void createElement(String name, Map<String, String> properties) {
 		// Some front end code for displaying the element on the map - omitted
 		// Stores element in engine's buffer, to be written to file after calling save
 		// as demonstrated in SaveGameEnvUseCase
-		mockPlayEngine.createElement(name, properties);
+		mockAuthoringEngine.createElement(name, properties);
 	}
 
 }
