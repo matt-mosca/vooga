@@ -88,3 +88,19 @@ In terms of Use Cases, I will be in charge of the following:
 * Allow for blank data entries for partially built games to be added onto later
 * Allow for missing data entries to be filled with default settings if user elects to do so
 * Allow for incorrect data entries to be replaced by default valid entries, while alerting user of error
+* 
+
+
+#### Matthew O'Boyle
+
+In terms of modules, I will mainly be responsible for the general upkeeping of the game and representing the visuals for the objects that we create on the screen for the authoring environment.
+
+In terms of Use Cases, I will be in charge of the following:
+* Creating the general authoring view that will be the basis for the project
+* Creating a general splash screen that allows the user to decide if they wish to edit or play the game, and an easy interface to navigate between these
+* Creating a user-updatable background and images the user can select for each object
+* Presenting a clear way for the user to define properties for objects (towers, soldiers etc.)
+* Presenting a clear way for the user to define the objectives of the game
+* Placing customizable objects into the editor through drag/drop method
+* Creating a dynamically-updated tab for the newly-created objects
+* Animating the attack hits, tower firing, soldiers destroyed etc.
