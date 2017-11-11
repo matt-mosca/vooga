@@ -11,7 +11,6 @@ import splashScreen.ScreenDisplay;
 public class editDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private LeftToolBar myLeftToolBar;
-	private Rectangle currRectangle;
 	private Rectangle myMainGrid;
 	private RightToolBar myRightToolBar;
 	
@@ -29,12 +28,12 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void clicked(Rectangle rec) {
 		// TODO Auto-generated method stub
-		currRectangle = new Rectangle(rec.getWidth(), rec.getHeight(), rec.getFill());
-		currRectangle.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e));
+		Rectangle currRectangle = new Rectangle(rec.getWidth(), rec.getHeight(), rec.getFill());
+		currRectangle.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, currRectangle));
 		rootAdd(currRectangle);
 	}
 	
-	private void drag(MouseEvent e) {
+	private void drag(MouseEvent e, Rectangle currRectangle) {
 		currRectangle.setX(e.getSceneX() - currRectangle.getWidth() / 2);
 		currRectangle.setY(e.getSceneY() - currRectangle.getHeight() / 2);
 	}
