@@ -2,6 +2,8 @@ package authoring;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -30,12 +32,26 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 		// TODO Auto-generated method stub
 		Rectangle currRectangle = new Rectangle(rec.getWidth(), rec.getHeight(), rec.getFill());
 		currRectangle.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, currRectangle));
+		currRectangle.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(currRectangle));
 		rootAdd(currRectangle);
 	}
 	
 	private void drag(MouseEvent e, Rectangle currRectangle) {
 		currRectangle.setX(e.getSceneX() - currRectangle.getWidth() / 2);
 		currRectangle.setY(e.getSceneY() - currRectangle.getHeight() / 2);
+	}
+	
+	private void released(Rectangle currRectangle) {
+		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
+			createNewErrorWindow();
+		}
+	}
+	
+	private void createNewErrorWindow() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Object placement error");
+		alert.setHeaderText("Must place object in the main grid");
+		alert.show();
 	}
 	
 
