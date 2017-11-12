@@ -9,13 +9,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import splashScreen.ScreenDisplay;
 
-public class editDisplay extends ScreenDisplay implements AuthorInterface {
+public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private LeftToolBar myLeftToolBar;
 	private Rectangle myMainGrid;
 	private RightToolBar myRightToolBar;
 	
-	public editDisplay(int width, int height) {
+	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
@@ -50,7 +50,6 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private void getInfo(Rectangle rec) {
 //		myRightToolBar.updateInfo(rec);
-		
 		System.out.println(rec.getWidth());
 		System.out.println(rec.getHeight());
 		System.out.println(rec.getFill());

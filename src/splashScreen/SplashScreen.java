@@ -1,6 +1,6 @@
 package splashScreen;
 
-import authoring.editDisplay;
+import authoring.EditDisplay;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -77,7 +77,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	
 	@Override
 	public void switchScreen() {
-		editDisplay myScene = new editDisplay(MAINWIDTH, MAINHEIGHT);
+		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT);
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		stage.setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		stage.setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
