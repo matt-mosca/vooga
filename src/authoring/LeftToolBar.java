@@ -3,6 +3,7 @@ package authoring;
 import java.util.ArrayList;
 import java.util.List;
 
+import GUI.TurProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -21,19 +22,22 @@ import javafx.scene.shape.Rectangle;
  * @author Matt
  */
 public class LeftToolBar extends ScrollPane {
-	
 	private static final int WIDTH = 300;
 	private List<Rectangle> myList;
 	private ListView<Rectangle> myListView;
 	private AuthorInterface myAuthor;
+	private Rectangle myrec1;
+	private Rectangle myrec2;
+	private Rectangle myrec3;
+	private Rectangle myrec4;
 	
 	public LeftToolBar(AuthorInterface author) {
 		myAuthor = author;
         myList = new ArrayList<Rectangle>();
-        Rectangle myrec1 = createRectangle(100, 100, Color.YELLOW);
-        Rectangle myrec2 = createRectangle(150, 150, Color.BLUE);
-        Rectangle myrec3 = createRectangle(50, 50, Color.RED);
-        Rectangle myrec4 = createRectangle(100, 400, Color.BLACK);
+        myrec1 = createRectangle(100, 100, Color.YELLOW);
+        myrec2 = createRectangle(150, 150, Color.BLUE);
+        myrec3 = createRectangle(50, 50, Color.RED);
+        myrec4 = createRectangle(100, 400, Color.BLACK);
         myList.add(myrec1);
         myList.add(myrec2);
         myList.add(myrec3);
@@ -50,11 +54,11 @@ public class LeftToolBar extends ScrollPane {
 		return tempRec;
 	}
 
-	private void drag(MouseEvent e, Rectangle myrec) {
-		Rectangle newRectangle = new Rectangle(myrec.getX(), myrec.getY());
-		newRectangle.setX(e.getSceneX());
-		myrec.setY(e.getSceneY());
-	}
+//	private void drag(MouseEvent e, Rectangle myrec) {
+//		Rectangle newRectangle = new Rectangle(myrec.getX(), myrec.getY());
+//		newRectangle.setX(e.getSceneX());
+//		myrec.setY(e.getSceneY());
+//	}
 
 //	public void init() {
 //		myCommandHistoryBox = new ScrollPane();

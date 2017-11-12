@@ -1,5 +1,6 @@
 package authoring;
 
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,24 +17,26 @@ import javafx.scene.layout.VBox;
 public class RightToolBar extends VBox {
 	
 	private TableView<ObjectProperties> table = new TableView<ObjectProperties>();
-	private final ObservableList<ObjectProperties> data;
+	private ObjectProperties[] dataArray;
+	private ObservableList<ObjectProperties> data;
 	private Label label;
 	private Button addButton;
-	final TextField addFirst;
-	final TextField addLast;
-	TableColumn<ObjectProperties, String> firstCol;
-	TableColumn<ObjectProperties, String> lastCol;
+	private TextField addFirst;
+	private TextField addLast;
+	private TableColumn<ObjectProperties, String> firstCol;
+	private TableColumn<ObjectProperties, String> lastCol;
+	private AuthorInterface myAuthor;
 	
 	public RightToolBar(AuthorInterface author) {
- 
+		myAuthor = author;
 	    table = new TableView<ObjectProperties>();
-	    data =
-	            FXCollections.observableArrayList(
-	            new ObjectProperties("Tower 1", "1"),
+	    dataArray = new ObjectProperties[] {new ObjectProperties("Tower 1", "1"),
 	            new ObjectProperties("Tower 2", "2"),
 	            new ObjectProperties("Tower 3", "3"),
 	            new ObjectProperties("Soldier 1", "20"),
-	            new ObjectProperties("Solider 2", "50"));
+	            new ObjectProperties("Solider 2", "50")};
+	    data = FXCollections.observableArrayList(dataArray);
+	            
   
         label = new Label("Table");
  
@@ -72,8 +75,14 @@ public class RightToolBar extends VBox {
         });
         this.getChildren().addAll(addFirst, addLast, addButton);
         this.setSpacing(3);
- 
-
     }
+	
+	
+	public void updateInfo(String first, String second) {
+        data.add(new ObjectProperties(first, second));
+	}
+		
+		
+	
  
 } 
