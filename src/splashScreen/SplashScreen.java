@@ -14,6 +14,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import player.PlayDisplay;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
@@ -58,12 +59,6 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	@Override
-	public void playExistingGameButtonPressed() {
-		// TODO Auto-generated method stub
-		System.out.println("Play Existing");
-	}
-
-	@Override
 	public void editButtonPressed() {
 		// TODO Auto-generated method stub
 		System.out.println("Edit");
@@ -82,6 +77,16 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		stage.setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		stage.setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
 		stage.setScene(myScene.getScene());
+	}
+
+	@Override
+	public void playExisting() {
+		PlayDisplay myScene = new PlayDisplay(MAINWIDTH, MAINHEIGHT);
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		stage.setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
+		stage.setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
+		stage.setScene(myScene.getScene());
+		
 	}
 
 

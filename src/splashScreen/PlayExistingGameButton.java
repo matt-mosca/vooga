@@ -20,7 +20,7 @@ public class PlayExistingGameButton extends Button {
 		this.setLayoutX(XPOS);
 		this.setLayoutY(YPOS);
 		this.setText(LABEL);
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->splash.playExistingGameButtonPressed());
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->splash.playExisting());
 //		this.setStyle(  "-fx-border-color: transparent; -fx-border-width: 0;-fx-background-radius: 0;-fx-background-color: red;");
 	}
 }

@@ -28,6 +28,7 @@ public class RightToolBar extends VBox {
 	private AuthorInterface myAuthor;
 	
 	public RightToolBar(AuthorInterface author) {
+		this.setLayoutY(50);
 		myAuthor = author;
 	    table = new TableView<ObjectProperties>();
 	    dataArray = new ObjectProperties[] {new ObjectProperties("Tower 1", "1"),

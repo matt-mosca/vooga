@@ -2,7 +2,7 @@ package splashScreen;
 
 public interface SplashInterface {
 
-	void playExistingGameButtonPressed();
+	void playExisting();
 
 	void editButtonPressed();
 
