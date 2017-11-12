@@ -3,7 +3,6 @@ package authoring;
 import java.util.ArrayList;
 import java.util.List;
 
-import GUI.TurProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -32,6 +31,7 @@ public class LeftToolBar extends ScrollPane {
 	private Rectangle myrec4;
 	
 	public LeftToolBar(AuthorInterface author) {
+		this.setLayoutY(50);
 		myAuthor = author;
         myList = new ArrayList<Rectangle>();
         myrec1 = createRectangle(100, 100, Color.YELLOW);
