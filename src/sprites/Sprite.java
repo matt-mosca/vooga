@@ -8,6 +8,8 @@ public abstract class Sprite {
 	private String name;
 	private double xCoord;
 	private double yCoord;
+	private double xVelocity;
+	private double yVelocity;
 	// Flag to facilitate clean-up of 'dead' elements - only active elements
 	// displayed by front end
 	private boolean isActive;
@@ -17,12 +19,20 @@ public abstract class Sprite {
 	}
 
 	/**
-	 * Update self for given number of cycles based on per-sprite logic
-	 * 
-	 * @param cycles
-	 *            number of cycles of updates to perform
+	 * Update self for one cycle based on current state
 	 */
-	public abstract void update(int cycles);
+	public abstract void update();
+
+	/**
+	 * Move one cycle in direction of current velocity vector
+	 */
+	public abstract void move();
+
+	/**
+	 * Attack in whatever way necessary Likely called by interaction_engine in
+	 * event-handlers for keys / clicks
+	 */
+	public abstract void attack();
 
 	public String getName() {
 		return name;
@@ -34,6 +44,14 @@ public abstract class Sprite {
 
 	public double getY() {
 		return yCoord;
+	}
+	
+	public double getXVelocity() {
+		return xVelocity;
+	}
+	
+	public double getYVelocity() {
+		return yVelocity;
 	}
 
 	public boolean isActive() {
@@ -55,7 +73,7 @@ public abstract class Sprite {
 	protected void setY(double newY) {
 		yCoord = newY;
 	}
-	
+
 	/**
 	 * When the Sprite dies - will facilitate removal of element from
 	 * ElementManager's collection of active sprites

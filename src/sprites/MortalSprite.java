@@ -1,5 +1,10 @@
 package sprites;
 
+/**
+ * Abstraction of a Sprite that can take damage and die
+ * @author radithya
+ *
+ */
 public abstract class MortalSprite extends Sprite {
 
 	private double hitPoints;
