@@ -7,12 +7,12 @@ package sprites;
  */
 public abstract class PeriodicallyAttackingSprite extends MortalSprite {
 
-	private double attackFrequency;
-	private long attackTimer;
+	private double attackPeriod;
+	private double attackTimer;
 
-	public PeriodicallyAttackingSprite(String name, double hitPoints, double attackFreqeuncy) {
+	public PeriodicallyAttackingSprite(String name, double hitPoints, double attackPeriod) {
 		super(name, hitPoints);
-		this.attackFrequency = attackFreqeuncy;
+		this.attackPeriod = attackPeriod;
 		resetAttackTimer();
 	}
 
@@ -38,7 +38,7 @@ public abstract class PeriodicallyAttackingSprite extends MortalSprite {
 	}
 	
 	private void resetAttackTimer() {
-		attackTimer = Math.round(1.0 / attackFrequency);
+		attackTimer = attackPeriod;
 	}
 
 }

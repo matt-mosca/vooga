@@ -17,9 +17,15 @@ import sprites.Tower;
 
 public class SerializationUtils {
 
+	public static final String DESCRIPTION = "description";
 	public static final String STATUS = "status";
 	public static final String SPRITES = "sprites";
 	public static final String DELIMITER = "\n";
+	// Description, Status, Sprites
+	public static final int NUM_SERIALIZATION_SECTIONS = 3;
+	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
+	public static final int STATUS_SERIALIZATION_INDEX = 1;
+	public static final int SPRITES_SERIALIZATION_INDEX = 2;
 	private GsonBuilder gsonBuilder;
 
 	public SerializationUtils() {
@@ -36,12 +42,29 @@ public class SerializationUtils {
 	 *            the active Sprites in the game
 	 * @return
 	 */
-	public String serializeGameData(Map<String, String> status, Collection<Sprite> elements) {
+	public String serializeGameData(String gameDescription, Map<String, String> status, Collection<Sprite> elements) {
 		StringBuilder gameDataStringBuilder = new StringBuilder();
+		gameDataStringBuilder.append(serializeGameDescription(gameDescription));
+		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeStatus(status));
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeSprites(elements));
 		return gameDataStringBuilder.toString();
+	}
+
+	/**
+	 * Deserialize previously serialized game description into a string
+	 * 
+	 * @param serializedGameData
+	 *            string of serialized game data, both top-level game status and
+	 *            elements
+	 * @return string corresponding to game description
+	 * @throws IllegalArgumentException
+	 *             if serialization is ill-formatted
+	 */
+	public String deserializeGameDescription(String serializedGameData) throws IllegalArgumentException {
+		String[] serializedSections = retrieveSerializedSections(serializedGameData);
+		return deserializeDescription(serializedSections[DESCRIPTION_SERIALIZATION_INDEX]);
 	}
 
 	/**
@@ -55,11 +78,8 @@ public class SerializationUtils {
 	 *             if serialization is ill-formatted
 	 */
 	public Map<String, String> deserializeGameStatus(String serializedGameData) throws IllegalArgumentException {
-		String[] serializedPortions = serializedGameData.split(DELIMITER);
-		if (serializedPortions.length < 2) {
-			throw new IllegalArgumentException();
-		}
-		return deserializeStatus(serializedPortions[0]);
+		String[] serializedPortions = retrieveSerializedSections(serializedGameData);
+		return deserializeStatus(serializedPortions[STATUS_SERIALIZATION_INDEX]);
 	}
 
 	/**
@@ -74,29 +94,20 @@ public class SerializationUtils {
 	 *             if serialization is ill-formatted
 	 */
 	public Map<String, List<Sprite>> deserializeGameSprites(String serializedGameData) throws IllegalArgumentException {
-		String[] serializedPortions = serializedGameData.split(DELIMITER);
-		if (serializedPortions.length < 2) {
-			throw new IllegalArgumentException();
-		}
-		return deserializeSprites(serializedPortions[1]);
+		String[] serializedSections = retrieveSerializedSections(serializedGameData);
+		return deserializeSprites(serializedSections[SPRITES_SERIALIZATION_INDEX]);
 	}
 
-	private Map<String, String> deserializeStatus(String serializedStatus) {
-		Gson gson = new GsonBuilder().create();
-		return gson.fromJson(serializedStatus, Map.class);
-	}
-
-	// Return a map of sprite name to list of elements, which can be used by
-	// ElementFactory to construct sprite objects
-	private Map<String, List<Sprite>> deserializeSprites(String serializedSprites) {
-		return gsonBuilder.create().fromJson(serializedSprites, Map.class);
+	private String serializeGameDescription(String gameDescription) {
+		Map<String, String> descriptionMap = new HashMap<>();
+		descriptionMap.put(DESCRIPTION, gameDescription);
+		return gsonBuilder.create().toJson(descriptionMap);
 	}
 
 	private String serializeStatus(Map<String, String> status) {
 		StringBuilder bob = new StringBuilder();
-		Gson gson = new GsonBuilder().create();
 		System.out.println("Serializing status");
-		gson.toJson(status, bob);
+		gsonBuilder.create().toJson(status, bob);
 		String serializedStatus = bob.toString();
 		System.out.println(serializedStatus);
 		return serializedStatus;
@@ -119,9 +130,33 @@ public class SerializationUtils {
 		return gsonBuilder.create().toJson(spritesMap);
 	}
 
+	private String deserializeDescription(String serializedDescription) {
+		Map<String, String> descriptionMap = gsonBuilder.create().fromJson(serializedDescription, Map.class);
+		return descriptionMap.get(DESCRIPTION);
+	}
+
+	private Map<String, String> deserializeStatus(String serializedStatus) {
+		return gsonBuilder.create().fromJson(serializedStatus, Map.class);
+	}
+
+	// Return a map of sprite name to list of elements, which can be used by
+	// ElementFactory to construct sprite objects
+	private Map<String, List<Sprite>> deserializeSprites(String serializedSprites) {
+		return gsonBuilder.create().fromJson(serializedSprites, Map.class);
+	}
+
+	private String[] retrieveSerializedSections(String serializedGameData) throws IllegalArgumentException {
+		String[] serializedSections = serializedGameData.split(DELIMITER);
+		if (serializedSections.length < NUM_SERIALIZATION_SECTIONS) {
+			throw new IllegalArgumentException();
+		}
+		return serializedSections;
+	}
+
 	// For testing
 	public static void main(String[] args) {
 		SerializationUtils tester = new SerializationUtils();
+		String testDescription = "test_game";
 		Map<String, String> testStatus = new HashMap<>();
 		testStatus.put("lives", "3");
 		testStatus.put("gold", "100");
@@ -135,8 +170,9 @@ public class SerializationUtils {
 		Collection<Sprite> allSprites = Stream
 				.of(testTower, testTower2, testTower3, testSoldier, testSoldier2, testSoldier3)
 				.collect(Collectors.toList());
-		String serializedGameData = tester.serializeGameData(testStatus, allSprites);
+		String serializedGameData = tester.serializeGameData(testDescription, testStatus, allSprites);
 		System.out.println("Serialized sprites: " + serializedGameData);
+		System.out.println("Game Description: " + tester.deserializeGameDescription(serializedGameData));
 		Map<String, String> deserializedStatus = tester.deserializeGameStatus(serializedGameData);
 		Map<String, List<Sprite>> deserializedSprites = tester.deserializeGameSprites(serializedGameData);
 		for (String statusKey : deserializedStatus.keySet()) {
