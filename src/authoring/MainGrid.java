@@ -14,6 +14,7 @@ public class MainGrid extends Rectangle {
 	
 	
 	public MainGrid(AuthorInterface author) {
+		this.setY(50);
 		this.setX(260);
 		this.setWidth(400);
 		this.setHeight(400);

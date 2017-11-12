@@ -7,7 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 public abstract class ScreenDisplay {

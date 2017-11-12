@@ -1,28 +1,36 @@
-package authoring;
+package player;
 
-import java.util.ArrayList;
+import authoring.AuthorInterface;
+import authoring.LeftToolBar;
+import authoring.MainGrid;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import splashScreen.ScreenDisplay;
 
-public class editDisplay extends ScreenDisplay implements AuthorInterface {
+public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private LeftToolBar myLeftToolBar;
-	private Rectangle myMainGrid;
-	private RightToolBar myRightToolBar;
+	private MainGrid myMainGrid;
+	private HealthBar myHealthBar;
+	private DecreaseHealthButton myDecreaseHealthButton;
 	
-	public editDisplay(int width, int height) {
-		super(width, height, Color.GREEN);
-		myLeftToolBar = new LeftToolBar(this);
-		rootAdd(myLeftToolBar);
-		myMainGrid = new MainGrid(this);
-		rootAdd(myMainGrid);
-		myRightToolBar = new RightToolBar(this);
-		rootAdd(myRightToolBar);
+	public PlayDisplay(int width, int height) {
+		super(width, height, Color.BLUE);
+//		myLeftToolBar = new LeftToolBar(this);
+//		rootAdd(myLeftToolBar);
+//		myMainGrid = new MainGrid(this);
+//		rootAdd(myMainGrid);
+		rootAdd(new HealthBackground());
+		myHealthBar = new HealthBar();
+		rootAdd(myHealthBar);
+		myDecreaseHealthButton = new DecreaseHealthButton(this);
+		rootAdd(myDecreaseHealthButton);
+		
+//		rootAdd(new Rectangle(400, 400, Color.WHITE));
+		
 	}
 
 	@Override
@@ -32,8 +40,6 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 		currRectangle.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, currRectangle));
 		currRectangle.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(currRectangle));
 		rootAdd(currRectangle);
-		myRightToolBar.updateInfo(Double.toString(currRectangle.getWidth()),
-				Double.toString(currRectangle.getWidth()));
 	}
 	
 	private void drag(MouseEvent e, Rectangle currRectangle) {
@@ -45,17 +51,6 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
 			createNewErrorWindow();
 		}
-		getInfo(currRectangle);
-	}
-	
-	private void getInfo(Rectangle rec) {
-//		myRightToolBar.updateInfo(rec);
-		
-		System.out.println(rec.getWidth());
-		System.out.println(rec.getHeight());
-		System.out.println(rec.getFill());
-		System.out.println(rec.getX());
-		System.out.println(rec.getY());
 	}
 	
 	private void createNewErrorWindow() {
@@ -64,6 +59,11 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 		alert.setHeaderText("Must place object in the main grid");
 		alert.show();
 	}
-	
 
+	@Override
+	public void decreaseHealth() {
+		myHealthBar.decreaseHealth(10);
+	}
+	
+	
 }
