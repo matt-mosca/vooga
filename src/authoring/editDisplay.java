@@ -1,7 +1,6 @@
 package authoring;
 
 import java.util.ArrayList;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +23,6 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMainGrid);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
-		
 	}
 
 	@Override
@@ -34,6 +32,8 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 		currRectangle.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, currRectangle));
 		currRectangle.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(currRectangle));
 		rootAdd(currRectangle);
+		myRightToolBar.updateInfo(Double.toString(currRectangle.getWidth()),
+				Double.toString(currRectangle.getWidth()));
 	}
 	
 	private void drag(MouseEvent e, Rectangle currRectangle) {
@@ -45,6 +45,17 @@ public class editDisplay extends ScreenDisplay implements AuthorInterface {
 		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
 			createNewErrorWindow();
 		}
+		getInfo(currRectangle);
+	}
+	
+	private void getInfo(Rectangle rec) {
+//		myRightToolBar.updateInfo(rec);
+		
+		System.out.println(rec.getWidth());
+		System.out.println(rec.getHeight());
+		System.out.println(rec.getFill());
+		System.out.println(rec.getX());
+		System.out.println(rec.getY());
 	}
 	
 	private void createNewErrorWindow() {
