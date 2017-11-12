@@ -27,7 +27,6 @@ public class StatusSerializerDeserializer {
 		return gson.fromJson(serializedStatus, Map.class);
 	}
 	
-	
 	public static void main(String[] args) {
 		StatusSerializerDeserializer tester = new StatusSerializerDeserializer();
 		Map<String, String> testMap = new HashMap<>();
@@ -38,5 +37,4 @@ public class StatusSerializerDeserializer {
 			System.out.print(key + " : " + testMap.get(key));
 		}
 	}
-
 }
