@@ -21,6 +21,11 @@ import java.util.Enumeration;
 /**
  * Used for chat between authors and players over a network socket.
  *
+ * Only works if machines are on same network (and sometimes not even).
+ *
+ * We're probably going to want to setup a full server on AWS or something to get this and online
+ * multi-player working.
+ *
  * Based on http://www.geeksforgeeks.org/a-group-chat-application-in-java/.
  *
  * @author Ben Schwennesen
@@ -101,6 +106,7 @@ public class ChatClient {
                 InetAddress i = (InetAddress) ee.nextElement();
                 if (i.isSiteLocalAddress() && !i.isAnyLocalAddress() && !i.isLinkLocalAddress()
                         && !i.isLoopbackAddress() && !i.isMulticastAddress()) {
+                    System.out.println(n.getName());
                     socket.setNetworkInterface(NetworkInterface.getByName(n.getName()));
                 }
             }
