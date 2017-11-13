@@ -3,7 +3,7 @@ package authoring;
 import java.util.ArrayList;
 import java.util.List;
 
-import GUI.TurProperty;
+//import GUI.TurProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
