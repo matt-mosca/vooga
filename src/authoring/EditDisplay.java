@@ -70,7 +70,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		alert.show();
 	}
 
-	@Override
+	//@Override
 	public void decreaseHealth() {
 		// TODO Auto-generated method stub
 		
