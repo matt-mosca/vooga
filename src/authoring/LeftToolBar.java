@@ -3,10 +3,6 @@ package authoring;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
-//import GUI.TurProperty;
->>>>>>> mjm141
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
