@@ -18,20 +18,23 @@ import sprites.Tower;
 public class SerializationUtils {
 
 	public static final String DESCRIPTION = "description";
+	public static final String LEVEL = "LEVEL";
 	public static final String STATUS = "status";
 	public static final String SPRITES = "sprites";
 	public static final String DELIMITER = "\n";
 	// Description, Status, Sprites
 	public static final int NUM_SERIALIZATION_SECTIONS = 3;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
-	public static final int STATUS_SERIALIZATION_INDEX = 1;
-	public static final int SPRITES_SERIALIZATION_INDEX = 2;
+	public static final int LEVEL_SERIALIZATION_INDEX = 1;
+	public static final int STATUS_SERIALIZATION_INDEX = 2;
+	public static final int SPRITES_SERIALIZATION_INDEX = 3;
 	private GsonBuilder gsonBuilder;
 
 	public SerializationUtils() {
 		gsonBuilder = new GsonBuilder();
 	}
 
+	// TODO - Modify logic to handle multiple levels, by having level as outer key of top-level map
 	/**
 	 * Serialize all game data - status and collection of sprites
 	 * 
@@ -42,9 +45,12 @@ public class SerializationUtils {
 	 *            the active Sprites in the game
 	 * @return
 	 */
-	public String serializeGameData(String gameDescription, Map<String, String> status, Collection<Sprite> elements) {
+	public String serializeGameData(String gameDescription, int level, Map<String, String> status,
+			Collection<Sprite> elements) {
 		StringBuilder gameDataStringBuilder = new StringBuilder();
 		gameDataStringBuilder.append(serializeGameDescription(gameDescription));
+		gameDataStringBuilder.append(DELIMITER);
+		gameDataStringBuilder.append(serializeGameLevel(level));
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeStatus(status));
 		gameDataStringBuilder.append(DELIMITER);
@@ -52,6 +58,8 @@ public class SerializationUtils {
 		return gameDataStringBuilder.toString();
 	}
 
+	// TODO - for all deserialization methods : take level as parameter
+	
 	/**
 	 * Deserialize previously serialized game description into a string
 	 * 
@@ -65,6 +73,20 @@ public class SerializationUtils {
 	public String deserializeGameDescription(String serializedGameData) throws IllegalArgumentException {
 		String[] serializedSections = retrieveSerializedSections(serializedGameData);
 		return deserializeDescription(serializedSections[DESCRIPTION_SERIALIZATION_INDEX]);
+	}
+
+	/**
+	 * Deserialize previously serialized game level
+	 * 
+	 * @param serializedGameData
+	 *            string of serialized game data, both top-level game status and
+	 *            elements
+	 * @return int corresponding to level of the game data
+	 * @throws IllegalArgumentException
+	 */
+	public int deserializeGameLevel(String serializedGameData) throws IllegalArgumentException {
+		String[] serializedSections = retrieveSerializedSections(serializedGameData);
+		return deserializeLevel(serializedSections[LEVEL_SERIALIZATION_INDEX]);
 	}
 
 	/**
@@ -104,6 +126,12 @@ public class SerializationUtils {
 		return gsonBuilder.create().toJson(descriptionMap);
 	}
 
+	private String serializeGameLevel(int level) {
+		Map<String, Integer> levelMap = new HashMap<>();
+		levelMap.put(LEVEL, level);
+		return gsonBuilder.create().toJson(levelMap);
+	}
+
 	private String serializeStatus(Map<String, String> status) {
 		StringBuilder bob = new StringBuilder();
 		System.out.println("Serializing status");
@@ -135,6 +163,11 @@ public class SerializationUtils {
 		return descriptionMap.get(DESCRIPTION);
 	}
 
+	private int deserializeLevel(String serializedLevel) {
+		Map<String, Double> levelMap = gsonBuilder.create().fromJson(serializedLevel, Map.class);
+		return (int) Math.floor(levelMap.get(LEVEL));
+	}
+
 	private Map<String, String> deserializeStatus(String serializedStatus) {
 		return gsonBuilder.create().fromJson(serializedStatus, Map.class);
 	}
@@ -157,10 +190,10 @@ public class SerializationUtils {
 	public static void main(String[] args) {
 		SerializationUtils tester = new SerializationUtils();
 		String testDescription = "test_game";
+		int testLevel = 1;
 		Map<String, String> testStatus = new HashMap<>();
 		testStatus.put("lives", "3");
 		testStatus.put("gold", "100");
-		testStatus.put("level", "1");
 		Tower testTower = new Tower("testTower", 100, 1);
 		Tower testTower2 = new Tower("testTower", 150, 2);
 		Tower testTower3 = new Tower("testTower2", 200, 3);
@@ -170,9 +203,10 @@ public class SerializationUtils {
 		Collection<Sprite> allSprites = Stream
 				.of(testTower, testTower2, testTower3, testSoldier, testSoldier2, testSoldier3)
 				.collect(Collectors.toList());
-		String serializedGameData = tester.serializeGameData(testDescription, testStatus, allSprites);
+		String serializedGameData = tester.serializeGameData(testDescription, testLevel, testStatus, allSprites);
 		System.out.println("Serialized sprites: " + serializedGameData);
 		System.out.println("Game Description: " + tester.deserializeGameDescription(serializedGameData));
+		System.out.println("Level: " + tester.deserializeGameLevel(serializedGameData));
 		Map<String, String> deserializedStatus = tester.deserializeGameStatus(serializedGameData);
 		Map<String, List<Sprite>> deserializedSprites = tester.deserializeGameSprites(serializedGameData);
 		for (String statusKey : deserializedStatus.keySet()) {
