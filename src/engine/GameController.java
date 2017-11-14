@@ -13,22 +13,23 @@ public abstract class GameController {
 	private IOController ioController;
 	// TODO - Initialize an ElementFactory instance when its ready
 	// private ElementFactory elementFactory;
-	
+
 	public GameController() {
 		serializationUtils = new SerializationUtils();
 		ioController = new IOController(serializationUtils);
 		// elementFactory = new ElementFactory();
 	}
-	
+
 	protected abstract StateManager getStateManager();
-	
+
 	// TODO - a not-so-lame way?
 	/**
 	 * Whether this controller is the authoring environment or player
+	 * 
 	 * @return true if authoring, false if player
 	 */
 	public abstract boolean isAuthoring();
-	
+
 	// TODO - interface methods
 	/**
 	 * Save state of currently played game - assumes only 1 game in play for a given
@@ -44,11 +45,13 @@ public abstract class GameController {
 	 * 
 	 * @param savedGameName
 	 *            the name used to save the game state
+	 * @param level
+	 *            level of the game to load
 	 * @return a collection of elements which can be saved in the engine and passed
 	 *         to the front end
 	 */
-	public Collection<Sprite> loadGameStateElements(String savedGameName) throws FileNotFoundException {
-		Collection<Sprite> loadedSprites = ioController.loadGameStateElements(savedGameName, isAuthoring());
+	public Collection<Sprite> loadGameStateElements(String savedGameName, int level) throws FileNotFoundException {
+		Collection<Sprite> loadedSprites = ioController.loadGameStateElements(savedGameName, level, isAuthoring());
 		getStateManager().setCurrentElements(loadedSprites);
 		return loadedSprites;
 	}
@@ -60,14 +63,16 @@ public abstract class GameController {
 	 * 
 	 * @param savedGameName
 	 *            the name used to save the game state
+	 * @param level
+	 *            level of the game to load
 	 * @return map of state keys to values
 	 */
-	public Map<String, String> loadGameStateSettings(String savedGameName) throws FileNotFoundException {
-		Map<String, String> loadedSettings = ioController.loadGameStateSettings(savedGameName, isAuthoring());
+	public Map<String, String> loadGameStateSettings(String savedGameName, int level) throws FileNotFoundException {
+		Map<String, String> loadedSettings = ioController.loadGameStateSettings(savedGameName, level, isAuthoring());
 		getStateManager().setStatus(loadedSettings);
 		return loadedSettings;
 	}
-	
+
 	/**
 	 * Fetch all available game names and their corresponding descriptions
 	 * 
@@ -77,9 +82,9 @@ public abstract class GameController {
 		return ioController.getAvailableGames();
 	}
 
-	
 	/**
 	 * Query current play status (lives, kills, resources, all top-level metrics)
+	 * 
 	 * @return map of parameter name to value
 	 */
 	public Map<String, String> getStatus() {
@@ -110,9 +115,9 @@ public abstract class GameController {
 	public Sprite placeElement(String elementName, double x, double y) {
 		return getStateManager().placeElement(elementName, x, y);
 	}
-	
+
 	protected IOController getIOController() {
 		return ioController;
 	}
-	
+
 }

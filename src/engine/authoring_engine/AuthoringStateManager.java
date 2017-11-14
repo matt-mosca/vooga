@@ -1,6 +1,7 @@
 package engine.authoring_engine;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import engine.IOController;
@@ -24,11 +25,14 @@ public class AuthoringStateManager extends StateManager {
 
 	@Override
 	public void saveGameState(String savedGameName) {
-		// Save separately for every level
+		// Serialize separately for every level
+		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (Integer level : elementsPerLevel.keySet()) {
-			getIOController().saveGameState(savedGameName, getDescription(), level, getStatus(),
-					elementsPerLevel.get(level), AuthoringConstants.IS_AUTHORING);
+			serializedLevelsData.put(level, getIOController().getLevelSerialization(getDescription(), getStatus(),
+					elementsPerLevel.get(level)));
 		}
+		// Serialize map of level to per-level serialized data
+		getIOController().saveGameStateForMultipleLevels(savedGameName, serializedLevelsData, AuthoringConstants.IS_AUTHORING);
 	}
 
 	// TODO
