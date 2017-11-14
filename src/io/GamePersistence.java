@@ -28,8 +28,9 @@ public class GamePersistence {
 		Writer gameStateWriter;
 		try {
 			if (gameStateFile.exists()) {
-				// Append to file
-				gameStateWriter = new FileWriter(gameStateFile, true);
+				// TODO - Warning if file exists
+				// Overwrite file if it exists
+				gameStateWriter = new FileWriter(gameStateFile, false);
 			} else {
 				gameStateFile.createNewFile();
 				gameStateWriter = new FileWriter(gameStateFile);

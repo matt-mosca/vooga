@@ -22,6 +22,7 @@ public class IOController {
 
 	public static final String AUTHORING_GAMES_FOLDER = "authoring/";
 	public static final String PLAY_GAMES_FOLDER = "play/";
+	public static final int FIRST_LEVEL = 1;
 
 	private SerializationUtils serializationUtils;
 	private GamePersistence gamePersistence;
@@ -53,11 +54,10 @@ public class IOController {
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
 			Map<String, String> status, Collection<Sprite> elements, boolean forAuthoring) {
-		// Determine correct folder
-		String prefix = forAuthoring ? AUTHORING_GAMES_FOLDER : PLAY_GAMES_FOLDER;
 		// First extract string from file through io module
-		String serializedGameState = serializationUtils.serializeGameData(prefix + gameDescription, currentLevel, status, elements);
-		gamePersistence.saveGameState(savedGameName, serializedGameState);
+		String serializedGameState = serializationUtils.serializeGameData(gameDescription, currentLevel, status,
+				elements);
+		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
 	// TODO - throw custom exception
@@ -73,14 +73,12 @@ public class IOController {
 	 *         to the front end
 	 * @throws FileNotFoundException
 	 */
-	public Collection<Sprite> loadGameStateElements(String savedGameName, boolean forAuthoring)
+	public Collection<Sprite> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
 			throws FileNotFoundException {
-		// Determine correct folder
-		String prefix = forAuthoring ? AUTHORING_GAMES_FOLDER : PLAY_GAMES_FOLDER;
 		// First extract string from file through io module
-		String serializedGameData = gamePersistence.loadGameState(prefix + savedGameName);
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		// deserialize string into map through utils module
-		Map<String, List<Sprite>> spritesMap = serializationUtils.deserializeGameSprites(serializedGameData);
+		Map<String, List<Sprite>> spritesMap = serializationUtils.deserializeGameSprites(serializedGameData, level);
 		// TODO - retrieve collection of Sprites from map through ElementFactory
 		// TODO - return this collection
 		return null;// TEMP
@@ -99,14 +97,12 @@ public class IOController {
 	 * @return map of state keys to values
 	 * @throws FileNotFoundException
 	 */
-	public Map<String, String> loadGameStateSettings(String savedGameName, boolean forAuthoring)
+	public Map<String, String> loadGameStateSettings(String savedGameName, int level, boolean forAuthoring)
 			throws FileNotFoundException {
-		// Determine correct folder
-		String prefix = forAuthoring ? AUTHORING_GAMES_FOLDER : PLAY_GAMES_FOLDER;
 		// First extract string from file through io module
-		String serializedGameData = gamePersistence.loadGameState(prefix + savedGameName);
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		// deserialize string into map through utils module
-		return serializationUtils.deserializeGameStatus(serializedGameData);
+		return serializationUtils.deserializeGameStatus(serializedGameData, level);
 	}
 
 	/**
@@ -121,7 +117,9 @@ public class IOController {
 		// for each file, extract description through util module
 		for (String authoredGameName : authoredGameSerializations.keySet()) {
 			availableGames.put(authoredGameName,
-					serializationUtils.deserializeGameDescription(authoredGameSerializations.get(authoredGameName)));
+					// Level description of 1st level of game assumed to be game description?
+					serializationUtils.deserializeGameDescription(authoredGameSerializations.get(authoredGameName),
+							FIRST_LEVEL));
 		}
 		return availableGames;
 	}
@@ -194,6 +192,46 @@ public class IOController {
 			}
 		}
 		return authoredGameSerializationMap;
+	}
+
+	/**
+	 * Get serialization of a level's data
+	 * 
+	 * @param levelDescription
+	 *            description of level as set by authoring engine
+	 * @param levelStatus
+	 *            top-level status metrics of game
+	 * @param levelElements
+	 *            elements for that level
+	 * @return string representing serialization of level's data
+	 */
+	public String getLevelSerialization(String levelDescription, Map<String, String> levelStatus,
+			Collection<Sprite> levelElements) {
+		return serializationUtils.serializeLevelData(levelDescription, levelStatus, levelElements);
+	}
+
+	/**
+	 * Save game state for multiple levels using mapping of level to serialized data
+	 * for level Especially useful for authoring use-case where a (partially) built
+	 * game with many levels of data has to be saved, differentiating between levels
+	 * 
+	 * @param savedGameName
+	 *            name for game state to be saved to
+	 * @param serializedLevelsData
+	 *            map of level to serialized data for level
+	 * @param forAuthoring
+	 *            true if for authoring, false if for play - TODO - more flexible
+	 *            approach? reflection?
+	 */
+	public void saveGameStateForMultipleLevels(String savedGameName, Map<Integer, String> serializedLevelsData,
+			boolean forAuthoring) {
+		String serializedGameData = serializationUtils.serializeLevelsData(serializedLevelsData);
+		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameData);
+	}
+
+	private String getResolvedGameName(String savedGameName, boolean forAuthoring) {
+		String prefix = forAuthoring ? AUTHORING_GAMES_FOLDER : PLAY_GAMES_FOLDER;
+		return prefix + savedGameName;
 	}
 
 }
