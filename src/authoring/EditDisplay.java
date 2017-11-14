@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -16,7 +17,7 @@ import splashScreen.ScreenDisplay;
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private LeftToolBar myLeftToolBar;
-	private Rectangle myMainGrid;
+	private GridPane myMainGrid;
 	private RightToolBar myRightToolBar;
 	private Scene drawingScene;
 	private Stage drawingStage;
