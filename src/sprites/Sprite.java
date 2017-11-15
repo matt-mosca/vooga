@@ -6,10 +6,15 @@ package sprites;
 public abstract class Sprite {
 
 	private String name;
+	// ^ I don't see why we'd want to name them?
+
 	private double xCoord;
 	private double yCoord;
+
 	private double xVelocity;
 	private double yVelocity;
+	// ^ these might be subclass members (likely abstract subclass) instead if we want multi-genre flexibility
+
 	// Flag to facilitate clean-up of 'dead' elements - only active elements
 	// displayed by front end
 	private boolean isActive;
