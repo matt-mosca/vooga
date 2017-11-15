@@ -61,7 +61,7 @@ public class GridGameArea extends GridPane implements GameArea{
 		for(int i = 0; i<(100/GRID_ROW_PERCENTAGE); i++) {
 			for(int j = 0; j<(100/GRID_COLUMN_PERCENTAGE);j++) {
 				Cell cell = new Cell();
-				this.add(cell, i, j);
+				this.add(cell, j, i); //column then row for this javafx command
 				cells[i][j] = cell;
 			}
 		}
@@ -70,7 +70,7 @@ public class GridGameArea extends GridPane implements GameArea{
 	private void adjustWaypoint(MouseEvent e) {
 		int row = (int) e.getY()/(GRID_HEIGHT/(100/GRID_ROW_PERCENTAGE));
 		int col = (int) e.getX()/(GRID_WIDTH/(100/GRID_COLUMN_PERCENTAGE));
-		Cell cell = cells[col][row];
+		Cell cell = cells[row][col];
 		
 		double x = col*(GRID_WIDTH/(100/GRID_COLUMN_PERCENTAGE)) + cell.getWidth()/2;
 		double y = row*(GRID_HEIGHT/(100/GRID_ROW_PERCENTAGE)) + cell.getHeight()/2;
@@ -79,9 +79,28 @@ public class GridGameArea extends GridPane implements GameArea{
 		if(cell.pathActive()) {
 			cell.deactivate();
 			points.remove(waypoint);
+			updateNeighbors(row, col, false);
 		}else {
+			if(points.size()>0 && !cell.activeNeighbors()) return;
 			cell.activate();
 			points.add(waypoint);
+			updateNeighbors(row, col,true);
+		}
+	}
+	
+	private void updateNeighbors(int row, int col, boolean addActive) {
+		int[] rows = {row, row+1, row-1};
+		int[] cols = {col, col+1, col-1};
+		for(int r: rows) {
+			for(int c:cols) {
+				if(r>-1 && c>-1 && r<(cells.length) && c<(cells[0].length) && !(r==row && c==col)) {
+					if(addActive) {
+						cells[r][c].addActive();
+					}else{
+						cells[r][c].removeActive();
+					}
+				}
+			}
 		}
 	}
 }
