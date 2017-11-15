@@ -26,7 +26,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.GREEN);
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
-		myMainGrid = new MainGrid(this);
+		myMainGrid = new GridGameArea(this);
 		rootAdd(myMainGrid);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
