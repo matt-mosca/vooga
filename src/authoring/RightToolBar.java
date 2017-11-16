@@ -37,7 +37,9 @@ public class RightToolBar extends VBox {
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
 	private TabPane bottomTabPane;
+	private NewSpriteTab newTower;
 	private NewSpriteTab newTroop;
+	private NewSpriteTab newProjectile;
 	
 	public RightToolBar(AuthorInterface author) {
 		this.setLayoutY(50);
@@ -56,7 +58,9 @@ public class RightToolBar extends VBox {
 	    bottomTabPane = new TabPane();
 	    createAndAddTabs();
 	    
-	    newTroop = new NewSpriteTab();      
+	    newTower = new NewTowerTab();   
+	    newTroop = new NewTroopTab(); 
+	    newProjectile = new NewProjectileTab(); 
   
         label = new Label("Table");
  
@@ -86,7 +90,9 @@ public class RightToolBar extends VBox {
         topTabPane.getTabs().get(0).setContent(table);
         //newTroops.attach(tabList.get(0);
         
-        newTroop.attach(topTabPane.getTabs().get(0));
+        newTower.attach(topTabPane.getTabs().get(0));
+        newTroop.attach(topTabPane.getTabs().get(1));
+        newProjectile.attach(topTabPane.getTabs().get(2));
         
         addButton = buttonMaker.buildDefaultTextButton("Add", e -> addData());
 

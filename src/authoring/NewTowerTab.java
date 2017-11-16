@@ -1,5 +1,7 @@
 package authoring;
 
-public class NewTowerTab {
-
+public class NewTowerTab extends NewSpriteTab {
+	public NewTowerTab() {
+		super();
+	}
 }

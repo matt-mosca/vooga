@@ -1,5 +1,7 @@
 package authoring;
 
-public class NewTroopTab {
-
+public class NewTroopTab extends NewSpriteTab {
+	public NewTroopTab() {
+		super();
+	}
 }
