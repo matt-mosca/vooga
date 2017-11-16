@@ -37,7 +37,7 @@ public class RightToolBar extends VBox {
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
 	private TabPane bottomTabPane;
-	private NewTroopTab newTroop;
+	private NewSpriteTab newTroop;
 	
 	public RightToolBar(AuthorInterface author) {
 		this.setLayoutY(50);
@@ -56,7 +56,7 @@ public class RightToolBar extends VBox {
 	    bottomTabPane = new TabPane();
 	    createAndAddTabs();
 	    
-	    newTroop = new NewTroopTab();      
+	    newTroop = new NewSpriteTab();      
   
         label = new Label("Table");
  
