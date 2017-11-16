@@ -1,4 +1,4 @@
-package behavior;
+package engine.behavior;
 
 /**
  * Support different ways of firing, one of which is chosen by authoring and

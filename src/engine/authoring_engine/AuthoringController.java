@@ -56,8 +56,10 @@ public class AuthoringController extends GameController {
 	 *            the identifier for this previously created type
 	 * @param level
 	 *            level of the game this element is being added for
+	 * @throws IllegalArgumentException
+	 *             if level does not exist
 	 */
-	public Sprite addElement(String name, int level) {
+	public Sprite addElement(String name, int level) throws IllegalArgumentException {
 		return getStateManager().addElement(name, level);
 	}
 
@@ -73,11 +75,14 @@ public class AuthoringController extends GameController {
 	 *            level of the game this element is being added for
 	 * @param customProperties
 	 *            map of properties to override for this specific instance
+	 * @throws IllegalArgumentException
+	 *             if level does not exist
 	 */
-	public Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties) {
+	public Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties)
+			throws IllegalArgumentException {
 		return getStateManager().updateElement(name, x, y, level, customProperties);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -86,12 +91,14 @@ public class AuthoringController extends GameController {
 	 *            level of the game this element is being added for
 	 * @param customProperties
 	 *            map of properties to override for this specific instance
+	 * @throws IllegalArgumentException
+	 *             if level does not exist
 	 */
-	public Sprite updateInventoryElement(String name, int level, Map<String, String> customProperties) {
-		//TODO
+	public Sprite updateInventoryElement(String name, int level, Map<String, String> customProperties)
+			throws IllegalArgumentException {
+		// TODO
 		return null;
 	}
-
 
 	/**
 	 * Set a top-level game property (e.g. lives, starting resources, etc)
@@ -103,6 +110,20 @@ public class AuthoringController extends GameController {
 	 */
 	public void setGameParam(String property, String value) {
 		getStateManager().setGameParam(property, value);
+	}
+
+	// TODO - to support multiple clients / interactive editing, need a client-id
+	// param (string or int)
+	/**
+	 * Delete the previously created level
+	 * 
+	 * @param level
+	 *            the level to delete
+	 * @throws IllegalArgumentException
+	 *             if level does not exist
+	 */
+	public void deleteLevel(int level) throws IllegalArgumentException {
+		getStateManager().deleteLevel(level);
 	}
 
 }

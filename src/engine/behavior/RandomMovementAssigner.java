@@ -1,4 +1,4 @@
-package behavior;
+package engine.behavior;
 
 import java.awt.Point;
 import java.util.ArrayList;

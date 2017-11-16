@@ -1,4 +1,4 @@
-package behavior;
+package engine.behavior;
 
 /**
  * Visitor Design Pattern for handling collisions
@@ -8,4 +8,5 @@ package behavior;
 public interface CollisionVisitable {
 
 	public void accept (CollisionVisitor v);
+
 }

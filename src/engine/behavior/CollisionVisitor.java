@@ -1,4 +1,4 @@
-package behavior;
+package engine.behavior;
 
 /**
  * Visitor Design Pattern for handling collisions
@@ -9,4 +9,8 @@ package behavior;
 public interface CollisionVisitor {
 
 	// TODO - Consider different kinds of reactions to collisions and implement Visitable differently for each one of them
+	public void visit(ImperviousCollider collider);
+	
+	public void visit(MortalCollider collider);
+	
 }

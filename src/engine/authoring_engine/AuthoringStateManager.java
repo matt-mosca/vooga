@@ -1,7 +1,9 @@
 package engine.authoring_engine;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import engine.IOController;
@@ -17,22 +19,24 @@ import sprites.Sprite;
  */
 public class AuthoringStateManager extends StateManager {
 
-	private Map<Integer, Collection<Sprite>> elementsPerLevel;
+	private List<Collection<Sprite>> elementsPerLevel;
 
 	public AuthoringStateManager(IOController authoringIOController) {// , ElementFactory elementFactory) {
 		super(authoringIOController);// , elementFactory);
+		elementsPerLevel.add(new ArrayList<Sprite>()); // Leave index 0 blank to facilitate 1-indexing from authoring
 	}
 
 	@Override
 	public void saveGameState(String savedGameName) {
 		// Serialize separately for every level
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
-		for (Integer level : elementsPerLevel.keySet()) {
+		for (int level = 0; level < elementsPerLevel.size(); level++) {
 			serializedLevelsData.put(level, getIOController().getLevelSerialization(getDescription(), getStatus(),
 					elementsPerLevel.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
-		getIOController().saveGameStateForMultipleLevels(savedGameName, serializedLevelsData, AuthoringConstants.IS_AUTHORING);
+		getIOController().saveGameStateForMultipleLevels(savedGameName, serializedLevelsData,
+				AuthoringConstants.IS_AUTHORING);
 	}
 
 	// TODO
@@ -60,7 +64,7 @@ public class AuthoringStateManager extends StateManager {
 
 	@Override
 	public void setCurrentElements(Collection<Sprite> newElements) {
-		elementsPerLevel.put(getCurrentLevel(), newElements);
+		elementsPerLevel.set(getCurrentLevel(), newElements);
 	}
 
 	@Override
@@ -70,7 +74,8 @@ public class AuthoringStateManager extends StateManager {
 		return elementsPerLevel.get(getCurrentLevel());
 	}
 
-	Sprite placeElement(String elementName, double x, double y, int level) {
+	Sprite placeElement(String elementName, double x, double y, int level) throws IllegalArgumentException {
+		assertValidLevel(level);
 		// Use ElementFactory to construct Sprite from elementName with these
 		// coordinates, ElementFactory will retrieve info from file since element
 		// already exists
@@ -83,27 +88,30 @@ public class AuthoringStateManager extends StateManager {
 	}
 
 	// TODO
-	Sprite addElement(String name, int level) {
+	Sprite addElement(String name, int level) throws IllegalArgumentException {
+		assertValidLevel(level);
 		// Use ElementFactory to construct Sprite from elementName with these
 		// coordinates, ElementFactory will retrieve info from file since element
 		// already exists
 		/*
 		 * Sprite elementToPlace = getElementFactory().instantiateElement(elementName);
-		 * // Add created Sprite to gameElements currentElements.add(elementToPlace);
+		 * // Add created Sprite to gameElements currentElements.get(level).add(elementToPlace);
 		 * return elementToPlace;
 		 */
 		return null; // TEMP
 	}
 
 	// TODO
-	Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties) {
+	Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties)
+			throws IllegalArgumentException {
+		assertValidLevel(level);
 		// find element and customize its properties
 		Sprite elementToUpdate = findElementByLevelAndPosition(level, x, y);
 		// Pass sprite and new properties to ElementFactory to let it update sprite
 		// accordingly by calling Sprite API methods
 		/*
-		elementFactory.updateElement(elementToUpdate, customProperties);
-		*/
+		 * elementFactory.updateElement(elementToUpdate, customProperties);
+		 */
 		return elementToUpdate;
 	}
 
@@ -111,8 +119,21 @@ public class AuthoringStateManager extends StateManager {
 		getStatus().put(property, value);
 	}
 
+	void deleteLevel(int level) throws IllegalArgumentException {
+		assertValidLevel(level);
+		elementsPerLevel.remove(level);
+	}
+
+	@Override
+	protected void assertValidLevel(int level) throws IllegalArgumentException {
+		if (level < 0 || level > elementsPerLevel.size()) {
+			throw new IllegalArgumentException();
+		}
+	}
+
 	// TODO - more efficient implementation?
-	private Sprite findElementByLevelAndPosition(int level, double x, double y) {
+	private Sprite findElementByLevelAndPosition(int level, double x, double y) throws IllegalArgumentException {
+		assertValidLevel(level);
 		Collection<Sprite> elementsForLevel = elementsPerLevel.get(level);
 		for (Sprite element : elementsForLevel) {
 			if (element.getX() == x && element.getY() == y) {
