@@ -6,4 +6,7 @@ import javafx.scene.shape.Rectangle;
 public interface AuthorInterface {
 
 	public void clicked(Rectangle rec);
+	
+	public void dropped(Rectangle rec);
+	
 }

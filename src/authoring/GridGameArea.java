@@ -11,11 +11,10 @@ import javafx.scene.shape.Polyline;
 
 
 public class GridGameArea extends GridPane implements GameArea{
-	private final int GRID_ROW_PERCENTAGE = 5;
-	private final int GRID_COLUMN_PERCENTAGE = 5;
+	private final int GRID_ROW_PERCENTAGE = 10;
+	private final int GRID_COLUMN_PERCENTAGE = 10;
 	private final int GRID_WIDTH = 400;
 	private final int GRID_HEIGHT = 400;
-	
 	private Polyline path;
 	private LinkedList<Point2D> points;
 	private Cell[][] cells;

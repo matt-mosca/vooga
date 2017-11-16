@@ -33,8 +33,8 @@ public class LeftToolBar extends ScrollPane {
 		this.setLayoutY(50);
 		myAuthor = author;
         myList = new ArrayList<Rectangle>();
-        myrec1 = createRectangle(100, 100, Color.YELLOW);
-        myrec2 = createRectangle(150, 150, Color.BLUE);
+        myrec1 = createRectangle(20, 20, Color.BLUE);
+        myrec2 = createRectangle(100, 100, Color.YELLOW);
         myrec3 = createRectangle(50, 50, Color.RED);
         myrec4 = createRectangle(100, 400, Color.BLACK);
         myList.add(myrec1);

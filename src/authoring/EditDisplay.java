@@ -76,6 +76,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void dropped(Rectangle rec) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 
