@@ -6,8 +6,8 @@ import javafx.scene.control.TabPane;
 
 public class TabFactory {
 	public Tab buildTab(String name, Group content, TabPane pane) {
-		Tab tab = new Tab(name);
-		tab.setContent(content);
-		return tab;
+		Tab product = new Tab(name);
+		product.setContent(content);
+		return product;
 	}
 }
