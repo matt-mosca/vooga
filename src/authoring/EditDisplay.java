@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,6 +32,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMainGrid);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
+//		insertAnimation();
 	}
 
 	@Override
@@ -77,6 +80,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 	
-	
+//	private void insertAnimation() {
+//		String imageName = "BlackSquareAnimation.gif";
+//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+//		ImageView square = new ImageView(image);
+//		rootAdd(square);
+//	}
 
 }
