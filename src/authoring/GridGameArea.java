@@ -1,6 +1,7 @@
 package authoring;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
@@ -102,5 +103,9 @@ public class GridGameArea extends GridPane implements GameArea{
 				}
 			}
 		}
+	}
+	
+	public List<Point2D> getPath() {
+		return points;
 	}
 }
