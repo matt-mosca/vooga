@@ -82,10 +82,6 @@ public class AuthoringController extends GameController {
 	 * 
 	 * @param name
 	 *            name of element type
-	 * @param x
-	 *            xCoordinate of previously created element
-	 * @param y
-	 *            yCoordinate of previously created element
 	 * @param level
 	 *            level of the game this element is being added for
 	 * @param customProperties
