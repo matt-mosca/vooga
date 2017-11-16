@@ -33,4 +33,8 @@ public class NewTroopTab {
 	public void attach(Tab newTroopTab) {
 		newTroopTab.setContent(troopArea);
 	}
+	
+	private void addDefaultImages() {
+		//AccessResourceFiles
+	}
 }
