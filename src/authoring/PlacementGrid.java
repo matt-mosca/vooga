@@ -26,12 +26,7 @@ public class PlacementGrid extends GridPane {
 		initializeEventHandlers();
 	}
 
-
-	private void initializeEventHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
-	}
-
-	public void initializeLayout() {
+	private void initializeLayout() {
 		this.setMinSize(width, height);
 		this.setStyle("-fx-background-color: #3E3F4B;");
 		
@@ -48,7 +43,7 @@ public class PlacementGrid extends GridPane {
 		}
 	}
 	
-	public void initializeCells() {
+	private void initializeCells() {
 		for(int i = 0; i<(100/GRID_ROW_PERCENTAGE); i++) {
 			for(int j = 0; j<(100/GRID_COLUMN_PERCENTAGE);j++) {
 				Cell cell = new Cell();
@@ -56,6 +51,11 @@ public class PlacementGrid extends GridPane {
 				cells[i][j] = cell;
 			}
 		}
+	}
+	
+
+	private void initializeEventHandlers() {
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
 	}
 
 	private void activatePath(MouseEvent e) {

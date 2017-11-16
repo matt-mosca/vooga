@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -18,10 +19,11 @@ import splashScreen.ScreenDisplay;
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private LeftToolBar myLeftToolBar;
-	private Pane myMainGrid;
+	private GameArea myMainGrid;
 	private RightToolBar myRightToolBar;
 	private Scene drawingScene;
 	private Stage drawingStage;
+	private CheckBox gridToggle;
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
@@ -31,6 +33,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMainGrid);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
+		
+		gridToggle = new CheckBox();
+		gridToggle.setLayoutX(650);
+		gridToggle.setLayoutY(455);
+		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
+		});
+		rootAdd(gridToggle);
 	}
 
 	@Override

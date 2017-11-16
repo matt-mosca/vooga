@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Polyline;
 
 public class GameArea extends Pane{
 	private final int GRID_WIDTH = 400;
