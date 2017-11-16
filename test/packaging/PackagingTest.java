@@ -5,7 +5,7 @@ import networking.ChatTestWindow;
 import java.lang.reflect.Method;
 
 /**
- * Test the packager.
+ * Tests the packager.
  *
  * @author Ben Schwennesen
  */
@@ -13,7 +13,7 @@ public class PackagingTest {
 
     private static void testJarCreation(Packager packager) {
         packager.generateJar("jar-package-testing", ChatTestWindow.class);
-        // test the JAR manually, no way to do it programmatically
+        // test the JAR manually with a launch
     }
 
     private static void testPathConversion(Packager packager) throws Exception {

@@ -3,7 +3,9 @@ package sprites;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -14,14 +16,18 @@ import java.util.Properties;
  */
 public class SpriteFactory {
 
+    private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
     private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-properties/";
     private final String PROPERTIES_EXTENSION = ".properties";
-    private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
+    private final String CLASS_KEY = "class";
 
     // this might change - still don't see why the sprite needs to know its template name
-    private final Class[] SPRITE_CONSTRUCTOR_ARGUMENT_CLASSES = {String.class};
+    private final Class[] SPRITE_CONSTRUCTOR_ARGUMENT_CLASSES = { Map.class, String.class };
 
-    private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
+    private Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
+    private Map<Integer, List<Sprite>> levelSpritesCache = new HashMap<>();
+
+    private int level = 1;
 
     /**
      * Generate a sprite from a new/updated template which specifies its properties.
@@ -33,8 +39,9 @@ public class SpriteFactory {
      * @return a sprite object with properties set to those specified in the template
      * @throws ReflectiveOperationException - in the case that the spriteClassName is invalid
      */
-    public Sprite generateSprite(String spriteClassName, String spriteTemplateName, Map<String, String> properties)
+    public Sprite generateSprite(String spriteClassName, String spriteTemplateName, Map<String, Object> properties)
             throws ReflectiveOperationException {
+        properties.put(CLASS_KEY, spriteClassName);
         spriteTemplates.put(spriteTemplateName, properties);
         return generateSprite(spriteClassName, spriteTemplateName);
     }
@@ -50,30 +57,18 @@ public class SpriteFactory {
     public Sprite generateSprite(String spriteClassName, String spriteTemplateName) throws
             ReflectiveOperationException {
         Class spriteClass = Class.forName(spriteClassName);
+        Map<String, Object> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
         Sprite sprite = (Sprite) spriteClass.getConstructor(SPRITE_CONSTRUCTOR_ARGUMENT_CLASSES)
-                .newInstance(spriteTemplateName);
-        setSpriteProperties(sprite, spriteTemplateName);
+                .newInstance(properties, spriteTemplateName);
+        cacheGeneratedSprite(sprite);
         return sprite;
     }
 
-    private void setSpriteProperties(Sprite sprite, String spriteTemplateName) {
-        Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
-        // TODO - set the properties
-        // Maybe get all the setters reflexively, check for "set" + property (ignore case)
+    private void cacheGeneratedSprite(Sprite sprite) {
+        List<Sprite> levelSprites = levelSpritesCache.getOrDefault(level, new ArrayList<>());
+        levelSprites.add(sprite);
+        levelSpritesCache.put(level, levelSprites);
     }
-
-    /*
-     * Generate a sprite with default properties (that is, without using a template).
-     *
-     * @param spriteClassName - the subclass of Sprite to generate
-     * @return a sprite object with properties set to those specified in the template
-     * @throws ReflectiveOperationException - in the case that the spriteClassName is invalid
-     *
-    public Sprite generateSprite(String spriteClassName) throws ReflectiveOperationException  {
-        Class spriteClass = Class.forName(spriteClassName);
-        return (Sprite) spriteClass.getConstructor(SPRITE_CONSTRUCTOR_ARGUMENT_CLASSES)
-                .newInstance(spriteClassName);
-    }*/
 
     /**
      * Export all the stored sprite templates for an authored game to properties files.
@@ -81,8 +76,8 @@ public class SpriteFactory {
     public void exportSpriteTemplates() {
         for (String templateName : spriteTemplates.keySet()) {
             Properties templateProperties = new Properties();
-            Map<String, String> templatePropertiesMap = spriteTemplates.get(templateName);
-            templatePropertiesMap.forEach(templateProperties::setProperty);
+            Map<String, Object> templatePropertiesMap = spriteTemplates.get(templateName);
+            templatePropertiesMap.forEach((key, value) -> templateProperties.setProperty(key, value.toString()));
             File exportFile = new File(TEMPLATE_FILE_OUTPUT_PATH + templateName + PROPERTIES_EXTENSION);
             writeTemplateToFile(templateProperties, exportFile);
         }
@@ -106,19 +101,11 @@ public class SpriteFactory {
         }
     }
 
-    public static void main(String[] args) {
-        SpriteFactory sf = new SpriteFactory();
-        Map<String, String> map = new HashMap<>();
-        map.put("health-points", "50.0");
-        map.put("damage", "4.0");
-        map.put("image", "http://veryrealurl.com/veryrealimage.png");
-        try {
-            sf.generateSprite("sprites.DummySprite", "Cool Tower", map);
-        } catch (ReflectiveOperationException e) {
-            System.out.println("reflection failure");
-            e.printStackTrace();
-        }
-        sf.exportSpriteTemplates();
+    public void setLevel(int level) {
+        this.level = level;
     }
 
+    public Map<Integer, List<Sprite>> getLevelSprites() {
+        return levelSpritesCache;
+    }
 }
