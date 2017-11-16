@@ -2,7 +2,6 @@ package engine.authoring_engine;
 
 import java.util.Collection;
 import java.util.Map;
-
 import engine.GameController;
 import engine.IOController;
 import engine.StateManager;
@@ -78,6 +77,21 @@ public class AuthoringController extends GameController {
 	public Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties) {
 		return getStateManager().updateElement(name, x, y, level, customProperties);
 	}
+	
+	/**
+	 * 
+	 * @param name
+	 *            name of element type
+	 * @param level
+	 *            level of the game this element is being added for
+	 * @param customProperties
+	 *            map of properties to override for this specific instance
+	 */
+	public Sprite updateInventoryElement(String name, int level, Map<String, String> customProperties) {
+		//TODO
+		return null;
+	}
+
 
 	/**
 	 * Set a top-level game property (e.g. lives, starting resources, etc)
