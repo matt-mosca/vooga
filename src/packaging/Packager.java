@@ -24,7 +24,7 @@ public class Packager {
     private final String SRC = "src/";
     private final String MAIN_CLASS_KEY = "Main-Class";
     private final String MANIFEST_VERSION = "1.0";
-    private final String GAMES_ROOT = "games/";
+    private final String GAMES_ROOT = "data/games/";
     private final String JAR_EXTENSION = ".jar";
 
     // this will eventually be all game engine classes, among other things to include like resource files
