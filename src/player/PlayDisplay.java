@@ -2,7 +2,7 @@ package player;
 
 import authoring.AuthorInterface;
 import authoring.LeftToolBar;
-import authoring.MainGrid;
+import authoring.GridGameArea;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
@@ -13,7 +13,7 @@ import splashScreen.ScreenDisplay;
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private LeftToolBar myLeftToolBar;
-	private MainGrid myMainGrid;
+	private GridGameArea myMainGrid;
 	private HealthBar myHealthBar;
 	private DecreaseHealthButton myDecreaseHealthButton;
 	
