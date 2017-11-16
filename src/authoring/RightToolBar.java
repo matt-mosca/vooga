@@ -1,6 +1,7 @@
 package authoring;
 
 
+import factory.ButtonFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +27,7 @@ public class RightToolBar extends VBox {
 	private TableColumn<ObjectProperties, String> firstCol;
 	private TableColumn<ObjectProperties, String> lastCol;
 	private AuthorInterface myAuthor;
+	ButtonFactory buttonMaker;
 	
 	public RightToolBar(AuthorInterface author) {
 		this.setLayoutY(50);
@@ -37,6 +39,8 @@ public class RightToolBar extends VBox {
 	            new ObjectProperties("Soldier 1", "20"),
 	            new ObjectProperties("Solider 2", "50")};
 	    data = FXCollections.observableArrayList(dataArray);
+	    
+	    buttonMaker = new ButtonFactory();
 	            
   
         label = new Label("Table");
@@ -62,22 +66,18 @@ public class RightToolBar extends VBox {
         addLast.setPromptText("Last");
         this.setLayoutX(680);
         this.getChildren().add(table);
- 
-        addButton = new Button("Add");
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                data.add(new ObjectProperties(
-                        addFirst.getText(),
-                        addLast.getText()));
-                addFirst.clear();
-                addLast.clear();
-            }
-        });
+        
+        addButton = buttonMaker.buildDefaultTextButton("Add", e -> addData());
+
         this.getChildren().addAll(addFirst, addLast, addButton);
         this.setSpacing(3);
     }
 	
+	private void addData() {
+    	data.add(new ObjectProperties(addFirst.getText(), addLast.getText()));
+        addFirst.clear();
+        addLast.clear();
+    }
 	
 	public void updateInfo(String first, String second) {
         data.add(new ObjectProperties(first, second));
