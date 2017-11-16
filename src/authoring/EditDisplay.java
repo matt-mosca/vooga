@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -17,19 +19,28 @@ import splashScreen.ScreenDisplay;
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private LeftToolBar myLeftToolBar;
-	private GridPane myMainGrid;
+	private GameArea myMainGrid;
 	private RightToolBar myRightToolBar;
 	private Scene drawingScene;
 	private Stage drawingStage;
+	private CheckBox gridToggle;
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
-		myMainGrid = new GridGameArea(this);
+		myMainGrid = new GameArea(this);
 		rootAdd(myMainGrid);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
+		
+		gridToggle = new CheckBox();
+		gridToggle.setLayoutX(650);
+		gridToggle.setLayoutY(455);
+		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
+		});
+		rootAdd(gridToggle);
 	}
 
 	@Override
@@ -77,6 +88,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 	
-	
+//	private void insertAnimation() {
+//		String imageName = "BlackSquareAnimation.gif";
+//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+//		ImageView square = new ImageView(image);
+//		rootAdd(square);
+//	}
 
 }
