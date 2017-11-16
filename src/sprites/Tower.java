@@ -1,5 +1,7 @@
 package sprites;
 
+import java.util.Map;
+
 /**
  * Generic stationary Tower that fires periodically at a specified frequency
  * @author radithya
@@ -7,8 +9,8 @@ package sprites;
  */
 public class Tower extends PeriodicallyAttackingSprite {
 
-	public Tower(String name, double hitPoints, double attackFrequency) {
-		super(name, hitPoints, attackFrequency);
+	public Tower(Map<String, ?> properties, String templateName) {
+		super(properties, templateName);
 	}
 
 	/**
