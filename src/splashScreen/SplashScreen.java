@@ -19,7 +19,7 @@ import player.PlayDisplay;
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	private static final int PREFSIZE = 80;
-	private static final int MAINWIDTH = 1000;
+	private static final int MAINWIDTH = 1100;
 	private static final int MAINHEIGHT = 600;
 	private static final String TITLEFONT = "Verdana";
 	private static final String TITLE = "Welcome to VOOGA";

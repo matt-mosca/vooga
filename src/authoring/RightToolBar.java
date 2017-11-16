@@ -1,13 +1,19 @@
 package authoring;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import factory.ButtonFactory;
+import factory.TabFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -28,6 +34,9 @@ public class RightToolBar extends VBox {
 	private TableColumn<ObjectProperties, String> lastCol;
 	private AuthorInterface myAuthor;
 	ButtonFactory buttonMaker;
+	TabFactory tabMaker;
+	TabPane tabPane;
+	List<Tab> tabList;
 	
 	public RightToolBar(AuthorInterface author) {
 		this.setLayoutY(50);
@@ -41,6 +50,11 @@ public class RightToolBar extends VBox {
 	    data = FXCollections.observableArrayList(dataArray);
 	    
 	    buttonMaker = new ButtonFactory();
+	    tabMaker = new TabFactory();
+	    tabList = new ArrayList<Tab>();
+	    tabPane = new TabPane();
+	    createTabs();
+	    addTabsToPane();
 	            
   
         label = new Label("Table");
@@ -65,7 +79,9 @@ public class RightToolBar extends VBox {
         addLast.setMaxWidth(lastCol.getPrefWidth());
         addLast.setPromptText("Last");
         this.setLayoutX(680);
-        this.getChildren().add(table);
+//      this.getChildren().add(table);
+        this.getChildren().add(tabPane);
+        tabList.get(0).setContent(table);
         
         addButton = buttonMaker.buildDefaultTextButton("Add", e -> addData());
 
@@ -83,7 +99,17 @@ public class RightToolBar extends VBox {
         data.add(new ObjectProperties(first, second));
 	}
 		
-		
+	private void createTabs() {
+		tabList.add(tabMaker.buildTabWithoutContent("New Tower", tabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("New Troop", tabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("Game Towers", tabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("Game Troops", tabPane));
+	}
 	
+	private void addTabsToPane() {
+		for(int i = 0; i < tabList.size(); i++) {
+			tabPane.getTabs().add(tabList.get(i));
+		}
+	}
  
 } 
