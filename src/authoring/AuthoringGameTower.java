@@ -25,35 +25,52 @@ public class AuthoringGameTower {
 		width = DEFAULT_WIDTH;
 		height = DEFAULT_HEIGHT;
 		perSecondFiringRate = DEFAULT_FIRING_RATE;
-		
-//		String imageName = DEFAULT_TURTLE;
-//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
-//		turtleImage = new ImageView(image);
-//		turtleImage.setFitWidth(DEFAULT_WIDTH);
-//		turtleImage.setFitHeight(DEFAULT_HEIGHT);
-//		xCoordinateOnRegion = xCoord;
-//		yCoordinateOnRegion = yCoord;
-//		turtleImage.setX(xCoord);
-//		turtleImage.setY(yCoord);
+		setImageviewProperties();
 	}
 	
-	public AuthoringGameTower(String imageName) {
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+	public AuthoringGameTower(Image image) {
 		towerImage = new ImageView(image);
 		xPosition = 0;
 		yPosition = 0;
 		width = DEFAULT_WIDTH;
 		height = DEFAULT_HEIGHT;
 		perSecondFiringRate = DEFAULT_FIRING_RATE;
+		setImageviewProperties();
 	}
 	
-	public AuthoringGameTower(String imageName, double xPos, double yPos, double w, double h, double rate) {
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+	public AuthoringGameTower(Image image, double xPos, double yPos, double w, double h, double rate) {
 		towerImage = new ImageView(image);
 		xPosition = xPos;
 		yPosition = yPos;
 		width = w;
 		height = h;
 		perSecondFiringRate = rate;
+		setImageviewProperties();
+	}
+	
+	private void setImageviewProperties() {
+		towerImage.setFitWidth(width);
+		towerImage.setFitHeight(height);
+		towerImage.setX(xPosition);
+		towerImage.setY(yPosition);
+	}
+	
+	public void setPosition(double x, double y) {
+		xPosition = x;
+		yPosition = y;
+	}
+	
+	public void setSize(double w, double h) {
+		width = w;
+		height = h;
+	}
+	
+	public void setFiringRate(double rate) {
+		perSecondFiringRate = rate;
+	}
+	
+	public void setImage(String imageName) {
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+		towerImage.setImage(image);
 	}
 }
