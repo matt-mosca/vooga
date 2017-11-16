@@ -2,6 +2,7 @@ package authoring;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +18,7 @@ public class NewTroopTab {
 //	private TableView<ImageView> table;
 	private ObservableList<ImageView> troops;
 	private ListView<ImageView> list;
+	ResourceBundle spriteImages;
 	
 	public NewTroopTab() {
 		newTroopImages = new ArrayList<ImageView>();
@@ -24,6 +26,7 @@ public class NewTroopTab {
 		list = new ListView<ImageView>();
 		troops = FXCollections.observableArrayList(newTroopImages);
 		troopArea = new ScrollPane();
+		spriteImages = ResourceBundle.getBundle("");
 		list.setItems(troops);
 //		table.setItems(troops);
 //      table.getColumns().addAll(firstCol, lastCol)
