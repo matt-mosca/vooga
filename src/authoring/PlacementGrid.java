@@ -59,13 +59,13 @@ public class PlacementGrid extends GridPane {
 	}
 
 	private void activatePath(MouseEvent e) {
+		e.consume();
 		int row = (int) e.getY()/(height/(100/GRID_ROW_PERCENTAGE));
 		int col = (int) e.getX()/(width/(100/GRID_COLUMN_PERCENTAGE));
 		Cell cell = cells[row][col];
 		
 		double x = col*(width/(100/GRID_COLUMN_PERCENTAGE)) + cell.getWidth()/2;
 		double y = row*(height/(100/GRID_ROW_PERCENTAGE)) + cell.getHeight()/2;
-		gameArea.addWaypoint(e,x,y);
 		
 		if(cell.pathActive()) {
 			cell.deactivate();
@@ -73,6 +73,7 @@ public class PlacementGrid extends GridPane {
 			pathNumber--;
 		}else {
 			if(pathNumber>0 && !cell.activeNeighbors()) return;
+			gameArea.addWaypoint(e,x,y);
 			cell.activate();
 			updateNeighbors(row, col,true);
 			pathNumber++;
