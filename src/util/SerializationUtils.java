@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 
 import sprites.Soldier;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 import sprites.Tower;
 
 public class SerializationUtils {
@@ -160,10 +161,12 @@ public class SerializationUtils {
 	}
 
 	// Collect multiple sprites into a top-level map
+	// This will make a call to sprite factory instead since it will keep track of the sprites
+	// of each name in each level
 	private String serializeSprites(Collection<Sprite> elements) {
 		Map<String, List<Sprite>> spritesMap = new HashMap<>();
 		for (Sprite sprite : elements) {
-			String spriteName = sprite.getName();
+			String spriteName = sprite.getTemplateName();
 			List<Sprite> spritesOfThisName;
 			if (!spritesMap.containsKey(spriteName)) {
 				spritesOfThisName = new ArrayList<>();
@@ -213,27 +216,51 @@ public class SerializationUtils {
 		Map<String, String> testStatus = new HashMap<>();
 		testStatus.put("lives", "3");
 		testStatus.put("gold", "100");
-		Tower testTower = new Tower("testTower", 100, 1);
-		Tower testTower2 = new Tower("testTower", 150, 2);
-		Tower testTower3 = new Tower("testTower2", 200, 3);
-		Soldier testSoldier = new Soldier("testSoldier", 25, 2);
-		Soldier testSoldier2 = new Soldier("testSoldier", 50, 1);
-		Soldier testSoldier3 = new Soldier("testSoldier2", 75, 3);
-		Collection<Sprite> allSprites = Stream
-				.of(testTower, testTower2, testTower3, testSoldier, testSoldier2, testSoldier3)
-				.collect(Collectors.toList());
-		String serializedGameData = tester.serializeGameData(testDescription, testLevel, testStatus, allSprites);
-		System.out.println("Serialized sprites: " + serializedGameData);
-		System.out.println("Game Description: " + tester.deserializeGameDescription(serializedGameData, testLevel));
-		Map<String, String> deserializedStatus = tester.deserializeGameStatus(serializedGameData, testLevel);
-		Map<String, List<Sprite>> deserializedSprites = tester.deserializeGameSprites(serializedGameData, testLevel);
-		for (String statusKey : deserializedStatus.keySet()) {
-			System.out.println(statusKey + " : " + deserializedStatus.get(statusKey));
+
+		SpriteFactory factory = new SpriteFactory();
+
+		Map<String, Object> towerMap = new HashMap<>();
+		towerMap.put("xVelocity", 0.0);
+		towerMap.put("yVelocity", 0.0);
+		towerMap.put("hitPoints", 5.0);
+		towerMap.put("attackPeriod", 1.0);
+		towerMap.put("attackTimer", 0.5);
+		towerMap.put("isActive", true);
+
+		Map<String, Object> soldierMap = new HashMap<>();
+		soldierMap.put("xVelocity", 40.0);
+		soldierMap.put("yVelocity", 20.0);
+		soldierMap.put("hitPoints", 111.0);
+		soldierMap.put("attackPeriod", 19.0);
+		soldierMap.put("attackTimer", 11.5);
+		soldierMap.put("isActive", true);
+
+		try {
+			Sprite testTower = factory.generateSprite(Tower.class.getName(), "testTower", towerMap);
+			Sprite testTower2 = factory.generateSprite(Tower.class.getName(), "testTower2", towerMap);
+			Sprite testTower3 = factory.generateSprite(Tower.class.getName(), "testTower");
+			Sprite testSoldier = factory.generateSprite(Soldier.class.getName(), "testSoldier", soldierMap);
+			Sprite testSoldier2 = factory.generateSprite(Soldier.class.getName(), "testSoldier2", soldierMap);
+			Sprite testSoldier3 = factory.generateSprite(Soldier.class.getName(), "testSoldier");
+			Collection<Sprite> allSprites = Stream
+					.of(testTower, testTower2, testTower3, testSoldier, testSoldier2, testSoldier3)
+					.collect(Collectors.toList());
+			String serializedGameData = tester.serializeGameData(testDescription, testLevel, testStatus, allSprites);
+			System.out.println("Serialized sprites: " + serializedGameData);
+			System.out.println("Game Description: " + tester.deserializeGameDescription(serializedGameData, testLevel));
+			Map<String, String> deserializedStatus = tester.deserializeGameStatus(serializedGameData, testLevel);
+			Map<String, List<Sprite>> deserializedSprites = tester.deserializeGameSprites(serializedGameData, testLevel);
+			for (String statusKey : deserializedStatus.keySet()) {
+				System.out.println(statusKey + " : " + deserializedStatus.get(statusKey));
+			}
+			for (String elementName : deserializedSprites.keySet()) {
+				System.out.println("Element name: " + elementName);
+				System.out.println(deserializedSprites.get(elementName).toString());
+			}
+		} catch (ReflectiveOperationException e) {
+			e.printStackTrace();
 		}
-		for (String elementName : deserializedSprites.keySet()) {
-			System.out.println("Element name: " + elementName);
-			System.out.println(deserializedSprites.get(elementName).toString());
-		}
+
 	}
 
 }

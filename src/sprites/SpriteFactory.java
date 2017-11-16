@@ -1,5 +1,14 @@
 package sprites;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 /**
  * Generates spite objects for displaying during authoring and gameplay.
  *
@@ -7,10 +16,96 @@ package sprites;
  */
 public class SpriteFactory {
 
-    // TODO - keep track of created sprites?
+    private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
+    private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-properties/";
+    private final String PROPERTIES_EXTENSION = ".properties";
+    private final String CLASS_KEY = "class";
 
-    public Sprite generateSprite(String spriteType) throws ReflectiveOperationException {
-        Class spriteClass = Class.forName(spriteType);
-        return (Sprite) spriteClass.newInstance();
+    // this might change - still don't see why the sprite needs to know its template name
+    private final Class[] SPRITE_CONSTRUCTOR_ARGUMENT_CLASSES = { Map.class, String.class };
+
+    private Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
+    private Map<Integer, List<Sprite>> levelSpritesCache = new HashMap<>();
+
+    private int level = 1;
+
+    /**
+     * Generate a sprite from a new/updated template which specifies its properties.
+     *
+     * @param spriteClassName - the subclass of Sprite to generate
+     *                        TODO - can this just be a Class object?
+     * @param spriteTemplateName - the name of the sprite template
+     * @param properties - a map of properties for sprites using this template
+     * @return a sprite object with properties set to those specified in the template
+     * @throws ReflectiveOperationException - in the case that the spriteClassName is invalid
+     */
+    public Sprite generateSprite(String spriteClassName, String spriteTemplateName, Map<String, Object> properties)
+            throws ReflectiveOperationException {
+        properties.put(CLASS_KEY, spriteClassName);
+        spriteTemplates.put(spriteTemplateName, properties);
+        return generateSprite(spriteClassName, spriteTemplateName);
+    }
+
+    /**
+     * Generate a sprite from an existing template which specifies its properties.
+     *
+     * @param spriteClassName - the subclass of Sprite to generate
+     * @param spriteTemplateName - the name of the sprite template
+     * @return a sprite object with properties set to those specified in the template
+     * @throws ReflectiveOperationException - in the case that the spriteClassName is invalid
+     */
+    public Sprite generateSprite(String spriteClassName, String spriteTemplateName) throws
+            ReflectiveOperationException {
+        Class spriteClass = Class.forName(spriteClassName);
+        Map<String, Object> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
+        Sprite sprite = (Sprite) spriteClass.getConstructor(SPRITE_CONSTRUCTOR_ARGUMENT_CLASSES)
+                .newInstance(properties, spriteTemplateName);
+        cacheGeneratedSprite(sprite);
+        return sprite;
+    }
+
+    private void cacheGeneratedSprite(Sprite sprite) {
+        List<Sprite> levelSprites = levelSpritesCache.getOrDefault(level, new ArrayList<>());
+        levelSprites.add(sprite);
+        levelSpritesCache.put(level, levelSprites);
+    }
+
+    /**
+     * Export all the stored sprite templates for an authored game to properties files.
+     */
+    public void exportSpriteTemplates() {
+        for (String templateName : spriteTemplates.keySet()) {
+            Properties templateProperties = new Properties();
+            Map<String, Object> templatePropertiesMap = spriteTemplates.get(templateName);
+            templatePropertiesMap.forEach((key, value) -> templateProperties.setProperty(key, value.toString()));
+            File exportFile = new File(TEMPLATE_FILE_OUTPUT_PATH + templateName + PROPERTIES_EXTENSION);
+            writeTemplateToFile(templateProperties, exportFile);
+        }
+    }
+
+    private void writeTemplateToFile(Properties templateProperties, File exportFile) {
+        FileOutputStream fileOut = null;
+        try {
+            fileOut = new FileOutputStream(exportFile);
+            templateProperties.store(fileOut, PROPERTIES_COMMENT);
+        } catch (IOException e) {
+            // TODO - throw custom exception
+        } finally {
+            if (fileOut != null) {
+                try {
+                    fileOut.close();
+                } catch (IOException e) {
+                    // TODO - throw custom exception
+                }
+            }
+        }
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public Map<Integer, List<Sprite>> getLevelSprites() {
+        return levelSpritesCache;
     }
 }

@@ -1,5 +1,7 @@
 package sprites;
 
+import java.util.Map;
+
 /**
  * Abstraction of a Sprite that can take damage and die
  * @author radithya
@@ -9,9 +11,8 @@ public abstract class MortalSprite extends Sprite {
 
 	private double hitPoints;
 	
-	public MortalSprite(String name, double hitPoints) {
-		super(name);
-		this.hitPoints = hitPoints;
+	public MortalSprite(Map<String, ?> properties, String templateName) {
+		super(properties, templateName);
 		// Safe to assume MortalSprite is alive and active on screen upon creation?
 		setActive();
 	}

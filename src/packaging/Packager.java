@@ -24,7 +24,7 @@ public class Packager {
     private final String SRC = "src/";
     private final String MAIN_CLASS_KEY = "Main-Class";
     private final String MANIFEST_VERSION = "1.0";
-    private final String GAMES_ROOT = "games/";
+    private final String GAMES_ROOT = "data/games/";
     private final String JAR_EXTENSION = ".jar";
 
     // this will eventually be all game engine classes, among other things to include like resource files
@@ -103,5 +103,17 @@ public class Packager {
 
     private String convertPathToJarFormat(String path) {
         return path.replaceAll(WINDOWS_PATH_DELIMITER_PATTERN, File.separator);
+    }
+    
+    
+    /**
+     * @param fileName
+     * @return the resource as an InputStream
+     * Based on code from 
+     * https://www.cefns.nau.edu/~edo/Classes/CS477_WWW/Docs/pack_resources_in_jar.html
+     */
+    public InputStream accessProperties (String fileName) {
+    	ClassLoader sampleClass = this.getClass().getClassLoader();
+    	return sampleClass.getResourceAsStream(fileName);
     }
 }
