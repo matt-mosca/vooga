@@ -1,7 +1,6 @@
 package authoring;
 
 import java.util.ArrayList;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

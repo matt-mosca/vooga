@@ -35,7 +35,8 @@ public class RightToolBar extends VBox {
 	private AuthorInterface myAuthor;
 	ButtonFactory buttonMaker;
 	TabFactory tabMaker;
-	TabPane tabPane;
+	TabPane topTabPane;
+	TabPane bottomTabPane;
 	List<Tab> tabList;
 	
 	public RightToolBar(AuthorInterface author) {
@@ -52,7 +53,8 @@ public class RightToolBar extends VBox {
 	    buttonMaker = new ButtonFactory();
 	    tabMaker = new TabFactory();
 	    tabList = new ArrayList<Tab>();
-	    tabPane = new TabPane();
+	    topTabPane = new TabPane();
+	    bottomTabPane = new TabPane();
 	    createTabs();
 	    addTabsToPane();
 	            
@@ -80,8 +82,10 @@ public class RightToolBar extends VBox {
         addLast.setPromptText("Last");
         this.setLayoutX(680);
 //      this.getChildren().add(table);
-        this.getChildren().add(tabPane);
+        this.getChildren().add(topTabPane);
+        this.getChildren().add(bottomTabPane);
         tabList.get(0).setContent(table);
+        //newTroops.attach(tabList.get(0);
         
         addButton = buttonMaker.buildDefaultTextButton("Add", e -> addData());
 
@@ -100,15 +104,20 @@ public class RightToolBar extends VBox {
 	}
 		
 	private void createTabs() {
-		tabList.add(tabMaker.buildTabWithoutContent("New Tower", tabPane));
-		tabList.add(tabMaker.buildTabWithoutContent("New Troop", tabPane));
-		tabList.add(tabMaker.buildTabWithoutContent("Game Towers", tabPane));
-		tabList.add(tabMaker.buildTabWithoutContent("Game Troops", tabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("New Tower", topTabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("New Troop", topTabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("New Projectile", topTabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("Inventory Towers", bottomTabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("Inventory Troops", bottomTabPane));
+		tabList.add(tabMaker.buildTabWithoutContent("Inventory Projectile", bottomTabPane));
 	}
 	
 	private void addTabsToPane() {
-		for(int i = 0; i < tabList.size(); i++) {
-			tabPane.getTabs().add(tabList.get(i));
+		for(int i = 0; i < tabList.size() / 2; i++) {
+			topTabPane.getTabs().add(tabList.get(i));
+		}
+		for(int i = tabList.size() / 2; i < tabList.size(); i++) {
+			bottomTabPane.getTabs().add(tabList.get(i));
 		}
 	}
  
