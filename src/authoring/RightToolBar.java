@@ -23,7 +23,7 @@ import javafx.scene.layout.VBox;
  
 public class RightToolBar extends VBox {
 	
-	private TableView<ObjectProperties> table = new TableView<ObjectProperties>();
+	private TableView<ObjectProperties> table;
 	private ObjectProperties[] dataArray;
 	private ObservableList<ObjectProperties> data;
 	private Label label;
@@ -33,11 +33,13 @@ public class RightToolBar extends VBox {
 	private TableColumn<ObjectProperties, String> firstCol;
 	private TableColumn<ObjectProperties, String> lastCol;
 	private AuthorInterface myAuthor;
-	ButtonFactory buttonMaker;
-	TabFactory tabMaker;
-	TabPane topTabPane;
-	TabPane bottomTabPane;
-	List<Tab> tabList;
+	private ButtonFactory buttonMaker;
+	private TabFactory tabMaker;
+	private TabPane topTabPane;
+	private TabPane bottomTabPane;
+	private NewSpriteTab newTower;
+	private NewSpriteTab newTroop;
+	private NewSpriteTab newProjectile;
 	
 	public RightToolBar(AuthorInterface author) {
 		this.setLayoutY(50);
@@ -52,12 +54,13 @@ public class RightToolBar extends VBox {
 	    
 	    buttonMaker = new ButtonFactory();
 	    tabMaker = new TabFactory();
-	    tabList = new ArrayList<Tab>();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
-	    createTabs();
-	    addTabsToPane();
-	            
+	    createAndAddTabs();
+	    
+	    newTower = new NewTowerTab();   
+	    newTroop = new NewTroopTab(); 
+	    newProjectile = new NewProjectileTab(); 
   
         label = new Label("Table");
  
@@ -84,8 +87,12 @@ public class RightToolBar extends VBox {
 //      this.getChildren().add(table);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
-        tabList.get(0).setContent(table);
+        topTabPane.getTabs().get(0).setContent(table);
         //newTroops.attach(tabList.get(0);
+        
+        newTower.attach(topTabPane.getTabs().get(0));
+        newTroop.attach(topTabPane.getTabs().get(1));
+        newProjectile.attach(topTabPane.getTabs().get(2));
         
         addButton = buttonMaker.buildDefaultTextButton("Add", e -> addData());
 
@@ -103,22 +110,22 @@ public class RightToolBar extends VBox {
         data.add(new ObjectProperties(first, second));
 	}
 		
-	private void createTabs() {
-		tabList.add(tabMaker.buildTabWithoutContent("New Tower", topTabPane));
-		tabList.add(tabMaker.buildTabWithoutContent("New Troop", topTabPane));
-		tabList.add(tabMaker.buildTabWithoutContent("New Projectile", topTabPane));
-		tabList.add(tabMaker.buildTabWithoutContent("Inventory Towers", bottomTabPane));
-		tabList.add(tabMaker.buildTabWithoutContent("Inventory Troops", bottomTabPane));
-		tabList.add(tabMaker.buildTabWithoutContent("Inventory Projectile", bottomTabPane));
+	private void createAndAddTabs() {
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", topTabPane));
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Troop", topTabPane));
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Projectile", topTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Towers", bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Troops", bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Projectile", bottomTabPane));
+		makeTabsUnclosable();
 	}
 	
-	private void addTabsToPane() {
-		for(int i = 0; i < tabList.size() / 2; i++) {
-			topTabPane.getTabs().add(tabList.get(i));
+	private void makeTabsUnclosable() {
+		for(int i = 0; i < topTabPane.getTabs().size(); i++) {
+			topTabPane.getTabs().get(i).setClosable(false);
 		}
-		for(int i = tabList.size() / 2; i < tabList.size(); i++) {
-			bottomTabPane.getTabs().add(tabList.get(i));
+		for(int i = 0; i < bottomTabPane.getTabs().size(); i++) {
+			topTabPane.getTabs().get(i).setClosable(false);
 		}
 	}
- 
 } 

@@ -21,7 +21,6 @@ public class AuthoringGameProjectile {
 		width = DEFAULT_WIDTH;
 		height = DEFAULT_HEIGHT;
 		damage = DEFAULT_DAMAGE;
-		
 	}
 	
 	public AuthoringGameProjectile(Image image) {
