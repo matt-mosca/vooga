@@ -8,6 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -17,7 +18,7 @@ import splashScreen.ScreenDisplay;
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private LeftToolBar myLeftToolBar;
-	private GridPane myMainGrid;
+	private Pane myMainGrid;
 	private RightToolBar myRightToolBar;
 	private Scene drawingScene;
 	private Stage drawingStage;
@@ -26,7 +27,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.GREEN);
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
-		myMainGrid = new GridGameArea(this);
+		myMainGrid = new GameArea(this);
 		rootAdd(myMainGrid);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);

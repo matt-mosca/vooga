@@ -1,48 +1,39 @@
 package authoring;
 
-import java.util.LinkedList;
-
-import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.shape.Polyline;
 
-
-public class GridGameArea extends GridPane implements GameArea{
+public class PlacementGrid extends GridPane {
 	private final int GRID_ROW_PERCENTAGE = 5;
 	private final int GRID_COLUMN_PERCENTAGE = 5;
-	private final int GRID_WIDTH = 400;
-	private final int GRID_HEIGHT = 400;
 	
-	private Polyline path;
-	private LinkedList<Point2D> points;
+	private GameArea gameArea;
 	private Cell[][] cells;
+	private int width;
+	private int height;
+	private int pathNumber = 0;
 	
-	public GridGameArea(AuthorInterface author) {
-		initializeVariables();
+	public PlacementGrid(AuthorInterface author, int width, int height, GameArea area) {
+		this.width = width;
+		this.height = height;
+		this.gameArea = area;
+		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
+		
 		initializeLayout();
 		initializeCells();
 		initializeEventHandlers();
 	}
-	
-	private void initializeVariables() {
-		path = new Polyline();
-		points = new LinkedList<>();
-		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
-	}
+
 
 	private void initializeEventHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->adjustWaypoint(e));
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
 	}
 
 	public void initializeLayout() {
-		this.setMinSize(GRID_WIDTH, GRID_HEIGHT);
-		this.setStyle("-fx-grid-lines-visible: true");
+		this.setMinSize(width, height);
 		this.setStyle("-fx-background-color: #3E3F4B;");
-		this.setLayoutX(260);
-		this.setLayoutY(50);
 		
 		for(int i = 0; i<100; i+=GRID_ROW_PERCENTAGE) {
 			RowConstraints row = new RowConstraints();
@@ -67,24 +58,24 @@ public class GridGameArea extends GridPane implements GameArea{
 		}
 	}
 
-	private void adjustWaypoint(MouseEvent e) {
-		int row = (int) e.getY()/(GRID_HEIGHT/(100/GRID_ROW_PERCENTAGE));
-		int col = (int) e.getX()/(GRID_WIDTH/(100/GRID_COLUMN_PERCENTAGE));
+	private void activatePath(MouseEvent e) {
+		int row = (int) e.getY()/(height/(100/GRID_ROW_PERCENTAGE));
+		int col = (int) e.getX()/(width/(100/GRID_COLUMN_PERCENTAGE));
 		Cell cell = cells[row][col];
 		
-		double x = col*(GRID_WIDTH/(100/GRID_COLUMN_PERCENTAGE)) + cell.getWidth()/2;
-		double y = row*(GRID_HEIGHT/(100/GRID_ROW_PERCENTAGE)) + cell.getHeight()/2;
-		Point2D waypoint = new Point2D(x, y);
+		double x = col*(width/(100/GRID_COLUMN_PERCENTAGE)) + cell.getWidth()/2;
+		double y = row*(height/(100/GRID_ROW_PERCENTAGE)) + cell.getHeight()/2;
+		gameArea.addWaypoint(e,x,y);
 		
 		if(cell.pathActive()) {
 			cell.deactivate();
-			points.remove(waypoint);
 			updateNeighbors(row, col, false);
+			pathNumber--;
 		}else {
-			if(points.size()>0 && !cell.activeNeighbors()) return;
+			if(pathNumber>0 && !cell.activeNeighbors()) return;
 			cell.activate();
-			points.add(waypoint);
 			updateNeighbors(row, col,true);
+			pathNumber++;
 		}
 	}
 	
