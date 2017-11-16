@@ -23,7 +23,7 @@ import javafx.scene.layout.VBox;
  
 public class RightToolBar extends VBox {
 	
-	private TableView<ObjectProperties> table = new TableView<ObjectProperties>();
+	private TableView<ObjectProperties> table;
 	private ObjectProperties[] dataArray;
 	private ObservableList<ObjectProperties> data;
 	private Label label;
