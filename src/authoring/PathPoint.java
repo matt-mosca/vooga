@@ -23,6 +23,7 @@ public class PathPoint extends Circle{
 	
 	private void initializeHandlers() {
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->dragPoint(e));
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->dragPoint(e));
 	}
 
 	protected Line setConnectingLine(PathPoint next) {
