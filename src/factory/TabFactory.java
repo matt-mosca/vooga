@@ -10,4 +10,9 @@ public class TabFactory {
 		product.setContent(content);
 		return product;
 	}
+	
+	public Tab buildTabWithoutContent(String name, TabPane pane) {
+		Tab product = new Tab(name);
+		return product;
+	}
 }
