@@ -2,6 +2,9 @@ package authoring;
 
 import java.util.LinkedList;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
@@ -13,7 +16,6 @@ public class GameArea extends Pane{
 	private PlacementGrid grid;
 	private LinkedList<PathPoint> points;
 	private PathPoint activePoint;
-	private PathPoint lastPoint;
 	private PathPoint headPoint;
 	
 	public GameArea(AuthorInterface author) {
@@ -32,6 +34,7 @@ public class GameArea extends Pane{
 		this.setStyle("-fx-background-color: #3E3F4B;");
 		this.setLayoutX(260);
 		this.setLayoutY(50);
+		this.setFocusTraversable(true);
 	}
 	
 	private void initializeHandlers() {
@@ -39,25 +42,37 @@ public class GameArea extends Pane{
 	}
 	
 	protected void addWaypoint(MouseEvent e, double x, double y) {
+		e.consume();
+		if(activePoint == null && points.size() != 0) return;
 		PathPoint point = new PathPoint(x, y);
-//		point.addEventHandler(MouseEvent.MOUSE_CLICKED, event->setActiveWaypoint(event, point));
-		point.addEventHandler(MouseEvent.MOUSE_CLICKED, event->removeWaypoint(point));
-		if(lastPoint != null) {
-			this.getChildren().add(lastPoint.setConnectingLine(point));
+		point.addEventHandler(MouseEvent.MOUSE_CLICKED, event->handleClick(event, point));
+		
+		if(activePoint != null) {
+			this.getChildren().add(activePoint.setConnectingLine(point));
 		}else {
 			headPoint = point;
 		}
-		lastPoint = point;
+		setActiveWaypoint(e, point);
+		activePoint = point;
 		points.add(point);
 		this.getChildren().add(point);
-		e.consume();
 	}
 	
-	protected void removeWaypoint(PathPoint point) {
+	private void handleClick(MouseEvent e, PathPoint point) {
+		if(e.getButton() == MouseButton.PRIMARY) {
+			setActiveWaypoint(e, point);
+		}else if(e.getButton() == MouseButton.SECONDARY) {
+			removeWaypoint(e, point);
+		}
+	}
+	
+	private void removeWaypoint(MouseEvent e, PathPoint point) {
+		e.consume();
 		points.remove(point);
 		removeWaypointLines(point);
+		addNewOrder(point);
+		if(point.equals(activePoint)) activePoint = null;
 		this.getChildren().remove(point);
-//		addNewOrder(point);
 	}
 	
 	private void setActiveWaypoint(MouseEvent e, PathPoint point) {
@@ -78,6 +93,12 @@ public class GameArea extends Pane{
 
 		for(PathPoint prev:point.getPrevious()) {
 			this.getChildren().remove(prev.getNextLines().get(point));
+			prev.getNext().remove(point);
+			prev.getNextLines().remove(point);
+		}
+		
+		for(PathPoint next:point.getNext()) {
+			next.getPrevious().remove(point);
 		}
 	}
 	
