@@ -46,7 +46,10 @@ public class PlayStateManager extends StateManager {
 	}
 	
 	void update() {
-		// TODO
+		// Move elements, check and handle collisions
+		elementManager.update();
+		// TODO - Check top-level victory / defeat / level completion conditions
+		
 	}
 
 	boolean isInPlay() {
