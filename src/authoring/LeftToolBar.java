@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import sprites.StaticObject;
 
 /**
  * Creates a re-runable HBox for old commands
@@ -21,36 +22,31 @@ import javafx.scene.shape.Rectangle;
  */
 public class LeftToolBar extends ScrollPane {
 	private static final int WIDTH = 300;
-	private List<Rectangle> myList;
-	private ListView<Rectangle> myListView;
+	private List<StaticObject> myList;
+	private ListView<StaticObject> myListView;
 	private AuthorInterface myAuthor;
-	private Rectangle myrec1;
-	private Rectangle myrec2;
-	private Rectangle myrec3;
-	private Rectangle myrec4;
+	private StaticObject myStatic1;
+	private StaticObject myStatic2;
+	private StaticObject myStatic3;
+	private StaticObject myStatic4;
 	
 	public LeftToolBar(AuthorInterface author) {
 		this.setLayoutY(50);
 		myAuthor = author;
-        myList = new ArrayList<Rectangle>();
-        myrec1 = createRectangle(20, 20, Color.BLUE);
-        myrec2 = createRectangle(100, 100, Color.YELLOW);
-        myrec3 = createRectangle(50, 50, Color.RED);
-        myrec4 = createRectangle(100, 400, Color.BLACK);
-        myList.add(myrec1);
-        myList.add(myrec2);
-        myList.add(myrec3);
-        myList.add(myrec4);
-        ObservableList<Rectangle> items = FXCollections.observableArrayList(myList);
-        myListView = new ListView<Rectangle>();
+        myList = new ArrayList<StaticObject>();
+        myStatic1 = new StaticObject(1, author);
+        myStatic2 = new StaticObject(1, author);
+        myStatic3 = new StaticObject(2, author);
+        myStatic4 = new StaticObject(3, author);
+
+        myList.add(myStatic1);
+        myList.add(myStatic2);
+        myList.add(myStatic3);
+        myList.add(myStatic4);
+        ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
+        myListView = new ListView<StaticObject>();
         myListView.setItems(items);
         this.setContent(myListView);
-	}
-	
-	private Rectangle createRectangle(double width, double height, Paint color) {
-		Rectangle tempRec = new Rectangle(width, height, color);
-        tempRec.addEventHandler(MouseEvent.MOUSE_CLICKED, e->myAuthor.clicked(tempRec));
-		return tempRec;
 	}
 
 //	private void drag(MouseEvent e, Rectangle myrec) {
