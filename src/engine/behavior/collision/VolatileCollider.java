@@ -7,25 +7,25 @@ package engine.behavior.collision;
  * @author radithya
  *
  */
-public class VolatileCollider implements CollisionVisitor {
-
+public abstract class VolatileCollider implements CollisionVisitor {
+	
+	// Can be sub-classed by different kinds of projectiles
+	
 	@Override
 	public void visit(ImperviousCollisionVisitable visitable) {
-		
+		explode();
 	}
 
 	@Override
 	public void visit(DamageDealingCollisionVisitable visitable) {
-		// TODO Auto-generated method stub
-
+		explode();
 	}
 
 	@Override
 	public void visit(NoopCollisionVisitable visitable) {
-		// TODO Auto-generated method stub
-
+		explode();
 	}
 	
-	protected void explode()
+	protected abstract void explode();
 
 }
