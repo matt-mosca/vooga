@@ -17,21 +17,4 @@ public class Soldier extends PeriodicallyAttackingSprite {
 		super(properties, templateName);
 	}
 
-	@Override
-	public void update() {
-		move();
-	}
-
-	/**
-	 * Generic movement along velocity vector, can be overridden by sub-classes
-	 * which have specific path-finding logic
-	 */
-	@Override
-	public void move() {
-		setX(getX() + getXVelocity());
-		setY(getY() + getYVelocity());
-	}
-
-	// Sub-classes could override attack strategy as necessary
-
 }
