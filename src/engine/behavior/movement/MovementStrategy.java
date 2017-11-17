@@ -1,4 +1,4 @@
-package engine.behavior;
+package engine.behavior.movement;
 
 /**
  * Use abstract class instead of interface to encapsulate x and y coordinate data
