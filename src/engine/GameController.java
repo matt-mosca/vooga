@@ -116,6 +116,17 @@ public abstract class GameController {
 		return getStateManager().placeElement(elementName, x, y);
 	}
 
+	/**
+	 * Set the current level to the given level, constraints on valid levels depend
+	 * on authoring / play use-case
+	 * 
+	 * @param level
+	 * @throws IllegalArgumentException
+	 */
+	public void setCurrentLevel(int level) throws IllegalArgumentException {
+		getStateManager().setCurrentLevel(level);
+	}
+
 	protected IOController getIOController() {
 		return ioController;
 	}

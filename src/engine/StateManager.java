@@ -23,6 +23,7 @@ public abstract class StateManager {
 		// These will be set upon loading
 		gameDescription = "";
 		gameStatus = new HashMap<>();
+		currentLevel = 1;
 	}
 	
 	public abstract void saveGameState(String savedGameName);
@@ -60,7 +61,8 @@ public abstract class StateManager {
 		gameStatus = newStatus;
 	}
 	
-	protected void setCurrentLevel(int level) {
+	protected void setCurrentLevel(int level) throws IllegalArgumentException {
+		assertValidLevel(level);
 		currentLevel = level;
 	}
 	
@@ -74,4 +76,7 @@ public abstract class StateManager {
 		return elementFactory;
 	}
 	*/
+	
+	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
+	
 }

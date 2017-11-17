@@ -1,5 +1,9 @@
 package authoring;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -95,4 +99,8 @@ public class PlacementGrid extends GridPane {
 			}
 		}
 	}
+//	
+//	public List<Point2D> getPath() {
+//		return points;
+//	}
 }
