@@ -30,7 +30,7 @@ public interface CollisionVisitor {
 	public void visit(DamageDealingCollisionVisitable visitable);
 
 	/**
-	 * What happens when hte CollisionVisitor hits a NoopCollisionVisitable (like an
+	 * What happens when the CollisionVisitor hits a NoopCollisionVisitable (like an
 	 * obstacle)
 	 * 
 	 * @param visitable
@@ -38,5 +38,26 @@ public interface CollisionVisitor {
 	 *            special effect, like a soldier, tower, etc
 	 */
 	public void visit(NoopCollisionVisitable visitable);
+
+	/**
+	 * Whether the collider is 'dead' - mortal colliders, projectiles, etc can be
+	 * 'dead'
+	 * 
+	 * @return
+	 */
+	public boolean isAlive();
+
+	/**
+	 * Whether the unit is blocked by an obstacle Can be used by movement strategy
+	 * to recompute path / reverse direction if necessary
+	 * 
+	 * @return true if unit is blocked, false otherwise
+	 */
+	public boolean isBlocked();
+	
+	/**
+	 * Will be used by MovementStrategy after recomputing path / reversing direction
+	 */
+	public void unBlock(); 
 
 }
