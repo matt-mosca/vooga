@@ -77,4 +77,12 @@ public class PlayStateManager extends StateManager {
 		// TODO
 	}
 
+	@Override
+	protected void assertValidLevel(int level) throws IllegalArgumentException {
+		// Enforce increments by at-most one for player
+		if (level > getCurrentLevel() + 1) {
+			throw new IllegalArgumentException();
+		}
+	}
+
 }

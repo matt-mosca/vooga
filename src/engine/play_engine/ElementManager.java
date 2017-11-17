@@ -18,6 +18,11 @@ public class ElementManager {
 
 	private Collection<Sprite> gameElements;
 
+	// TODO
+	// Reference to GridManager
+	// call double[] getGridPosition(double x, double y) to get grid position, do
+	// collision-checking at coarser granularity
+
 	/**
 	 * Handles the collision-checking and Sprite-specific collision-handling logic
 	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md

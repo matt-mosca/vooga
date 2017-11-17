@@ -103,10 +103,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 //	private void insertAnimation() {
-//		String imageName = "BlackSquareAnimation.gif";
+//		String imageName = "turtleGif.gif";
 //		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
 //		ImageView square = new ImageView(image);
 //		rootAdd(square);
 //	}
-
 }
