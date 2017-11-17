@@ -2,6 +2,7 @@ package sprites;
 
 import java.util.Map;
 
+// TODO - DEPRECATE IN FAVOR OF MORTALCOLLIDER COLLISIONVISITOR
 /**
  * Abstraction of a Sprite that can take damage and die
  * @author radithya
