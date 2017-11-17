@@ -1,4 +1,4 @@
-package engine.behavior;
+package engine.behavior.movement;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class RandomMovementAssigner {
 		random = new Random();
 	}
 	
-	public Point assignMovementDirection() {
+	Point assignMovementDirection() {
 		double movementRand = random.nextDouble();
 		int insertionPoint = -1 * Collections.binarySearch(cumulativeMovementProbabilities, movementRand) - 1;
 		return DIRECTIONS[insertionPoint];

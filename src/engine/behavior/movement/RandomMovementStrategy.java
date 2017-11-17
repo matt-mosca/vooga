@@ -1,4 +1,4 @@
-package engine.behavior;
+package engine.behavior.movement;
 
 import java.awt.Point;
 
