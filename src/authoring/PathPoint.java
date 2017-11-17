@@ -39,7 +39,8 @@ public class PathPoint extends Circle{
 		line.startYProperty().bind(this.centerYProperty());
 		line.endXProperty().bind(next.centerXProperty());
 		line.endYProperty().bind(next.centerYProperty());
-		line.setFill(Color.RED);
+		line.setStroke(Color.RED);
+		line.setStrokeWidth(2);
 		linesToNext.put(next, line);
 		next.addToPrevious(this);
 		return line;
