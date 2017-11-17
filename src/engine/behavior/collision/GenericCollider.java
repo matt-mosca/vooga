@@ -1,8 +1,8 @@
 package engine.behavior.collision;
 
 /**
- * Captures general collision behaviors of most colliders Specific collision
- * behaviors can be achieved by implementing visit(CollisionVisitable) visitable
+ * Captures general collision behaviors of most colliders. Specific collision
+ * behaviors can be achieved by implementing visit(CollisionVisitable visitable)
  * for missing types and overriding where necessary
  * 
  * @author radithya

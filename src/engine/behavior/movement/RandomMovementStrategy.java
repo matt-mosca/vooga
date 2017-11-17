@@ -1,6 +1,5 @@
 package engine.behavior.movement;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 
 /**
