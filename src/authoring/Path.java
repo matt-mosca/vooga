@@ -23,7 +23,7 @@ public class Path extends Group{
 		e.consume();
 		if(activePoint == null && points.size() != 0) return;
 		PathPoint point = new PathPoint(x, y);
-		point.addEventHandler(MouseEvent.MOUSE_CLICKED, event->handleClick(event, point));
+		point.addEventHandler(MouseEvent.MOUSE_CLICKED, event->handlePointClick(event, point));
 		
 		if(activePoint != null) {
 			drawLineBetween(activePoint, point);
@@ -37,7 +37,7 @@ public class Path extends Group{
 		this.getChildren().add(point);
 	}
 	
-	private void handleClick(MouseEvent e, PathPoint point) {
+	private void handlePointClick(MouseEvent e, PathPoint point) {
 		e.consume();
 		if(point.wasMoved()) {
 			point.lockPosition();
@@ -90,10 +90,30 @@ public class Path extends Group{
 		}
 	}
 	
+	private void handleLineClick(MouseEvent e, PathLine line) {
+		e.consume();
+		if(e.getButton() == MouseButton.PRIMARY) {
+			setActiveLine(line);
+		}else if(e.getButton() == MouseButton.SECONDARY) {
+			removeLine(line);
+		}
+	}
+
+	private void setActiveLine(PathLine line) {
+		line.toggleActive();
+	}
+	
+	private void removeLine(PathLine line) {
+		if(!line.isActive()) return;
+		line.removeLineFromPoints();
+		this.getChildren().remove(line);
+	}
+
 	private void drawLineBetween(PathPoint start, PathPoint end) {
-		Line line = start.setConnectingLine(end);
+		PathLine line = start.setConnectingLine(end);
 		this.getChildren().add(line);
 		line.toBack();
+		line.addEventHandler(MouseEvent.MOUSE_CLICKED, e->handleLineClick(e, line));
 	}
 	
 }

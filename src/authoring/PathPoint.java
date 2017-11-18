@@ -33,15 +33,9 @@ public class PathPoint extends Circle{
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->dragPoint(e));
 	}
 
-	protected Line setConnectingLine(PathPoint next) {
+	protected PathLine setConnectingLine(PathPoint next) {
 		nextPoints.add(next);
-		Line line = new Line();
-		line.startXProperty().bind(this.centerXProperty());
-		line.startYProperty().bind(this.centerYProperty());
-		line.endXProperty().bind(next.centerXProperty());
-		line.endYProperty().bind(next.centerYProperty());
-		line.setStroke(Color.RED);
-		line.setStrokeWidth(2);
+		PathLine line = new PathLine(this, next);
 		linesToNext.put(next, line);
 		next.addToPrevious(this);
 		return line;
