@@ -61,11 +61,14 @@ public class AuthoringController extends GameController {
 	 *             if level does not exist
 	 * @return a unique ID for the element
 	 */
-	public int addElement(String name, int level) throws IllegalArgumentException {
+	public Sprite addElement(String name, int level) throws IllegalArgumentException {
 		return getStateManager().addElement(name, level);
 	}
 
-	/**
+	/*
+	 *
+	 * If we return the sprites to them, why can't they make a call to do this themselves?
+	 *
 	 * @param spriteId
 	 * 			  unique identifier for the sprite to modify
 	 * @param level
@@ -74,11 +77,11 @@ public class AuthoringController extends GameController {
 	 *            map of properties to override for this specific instance
 	 * @throws IllegalArgumentException
 	 *             if level does not exist
-	 */
+	 *
 	public void updateElement(int spriteId, int level, Map<String, Object> customProperties)
 			throws IllegalArgumentException {
 		getStateManager().updateElement(spriteId, level, customProperties);
-	}
+	}*/
 
 	/**
 	 * 
