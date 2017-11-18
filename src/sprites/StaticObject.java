@@ -7,11 +7,14 @@ import javafx.scene.input.MouseEvent;
 
 public class StaticObject extends ImageView {
 	
+	private int mySize;
+	
 	public StaticObject(int size, AuthorInterface author) {
 		this.setFitWidth(size * 20);
 		this.setFitHeight(size * 20);
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream("tortoise.png"));
 		this.setImage(image);
+		mySize = size;
 		this.setEventHandler(MouseEvent.MOUSE_CLICKED, e->author.clicked(this));
 	}
 	
@@ -24,7 +27,7 @@ public class StaticObject extends ImageView {
 	}
 	
 	public int getSize() {
-		return this.getSize();
+		return mySize;
 	}
 
 }
