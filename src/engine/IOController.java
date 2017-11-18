@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.xml.internal.messaging.saaj.soap.impl.ElementFactory;
 import io.GamePersistence;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 import util.SerializationUtils;
 
 /**
@@ -27,11 +29,12 @@ public class IOController {
 	private SerializationUtils serializationUtils;
 	private GamePersistence gamePersistence;
 	// TODO - uncomment when ElementFactory is ready
-	// private ElementFactory elementFactory;
+	private SpriteFactory spriteFactory;
 
-	public IOController(SerializationUtils serializationUtils) {
+	public IOController(SerializationUtils serializationUtils, SpriteFactory spriteFactory) {
 		this.serializationUtils = serializationUtils;
 		gamePersistence = new GamePersistence();
+		this.spriteFactory = spriteFactory;
 	}
 
 	/**
@@ -46,17 +49,14 @@ public class IOController {
 	 * @param status
 	 *            top-level status key-value pairs for heads-up display (player) or
 	 *            settings (authoring)
-	 * @param elements
-	 *            set of elements in game to be serialized
 	 * @param forAuthoring
 	 *            true if for authoring, false if for play - TODO - more flexible
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-			Map<String, String> status, Collection<Sprite> elements, boolean forAuthoring) {
+			Map<String, String> status, boolean forAuthoring) {
 		// First extract string from file through io module
-		String serializedGameState = serializationUtils.serializeGameData(gameDescription, currentLevel, status,
-				elements);
+		String serializedGameState = serializationUtils.serializeGameData(gameDescription, currentLevel, status, spriteFactory);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -196,18 +196,17 @@ public class IOController {
 
 	/**
 	 * Get serialization of a level's data
-	 * 
+	 *
+	 * @param level
+	 * 			  level to get a serialization of
 	 * @param levelDescription
 	 *            description of level as set by authoring engine
 	 * @param levelStatus
 	 *            top-level status metrics of game
-	 * @param levelElements
-	 *            elements for that level
 	 * @return string representing serialization of level's data
 	 */
-	public String getLevelSerialization(String levelDescription, Map<String, String> levelStatus,
-			Collection<Sprite> levelElements) {
-		return serializationUtils.serializeLevelData(levelDescription, levelStatus, levelElements);
+	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelStatus) {
+		return serializationUtils.serializeLevelData(levelDescription, levelStatus, spriteFactory, level);
 	}
 
 	/**

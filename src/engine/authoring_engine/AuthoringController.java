@@ -3,6 +3,8 @@ package engine.authoring_engine;
 import java.util.Map;
 import engine.GameController;
 import sprites.Sprite;
+import sprites.SpriteFactory;
+import util.SerializationUtils;
 
 /**
  * Top-level authoring controller, gateway of front end GameAuthoringEnv to back
@@ -18,7 +20,7 @@ public class AuthoringController extends GameController {
 
 	public AuthoringController() {
 		super();
-		authoringStateManager = new AuthoringStateManager(getIOController());
+		authoringStateManager = new AuthoringStateManager(getIOController(), new SpriteFactory());
 	}
 
 	@Override
@@ -41,7 +43,10 @@ public class AuthoringController extends GameController {
 	 *            <url>, "hp" : <hp>, ...}
 	 */
 	public Sprite createElement(String name, Map<String, String> properties) {
-		return getStateManager().createElement(name, properties);
+		// return getStateManager().createElement(name, properties);
+		return null;
+		// TODO - this should return an integer id for the frontend to use to access it in the future
+		// (prevents exposing the Sprite objects to the frontend)
 	}
 
 	/**
@@ -54,19 +59,15 @@ public class AuthoringController extends GameController {
 	 *            level of the game this element is being added for
 	 * @throws IllegalArgumentException
 	 *             if level does not exist
+	 * @return a unique ID for the element
 	 */
-	public Sprite addElement(String name, int level) throws IllegalArgumentException {
+	public int addElement(String name, int level) throws IllegalArgumentException {
 		return getStateManager().addElement(name, level);
 	}
 
 	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param x
-	 *            xCoordinate of previously created element
-	 * @param y
-	 *            yCoordinate of previously created element
+	 * @param spriteId
+	 * 			  unique identifier for the sprite to modify
 	 * @param level
 	 *            level of the game this element is being added for
 	 * @param customProperties
@@ -74,9 +75,9 @@ public class AuthoringController extends GameController {
 	 * @throws IllegalArgumentException
 	 *             if level does not exist
 	 */
-	public Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties)
+	public void updateElement(int spriteId, int level, Map<String, Object> customProperties)
 			throws IllegalArgumentException {
-		return getStateManager().updateElement(name, x, y, level, customProperties);
+		getStateManager().updateElement(spriteId, level, customProperties);
 	}
 
 	/**

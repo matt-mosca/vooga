@@ -5,6 +5,7 @@ import java.util.Collection;
 import engine.IOController;
 import engine.StateManager;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 
 /**
  * Single-source of truth for game state when in-play
@@ -16,20 +17,23 @@ public class PlayStateManager extends StateManager {
 
 	private ElementManager elementManager;
 
-	public PlayStateManager(IOController playIOController) {//, ElementFactory elementFactory) {
-		super(playIOController);//, elementFactory);
+	public PlayStateManager(IOController playIOController, SpriteFactory spriteFactory) {
+		super(playIOController, spriteFactory);
 		this.elementManager = new ElementManager();
 	}
 
 	@Override
 	public void saveGameState(String savedGameName) {
 		getIOController().saveGameState(savedGameName, getDescription(), getCurrentLevel(), getStatus(),
-				elementManager.getCurrentElements(), PlayConstants.IS_AUTHORING);
+				PlayConstants.IS_AUTHORING);
 	}
 
 	@Override
 	public Sprite placeElement(String elementName, double x, double y) {
-		return elementManager.placeElement(elementName, x, y);
+		//return elementManager.placeElement(elementName, x, y);
+		return null;
+		// TODO - this should return an integer id for the frontend to use to access it in the future
+		// (prevents exposing the Sprite objects to the frontend)
 	}
 
 	@Override

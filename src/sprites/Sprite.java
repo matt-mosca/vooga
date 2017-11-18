@@ -12,32 +12,31 @@ import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 
-// TODO - Just a basic outline for reference from Behavior
-// Schwen please feel free to add / change / remove as necessary
-// Could be sub-classed by -> MortalSprite -> MovingSprite etc
-public abstract class Sprite {
+/**
+ * Represents displayed game objects in the backend. Responsible for controlling the object's update behavior.
+ *
+ * @author Ben Schwennesen
+ */
+public class Sprite {
 
-	// Flag to facilitate clean-up of 'dead' elements - only active elements
-	// displayed by front end
-	private boolean isActive;
-	// ^ I (Schwen) think this will be part of the State object once I make it
-
-	private String templateName;
 	// These fields should be set through setProperties
+	private FiringStrategy firingStrategy;
 	private MovementStrategy movementStrategy;
 	private CollisionVisitor collisionVisitor;
 	private CollisionVisitable collisionVisitable;
-	private FiringStrategy firingStrategy;
 
-	public Sprite(Map<String, ?> properties, String templateName) {
+	public Sprite(Map<String, ?> properties) {
 		setProperties(properties);
-		this.templateName = templateName;
 	}
 
 	/**
 	 * Move one cycle in direction of current velocity vector
 	 */
 	public void move() {
+		if (collisionVisitor.isBlocked()) {
+			movementStrategy.handleBlock();
+			collisionVisitor.unBlock();
+		}
 		movementStrategy.move();
 	}
 
@@ -57,44 +56,12 @@ public abstract class Sprite {
 		return movementStrategy.getY();
 	}
 
-	// TODO - Can avoid exposing strategies through public methods? Currently using
-	// public methods since sprites package is different from behavior package and
-	// play_engine package
-	public CollisionVisitor getCollisionVisitor() {
-		return collisionVisitor;
+	public void processCollision(Sprite other) {
+		collisionVisitable.accept(other.collisionVisitor);
 	}
 
-	public CollisionVisitable getCollisionVisitable() {
-		return collisionVisitable;
-	}
-	
-	public MovementStrategy getMovementStrategy() {
-		return movementStrategy;
-	}
-
-
-	public String getTemplateName() {
-		return templateName;
-	}
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	/**
-	 * Will cause Sprite to be displayed by front end Can be used to differentiate
-	 * between Sprites in game area and those not (dead, off-screen???, etc)
-	 */
-	public void setActive() {
-		isActive = true;
-	}
-
-	/**
-	 * When the Sprite dies - will facilitate removal of element from
-	 * ElementManager's collection of active sprites
-	 */
-	public void deactivate() {
-		isActive = false;
+	public boolean isAlive() {
+		return collisionVisitor.isAlive();
 	}
 
 	/**
@@ -103,7 +70,7 @@ public abstract class Sprite {
 	 * @param properties
 	 *            - maps instance variables of this sprite to properties, as strings
 	 */
-	private void setProperties(Map<String, ?> properties) {
+	public void setProperties(Map<String, ?> properties) {
 		List<Field> fields = getAllFieldsInInheritanceHierarchy();
 		for (Field field : fields) {
 			field.setAccessible(true);

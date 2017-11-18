@@ -4,22 +4,23 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sun.xml.internal.messaging.saaj.soap.impl.ElementFactory;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 
 public abstract class StateManager {
 
 	private IOController ioController;
-	// TODO - Uncomment when ElementFactory is ready
-	//private ElementFactory elementFactory;
+	private SpriteFactory spriteFactory;
 	// TODO - Should be customizable per level?
 	private String gameDescription;
 	private Map<String, String> gameStatus;
 	private int currentLevel;
 
-	public StateManager(IOController ioController) {
+	public StateManager(IOController ioController, SpriteFactory spriteFactory) {
 		// TODO Auto-generated constructor stub
 		this.ioController = ioController;
-		// this.elementFactory = elementFactory;
+		this.spriteFactory = spriteFactory;
 		// These will be set upon loading
 		gameDescription = "";
 		gameStatus = new HashMap<>();
@@ -69,13 +70,10 @@ public abstract class StateManager {
 	protected IOController getIOController() {
 		return ioController;
 	}
-	
-	// TODO - Uncomment when ElementFactory is ready
-	/*
-	protected ElementFactory getElementFactory() {
-		return elementFactory;
+
+	protected SpriteFactory getSpriteFactory() {
+		return spriteFactory;
 	}
-	*/
 	
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
 	

@@ -6,6 +6,7 @@ import java.util.Map;
  * Generic stationary Tower that fires periodically at a specified frequency
  * 
  * @author radithya
+ * @deprecated
  *
  */
 public class Tower extends PeriodicallyAttackingSprite {

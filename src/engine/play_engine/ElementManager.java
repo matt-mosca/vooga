@@ -2,12 +2,11 @@ package engine.play_engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
-import engine.behavior.collision.CollisionVisitable;
-import engine.behavior.collision.CollisionVisitor;
-import engine.behavior.movement.MovementStrategy;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 
 /**
  * Single-source of truth for elements and their behavior when in-play
@@ -17,8 +16,8 @@ import sprites.Sprite;
  */
 public class ElementManager {
 
-	// TODO - Uncomment when SpriteFactory is ready
-	// private SpriteFactory spriteFactory;
+	// TODO - Uncomment when ElementFactory is ready
+	private SpriteFactory spriteFactory;
 
 	// Use list to enforce an ordering of elements to facilitate consideration of
 	// every element pair only once
@@ -33,50 +32,56 @@ public class ElementManager {
 	 * Handles the collision-checking and Sprite-specific collision-handling logic
 	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md
 	 */
-	public ElementManager() {// SpriteFactory spriteFactory) {
-		// TODO - Uncomment when spriteFactory is ready
-		// this.spriteFactory = spriteFactory;
+	public ElementManager() {
+		spriteFactory = new SpriteFactory();
 		gameElements = new ArrayList<>();
 	}
 
 	// Guaranteed to return only active elements (i.e. not dead ones)
 	Collection<Sprite> getCurrentElements() {
 		// Filter to return only active elements?
-		gameElements.removeIf(gameElement -> !gameElement.isActive());
+		gameElements.removeIf(gameElement -> !gameElement.isAlive());
 		return gameElements;
 	}
 
+	// Why do we need this?
 	void setCurrentElements(Collection<Sprite> newElements) {
 		gameElements = new ArrayList<>(newElements);
 	}
 
-	// TODO
+	/*
+
+	MovementStrategy object should be created with the coordinates
+
+	Method might still be necessary but should just do void and put in authoring game grid
+
 	Sprite placeElement(String elementName, double x, double y) {
 		// Use SpriteFactory to construct Sprite from elementName with these
 		// coordinates
 		// Add created Sprite to gameElements
 		return null; // TEMP
-	}
+	}*/
 
 	void update() {
-		for (int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
-			Sprite element = gameElements.get(elementIndex);
-			CollisionVisitor colliderBehaviorForElement = element.getCollisionVisitor();
-			MovementStrategy movementStrategyForElement = element.getMovementStrategy();
-			// Handle blocked element
-			if (colliderBehaviorForElement.isBlocked()) {
-				movementStrategyForElement.handleBlock();
-				colliderBehaviorForElement.unBlock();
-			}
-			element.move(); // Depends on movementStrategy
-			for (int otherElementIndex = elementIndex + 1; otherElementIndex < gameElements
-					.size(); otherElementIndex++) {
-				Sprite otherElement = gameElements.get(otherElementIndex);
-				if (collidesWith(element, otherElement)) {
-					handleCollision(element, otherElement);
+		Iterator<Sprite> activeSprites = gameElements.iterator();
+		while(activeSprites.hasNext()) {
+			Sprite element = activeSprites.next();
+			element.move();
+			element.attack();
+			Iterator<Sprite> otherActiveSprites = gameElements.iterator();
+			while(element.isAlive() && otherActiveSprites.hasNext()) {
+				Sprite otherElement = otherActiveSprites.next();
+				if (!otherElement.equals(element) && collidesWith(element, otherElement)) {
+					element.processCollision(otherElement);
+					otherElement.processCollision(element);
+					if (!otherElement.isAlive()) {
+						otherActiveSprites.remove();
+					}
 				}
 			}
-			element.attack(); // Depends on firingStrategy
+			if (!element.isAlive()) {
+				activeSprites.remove();
+			}
 		}
 	}
 
