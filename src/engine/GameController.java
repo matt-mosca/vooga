@@ -4,20 +4,19 @@ import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Map;
 
+import com.sun.xml.internal.messaging.saaj.soap.impl.ElementFactory;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 import util.SerializationUtils;
 
 public abstract class GameController {
 
 	private SerializationUtils serializationUtils;
 	private IOController ioController;
-	// TODO - Initialize an ElementFactory instance when its ready
-	// private ElementFactory elementFactory;
 
 	public GameController() {
 		serializationUtils = new SerializationUtils();
-		ioController = new IOController(serializationUtils);
-		// elementFactory = new ElementFactory();
+		ioController = new IOController(serializationUtils, new SpriteFactory());
 	}
 
 	protected abstract StateManager getStateManager();

@@ -9,6 +9,7 @@ import java.util.Map;
  * specified frequency
  * 
  * @author radithya
+ * @deprecated
  *
  */
 public class Soldier extends PeriodicallyAttackingSprite {
