@@ -56,7 +56,7 @@ public class ElementManager {
 	Method might still be necessary but should just do void and put in authoring game grid
 
 	Sprite placeElement(String elementName, double x, double y) {
-		// Use ElementFactory to construct Sprite from elementName with these
+		// Use SpriteFactory to construct Sprite from elementName with these
 		// coordinates
 		// Add created Sprite to gameElements
 		return null; // TEMP
@@ -90,4 +90,26 @@ public class ElementManager {
 		// TODO
 		return false; // TEMP
 	}
+
+	// Delegate to the collision strategies (CollisionVisitor and
+	// CollisionVisitable) of the elements
+	private void handleCollision(Sprite element, Sprite otherElement) {
+		CollisionVisitor colliderBehaviorForElement = element.getCollisionVisitor();
+		CollisionVisitable collidableBehaviorForElement = element.getCollisionVisitable();
+		CollisionVisitor colliderBehaviorForOtherElement = otherElement.getCollisionVisitor();
+		CollisionVisitable collidableBehaviorForOtherElement = otherElement.getCollisionVisitable();
+		// Handle effects of collision on element
+		collidableBehaviorForOtherElement.accept(colliderBehaviorForElement);
+		// Handle effects of collision on otherElement
+		collidableBehaviorForElement.accept(colliderBehaviorForOtherElement);
+		if (!colliderBehaviorForElement.isAlive()) {
+			// Will facilitate removal of element
+			element.deactivate();
+		}
+		if (!colliderBehaviorForOtherElement.isAlive()) {
+			// Will facilitate removal of element
+			otherElement.deactivate();
+		}
+	}
+
 }

@@ -1,7 +1,7 @@
 package engine.behavior.collision;
 
 /**
- * Visitor Design Pattern for handling collisions Classes implementing
+ * Visitor Design Pattern for handling collisions. Classes implementing
  * CollisionVisitable represent different kinds of effects on CollisionVisitors
  * when they collide with something
  * 

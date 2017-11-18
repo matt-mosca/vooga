@@ -12,14 +12,13 @@ public class RandomMovementAssigner {
 	private final Point2D.Double[] DIRECTIONS = { new Point2D.Double(0, -1), new Point2D.Double(-1, 0),
 			new Point2D.Double(0, 1), new Point2D.Double(1, 0) };
 	private Random random;
-	// TODO - Consider making this a collection / variadic args?
 	private List<Double> cumulativeMovementProbabilities = new ArrayList<>();
 
 	public RandomMovementAssigner(double[] directionProbabilities) {
-		double prevProbability = 0;
+		double cumulativeProbability = 0;
 		for (double directionProbability : directionProbabilities) {
-			prevProbability += directionProbability;
-			cumulativeMovementProbabilities.add(prevProbability);
+			cumulativeProbability += directionProbability;
+			cumulativeMovementProbabilities.add(cumulativeProbability);
 		}
 		random = new Random();
 	}

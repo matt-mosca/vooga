@@ -1,10 +1,7 @@
 package engine.authoring_engine;
 
-import java.util.Collection;
 import java.util.Map;
 import engine.GameController;
-import engine.IOController;
-import engine.StateManager;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 import util.SerializationUtils;

@@ -1,7 +1,7 @@
 package engine.behavior.collision;
 
 /**
- * Visitor Design Pattern for handling collisions Handle effects of collision on
+ * Visitor Design Pattern for handling collisions. Handle effects of collision on
  * colliding element through the visit method
  * 
  * @author radithya
@@ -22,7 +22,7 @@ public interface CollisionVisitor {
 
 	/**
 	 * What happens when the CollisionVisitor hits a DamageDealingCollisionVisitable
-	 * (like an obstacle)
+	 * (like a mine or projectile)
 	 *
 	 * @param visitable
 	 *            a damage-dealing collision visitable, like a mine or projectile
@@ -30,8 +30,8 @@ public interface CollisionVisitor {
 	public void visit(DamageDealingCollisionVisitable visitable);
 
 	/**
-	 * What happens when the CollisionVisitor hits a NoopCollisionVisitable (like an
-	 * obstacle)
+	 * What happens when the CollisionVisitor hits a NoopCollisionVisitable (like a
+	 * tower, soldier, etc)
 	 * 
 	 * @param visitable
 	 *            a collision visitable that can be passed through and has no
