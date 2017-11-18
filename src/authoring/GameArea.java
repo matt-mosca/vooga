@@ -15,6 +15,7 @@ public class GameArea extends Pane{
 		grid = new PlacementGrid(author, GRID_WIDTH, GRID_HEIGHT, path);
 		this.getChildren().add(path);
 		this.getChildren().add(grid);
+		grid.toBack();
 		
 		toggleGridVisibility(false);
 		initializeLayout();
@@ -29,7 +30,12 @@ public class GameArea extends Pane{
 	}
 	
 	private void initializeHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->path.addWaypoint(e, e.getX(), e.getY()));
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addToPath(e));
+	}
+	
+	private void addToPath(MouseEvent e) {
+		path.addWaypoint(e, e.getX(), e.getY());
+		grid.updateCells(e.getX(), e.getY());
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
