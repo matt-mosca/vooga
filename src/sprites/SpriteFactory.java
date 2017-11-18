@@ -31,10 +31,8 @@ public class SpriteFactory {
      * @param spriteTemplateName - the name of the sprite template
      * @param properties - a map of properties for sprites using this template
      * @return a sprite object with properties set to those specified in the template
-     * @throws ReflectiveOperationException - in the case that the spriteClassName is invalid
      */
-    public Sprite generateSprite(String spriteTemplateName, Map<String, Object> properties)
-            throws ReflectiveOperationException {
+    public Sprite generateSprite(String spriteTemplateName, Map<String, Object> properties) {
         spriteTemplates.put(spriteTemplateName, properties);
         return generateSprite(spriteTemplateName);
     }
@@ -44,10 +42,8 @@ public class SpriteFactory {
      *
      * @param spriteTemplateName - the name of the sprite template
      * @return a sprite object with properties set to those specified in the template
-     * @throws ReflectiveOperationException - in the case that the spriteClassName is invalid
      */
-    public Sprite generateSprite(String spriteTemplateName) throws
-            ReflectiveOperationException {
+    public Sprite generateSprite(String spriteTemplateName) {
         Map<String, Object> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
         Sprite sprite = new Sprite(properties);
         cacheGeneratedSprite(spriteTemplateName, sprite);
