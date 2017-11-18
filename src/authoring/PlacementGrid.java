@@ -26,7 +26,7 @@ public class PlacementGrid extends GridPane {
 	}
 
 	private void initializeLayout() {
-		this.setMinSize(width, height);
+		this.setPrefSize(width, height);
 		this.setStyle("-fx-background-color: #3E3F4B;");
 		
 		for(int i = 0; i<100; i+=GRID_ROW_PERCENTAGE) {
@@ -88,8 +88,11 @@ public class PlacementGrid extends GridPane {
 		int col = (int) x/(width/(100/GRID_COLUMN_PERCENTAGE));
 		return cells[row][col];
 	}
-//	
-//	public List<Point2D> getPath() {
-//		return points;
-//	}
+
+	protected void resizeGrid(int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.setPrefWidth(width);
+		this.setPrefHeight(height);
+	}
 }
