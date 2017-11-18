@@ -229,29 +229,24 @@ public class SerializationUtils {
         towerMap.put("movementStrategy", new RandomMovementStrategy(10.0, 11.0,
                 new RandomMovementAssigner(new double[]{.24, .26, .27, .23})));
 
-        try {
-            Sprite testTower = factory.generateSprite("testTower", towerMap);
-            Sprite testTower2 = factory.generateSprite("testTower2", towerMap);
-            Sprite testTower3 = factory.generateSprite("testTower");
-            Sprite testSoldier = factory.generateSprite("testSoldier", soldierMap);
-            Sprite testSoldier2 = factory.generateSprite("testSoldier2", soldierMap);
-            Sprite testSoldier3 = factory.generateSprite("testSoldier");
-            String serializedGameData = tester.serializeGameData(testDescription, testLevel, testStatus, factory);
-            System.out.println("Serialized sprites: " + serializedGameData);
-            System.out.println("Game Description: " + tester.deserializeGameDescription(serializedGameData, testLevel));
-            Map<String, String> deserializedStatus = tester.deserializeGameStatus(serializedGameData, testLevel);
-            Map<String, List<Sprite>> deserializedSprites = tester.deserializeGameSprites(serializedGameData, testLevel);
-            for (String statusKey : deserializedStatus.keySet()) {
-                System.out.println(statusKey + " : " + deserializedStatus.get(statusKey));
-            }
-            for (String elementName : deserializedSprites.keySet()) {
-                System.out.println("Element name: " + elementName);
-                System.out.println(deserializedSprites.get(elementName).toString());
-            }
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
+        Sprite testTower = factory.generateSprite("testTower", towerMap);
+        Sprite testTower2 = factory.generateSprite("testTower2", towerMap);
+        Sprite testTower3 = factory.generateSprite("testTower");
+        Sprite testSoldier = factory.generateSprite("testSoldier", soldierMap);
+        Sprite testSoldier2 = factory.generateSprite("testSoldier2", soldierMap);
+        Sprite testSoldier3 = factory.generateSprite("testSoldier");
+        String serializedGameData = tester.serializeGameData(testDescription, testLevel, testStatus, factory);
+        System.out.println("Serialized sprites: " + serializedGameData);
+        System.out.println("Game Description: " + tester.deserializeGameDescription(serializedGameData, testLevel));
+        Map<String, String> deserializedStatus = tester.deserializeGameStatus(serializedGameData, testLevel);
+        Map<String, List<Sprite>> deserializedSprites = tester.deserializeGameSprites(serializedGameData, testLevel);
+        for (String statusKey : deserializedStatus.keySet()) {
+            System.out.println(statusKey + " : " + deserializedStatus.get(statusKey));
         }
-
+        for (String elementName : deserializedSprites.keySet()) {
+            System.out.println("Element name: " + elementName);
+            System.out.println(deserializedSprites.get(elementName).toString());
+        }
     }
 
 }
