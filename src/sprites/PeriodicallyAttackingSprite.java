@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Abstraction of a Sprite that attacks periodically at a certain frequency
  * @author radithya
- *
+ * @deprecated
  */
 public abstract class PeriodicallyAttackingSprite extends MortalSprite {
 
