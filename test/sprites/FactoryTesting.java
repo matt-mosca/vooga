@@ -17,7 +17,7 @@ public class FactoryTesting {
         map.put("damage", "4.0");
         map.put("image", "http://veryrealurl.com/veryrealimage.png");
         try {
-            sf.generateSprite("sprites.TestSprite", "TestSprite", map);
+            sf.generateSprite("TestSprite", map);
         } catch (ReflectiveOperationException e) {
             System.out.println("reflection failure");
             e.printStackTrace();
