@@ -91,25 +91,4 @@ public class ElementManager {
 		return false; // TEMP
 	}
 
-	// Delegate to the collision strategies (CollisionVisitor and
-	// CollisionVisitable) of the elements
-	private void handleCollision(Sprite element, Sprite otherElement) {
-		CollisionVisitor colliderBehaviorForElement = element.getCollisionVisitor();
-		CollisionVisitable collidableBehaviorForElement = element.getCollisionVisitable();
-		CollisionVisitor colliderBehaviorForOtherElement = otherElement.getCollisionVisitor();
-		CollisionVisitable collidableBehaviorForOtherElement = otherElement.getCollisionVisitable();
-		// Handle effects of collision on element
-		collidableBehaviorForOtherElement.accept(colliderBehaviorForElement);
-		// Handle effects of collision on otherElement
-		collidableBehaviorForElement.accept(colliderBehaviorForOtherElement);
-		if (!colliderBehaviorForElement.isAlive()) {
-			// Will facilitate removal of element
-			element.deactivate();
-		}
-		if (!colliderBehaviorForOtherElement.isAlive()) {
-			// Will facilitate removal of element
-			otherElement.deactivate();
-		}
-	}
-
 }
