@@ -2,6 +2,7 @@ package authoring;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
 
 public class GameArea extends Pane{
 	private int width = 400;
@@ -9,6 +10,7 @@ public class GameArea extends Pane{
 	
 	private PlacementGrid grid;
 	private Path path;
+	private boolean gridEnabled;
 	
 	public GameArea(AuthorInterface author) {
 		path = new Path();
@@ -17,7 +19,6 @@ public class GameArea extends Pane{
 		this.getChildren().add(grid);
 		grid.toBack();
 		
-		toggleGridVisibility(false);
 		initializeLayout();
 		initializeHandlers();
 	}
@@ -30,11 +31,16 @@ public class GameArea extends Pane{
 	}
 	
 	private void initializeHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->path.addWaypoint(e, e.getX(), e.getY()));
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->gameAreaClicked(e));
+	}
+	
+	private void gameAreaClicked(MouseEvent e) {
+		path.addWaypoint(e, e.getX(), e.getY());
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
 		grid.setVisible(visible);
+		gridEnabled = visible;
 	}
 	
 	protected void resizeGameArea(int width, int height) {
@@ -42,6 +48,16 @@ public class GameArea extends Pane{
 		this.height= height;
 		grid.resizeGrid(width, height);
 		this.setPrefSize(width, height);
+	}
+	
+	protected void changeBackground(String hexcode) {
+		this.setStyle("-fx-background-color: " + hexcode + ";");
+	}
+	
+	protected void placeObject(Shape shape) {
+		if(gridEnabled) {
+			grid.snapToGrid(shape);
+		}
 	}
 
 }

@@ -4,6 +4,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.shape.Shape;
 
 public class PlacementGrid extends GridPane {
 	private final int GRID_ROW_PERCENTAGE = 5;
@@ -18,16 +19,14 @@ public class PlacementGrid extends GridPane {
 		this.width = width;
 		this.height = height;
 		this.path = path;
-		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
 		
 		initializeLayout();
 		initializeCells();
-		initializeEventHandlers();
 	}
 
 	private void initializeLayout() {
 		this.setPrefSize(width, height);
-		this.setStyle("-fx-background-color: #3E3F4B;");
 		
 		for(int i = 0; i<100; i+=GRID_ROW_PERCENTAGE) {
 			RowConstraints row = new RowConstraints();
@@ -43,6 +42,7 @@ public class PlacementGrid extends GridPane {
 	}
 	
 	private void initializeCells() {
+		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
 		for(int i = 0; i<(100/GRID_ROW_PERCENTAGE); i++) {
 			for(int j = 0; j<(100/GRID_COLUMN_PERCENTAGE);j++) {
 				Cell cell = new Cell();
@@ -50,11 +50,6 @@ public class PlacementGrid extends GridPane {
 				cells[i][j] = cell;
 			}
 		}
-	}
-	
-
-	private void initializeEventHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
 	}
 
 	private void activatePath(MouseEvent e) {
@@ -74,6 +69,7 @@ public class PlacementGrid extends GridPane {
 		}
 	}
 	
+	//Currently unused, might eventually change state when objects are placed in cells
 	protected void updateCells(double x, double y) {
 		Cell cell = calculateCell(x,y);
 		if(cell.pathActive()) {
@@ -94,5 +90,9 @@ public class PlacementGrid extends GridPane {
 		this.height = height;
 		this.setPrefWidth(width);
 		this.setPrefHeight(height);
+	}
+	
+	protected void snapToGrid(Shape shape) {
+		
 	}
 }

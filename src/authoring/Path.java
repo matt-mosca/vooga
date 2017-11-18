@@ -3,7 +3,6 @@ package authoring;
 import java.util.HashSet;
 import java.util.Set;
 
-import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -77,24 +76,21 @@ public class Path extends Group{
 	}
 	
 	private void removeWaypointLines(PathPoint point) {
-		for(Line line:point.getNextLines().values()) {
+		for(PathPoint prev:point.getPrevLines().keySet()) {
+			Line line = prev.getNextLines().remove(point);
+			this.getChildren().remove(line);
+		}
+		
+		for(PathPoint next:point.getNextLines().keySet()) {
+			Line line = next.getPrevLines().remove(point);
 			this.getChildren().remove(line);
 		}
 
-		for(PathPoint prev:point.getPrevious()) {
-			this.getChildren().remove(prev.getNextLines().get(point));
-			prev.getNext().remove(point);
-			prev.getNextLines().remove(point);
-		}
-		
-		for(PathPoint next:point.getNext()) {
-			next.getPrevious().remove(point);
-		}
 	}
 	
 	private void modifyLineOrder(PathPoint point) {
-		for(PathPoint prevPoint:point.getPrevious()) {
-			for(PathPoint nextPoint:point.getNext()) {
+		for(PathPoint prevPoint:point.getPrevLines().keySet()) {
+			for(PathPoint nextPoint:point.getNextLines().keySet()) {
 				drawLineBetween(prevPoint, nextPoint);
 			}
 		}
@@ -116,12 +112,14 @@ public class Path extends Group{
 	private void removeLine(PathLine line) {
 		if(!line.isActive()) return;
 		line.removeLineFromPoints();
+		this.getChildren().remove(line.getDirectionComponent());
 		this.getChildren().remove(line);
 	}
 
 	private void drawLineBetween(PathPoint start, PathPoint end) {
 		PathLine line = start.setConnectingLine(end);
 		this.getChildren().add(line);
+		this.getChildren().add(line.getDirectionComponent());
 		line.toBack();
 		line.addEventHandler(MouseEvent.MOUSE_CLICKED, e->handleLineClick(e, line));
 	}

@@ -1,8 +1,6 @@
 package authoring;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javafx.scene.input.MouseEvent;
@@ -11,8 +9,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 public class PathPoint extends Circle{
-	private List<PathPoint> nextPoints;
-	private List<PathPoint> prevPoints;
+	private Map<PathPoint,Line> linesToPrev;
 	private Map<PathPoint,Line> linesToNext;
 	private boolean active = false;
 	private boolean wasDragged = false;
@@ -22,8 +19,7 @@ public class PathPoint extends Circle{
 		this.setCenterY(y);
 		this.setRadius(5);
 		this.setFill(Color.RED);
-		nextPoints = new ArrayList<>();
-		prevPoints = new ArrayList<>();
+		linesToPrev = new HashMap<>();
 		linesToNext = new HashMap<>();
 		
 		initializeHandlers();
@@ -34,15 +30,14 @@ public class PathPoint extends Circle{
 	}
 
 	protected PathLine setConnectingLine(PathPoint next) {
-		nextPoints.add(next);
 		PathLine line = new PathLine(this, next);
 		linesToNext.put(next, line);
-		next.addToPrevious(this);
+		next.addToPrevious(this, line);
 		return line;
 	}
 	
-	protected void addToPrevious(PathPoint prev) {
-		prevPoints.add(prev);
+	protected void addToPrevious(PathPoint prev, Line line) {
+		linesToPrev.put(prev, line);
 	}
 	
 	protected void lockPosition() {
@@ -73,12 +68,8 @@ public class PathPoint extends Circle{
 		return active;
 	}
 	
-	protected List<PathPoint> getPrevious(){
-		return prevPoints;
-	}
-	
-	protected List<PathPoint> getNext(){
-		return nextPoints;
+	protected Map<PathPoint, Line> getPrevLines(){
+		return linesToPrev;
 	}
 	
 	protected Map<PathPoint, Line> getNextLines(){

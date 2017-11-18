@@ -6,6 +6,7 @@ import javafx.scene.shape.Line;
 public class PathLine extends Line{
 	private PathPoint start;
 	private PathPoint end;
+	private LineDirection direction;
 	private boolean active = false;
 	
 	public PathLine(PathPoint start, PathPoint end) {
@@ -17,6 +18,8 @@ public class PathLine extends Line{
 		this.endYProperty().bind(end.centerYProperty());
 		this.setStroke(Color.RED);
 		this.setStrokeWidth(2);
+		
+		direction = new LineDirection(start, end, line);
 	}
 	
 	protected void toggleActive() {
@@ -30,11 +33,26 @@ public class PathLine extends Line{
 	
 	protected void removeLineFromPoints() {
 		start.getNextLines().remove(end);
-		start.getNext().remove(end);
-		end.getPrevious().remove(start);
+		end.getPrevLines().remove(start);
+	}
+	
+	protected void changeDirection() {
+		direction.changeDirection();
+		removeLineFromPoints();
+		
+		PathPoint temp = start;
+		start = end;
+		end = temp;
+		
+		start.getNextLines().put(end, this);
+		end.getPrevLines().put(start, this);
 	}
 	
 	protected boolean isActive() {
 		return active;
+	}
+	
+	protected LineDirection getDirectionComponent() {
+		return direction;
 	}
 }
