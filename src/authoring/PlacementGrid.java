@@ -1,9 +1,5 @@
 package authoring;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -13,16 +9,15 @@ public class PlacementGrid extends GridPane {
 	private final int GRID_ROW_PERCENTAGE = 5;
 	private final int GRID_COLUMN_PERCENTAGE = 5;
 	
-	private GameArea gameArea;
+	private Path path;
 	private Cell[][] cells;
 	private int width;
 	private int height;
-	private int pathNumber = 0;
 	
-	public PlacementGrid(AuthorInterface author, int width, int height, GameArea area) {
+	public PlacementGrid(AuthorInterface author, int width, int height, Path path) {
 		this.width = width;
 		this.height = height;
-		this.gameArea = area;
+		this.path = path;
 		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
 		
 		initializeLayout();
@@ -73,31 +68,25 @@ public class PlacementGrid extends GridPane {
 		
 		if(cell.pathActive()) {
 			cell.deactivate();
-			updateNeighbors(row, col, false);
-			pathNumber--;
 		}else {
-			if(pathNumber>0 && !cell.activeNeighbors()) return;
-			gameArea.addWaypoint(e,x,y);
+			path.addWaypoint(e,x,y);
 			cell.activate();
-			updateNeighbors(row, col,true);
-			pathNumber++;
 		}
 	}
 	
-	private void updateNeighbors(int row, int col, boolean addActive) {
-		int[] rows = {row, row+1, row-1};
-		int[] cols = {col, col+1, col-1};
-		for(int r: rows) {
-			for(int c:cols) {
-				if(r>-1 && c>-1 && r<(cells.length) && c<(cells[0].length) && !(r==row && c==col)) {
-					if(addActive) {
-						cells[r][c].addActive();
-					}else{
-						cells[r][c].removeActive();
-					}
-				}
-			}
+	protected void updateCells(double x, double y) {
+		Cell cell = calculateCell(x,y);
+		if(cell.pathActive()) {
+			return;
+		}else {
+			cell.activate();
 		}
+	}
+	
+	private Cell calculateCell(double x, double y) {
+		int row = (int) y/(height/(100/GRID_ROW_PERCENTAGE));
+		int col = (int) x/(width/(100/GRID_COLUMN_PERCENTAGE));
+		return cells[row][col];
 	}
 //	
 //	public List<Point2D> getPath() {
