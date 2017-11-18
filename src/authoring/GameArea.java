@@ -30,12 +30,7 @@ public class GameArea extends Pane{
 	}
 	
 	private void initializeHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addToPath(e));
-	}
-	
-	private void addToPath(MouseEvent e) {
-		path.addWaypoint(e, e.getX(), e.getY());
-		grid.updateCells(e.getX(), e.getY());
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->path.addWaypoint(e, e.getX(), e.getY()));
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {

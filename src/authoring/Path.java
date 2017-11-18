@@ -41,7 +41,9 @@ public class Path extends Group{
 		e.consume();
 		if(point.wasMoved()) {
 			point.lockPosition();
-		}else if(e.getButton() == MouseButton.PRIMARY) {
+		}else if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+			connectPath(e, point);
+		}else if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
 			setActiveWaypoint(e, point);
 		}else if(e.getButton() == MouseButton.SECONDARY) {
 			removeWaypoint(e, point);
@@ -63,6 +65,13 @@ public class Path extends Group{
 		}else {
 			if(activePoint != null) activePoint.toggleActive();
 			activePoint = point;
+		}
+	}
+	
+	private void connectPath(MouseEvent e, PathPoint point) {
+		if(!point.equals(activePoint) && activePoint != null) {
+			drawLineBetween(activePoint, point);
+			setActiveWaypoint(e, point);
 		}
 	}
 	
