@@ -3,6 +3,7 @@ package authoring;
 import java.util.HashSet;
 import java.util.Set;
 
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +26,7 @@ public class Path extends Group{
 		point.addEventHandler(MouseEvent.MOUSE_CLICKED, event->handleClick(event, point));
 		
 		if(activePoint != null) {
-			this.getChildren().add(activePoint.setConnectingLine(point));
+			drawLineBetween(activePoint, point);
 		}else {
 			headPoint = point;
 		}
@@ -38,7 +39,9 @@ public class Path extends Group{
 	
 	private void handleClick(MouseEvent e, PathPoint point) {
 		e.consume();
-		if(e.getButton() == MouseButton.PRIMARY) {
+		if(point.wasMoved()) {
+			point.lockPosition();
+		}else if(e.getButton() == MouseButton.PRIMARY) {
 			setActiveWaypoint(e, point);
 		}else if(e.getButton() == MouseButton.SECONDARY) {
 			removeWaypoint(e, point);
@@ -46,16 +49,14 @@ public class Path extends Group{
 	}
 	
 	private void removeWaypoint(MouseEvent e, PathPoint point) {
-		e.consume();
 		points.remove(point);
 		removeWaypointLines(point);
-		addNewOrder(point);
+		modifyLineOrder(point);
 		if(point.equals(activePoint)) activePoint = null;
 		this.getChildren().remove(point);
 	}
 	
 	private void setActiveWaypoint(MouseEvent e, PathPoint point) {
-		e.consume();
 		point.toggleActive();
 		if(point.equals(activePoint)) {
 			activePoint = null;
@@ -81,12 +82,18 @@ public class Path extends Group{
 		}
 	}
 	
-	private void addNewOrder(PathPoint point) {
+	private void modifyLineOrder(PathPoint point) {
 		for(PathPoint prevPoint:point.getPrevious()) {
 			for(PathPoint nextPoint:point.getNext()) {
-				this.getChildren().add(prevPoint.setConnectingLine(nextPoint));
+				drawLineBetween(prevPoint, nextPoint);
 			}
 		}
+	}
+	
+	private void drawLineBetween(PathPoint start, PathPoint end) {
+		Line line = start.setConnectingLine(end);
+		this.getChildren().add(line);
+		line.toBack();
 	}
 	
 }

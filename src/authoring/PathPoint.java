@@ -15,6 +15,7 @@ public class PathPoint extends Circle{
 	private List<PathPoint> prevPoints;
 	private Map<PathPoint,Line> linesToNext;
 	private boolean active = false;
+	private boolean wasDragged = false;
 	
 	protected PathPoint(double x, double y) {
 		this.setCenterX(x);
@@ -50,9 +51,18 @@ public class PathPoint extends Circle{
 		prevPoints.add(prev);
 	}
 	
+	protected void lockPosition() {
+		wasDragged = false;
+	}
+	
+	protected boolean wasMoved() {
+		return wasDragged;
+	}
+	
 	private void dragPoint(MouseEvent e) {
 		this.setCenterX(e.getX());
 		this.setCenterY(e.getY());
+		wasDragged = true;
 		e.consume();
 	}
 	
