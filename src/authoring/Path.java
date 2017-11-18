@@ -39,11 +39,12 @@ public class Path extends Group{
 	
 	private void handlePointClick(MouseEvent e, PathPoint point) {
 		e.consume();
+		System.out.println(e.getClickCount());
 		if(point.wasMoved()) {
 			point.lockPosition();
-		}else if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+		}else if(e.getButton() == MouseButton.PRIMARY && e.isControlDown()) {
 			connectPath(e, point);
-		}else if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
+		}else if(e.getButton() == MouseButton.PRIMARY) {
 			setActiveWaypoint(e, point);
 		}else if(e.getButton() == MouseButton.SECONDARY) {
 			removeWaypoint(e, point);
