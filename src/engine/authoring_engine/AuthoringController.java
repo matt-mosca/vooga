@@ -1,12 +1,8 @@
 package engine.authoring_engine;
 
-import java.util.Collection;
 import java.util.Map;
 import engine.GameController;
-import engine.IOController;
-import engine.StateManager;
 import sprites.Sprite;
-import util.SerializationUtils;
 
 /**
  * Top-level authoring controller, gateway of front end GameAuthoringEnv to back

@@ -15,13 +15,28 @@ public abstract class MovementStrategy {
 		yCoord = startY;
 	}
 	
+	/**
+	 * Move based on the specific movement strategy
+	 */
 	public abstract void move();
-
 	
+	/**
+	 * What to do when blocked
+	 */
+	public abstract void handleBlock();
+	
+	/**
+	 * The current xCoordinate
+	 * @return current xCoordinate
+	 */
 	public double getX() {
 		return xCoord;
 	}
 	
+	/**
+	 * The current yCoordinate
+	 * @return current yCoordinate
+	 */
 	public double getY() {
 		return yCoord;
 	}

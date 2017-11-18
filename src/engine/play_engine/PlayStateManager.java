@@ -1,9 +1,6 @@
 package engine.play_engine;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 import engine.IOController;
 import engine.StateManager;
@@ -46,7 +43,10 @@ public class PlayStateManager extends StateManager {
 	}
 	
 	void update() {
-		// TODO
+		// Move elements, check and handle collisions
+		elementManager.update();
+		// TODO - Check top-level victory / defeat / level completion conditions
+		
 	}
 
 	boolean isInPlay() {

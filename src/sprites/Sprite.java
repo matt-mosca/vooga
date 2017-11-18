@@ -7,17 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import engine.behavior.collision.CollisionVisitable;
+import engine.behavior.collision.CollisionVisitor;
+import engine.behavior.firing.FiringStrategy;
+import engine.behavior.movement.MovementStrategy;
+
 // TODO - Just a basic outline for reference from Behavior
 // Schwen please feel free to add / change / remove as necessary
 // Could be sub-classed by -> MortalSprite -> MovingSprite etc
 public abstract class Sprite {
-
-	private double xCoord;
-	private double yCoord;
-
-	private double xVelocity;
-	private double yVelocity;
-	// ^ these might be subclass members (likely abstract subclass) instead if we want multi-genre flexibility
 
 	// Flag to facilitate clean-up of 'dead' elements - only active elements
 	// displayed by front end
@@ -25,6 +23,11 @@ public abstract class Sprite {
 	// ^ I (Schwen) think this will be part of the State object once I make it
 
 	private String templateName;
+	// These fields should be set through setProperties
+	private MovementStrategy movementStrategy;
+	private CollisionVisitor collisionVisitor;
+	private CollisionVisitable collisionVisitable;
+	private FiringStrategy firingStrategy;
 
 	public Sprite(Map<String, ?> properties, String templateName) {
 		setProperties(properties);
@@ -32,38 +35,47 @@ public abstract class Sprite {
 	}
 
 	/**
-	 * Update self for one cycle based on current state
-	 */
-	public abstract void update();
-
-	/**
 	 * Move one cycle in direction of current velocity vector
 	 */
-	public abstract void move();
+	public void move() {
+		movementStrategy.move();
+	}
 
 	/**
 	 * Attack in whatever way necessary Likely called by interaction_engine in
 	 * event-handlers for keys / clicks
 	 */
-	public abstract void attack();
+	public void attack() {
+		firingStrategy.fire();
+	}
 
 	public double getX() {
-		return xCoord;
+		return movementStrategy.getX();
 	}
 
 	public double getY() {
-		return yCoord;
-	}
-	
-	public double getXVelocity() {
-		return xVelocity;
-	}
-	
-	public double getYVelocity() {
-		return yVelocity;
+		return movementStrategy.getY();
 	}
 
-	public String getTemplateName() { return templateName; }
+	// TODO - Can avoid exposing strategies through public methods? Currently using
+	// public methods since sprites package is different from behavior package and
+	// play_engine package
+	public CollisionVisitor getCollisionVisitor() {
+		return collisionVisitor;
+	}
+
+	public CollisionVisitable getCollisionVisitable() {
+		return collisionVisitable;
+	}
+	
+	public MovementStrategy getMovementStrategy() {
+		return movementStrategy;
+	}
+
+
+	public String getTemplateName() {
+		return templateName;
+	}
 
 	public boolean isActive() {
 		return isActive;
@@ -77,14 +89,6 @@ public abstract class Sprite {
 		isActive = true;
 	}
 
-	protected void setX(double newX) {
-		xCoord = newX;
-	}
-
-	protected void setY(double newY) {
-		yCoord = newY;
-	}
-
 	/**
 	 * When the Sprite dies - will facilitate removal of element from
 	 * ElementManager's collection of active sprites
@@ -96,9 +100,10 @@ public abstract class Sprite {
 	/**
 	 * Set the properties of this sprite.
 	 *
-	 * @param properties - maps instance variables of this sprite to properties, as strings
+	 * @param properties
+	 *            - maps instance variables of this sprite to properties, as strings
 	 */
-	private void setProperties(Map<String, ?> properties)  {
+	private void setProperties(Map<String, ?> properties) {
 		List<Field> fields = getAllFieldsInInheritanceHierarchy();
 		for (Field field : fields) {
 			field.setAccessible(true);
@@ -106,7 +111,8 @@ public abstract class Sprite {
 				setField(properties, field);
 			} else {
 				// TODO - throw custom exception? set to a default value?
-				//System.out.println(String.format("%s: warning, %s was not set", this.getClass().getName(), field
+				// System.out.println(String.format("%s: warning, %s was not set",
+				// this.getClass().getName(), field
 				// .getName()));
 			}
 		}
@@ -126,7 +132,8 @@ public abstract class Sprite {
 		try {
 			field.set(this, properties.get(field.getName()));
 		} catch (IllegalAccessException e) {
-			// TODO - because of setAccessible above this won't happen (?), so remove print statement
+			// TODO - because of setAccessible above this won't happen (?), so remove print
+			// statement
 			System.out.println("Sprite reflection exception: this should never happen");
 		}
 	}
@@ -134,10 +141,10 @@ public abstract class Sprite {
 	/**
 	 * Get all the field names of this sprite instance, for creating a property map.
 	 *
-	 * @return a list of all field names (regardless of accessibility) in this instance's inheritance hierarchy
+	 * @return a list of all field names (regardless of accessibility) in this
+	 *         instance's inheritance hierarchy
 	 */
 	public List<String> getFieldNames() {
-		return getAllFieldsInInheritanceHierarchy().stream()
-				.map(Field::getName).collect(Collectors.toList());
+		return getAllFieldsInInheritanceHierarchy().stream().map(Field::getName).collect(Collectors.toList());
 	}
 }
