@@ -13,16 +13,16 @@ public class PlacementGrid extends GridPane {
 	private final int GRID_ROW_PERCENTAGE = 5;
 	private final int GRID_COLUMN_PERCENTAGE = 5;
 	
-	private GameArea gameArea;
+	private Path path;
 	private Cell[][] cells;
 	private int width;
 	private int height;
 	private int pathNumber = 0;
 	
-	public PlacementGrid(AuthorInterface author, int width, int height, GameArea area) {
+	public PlacementGrid(AuthorInterface author, int width, int height, Path path) {
 		this.width = width;
 		this.height = height;
-		this.gameArea = area;
+		this.path = path;
 		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
 		
 		initializeLayout();
@@ -77,7 +77,7 @@ public class PlacementGrid extends GridPane {
 			pathNumber--;
 		}else {
 			if(pathNumber>0 && !cell.activeNeighbors()) return;
-			gameArea.addWaypoint(e,x,y);
+			path.addWaypoint(e,x,y);
 			cell.activate();
 			updateNeighbors(row, col,true);
 			pathNumber++;
