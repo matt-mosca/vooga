@@ -33,7 +33,7 @@ public class FactoryTesting {
         bleh.put("collisionVisitor", new ImmortalCollider());
         bleh.put("collisionVisitable", new ImperviousCollisionVisitable());
         sf.generateSprite("blehSprite", bleh);
-        XStream x = new XStream(new DomDriver());
+        /*XStream x = new XStream(new DomDriver());
         String saved = "";
         for (Sprite template : sf.getLevelSprites(1).get("blehSprite")) {
             saved = x.toXML(template);
@@ -41,7 +41,7 @@ public class FactoryTesting {
         }
         Sprite loaded = (Sprite) x.fromXML(saved);
         System.out.println(loaded.isAlive());
-        sf.exportSpriteTemplates();
+        sf.exportSpriteTemplates();*/
         // ^ need to manually examine the property file
     }
 }
