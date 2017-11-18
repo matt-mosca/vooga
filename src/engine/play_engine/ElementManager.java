@@ -2,13 +2,11 @@ package engine.play_engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
-import engine.behavior.collision.CollisionVisitable;
-import engine.behavior.collision.CollisionVisitor;
-import engine.behavior.movement.MovementStrategy;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 
 /**
  * Single-source of truth for elements and their behavior when in-play
@@ -19,7 +17,7 @@ import sprites.Sprite;
 public class ElementManager {
 
 	// TODO - Uncomment when ElementFactory is ready
-	// private ElementFactory elementFactory;
+	private SpriteFactory spriteFactory;
 
 	// Use list to enforce an ordering of elements to facilitate consideration of
 	// every element pair only once
@@ -34,70 +32,62 @@ public class ElementManager {
 	 * Handles the collision-checking and Sprite-specific collision-handling logic
 	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md
 	 */
-	public ElementManager() {// ElementFactory elementFactory) {
-		// TODO - Uncomment when elementFactory is ready
-		// this.elementFactory = elementFactory;
+	public ElementManager() {
+		spriteFactory = new SpriteFactory();
 		gameElements = new ArrayList<>();
 	}
 
 	// Guaranteed to return only active elements (i.e. not dead ones)
 	Collection<Sprite> getCurrentElements() {
 		// Filter to return only active elements?
-		gameElements.removeIf(gameElement -> !gameElement.isActive());
+		gameElements.removeIf(gameElement -> !gameElement.isAlive());
 		return gameElements;
 	}
 
+	// Why do we need this?
 	void setCurrentElements(Collection<Sprite> newElements) {
 		gameElements = new ArrayList<>(newElements);
 	}
 
-	// TODO
+	/*
+
+	MovementStrategy object should be created with the coordinates
+
+	Method might still be necessary but should just do void and put in authoring game grid
+
 	Sprite placeElement(String elementName, double x, double y) {
 		// Use ElementFactory to construct Sprite from elementName with these
 		// coordinates
 		// Add created Sprite to gameElements
 		return null; // TEMP
-	}
+	}*/
 
 	void update() {
-		for (int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
-			Sprite element = gameElements.get(elementIndex);
-			CollisionVisitor colliderBehaviorForElement = element.getCollisionVisitor();
-			CollisionVisitable collidableBehaviorForElement = element.getCollisionVisitable();
-			MovementStrategy movementStrategyForElement = element.getMovementStrategy();
-			// Handle blocked element
-			if (colliderBehaviorForElement.isBlocked()) {
-				movementStrategyForElement.handleBlock();
-				colliderBehaviorForElement.unBlock();
-			}
+		Iterator<Sprite> activeSprites = gameElements.iterator();
+		while(activeSprites.hasNext()) {
+			Sprite element = activeSprites.next();
 			element.move();
-			for (int otherElementIndex = elementIndex + 1; otherElementIndex < gameElements
-					.size(); otherElementIndex++) {
-				Sprite otherElement = gameElements.get(otherElementIndex);
-				if (collidesWith(element, otherElement)) {
-					CollisionVisitor colliderBehaviorForOtherElement = otherElement.getCollisionVisitor();
-					CollisionVisitable collidableBehaviorForOtherElement = otherElement.getCollisionVisitable();
-					// Handle effects of collision on element
-					collidableBehaviorForOtherElement.accept(colliderBehaviorForElement);
-					// Handle effects of collision on otherElement
-					collidableBehaviorForElement.accept(colliderBehaviorForOtherElement);
-					if (!colliderBehaviorForElement.isAlive()) {
-						// Will facilitate removal of element
-						element.deactivate();
-					}
-					if (!colliderBehaviorForOtherElement.isAlive()) {
-						// Will facilitate removal of element
-						otherElement.deactivate();
+			element.attack();
+			Iterator<Sprite> otherActiveSprites = gameElements.iterator();
+			while(element.isAlive() && otherActiveSprites.hasNext()) {
+				Sprite otherElement = otherActiveSprites.next();
+				if (!otherElement.equals(element) && collidesWith(element, otherElement)) {
+					element.processCollision(otherElement);
+					otherElement.processCollision(element);
+					if (!otherElement.isAlive()) {
+						otherActiveSprites.remove();
 					}
 				}
 			}
+			if (!element.isAlive()) {
+				activeSprites.remove();
+			}
 		}
 	}
-	
+
 	// TEMP - SIMPLIFIED CHECKING OF COLLISIONS, JUST BY GRID POSITION
 	private boolean collidesWith(Sprite element, Sprite otherElement) {
 		// TODO
 		return false; // TEMP
 	}
-
 }
