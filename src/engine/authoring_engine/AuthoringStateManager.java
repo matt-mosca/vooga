@@ -23,14 +23,10 @@ import sprites.SpriteFactory;
 public class AuthoringStateManager extends StateManager {
 
 	private List<Collection<Sprite>> elementsPerLevel;
-	private Map<Integer, Sprite> spritesByIds;
-	private AtomicInteger uniqueSpriteId;
 
 	public AuthoringStateManager(IOController authoringIOController, SpriteFactory spriteFactory) {
 		super(authoringIOController, spriteFactory);
-		elementsPerLevel.add(new ArrayList<Sprite>()); // Leave index 0 blank to facilitate 1-indexing from authoring
-		uniqueSpriteId = new AtomicInteger();
-		spritesByIds = new HashMap<>();
+		elementsPerLevel.add(new ArrayList<>()); // Leave index 0 blank to facilitate 1-indexing from authoring
 	}
 
 	@Override
@@ -46,18 +42,10 @@ public class AuthoringStateManager extends StateManager {
 				AuthoringConstants.IS_AUTHORING);
 	}
 
-	int createElement(String templateName, Map<String, Object> properties) {
-		try {
-			Sprite sprite = getSpriteFactory().generateSprite(templateName, properties);
-			spritesByIds.put(uniqueSpriteId.incrementAndGet(), sprite);
-			// (id prevents exposing the Sprite objects to the frontend)
-		} catch (ReflectiveOperationException e){
-			// TODO - throw custom exception
-		}
-		return uniqueSpriteId.get();
+	Sprite createElement(String templateName, Map<String, Object> properties) {
+		return getSpriteFactory().generateSprite(templateName, properties);
 	}
 
-	// Why is this returning a sprite?
 	@Override
 	public Sprite placeElement(String elementName, double x, double y) {
 		return placeElement(elementName, x, y, getCurrentLevel());
@@ -90,28 +78,17 @@ public class AuthoringStateManager extends StateManager {
 	}
 
 	// TODO
-	int addElement(String templateName, int level) throws IllegalArgumentException {
+	Sprite addElement(String templateName, int level) throws IllegalArgumentException {
 		assertValidLevel(level);
-		try {
-			getSpriteFactory().setLevel(level);
-			Sprite sprite = getSpriteFactory().generateSprite(templateName);
-			spritesByIds.put(uniqueSpriteId.incrementAndGet(), sprite);
-			// (id prevents exposing the Sprite objects to the frontend)
-		} catch (ReflectiveOperationException e){
-			// TODO - throw custom exception
-		}
-		return uniqueSpriteId.get();
+		return getSpriteFactory().generateSprite(templateName);
 	}
 
-	// TODO
+	/* If we return the sprite to the frontend, they will be able to do this themselves?
+
 	void updateElement(int spriteId, int level, Map<String, Object> customProperties)
 			throws IllegalArgumentException {
 		assertValidLevel(level);
-		if (spritesByIds.containsKey(spriteId)) {
-			Sprite spriteToUpdate = spritesByIds.get(spriteId);
-			spriteToUpdate.setProperties(customProperties);
-		}
-	}
+	}*/
 
 	void setGameParam(String property, String value) {
 		getStatus().put(property, value);

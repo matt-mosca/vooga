@@ -29,6 +29,14 @@ public class Sprite {
 		setProperties(properties);
 	}
 
+	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy,
+				  CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable) {
+		this.firingStrategy = firingStrategy;
+		this.movementStrategy = movementStrategy;
+		this.collisionVisitor = collisionVisitor;
+		this.collisionVisitable = collisionVisitable;
+	}
+
 	/**
 	 * Move one cycle in direction of current velocity vector
 	 */
@@ -78,9 +86,6 @@ public class Sprite {
 				setField(properties, field);
 			} else {
 				// TODO - throw custom exception? set to a default value?
-				// System.out.println(String.format("%s: warning, %s was not set",
-				// this.getClass().getName(), field
-				// .getName()));
 			}
 		}
 	}
