@@ -35,19 +35,21 @@ public class LeftToolBar extends ScrollPane {
 		myAuthor = author;
         myList = new ArrayList<StaticObject>();
         myStatic1 = new StaticObject(1, author);
-        myStatic2 = new StaticObject(1, author);
-        myStatic3 = new StaticObject(2, author);
-        myStatic4 = new StaticObject(3, author);
-
+        myStatic2 = new StaticObject(1, author);        
+        myStatic3 = new StaticObject(3, author);        
+        myStatic4 = new StaticObject(2, author);
         myList.add(myStatic1);
         myList.add(myStatic2);
         myList.add(myStatic3);
         myList.add(myStatic4);
         ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
         myListView = new ListView<StaticObject>();
+        myListView.setOnMouseClicked(e->myAuthor.clicked(
+        		myListView.getSelectionModel().getSelectedItem()));
         myListView.setItems(items);
         this.setContent(myListView);
 	}
+
 
 //	private void drag(MouseEvent e, Rectangle myrec) {
 //		Rectangle newRectangle = new Rectangle(myrec.getX(), myrec.getY());

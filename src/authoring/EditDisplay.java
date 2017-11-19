@@ -40,8 +40,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMainGrid);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
-		myStaticObject = new StaticObject(2, this);
-		rootAdd(myStaticObject);
+//		myStaticObject = new StaticObject(2, this);
+//		rootAdd(myStaticObject);
 		gridToggle = new CheckBox();
 		gridToggle.setLayoutX(GRID_X_LOCATION);
 		gridToggle.setLayoutY(GRID_Y_LOCATION);
@@ -53,22 +53,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override 
 	public void clicked(StaticObject object) {
-		StaticObject newObject = new StaticObject(object.getSize() + 1, this);
+		StaticObject newObject = new StaticObject(object.getSize(), this);
 		rootAdd(newObject);
-		newObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, newObject));
+//		newObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, newObject));
 	}
-
-//	@Override
-//	public void c	licked(StaticObject object) {
-//		// TODO Auto-generated method stub
-//		StaticObject currObject = new StaticObject(object.getSize(), this);
-//		currObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, currObject));
-////		currRectangle.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(currRectangle));
-//		currObject.addEventHandler(MouseEvent.MOUSE_RELEASED, e->this.dropped(currObject, e));
-//		rootAdd(currObject);
-//		myRightToolBar.updateInfo(Double.toString(currObject.getWidth()),
-//				Double.toString(currObject.getWidth()));
-//	}
 	
 	private void drag(MouseEvent e, StaticObject currObject) {
 		currObject.setX(e.getSceneX() - currObject.getWidth() / 2);

@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import sprites.StaticObject;
 
 public class GameArea extends Pane{
+	private static final Point2D LOCATION = new Point2D(260, 50);
 	private static final int Y_LOCATION = 50;
 	private static final int X_LOCATION = 260;
 	private final int GRID_WIDTH = 400;
@@ -31,8 +32,8 @@ public class GameArea extends Pane{
 	private void initializeLayout() {
 		this.setMinSize(GRID_WIDTH, GRID_HEIGHT);
 		this.setStyle("-fx-background-color: #3E3F4B;");
-		this.setLayoutX(X_LOCATION);
-		this.setLayoutY(Y_LOCATION);
+		this.setLayoutX(LOCATION.getX());
+		this.setLayoutY(LOCATION.getY());
 	}
 	
 	private void initializeHandlers() {
@@ -51,12 +52,9 @@ public class GameArea extends Pane{
 	
 	
 	protected void placeInGrid(StaticObject currObject, MouseEvent e) {
-		double xLocation = e.getX() - X_LOCATION;
-		double yLocation = e.getY() - Y_LOCATION;
-		Point2D location = new Point2D(xLocation, yLocation);
-		Point2D newLocation = grid.findClosest(location, currObject);
-		currObject.setX(newLocation.getX() + X_LOCATION);
-		currObject.setY(newLocation.getY() + Y_LOCATION);
+		Point2D newLocation = grid.findClosest(currObject, X_LOCATION, Y_LOCATION);
+		currObject.setX(newLocation.getX());
+		currObject.setY(newLocation.getY());
 		
 	}
 	

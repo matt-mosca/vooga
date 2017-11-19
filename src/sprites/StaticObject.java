@@ -1,21 +1,44 @@
 package sprites;
 
 import authoring.AuthorInterface;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class StaticObject extends ImageView {
 	
-	private int mySize;
+	private static final int CELL_SIZE = 20;
+	private int objectSize;
+	private int realSize;
+	private AuthorInterface myAuthor;
 	
 	public StaticObject(int size, AuthorInterface author) {
-		this.setFitWidth(size * 20);
-		this.setFitHeight(size * 20);
+		myAuthor = author;
+		realSize = size * CELL_SIZE;
+		this.setFitWidth(realSize);
+		this.setFitHeight(realSize);
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream("tortoise.png"));
 		this.setImage(image);
-		mySize = size;
-		this.setEventHandler(MouseEvent.MOUSE_CLICKED, e->author.clicked(this));
+		objectSize = size;
+		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e));
+		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(e));
+	}
+	
+	private void drag(MouseEvent e) {
+		this.setX(e.getSceneX() - realSize / 2);
+		this.setY(e.getSceneY() - realSize / 2);
+	}
+	
+	private void released(MouseEvent e) {
+		if (objectSize % 2 == 0) myAuthor.dropped(this, e);
+		else myAuthor.dropped(this, e);
+	}
+	
+	public Point2D center() {
+
+
+		return new Point2D(this.getX(), this.getY());
 	}
 	
 	public double getHeight() {
@@ -27,7 +50,7 @@ public class StaticObject extends ImageView {
 	}
 	
 	public int getSize() {
-		return mySize;
+		return objectSize;
 	}
 
 }

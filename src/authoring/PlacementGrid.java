@@ -110,25 +110,40 @@ public class PlacementGrid extends GridPane {
 	 * Need to update it to account for different sized objects 
 	 * Change the assignToCell method and do different checking for odd/set
 	 */
-	public Point2D findClosest(Point2D location, StaticObject currObject) {
+	public Point2D findClosest(StaticObject currObject, double xLocation, double yLocation) {
 		double minDistance = Double.MAX_VALUE;
 		Point2D finalLocation = null;
-		Cell finalCell = null;
-		for (int r = 0; r < cells.length; r++) {
-			for (int c = 0; c < cells[r].length; c++) {
+		int finalRow = 0;
+		int finalColumn = 0;
+		for (int r = 0; r < cells.length - currObject.getSize() + 1; r++) {
+			for (int c = 0; c < cells[r].length - currObject.getSize() + 1; c++) {
 				Cell currCell = cells[r][c];
-				Point2D cellLocation = new Point2D(currCell.getLayoutX(), currCell.getLayoutY());
-				double totalDistance = Math.abs(cellLocation.distance(location));
+				Point2D cellLocation = new Point2D(currCell.getLayoutX() + xLocation, 
+						currCell.getLayoutY() + yLocation);
+				double totalDistance = Math.abs(cellLocation.distance(currObject.center()));
 				if (totalDistance <= minDistance && currCell.isEmpty()) {
 					minDistance = totalDistance;
 					finalLocation = cellLocation;
-					finalCell = currCell;
+					finalRow = r;
+					finalColumn = c;
 				}
 				
 			}
 		}
-		finalCell.assignToCell(currObject);
+		assignToCells(finalRow, finalColumn, currObject);
 		return finalLocation;
+	}
+	
+	private void assignToCells(int finalRow, int finalColumn, StaticObject currObject) {
+
+		for (int i = 0; i < currObject.getSize(); i++) {
+			for (int j = 0; j < currObject.getSize(); j++) {
+				System.out.println(finalRow + i);
+				System.out.println(finalColumn + j);
+				cells[finalRow + i][finalColumn + j].assignToCell(currObject);
+			}
+			
+		}
 	}
 	
 //	
