@@ -3,7 +3,6 @@ package authoring;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import factory.ButtonFactory;
 import factory.TabFactory;
 import javafx.collections.FXCollections;
@@ -124,8 +123,9 @@ public class RightToolBar extends VBox {
 		for(int i = 0; i < topTabPane.getTabs().size(); i++) {
 			topTabPane.getTabs().get(i).setClosable(false);
 		}
+		
 		for(int i = 0; i < bottomTabPane.getTabs().size(); i++) {
-			topTabPane.getTabs().get(i).setClosable(false);
+			bottomTabPane.getTabs().get(i).setClosable(false);
 		}
 	}
 } 
