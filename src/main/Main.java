@@ -20,8 +20,6 @@ public class Main extends Application {
 	/**
 	 * Initialize what will be displayed and how it will be updated.
 	 */
-	
-	
 	@Override
 	public void start(Stage s) {
 		ScreenDisplay myScene = new SplashScreen(WIDTH, HEIGHT, BACKGROUND, s);
