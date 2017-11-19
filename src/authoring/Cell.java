@@ -16,7 +16,7 @@ public class Cell extends StackPane{
 	}
 
 	private void removeHighlight() {
-		this.setStyle("-fx-background-color:#3E3F4B;");
+		this.setStyle("-fx-background-color:transparent;");
 	}
 	
 	protected boolean pathActive() {

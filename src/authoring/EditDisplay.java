@@ -34,8 +34,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myRightToolBar);
 		
 		gridToggle = new CheckBox();
-		gridToggle.setLayoutX(650);
-		gridToggle.setLayoutY(455);
+		gridToggle.setLayoutX(605);
+		gridToggle.setLayoutY(30);
+		gridToggle.setSelected(true);
+		gridToggle.setText("Grid");
+		gridToggle.setTextFill(Color.BLACK);
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
 		});
