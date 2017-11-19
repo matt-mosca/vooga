@@ -19,7 +19,7 @@ public class PathLine extends Line{
 		this.setStroke(Color.RED);
 		this.setStrokeWidth(2);
 		
-		direction = new LineDirection(start, end, line);
+		direction = new LineDirection(start, end, this);
 	}
 	
 	protected void toggleActive() {

@@ -112,14 +112,14 @@ public class Path extends Group{
 	private void removeLine(PathLine line) {
 		if(!line.isActive()) return;
 		line.removeLineFromPoints();
-		this.getChildren().remove(line.getDirectionComponent());
+//		this.getChildren().remove(line.getDirectionComponent());
 		this.getChildren().remove(line);
 	}
 
 	private void drawLineBetween(PathPoint start, PathPoint end) {
 		PathLine line = start.setConnectingLine(end);
 		this.getChildren().add(line);
-		this.getChildren().add(line.getDirectionComponent());
+//		this.getChildren().add(line.getDirectionComponent());
 		line.toBack();
 		line.addEventHandler(MouseEvent.MOUSE_CLICKED, e->handleLineClick(e, line));
 	}

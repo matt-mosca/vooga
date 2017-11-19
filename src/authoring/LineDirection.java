@@ -1,5 +1,6 @@
 package authoring;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -9,6 +10,12 @@ public class LineDirection extends Polygon{
 	public LineDirection(PathPoint start, PathPoint end, PathLine line) {
 		drawShape(start, end);
 		this.setFill(Color.RED);
+//		DoubleBinding midx = line.endXProperty().add(line.startXProperty());
+//		DoubleBinding midy = line.endYProperty().add(line.startYProperty());
+//		midx = midx.divide(2);
+//		midy = midy.divide(2);
+//		this.translateXProperty().bind(midx);
+//		this.translateYProperty().bind(midy);
 	}
 	
 	private void drawShape(PathPoint start, PathPoint end) {
