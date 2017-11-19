@@ -52,7 +52,7 @@ public class GameArea extends Pane{
 	
 	
 	protected void placeInGrid(StaticObject currObject, MouseEvent e) {
-		Point2D newLocation = grid.findClosest(currObject, X_LOCATION, Y_LOCATION);
+		Point2D newLocation = grid.place(currObject, X_LOCATION, Y_LOCATION);
 		currObject.setX(newLocation.getX());
 		currObject.setY(newLocation.getY());
 		
@@ -62,4 +62,7 @@ public class GameArea extends Pane{
 		grid.setVisible(visible);
 	}
 
+	public void removeFromGrid(StaticObject currObject, MouseEvent e) {
+		grid.removeFromGrid(currObject, X_LOCATION, Y_LOCATION);
+	}
 }

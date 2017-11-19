@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import sprites.StaticObject;
 
@@ -63,5 +64,13 @@ public class Cell extends StackPane{
 	
 	protected boolean isEmpty() {
 		return myAssignments.isEmpty();
+	}
+
+	public void removeAssignment(StaticObject currObject) {
+		System.out.println(myAssignments.toString());
+		if (!isEmpty()) myAssignments.remove(currObject);
+		System.out.println(myAssignments.toString());
+
+		
 	}
 }

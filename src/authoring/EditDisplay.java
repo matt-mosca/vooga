@@ -96,6 +96,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void dropped(StaticObject currObject, MouseEvent e) {
 		myMainGrid.placeInGrid(currObject, e);
 	}
+
+	@Override
+	public void pressed(StaticObject currObject, MouseEvent e) {
+		myMainGrid.removeFromGrid(currObject, e);
+		
+	}
 	
 //	private void insertAnimation() {
 //		String imageName = "turtleGif.gif";

@@ -23,6 +23,7 @@ public class StaticObject extends ImageView {
 		objectSize = size;
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e));
 		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(e));
+		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->pressed(e));
 	}
 	
 	private void drag(MouseEvent e) {
@@ -31,13 +32,14 @@ public class StaticObject extends ImageView {
 	}
 	
 	private void released(MouseEvent e) {
-		if (objectSize % 2 == 0) myAuthor.dropped(this, e);
-		else myAuthor.dropped(this, e);
+		myAuthor.dropped(this, e);
+	}
+	
+	private void pressed(MouseEvent e) {
+		myAuthor.pressed(this, e);
 	}
 	
 	public Point2D center() {
-
-
 		return new Point2D(this.getX(), this.getY());
 	}
 	

@@ -11,5 +11,7 @@ public interface AuthorInterface {
 	public void clicked(StaticObject object);
 	
 	public void dropped(StaticObject rec, MouseEvent e);
+
+	public void pressed(StaticObject staticObject, MouseEvent e);
 	
 }

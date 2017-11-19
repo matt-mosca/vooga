@@ -20,6 +20,7 @@ import javafx.geometry.Point2D;
 public class PlacementGrid extends GridPane {
 	private final int GRID_ROW_PERCENTAGE = 5;
 	private final int GRID_COLUMN_PERCENTAGE = 5;
+	private final int CELL_SIZE = 20;
 	
 	private GameArea gameArea;
 	private Cell[][] cells;
@@ -110,7 +111,7 @@ public class PlacementGrid extends GridPane {
 	 * Need to update it to account for different sized objects 
 	 * Change the assignToCell method and do different checking for odd/set
 	 */
-	public Point2D findClosest(StaticObject currObject, double xLocation, double yLocation) {
+	public Point2D place(StaticObject currObject, double xLocation, double yLocation) {
 		double minDistance = Double.MAX_VALUE;
 		Point2D finalLocation = null;
 		int finalRow = 0;
@@ -121,7 +122,9 @@ public class PlacementGrid extends GridPane {
 				Point2D cellLocation = new Point2D(currCell.getLayoutX() + xLocation, 
 						currCell.getLayoutY() + yLocation);
 				double totalDistance = Math.abs(cellLocation.distance(currObject.center()));
-				if (totalDistance <= minDistance && currCell.isEmpty()) {
+				if (totalDistance <= minDistance && currCell.isEmpty() 
+						&& !neighborsFull(r, c, currObject.getSize())
+						) {
 					minDistance = totalDistance;
 					finalLocation = cellLocation;
 					finalRow = r;
@@ -134,16 +137,39 @@ public class PlacementGrid extends GridPane {
 		return finalLocation;
 	}
 	
-	private void assignToCells(int finalRow, int finalColumn, StaticObject currObject) {
-
+	private boolean neighborsFull(int row, int col, int size) {
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (!cells[i+row][j+col].isEmpty()) return true;
+			}
+		}
+		return false;
+	}
+	
+	private void assignToCells(int finalRow, int finalCol, StaticObject currObject) {
 		for (int i = 0; i < currObject.getSize(); i++) {
 			for (int j = 0; j < currObject.getSize(); j++) {
-				System.out.println(finalRow + i);
-				System.out.println(finalColumn + j);
-				cells[finalRow + i][finalColumn + j].assignToCell(currObject);
+				cells[i+finalRow][j+finalCol].assignToCell(currObject);
 			}
-			
 		}
+	}
+	
+	private void removeAssignments(int finalRow, int finalCol, StaticObject currObject) {
+		for (int i = 0; i < currObject.getSize(); i++) {
+			for (int j = 0; j < currObject.getSize(); j++) {
+				
+				cells[i+finalRow][j+finalCol].removeAssignment(currObject);
+			}
+		}
+	}
+
+	public void removeFromGrid(StaticObject currObject, double xLocation, double yLocation) {
+		int col = (int) ((currObject.getX() - xLocation) / 20);
+		if (col >= 0) {
+			int row = (int) ((currObject.getY() - yLocation) / 20);
+			removeAssignments(row, col, currObject);
+		}
+
 	}
 	
 //	
