@@ -9,8 +9,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 public class PathPoint extends Circle{
-	private Map<PathPoint,Line> linesToPrev;
-	private Map<PathPoint,Line> linesToNext;
+	private Map<PathPoint,PathLine> linesToPrev;
+	private Map<PathPoint,PathLine> linesToNext;
 	private boolean active = false;
 	private boolean wasDragged = false;
 	
@@ -36,7 +36,7 @@ public class PathPoint extends Circle{
 		return line;
 	}
 	
-	protected void addToPrevious(PathPoint prev, Line line) {
+	protected void addToPrevious(PathPoint prev, PathLine line) {
 		linesToPrev.put(prev, line);
 	}
 	
@@ -68,11 +68,11 @@ public class PathPoint extends Circle{
 		return active;
 	}
 	
-	protected Map<PathPoint, Line> getPrevLines(){
+	protected Map<PathPoint, PathLine> getPrevLines(){
 		return linesToPrev;
 	}
 	
-	protected Map<PathPoint, Line> getNextLines(){
+	protected Map<PathPoint, PathLine> getNextLines(){
 		return linesToNext;
 	}
 }

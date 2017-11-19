@@ -17,7 +17,7 @@ public class PathLine extends Line{
 		this.endXProperty().bind(end.centerXProperty());
 		this.endYProperty().bind(end.centerYProperty());
 		this.setStroke(Color.RED);
-		this.setStrokeWidth(2);
+		this.setStrokeWidth(4);
 		
 		direction = new LineDirection(start, end, this);
 	}
@@ -37,13 +37,13 @@ public class PathLine extends Line{
 	}
 	
 	protected void changeDirection() {
-		direction.changeDirection();
 		removeLineFromPoints();
 		
 		PathPoint temp = start;
 		start = end;
 		end = temp;
 		
+		direction.drawShape();
 		start.getNextLines().put(end, this);
 		end.getPrevLines().put(start, this);
 	}
@@ -54,5 +54,13 @@ public class PathLine extends Line{
 	
 	protected LineDirection getDirectionComponent() {
 		return direction;
+	}
+	
+	protected PathPoint getStartPoint() {
+		return start;
+	}
+	
+	protected PathPoint getEndPoint() {
+		return end;
 	}
 }

@@ -1,24 +1,26 @@
 package authoring;
 
-import javafx.beans.binding.DoubleBinding;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class LineDirection extends Polygon{
-	private int rotation = 0;
+	private PathLine line;
 	
 	public LineDirection(PathPoint start, PathPoint end, PathLine line) {
-		drawShape(start, end);
+		this.line = line;
+		drawShape();
 		this.setFill(Color.RED);
-//		DoubleBinding midx = line.endXProperty().add(line.startXProperty());
-//		DoubleBinding midy = line.endYProperty().add(line.startYProperty());
-//		midx = midx.divide(2);
-//		midy = midy.divide(2);
-//		this.translateXProperty().bind(midx);
-//		this.translateYProperty().bind(midy);
+		line.startXProperty().addListener((observable, oldValue, newValue) -> drawShape());
+		line.startYProperty().addListener((observable, oldValue, newValue) -> drawShape());
+		line.endXProperty().addListener((observable, oldValue, newValue) -> drawShape());
+		line.endYProperty().addListener((observable, oldValue, newValue) -> drawShape());
 	}
 	
-	private void drawShape(PathPoint start, PathPoint end) {
+	protected void drawShape() {
+		this.getPoints().clear();
+		PathPoint start = line.getStartPoint();
+		PathPoint end = line.getEndPoint();
+		
 		double angle = Math.atan2(end.getCenterY()-start.getCenterY(), end.getCenterX() - start.getCenterX());
 		double midx = (start.getCenterX() + end.getCenterX())/2;
 		double midy = (start.getCenterY() + end.getCenterY())/2;
@@ -33,11 +35,5 @@ public class LineDirection extends Polygon{
 		this.getPoints().addAll(new Double[] {
 				tipx, tipy, vert1x, vert1y, vert2x, vert2y
 		});
-	}
-	
-	protected void changeDirection() {
-		rotation += 180;
-		if(rotation >= 360) rotation %= 360;
-		this.setRotate(rotation);
 	}
 }
