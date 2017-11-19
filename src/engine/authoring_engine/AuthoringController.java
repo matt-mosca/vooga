@@ -45,8 +45,6 @@ public class AuthoringController extends GameController {
 	public Sprite createElement(String name, Map<String, String> properties) {
 		// return getStateManager().createElement(name, properties);
 		return null;
-		// TODO - this should return an integer id for the frontend to use to access it in the future
-		// (prevents exposing the Sprite objects to the frontend)
 	}
 
 	/**

@@ -18,7 +18,6 @@ public abstract class StateManager {
 	private int currentLevel;
 
 	public StateManager(IOController ioController, SpriteFactory spriteFactory) {
-		// TODO Auto-generated constructor stub
 		this.ioController = ioController;
 		this.spriteFactory = spriteFactory;
 		// These will be set upon loading

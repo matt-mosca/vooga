@@ -1,7 +1,5 @@
 package sprites;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.ImperviousCollisionVisitable;
 import engine.behavior.firing.NoopFiringStrategy;

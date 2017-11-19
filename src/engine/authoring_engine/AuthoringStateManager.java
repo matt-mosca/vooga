@@ -17,8 +17,6 @@ import sprites.SpriteFactory;
  * authoring
  * 
  * @author radithya
- * @author Ben Schwennesen
- *
  */
 public class AuthoringStateManager extends StateManager {
 
@@ -26,6 +24,7 @@ public class AuthoringStateManager extends StateManager {
 
 	public AuthoringStateManager(IOController authoringIOController, SpriteFactory spriteFactory) {
 		super(authoringIOController, spriteFactory);
+		elementsPerLevel = new ArrayList<>();
 		elementsPerLevel.add(new ArrayList<>()); // Leave index 0 blank to facilitate 1-indexing from authoring
 	}
 
@@ -51,7 +50,6 @@ public class AuthoringStateManager extends StateManager {
 		return placeElement(elementName, x, y, getCurrentLevel());
 	}
 
-	// why do we need this?
 	@Override
 	public void setCurrentElements(Collection<Sprite> newElements) {
 		elementsPerLevel.set(getCurrentLevel(), newElements);
