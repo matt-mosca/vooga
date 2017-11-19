@@ -4,7 +4,6 @@ import java.util.Map;
 import engine.GameController;
 import sprites.Sprite;
 import sprites.SpriteFactory;
-import util.SerializationUtils;
 
 /**
  * Top-level authoring controller, gateway of front end GameAuthoringEnv to back
@@ -65,41 +64,19 @@ public class AuthoringController extends GameController {
 		return getStateManager().addElement(name, level);
 	}
 
-	/*
-	 *
-	 * If we return the sprites to them, why can't they make a call to do this themselves?
-	 *
+	/**
 	 * @param spriteId
 	 * 			  unique identifier for the sprite to modify
-	 * @param level
-	 *            level of the game this element is being added for
 	 * @param customProperties
-	 *            map of properties to override for this specific instance
-	 * @throws IllegalArgumentException
-	 *             if level does not exist
-	 *
-	public void updateElement(int spriteId, int level, Map<String, Object> customProperties)
-			throws IllegalArgumentException {
-		getStateManager().updateElement(spriteId, level, customProperties);
-	}*/
-
-	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @param customProperties
-	 *            map of properties to override for this specific instance
+	 *            map of properties to override for this element
 	 * @throws IllegalArgumentException
 	 *             if level does not exist
 	 */
-	public Sprite updateInventoryElement(String name, int level, Map<String, String> customProperties)
+	public void updateElement(int spriteId, Map<String, Object> customProperties)
 			throws IllegalArgumentException {
-		// TODO
-		return null;
+		getStateManager().updateElement(spriteId, customProperties);
 	}
-
+	
 	/**
 	 * Set a top-level game property (e.g. lives, starting resources, etc)
 	 * 

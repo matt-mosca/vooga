@@ -13,7 +13,8 @@ import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 
 /**
- * Represents displayed game objects in the backend. Responsible for controlling the object's update behavior.
+ * Represents displayed game objects in the backend. Responsible for controlling
+ * the object's update behavior.
  *
  * @author Ben Schwennesen
  */
@@ -29,8 +30,8 @@ public class Sprite {
 		setProperties(properties);
 	}
 
-	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy,
-				  CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable) {
+	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
+			CollisionVisitable collisionVisitable) {
 		this.firingStrategy = firingStrategy;
 		this.movementStrategy = movementStrategy;
 		this.collisionVisitor = collisionVisitor;
@@ -64,6 +65,20 @@ public class Sprite {
 		return movementStrategy.getY();
 	}
 
+	public void setX(double newXCoord) {
+		movementStrategy.setX(newXCoord);
+	}
+
+	public void setY(double newYCoord) {
+		movementStrategy.setY(newYCoord);
+	}
+
+	/**
+	 * Handle the effects ON THIS SPRITE only of collision with another Sprite
+	 * 
+	 * @param other
+	 *            the other Sprite which this Sprite collided with
+	 */
 	public void processCollision(Sprite other) {
 		other.collisionVisitable.accept(collisionVisitor);
 	}
