@@ -69,16 +69,14 @@ public class ElementManager {
 			element.move();
 			element.attack();
 			Iterator<Sprite> otherActiveSprites = gameElements.iterator();
-			while(element.isAlive() && otherActiveSprites.hasNext()) {
+			while(otherActiveSprites.hasNext()) {
 				Sprite otherElement = otherActiveSprites.next();
 				if (!otherElement.equals(element) && collidesWith(element, otherElement)) {
 					element.processCollision(otherElement);
 				}
 			}
-			if (!element.isAlive()) {
-				activeSprites.remove();
-			}
 		}
+		gameElements.removeIf(gameElement -> !gameElement.isAlive());
 	}
 
 	// TEMP - SIMPLIFIED CHECKING OF COLLISIONS, JUST BY GRID POSITION
