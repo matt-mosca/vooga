@@ -14,7 +14,7 @@ public class RandomMovementStrategy extends MovementStrategy {
 	private Point2D.Double chosenDirection;
 
 	public RandomMovementStrategy(double startX, double startY, RandomMovementAssigner randomMovementAssigner) {
-		super(startX, startY);
+		super();
 		chosenDirection = randomMovementAssigner.assignMovementDirection();
 	}
 

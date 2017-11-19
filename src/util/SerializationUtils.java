@@ -204,7 +204,7 @@ public class SerializationUtils {
                 //
             }
         });
-        towerMap.put("movementStrategy", new MovementStrategy(50.0, 100.0) {
+        towerMap.put("movementStrategy", new MovementStrategy() {
             @Override
             public void move() {
 

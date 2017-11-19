@@ -7,15 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.xml.internal.messaging.saaj.soap.impl.ElementFactory;
 import io.GamePersistence;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 import util.SerializationUtils;
 
 /**
- * Gateway of authoring and play modules to I/O through engine Represents shared
- * logic for
+ * Gateway of authoring and play modules to I/O through engine. Encapsulates shared
+ * logic for authoring and play use-cases
  * 
  * @author radithya
  *

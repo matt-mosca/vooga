@@ -50,17 +50,18 @@ public class ElementManager {
 	}
 
 	/*
-
 	MovementStrategy object should be created with the coordinates
-
 	Method might still be necessary but should just do void and put in authoring game grid
-
+	*/
 	Sprite placeElement(String elementName, double x, double y) {
 		// Use SpriteFactory to construct Sprite from elementName with these
 		// coordinates
+		Sprite generatedSprite = spriteFactory.generateSprite(elementName);
+		generatedSprite.setX(x);
+		generatedSprite.setY(y);
 		// Add created Sprite to gameElements
-		return null; // TEMP
-	}*/
+		return generatedSprite;
+	}
 
 	void update() {
 		Iterator<Sprite> activeSprites = gameElements.iterator();
@@ -69,20 +70,14 @@ public class ElementManager {
 			element.move();
 			element.attack();
 			Iterator<Sprite> otherActiveSprites = gameElements.iterator();
-			while(element.isAlive() && otherActiveSprites.hasNext()) {
+			while(otherActiveSprites.hasNext()) {
 				Sprite otherElement = otherActiveSprites.next();
 				if (!otherElement.equals(element) && collidesWith(element, otherElement)) {
 					element.processCollision(otherElement);
-					otherElement.processCollision(element);
-					if (!otherElement.isAlive()) {
-						otherActiveSprites.remove();
-					}
 				}
 			}
-			if (!element.isAlive()) {
-				activeSprites.remove();
-			}
 		}
+		gameElements.removeIf(gameElement -> !gameElement.isAlive());
 	}
 
 	// TEMP - SIMPLIFIED CHECKING OF COLLISIONS, JUST BY GRID POSITION
