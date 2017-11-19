@@ -73,10 +73,6 @@ public class ElementManager {
 				Sprite otherElement = otherActiveSprites.next();
 				if (!otherElement.equals(element) && collidesWith(element, otherElement)) {
 					element.processCollision(otherElement);
-					otherElement.processCollision(element);
-					if (!otherElement.isAlive()) {
-						otherActiveSprites.remove();
-					}
 				}
 			}
 			if (!element.isAlive()) {
