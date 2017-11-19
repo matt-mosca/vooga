@@ -65,7 +65,7 @@ public class Sprite {
 	}
 
 	public void processCollision(Sprite other) {
-		collisionVisitable.accept(other.collisionVisitor);
+		other.collisionVisitable.accept(collisionVisitor);
 	}
 
 	public boolean isAlive() {

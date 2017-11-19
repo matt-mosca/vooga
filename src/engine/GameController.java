@@ -4,11 +4,15 @@ import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Map;
 
-import com.sun.xml.internal.messaging.saaj.soap.impl.ElementFactory;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 import util.SerializationUtils;
 
+/**
+ * Encapsulates shared logic for authoring and play controllers
+ * @author radithya
+ *
+ */
 public abstract class GameController {
 
 	private SerializationUtils serializationUtils;
