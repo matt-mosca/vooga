@@ -16,6 +16,9 @@ public class NewTroopTab extends NewSpriteTab {
 	@Override
 	protected void addDefaultImages() {
 		// TODO Auto-generated method stub
-		
+		addImage(troopResources.getString("Red_Balloon"));
+		addImage(troopResources.getString("Green_Tank"));
+		addImage(troopResources.getString("Black_Square"));
+		addImage(troopResources.getString("Black_Square2"));
 	}
 }

@@ -14,6 +14,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class NewSpriteTab {
+	
+	public static final double DISPLAY_SIZE = 60;
+	
 	private ScrollPane spriteArea;
 	private List<ImageView> newSpriteImages;
 //	private TableView<ImageView> table;
@@ -45,6 +48,12 @@ public abstract class NewSpriteTab {
 	protected void addImage(String imageName) {
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
 		ImageView spriteImage = new ImageView(image);
+		double spriteWidth = spriteImage.getBoundsInLocal().getWidth();
+		double spriteHeight = spriteImage.getBoundsInLocal().getHeight();
+		double maxDimension = Math.max(spriteWidth, spriteHeight);
+		double scaleValue = maxDimension / DISPLAY_SIZE;
+		spriteImage.setFitWidth(spriteWidth / scaleValue);
+		spriteImage.setFitHeight(spriteHeight / scaleValue);
 		newSpriteImages.add(spriteImage);
 	}
 	
@@ -54,8 +63,5 @@ public abstract class NewSpriteTab {
 		spriteArea.setContent(list);
 	}
 	
-	/**
-	 * 
-	 */
 	protected abstract void addDefaultImages();
 }

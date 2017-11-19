@@ -15,7 +15,8 @@ public class NewProjectileTab extends NewSpriteTab {
 
 	@Override
 	protected void addDefaultImages() {
-		// TODO Auto-generated method stub
-		
+		addImage(projectileResources.getString("Gray_Circle"));
+		addImage(projectileResources.getString("Black_Square"));
+		addImage(projectileResources.getString("Black_Square2"));
 	}
 }
