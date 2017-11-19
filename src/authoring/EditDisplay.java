@@ -43,8 +43,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		myStaticObject = new StaticObject(2, this);
 //		rootAdd(myStaticObject);
 		gridToggle = new CheckBox();
-		gridToggle.setLayoutX(GRID_X_LOCATION);
-		gridToggle.setLayoutY(GRID_Y_LOCATION);
+		gridToggle.setLayoutX(605);
+		gridToggle.setLayoutY(30);
+		gridToggle.setSelected(true);
+		gridToggle.setText("Grid");
+		gridToggle.setTextFill(Color.BLACK);
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
 		});

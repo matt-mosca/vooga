@@ -1,58 +1,52 @@
 package authoring;
 
-import java.util.LinkedList;
 
 import javafx.geometry.Point2D;
-
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import sprites.StaticObject;
 
 public class GameArea extends Pane{
-	private static final Point2D LOCATION = new Point2D(260, 50);
-	private static final int Y_LOCATION = 50;
-	private static final int X_LOCATION = 260;
-	private final int GRID_WIDTH = 400;
-	private final int GRID_HEIGHT = 400;
+	private int width = 400;
+	private int height = 400;
+	private final int X_OFFSET = 260;
+	private final int Y_OFFSET = 50;
+	
 	private PlacementGrid grid;
-	private LinkedList<PathPoint> points;
-	private PathPoint activePoint;
+	private Path path;
+	private boolean gridEnabled;
 	
 	public GameArea(AuthorInterface author) {
-		grid = new PlacementGrid(author, GRID_WIDTH, GRID_HEIGHT, this);
-		points = new LinkedList<>();
-		activePoint = null;
+		path = new Path();
+		grid = new PlacementGrid(author, width, height, path);
+		this.getChildren().add(path);
 		this.getChildren().add(grid);
-		toggleGridVisibility(false);
+		grid.toBack();
+		
 		initializeLayout();
 		initializeHandlers();
 	}
 	
 	private void initializeLayout() {
-		this.setMinSize(GRID_WIDTH, GRID_HEIGHT);
+		this.setPrefSize(width, height);
 		this.setStyle("-fx-background-color: #3E3F4B;");
-		this.setLayoutX(LOCATION.getX());
-		this.setLayoutY(LOCATION.getY());
+		this.setLayoutX(X_OFFSET);
+		this.setLayoutY(Y_OFFSET);
 	}
 	
 	private void initializeHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addWaypoint(e, e.getX(), e.getY()));
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->gameAreaClicked(e));
 	}
 	
-	protected void addWaypoint(MouseEvent e, double x, double y) {
-		PathPoint point = new PathPoint(x, y);
-		if(activePoint != null) this.getChildren().add(activePoint.setConnectingLine(point));
-		activePoint = point;
-		points.add(point);
-		this.getChildren().add(point);
-		e.consume();
+	private void gameAreaClicked(MouseEvent e) {
+		path.addWaypoint(e, e.getX(), e.getY());
 	}
 	
 	
 	
 	protected void placeInGrid(StaticObject currObject, MouseEvent e) {
-		Point2D newLocation = grid.place(currObject, X_LOCATION, Y_LOCATION);
+		Point2D newLocation = grid.place(currObject, X_OFFSET, Y_OFFSET);
 		currObject.setX(newLocation.getX());
 		currObject.setY(newLocation.getY());
 		
@@ -60,9 +54,27 @@ public class GameArea extends Pane{
 	
 	protected void toggleGridVisibility(boolean visible) {
 		grid.setVisible(visible);
+		gridEnabled = visible;
+	}
+	
+	protected void resizeGameArea(int width, int height) {
+		this.width = width;
+		this.height= height;
+		grid.resizeGrid(width, height);
+		this.setPrefSize(width, height);
+	}
+	
+	protected void changeBackground(String hexcode) {
+		this.setStyle("-fx-background-color: " + hexcode + ";");
+	}
+	
+	protected void placeObject(Shape shape) {
+		if(gridEnabled) {
+			grid.snapToGrid(shape);
+		}
 	}
 
 	public void removeFromGrid(StaticObject currObject, MouseEvent e) {
-		grid.removeFromGrid(currObject, X_LOCATION, Y_LOCATION);
+		grid.removeFromGrid(currObject, X_OFFSET, Y_OFFSET);
 	}
 }

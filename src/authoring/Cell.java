@@ -21,40 +21,22 @@ public class Cell extends StackPane{
 	}
 
 	private void highlight() {
-		if(!active && activeNeighbors>0) {
-			this.setStyle("-fx-background-color:#51525D;");
-		}
+		this.setStyle("-fx-background-color:#51525D;");
 	}
 
 	private void removeHighlight() {
-		if(!active && activeNeighbors>0) {
-			this.setStyle("-fx-background-color:#3E3F4B;");
-		}
+		this.setStyle("-fx-background-color:transparent;");
 	}
 	
 	protected boolean pathActive() {
 		return active;
 	}
 	
-	protected boolean activeNeighbors() {
-		return (activeNeighbors>0) ? true : false;
-	}
-	
-	protected void addActive() {
-		activeNeighbors++;
-	}
-	
-	protected void removeActive() {
-		activeNeighbors--;
-	}
-	
 	protected void activate() {
-		this.setStyle("-fx-background-color:#FF0033;");
 		active = true;
 	}
 	
 	protected void deactivate() {
-		this.setStyle("-fx-background-color:#3E3F4B;");
 		active = false;
 	}
 	
@@ -67,10 +49,6 @@ public class Cell extends StackPane{
 	}
 
 	public void removeAssignment(StaticObject currObject) {
-		System.out.println(myAssignments.toString());
 		if (!isEmpty()) myAssignments.remove(currObject);
-		System.out.println(myAssignments.toString());
-
-		
 	}
 }

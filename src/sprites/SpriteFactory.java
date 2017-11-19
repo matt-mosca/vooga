@@ -19,54 +19,42 @@ public class SpriteFactory {
     private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
     private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-properties/";
     private final String PROPERTIES_EXTENSION = ".properties";
-    private final String CLASS_KEY = "class";
-
-    // this might change - still don't see why the sprite needs to know its template name
-    private final Class[] SPRITE_CONSTRUCTOR_ARGUMENT_CLASSES = { Map.class, String.class };
 
     private Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
-    private Map<Integer, List<Sprite>> levelSpritesCache = new HashMap<>();
+    private Map<Integer, Map<String, List<Sprite>>> levelSpritesCache = new HashMap<>();
 
     private int level = 1;
 
     /**
      * Generate a sprite from a new/updated template which specifies its properties.
      *
-     * @param spriteClassName - the subclass of Sprite to generate
-     *                        TODO - can this just be a Class object?
      * @param spriteTemplateName - the name of the sprite template
      * @param properties - a map of properties for sprites using this template
      * @return a sprite object with properties set to those specified in the template
-     * @throws ReflectiveOperationException - in the case that the spriteClassName is invalid
      */
-    public Sprite generateSprite(String spriteClassName, String spriteTemplateName, Map<String, Object> properties)
-            throws ReflectiveOperationException {
-        properties.put(CLASS_KEY, spriteClassName);
+    public Sprite generateSprite(String spriteTemplateName, Map<String, Object> properties) {
         spriteTemplates.put(spriteTemplateName, properties);
-        return generateSprite(spriteClassName, spriteTemplateName);
+        return generateSprite(spriteTemplateName);
     }
 
     /**
      * Generate a sprite from an existing template which specifies its properties.
      *
-     * @param spriteClassName - the subclass of Sprite to generate
      * @param spriteTemplateName - the name of the sprite template
      * @return a sprite object with properties set to those specified in the template
-     * @throws ReflectiveOperationException - in the case that the spriteClassName is invalid
      */
-    public Sprite generateSprite(String spriteClassName, String spriteTemplateName) throws
-            ReflectiveOperationException {
-        Class spriteClass = Class.forName(spriteClassName);
+    public Sprite generateSprite(String spriteTemplateName) {
         Map<String, Object> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
-        Sprite sprite = (Sprite) spriteClass.getConstructor(SPRITE_CONSTRUCTOR_ARGUMENT_CLASSES)
-                .newInstance(properties, spriteTemplateName);
-        cacheGeneratedSprite(sprite);
+        Sprite sprite = new Sprite(properties);
+        cacheGeneratedSprite(spriteTemplateName, sprite);
         return sprite;
     }
 
-    private void cacheGeneratedSprite(Sprite sprite) {
-        List<Sprite> levelSprites = levelSpritesCache.getOrDefault(level, new ArrayList<>());
-        levelSprites.add(sprite);
+    private void cacheGeneratedSprite(String spriteTemplateName, Sprite sprite) {
+        Map<String, List<Sprite>> levelSprites = levelSpritesCache.getOrDefault(level, new HashMap<>());
+        List<Sprite> sprites = levelSprites.getOrDefault(spriteTemplateName, new ArrayList<>());
+        sprites.add(sprite);
+        levelSprites.put(spriteTemplateName, sprites);
         levelSpritesCache.put(level, levelSprites);
     }
 
@@ -105,7 +93,7 @@ public class SpriteFactory {
         this.level = level;
     }
 
-    public Map<Integer, List<Sprite>> getLevelSprites() {
-        return levelSpritesCache;
+    public Map<String, List<Sprite>> getLevelSprites(int level) {
+        return levelSpritesCache.getOrDefault(level, new HashMap<>());
     }
 }

@@ -1,9 +1,5 @@
 package authoring;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -11,6 +7,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Rectangle;
 import sprites.StaticObject;
 import javafx.geometry.Point2D;
+import javafx.scene.shape.Shape;
 
 /**
  * 
@@ -22,26 +19,23 @@ public class PlacementGrid extends GridPane {
 	private final int GRID_COLUMN_PERCENTAGE = 5;
 	private final int CELL_SIZE = 20;
 	
-	private GameArea gameArea;
+	private Path path;
 	private Cell[][] cells;
 	private int width;
 	private int height;
-	private int pathNumber = 0;
 	
-	public PlacementGrid(AuthorInterface author, int width, int height, GameArea area) {
+	public PlacementGrid(AuthorInterface author, int width, int height, Path path) {
 		this.width = width;
 		this.height = height;
-		this.gameArea = area;
-		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
+		this.path = path;
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
 		
 		initializeLayout();
 		initializeCells();
-		initializeEventHandlers();
 	}
 
 	private void initializeLayout() {
-		this.setMinSize(width, height);
-		this.setStyle("-fx-background-color: #3E3F4B;");
+		this.setPrefSize(width, height);
 		
 		for(int i = 0; i<100; i+=GRID_ROW_PERCENTAGE) {
 			RowConstraints row = new RowConstraints();
@@ -57,6 +51,7 @@ public class PlacementGrid extends GridPane {
 	}
 	
 	private void initializeCells() {
+		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
 		for(int i = 0; i<(100/GRID_ROW_PERCENTAGE); i++) {
 			for(int j = 0; j<(100/GRID_COLUMN_PERCENTAGE);j++) {
 				Cell cell = new Cell();
@@ -71,39 +66,29 @@ public class PlacementGrid extends GridPane {
 	}
 
 	private void activatePath(MouseEvent e) {
+		e.consume();
 		int row = (int) e.getY()/(height/(100/GRID_ROW_PERCENTAGE));
 		int col = (int) e.getX()/(width/(100/GRID_COLUMN_PERCENTAGE));
 		Cell cell = cells[row][col];
 		
 		double x = col*(width/(100/GRID_COLUMN_PERCENTAGE)) + cell.getWidth()/2;
 		double y = row*(height/(100/GRID_ROW_PERCENTAGE)) + cell.getHeight()/2;
-		gameArea.addWaypoint(e,x,y);
 		
 		if(cell.pathActive()) {
 			cell.deactivate();
-			updateNeighbors(row, col, false);
-			pathNumber--;
 		}else {
-			if(pathNumber>0 && !cell.activeNeighbors()) return;
+			path.addWaypoint(e,x,y);
 			cell.activate();
-			updateNeighbors(row, col,true);
-			pathNumber++;
 		}
 	}
 	
-	private void updateNeighbors(int row, int col, boolean addActive) {
-		int[] rows = {row, row+1, row-1};
-		int[] cols = {col, col+1, col-1};
-		for(int r: rows) {
-			for(int c:cols) {
-				if(r>-1 && c>-1 && r<(cells.length) && c<(cells[0].length) && !(r==row && c==col)) {
-					if(addActive) {
-						cells[r][c].addActive();
-					}else{
-						cells[r][c].removeActive();
-					}
-				}
-			}
+	//Currently unused, might eventually change state when objects are placed in cells
+	protected void updateCells(double x, double y) {
+		Cell cell = calculateCell(x,y);
+		if(cell.pathActive()) {
+			return;
+		}else {
+			cell.activate();
 		}
 	}
 	
@@ -176,4 +161,20 @@ public class PlacementGrid extends GridPane {
 //	public List<Point2D> getPath() {
 //		return points;
 //	}
+	private Cell calculateCell(double x, double y) {
+		int row = (int) y/(height/(100/GRID_ROW_PERCENTAGE));
+		int col = (int) x/(width/(100/GRID_COLUMN_PERCENTAGE));
+		return cells[row][col];
+	}
+
+	protected void resizeGrid(int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.setPrefWidth(width);
+		this.setPrefHeight(height);
+	}
+	
+	protected void snapToGrid(Shape shape) {
+		
+	}
 }

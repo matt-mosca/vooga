@@ -4,7 +4,9 @@ import java.util.Map;
 
 /**
  * Generic stationary Tower that fires periodically at a specified frequency
+ * 
  * @author radithya
+ * @deprecated
  *
  */
 public class Tower extends PeriodicallyAttackingSprite {
@@ -13,6 +15,9 @@ public class Tower extends PeriodicallyAttackingSprite {
 		super(properties, templateName);
 	}
 
+	// TODO - Need this? Or remove for greater flexibility? Want a nice way of
+	// enforcing default stationary MovementStrategy
+	// for towers
 	/**
 	 * Towers don't move, by default
 	 */

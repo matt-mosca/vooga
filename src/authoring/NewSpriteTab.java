@@ -10,34 +10,58 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class NewSpriteTab {
-	private ScrollPane troopArea;
-	private List<ImageView> newTroopImages;
+public abstract class NewSpriteTab {
+	
+	public static final double DISPLAY_SIZE = 60;
+	
+	private ScrollPane spriteArea;
+	private List<ImageView> newSpriteImages;
 //	private TableView<ImageView> table;
-	private ObservableList<ImageView> troops;
+	private ObservableList<ImageView> spritesView;
 	private ListView<ImageView> list;
-	ResourceBundle spriteImages;
+	ResourceBundle images;
 	
 	public NewSpriteTab() {
-		newTroopImages = new ArrayList<ImageView>();
+		newSpriteImages = new ArrayList<ImageView>();
 //		table = new TableView<ImageView>();
 		list = new ListView<ImageView>();
-		troops = FXCollections.observableArrayList(newTroopImages);
-		troopArea = new ScrollPane();
-//		spriteImages = ResourceBundle.getBundle("");
-		list.setItems(troops);
+		spritesView = FXCollections.observableArrayList(newSpriteImages);
+		spriteArea = new ScrollPane();
+//		images = ResourceBundle.getBundle("");
+		list.setItems(spritesView);
 //		table.setItems(troops);
 //      table.getColumns().addAll(firstCol, lastCol)
-		troopArea.setContent(list);
+		spriteArea.setContent(list);
 	}
 	
 	public void attach(Tab newTroopTab) {
-		newTroopTab.setContent(troopArea);
+		newTroopTab.setContent(spriteArea);
 	}
 	
-	private void addDefaultImages() {
-		//AccessResourceFiles
+	protected List<ImageView> getImages() {
+		return newSpriteImages;
 	}
+	
+	protected void addImage(String imageName) {
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+		ImageView spriteImage = new ImageView(image);
+		double spriteWidth = spriteImage.getBoundsInLocal().getWidth();
+		double spriteHeight = spriteImage.getBoundsInLocal().getHeight();
+		double maxDimension = Math.max(spriteWidth, spriteHeight);
+		double scaleValue = maxDimension / DISPLAY_SIZE;
+		spriteImage.setFitWidth(spriteWidth / scaleValue);
+		spriteImage.setFitHeight(spriteHeight / scaleValue);
+		newSpriteImages.add(spriteImage);
+	}
+	
+	protected void updateImages() {
+		spritesView = FXCollections.observableArrayList(newSpriteImages);
+		list.setItems(spritesView);
+		spriteArea.setContent(list);
+	}
+	
+	protected abstract void addDefaultImages();
 }

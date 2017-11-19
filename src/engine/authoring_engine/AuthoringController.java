@@ -1,12 +1,9 @@
 package engine.authoring_engine;
 
-import java.util.Collection;
 import java.util.Map;
 import engine.GameController;
-import engine.IOController;
-import engine.StateManager;
 import sprites.Sprite;
-import util.SerializationUtils;
+import sprites.SpriteFactory;
 
 /**
  * Top-level authoring controller, gateway of front end GameAuthoringEnv to back
@@ -22,7 +19,7 @@ public class AuthoringController extends GameController {
 
 	public AuthoringController() {
 		super();
-		authoringStateManager = new AuthoringStateManager(getIOController());
+		authoringStateManager = new AuthoringStateManager(getIOController(), new SpriteFactory());
 	}
 
 	@Override
@@ -45,7 +42,10 @@ public class AuthoringController extends GameController {
 	 *            <url>, "hp" : <hp>, ...}
 	 */
 	public Sprite createElement(String name, Map<String, String> properties) {
-		return getStateManager().createElement(name, properties);
+		// return getStateManager().createElement(name, properties);
+		return null;
+		// TODO - this should return an integer id for the frontend to use to access it in the future
+		// (prevents exposing the Sprite objects to the frontend)
 	}
 
 	/**
@@ -58,48 +58,25 @@ public class AuthoringController extends GameController {
 	 *            level of the game this element is being added for
 	 * @throws IllegalArgumentException
 	 *             if level does not exist
+	 * @return a unique ID for the element
 	 */
 	public Sprite addElement(String name, int level) throws IllegalArgumentException {
 		return getStateManager().addElement(name, level);
 	}
 
 	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param x
-	 *            xCoordinate of previously created element
-	 * @param y
-	 *            yCoordinate of previously created element
-	 * @param level
-	 *            level of the game this element is being added for
+	 * @param spriteId
+	 * 			  unique identifier for the sprite to modify
 	 * @param customProperties
-	 *            map of properties to override for this specific instance
+	 *            map of properties to override for this element
 	 * @throws IllegalArgumentException
 	 *             if level does not exist
 	 */
-	public Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties)
+	public void updateElement(int spriteId, Map<String, Object> customProperties)
 			throws IllegalArgumentException {
-		return getStateManager().updateElement(name, x, y, level, customProperties);
+		getStateManager().updateElement(spriteId, customProperties);
 	}
-
-	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @param customProperties
-	 *            map of properties to override for this specific instance
-	 * @throws IllegalArgumentException
-	 *             if level does not exist
-	 */
-	public Sprite updateInventoryElement(String name, int level, Map<String, String> customProperties)
-			throws IllegalArgumentException {
-		// TODO
-		return null;
-	}
-
+	
 	/**
 	 * Set a top-level game property (e.g. lives, starting resources, etc)
 	 * 

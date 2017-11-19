@@ -3,6 +3,7 @@ package engine.play_engine;
 import java.util.Map;
 
 import engine.GameController;
+import sprites.SpriteFactory;
 
 
 // TODO - Add a behavior module with FiringStrategy, MovementStrategy, etc.
@@ -19,11 +20,11 @@ public class PlayController extends GameController {
 
 	// TODO - Initialize an ElementFactory instance when its ready
 	private PlayStateManager stateManager;
-	// private ElementFactory elementFactory;
+	private SpriteFactory spriteFactory;
 	
 	public PlayController() {
 		super();
-		stateManager = new PlayStateManager(getIOController());//, elementFactory);
+		stateManager = new PlayStateManager(getIOController(), spriteFactory);
 	}
 	
 	@Override

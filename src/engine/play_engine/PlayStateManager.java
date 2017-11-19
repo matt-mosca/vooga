@@ -1,13 +1,11 @@
 package engine.play_engine;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 import engine.IOController;
 import engine.StateManager;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 
 /**
  * Single-source of truth for game state when in-play
@@ -19,20 +17,22 @@ public class PlayStateManager extends StateManager {
 
 	private ElementManager elementManager;
 
-	public PlayStateManager(IOController playIOController) {//, ElementFactory elementFactory) {
-		super(playIOController);//, elementFactory);
+	public PlayStateManager(IOController playIOController, SpriteFactory spriteFactory) {
+		super(playIOController, spriteFactory);
 		this.elementManager = new ElementManager();
 	}
 
 	@Override
 	public void saveGameState(String savedGameName) {
 		getIOController().saveGameState(savedGameName, getDescription(), getCurrentLevel(), getStatus(),
-				elementManager.getCurrentElements(), PlayConstants.IS_AUTHORING);
+				PlayConstants.IS_AUTHORING);
 	}
 
 	@Override
 	public Sprite placeElement(String elementName, double x, double y) {
 		return elementManager.placeElement(elementName, x, y);
+		// TODO - this should return an integer id for the frontend to use to access it in the future
+		// (prevents exposing the Sprite objects to the frontend)
 	}
 
 	@Override
@@ -46,7 +46,10 @@ public class PlayStateManager extends StateManager {
 	}
 	
 	void update() {
-		// TODO
+		// Move elements, check and handle collisions
+		elementManager.update();
+		// TODO - Check top-level victory / defeat / level completion conditions
+		
 	}
 
 	boolean isInPlay() {
