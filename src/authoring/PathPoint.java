@@ -2,31 +2,47 @@ package authoring;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 
 public class PathPoint extends Circle{
+	private final static String RADIUS = "Path_Point_Radius";
+	private final static String INACTIVE = "Path_Point_Color";
+	private final static String ACTIVE = "Path_Active_Color";
+	
 	private Map<PathPoint,PathLine> linesToPrev;
 	private Map<PathPoint,PathLine> linesToNext;
+	private ResourceBundle gameResources;
 	private boolean active = false;
 	private boolean wasDragged = false;
+	private Color activeColor;
+	private Color inactiveColor;
+	private int radius;
 	
 	protected PathPoint(double x, double y) {
-		this.setCenterX(x);
-		this.setCenterY(y);
-		this.setRadius(5);
-		this.setFill(Color.RED);
 		linesToPrev = new HashMap<>();
 		linesToNext = new HashMap<>();
-		
+		initializeProperties();
 		initializeHandlers();
+		
+		this.setCenterX(x);
+		this.setCenterY(y);
+		this.setRadius(radius);
+		this.setFill(activeColor);
 	}
 	
 	private void initializeHandlers() {
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->dragPoint(e));
+	}
+	
+	private void initializeProperties() {
+		gameResources = ResourceBundle.getBundle("authoring/resources/GameArea");
+		radius = Integer.parseInt(gameResources.getString(RADIUS));
+		activeColor = Color.web(gameResources.getString(ACTIVE));
+		inactiveColor = Color.web(gameResources.getString(INACTIVE));
 	}
 
 	protected PathLine setConnectingLine(PathPoint next) {
@@ -57,9 +73,9 @@ public class PathPoint extends Circle{
 	
 	protected void toggleActive() {
 		if(!active) {
-			this.setFill(Color.AQUAMARINE);
+			this.setFill(activeColor);
 		}else {
-			this.setFill(Color.RED);
+			this.setFill(inactiveColor);
 		}
 		active = !active;
 	}
