@@ -3,7 +3,6 @@ package authoring;
 import java.util.HashSet;
 import java.util.Set;
 
-import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -39,11 +38,12 @@ public class Path extends Group{
 	
 	private void handlePointClick(MouseEvent e, PathPoint point) {
 		e.consume();
+		System.out.println(e.getClickCount());
 		if(point.wasMoved()) {
 			point.lockPosition();
-		}else if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+		}else if(e.getButton() == MouseButton.PRIMARY && e.isControlDown()) {
 			connectPath(e, point);
-		}else if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
+		}else if(e.getButton() == MouseButton.PRIMARY) {
 			setActiveWaypoint(e, point);
 		}else if(e.getButton() == MouseButton.SECONDARY) {
 			removeWaypoint(e, point);
@@ -76,24 +76,23 @@ public class Path extends Group{
 	}
 	
 	private void removeWaypointLines(PathPoint point) {
-		for(Line line:point.getNextLines().values()) {
+		for(PathPoint prev:point.getPrevLines().keySet()) {
+			PathLine line = prev.getNextLines().remove(point);
 			this.getChildren().remove(line);
-		}
-
-		for(PathPoint prev:point.getPrevious()) {
-			this.getChildren().remove(prev.getNextLines().get(point));
-			prev.getNext().remove(point);
-			prev.getNextLines().remove(point);
+			this.getChildren().remove(line.getDirectionComponent());
 		}
 		
-		for(PathPoint next:point.getNext()) {
-			next.getPrevious().remove(point);
+		for(PathPoint next:point.getNextLines().keySet()) {
+			PathLine line = next.getPrevLines().remove(point);
+			this.getChildren().remove(line);
+			this.getChildren().remove(line.getDirectionComponent());
 		}
+
 	}
 	
 	private void modifyLineOrder(PathPoint point) {
-		for(PathPoint prevPoint:point.getPrevious()) {
-			for(PathPoint nextPoint:point.getNext()) {
+		for(PathPoint prevPoint:point.getPrevLines().keySet()) {
+			for(PathPoint nextPoint:point.getNextLines().keySet()) {
 				drawLineBetween(prevPoint, nextPoint);
 			}
 		}
@@ -101,7 +100,9 @@ public class Path extends Group{
 	
 	private void handleLineClick(MouseEvent e, PathLine line) {
 		e.consume();
-		if(e.getButton() == MouseButton.PRIMARY) {
+		if(e.getButton() == MouseButton.PRIMARY && e.isControlDown()) {
+			line.changeDirection();
+		}else if(e.getButton() == MouseButton.PRIMARY) {
 			setActiveLine(line);
 		}else if(e.getButton() == MouseButton.SECONDARY) {
 			removeLine(line);
@@ -115,12 +116,14 @@ public class Path extends Group{
 	private void removeLine(PathLine line) {
 		if(!line.isActive()) return;
 		line.removeLineFromPoints();
+		this.getChildren().remove(line.getDirectionComponent());
 		this.getChildren().remove(line);
 	}
 
 	private void drawLineBetween(PathPoint start, PathPoint end) {
 		PathLine line = start.setConnectingLine(end);
 		this.getChildren().add(line);
+		this.getChildren().add(line.getDirectionComponent());
 		line.toBack();
 		line.addEventHandler(MouseEvent.MOUSE_CLICKED, e->handleLineClick(e, line));
 	}

@@ -75,18 +75,18 @@ public class AuthoringStateManager extends StateManager {
 		return null; // TEMP
 	}
 
-	// TODO
 	Sprite addElement(String templateName, int level) throws IllegalArgumentException {
 		assertValidLevel(level);
 		return getSpriteFactory().generateSprite(templateName);
 	}
 
-	/* If we return the sprite to the frontend, they will be able to do this themselves?
+	// If we return the sprite to the frontend, they will be able to do this themselves?
 
-	void updateElement(int spriteId, int level, Map<String, Object> customProperties)
+	// TODO
+	void updateElement(int spriteId, Map<String, Object> customProperties)
 			throws IllegalArgumentException {
-		assertValidLevel(level);
-	}*/
+		// @Ben or @Adi to fill this in
+	}
 
 	void setGameParam(String property, String value) {
 		getStatus().put(property, value);

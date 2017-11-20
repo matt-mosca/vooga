@@ -1,12 +1,21 @@
 package authoring;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import sprites.StaticObject;
 
 public class Cell extends StackPane{
 	private boolean active = false;
+	private int activeNeighbors = 0;
+	private List<StaticObject> myAssignments;
 	
 	public Cell() {
+		myAssignments = new ArrayList<StaticObject>();
 		this.addEventHandler(MouseEvent.MOUSE_ENTERED, e->highlight());
 		this.addEventHandler(MouseEvent.MOUSE_EXITED, e->removeHighlight());
 	}
@@ -16,7 +25,7 @@ public class Cell extends StackPane{
 	}
 
 	private void removeHighlight() {
-		this.setStyle("-fx-background-color:#3E3F4B;");
+		this.setStyle("-fx-background-color:transparent;");
 	}
 	
 	protected boolean pathActive() {
@@ -29,5 +38,17 @@ public class Cell extends StackPane{
 	
 	protected void deactivate() {
 		active = false;
+	}
+	
+	protected void assignToCell(StaticObject currObject) {
+		myAssignments.add(currObject);
+	}
+	
+	protected boolean isEmpty() {
+		return myAssignments.isEmpty();
+	}
+
+	public void removeAssignment(StaticObject currObject) {
+		if (!isEmpty()) myAssignments.remove(currObject);
 	}
 }

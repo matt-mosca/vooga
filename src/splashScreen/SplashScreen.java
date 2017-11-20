@@ -51,6 +51,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		VoogaTitle = new Text(10, 20, TITLE);
 		VoogaTitle.setFont(Font.font(TITLEFONT, FontPosture.ITALIC, 30));
 		VoogaTitle.setFill(Color.DARKBLUE);
+//		VoogaTitle.setFill(Color.GOLD);
+//		VoogaTitle.setFill(Color.SILVER);
 		titleBox = new HBox();
 		titleBox.setAlignment(Pos.CENTER);
 		titleBox.getChildren().add(VoogaTitle);
