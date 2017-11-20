@@ -11,15 +11,18 @@ import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
+import javafx.geometry.Bounds;
+import javafx.scene.image.ImageView;
 
 /**
  * Represents displayed game objects in the backend. Responsible for controlling
  * the object's update behavior.
  *
- * TODO - we need to change the way properties are set, unless we want the frontend to generate the strategies objects
- * 			making this happen will require defining a set of properties we're okay with each sprite having
- * 			e.g. fire rate, image path/url, destructible flag, etc.
- *       the creation of the strategy objects will then be handled in the factory
+ * TODO - we need to change the way properties are set, unless we want the
+ * frontend to generate the strategies objects making this happen will require
+ * defining a set of properties we're okay with each sprite having e.g. fire
+ * rate, image path/url, destructible flag, etc. the creation of the strategy
+ * objects will then be handled in the factory
  *
  * @author Ben Schwennesen
  */
@@ -30,6 +33,9 @@ public class Sprite {
 	private MovementStrategy movementStrategy;
 	private CollisionVisitor collisionVisitor;
 	private CollisionVisitable collisionVisitable;
+	// Might need custom code in setProperties for handling loading of image and
+	// subsequent construction of ImageView?
+	private ImageView spriteImageView;
 
 	public Sprite(Map<String, ?> properties) {
 		setProperties(properties);
@@ -96,10 +102,15 @@ public class Sprite {
 
 	private List<Field> getFieldsForAllMembers() {
 		List<Field> fields = new ArrayList<>(Arrays.asList(this.getClass().getDeclaredFields()));
-		/*fields.addAll(Arrays.asList(firingStrategy.getClass().getDeclaredFields()));
-		fields.addAll(Arrays.asList(movementStrategy.getClass().getDeclaredFields()));
-		fields.addAll(Arrays.asList(collisionVisitor.getClass().getDeclaredFields()));
-		fields.addAll(Arrays.asList(collisionVisitable.getClass().getDeclaredFields()));*/
+		/*
+		 * fields.addAll(Arrays.asList(firingStrategy.getClass().getDeclaredFields()));
+		 * fields.addAll(Arrays.asList(movementStrategy.getClass().getDeclaredFields()))
+		 * ;
+		 * fields.addAll(Arrays.asList(collisionVisitor.getClass().getDeclaredFields()))
+		 * ;
+		 * fields.addAll(Arrays.asList(collisionVisitable.getClass().getDeclaredFields()
+		 * ));
+		 */
 		return fields;
 	}
 
@@ -123,6 +134,23 @@ public class Sprite {
 		return getFieldsForAllMembers().stream().map(Field::getName).collect(Collectors.toList());
 	}
 
+	/**
+	 * For front end to retrieve, rescale and display
+	 * 
+	 * @return
+	 */
+	public ImageView getRepresentation() {
+		return spriteImageView;
+	}
+
+	/**
+	 * Scaling-aware boundaries of sprite's representation 
+	 * 
+	 * @return
+	 */
+	public Bounds getBounds() {
+		return spriteImageView.getBoundsInParent();
+	}
 
 	public double getX() {
 		return movementStrategy.getX();
@@ -139,4 +167,5 @@ public class Sprite {
 	public void setY(double newYCoord) {
 		movementStrategy.setY(newYCoord);
 	}
+
 }
