@@ -60,6 +60,15 @@ public class PlayControllerTemp extends AbstractGameController implements IPlayC
 
 
     @Override
+    public Collection<Sprite> getLevelSprites(int level) throws IllegalArgumentException {
+        if (!getLevelSpritesMap().containsKey(level)) {
+            throw new IllegalArgumentException();
+        }
+        return getLevelSpritesMap().get(level);
+    }
+
+
+    @Override
     public Map<String, String> getStatus() {
         return getLevelStatuses().get(getCurrentLevel());
     }

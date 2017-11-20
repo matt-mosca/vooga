@@ -1,5 +1,6 @@
 package engine;
 
+import engine.authoring_engine.AuthoringController;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 import util.SerializationUtils;
@@ -45,7 +46,7 @@ public abstract class AbstractGameController {
 
     private boolean isAuthoring() {
         // TODO - remove the forAuthoring param from ioController method so we don't have to do this
-        return this.getClass().equals(AuthoringControllerTemp.class);
+        return this.getClass().equals(AuthoringController.class);
     }
 
     /**
@@ -101,10 +102,9 @@ public abstract class AbstractGameController {
         levelSpritesCache.put(currentLevel, levelSprites);
     }
 
-    public Collection<Sprite> getLevelSprites(int level) {
-        return levelSpritesCache.get(level);
+    public Map<Integer, List<Sprite>> getLevelSpritesMap() {
+        return levelSpritesCache;
     }
-
 
     public String getGameName() {
         return gameName;

@@ -1,127 +1,94 @@
 package engine.authoring_engine;
 
-import java.util.Map;
-import engine.GameController;
+import engine.AbstractGameController;
+import engine.AuthorController;
+import packaging.Packager;
 import sprites.Sprite;
-import sprites.SpriteFactory;
-import util.SerializationUtils;
+
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Top-level authoring controller, gateway of front end GameAuthoringEnv to back
- * end logic and IO
- * 
- * @author radithya
+ * Controls the model for a game being authored. Allows the view to modify and retrieve information about the model.
  *
+ * @author Ben Schwennesen
  */
+public class AuthoringController extends AbstractGameController implements AuthorController {
 
-public class AuthoringController extends GameController {
+    private Packager packager;
 
-	private AuthoringStateManager authoringStateManager;
+    private AtomicInteger spriteIdCounter;
 
-	public AuthoringController() {
-		super();
-		authoringStateManager = new AuthoringStateManager(getIOController(), new SpriteFactory());
-	}
+    private Map<Integer, Sprite> spriteIdMap;
 
-	@Override
-	protected AuthoringStateManager getStateManager() {
-		return authoringStateManager;
-	}
+    public AuthoringController() {
+        super();
+        packager = new Packager();
+        spriteIdCounter = new AtomicInteger();
+        spriteIdMap = new HashMap<>();
+    }
 
-	@Override
-	public boolean isAuthoring() {
-		return AuthoringConstants.IS_AUTHORING;
-	}
+    @Override
+    public void exportGame() {
+        getSpriteFactory().exportSpriteTemplates();
+        packager.generateJar(getGameName());
+    }
 
-	/**
-	 * Define a new element type
-	 * 
-	 * @param name
-	 *            the name of new element to be created
-	 * @param properties
-	 *            map of properties for the new element, of the form {"image_url":
-	 *            <url>, "hp" : <hp>, ...}
-	 */
-	public Sprite createElement(String name, Map<String, String> properties) {
-		// return getStateManager().createElement(name, properties);
-		return null;
-	}
+    @Override
+    public int createElement(String elementName, Map<String, String> properties) {
+        Sprite sprite = getSpriteFactory().generateSprite(elementName, properties);
+        spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
+        return spriteIdCounter.get();
+    }
 
-	/**
-	 * Add a previously defined element type to the game (level's) inventory BUT NOT
-	 * on map
-	 * 
-	 * @param name
-	 *            the identifier for this previously created type
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @throws IllegalArgumentException
-	 *             if level does not exist
-	 * @return a unique ID for the element
-	 */
-	public Sprite addElement(String name, int level) throws IllegalArgumentException {
-		return getStateManager().addElement(name, level);
-	}
+    // TODO - overloaded method for previously created element type
 
-	/*
-	 *
-	 * If we return the sprites to them, why can't they make a call to do this themselves?
-	 *
-	 * @param spriteId
-	 * 			  unique identifier for the sprite to modify
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @param customProperties
-	 *            map of properties to override for this specific instance
-	 * @throws IllegalArgumentException
-	 *             if level does not exist
-	 *
-	public void updateElement(int spriteId, int level, Map<String, Object> customProperties)
-			throws IllegalArgumentException {
-		getStateManager().updateElement(spriteId, level, customProperties);
-	}*/
+    @Override
+    public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
+        Sprite sprite = getElement(elementId);
+        // TODO - implement
+        return null;
+    }
 
-	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @param customProperties
-	 *            map of properties to override for this specific instance
-	 * @throws IllegalArgumentException
-	 *             if level does not exist
-	 */
-	public Sprite updateInventoryElement(String name, int level, Map<String, String> customProperties)
-			throws IllegalArgumentException {
-		// TODO
-		return null;
-	}
+    @Override
+    public void setElementProperty(int elementId, String propertyName, String propertyValue)
+           throws IllegalArgumentException {
+        Sprite sprite = getElement(elementId);
+        // TODO - implement
+    }
 
-	/**
-	 * Set a top-level game property (e.g. lives, starting resources, etc)
-	 * 
-	 * @param property
-	 *            name
-	 * @param value
-	 *            string representation of the value
-	 */
-	public void setGameParam(String property, String value) {
-		getStateManager().setGameParam(property, value);
-	}
+    private Sprite getElement(int elementId) {
+        if (!spriteIdMap.containsKey(elementId)) {
+            throw new IllegalArgumentException();
+        }
+        return spriteIdMap.get(elementId);
+    }
 
-	// TODO - to support multiple clients / interactive editing, need a client-id
-	// param (string or int)
-	/**
-	 * Delete the previously created level
-	 * 
-	 * @param level
-	 *            the level to delete
-	 * @throws IllegalArgumentException
-	 *             if level does not exist
-	 */
-	public void deleteLevel(int level) throws IllegalArgumentException {
-		getStateManager().deleteLevel(level);
-	}
+    @Override
+    public void createNewLevel(int level) {
+        setLevel(level);
+        if (!getLevelStatuses().containsKey(level)) {
+            getLevelStatuses().put(level, new HashMap<>());
+        }
+    }
 
+    @Override
+    public void loadGameState(String saveName, int level) throws FileNotFoundException {
+        loadGameStateElements(saveName, level);
+        loadGameState(saveName, level);
+    }
+
+    @Override
+    public void setStatusProperty(String property, String value) {
+        getLevelStatuses().getOrDefault(getCurrentLevel(), new HashMap<>()).put(property, value);
+    }
+
+    // TODO - to support multiple clients / interactive editing, need a client-id param (string or int)
+    @Override
+    public void deleteLevel(int level) throws IllegalArgumentException {
+        getLevelStatuses().remove(level);
+        getLevelSpritesMap().remove(level);
+    }
 }

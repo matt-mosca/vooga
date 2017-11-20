@@ -41,7 +41,7 @@ public class AuthoringStateManager extends StateManager {
 				AuthoringConstants.IS_AUTHORING);
 	}
 
-	Sprite createElement(String templateName, Map<String, Object> properties) {
+	Sprite createElement(String templateName, Map<String, String> properties) {
 		return getSpriteFactory().generateSprite(templateName, properties);
 	}
 

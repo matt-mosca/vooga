@@ -20,7 +20,7 @@ public class SpriteFactory {
     private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-properties/";
     private final String PROPERTIES_EXTENSION = ".properties";
 
-    private Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
+    private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
 
     private int level = 1;
 
@@ -31,7 +31,7 @@ public class SpriteFactory {
      * @param properties - a map of properties for sprites using this template
      * @return a sprite object with properties set to those specified in the template
      */
-    public Sprite generateSprite(String spriteTemplateName, Map<String, Object> properties) {
+    public Sprite generateSprite(String spriteTemplateName, Map<String, String> properties) {
         spriteTemplates.put(spriteTemplateName, properties);
         return generateSprite(spriteTemplateName);
     }
@@ -43,7 +43,7 @@ public class SpriteFactory {
      * @return a sprite object with properties set to those specified in the template
      */
     public Sprite generateSprite(String spriteTemplateName) {
-        Map<String, Object> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
+        Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
         Sprite sprite = new Sprite(properties);
         return sprite;
     }
@@ -54,8 +54,8 @@ public class SpriteFactory {
     public void exportSpriteTemplates() {
         for (String templateName : spriteTemplates.keySet()) {
             Properties templateProperties = new Properties();
-            Map<String, Object> templatePropertiesMap = spriteTemplates.get(templateName);
-            templatePropertiesMap.forEach((key, value) -> templateProperties.setProperty(key, value.toString()));
+            Map<String, String> templatePropertiesMap = spriteTemplates.get(templateName);
+            templatePropertiesMap.forEach(templateProperties::setProperty);
             File exportFile = new File(TEMPLATE_FILE_OUTPUT_PATH + templateName + PROPERTIES_EXTENSION);
             writeTemplateToFile(templateProperties, exportFile);
         }
