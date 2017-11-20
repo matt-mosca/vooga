@@ -12,40 +12,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controls the model for a game being authored. Allows the view to modify and retrieve information about the model.
+ *
+ * @author Ben Schwennesen
+ */
 public class AuthoringControllerTemp extends AbstractGameController implements AuthorController {
 
     private Packager packager;
 
-    // this should be from a properties file? or handled in some better way?
-    private final String DEFAULT_GAME_NAME = "untitled";
-    private String gameName;
-    private String gameDescription;
-
     public AuthoringControllerTemp() {
         super();
         packager = new Packager();
-        gameName = DEFAULT_GAME_NAME;
-        gameDescription = "";
     }
 
     @Override
     public void exportGame() {
-        packager.generateJar(gameName);
+        getSpriteFactory().exportSpriteTemplates();
+        packager.generateJar(getGameName());
     }
 
     @Override
-    public Sprite createElement(String elementName, String serializedProperties) {
-        return null;
-    }
-
-    @Override
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
-    }
-
-    @Override
-    public void setGameDescription(String gameDescription) {
-        this.gameDescription = gameDescription;
+    public Sprite createElement(String elementName, Map<String, Object> properties) {
+        return getSpriteFactory().generateSprite(elementName, properties);
     }
 
     @Override
@@ -57,19 +46,8 @@ public class AuthoringControllerTemp extends AbstractGameController implements A
     }
 
     @Override
-    public void saveGameState(String saveName) {
-        // Serialize separately for every level
-        Map<Integer, String> serializedLevelsData = new HashMap<>();
-        for (int level = 0; level < getLevelStatuses().size(); level++) {
-            serializedLevelsData.put(level, getIoController().getLevelSerialization(level, gameDescription,
-                    getLevelStatuses().getOrDefault(level, new HashMap<>())));
-        }
-        // Serialize map of level to per-level serialized data
-        getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, true);
-    }
-
-    @Override
     public void loadGameState(String saveName, int level) throws FileNotFoundException {
-        getLevelStatuses().put(level, getIoController().loadGameStateSettings(saveName, level, true));
+        loadGameStateElements(saveName, level);
+        loadGameState(saveName, level);
     }
 }

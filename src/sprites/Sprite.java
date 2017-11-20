@@ -15,6 +15,11 @@ import engine.behavior.movement.MovementStrategy;
 /**
  * Represents displayed game objects in the backend. Responsible for controlling the object's update behavior.
  *
+ * TODO - we need to change the way properties are set, unless we want the frontend to generate the strategies objects
+ * 			making this happen will require defining a set of properties we're okay with each sprite having
+ * 			e.g. fire rate, image path/url, destructible flag, etc.
+ *       the creation of the strategy objects will then be handled in the factory
+ *
  * @author Ben Schwennesen
  */
 public class Sprite {
@@ -56,13 +61,6 @@ public class Sprite {
 		firingStrategy.fire();
 	}
 
-	public double getX() {
-		return movementStrategy.getX();
-	}
-
-	public double getY() {
-		return movementStrategy.getY();
-	}
 
 	public void processCollision(Sprite other) {
 		collisionVisitable.accept(other.collisionVisitor);
@@ -79,7 +77,7 @@ public class Sprite {
 	 *            - maps instance variables of this sprite to properties, as strings
 	 */
 	public void setProperties(Map<String, ?> properties) {
-		List<Field> fields = getAllFieldsInInheritanceHierarchy();
+		List<Field> fields = getFieldsForAllMembers();
 		for (Field field : fields) {
 			field.setAccessible(true);
 			if (properties.containsKey(field.getName())) {
@@ -90,13 +88,12 @@ public class Sprite {
 		}
 	}
 
-	private List<Field> getAllFieldsInInheritanceHierarchy() {
+	private List<Field> getFieldsForAllMembers() {
 		List<Field> fields = new ArrayList<>(Arrays.asList(this.getClass().getDeclaredFields()));
-		Class superClass = this.getClass().getSuperclass();
-		while (superClass != null && !superClass.equals(Object.class)) {
-			fields.addAll(Arrays.asList(superClass.getDeclaredFields()));
-			superClass = superClass.getSuperclass();
-		}
+		/*fields.addAll(Arrays.asList(firingStrategy.getClass().getDeclaredFields()));
+		fields.addAll(Arrays.asList(movementStrategy.getClass().getDeclaredFields()));
+		fields.addAll(Arrays.asList(collisionVisitor.getClass().getDeclaredFields()));
+		fields.addAll(Arrays.asList(collisionVisitable.getClass().getDeclaredFields()));*/
 		return fields;
 	}
 
@@ -117,6 +114,23 @@ public class Sprite {
 	 *         instance's inheritance hierarchy
 	 */
 	public List<String> getFieldNames() {
-		return getAllFieldsInInheritanceHierarchy().stream().map(Field::getName).collect(Collectors.toList());
+		return getFieldsForAllMembers().stream().map(Field::getName).collect(Collectors.toList());
+	}
+
+
+	public double getX() {
+		return movementStrategy.getX();
+	}
+
+	public double getY() {
+		return movementStrategy.getY();
+	}
+
+	public void setX(double x) {
+		movementStrategy.setX(x);
+	}
+
+	public void setY(double y) {
+		movementStrategy.setY(y);
 	}
 }

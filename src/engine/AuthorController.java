@@ -3,6 +3,7 @@ package engine;
 import sprites.Sprite;
 
 import java.io.FileNotFoundException;
+import java.util.Map;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and retrieve information about the model.
@@ -34,13 +35,13 @@ public interface AuthorController {
 
     /**
      * Generate a new type of element for the game being authored. The element will be created by the model based on
-     * its serialized properties.
+     * its properties, assuming defaults where necessary.
      *
-     * @param elementName          the template name assigned to this element, for future reuse of the properties
-     * @param serializedProperties a serialization of the element's properties, assuming default when necessary
+     * @param elementName the template name assigned to this element, for future reuse of the properties
+     * @param properties  a map containing the properties of the element to be created
      * @return a sprite abstraction representing the game element
      */
-    Sprite createElement(String elementName, String serializedProperties);
+    Sprite createElement(String elementName, Map<String, Object> properties);
 
     /**
      * Set the name of the game being authored.

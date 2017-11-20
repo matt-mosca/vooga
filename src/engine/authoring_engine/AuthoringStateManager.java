@@ -33,8 +33,8 @@ public class AuthoringStateManager extends StateManager {
 		// Serialize separately for every level
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (int level = 0; level < elementsPerLevel.size(); level++) {
-			serializedLevelsData.put(level, getIOController().getLevelSerialization(level, getDescription(),
-					getStatus()));
+			//serializedLevelsData.put(level, getIOController().getLevelSerialization(level, getDescription(),
+			//		getStatus()));
 		}
 		// Serialize map of level to per-level serialized data
 		getIOController().saveGameStateForMultipleLevels(savedGameName, serializedLevelsData,

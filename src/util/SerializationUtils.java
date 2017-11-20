@@ -1,6 +1,7 @@
 package util;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
 import engine.behavior.collision.DamageDealingCollisionVisitable;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.MortalCollider;
@@ -11,9 +12,14 @@ import engine.behavior.movement.RandomMovementStrategy;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SerializationUtils {
 
@@ -41,13 +47,13 @@ public class SerializationUtils {
      *                        data
      * @param status          top-level game status from Heads-Up-Display, i.e. all game state
      *                        other than the Sprites
-     * @param spriteFactory   the object for generating and caching sprites
+     * @param levelSprites    the cache of generated sprites for a level
      * @return serialization of map of level to serialized level data
      */
     public String serializeGameData(String gameDescription, int level, Map<String, String> status,
-                                    SpriteFactory spriteFactory) {
+                                    List<Sprite> levelSprites) {
         Map<String, String> serializedLevelData = new HashMap<>();
-        serializedLevelData.put(Integer.toString(level), serializeLevelData(gameDescription, status, spriteFactory,
+        serializedLevelData.put(Integer.toString(level), serializeLevelData(gameDescription, status, levelSprites,
                 level));
         return gsonBuilder.create().toJson(serializedLevelData);
     }
@@ -75,17 +81,17 @@ public class SerializationUtils {
      * @param gameDescription (level-specific) description of game
      * @param status          top-level game status from Heads-Up-Display, i.e. all game state
      *                        other than the Sprites
-     * @param spriteFactory   the object for generating and caching sprites
+     * @param levelSprites    the cache of generated sprites for a level
      * @return serialization of level data
      */
-    public String serializeLevelData(String gameDescription, Map<String, String> status, SpriteFactory spriteFactory,
-                                     int level) {
+    public String serializeLevelData(String gameDescription, Map<String, String> status,
+                                     List<Sprite> levelSprites, int level) {
         StringBuilder gameDataStringBuilder = new StringBuilder();
         gameDataStringBuilder.append(serializeGameDescription(gameDescription));
         gameDataStringBuilder.append(DELIMITER);
         gameDataStringBuilder.append(serializeStatus(status));
         gameDataStringBuilder.append(DELIMITER);
-        gameDataStringBuilder.append(serializeSprites(spriteFactory, level));
+        gameDataStringBuilder.append(serializeSprites(levelSprites, level));
         return gameDataStringBuilder.toString();
     }
 
@@ -127,7 +133,7 @@ public class SerializationUtils {
      * @return map of sprite name to list of sprites of that name / type
      * @throws IllegalArgumentException if serialization is ill-formatted
      */
-    public Map<String, List<Sprite>> deserializeGameSprites(String serializedGameData, int level)
+    public List<Sprite> deserializeGameSprites(String serializedGameData, int level)
             throws IllegalArgumentException {
         String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
         return deserializeSprites(serializedSections[SPRITES_SERIALIZATION_INDEX]);
@@ -149,10 +155,9 @@ public class SerializationUtils {
     }
 
     // Collect multiple sprites into a top-level map
-    private String serializeSprites(SpriteFactory spriteFactory, int level) {
-        Map<String, List<Sprite>> spritesMap = spriteFactory.getLevelSprites(level);
-        System.out.println(spritesMap);
-        return gsonBuilder.create().toJson(spritesMap);
+    private String serializeSprites(List<Sprite> levelSprites, int level) {
+        System.out.println(levelSprites);
+        return gsonBuilder.create().toJson(levelSprites);
     }
 
     private String deserializeDescription(String serializedDescription) {
@@ -166,8 +171,11 @@ public class SerializationUtils {
 
     // Return a map of sprite name to list of elements, which can be used by
     // ElementFactory to construct sprite objects
-    private Map<String, List<Sprite>> deserializeSprites(String serializedSprites) {
-        return gsonBuilder.create().fromJson(serializedSprites, Map.class);
+    private List<Sprite> deserializeSprites(String serializedSprites) {
+        // TODO - fix this, it will eventually cause:
+        // Exception in thread "main" java.lang.ClassCastException:
+        // com.google.gson.internal.LinkedTreeMap cannot be cast to sprites.Sprite
+        return gsonBuilder.create().fromJson(serializedSprites, List.class);
     }
 
     private String[] retrieveSerializedSectionsForLevel(String serializedGameData, int level)
@@ -235,17 +243,18 @@ public class SerializationUtils {
         Sprite testSoldier = factory.generateSprite("testSoldier", soldierMap);
         Sprite testSoldier2 = factory.generateSprite("testSoldier2", soldierMap);
         Sprite testSoldier3 = factory.generateSprite("testSoldier");
-        String serializedGameData = tester.serializeGameData(testDescription, testLevel, testStatus, factory);
+        List<Sprite> levelSprites = Arrays.asList(testTower, testTower2, testTower3, testSoldier, testSoldier2,
+                testSoldier3);
+        String serializedGameData = tester.serializeGameData(testDescription, testLevel, testStatus, levelSprites);
         System.out.println("Serialized sprites: " + serializedGameData);
         System.out.println("Game Description: " + tester.deserializeGameDescription(serializedGameData, testLevel));
         Map<String, String> deserializedStatus = tester.deserializeGameStatus(serializedGameData, testLevel);
-        Map<String, List<Sprite>> deserializedSprites = tester.deserializeGameSprites(serializedGameData, testLevel);
+        List<Sprite> deserializedSprites = tester.deserializeGameSprites(serializedGameData, testLevel);
         for (String statusKey : deserializedStatus.keySet()) {
             System.out.println(statusKey + " : " + deserializedStatus.get(statusKey));
         }
-        for (String elementName : deserializedSprites.keySet()) {
-            System.out.println("Element name: " + elementName);
-            System.out.println(deserializedSprites.get(elementName).toString());
+        for (Sprite sprite : deserializedSprites) {
+            System.out.println(sprite);
         }
     }
 

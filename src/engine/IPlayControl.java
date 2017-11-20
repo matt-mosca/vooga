@@ -2,7 +2,9 @@ package engine;
 
 import sprites.Sprite;
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,17 +23,21 @@ public interface IPlayControl {
 
     /**
      * Load the detailed state of a game for a particular level, including high-level information and elements present.
-
-     * @param level the level of the game which should be loaded
+     *
+     * @param saveName the name the save file was assigned
+     * @param level    the level of the game which should be loaded
      */
-    void loadGameState(int level);
+    void loadGameState(String saveName, int level) throws FileNotFoundException;
 
     /**
-     * Place an element into the game. The element will be created using cached properties specified during authoring.
-     *
-     * @return a sprite abstraction representing the game element
+     * Pause the game.
      */
-    Sprite placeElement(String elementName, double x, double y);
+    void pause();
+
+    /**
+     * Resume the (paused) game.
+     */
+    void resume();
 
     /**
      * Determine whether the game in-progress has been lost.
@@ -48,6 +54,13 @@ public interface IPlayControl {
     boolean isWon();
 
     /**
+     * Place an element into the game. The element will be created using cached properties specified during authoring.
+     *
+     * @return a sprite abstraction representing the game element
+     */
+    Sprite placeElement(String elementName, double x, double y);
+
+    /**
      * Get the high-level status of a game in-progress, notably lives remaining and resources available.
      *
      * @return a map of relevant details to display or modify about the game
@@ -57,9 +70,11 @@ public interface IPlayControl {
     /**
      * Get the elements of a game (represented as sprites) for a particular level.
      *
-     * @param gameName the name of the game being loaded
+     * TODO - custom exception?
+     *
      * @param level    the level of the game which should be loaded
      * @return all the game elements (sprites) represented in the level
+     * @throws IllegalArgumentException if there is no corresponding level in the current game
      */
-    Collection<Sprite> getLevelSprites(String gameName, int level);
+    Collection<Sprite> getLevelSprites(int level) throws IllegalArgumentException;
 }

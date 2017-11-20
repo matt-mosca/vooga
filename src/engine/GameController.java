@@ -16,7 +16,7 @@ public abstract class GameController {
 
 	public GameController() {
 		serializationUtils = new SerializationUtils();
-		ioController = new IOController(serializationUtils, new SpriteFactory());
+		ioController = new IOController(serializationUtils);
 	}
 
 	protected abstract StateManager getStateManager();

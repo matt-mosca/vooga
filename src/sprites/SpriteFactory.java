@@ -21,7 +21,6 @@ public class SpriteFactory {
     private final String PROPERTIES_EXTENSION = ".properties";
 
     private Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
-    private Map<Integer, Map<String, List<Sprite>>> levelSpritesCache = new HashMap<>();
 
     private int level = 1;
 
@@ -46,16 +45,7 @@ public class SpriteFactory {
     public Sprite generateSprite(String spriteTemplateName) {
         Map<String, Object> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
         Sprite sprite = new Sprite(properties);
-        cacheGeneratedSprite(spriteTemplateName, sprite);
         return sprite;
-    }
-
-    private void cacheGeneratedSprite(String spriteTemplateName, Sprite sprite) {
-        Map<String, List<Sprite>> levelSprites = levelSpritesCache.getOrDefault(level, new HashMap<>());
-        List<Sprite> sprites = levelSprites.getOrDefault(spriteTemplateName, new ArrayList<>());
-        sprites.add(sprite);
-        levelSprites.put(spriteTemplateName, sprites);
-        levelSpritesCache.put(level, levelSprites);
     }
 
     /**
@@ -91,9 +81,5 @@ public class SpriteFactory {
 
     public void setLevel(int level) {
         this.level = level;
-    }
-
-    public Map<String, List<Sprite>> getLevelSprites(int level) {
-        return levelSpritesCache.getOrDefault(level, new HashMap<>());
     }
 }

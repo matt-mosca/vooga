@@ -24,8 +24,8 @@ public class PlayStateManager extends StateManager {
 
 	@Override
 	public void saveGameState(String savedGameName) {
-		getIOController().saveGameState(savedGameName, getDescription(), getCurrentLevel(), getStatus(),
-				PlayConstants.IS_AUTHORING);
+		//getIOController().saveGameState(savedGameName, getDescription(), getCurrentLevel(), getStatus(),
+		//		PlayConstants.IS_AUTHORING);
 	}
 
 	@Override

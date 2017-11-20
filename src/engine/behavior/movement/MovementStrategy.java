@@ -41,11 +41,11 @@ public abstract class MovementStrategy {
 		return yCoord;
 	}
 	
-	protected void setX(double newXCoord) {
+	public void setX(double newXCoord) {
 		xCoord = newXCoord;
 	}
 	
-	protected void setY(double newYCoord) {
+	public void setY(double newYCoord) {
 		yCoord = newYCoord;
 	}
 	
