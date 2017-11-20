@@ -12,13 +12,15 @@ public class StaticObject extends ImageView {
 	private int objectSize;
 	private int realSize;
 	private AuthorInterface myAuthor;
+	private String	 myImageString;
 	
-	public StaticObject(int size, AuthorInterface author) {
-		myAuthor = author;
+	public StaticObject(int size, AuthorInterface author, String imageString) {
+		myAuthor = author; 
+		myImageString = imageString;
 		realSize = size * CELL_SIZE;
 		this.setFitWidth(realSize);
 		this.setFitHeight(realSize);
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream("tortoise.png"));
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageString));
 		this.setImage(image);
 		objectSize = size;
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e));
@@ -49,6 +51,10 @@ public class StaticObject extends ImageView {
 	
 	public double getWidth() {
 		return this.getFitWidth();
+	}
+	
+	public String getImageString() {
+		return myImageString;
 	}
 	
 	public int getSize() {

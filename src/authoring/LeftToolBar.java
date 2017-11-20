@@ -34,10 +34,10 @@ public class LeftToolBar extends ScrollPane {
 		this.setLayoutY(50);
 		myAuthor = author;
         myList = new ArrayList<StaticObject>();
-        myStatic1 = new StaticObject(1, author);
-        myStatic2 = new StaticObject(1, author);        
-        myStatic3 = new StaticObject(3, author);        
-        myStatic4 = new StaticObject(2, author);
+        myStatic1 = new StaticObject(1, author, "tortoise.png");
+        myStatic2 = new StaticObject(1, author, "gray_circle.png");        
+        myStatic3 = new StaticObject(3, author, "grass_small.png");        
+        myStatic4 = new StaticObject(2, author, "brick_path.png");
         myList.add(myStatic1);
         myList.add(myStatic2);
         myList.add(myStatic3);

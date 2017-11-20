@@ -59,7 +59,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override 
 	public void clicked(StaticObject object) {
-		StaticObject newObject = new StaticObject(object.getSize(), this);
+		StaticObject newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		rootAdd(newObject);
 //		newObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, newObject));
 	}
