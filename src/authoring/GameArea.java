@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
 import sprites.StaticObject;
 
 public class GameArea extends Pane{
@@ -23,7 +22,7 @@ public class GameArea extends Pane{
 	private ResourceBundle gameProperties;
 	private PlacementGrid grid;
 	private Path path;
-	private boolean gridEnabled;
+	private boolean gridEnabled = true;
 	
 	public GameArea(AuthorInterface author) {
 		initializeProperties();
@@ -60,10 +59,11 @@ public class GameArea extends Pane{
 	}
 	
 	protected void placeInGrid(StaticObject currObject, MouseEvent e) {
-		Point2D newLocation = grid.place(currObject, X_OFFSET, Y_OFFSET);
-		currObject.setX(newLocation.getX());
-		currObject.setY(newLocation.getY());
-		
+		if(gridEnabled) {
+			Point2D newLocation = grid.place(currObject, X_OFFSET, Y_OFFSET);
+			currObject.setX(newLocation.getX());
+			currObject.setY(newLocation.getY());
+		}
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
@@ -81,12 +81,6 @@ public class GameArea extends Pane{
 	protected void changeBackground(String hexcode) {
 		this.setStyle("-fx-background-color: " + hexcode + ";");
 		backgroundColor = hexcode;
-	}
-	
-	protected void placeObject(Shape shape) {
-		if(gridEnabled) {
-			grid.snapToGrid(shape);
-		}
 	}
 
 	public void removeFromGrid(StaticObject currObject, MouseEvent e) {

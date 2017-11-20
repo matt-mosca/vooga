@@ -151,11 +151,7 @@ public class PlacementGrid extends GridPane {
 		}
 
 	}
-	
-//	
-//	public List<Point2D> getPath() {
-//		return points;
-//	}
+
 	private Cell calculateCell(double x, double y) {
 		int row = (int) y/(height/(100/GRID_ROW_PERCENTAGE));
 		int col = (int) x/(width/(100/GRID_COLUMN_PERCENTAGE));
@@ -167,9 +163,5 @@ public class PlacementGrid extends GridPane {
 		this.height = height;
 		this.setPrefWidth(width);
 		this.setPrefHeight(height);
-	}
-	
-	protected void snapToGrid(Shape shape) {
-		
 	}
 }
