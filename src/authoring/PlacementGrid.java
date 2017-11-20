@@ -4,7 +4,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.shape.Rectangle;
 import sprites.StaticObject;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
@@ -59,10 +58,6 @@ public class PlacementGrid extends GridPane {
 				cells[i][j] = cell;
 			}
 		}
-	}
-	
-	private void initializeEventHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
 	}
 
 	private void activatePath(MouseEvent e) {

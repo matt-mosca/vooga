@@ -15,7 +15,7 @@ public class PathPoint extends Circle{
 	
 	private Map<PathPoint,PathLine> linesToPrev;
 	private Map<PathPoint,PathLine> linesToNext;
-	private ResourceBundle gameResources;
+	private ResourceBundle pathProperties;
 	private boolean active = false;
 	private boolean wasDragged = false;
 	private Color activeColor;
@@ -39,10 +39,10 @@ public class PathPoint extends Circle{
 	}
 	
 	private void initializeProperties() {
-		gameResources = ResourceBundle.getBundle("authoring/resources/GameArea");
-		radius = Integer.parseInt(gameResources.getString(RADIUS));
-		activeColor = Color.web(gameResources.getString(ACTIVE));
-		inactiveColor = Color.web(gameResources.getString(INACTIVE));
+		pathProperties = ResourceBundle.getBundle("authoring/resources/Path");
+		radius = Integer.parseInt(pathProperties.getString(RADIUS));
+		activeColor = Color.web(pathProperties.getString(ACTIVE));
+		inactiveColor = Color.web(pathProperties.getString(INACTIVE));
 	}
 
 	protected PathLine setConnectingLine(PathPoint next) {

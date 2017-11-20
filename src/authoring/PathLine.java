@@ -10,7 +10,7 @@ public class PathLine extends Line{
 	private final static String INACTIVE = "Path_Color";
 	private final static String ACTIVE = "Path_Active_Color";
 	
-	private ResourceBundle gameResources;
+	private ResourceBundle pathProperties;
 	private PathPoint start;
 	private PathPoint end;
 	private LineDirection direction;
@@ -35,10 +35,10 @@ public class PathLine extends Line{
 	}
 	
 	private void initializeProperties() {
-		gameResources = ResourceBundle.getBundle("authoring/resources/GameArea");
-		width = Integer.parseInt(gameResources.getString(WIDTH));
-		activeColor = Color.web(gameResources.getString(ACTIVE));
-		inactiveColor = Color.web(gameResources.getString(INACTIVE));
+		pathProperties = ResourceBundle.getBundle("authoring/resources/Path");
+		width = Integer.parseInt(pathProperties.getString(WIDTH));
+		activeColor = Color.web(pathProperties.getString(ACTIVE));
+		inactiveColor = Color.web(pathProperties.getString(INACTIVE));
 	}
 
 	protected void toggleActive() {

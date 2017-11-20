@@ -5,13 +5,10 @@ import java.util.List;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import sprites.StaticObject;
 
 public class Cell extends StackPane{
 	private boolean active = false;
-	private int activeNeighbors = 0;
 	private List<StaticObject> myAssignments;
 	
 	public Cell() {
