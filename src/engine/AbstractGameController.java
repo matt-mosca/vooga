@@ -21,7 +21,6 @@ public abstract class AbstractGameController {
 
     private String gameName;
     private String gameDescription;
-    private SpriteFactory spriteFactory;
     private IOController ioController;
 
     private Map<Integer, Map<String, String>> levelStatuses;
@@ -35,7 +34,6 @@ public abstract class AbstractGameController {
 
     public AbstractGameController() {
         SerializationUtils serializationUtils = new SerializationUtils();
-        spriteFactory = new SpriteFactory();
         ioController = new IOController(serializationUtils);
         levelStatuses = new HashMap<>();
         setLevel(1);
@@ -110,10 +108,6 @@ public abstract class AbstractGameController {
         return gameName;
     }
 
-    protected SpriteFactory getSpriteFactory() {
-        return spriteFactory;
-    }
-
     protected IOController getIoController() {
         return ioController;
     }
@@ -135,7 +129,6 @@ public abstract class AbstractGameController {
      */
     protected void setLevel(int level) {
         currentLevel = level;
-        spriteFactory.setLevel(currentLevel);
     }
 
     public void setGameDescription(String gameDescription) {

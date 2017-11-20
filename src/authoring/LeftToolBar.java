@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 /**
@@ -27,20 +28,20 @@ public class LeftToolBar extends ScrollPane {
 	private AuthorInterface myAuthor;
 	private StaticObject myStatic1;
 	private StaticObject myStatic2;
-	private StaticObject myStatic3;
+	private BackgroundObject myBackground3;
 	private StaticObject myStatic4;
 	
 	public LeftToolBar(AuthorInterface author) {
 		this.setLayoutY(50);
 		myAuthor = author;
         myList = new ArrayList<StaticObject>();
-        myStatic1 = new StaticObject(1, author);
-        myStatic2 = new StaticObject(1, author);        
-        myStatic3 = new StaticObject(3, author);        
-        myStatic4 = new StaticObject(2, author);
+        myStatic1 = new StaticObject(1, author, "tortoise.png");
+        myStatic2 = new StaticObject(1, author, "gray_circle.png");        
+        myBackground3 = new BackgroundObject(3, author, "grass_small.png");        
+        myStatic4 = new StaticObject(2, author, "brick_path.png");
         myList.add(myStatic1);
         myList.add(myStatic2);
-        myList.add(myStatic3);
+        myList.add(myBackground3);
         myList.add(myStatic4);
         ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
         myListView = new ListView<StaticObject>();
