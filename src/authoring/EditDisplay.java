@@ -25,6 +25,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_X_LOCATION = 650;
 	private LeftToolBar myLeftToolBar;
 	private GameArea myMainGrid;
+	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
 	private Scene drawingScene;
 	private Stage drawingStage;
@@ -37,7 +38,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
 		myMainGrid = new GameArea(this);
-		rootAdd(myMainGrid);
+		myGameEnvironment = new ScrollableArea(myMainGrid);
+		rootAdd(myGameEnvironment);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
 //		myStaticObject = new StaticObject(2, this);
