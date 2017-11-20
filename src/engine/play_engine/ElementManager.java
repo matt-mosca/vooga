@@ -52,8 +52,8 @@ public class ElementManager {
 	/*
 	MovementStrategy object should be created with the coordinates
 	Method might still be necessary but should just do void and put in authoring game grid
-	*/
-	Sprite placeElement(String elementName, double x, double y) {
+
+	Sprite createElement(String elementName, double x, double y) {
 		// Use SpriteFactory to construct Sprite from elementName with these
 		// coordinates
 		Sprite generatedSprite = spriteFactory.generateSprite(elementName);
