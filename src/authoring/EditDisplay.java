@@ -36,6 +36,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
+//		super(width, height, Color.BLACK);
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
 		myMainGrid = new GameArea(this);
