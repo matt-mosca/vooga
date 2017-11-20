@@ -3,6 +3,7 @@ package splashScreen;
 import authoring.EditDisplay;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -14,6 +15,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import main.Main;
 import player.PlayDisplay;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
@@ -23,6 +25,9 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final int MAINHEIGHT = 600;
 	private static final String TITLEFONT = "Verdana";
 	private static final String TITLE = "Welcome to VOOGA";
+	private static final double STANDARD_PATH_WIDTH = Main.WIDTH / 15;
+	private static final double STANDARD_PATH_HEIGHT = Main.HEIGHT / 15;
+	
 	private HBox titleBox = new HBox();
 	private Text VoogaTitle;
 	private Stage stage;
@@ -44,10 +49,14 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	private void basicSetup() {
-		createTitle();
+//		createTitle();
+		setSplashBackground();
+		createPathTitle();
+		createSubtitle();
+		addPath();
 	}
 
-	public void createTitle() {
+	private void createTitle() {
 		VoogaTitle = new Text(10, 20, TITLE);
 		VoogaTitle.setFont(Font.font(TITLEFONT, FontPosture.ITALIC, 30));
 		VoogaTitle.setFill(Color.DARKBLUE);
@@ -58,6 +67,78 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		titleBox.getChildren().add(VoogaTitle);
 		titleBox.setPrefSize(PREFSIZE, PREFSIZE);
 		rootAdd(titleBox);
+	}
+	
+	private void setSplashBackground() {
+		String backgroundName = "grass_large.png";
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(backgroundName));
+		ImageView splashBackground = new ImageView(image);
+		splashBackground.setFitWidth(Main.WIDTH);
+		splashBackground.setFitHeight(Main.HEIGHT);
+		rootAdd(splashBackground);
+	}
+	
+	private void createPathTitle() {
+		String titleName = "VOOGA_Words.png";
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(titleName));
+		ImageView voogaTitle = new ImageView(image);
+		double width = voogaTitle.getBoundsInLocal().getWidth();
+		double height = voogaTitle.getBoundsInLocal().getHeight();
+		double ratio = width / Main.WIDTH;
+		voogaTitle.setFitWidth(Main.WIDTH);
+		voogaTitle.setFitHeight(height / ratio);
+		rootAdd(voogaTitle);
+	}
+	
+	private void createSubtitle() {
+		Label subtitle = new Label("TOWER DEFENSE GAME AUTHORING & PLAYING ENVIRONMENT");
+		subtitle.setFont(new Font("American Typewriter", Main.WIDTH / 40));
+		subtitle.setTextFill(Color.BLACK);
+		subtitle.setLayoutX(Main.WIDTH / 10);
+		subtitle.setLayoutY(Main.HEIGHT / 3);
+		rootAdd(subtitle);
+	}
+	
+	private void addPath() {
+		for(int i = 0; i < 5; i++) {
+			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2);
+		}
+		for(int i = 0; i < 3; i++) {
+			createStandardPath(STANDARD_PATH_WIDTH * 4, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
+		}
+		for(int i = 4; i < 11; i++) {
+			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 4 * STANDARD_PATH_HEIGHT);
+		}
+		//Next two for asymmetric style
+		for(int i = 2; i < 3; i++) {
+			createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
+		}
+		for(int i = 10; i < 15; i++) {
+			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 2 * STANDARD_PATH_HEIGHT);
+		}
+		//Next two for symmetric style
+//		for(int i = 0; i < 3; i++) {
+//			createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
+//		}
+//		for(int i = 10; i < 15; i++) {
+//			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2);
+//		}
+		//First two plus next one for third path style
+//		for(int i = 4; i < 15; i++) {
+//			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 4 * STANDARD_PATH_HEIGHT);
+//		}
+	}
+	
+	private ImageView createStandardPath(double xPos, double yPos) {
+		String pathName = "brick_path.png";
+		Image pathImage = new Image(getClass().getClassLoader().getResourceAsStream(pathName));
+		ImageView path = new ImageView(pathImage);
+		path.setFitWidth(STANDARD_PATH_WIDTH);
+		path.setFitHeight(STANDARD_PATH_HEIGHT);
+		path.setX(xPos);
+		path.setY(yPos);
+		rootAdd(path);
+		return path;
 	}
 
 	@Override
