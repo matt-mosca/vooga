@@ -12,9 +12,9 @@ import main.Main;
 public class EditGameButton extends Button {
 	
 	private static final String LABEL = "Load and Edit";
-	private static final double WIDTH = 200;
+	private static final double WIDTH = Main.WIDTH / 3;
 	private static final double XPOS = Main.WIDTH / 2 - WIDTH / 2;
-	private static final double YPOS = 250;
+	private static final double YPOS = (5.0 / 9.0) * Main.HEIGHT;
 
 
 	public EditGameButton(SplashInterface splash) {

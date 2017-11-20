@@ -12,9 +12,9 @@ import main.Main;
 public class NewGameButton extends Button {
 	
 	private static final String LABEL = "Create a new game";
-	private static final double WIDTH = 200;
+	private static final double WIDTH = Main.WIDTH / 3;
 	private static final double XPOS = Main.WIDTH / 2 - WIDTH / 2;
-	private static final double YPOS = 200;
+	private static final double YPOS = (4.0 / 9.0) * Main.HEIGHT;
 	
 	public NewGameButton(SplashInterface splash) {
 		this.setPrefWidth(WIDTH);

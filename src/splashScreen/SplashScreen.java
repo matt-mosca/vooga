@@ -92,10 +92,10 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	
 	private void createSubtitle() {
 		Label subtitle = new Label("TOWER DEFENSE GAME AUTHORING & PLAYING ENVIRONMENT");
-		subtitle.setFont(new Font("American Typewriter", 15));
+		subtitle.setFont(new Font("American Typewriter", Main.WIDTH / 40));
 		subtitle.setTextFill(Color.BLACK);
-		subtitle.setLayoutX(60);
-		subtitle.setLayoutY(150);
+		subtitle.setLayoutX(Main.WIDTH / 10);
+		subtitle.setLayoutY(Main.HEIGHT / 3);
 		rootAdd(subtitle);
 	}
 	
@@ -103,18 +103,30 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		for(int i = 0; i < 5; i++) {
 			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2);
 		}
-		for(int i = 10; i < 15; i++) {
-			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2);
-		}
 		for(int i = 0; i < 3; i++) {
 			createStandardPath(STANDARD_PATH_WIDTH * 4, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
-		}
-		for(int i = 0; i < 3; i++) {
-			createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
 		}
 		for(int i = 4; i < 11; i++) {
 			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 4 * STANDARD_PATH_HEIGHT);
 		}
+		//Next two for asymmetric style
+		for(int i = 2; i < 3; i++) {
+			createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
+		}
+		for(int i = 10; i < 15; i++) {
+			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 2 * STANDARD_PATH_HEIGHT);
+		}
+		//Next two for symmetric style
+//		for(int i = 0; i < 3; i++) {
+//			createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
+//		}
+//		for(int i = 10; i < 15; i++) {
+//			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2);
+//		}
+		//First two plus next one for third path style
+//		for(int i = 4; i < 15; i++) {
+//			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 4 * STANDARD_PATH_HEIGHT);
+//		}
 	}
 	
 	private ImageView createStandardPath(double xPos, double yPos) {
