@@ -4,10 +4,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.xml.internal.messaging.saaj.soap.impl.ElementFactory;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
+/**
+ * Encapsulates shared logic for authoring and play state managers
+ * 
+ * @author radithya
+ *
+ */
 public abstract class StateManager {
 
 	private IOController ioController;
@@ -25,24 +30,24 @@ public abstract class StateManager {
 		gameStatus = new HashMap<>();
 		currentLevel = 1;
 	}
-	
+
 	public abstract void saveGameState(String savedGameName);
-	
+
 	public abstract Sprite placeElement(String elementName, double x, double y);
-	
+
 	public abstract void setCurrentElements(Collection<Sprite> newElements);
-	
+
 	public abstract Collection<Sprite> getCurrentElements();
-	
+
 	// TODO - should take level as parameter?
 	public String getDescription() {
 		return gameDescription;
 	}
-	
+
 	public Map<String, String> getStatus() {
 		return gameStatus;
 	}
-	
+
 	public int getLives() {
 		// TODO
 		return 0; // TEMP
@@ -60,12 +65,12 @@ public abstract class StateManager {
 	public void setStatus(Map<String, String> newStatus) {
 		gameStatus = newStatus;
 	}
-	
+
 	protected void setCurrentLevel(int level) throws IllegalArgumentException {
 		assertValidLevel(level);
 		currentLevel = level;
 	}
-	
+
 	protected IOController getIOController() {
 		return ioController;
 	}
@@ -73,7 +78,7 @@ public abstract class StateManager {
 	protected SpriteFactory getSpriteFactory() {
 		return spriteFactory;
 	}
-	
+
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
-	
+
 }

@@ -1,6 +1,9 @@
 package authoring;
 
 import java.util.ArrayList;
+
+import com.sun.glass.events.KeyEvent;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -14,15 +17,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
+import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
+	private static final double GRID_Y_LOCATION = 455;
+	private static final double GRID_X_LOCATION = 650;
 	private LeftToolBar myLeftToolBar;
 	private GameArea myMainGrid;
 	private RightToolBar myRightToolBar;
 	private Scene drawingScene;
 	private Stage drawingStage;
 	private CheckBox gridToggle;
+	private StaticObject myStaticObject;
+	
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
@@ -32,30 +40,30 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMainGrid);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
-		
+//		myStaticObject = new StaticObject(2, this);
+//		rootAdd(myStaticObject);
 		gridToggle = new CheckBox();
-		gridToggle.setLayoutX(650);
-		gridToggle.setLayoutY(455);
+		gridToggle.setLayoutX(605);
+		gridToggle.setLayoutY(30);
+		gridToggle.setSelected(true);
+		gridToggle.setText("Grid");
+		gridToggle.setTextFill(Color.BLACK);
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
 		});
 		rootAdd(gridToggle);
 	}
-
-	@Override
-	public void clicked(Rectangle rec) {
-		// TODO Auto-generated method stub
-		Rectangle currRectangle = new Rectangle(rec.getWidth(), rec.getHeight(), rec.getFill());
-		currRectangle.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, currRectangle));
-		currRectangle.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(currRectangle));
-		rootAdd(currRectangle);
-		myRightToolBar.updateInfo(Double.toString(currRectangle.getWidth()),
-				Double.toString(currRectangle.getWidth()));
+	
+	@Override 
+	public void clicked(StaticObject object) {
+		StaticObject newObject = new StaticObject(object.getSize(), this);
+		rootAdd(newObject);
+//		newObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, newObject));
 	}
 	
-	private void drag(MouseEvent e, Rectangle currRectangle) {
-		currRectangle.setX(e.getSceneX() - currRectangle.getWidth() / 2);
-		currRectangle.setY(e.getSceneY() - currRectangle.getHeight() / 2);
+	private void drag(MouseEvent e, StaticObject currObject) {
+		currObject.setX(e.getSceneX() - currObject.getWidth() / 2);
+		currObject.setY(e.getSceneY() - currObject.getHeight() / 2);
 	}
 	
 	private void released(Rectangle currRectangle) {
@@ -84,6 +92,17 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	//@Override
 	public void decreaseHealth() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dropped(StaticObject currObject, MouseEvent e) {
+		myMainGrid.placeInGrid(currObject, e);
+	}
+
+	@Override
+	public void pressed(StaticObject currObject, MouseEvent e) {
+		myMainGrid.removeFromGrid(currObject, e);
 		
 	}
 	

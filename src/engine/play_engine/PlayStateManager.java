@@ -30,8 +30,7 @@ public class PlayStateManager extends StateManager {
 
 	@Override
 	public Sprite placeElement(String elementName, double x, double y) {
-		//return elementManager.createElement(elementName, x, y);
-		return null;
+		return elementManager.placeElement(elementName, x, y);
 		// TODO - this should return an integer id for the frontend to use to access it in the future
 		// (prevents exposing the Sprite objects to the frontend)
 	}
