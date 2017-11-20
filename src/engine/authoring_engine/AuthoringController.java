@@ -77,7 +77,7 @@ public class AuthoringController extends AbstractGameController implements Autho
     @Override
     public void loadGameState(String saveName, int level) throws FileNotFoundException {
         loadGameStateElements(saveName, level);
-        loadGameState(saveName, level);
+        loadGameStateSettings(saveName, level);
     }
 
     @Override

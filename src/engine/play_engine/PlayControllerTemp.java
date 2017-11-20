@@ -26,6 +26,7 @@ public class PlayControllerTemp extends AbstractGameController implements IPlayC
     @Override
     public void loadGameState(String saveName, int level) throws FileNotFoundException {
         elementManager.setCurrentElements(loadGameStateElements(saveName, level));
+        loadGameStateSettings(saveName, level);
     }
 
     @Override
