@@ -6,7 +6,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import sprites.StaticObject;
 import javafx.geometry.Point2D;
-import javafx.scene.shape.Shape;
 
 /**
  * 
