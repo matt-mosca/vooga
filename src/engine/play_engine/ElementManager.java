@@ -2,9 +2,12 @@ package engine.play_engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import engine.behavior.movement.MovementStrategy;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
@@ -49,11 +52,11 @@ public class ElementManager {
 		gameElements = new ArrayList<>(newElements);
 	}
 
-	/*
-	MovementStrategy object should be created with the coordinates
-	Method might still be necessary but should just do void and put in authoring game grid
 
-	Sprite createElement(String elementName, double x, double y) {
+	/*MovementStrategy object should be created with the coordinates
+	Method might still be necessary but should just do void and put in authoring game grid*/
+
+	Sprite placeElement(String elementName, double x, double y) {
 		// Use SpriteFactory to construct Sprite from elementName with these
 		// coordinates
 		Sprite generatedSprite = spriteFactory.generateSprite(elementName);
@@ -64,20 +67,30 @@ public class ElementManager {
 	}
 
 	void update() {
-		Iterator<Sprite> activeSprites = gameElements.iterator();
-		while(activeSprites.hasNext()) {
-			Sprite element = activeSprites.next();
+		Set<Sprite> elementsToRemove = new HashSet<>();
+		for(int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
+			Sprite element = gameElements.get(elementIndex);
 			element.move();
 			element.attack();
-			Iterator<Sprite> otherActiveSprites = gameElements.iterator();
-			while(otherActiveSprites.hasNext()) {
-				Sprite otherElement = otherActiveSprites.next();
-				if (!otherElement.equals(element) && collidesWith(element, otherElement)) {
-					element.processCollision(otherElement);
-				}
-			}
+			processAllCollisions(elementIndex, element, elementsToRemove);
 		}
-		gameElements.removeIf(gameElement -> !gameElement.isAlive());
+		gameElements.removeAll(elementsToRemove);
+	}
+
+	private void processAllCollisions(int elementIndex, Sprite element, Set<Sprite> elementsToRemove) {
+		for (int otherIndex = elementIndex + 1; otherIndex < gameElements.size(); otherIndex++) {
+            Sprite otherElement = gameElements.get(otherIndex);
+            if (collidesWith(element, otherElement)) {
+                element.processCollision(otherElement);
+                otherElement.processCollision(element);
+            }
+            if (!otherElement.isAlive()) {
+                elementsToRemove.add(otherElement);
+            }
+        }
+		if (!element.isAlive()) {
+            elementsToRemove.add(element);
+        }
 	}
 
 	// TEMP - SIMPLIFIED CHECKING OF COLLISIONS, JUST BY GRID POSITION
@@ -85,5 +98,5 @@ public class ElementManager {
 		// TODO
 		return false; // TEMP
 	}
-*/
+
 }

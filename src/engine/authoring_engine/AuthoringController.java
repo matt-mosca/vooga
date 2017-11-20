@@ -4,6 +4,7 @@ import engine.AbstractGameController;
 import engine.AuthorController;
 import packaging.Packager;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -13,37 +14,71 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Controls the model for a game being authored. Allows the view to modify and retrieve information about the model.
  *
+ * TODO (for Ben S)
+ *      - move sprite map/id into sprite factory or other object (?)
+ *      - implement object creation in factory via string properties
+ *              + this will entail all behavior object constructors having same parameters
+ *                  because reflection won't work otherwise
+ *                  (eg) MortalCollider needs same constructor params as ImmortalCollider
+ *      - custom error throwing
+ *
  * @author Ben Schwennesen
  */
 public class AuthoringController extends AbstractGameController implements AuthorController {
 
     private Packager packager;
 
+    // TODO - move these into own object? Or have them in the sprite factory?
     private AtomicInteger spriteIdCounter;
-
     private Map<Integer, Sprite> spriteIdMap;
+
+    private SpriteFactory spriteFactory;
 
     public AuthoringController() {
         super();
         packager = new Packager();
         spriteIdCounter = new AtomicInteger();
         spriteIdMap = new HashMap<>();
+        spriteFactory = new SpriteFactory();
     }
 
     @Override
     public void exportGame() {
-        getSpriteFactory().exportSpriteTemplates();
+        spriteFactory.exportSpriteTemplates();
         packager.generateJar(getGameName());
     }
 
     @Override
-    public int createElement(String elementName, Map<String, String> properties) {
-        Sprite sprite = getSpriteFactory().generateSprite(elementName, properties);
+    public void defineElement(String elementName, Map<String, String> properties) {
+        spriteFactory.defineElement(elementName, properties);
+    }
+
+    @Override
+    public int placeElement(String elementName, double xCoordinate, double yCoordinate) {
+        Sprite sprite = spriteFactory.generateSprite(elementName);
+        sprite.setX(xCoordinate);
+        sprite.setY(yCoordinate);
         spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
         return spriteIdCounter.get();
     }
 
-    // TODO - overloaded method for previously created element type
+    @Override
+    public void moveElement(int elementId, double xCoordinate, double yCoordinate) throws IllegalArgumentException {
+        Sprite sprite = getElement(elementId);
+        sprite.setX(xCoordinate);
+        sprite.setY(yCoordinate);
+    }
+
+    @Override
+    public void updateElementProperties(int elementId, Map<String, String> properties) throws IllegalArgumentException {
+        Sprite sprite = getElement(elementId);
+        // TODO - implement
+    }
+
+    @Override
+    public void deleteElement(int elementId) throws IllegalArgumentException {
+        spriteIdMap.remove(elementId);
+    }
 
     @Override
     public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
@@ -52,14 +87,7 @@ public class AuthoringController extends AbstractGameController implements Autho
         return null;
     }
 
-    @Override
-    public void setElementProperty(int elementId, String propertyName, String propertyValue)
-           throws IllegalArgumentException {
-        Sprite sprite = getElement(elementId);
-        // TODO - implement
-    }
-
-    private Sprite getElement(int elementId) {
+    private Sprite getElement(int elementId) throws IllegalArgumentException {
         if (!spriteIdMap.containsKey(elementId)) {
             throw new IllegalArgumentException();
         }

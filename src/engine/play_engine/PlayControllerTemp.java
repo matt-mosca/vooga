@@ -2,7 +2,6 @@ package engine.play_engine;
 
 import engine.AbstractGameController;
 import engine.IPlayControl;
-import engine.play_engine.ElementManager;
 import sprites.Sprite;
 
 import java.io.FileNotFoundException;
@@ -51,23 +50,22 @@ public class PlayControllerTemp extends AbstractGameController implements IPlayC
         return false;
     }
 
+    // TODO - IDs instead of returning sprite ?
     @Override
     public Sprite placeElement(String elementName, double x, double y){
-        Sprite sprite = getSpriteFactory().generateSprite(elementName);
-        sprite.setX(x);
-        sprite.setY(y);
-        return sprite;
+        return elementManager.placeElement(elementName, x, y);
+
     }
 
-
+    // TODO - IDs instead of returning sprite ?
     @Override
     public Collection<Sprite> getLevelSprites(int level) throws IllegalArgumentException {
         if (!getLevelSpritesMap().containsKey(level)) {
             throw new IllegalArgumentException();
         }
         return getLevelSpritesMap().get(level);
-    }
 
+    }
 
     @Override
     public Map<String, String> getStatus() {
