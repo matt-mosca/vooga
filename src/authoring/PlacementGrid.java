@@ -4,10 +4,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.shape.Rectangle;
 import sprites.StaticObject;
 import javafx.geometry.Point2D;
-import javafx.scene.shape.Shape;
 
 /**
  * 
@@ -59,10 +57,6 @@ public class PlacementGrid extends GridPane {
 				cells[i][j] = cell;
 			}
 		}
-	}
-	
-	private void initializeEventHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
 	}
 
 	private void activatePath(MouseEvent e) {
@@ -156,11 +150,7 @@ public class PlacementGrid extends GridPane {
 		}
 
 	}
-	
-//	
-//	public List<Point2D> getPath() {
-//		return points;
-//	}
+
 	private Cell calculateCell(double x, double y) {
 		int row = (int) y/(height/(100/GRID_ROW_PERCENTAGE));
 		int col = (int) x/(width/(100/GRID_COLUMN_PERCENTAGE));
@@ -172,9 +162,5 @@ public class PlacementGrid extends GridPane {
 		this.height = height;
 		this.setPrefWidth(width);
 		this.setPrefHeight(height);
-	}
-	
-	protected void snapToGrid(Shape shape) {
-		
 	}
 }

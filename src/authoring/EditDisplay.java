@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -25,6 +26,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_X_LOCATION = 650;
 	private LeftToolBar myLeftToolBar;
 	private GameArea myMainGrid;
+	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
 	private Scene drawingScene;
 	private Stage drawingStage;
@@ -37,7 +39,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
 		myMainGrid = new GameArea(this);
-		rootAdd(myMainGrid);
+		myGameEnvironment = new ScrollableArea(myMainGrid);
+		rootAdd(myGameEnvironment);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
 //		myStaticObject = new StaticObject(2, this);
@@ -98,12 +101,20 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void dropped(StaticObject currObject, MouseEvent e) {
 		myMainGrid.placeInGrid(currObject, e);
+		myGameEnvironment.requestFocus();
 	}
 
 	@Override
 	public void pressed(StaticObject currObject, MouseEvent e) {
 		myMainGrid.removeFromGrid(currObject, e);
-		
+		if(e.getButton() == MouseButton.SECONDARY) {
+			deleteObject(currObject);
+		}
+	}
+	
+	private void deleteObject(StaticObject object) {
+		rootRemove(object);
+		myLeftToolBar.requestFocus();
 	}
 	
 //	private void insertAnimation() {
