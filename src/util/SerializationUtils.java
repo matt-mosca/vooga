@@ -237,12 +237,12 @@ public class SerializationUtils {
         towerMap.put("movementStrategy", new RandomMovementStrategy(10.0, 11.0,
                 new RandomMovementAssigner(new double[]{.24, .26, .27, .23})));
 
-        Sprite testTower = factory.generateSprite("testTower", towerMap);
-        Sprite testTower2 = factory.generateSprite("testTower2", towerMap);
-        Sprite testTower3 = factory.generateSprite("testTower");
-        Sprite testSoldier = factory.generateSprite("testSoldier", soldierMap);
-        Sprite testSoldier2 = factory.generateSprite("testSoldier2", soldierMap);
-        Sprite testSoldier3 = factory.generateSprite("testSoldier");
+        /*Sprite testTower = factory.defineElement("testTower", towerMap);
+        Sprite testTower2 = factory.defineElement("testTower2", towerMap);
+        Sprite testTower3 = factory.defineElement("testTower");
+        Sprite testSoldier = factory.defineElement("testSoldier", soldierMap);
+        Sprite testSoldier2 = factory.defineElement("testSoldier2", soldierMap);
+        Sprite testSoldier3 = factory.defineElement("testSoldier");
         List<Sprite> levelSprites = Arrays.asList(testTower, testTower2, testTower3, testSoldier, testSoldier2,
                 testSoldier3);
         String serializedGameData = tester.serializeGameData(testDescription, testLevel, testStatus, levelSprites);
@@ -255,7 +255,7 @@ public class SerializationUtils {
         }
         for (Sprite sprite : deserializedSprites) {
             System.out.println(sprite);
-        }
+        }*/
     }
 
 }

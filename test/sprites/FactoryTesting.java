@@ -18,7 +18,7 @@ public class FactoryTesting {
     public static void main(String[] args) {
         SpriteFactory sf = new SpriteFactory();
         Map<String, Object> bleh = new HashMap<>();
-        bleh.put("movementStrategy", new MovementStrategy(0, 0) {
+        /*bleh.put("movementStrategy", new MovementStrategy(0, 0) {
             @Override
             public void move() {
             }
@@ -30,7 +30,7 @@ public class FactoryTesting {
         bleh.put("firingStrategy", new NoopFiringStrategy());
         bleh.put("collisionVisitor", new ImmortalCollider());
         bleh.put("collisionVisitable", new ImperviousCollisionVisitable());
-        sf.generateSprite("blehSprite", bleh);
+        sf.defineElement("blehSprite", bleh);*/
         /*XStream x = new XStream(new DomDriver());
         String saved = "";
         for (Sprite template : sf.getLevelSprites(1).get("blehSprite")) {

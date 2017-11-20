@@ -22,18 +22,14 @@ public class SpriteFactory {
 
     private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
 
-    private int level = 1;
-
     /**
-     * Generate a sprite from a new/updated template which specifies its properties.
+     * Define a new/updated template with specified properties.
      *
      * @param spriteTemplateName - the name of the sprite template
      * @param properties - a map of properties for sprites using this template
-     * @return a sprite object with properties set to those specified in the template
      */
-    public Sprite generateSprite(String spriteTemplateName, Map<String, String> properties) {
+    public void defineElement(String spriteTemplateName, Map<String, String> properties) {
         spriteTemplates.put(spriteTemplateName, properties);
-        return generateSprite(spriteTemplateName);
     }
 
     /**
@@ -77,9 +73,5 @@ public class SpriteFactory {
                 }
             }
         }
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 }

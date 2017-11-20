@@ -62,15 +62,6 @@ public class Sprite {
 		firingStrategy.fire();
 	}
 
-
-	public void setX(double newXCoord) {
-		movementStrategy.setX(newXCoord);
-	}
-
-	public void setY(double newYCoord) {
-		movementStrategy.setY(newYCoord);
-	}
-
 	/**
 	 * Handle the effects ON THIS SPRITE only of collision with another Sprite
 	 * 
@@ -141,11 +132,11 @@ public class Sprite {
 		return movementStrategy.getY();
 	}
 
-	public void setX(double x) {
-		movementStrategy.setX(x);
+	public void setX(double newXCoord) {
+		movementStrategy.setX(newXCoord);
 	}
 
-	public void setY(double y) {
-		movementStrategy.setY(y);
+	public void setY(double newYCoord) {
+		movementStrategy.setY(newYCoord);
 	}
 }

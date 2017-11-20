@@ -50,14 +50,47 @@ public interface AuthorController {
     void deleteLevel(int level) throws IllegalArgumentException;
 
     /**
-     * Generate a new type of element for the game being authored. The element will be created by the model based on
-     * its properties, assuming defaults where necessary.
+     * Define (or update if previously defined) a new type of element for the game being authored. Elements of this
+     * type will be created by the model based on its properties, assuming defaults where necessary.
      *
      * @param elementName the template name assigned to this element, for future reuse of the properties
      * @param properties  a map containing the properties of the element to be created
+     */
+    void defineElement(String elementName, Map<String, String> properties);
+
+    /**
+     * Place a game element of previously defined (or default) type within the game.
+     *
+     * @param elementName the template name for the element
+     * @param xCoordinate the horizontal position of the element within the game
+     * @param yCoordinate the vertical position of the element within the game
      * @return a unique identifier for the sprite abstraction representing the game element
      */
-    int createElement(String elementName, Map<String, String> properties);
+    int placeElement(String elementName, double xCoordinate, double yCoordinate);
+
+    /**
+     * Move a previously created game element to a new location.
+     *
+     * @param elementId   elementId  the unique identifier for the element
+     * @param xCoordinate the new horizontal position of the element within the game
+     * @param yCoordinate the new vertical position of the element within the game
+     */
+    void moveElement(int elementId, double xCoordinate, double yCoordinate);
+
+    /**
+     * Update the properties of a particular game element, without changing the definition of its type.
+     *
+     * @param elementId  the unique identifier for the element
+     * @param properties a map containing the new properties of the element
+     */
+    void updateElementProperties(int elementId, Map<String, String> properties);
+
+    /**
+     * Delete a previously created game element.
+     *
+     * @param elementId  the unique identifier for the element
+     */
+    void deleteElement(int elementId);
 
     /**
      * Get a map of properties for a particular game element, so as to allow for their displaying in a modification
@@ -69,17 +102,6 @@ public interface AuthorController {
      * @throws IllegalArgumentException if the element ID does not refer to a created element
      */
     Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException;
-
-    /**
-     * Set a particular property for a particular game element.
-     *
-     * @param elementId     the unique identifier for the game element
-     * @param propertyName  the name of the property to modify
-     * @param propertyValue the value to which the property should be set, as a string
-     *
-     * @throws IllegalArgumentException if the element ID does not refer to a created element
-     */
-    void setElementProperty(int elementId, String propertyName, String propertyValue) throws IllegalArgumentException;
 
     /**
      * Set the name of the game being authored.

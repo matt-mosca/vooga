@@ -43,7 +43,7 @@ public class OrigAuthoringController extends GameController {
 	 *            <url>, "hp" : <hp>, ...}
 	 */
 	public Sprite createElement(String name, Map<String, String> properties) {
-		// return getStateManager().createElement(name, properties);
+		// return getStateManager().defineElement(name, properties);
 		return null;
 	}
 

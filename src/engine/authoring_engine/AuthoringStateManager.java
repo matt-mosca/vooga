@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import engine.IOController;
 import engine.StateManager;
@@ -42,7 +41,8 @@ public class AuthoringStateManager extends StateManager {
 	}
 
 	Sprite createElement(String templateName, Map<String, String> properties) {
-		return getSpriteFactory().generateSprite(templateName, properties);
+		getSpriteFactory().defineElement(templateName, properties);
+		return getSpriteFactory().generateSprite(templateName);
 	}
 
 	@Override
