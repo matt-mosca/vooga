@@ -6,9 +6,6 @@ import engine.GameController;
 import sprites.SpriteFactory;
 
 
-// TODO - Add a behavior module with FiringStrategy, MovementStrategy, etc.
-
-
 /**
  * Top-level play controller, gateway of front end GamePlayer to back
  * end logic and IO
