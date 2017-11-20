@@ -27,13 +27,10 @@ public class IOController {
 
 	private SerializationUtils serializationUtils;
 	private GamePersistence gamePersistence;
-	// TODO - uncomment when ElementFactory is ready
-	private SpriteFactory spriteFactory;
 
-	public IOController(SerializationUtils serializationUtils, SpriteFactory spriteFactory) {
+	public IOController(SerializationUtils serializationUtils) {
 		this.serializationUtils = serializationUtils;
 		gamePersistence = new GamePersistence();
-		this.spriteFactory = spriteFactory;
 	}
 
 	/**
@@ -53,9 +50,9 @@ public class IOController {
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-			Map<String, String> status, boolean forAuthoring) {
+							  List<Sprite> levelSprites, Map<String, String> status, boolean forAuthoring) {
 		// First extract string from file through io module
-		String serializedGameState = serializationUtils.serializeGameData(gameDescription, currentLevel, status, spriteFactory);
+		String serializedGameState = serializationUtils.serializeGameData(gameDescription, currentLevel, status, levelSprites);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -72,15 +69,13 @@ public class IOController {
 	 *         to the front end
 	 * @throws FileNotFoundException
 	 */
-	public Collection<Sprite> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
+	public List<Sprite> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
 			throws FileNotFoundException {
 		// First extract string from file through io module
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		// deserialize string into map through utils module
-		Map<String, List<Sprite>> spritesMap = serializationUtils.deserializeGameSprites(serializedGameData, level);
-		// TODO - retrieve collection of Sprites from map through ElementFactory
-		// TODO - return this collection
-		return null;// TEMP
+		List<Sprite> levelSprites = serializationUtils.deserializeGameSprites(serializedGameData, level);
+		return levelSprites;
 	}
 
 	// TODO - throw custom exception
@@ -202,10 +197,13 @@ public class IOController {
 	 *            description of level as set by authoring engine
 	 * @param levelStatus
 	 *            top-level status metrics of game
+	 * @param levelSprites
+	 * 			  the template-mapped game elements present in the level
 	 * @return string representing serialization of level's data
 	 */
-	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelStatus) {
-		return serializationUtils.serializeLevelData(levelDescription, levelStatus, spriteFactory, level);
+	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelStatus,
+										List<Sprite> levelSprites) {
+		return serializationUtils.serializeLevelData(levelDescription, levelStatus, levelSprites, level);
 	}
 
 	/**
