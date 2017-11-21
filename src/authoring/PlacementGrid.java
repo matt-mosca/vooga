@@ -13,20 +13,22 @@ import javafx.geometry.Point2D;
  *
  */
 public class PlacementGrid extends GridPane {
-	private final int GRID_ROW_PERCENTAGE = 5;
-	private final int GRID_COLUMN_PERCENTAGE = 5;
-	private final int CELL_SIZE = 20;
-	
 	private Path path;
 	private Cell[][] cells;
 	private int width;
 	private int height;
+	private int rowPercentage;
+	private int colPercentage;
+	private int cellSize;
 	
-	public PlacementGrid(AuthorInterface author, int width, int height, Path path) {
+	public PlacementGrid(AuthorInterface author, int width, int height, int rowPercent, int colPercent, Path path) {
 		this.width = width;
 		this.height = height;
 		this.path = path;
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->activatePath(e));
+		this.rowPercentage = rowPercent;
+		this.colPercentage = colPercent;
+		this.cellSize = width/(100/rowPercentage);
+		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->activatePath(e));
 		
 		initializeLayout();
 		initializeCells();
@@ -35,23 +37,23 @@ public class PlacementGrid extends GridPane {
 	private void initializeLayout() {
 		this.setPrefSize(width, height);
 		
-		for(int i = 0; i<100; i+=GRID_ROW_PERCENTAGE) {
+		for(int i = 0; i<100; i+=rowPercentage) {
 			RowConstraints row = new RowConstraints();
-			row.setPercentHeight(100/GRID_ROW_PERCENTAGE);
+			row.setPercentHeight(100/rowPercentage);
 			this.getRowConstraints().add(row);
 		}
 		
-		for(int i = 0; i<100; i+=GRID_COLUMN_PERCENTAGE) {
+		for(int i = 0; i<100; i+=colPercentage) {
 			ColumnConstraints col = new ColumnConstraints();
-			col.setPercentWidth(100/GRID_COLUMN_PERCENTAGE);
+			col.setPercentWidth(100/colPercentage);
 			this.getColumnConstraints().add(col);
 		}
 	}
 	
 	private void initializeCells() {
-		cells = new Cell[(100/GRID_COLUMN_PERCENTAGE)][(100/GRID_ROW_PERCENTAGE)];
-		for(int i = 0; i<(100/GRID_ROW_PERCENTAGE); i++) {
-			for(int j = 0; j<(100/GRID_COLUMN_PERCENTAGE);j++) {
+		cells = new Cell[(100/colPercentage)][(100/rowPercentage)];
+		for(int i = 0; i<(100/rowPercentage); i++) {
+			for(int j = 0; j<(100/colPercentage);j++) {
 				Cell cell = new Cell();
 				this.add(cell, j, i); //column then row for this javafx command
 				cells[i][j] = cell;
@@ -61,12 +63,12 @@ public class PlacementGrid extends GridPane {
 
 	private void activatePath(MouseEvent e) {
 		e.consume();
-		int row = (int) e.getY()/(height/(100/GRID_ROW_PERCENTAGE));
-		int col = (int) e.getX()/(width/(100/GRID_COLUMN_PERCENTAGE));
+		int row = (int) e.getY()/(height/(100/rowPercentage));
+		int col = (int) e.getX()/(width/(100/colPercentage));
 		Cell cell = cells[row][col];
 		
-		double x = col*(width/(100/GRID_COLUMN_PERCENTAGE)) + cell.getWidth()/2;
-		double y = row*(height/(100/GRID_ROW_PERCENTAGE)) + cell.getHeight()/2;
+		double x = col*(width/(100/colPercentage)) + cell.getWidth()/2;
+		double y = row*(height/(100/rowPercentage)) + cell.getHeight()/2;
 		
 		if(cell.pathActive()) {
 			cell.deactivate();
@@ -90,7 +92,7 @@ public class PlacementGrid extends GridPane {
 	 * Need to update it to account for different sized objects 
 	 * Change the assignToCell method and do different checking for odd/set
 	 */
-	public Point2D place(StaticObject currObject, double xLocation, double yLocation) {
+	public Point2D place(StaticObject currObject) {
 		double minDistance = Double.MAX_VALUE;
 		Point2D finalLocation = null;
 		int finalRow = 0;
@@ -98,8 +100,7 @@ public class PlacementGrid extends GridPane {
 		for (int r = 0; r < cells.length - currObject.getSize() + 1; r++) {
 			for (int c = 0; c < cells[r].length - currObject.getSize() + 1; c++) {
 				Cell currCell = cells[r][c];
-				Point2D cellLocation = new Point2D(currCell.getLayoutX() + xLocation, 
-						currCell.getLayoutY() + yLocation);
+				Point2D cellLocation = new Point2D(currCell.getLayoutX(), currCell.getLayoutY());
 				double totalDistance = Math.abs(cellLocation.distance(currObject.center()));
 				if (totalDistance <= minDistance && currCell.isEmpty() 
 						&& !neighborsFull(r, c, currObject.getSize())
@@ -136,24 +137,23 @@ public class PlacementGrid extends GridPane {
 	private void removeAssignments(int finalRow, int finalCol, StaticObject currObject) {
 		for (int i = 0; i < currObject.getSize(); i++) {
 			for (int j = 0; j < currObject.getSize(); j++) {
-				
-				cells[i+finalRow][j+finalCol].removeAssignment(currObject);
+				cells[i + finalRow][j + finalCol].removeAssignment(currObject);
 			}
 		}
 	}
 
-	public void removeFromGrid(StaticObject currObject, double xLocation, double yLocation) {
-		int col = (int) ((currObject.getX() - xLocation) / 20);
+	public void removeFromGrid(StaticObject currObject) {
+		int col = (int) ((currObject.getX()) / cellSize);
 		if (col >= 0) {
-			int row = (int) ((currObject.getY() - yLocation) / 20);
+			int row = (int) ((currObject.getY()) / cellSize);
 			removeAssignments(row, col, currObject);
 		}
 
 	}
 
 	private Cell calculateCell(double x, double y) {
-		int row = (int) y/(height/(100/GRID_ROW_PERCENTAGE));
-		int col = (int) x/(width/(100/GRID_COLUMN_PERCENTAGE));
+		int row = (int) y/(height/(100/rowPercentage));
+		int col = (int) x/(width/(100/colPercentage));
 		return cells[row][col];
 	}
 

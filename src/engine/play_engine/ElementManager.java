@@ -2,12 +2,7 @@ package engine.play_engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
-import engine.behavior.movement.MovementStrategy;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
@@ -19,7 +14,6 @@ import sprites.SpriteFactory;
  */
 public class ElementManager {
 
-	// TODO - Uncomment when ElementFactory is ready
 	private SpriteFactory spriteFactory;
 
 	// Use list to enforce an ordering of elements to facilitate consideration of
@@ -47,14 +41,14 @@ public class ElementManager {
 		return gameElements;
 	}
 
-	// Why do we need this?
 	void setCurrentElements(Collection<Sprite> newElements) {
 		gameElements = new ArrayList<>(newElements);
 	}
 
-
-	/*MovementStrategy object should be created with the coordinates
-	Method might still be necessary but should just do void and put in authoring game grid*/
+	/*
+	 * MovementStrategy object should be created with the coordinates Method might
+	 * still be necessary but should just do void and put in authoring game grid
+	 */
 
 	Sprite placeElement(String elementName, double x, double y) {
 		// Use SpriteFactory to construct Sprite from elementName with these
@@ -67,36 +61,34 @@ public class ElementManager {
 	}
 
 	void update() {
-		Set<Sprite> elementsToRemove = new HashSet<>();
-		for(int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
+		for (int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
 			Sprite element = gameElements.get(elementIndex);
 			element.move();
 			element.attack();
-			processAllCollisions(elementIndex, element, elementsToRemove);
+			processAllCollisionsForElement(elementIndex, element);
 		}
-		gameElements.removeAll(elementsToRemove);
+		gameElements.removeIf(element -> !element.isAlive());
 	}
 
-	private void processAllCollisions(int elementIndex, Sprite element, Set<Sprite> elementsToRemove) {
+	private void processAllCollisionsForElement(int elementIndex, Sprite element) {
 		for (int otherIndex = elementIndex + 1; otherIndex < gameElements.size(); otherIndex++) {
-            Sprite otherElement = gameElements.get(otherIndex);
-            if (collidesWith(element, otherElement)) {
-                element.processCollision(otherElement);
-                otherElement.processCollision(element);
-            }
-            if (!otherElement.isAlive()) {
-                elementsToRemove.add(otherElement);
-            }
-        }
-		if (!element.isAlive()) {
-            elementsToRemove.add(element);
-        }
+			Sprite otherElement = gameElements.get(otherIndex);
+			if (collidesWith(element, otherElement)) {
+				element.processCollision(otherElement);
+				otherElement.processCollision(element);
+			}
+		}
 	}
 
-	// TEMP - SIMPLIFIED CHECKING OF COLLISIONS, JUST BY GRID POSITION
 	private boolean collidesWith(Sprite element, Sprite otherElement) {
-		// TODO
-		return false; // TEMP
+		return element.getBounds().intersects(otherElement.getBounds());
 	}
+
+	/*
+	 * Santo's GridManager is not ready, so might as well skip this for now and use
+	 * the exact collision-checking logic above // TEMP - SIMPLIFIED CHECKING OF COLLISIONS,
+	 * JUST BY GRID POSITION private boolean collidesWith(Sprite element, Sprite
+	 * otherElement) { // TODO return false; // TEMP }
+	 */
 
 }

@@ -16,10 +16,12 @@ import sprites.SpriteFactory;
 public class PlayStateManager extends StateManager {
 
 	private ElementManager elementManager;
+	private boolean inPlay;
 
 	public PlayStateManager(IOController playIOController, SpriteFactory spriteFactory) {
 		super(playIOController, spriteFactory);
 		this.elementManager = new ElementManager();
+		inPlay = false;
 	}
 
 	@Override
@@ -46,38 +48,38 @@ public class PlayStateManager extends StateManager {
 	}
 	
 	void update() {
-		// Move elements, check and handle collisions
-		elementManager.update();
-		// TODO - Check top-level victory / defeat / level completion conditions
-		
+		if (inPlay) {
+			// Move elements, check and handle collisions
+			elementManager.update();
+			// TODO - Check top-level victory / defeat / level completion conditions			
+		}
 	}
 
 	boolean isInPlay() {
-		// TODO
-		return false; // TEMP
-	}
-
-	boolean isWon() {
-		// TODO
-		return false; // TEMP
-	}
-
-	boolean isLost() {
-		// TODO
-		return false; // TEMP
-	}
-
-	boolean isLevelCleared() {
-		// TODO
-		return false; // TEMP
+		return inPlay;
 	}
 
 	void pause() {
-		// TODO
+		inPlay = false;
 	}
 
 	void resume() {
-		// TODO
+		inPlay = true;
+	}
+
+	// TODO - Check victory conditions from game config
+	boolean isWon() {
+		return false; // TEMP
+	}
+
+	// TODO - Check defeat conditions from game config
+	boolean isLost() {
+		return false; // TEMP
+	}
+
+	// TODO - Check level-clearance conditions from game config
+	boolean isLevelCleared() {
+		return false; // TEMP
 	}
 
 	@Override

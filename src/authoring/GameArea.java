@@ -12,11 +12,13 @@ public class GameArea extends Pane{
 	private final String WIDTH = "Game_Area_Width";
 	private final String HEIGHT = "Game_Area_Height";
 	private final String COLOR = "Game_Area_Color";
-	private final int X_OFFSET = 260;
-	private final int Y_OFFSET = 50;
+	private final String ROW_PERCENTAGE = "Grid_Row_Percentage";
+	private final String COL_PERCENTAGE = "Grid_Column_Percentage";
 	
 	private int width;
 	private int height;
+	private int rowPercentage;
+	private int colPercentage;
 	private String backgroundColor;
 	
 	private ResourceBundle gameProperties;
@@ -29,7 +31,7 @@ public class GameArea extends Pane{
 		initializeLayout();
 		initializeHandlers();
 		path = new Path();
-		grid = new PlacementGrid(author, width, height, path);
+		grid = new PlacementGrid(author, width, height, rowPercentage, colPercentage, path);
 
 		this.getChildren().add(path);
 		this.getChildren().add(grid);
@@ -41,17 +43,17 @@ public class GameArea extends Pane{
 		width = Integer.parseInt(gameProperties.getString(WIDTH));
 		height = Integer.parseInt(gameProperties.getString(HEIGHT));
 		backgroundColor = gameProperties.getString(COLOR);
+		rowPercentage = Integer.parseInt(gameProperties.getString(ROW_PERCENTAGE));
+		colPercentage = Integer.parseInt(gameProperties.getString(COL_PERCENTAGE));
 	}
 	
 	private void initializeLayout() {
 		this.setPrefSize(width, height);
 		this.setStyle("-fx-background-color: " + backgroundColor + ";");
-		this.setLayoutX(X_OFFSET);
-		this.setLayoutY(Y_OFFSET);
 	}
 	
 	private void initializeHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->gameAreaClicked(e));
+		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->gameAreaClicked(e));
 	}
 	
 	private void gameAreaClicked(MouseEvent e) {
@@ -60,7 +62,7 @@ public class GameArea extends Pane{
 	
 	protected void placeInGrid(StaticObject currObject, MouseEvent e) {
 		if(gridEnabled) {
-			Point2D newLocation = grid.place(currObject, X_OFFSET, Y_OFFSET);
+			Point2D newLocation = grid.place(currObject);
 			currObject.setX(newLocation.getX());
 			currObject.setY(newLocation.getY());
 		}
@@ -84,6 +86,6 @@ public class GameArea extends Pane{
 	}
 
 	public void removeFromGrid(StaticObject currObject, MouseEvent e) {
-		grid.removeFromGrid(currObject, X_OFFSET, Y_OFFSET);
+		grid.removeFromGrid(currObject);
 	}
 }
