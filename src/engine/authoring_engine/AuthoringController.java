@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *                  because reflection won't work otherwise
  *                  (eg) MortalCollider needs same constructor params as ImmortalCollider
  *      - custom error throwing
- *
+ * @author radithya
  * @author Ben Schwennesen
  */
 public class AuthoringController extends AbstractGameController implements AuthorController {

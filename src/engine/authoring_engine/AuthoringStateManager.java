@@ -15,6 +15,7 @@ import sprites.SpriteFactory;
  * Single-source of truth for game settings and created / added elements when
  * authoring
  * 
+ * @deprecated
  * @author radithya
  */
 public class AuthoringStateManager extends StateManager {
