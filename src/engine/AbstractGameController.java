@@ -16,6 +16,7 @@ import java.util.Map;
  * Encapsulates the shared fields and behavior between authoring and playing
  * controllers.
  *
+ * @author radithya
  * @author Ben Schwennesen
  */
 public abstract class AbstractGameController {
