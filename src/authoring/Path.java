@@ -22,7 +22,7 @@ public class Path extends Group{
 		e.consume();
 		if(activePoint == null && points.size() != 0) return;
 		PathPoint point = new PathPoint(x, y);
-		point.addEventHandler(MouseEvent.MOUSE_CLICKED, event->handlePointClick(event, point));
+		point.addEventHandler(MouseEvent.MOUSE_PRESSED, event->handlePointClick(event, point));
 		
 		if(activePoint != null) {
 			drawLineBetween(activePoint, point);
@@ -125,7 +125,7 @@ public class Path extends Group{
 		this.getChildren().add(line);
 		this.getChildren().add(line.getDirectionComponent());
 		line.toBack();
-		line.addEventHandler(MouseEvent.MOUSE_CLICKED, e->handleLineClick(e, line));
+		line.addEventHandler(MouseEvent.MOUSE_PRESSED, e->handleLineClick(e, line));
 	}
 	
 }

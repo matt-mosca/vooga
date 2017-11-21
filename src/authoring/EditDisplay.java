@@ -61,7 +61,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override 
 	public void clicked(StaticObject object) {
 		StaticObject newObject = new StaticObject(object.getSize(), this, object.getImageString());
-		rootAdd(newObject);
+		myMainGrid.getChildren().add(newObject);
 //		newObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, newObject));
 	}
 	
@@ -101,20 +101,22 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void dropped(StaticObject currObject, MouseEvent e) {
-		myMainGrid.placeInGrid(currObject, e);
-		myGameEnvironment.requestFocus();
+		if(e.getButton() == MouseButton.SECONDARY) {
+			deleteObject(currObject);
+		}else {
+			myMainGrid.placeInGrid(currObject, e);
+			myGameEnvironment.requestFocus();
+		}
 	}
 
 	@Override
 	public void pressed(StaticObject currObject, MouseEvent e) {
+		e.consume();
 		myMainGrid.removeFromGrid(currObject, e);
-		if(e.getButton() == MouseButton.SECONDARY) {
-			deleteObject(currObject);
-		}
 	}
 	
 	private void deleteObject(StaticObject object) {
-		rootRemove(object);
+		myMainGrid.getChildren().remove(object);
 		myLeftToolBar.requestFocus();
 	}
 	

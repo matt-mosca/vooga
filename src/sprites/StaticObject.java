@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 
 public class StaticObject extends ImageView {
 	
-	private static final int CELL_SIZE = 20;
+	private static final int CELL_SIZE = 40;
 	private int objectSize;
 	private int realSize;
 	private AuthorInterface myAuthor;
@@ -29,8 +29,8 @@ public class StaticObject extends ImageView {
 	}
 	
 	private void drag(MouseEvent e) {
-		this.setX(e.getSceneX() - realSize / 2);
-		this.setY(e.getSceneY() - realSize / 2);
+		this.setX(e.getX() - realSize / 2);
+		this.setY(e.getY() - realSize / 2);
 	}
 	
 	private void released(MouseEvent e) {
