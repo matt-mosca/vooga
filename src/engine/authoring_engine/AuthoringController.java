@@ -7,10 +7,7 @@ import sprites.Sprite;
 import sprites.SpriteFactory;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -62,7 +59,7 @@ public class AuthoringController extends AbstractGameController implements Autho
         sprite.setX(xCoordinate);
         sprite.setY(yCoordinate);
         spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
-        
+        cacheGeneratedSprite(sprite);
         return spriteIdCounter.get();
     }
 
@@ -81,7 +78,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 
     @Override
     public void deleteElement(int elementId) throws IllegalArgumentException {
-        spriteIdMap.remove(elementId);
+        Sprite removedSprite = spriteIdMap.remove(elementId);
+        getLevelSprites().get(getCurrentLevel()).remove(removedSprite);
     }
 
     @Override
@@ -120,6 +118,7 @@ public class AuthoringController extends AbstractGameController implements Autho
     public void deleteLevel(int level) throws IllegalArgumentException {
         getLevelStatuses().remove(level);
         getLevelSprites().remove(level);
+        getLevelConditions().remove(level);
     }
     
 	@Override

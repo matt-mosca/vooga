@@ -1,126 +1,169 @@
 package engine.play_engine;
 
+import engine.AbstractGameController;
+import engine.IPlayControl;
+import sprites.Sprite;
+
+import java.io.FileNotFoundException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
-import engine.GameController;
-import sprites.SpriteFactory;
-
-
 /**
- * Top-level play controller, gateway of front end GamePlayer to back
- * end logic and IO
- * 
- * @deprecated
- * @author radithya
+ * Controls the model for a game being played. Allows the view to modify and retrieve information about the model.
  *
+ * @author radithya
+ * @author Ben Schwennesen
  */
-public class PlayController extends GameController {
+public class PlayController extends AbstractGameController implements IPlayControl {
 
-	// TODO - Initialize an ElementFactory instance when its ready
-	private PlayStateManager stateManager;
-	private SpriteFactory spriteFactory;
+	public static final int DEFAULT_MAX_LEVELS = 1;
+	public static final String VICTORY = "victory";
+	public static final String DEFEAT = "defeat";
 	
-	public PlayController() {
-		super();
-		stateManager = new PlayStateManager(getIOController(), spriteFactory);
-	}
-	
+	private ElementManager elementManager;
+	private boolean inPlay;
+	private boolean isWon;
+	private boolean isLost;
+	private boolean levelCleared;
+	private Method victoryConditionMethod;
+	private Method defeatConditionMethod;
+	private int maxLevels = DEFAULT_MAX_LEVELS;
+    
+    public PlayController(){
+        super();
+        elementManager = new ElementManager();
+    }
+
+    @Override
+    public void loadGameState(String saveName, int level) throws FileNotFoundException {
+    		assertValidLevel(level);
+        setMaxLevelsForGame(getNumLevelsForGame());
+    		elementManager.setCurrentElements(loadGameStateElements(saveName, level));
+        loadGameStateSettings(saveName, level);
+        loadGameConditions(saveName, level);
+        setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
+        setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
+    }
+
 	@Override
-	public PlayStateManager getStateManager() {
-		return stateManager;
-	}
-	
-	@Override
-	public boolean isAuthoring() {
-		return PlayConstants.IS_AUTHORING;
-	}
-	
-	/**
-	 * Run the game loop for the given number of cycles
-	 * 
-	 * @param cycles
-	 *            the number of cycles
-	 */
 	public void update() {
-		getStateManager().update();
+		if (inPlay) {
+			if (checkLevelClearanceCondition()) {
+				if (checkVictoryCondition()) {
+					registerVictory();
+				} else {
+					registerLevelCleared();
+				}
+			}
+			else if (checkDefeatCondition()) {
+				registerDefeat();
+			}
+			else {
+				// Move elements, check and handle collisions
+				elementManager.update();				
+			}
+		}
+	}
+    
+    @Override
+    public void pause() {
+    		inPlay = false;
+    }
+
+    @Override
+    public void resume() {
+    		inPlay = true;
+    }
+
+    @Override
+    public boolean isLost() {
+        return isLost;
+    }
+
+    @Override
+    public boolean isWon() {
+    		return isWon;
+    }
+
+    // TODO - IDs instead of returning sprite ?
+    @Override
+    public Sprite placeElement(String elementName, double x, double y){
+        return elementManager.placeElement(elementName, x, y);
+    }
+
+    // TODO - IDs instead of returning sprite ?
+    @Override
+    public Collection<Sprite> getLevelSprites(int level) throws IllegalArgumentException {
+        assertValidLevel(level);
+        return getLevelSprites().get(level);
+    }
+
+    @Override
+    public Map<String, String> getStatus() {
+        return getLevelStatuses().get(getCurrentLevel());
+    }
+    
+	boolean isLevelCleared() {
+		return levelCleared;
 	}
 
-	/**
-	 * Get lives left
-	 * 
-	 * @return number of lives left
-	 */
-	public int getLives() {
-		return getStateManager().getLives(); // TEMP
-	}
-
-	/**
-	 * Retrieve the amount of each resource left
-	 * 
-	 * @return map of resource name to amount left
-	 */
-	public Map<String, Integer> getResources() {
-		return getStateManager().getResources();
-	}
-
-	/**
-	 * Query the current level of the game
-	 * 
-	 * @return the integer corresponding to the game's current level
-	 */
-	public int getCurrentLevel() {
-		return getStateManager().getCurrentLevel();
+	@Override
+	protected void assertValidLevel(int level) throws IllegalArgumentException {
+		// Enforce increments by at-most one for player
+		if (level > getCurrentLevel() + 1) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
-	/**
-	 * Query whether the game is currently in play
-	 * 
-	 * @return true if in play, false if over / paused
-	 */
-	public boolean isInPlay() {
-		return getStateManager().isInPlay();
+	private boolean checkVictoryCondition() {
+		return levelCleared && getCurrentLevel() == maxLevels;
+	}
+	
+	private boolean checkDefeatCondition() {
+		return dispatchBooleanMethod(defeatConditionMethod);
+	}
+	
+	private boolean checkLevelClearanceCondition() {
+		return dispatchBooleanMethod(victoryConditionMethod);
+	}
+	
+	private boolean dispatchBooleanMethod(Method chosenBooleanMethod) {
+		try {
+			return (boolean) chosenBooleanMethod.invoke(this, new Object[]{null});			
+		} catch (ReflectiveOperationException e) {
+			return false;
+		}
+	}
+	
+	private void registerVictory() {
+		isWon = true;
+		inPlay = false;
+	}
+	
+	private void registerDefeat() {
+		isLost = true;
+		inPlay = false;
+	}
+	
+	private void registerLevelCleared() {
+		levelCleared = true;
+		inPlay = false;
+	}
+	
+	private void setMaxLevelsForGame(int maxLevels) {
+		this.maxLevels = maxLevels;
 	}
 
-	/**
-	 * Query whether game has been won
-	 * 
-	 * @return true if won, false otherwise
-	 */
-	public boolean isWon() {
-		return getStateManager().isWon();
+	// TODO - Use reflection to set victoryConditionMethod based on argument
+	private void setVictoryCondition(String conditionFunctionIdentifier) {
+		
 	}
 
-	/**
-	 * Query whether game has been lost
-	 * 
-	 * @return true if lost, false otherwise
-	 */
-	public boolean isLost() {
-		return getStateManager().isLost();
-	}
-
-	/**
-	 * Query whether the current level has been cleared (if so, game will be paused
-	 * until resume() is called )
-	 * 
-	 * @return true if current level is cleared and game is paused, false otherwise
-	 */
-	public boolean isLevelCleared() {
-		return getStateManager().isLevelCleared();
-	}
-
-	/**
-	 * Pause the game
-	 */
-	public void pause() {
-		getStateManager().pause();
-	}
-
-	/**
-	 * Resume the game
-	 */
-	public void resume() {
-		getStateManager().resume();
+	// TODO - Use reflection to set defeatConditionMethod based on argument
+	private void setDefeatCondition(String conditionFunctionIdentifier) {
+		
 	}
 
 
