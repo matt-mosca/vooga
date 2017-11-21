@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -116,6 +117,17 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootRemove(object);
 		myLeftToolBar.requestFocus();
 	}
+
+	@Override
+	public void newTowerSelected(ImageView myImageView) {
+		// TODO Auto-generated method stub
+		
+	}
+
+//	@Override
+//	public void newTowerSelected() {
+//		myRightToolBar.doSomething();
+//	}
 	
 //	private void insertAnimation() {
 //		String imageName = "turtleGif.gif";

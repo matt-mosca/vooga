@@ -12,33 +12,34 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
-public abstract class NewSpriteTab {
+public abstract class NewSpriteTab extends ScrollPane {
 	
 	public static final double DISPLAY_SIZE = 60;
 	
-	private ScrollPane spriteArea;
 	private List<ImageView> newSpriteImages;
 //	private TableView<ImageView> table;
 	private ObservableList<ImageView> spritesView;
 	private ListView<ImageView> list;
+	private AuthorInterface myAuthor;
 	ResourceBundle images;
 	
 	public NewSpriteTab() {
+//		myAuthor = author;
 		newSpriteImages = new ArrayList<ImageView>();
 //		table = new TableView<ImageView>();
 		list = new ListView<ImageView>();
 		spritesView = FXCollections.observableArrayList(newSpriteImages);
-		spriteArea = new ScrollPane();
 //		images = ResourceBundle.getBundle("");
 		list.setItems(spritesView);
 //		table.setItems(troops);
 //      table.getColumns().addAll(firstCol, lastCol)
-		spriteArea.setContent(list);
+		this.setContent(list);
 	}
 	
 	public void attach(Tab newTroopTab) {
-		newTroopTab.setContent(spriteArea);
+		newTroopTab.setContent(this);
 	}
 	
 	protected List<ImageView> getImages() {
@@ -60,8 +61,14 @@ public abstract class NewSpriteTab {
 	protected void updateImages() {
 		spritesView = FXCollections.observableArrayList(newSpriteImages);
 		list.setItems(spritesView);
-		spriteArea.setContent(list);
+		this.setContent(list);
 	}
+	
+//	public void tabClicked(InventoryTab myInventory) {
+//		list.getSelectionModel().getSelectedItem().addEventHandler
+//		(MouseEvent.MOUSE_CLICKED, e->myAuthor.newTowerSelected(
+//				list.getSelectionModel().getSelectedItem()));
+//	}
 	
 	protected abstract void addDefaultImages();
 }

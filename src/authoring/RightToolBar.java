@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
  
@@ -127,5 +128,9 @@ public class RightToolBar extends VBox {
 		for(int i = 0; i < bottomTabPane.getTabs().size(); i++) {
 			bottomTabPane.getTabs().get(i).setClosable(false);
 		}
+	}
+	
+	public void doSomething() {
+		System.out.println("Done");
 	}
 } 

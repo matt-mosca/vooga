@@ -8,5 +8,4 @@ public class BackgroundObject extends StaticObject {
 		super(size, author, imageString);
 		this.toBack();
 	}
-
 }
