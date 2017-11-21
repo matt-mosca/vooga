@@ -10,6 +10,7 @@ import sprites.SpriteFactory;
  * Top-level play controller, gateway of front end GamePlayer to back
  * end logic and IO
  * 
+ * @deprecated
  * @author radithya
  *
  */
