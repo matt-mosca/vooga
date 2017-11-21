@@ -2,19 +2,17 @@ package engine;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.GamePersistence;
 import sprites.Sprite;
-import sprites.SpriteFactory;
 import util.SerializationUtils;
 
 /**
- * Gateway of authoring and play modules to I/O through engine. Encapsulates shared
- * logic for authoring and play use-cases
+ * Gateway of authoring and play modules to I/O through engine. Encapsulates
+ * shared logic for authoring and play use-cases
  * 
  * @author radithya
  *
@@ -50,9 +48,11 @@ public class IOController {
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-							  List<Sprite> levelSprites, Map<String, String> status, boolean forAuthoring) {
+			Map<String, String> levelConditions, List<Sprite> levelSprites, Map<String, String> status,
+			boolean forAuthoring) {
 		// First extract string from file through io module
-		String serializedGameState = serializationUtils.serializeGameData(gameDescription, currentLevel, status, levelSprites);
+		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions,
+				currentLevel, status, levelSprites);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -97,6 +97,45 @@ public class IOController {
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		// deserialize string into map through utils module
 		return serializationUtils.deserializeGameStatus(serializedGameData, level);
+	}
+
+	/**
+	 * Load conditions (victory, defeat, etc.) for the game
+	 * 
+	 * @param savedGameName
+	 *            the name used to save the game state
+	 * @param level
+	 *            the level whose conditions are to be loaded
+	 * @param forAuthoring
+	 *            true if for authoring, false if for play - TODO - more flexible
+	 *            approach? reflection?
+	 * @return map of condition key (e.g. victory, defeat) to string from which
+	 *         boolean function can be dispatched through reflection
+	 * @throws FileNotFoundException
+	 */
+	public Map<String, String> loadGameConditions(String savedGameName, int level, boolean forAuthoring)
+			throws FileNotFoundException {
+		// First extract string from file through io module
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
+		// deserialize string into map through utils module
+		return serializationUtils.deserializeGameConditions(serializedGameData, level);
+	}
+
+	/**
+	 * Get the number of levels for this game
+	 * 
+	 * @param savedGameName
+	 *            the name used to save the game state
+	 * @param forAuthoring
+	 *            true if for authoring, false if for play - TODO - more flexible
+	 *            approach? reflection?
+	 * @return number of levels that currently exist in this game
+	 * @throws FileNotFoundException
+	 */
+	public int getNumLevelsForGame(String savedGameName, boolean forAuthoring) throws FileNotFoundException {
+		// First extract string from file through io module
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
+		return serializationUtils.getNumLevelsFromSerializedGame(serializedGameData);
 	}
 
 	/**
@@ -192,18 +231,19 @@ public class IOController {
 	 * Get serialization of a level's data
 	 *
 	 * @param level
-	 * 			  level to get a serialization of
+	 *            level to get a serialization of
 	 * @param levelDescription
 	 *            description of level as set by authoring engine
 	 * @param levelStatus
 	 *            top-level status metrics of game
 	 * @param levelSprites
-	 * 			  the template-mapped game elements present in the level
+	 *            the template-mapped game elements present in the level
 	 * @return string representing serialization of level's data
 	 */
-	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelStatus,
-										List<Sprite> levelSprites) {
-		return serializationUtils.serializeLevelData(levelDescription, levelStatus, levelSprites, level);
+	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
+			Map<String, String> levelStatus, List<Sprite> levelSprites) {
+		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelStatus, levelSprites,
+				level);
 	}
 
 	/**
