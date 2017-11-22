@@ -4,6 +4,7 @@ import interfaces.ClickableInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
 public class StaticObject extends ImageView {
@@ -24,8 +25,9 @@ public class StaticObject extends ImageView {
 		this.setImage(image);
 		objectSize = size;
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e));
-		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(e));
+		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->dropped(e));
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->pressed(e));
+		
 	}
 	
 	private void drag(MouseEvent e) {
@@ -33,7 +35,7 @@ public class StaticObject extends ImageView {
 		this.setY(e.getY() - realSize / 2);
 	}
 	
-	private void released(MouseEvent e) {
+	private void dropped(MouseEvent e) {
 		myClickable.dropped(this, e);
 	}
 	

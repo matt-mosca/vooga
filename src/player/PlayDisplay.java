@@ -80,12 +80,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	@Override
-	public void dropped(BackgroundObject rec, MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void pressed(StaticObject staticObject, MouseEvent e) {
 		// TODO Auto-generated method stub
 		

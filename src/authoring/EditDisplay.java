@@ -76,12 +76,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		currObject.setY(e.getSceneY() - currObject.getHeight() / 2);
 	}
 	
-	private void released(StaticObject currObject) {
-		if (!currObject.intersects(myMainGrid.getBoundsInParent())) {
-			createNewErrorWindow();
-		}
-	}
-	
 	private void createNewErrorWindow() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Object placement error");
@@ -99,8 +93,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void dropped(StaticObject currObject, MouseEvent e) {
 		if(e.getButton() == MouseButton.SECONDARY) {
 			deleteObject(currObject);
-		}else {
-			myMainGrid.placeInGrid(currObject, e);
+		} else {
+			myMainGrid.placeInGrid(currObject);
 			myGameEnvironment.requestFocus();
 		}
 	}
@@ -108,12 +102,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void pressed(StaticObject currObject, MouseEvent e) {
 		e.consume();
-		myMainGrid.removeFromGrid(currObject, e);
+		myMainGrid.removeFromGrid(currObject);
 	}
 	
 	private void deleteObject(StaticObject object) {
 		myMainGrid.getChildren().remove(object);
 		myLeftToolBar.requestFocus();
+		myMainGrid.removeFromGrid(object);
 	}
 
 	@Override
@@ -122,26 +117,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 
-	@Override
-	public void dropped(BackgroundObject currObject, MouseEvent e) {
-		if(e.getButton() == MouseButton.SECONDARY) {
-			deleteObject(currObject);
-		}else {
-			myMainGrid.placeInGrid(currObject, e);
-			myGameEnvironment.requestFocus();
-		}
-		
-	}
-
 //	@Override
-//	public void newTowerSelected() {
-//		myRightToolBar.doSomething();
-//	}
-	
-//	private void insertAnimation() {
-//		String imageName = "turtleGif.gif";
-//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
-//		ImageView square = new ImageView(image);
-//		rootAdd(square);
+//	public void dropped(BackgroundObject currObject, MouseEvent e) {
+//		if(e.getButton() == MouseButton.SECONDARY) {
+//			deleteObject(currObject);
+//		}else {
+//			myMainGrid.placeInGrid(currObject);
+//			myGameEnvironment.requestFocus();
+//		}
+//		
 //	}
 }

@@ -10,7 +10,7 @@ public interface ClickableInterface {
 	
 	public void dropped(StaticObject rec, MouseEvent e);
 	
-	public void dropped(BackgroundObject rec, MouseEvent e);
+//	public void dropped(BackgroundObject rec, MouseEvent e);
 
 	public void pressed(StaticObject staticObject, MouseEvent e);
 	

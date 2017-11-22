@@ -55,4 +55,8 @@ public class Cell extends StackPane{
 	public void removeAssignment(StaticObject currObject) {
 		if (!isEmpty()) myAssignments.remove(currObject);
 	}
+	
+	public List<StaticObject> saveAssignments() {
+		return myAssignments;
+	}
 }
