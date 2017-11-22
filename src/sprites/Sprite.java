@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.google.gson.FieldAttributes;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;

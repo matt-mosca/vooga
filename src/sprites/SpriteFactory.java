@@ -17,7 +17,7 @@ import java.util.Properties;
 public class SpriteFactory {
 
     private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
-    private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-properties/";
+    private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-templates/";
     private final String PROPERTIES_EXTENSION = ".properties";
 
     private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();

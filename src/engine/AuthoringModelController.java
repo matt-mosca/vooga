@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author Ben Schwennesen
  */
-public interface AuthorController {
+public interface AuthoringModelController {
 
     /**
      * Save the current state of the current level a game being authored.
