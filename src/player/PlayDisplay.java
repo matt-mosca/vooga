@@ -14,7 +14,7 @@ import sprites.StaticObject;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
-	private LeftToolBar myLeftToolBar;
+	private GameToolBar myGameToolBar;
 	private PlacementGrid myMainGrid;
 	private HealthBar myHealthBar;
 	private DecreaseHealthButton myDecreaseHealthButton;
@@ -26,6 +26,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		myMainGrid = new MainGrid(this);
 //		rootAdd(myMainGrid);
 		rootAdd(new HealthBackground());
+		myGameToolBar = new GameToolBar(this);
+		rootAdd(myGameToolBar);
 		myHealthBar = new HealthBar();
 		rootAdd(myHealthBar);
 		myDecreaseHealthButton = new DecreaseHealthButton(this);
