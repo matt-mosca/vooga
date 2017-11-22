@@ -9,6 +9,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import splashScreen.ScreenDisplay;
+import sprites.BackgroundObject;
+import sprites.StaticObject;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
@@ -63,6 +65,30 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void decreaseHealth() {
 		myHealthBar.decreaseHealth(10);
+	}
+
+	@Override
+	public void clicked(StaticObject object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dropped(StaticObject rec, MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dropped(BackgroundObject rec, MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pressed(StaticObject staticObject, MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

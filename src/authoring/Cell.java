@@ -15,6 +15,7 @@ public class Cell extends StackPane{
 	
 	public Cell() {
 		myAssignments = new ArrayList<StaticObject>();
+		myBackgrounds = new ArrayList<BackgroundObject>();
 		this.addEventHandler(MouseEvent.MOUSE_ENTERED, e->highlight());
 		this.addEventHandler(MouseEvent.MOUSE_EXITED, e->removeHighlight());
 	}
@@ -40,7 +41,11 @@ public class Cell extends StackPane{
 	}
 	
 	protected void assignToCell(StaticObject currObject) {
-		myAssignments.add(currObject);
+		if (currObject instanceof BackgroundObject) {
+			myBackgrounds.add((BackgroundObject) currObject);
+		} else {
+			myAssignments.add(currObject);
+		}
 	}
 	
 	protected boolean isEmpty() {

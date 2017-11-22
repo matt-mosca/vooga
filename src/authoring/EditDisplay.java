@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
@@ -61,9 +62,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override 
 	public void clicked(StaticObject object) {
-		StaticObject newObject = new StaticObject(object.getSize(), this, object.getImageString());
+		StaticObject newObject;
+		if (object instanceof BackgroundObject) {
+			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
+		} else {
+			newObject = new StaticObject(object.getSize(), this, object.getImageString());
+		}
 		myMainGrid.getChildren().add(newObject);
-//		newObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, newObject));
 	}
 	
 	private void drag(MouseEvent e, StaticObject currObject) {
@@ -71,20 +76,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		currObject.setY(e.getSceneY() - currObject.getHeight() / 2);
 	}
 	
-	private void released(Rectangle currRectangle) {
-		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
+	private void released(StaticObject currObject) {
+		if (!currObject.intersects(myMainGrid.getBoundsInParent())) {
 			createNewErrorWindow();
 		}
-		getInfo(currRectangle);
-	}
-	
-	private void getInfo(Rectangle rec) {
-//		myRightToolBar.updateInfo(rec);
-		System.out.println(rec.getWidth());
-		System.out.println(rec.getHeight());
-		System.out.println(rec.getFill());
-		System.out.println(rec.getX());
-		System.out.println(rec.getY());
 	}
 	
 	private void createNewErrorWindow() {
@@ -124,6 +119,17 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void newTowerSelected(ImageView myImageView) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dropped(BackgroundObject currObject, MouseEvent e) {
+		if(e.getButton() == MouseButton.SECONDARY) {
+			deleteObject(currObject);
+		}else {
+			myMainGrid.placeInGrid(currObject, e);
+			myGameEnvironment.requestFocus();
+		}
 		
 	}
 

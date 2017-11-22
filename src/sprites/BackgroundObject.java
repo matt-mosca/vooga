@@ -1,11 +1,13 @@
 package sprites;
 
-import authoring.AuthorInterface;
+import interfaces.ClickableInterface;
+import javafx.scene.input.MouseEvent;
 
 public class BackgroundObject extends StaticObject {
 	
-	public BackgroundObject(int size, AuthorInterface author, String imageString) {
-		super(size, author, imageString);
+	public BackgroundObject(int size, ClickableInterface clickable, String imageString) {
+		super(size, clickable, imageString);
 		this.toBack();
+		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->clickable.dropped(this, e));
 	}
 }
