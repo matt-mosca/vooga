@@ -32,14 +32,12 @@ public class PlayControllerDeprecated extends GameController {
 	
 	@Override
 	public boolean isAuthoring() {
-		return PlayConstants.IS_AUTHORING;
+		//return PlayConstants.IS_AUTHORING;
+		return false;
 	}
 	
 	/**
 	 * Run the game loop for the given number of cycles
-	 * 
-	 * @param cycles
-	 *            the number of cycles
 	 */
 	public void update() {
 		getStateManager().update();

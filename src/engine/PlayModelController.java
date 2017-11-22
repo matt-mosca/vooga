@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author Ben Schwennesen
  */
-public interface IPlayControl {
+public interface PlayModelController {
 
     /**
      * Save the current state of a game being played.

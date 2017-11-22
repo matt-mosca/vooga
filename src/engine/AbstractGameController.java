@@ -2,7 +2,6 @@ package engine;
 
 import engine.authoring_engine.AuthoringController;
 import sprites.Sprite;
-import sprites.SpriteFactory;
 import util.SerializationUtils;
 
 import java.io.FileNotFoundException;
@@ -84,7 +83,7 @@ public abstract class AbstractGameController {
 
 	public int getNumLevelsForGame() {
 		try {
-			return getIoController().getNumLevelsForGame(getGameName(), isAuthoring());			
+			return getIoController().getNumberOfLevelsForGame(getGameName(), isAuthoring());
 		} catch (FileNotFoundException e) {
 			return 0;
 		}

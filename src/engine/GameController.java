@@ -12,6 +12,7 @@ import util.SerializationUtils;
  * Encapsulates shared logic for authoring and play controllers
  * 
  * @author radithya
+ * @deprecated 
  *
  */
 public abstract class GameController {

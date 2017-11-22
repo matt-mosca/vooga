@@ -132,7 +132,7 @@ public class IOController {
 	 * @return number of levels that currently exist in this game
 	 * @throws FileNotFoundException
 	 */
-	public int getNumLevelsForGame(String savedGameName, boolean forAuthoring) throws FileNotFoundException {
+	public int getNumberOfLevelsForGame(String savedGameName, boolean forAuthoring) throws FileNotFoundException {
 		// First extract string from file through io module
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		return serializationUtils.getNumLevelsFromSerializedGame(serializedGameData);
