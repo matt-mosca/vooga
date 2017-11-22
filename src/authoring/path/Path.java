@@ -1,4 +1,4 @@
-package authoring;
+package authoring.path;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class Path extends Group{
 		activePoint = null;
 	}
 	
-	protected void addWaypoint(MouseEvent e, double x, double y) {
+	public void addWaypoint(MouseEvent e, double x, double y) {
 		e.consume();
 		if(activePoint == null && points.size() != 0) return;
 		PathPoint point = new PathPoint(x, y);
