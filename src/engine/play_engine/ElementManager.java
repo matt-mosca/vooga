@@ -24,7 +24,7 @@ public class ElementManager {
 	// Reference to GridManager
 	// call double[] getGridPosition(double x, double y) to get grid position, do
 	// collision-checking at coarser granularity
-
+	
 	/**
 	 * Handles the collision-checking and Sprite-specific collision-handling logic
 	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md
@@ -44,7 +44,7 @@ public class ElementManager {
 	void setCurrentElements(Collection<Sprite> newElements) {
 		gameElements = new ArrayList<>(newElements);
 	}
-
+	
 	/*
 	 * MovementStrategy object should be created with the coordinates Method might
 	 * still be necessary but should just do void and put in authoring game grid

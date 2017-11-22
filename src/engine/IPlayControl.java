@@ -30,6 +30,11 @@ public interface IPlayControl {
     void loadGameState(String saveName, int level) throws FileNotFoundException;
 
     /**
+     * Run one cycle of update
+     */
+    void update();
+    
+    /**
      * Pause the game.
      */
     void pause();

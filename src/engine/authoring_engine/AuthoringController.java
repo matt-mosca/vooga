@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *                  because reflection won't work otherwise
  *                  (eg) MortalCollider needs same constructor params as ImmortalCollider
  *      - custom error throwing
- *
+ * @author radithya
  * @author Ben Schwennesen
  */
 public class AuthoringController extends AbstractGameController implements AuthorController {
@@ -59,6 +59,7 @@ public class AuthoringController extends AbstractGameController implements Autho
         sprite.setX(xCoordinate);
         sprite.setY(yCoordinate);
         spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
+        cacheGeneratedSprite(sprite);
         return spriteIdCounter.get();
     }
 
@@ -77,7 +78,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 
     @Override
     public void deleteElement(int elementId) throws IllegalArgumentException {
-        spriteIdMap.remove(elementId);
+        Sprite removedSprite = spriteIdMap.remove(elementId);
+        getLevelSprites().get(getCurrentLevel()).remove(removedSprite);
     }
 
     @Override
@@ -97,26 +99,34 @@ public class AuthoringController extends AbstractGameController implements Autho
     @Override
     public void createNewLevel(int level) {
         setLevel(level);
-        if (!getLevelStatuses().containsKey(level)) {
-            getLevelStatuses().put(level, new HashMap<>());
-        }
     }
 
     @Override
     public void loadGameState(String saveName, int level) throws FileNotFoundException {
         loadGameStateElements(saveName, level);
         loadGameStateSettings(saveName, level);
+        loadGameConditions(saveName, level);
     }
 
     @Override
     public void setStatusProperty(String property, String value) {
-        getLevelStatuses().getOrDefault(getCurrentLevel(), new HashMap<>()).put(property, value);
+    		getLevelStatuses().get(getCurrentLevel()).put(property, value);
     }
 
     // TODO - to support multiple clients / interactive editing, need a client-id param (string or int)
     @Override
     public void deleteLevel(int level) throws IllegalArgumentException {
         getLevelStatuses().remove(level);
-        getLevelSpritesMap().remove(level);
+        getLevelSprites().remove(level);
+        getLevelConditions().remove(level);
     }
+    
+	@Override
+	protected void assertValidLevel(int level) throws IllegalArgumentException {
+		if (level < 0 || level > getLevelSprites().size()) {
+			throw new IllegalArgumentException();
+			// TODO - customize exception ?
+		}		
+	}
+
 }
