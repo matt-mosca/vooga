@@ -3,6 +3,7 @@ package authoring;
 
 import java.util.ResourceBundle;
 
+import authoring.path.Path;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
