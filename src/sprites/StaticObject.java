@@ -13,7 +13,6 @@ public class StaticObject extends ImageView {
 	private int realSize;
 	private AuthorInterface myAuthor;
 	private String	 myImageString;
-	private boolean active;
 	
 	public StaticObject(int size, AuthorInterface author, String imageString) {
 		myAuthor = author; 
@@ -40,15 +39,6 @@ public class StaticObject extends ImageView {
 	
 	private void pressed(MouseEvent e) {
 		myAuthor.pressed(this, e);
-	}
-	
-	public void toggleActive() {
-		if(!active) {
-			this.setStyle("-fx-border: white, 2px;");
-		}else {
-			this.setStyle("-fx-border: white, 2px;");
-		}
-		active = !active;
 	}
 	
 	public Point2D center() {
