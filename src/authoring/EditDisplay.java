@@ -112,6 +112,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void pressed(StaticObject currObject, MouseEvent e) {
 		e.consume();
+		currObject.toggleActive();
 		myMainGrid.removeFromGrid(currObject, e);
 	}
 	

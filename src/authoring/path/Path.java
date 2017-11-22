@@ -38,7 +38,6 @@ public class Path extends Group{
 	
 	private void handlePointClick(MouseEvent e, PathPoint point) {
 		e.consume();
-		System.out.println(e.getClickCount());
 		if(point.wasMoved()) {
 			point.lockPosition();
 		}else if(e.getButton() == MouseButton.PRIMARY && e.isControlDown()) {
@@ -78,14 +77,12 @@ public class Path extends Group{
 	private void removeWaypointLines(PathPoint point) {
 		for(PathPoint prev:point.getPrevLines().keySet()) {
 			PathLine line = prev.getNextLines().remove(point);
-			this.getChildren().remove(line);
-			this.getChildren().remove(line.getDirectionComponent());
+			this.getChildren().remove(line.getNode());
 		}
 		
 		for(PathPoint next:point.getNextLines().keySet()) {
 			PathLine line = next.getPrevLines().remove(point);
-			this.getChildren().remove(line);
-			this.getChildren().remove(line.getDirectionComponent());
+			this.getChildren().remove(line.getNode());
 		}
 
 	}
@@ -116,15 +113,13 @@ public class Path extends Group{
 	private void removeLine(PathLine line) {
 		if(!line.isActive()) return;
 		line.removeLineFromPoints();
-		this.getChildren().remove(line.getDirectionComponent());
-		this.getChildren().remove(line);
+		this.getChildren().remove(line.getNode());
 	}
 
 	private void drawLineBetween(PathPoint start, PathPoint end) {
 		PathLine line = start.setConnectingLine(end);
-		this.getChildren().add(line);
-		this.getChildren().add(line.getDirectionComponent());
-		line.toBack();
+		this.getChildren().add(line.getNode());
+		line.getNode().toBack();
 		line.addEventHandler(MouseEvent.MOUSE_PRESSED, e->handleLineClick(e, line));
 	}
 	

@@ -2,6 +2,7 @@ package authoring.path;
 
 import java.util.ResourceBundle;
 
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -14,6 +15,7 @@ public class PathLine extends Line{
 	private PathPoint start;
 	private PathPoint end;
 	private LineDirection direction;
+	private Group node;
 	private boolean active = false;
 	private Color activeColor;
 	private Color inactiveColor;
@@ -32,6 +34,9 @@ public class PathLine extends Line{
 		this.setStrokeWidth(width);
 		
 		direction = new LineDirection(start, end, this);
+		node = new Group();
+		node.getChildren().add(direction);
+		node.getChildren().add(this);
 	}
 	
 	private void initializeProperties() {
@@ -71,8 +76,8 @@ public class PathLine extends Line{
 		return active;
 	}
 	
-	protected LineDirection getDirectionComponent() {
-		return direction;
+	protected Group getNode() {
+		return node;
 	}
 	
 	protected PathPoint getStartPoint() {
