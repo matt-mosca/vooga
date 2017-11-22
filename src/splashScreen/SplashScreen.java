@@ -131,6 +131,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	
 	private ImageView createStandardPath(double xPos, double yPos) {
 		String pathName = "brick_path.png";
+//		String pathName = "stone_path2.png";
 		Image pathImage = new Image(getClass().getClassLoader().getResourceAsStream(pathName));
 		ImageView path = new ImageView(pathImage);
 		path.setFitWidth(STANDARD_PATH_WIDTH);

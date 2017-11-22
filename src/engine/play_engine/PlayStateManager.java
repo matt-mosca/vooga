@@ -1,5 +1,7 @@
 package engine.play_engine;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 
 import engine.IOController;
@@ -10,6 +12,7 @@ import sprites.SpriteFactory;
 /**
  * Single-source of truth for game state when in-play
  * 
+ * @deprecated
  * @author radithya
  *
  */
@@ -17,6 +20,12 @@ public class PlayStateManager extends StateManager {
 
 	private ElementManager elementManager;
 	private boolean inPlay;
+	private boolean isWon;
+	private boolean isLost;
+	private boolean isLevelCleared;
+	private Method victoryConditionMethod;
+	private Method defeatConditionMethod;
+	private Method levelClearanceConditionMethod;
 
 	public PlayStateManager(IOController playIOController, SpriteFactory spriteFactory) {
 		super(playIOController, spriteFactory);
@@ -49,9 +58,17 @@ public class PlayStateManager extends StateManager {
 	
 	void update() {
 		if (inPlay) {
+			if (checkVictoryCondition()) {
+				registerVictory();
+			}
+			if (checkDefeatCondition()) {
+				registerDefeat();
+			}
+			if (checkLevelClearanceCondition()) {
+				registerLevelCleared();
+			}
 			// Move elements, check and handle collisions
 			elementManager.update();
-			// TODO - Check top-level victory / defeat / level completion conditions			
 		}
 	}
 
@@ -67,19 +84,16 @@ public class PlayStateManager extends StateManager {
 		inPlay = true;
 	}
 
-	// TODO - Check victory conditions from game config
 	boolean isWon() {
-		return false; // TEMP
+		return isWon;
 	}
 
-	// TODO - Check defeat conditions from game config
 	boolean isLost() {
-		return false; // TEMP
+		return isLost;
 	}
 
-	// TODO - Check level-clearance conditions from game config
 	boolean isLevelCleared() {
-		return false; // TEMP
+		return isLevelCleared;
 	}
 
 	@Override
@@ -88,6 +102,41 @@ public class PlayStateManager extends StateManager {
 		if (level > getCurrentLevel() + 1) {
 			throw new IllegalArgumentException();
 		}
+	}
+	
+	private boolean checkVictoryCondition() {
+		return dispatchBooleanMethod(victoryConditionMethod);
+	}
+	
+	private boolean checkDefeatCondition() {
+		return dispatchBooleanMethod(defeatConditionMethod);
+	}
+	
+	private boolean checkLevelClearanceCondition() {
+		return dispatchBooleanMethod(levelClearanceConditionMethod);
+	}
+	
+	private boolean dispatchBooleanMethod(Method chosenBooleanMethod) {
+		try {
+			return (boolean) chosenBooleanMethod.invoke(this, new Object[]{null});			
+		} catch (ReflectiveOperationException e) {
+			return false;
+		}
+	}
+	
+	private void registerVictory() {
+		isWon = true;
+		inPlay = false;
+	}
+	
+	private void registerDefeat() {
+		isLost = true;
+		inPlay = false;
+	}
+	
+	private void registerLevelCleared() {
+		isLevelCleared = true;
+		inPlay = false;
 	}
 
 }

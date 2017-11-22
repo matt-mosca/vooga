@@ -15,6 +15,7 @@ import sprites.SpriteFactory;
  * Single-source of truth for game settings and created / added elements when
  * authoring
  * 
+ * @deprecated
  * @author radithya
  */
 public class AuthoringStateManager extends StateManager {
@@ -37,7 +38,7 @@ public class AuthoringStateManager extends StateManager {
 		}
 		// Serialize map of level to per-level serialized data
 		getIOController().saveGameStateForMultipleLevels(savedGameName, serializedLevelsData,
-				AuthoringConstants.IS_AUTHORING);
+				true);
 	}
 
 	Sprite createElement(String templateName, Map<String, String> properties) {

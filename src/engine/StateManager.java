@@ -10,6 +10,7 @@ import sprites.SpriteFactory;
 /**
  * Encapsulates shared logic for authoring and play state managers
  * 
+ * @deprecated
  * @author radithya
  *
  */
