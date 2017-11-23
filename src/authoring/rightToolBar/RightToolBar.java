@@ -8,6 +8,7 @@ import authoring.AuthorInterface;
 import authoring.ObjectProperties;
 import factory.ButtonFactory;
 import factory.TabFactory;
+import interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,16 +39,16 @@ public class RightToolBar extends VBox {
 
 	
 	
-	public RightToolBar() {
+	public RightToolBar(CreationInterface created) {
         this.setLayoutX(680);
 		this.setLayoutY(50);
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
 	    createAndAddTabs();
-	    newTower = new NewTowerTab();   
-	    newTroop = new NewTroopTab(); 
-	    newProjectile = new NewProjectileTab(); 
+	    newTower = new NewTowerTab(created);   
+	    newTroop = new NewTroopTab(created); 
+	    newProjectile = new NewProjectileTab(created); 
 	    inventoryTower = new NewInventoryTower();
 	    inventoryTroop = new NewInventoryTroop();
 	    inventoryProjectile = new NewInventoryProjectile();

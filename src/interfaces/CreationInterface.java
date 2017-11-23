@@ -1,9 +1,9 @@
 package interfaces;
 
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public interface CreationInterface {
 	
-	public void clicked(Image myImage);
+	public void clicked(ImageView imageView);
 
 }

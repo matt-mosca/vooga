@@ -119,6 +119,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 
+	@Override
+	public void clicked(ImageView imageView) {
+		// TODO Auto-generated method stub
+		
+	}
+
 //	@Override
 //	public void dropped(BackgroundObject currObject, MouseEvent e) {
 //		if(e.getButton() == MouseButton.SECONDARY) {

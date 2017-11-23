@@ -2,12 +2,23 @@ package authoring.rightToolBar;
 
 import java.util.ResourceBundle;
 
-public class NewTroopTab extends NewInventoryTab {
+import interfaces.CreationInterface;
+import javafx.scene.image.ImageView;
+
+public class NewTroopTab extends NewSpriteTab {
 	
-	public NewTroopTab() {
+	private ResourceBundle towerResources;
+	
+	public NewTroopTab(CreationInterface created) {
+		super(created);
+		towerResources = ResourceBundle.getBundle("authoring/resources/NewTroopImages");
+		addDefaultImages();
+		updateImages();
 	}
 
 	@Override
 	protected void addDefaultImages() {
+		addImage(towerResources.getString("Black_Square"));
+		addImage(towerResources.getString("Black_Square2"));
 	}
 }

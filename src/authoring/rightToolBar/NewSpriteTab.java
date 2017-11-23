@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import authoring.AuthorInterface;
+import interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
@@ -23,10 +23,11 @@ public abstract class NewSpriteTab extends ScrollPane {
 //	private TableView<ImageView> table;
 	private ObservableList<ImageView> spritesView;
 	private ListView<ImageView> list;
-	private AuthorInterface myAuthor;
-	ResourceBundle images;
+	private CreationInterface myCreated;
+	private ResourceBundle images;
 	
-	public NewSpriteTab() {
+	public NewSpriteTab(CreationInterface created) {
+		myCreated = created;
 //		myAuthor = author;
 		newSpriteImages = new ArrayList<ImageView>();
 //		table = new TableView<ImageView>();
@@ -65,11 +66,11 @@ public abstract class NewSpriteTab extends ScrollPane {
 		this.setContent(list);
 	}
 	
-//	public void tabClicked(InventoryTab myInventory) {
-//		list.getSelectionModel().getSelectedItem().addEventHandler
-//		(MouseEvent.MOUSE_CLICKED, e->myAuthor.newTowerSelected(
-//				list.getSelectionModel().getSelectedItem()));
-//	}
+	public void tabClicked(NewInventoryTab myInventory) {
+		list.getSelectionModel().getSelectedItem().addEventHandler
+		(MouseEvent.MOUSE_CLICKED, e->myCreated.clicked(
+				list.getSelectionModel().getSelectedItem()));
+	}
 	
 	protected abstract void addDefaultImages();
 }
