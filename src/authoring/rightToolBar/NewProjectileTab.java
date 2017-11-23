@@ -1,13 +1,15 @@
-package authoring;
+package authoring.rightToolBar;
 
 import java.util.ResourceBundle;
+
+import interfaces.CreationInterface;
 
 public class NewProjectileTab extends NewSpriteTab {
 	
 	private ResourceBundle projectileResources;
 	
-	public NewProjectileTab() {
-		super();
+	public NewProjectileTab(CreationInterface created) {
+		super(created);
 		projectileResources = ResourceBundle.getBundle("authoring/resources/NewProjectileImages");
 		addDefaultImages();
 		updateImages();

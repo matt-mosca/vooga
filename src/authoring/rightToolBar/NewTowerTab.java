@@ -1,15 +1,16 @@
-package authoring;
+package authoring.rightToolBar;
 
 import java.util.ResourceBundle;
 
+import interfaces.CreationInterface;
 import javafx.scene.image.ImageView;
 
 public class NewTowerTab extends NewSpriteTab {
 	
 	private ResourceBundle towerResources;
 	
-	public NewTowerTab() {
-		super();
+	public NewTowerTab(CreationInterface created) {
+		super(created);
 		towerResources = ResourceBundle.getBundle("authoring/resources/NewTowerImages");
 		addDefaultImages();
 		updateImages();

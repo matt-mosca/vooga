@@ -1,8 +1,9 @@
 package player;
 
+import interfaces.ClickableInterface;
 import javafx.scene.shape.Rectangle;
 
-public interface PlayerInterface {
+public interface PlayerInterface extends ClickableInterface {
 
 	public void clicked(Rectangle rec);
 	

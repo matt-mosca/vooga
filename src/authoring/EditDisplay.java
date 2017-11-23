@@ -3,11 +3,14 @@ package authoring;
 import java.util.ArrayList;
 
 import com.sun.glass.events.KeyEvent;
+
+import authoring.rightToolBar.RightToolBar;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -18,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
@@ -60,30 +64,18 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override 
 	public void clicked(StaticObject object) {
-		StaticObject newObject = new StaticObject(object.getSize(), this, object.getImageString());
+		StaticObject newObject;
+		if (object instanceof BackgroundObject) {
+			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
+		} else {
+			newObject = new StaticObject(object.getSize(), this, object.getImageString());
+		}
 		myMainGrid.getChildren().add(newObject);
-//		newObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, newObject));
 	}
 	
 	private void drag(MouseEvent e, StaticObject currObject) {
 		currObject.setX(e.getSceneX() - currObject.getWidth() / 2);
 		currObject.setY(e.getSceneY() - currObject.getHeight() / 2);
-	}
-	
-	private void released(Rectangle currRectangle) {
-		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
-			createNewErrorWindow();
-		}
-		getInfo(currRectangle);
-	}
-	
-	private void getInfo(Rectangle rec) {
-//		myRightToolBar.updateInfo(rec);
-		System.out.println(rec.getWidth());
-		System.out.println(rec.getHeight());
-		System.out.println(rec.getFill());
-		System.out.println(rec.getX());
-		System.out.println(rec.getY());
 	}
 	
 	private void createNewErrorWindow() {
@@ -103,8 +95,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void dropped(StaticObject currObject, MouseEvent e) {
 		if(e.getButton() == MouseButton.SECONDARY) {
 			deleteObject(currObject);
-		}else {
-			myMainGrid.placeInGrid(currObject, e);
+		} else {
+			myMainGrid.placeInGrid(currObject);
 			myGameEnvironment.requestFocus();
 		}
 	}
@@ -112,18 +104,34 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void pressed(StaticObject currObject, MouseEvent e) {
 		e.consume();
-		myMainGrid.removeFromGrid(currObject, e);
+		myMainGrid.removeFromGrid(currObject);
 	}
 	
 	private void deleteObject(StaticObject object) {
 		myMainGrid.getChildren().remove(object);
 		myLeftToolBar.requestFocus();
+		myMainGrid.removeFromGrid(object);
 	}
-	
-//	private void insertAnimation() {
-//		String imageName = "turtleGif.gif";
-//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
-//		ImageView square = new ImageView(image);
-//		rootAdd(square);
+
+	@Override
+	public void newTowerSelected(ImageView myImageView) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clicked(ImageView imageView) {
+		myRightToolBar.imageSelected(imageView.getImage());
+	}
+
+//	@Override
+//	public void dropped(BackgroundObject currObject, MouseEvent e) {
+//		if(e.getButton() == MouseButton.SECONDARY) {
+//			deleteObject(currObject);
+//		}else {
+//			myMainGrid.placeInGrid(currObject);
+//			myGameEnvironment.requestFocus();
+//		}
+//		
 //	}
 }
