@@ -1,4 +1,4 @@
-package authoring;
+package authoring.rightToolBar;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;

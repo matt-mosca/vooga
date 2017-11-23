@@ -1,8 +1,11 @@
-package authoring;
+package authoring.rightToolBar;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import authoring.AuthorInterface;
+import authoring.ObjectProperties;
 import factory.ButtonFactory;
 import factory.TabFactory;
 import javafx.collections.FXCollections;
@@ -38,11 +41,11 @@ public class RightToolBar extends VBox {
 	private TabPane topTabPane;
 	private TabPane bottomTabPane;
 	private NewSpriteTab newTower;
-	private NewSpriteTab newTroop;
+	private NewTroopTab newTroop;
 	private NewSpriteTab newProjectile;
 	
 	public RightToolBar(AuthorInterface author) {
-		this.setLayoutY(50);
+		this.setLayoutY(100);
 		myAuthor = author;
 	    table = new TableView<ObjectProperties>();
 	    dataArray = new ObjectProperties[] {new ObjectProperties("Tower 1", "1"),

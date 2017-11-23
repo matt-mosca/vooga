@@ -1,9 +1,10 @@
-package authoring;
+package authoring.rightToolBar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import authoring.AuthorInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;

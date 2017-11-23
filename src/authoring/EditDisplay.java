@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.sun.glass.events.KeyEvent;
 
+import authoring.rightToolBar.RightToolBar;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;

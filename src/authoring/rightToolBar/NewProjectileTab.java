@@ -1,4 +1,4 @@
-package authoring;
+package authoring.rightToolBar;
 
 import java.util.ResourceBundle;
 
