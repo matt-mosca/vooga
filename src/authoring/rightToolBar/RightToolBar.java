@@ -26,38 +26,40 @@ import javafx.scene.layout.VBox;
  
 public class RightToolBar extends VBox {
 	
-	private TableView<ObjectProperties> table;
-	private AuthorInterface myAuthor;
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
 	private TabPane bottomTabPane;
 	private NewSpriteTab newTower;
 	private NewTroopTab newTroop;
 	private NewSpriteTab newProjectile;
+	private NewInventoryTower inventoryTower;
+	private NewInventoryTroop inventoryTroop;
+	private NewInventoryProjectile inventoryProjectile;
+
 	
-	public RightToolBar(AuthorInterface author) {
+	
+	public RightToolBar() {
+        this.setLayoutX(680);
 		this.setLayoutY(50);
-		myAuthor = author;
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
 	    createAndAddTabs();
-	    
 	    newTower = new NewTowerTab();   
 	    newTroop = new NewTroopTab(); 
 	    newProjectile = new NewProjectileTab(); 
-   
-//        table.setEditable(true);
-        this.setLayoutX(680);
-//      this.getChildren().add(table);
+	    inventoryTower = new NewInventoryTower();
+	    inventoryTroop = new NewInventoryTroop();
+	    inventoryProjectile = new NewInventoryProjectile();
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
-        topTabPane.getTabs().get(0).setContent(table);
-        //newTroops.attach(tabList.get(0);
         
         newTower.attach(topTabPane.getTabs().get(0));
         newTroop.attach(topTabPane.getTabs().get(1));
         newProjectile.attach(topTabPane.getTabs().get(2));
+        inventoryTower.attach(bottomTabPane.getTabs().get(0));
+        inventoryTroop.attach(bottomTabPane.getTabs().get(1));
+        inventoryProjectile.attach(bottomTabPane.getTabs().get(2));
     }
 		
 	private void createAndAddTabs() {
