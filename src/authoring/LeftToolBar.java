@@ -30,8 +30,12 @@ public class LeftToolBar extends ScrollPane {
 	private ClickableInterface myClickable;
 	private StaticObject myStatic1;
 	private StaticObject myStatic2;
+	private StaticObject myStatic3;
+	private BackgroundObject myBackground1;
+	private BackgroundObject myBackground2;
 	private BackgroundObject myBackground3;
 	private BackgroundObject myBackground4;
+	private BackgroundObject myBackground5;
 	
 	public LeftToolBar(ClickableInterface clickable) {
 		this.setLayoutY(50);
@@ -48,16 +52,24 @@ public class LeftToolBar extends ScrollPane {
 	public void createDefaultObjects() {
 		myStatic1 = createNewStatic(1, "tortoise.png");
 		myStatic2 = createNewStatic(1, "gray_circle.png");
-		myBackground3 = createNewBackground(3, "grass_small.png");
-		myBackground4 = createNewBackground(2, "brick_path.png");
+		myStatic3 = createNewStatic(1, "green_soldier.gif");
+		myBackground1 = createNewBackground(3, "grass_small.png");
+		myBackground2 = createNewBackground(3, "grass2_small.png");
+		myBackground3 = createNewBackground(2, "brick_path.png");
+		myBackground4 = createNewBackground(2, "stone_path1.png");
+		myBackground4 = createNewBackground(3, "water_medium.png");
 	}
 
 	public void addToList() {
 		myList = new ArrayList<StaticObject>();
         myList.add(myStatic1);
         myList.add(myStatic2);
+        myList.add(myStatic3);
+        myList.add(myBackground1);
+        myList.add(myBackground2);
         myList.add(myBackground3);
         myList.add(myBackground4);
+        myList.add(myBackground5);
 	}
 	
 	public void addToToolbar() {
