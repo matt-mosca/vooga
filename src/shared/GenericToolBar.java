@@ -1,4 +1,4 @@
-package authoring;
+package shared;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import sprites.BackgroundObject;
+import sprites.Sprite;
 import sprites.StaticObject;
 
 /**
@@ -23,26 +24,35 @@ import sprites.StaticObject;
  * 
  * @author Matt
  */
-public class LeftToolBar extends ScrollPane {
+public class GenericToolBar extends ScrollPane {
 	private static final int WIDTH = 300;
 	private List<StaticObject> myList;
 	private ListView<StaticObject> myListView;
 	private ClickableInterface myClickable;
 	private StaticObject myStatic1;
 	private StaticObject myStatic2;
-	private StaticObject myStatic3;
-	private BackgroundObject myBackground1;
-	private BackgroundObject myBackground2;
 	private BackgroundObject myBackground3;
 	private BackgroundObject myBackground4;
-	private BackgroundObject myBackground5;
+	private Class<?> myCls;
 	
-	public LeftToolBar(ClickableInterface clickable) {
+	public GenericToolBar(ClickableInterface clickable, Class<?> cls) {
+		myCls = cls;
 		this.setLayoutY(50);
 		myClickable = clickable;
-        init();
+		init();
+//		if (cls == StaticObject.class) addToStaticToolbar();
+//		else System.out.println("Fails.");
 	}
-
+	
+	public void addToStaticToolbar() {
+        ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
+        myListView = new ListView<StaticObject>();
+        myListView.setOnMouseClicked(e->myClickable.clicked(
+        		myListView.getSelectionModel().getSelectedItem()));
+        myListView.setItems(items);
+        this.setContent(myListView);
+	}
+	
 	public void init() {
 		createDefaultObjects();
 		addToList();
@@ -50,26 +60,18 @@ public class LeftToolBar extends ScrollPane {
 	}
 
 	public void createDefaultObjects() {
-		myStatic1 = createNewStatic(1, "tortoise.png");
-		myStatic2 = createNewStatic(1, "gray_circle.png");
-		myStatic3 = createNewStatic(1, "green_soldier.gif");
-		myBackground1 = createNewBackground(3, "grass_small.png");
-		myBackground2 = createNewBackground(3, "grass2_small.png");
-		myBackground3 = createNewBackground(2, "brick_path.png");
-		myBackground4 = createNewBackground(2, "stone_path1.png");
-		myBackground4 = createNewBackground(3, "water_medium.png");
+		myStatic1 = createNewStatic(1, "black_square.png");
+		myStatic2 = createNewStatic(1, "black_square2.png");
+		myBackground3 = createNewBackground(3, "green_tank.png");
+		myBackground4 = createNewBackground(2, "red_balloon.png");
 	}
 
 	public void addToList() {
 		myList = new ArrayList<StaticObject>();
         myList.add(myStatic1);
         myList.add(myStatic2);
-        myList.add(myStatic3);
-        myList.add(myBackground1);
-        myList.add(myBackground2);
         myList.add(myBackground3);
         myList.add(myBackground4);
-        myList.add(myBackground5);
 	}
 	
 	public void addToToolbar() {

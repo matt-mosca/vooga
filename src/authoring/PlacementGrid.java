@@ -4,6 +4,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 import authoring.path.Path;
 import javafx.geometry.Point2D;
@@ -30,14 +31,12 @@ public class PlacementGrid extends GridPane {
 		this.colPercentage = colPercent;
 		this.cellSize = width/(100/rowPercentage);
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->activatePath(e));
-		
 		initializeLayout();
 		initializeCells();
 	}
 
 	private void initializeLayout() {
 		this.setPrefSize(width, height);
-		
 		for(int i = 0; i<100; i+=rowPercentage) {
 			RowConstraints row = new RowConstraints();
 			row.setPercentHeight(100/rowPercentage);
@@ -103,9 +102,9 @@ public class PlacementGrid extends GridPane {
 				Cell currCell = cells[r][c];
 				Point2D cellLocation = new Point2D(currCell.getLayoutX(), currCell.getLayoutY());
 				double totalDistance = Math.abs(cellLocation.distance(currObject.center()));
-				if (totalDistance <= minDistance && currCell.isEmpty() 
-						&& !neighborsFull(r, c, currObject.getSize())
-						) {
+				if ((totalDistance <= minDistance) && (currCell.isEmpty() &&
+						(!neighborsFull(r, c, currObject.getSize()))) | 
+						(currObject instanceof BackgroundObject)) {
 					minDistance = totalDistance;
 					finalLocation = cellLocation;
 					finalRow = r;
