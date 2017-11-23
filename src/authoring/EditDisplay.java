@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.sun.glass.events.KeyEvent;
 
 import authoring.rightToolBar.RightToolBar;
+import authoring.rightToolBar.SpriteImage;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -129,7 +130,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	@Override
-	public void clicked(ImageView imageView) {
-		myRightToolBar.imageSelected(imageView.getImage());
+	public void clicked(SpriteImage imageView) {
+		myRightToolBar.imageSelected(imageView);
 	}
 }

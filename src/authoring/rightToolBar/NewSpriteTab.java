@@ -19,18 +19,18 @@ public abstract class NewSpriteTab extends ScrollPane {
 	
 	public static final double DISPLAY_SIZE = 60;
 	
-	private List<ImageView> newSpriteImages;
+	private List<SpriteImage> newSpriteImages;
 //	private TableView<ImageView> table;
-	private ObservableList<ImageView> spritesView;
-	private ListView<ImageView> list;
+	private ObservableList<SpriteImage> spritesView;
+	private ListView<SpriteImage> list;
 	private CreationInterface myCreated;
 	private ResourceBundle images;
 	private SpriteImage spriteImage;
 	
 	public NewSpriteTab(CreationInterface created) {
 		myCreated = created;
-		newSpriteImages = new ArrayList<ImageView>();
-		list = new ListView<ImageView>();
+		newSpriteImages = new ArrayList<SpriteImage>();
+		list = new ListView<SpriteImage>();
 		spritesView = FXCollections.observableArrayList(newSpriteImages);
 		list.setItems(spritesView);
 		this.setContent(list);
@@ -42,20 +42,12 @@ public abstract class NewSpriteTab extends ScrollPane {
 		newTroopTab.setContent(this);
 	}
 	
-	protected List<ImageView> getImages() {
+	protected List<SpriteImage> getImages() {
 		return newSpriteImages;
 	}
 	
 	protected void addImage(SpriteImage spriteImage) {
-//		spriteImage = new SpriteImage(DISPLAY_SIZE, imageName);
-//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
-//		ImageView spriteImage = new ImageView(image);
-		double spriteWidth = spriteImage.getBoundsInLocal().getWidth();
-		double spriteHeight = spriteImage.getBoundsInLocal().getHeight();
-		double maxDimension = Math.max(spriteWidth, spriteHeight);
-		double scaleValue = maxDimension / DISPLAY_SIZE;
-		spriteImage.setFitWidth(spriteWidth / scaleValue);
-		spriteImage.setFitHeight(spriteHeight / scaleValue);
+		spriteImage.resize(DISPLAY_SIZE);
 		newSpriteImages.add(spriteImage);
 	}
 	
