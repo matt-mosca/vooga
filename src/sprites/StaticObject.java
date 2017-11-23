@@ -73,8 +73,10 @@ public class StaticObject extends ImageView {
 	}
 	
 	public void decrementSize() {
-		objectSize--;
-		setSize(objectSize);
+		if (objectSize > 1) {
+			objectSize--;
+			setSize(objectSize);
+		}
 	}
 
 }

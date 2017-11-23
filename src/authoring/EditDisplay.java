@@ -59,16 +59,20 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override 
 	public void clicked(StaticObject object) {
-		createOptionWindow();
-		addObject(object);
+		createOptionButtons(object);
 	}
 	
-	private void createOptionWindow() {
+	private void createOptionButtons(StaticObject object) {
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
 		Button decrementButton = new Button("-");
+		double yLocation = object.getY();
+		System.out.println(yLocation);
 		incrementButton.setLayoutX(50);
 		decrementButton.setLayoutX(85);
+		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
+		incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.incrementSize());
+		decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.decrementSize());
 		rootAdd(addNewButton);
 		rootAdd(incrementButton);
 		rootAdd(decrementButton);
