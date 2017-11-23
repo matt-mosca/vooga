@@ -25,6 +25,7 @@ public abstract class NewSpriteTab extends ScrollPane {
 	private ListView<ImageView> list;
 	private CreationInterface myCreated;
 	private ResourceBundle images;
+	private SpriteImage spriteImage;
 	
 	public NewSpriteTab(CreationInterface created) {
 		myCreated = created;
@@ -45,9 +46,10 @@ public abstract class NewSpriteTab extends ScrollPane {
 		return newSpriteImages;
 	}
 	
-	protected void addImage(String imageName) {
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
-		ImageView spriteImage = new ImageView(image);
+	protected void addImage(SpriteImage spriteImage) {
+//		spriteImage = new SpriteImage(DISPLAY_SIZE, imageName);
+//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+//		ImageView spriteImage = new ImageView(image);
 		double spriteWidth = spriteImage.getBoundsInLocal().getWidth();
 		double spriteHeight = spriteImage.getBoundsInLocal().getHeight();
 		double maxDimension = Math.max(spriteWidth, spriteHeight);

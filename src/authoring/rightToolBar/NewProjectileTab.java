@@ -17,10 +17,10 @@ public class NewProjectileTab extends NewSpriteTab {
 
 	@Override
 	protected void addDefaultImages() {
-		addImage(projectileResources.getString("Gray_Circle"));
-		addImage(projectileResources.getString("Black_Square"));
-		addImage(projectileResources.getString("Black_Square2"));
-		addImage(projectileResources.getString("Orange_Splash"));
-		addImage(projectileResources.getString("Fireball"));
+//		addImage(projectileResources.getString("Gray_Circle"));
+//		addImage(projectileResources.getString("Black_Square"));
+//		addImage(projectileResources.getString("Black_Square2"));
+//		addImage(projectileResources.getString("Orange_Splash"));
+//		addImage(projectileResources.getString("Fireball"));
 	}
 }
