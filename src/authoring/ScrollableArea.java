@@ -1,5 +1,7 @@
 package authoring;
 
+import com.sun.prism.paint.Color;
+
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
@@ -10,7 +12,6 @@ public class ScrollableArea extends ScrollPane{
 	private final int SIZE = 400;
 	
 	private GameArea area;
-	private boolean scrollOff;
 	
 	public ScrollableArea(GameArea area) {
 		this.area = area;
@@ -31,14 +32,31 @@ public class ScrollableArea extends ScrollPane{
 		if(scaleX <= 1 && scaleY <= 1 && (scaleX*area.getHeight() >= SIZE) && (scaleY*area.getWidth() >= SIZE)) {
 			area.setScaleX(area.getScaleX()* e.getZoomFactor());
 			area.setScaleY(area.getScaleY()* e.getZoomFactor());
-			this.setHvalue(1 - area.getScaleX());
-			this.setVvalue(1 - area.getScaleY());
+			this.setHvalue(0.5);
+			this.setVvalue(0.5);
 		}
 	}
 	
 	private void scroll(ScrollEvent e) {
-		if(Math.floor(area.getWidth()*area.getScaleX())<=SIZE) {
+		if(outOfBounds(e)) {
 			e.consume();
 		}
+	}
+	
+	private boolean outOfBounds(ScrollEvent e) {
+		//left bound
+		if((0.5 - this.getHvalue()) >= Math.abs(0.5 - area.getScaleX()) && e.getDeltaX()>0) {
+			return true;
+		//right bound
+		}else if((this.getHvalue()-0.5) >= Math.abs(0.5 - area.getScaleX()) && e.getDeltaX()<0) {
+			return true;
+		//top bound
+		}else if((0.5 - this.getVvalue()) >= Math.abs(0.5 - area.getScaleY()) && e.getDeltaY()>0) {
+			return true;
+		//bottom bound
+		}else if((this.getVvalue()-0.5) >= Math.abs(0.5 - area.getScaleY()) && e.getDeltaY()<0) {
+			return true;
+		}
+		return false;
 	}
 }
