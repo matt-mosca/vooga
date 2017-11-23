@@ -28,16 +28,13 @@ public abstract class NewSpriteTab extends ScrollPane {
 	
 	public NewSpriteTab(CreationInterface created) {
 		myCreated = created;
-//		myAuthor = author;
 		newSpriteImages = new ArrayList<ImageView>();
-//		table = new TableView<ImageView>();
 		list = new ListView<ImageView>();
 		spritesView = FXCollections.observableArrayList(newSpriteImages);
-//		images = ResourceBundle.getBundle("");
 		list.setItems(spritesView);
-//		table.setItems(troops);
-//      table.getColumns().addAll(firstCol, lastCol)
 		this.setContent(list);
+		list.setOnMouseClicked(e->myCreated.clicked(
+        		list.getSelectionModel().getSelectedItem()));
 	}
 	
 	public void attach(Tab newTroopTab) {
@@ -66,7 +63,7 @@ public abstract class NewSpriteTab extends ScrollPane {
 		this.setContent(list);
 	}
 	
-	public void tabClicked(NewInventoryTab myInventory) {
+	public void tabClicked() {
 		list.getSelectionModel().getSelectedItem().addEventHandler
 		(MouseEvent.MOUSE_CLICKED, e->myCreated.clicked(
 				list.getSelectionModel().getSelectedItem()));

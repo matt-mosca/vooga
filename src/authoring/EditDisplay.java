@@ -121,8 +121,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(ImageView imageView) {
-		// TODO Auto-generated method stub
-		
+		rootAdd(new ImageView(imageView.getImage()));
 	}
 
 //	@Override

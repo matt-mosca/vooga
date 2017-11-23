@@ -18,7 +18,7 @@ public class NewTroopTab extends NewSpriteTab {
 
 	@Override
 	protected void addDefaultImages() {
-		addImage(towerResources.getString("Black_Square"));
-		addImage(towerResources.getString("Black_Square2"));
+		addImage(towerResources.getString("Green_Tank"));
+		addImage(towerResources.getString("Blue_Soldier"));
 	}
 }

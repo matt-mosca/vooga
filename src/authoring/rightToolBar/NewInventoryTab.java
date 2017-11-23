@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import authoring.AuthorInterface;
+import interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
@@ -20,23 +20,18 @@ public abstract class NewInventoryTab extends ScrollPane {
 	public static final double DISPLAY_SIZE = 60;
 	
 	private List<ImageView> newSpriteImages;
-//	private TableView<ImageView> table;
 	private ObservableList<ImageView> spritesView;
 	private ListView<ImageView> list;
-	private AuthorInterface myAuthor;
-	ResourceBundle images;
+	private ResourceBundle images;
 	
 	public NewInventoryTab() {
-//		myAuthor = author;
 		newSpriteImages = new ArrayList<ImageView>();
-//		table = new TableView<ImageView>();
 		list = new ListView<ImageView>();
 		spritesView = FXCollections.observableArrayList(newSpriteImages);
-//		images = ResourceBundle.getBundle("");
 		list.setItems(spritesView);
-//		table.setItems(troops);
-//      table.getColumns().addAll(firstCol, lastCol)
 		this.setContent(list);
+		list.setOnMouseClicked(e->System.out.println(
+        		list.getSelectionModel().getSelectedItem()));
 	}
 	
 	public void attach(Tab newTroopTab) {
@@ -65,11 +60,11 @@ public abstract class NewInventoryTab extends ScrollPane {
 		this.setContent(list);
 	}
 	
-//	public void tabClicked(InventoryTab myInventory) {
-//		list.getSelectionModel().getSelectedItem().addEventHandler
-//		(MouseEvent.MOUSE_CLICKED, e->myAuthor.newTowerSelected(
-//				list.getSelectionModel().getSelectedItem()));
-//	}
+	public void tabClicked() {
+		list.getSelectionModel().getSelectedItem().addEventHandler
+		(MouseEvent.MOUSE_CLICKED, e->System.out.println(
+				list.getSelectionModel().getSelectedItem()));
+	}
 	
 	protected abstract void addDefaultImages();
 }
