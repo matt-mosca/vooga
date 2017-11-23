@@ -1,5 +1,8 @@
 package authoring.rightToolBar;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import interfaces.CreationInterface;
@@ -14,13 +17,17 @@ public class NewProjectileTab extends NewSpriteTab {
 		addDefaultImages();
 		updateImages();
 	}
-
+	
 	@Override
 	protected void addDefaultImages() {
-//		addImage(projectileResources.getString("Gray_Circle"));
-//		addImage(projectileResources.getString("Black_Square"));
-//		addImage(projectileResources.getString("Black_Square2"));
-//		addImage(projectileResources.getString("Orange_Splash"));
-//		addImage(projectileResources.getString("Fireball"));
+		List<String> imageList = new ArrayList<String>(Arrays.asList("Gray_Circle",
+				"Black_Square", "Black_Square2", "Orange_Splash", "Fireball"));
+		addImages(imageList);
+	}
+	
+	private void addImages(List<String> stringNames) {
+		for (String s : stringNames) {
+			addImage(new ProjectileImage(s));
+		}
 	}
 }

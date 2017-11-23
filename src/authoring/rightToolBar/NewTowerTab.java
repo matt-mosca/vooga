@@ -1,5 +1,8 @@
 package authoring.rightToolBar;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import interfaces.CreationInterface;
@@ -16,24 +19,18 @@ public class NewTowerTab extends NewSpriteTab {
 		updateImages();
 	}
 	
-
 	@Override
 	protected void addDefaultImages() {
-		addImage(new TowerImage("Black_Square2"));
-		
-		
-//		addImage(towerResources.getString("Black_Square2"));
-//		addImage(towerResources.getString("Green_Turret1"));
-//		addImage(towerResources.getString("Green_Turret2"));
-//		addImage(towerResources.getString("Green_Turret3"));
-//		addImage(towerResources.getString("Green_Turret4"));
-//		addImage(towerResources.getString("Green_Turret5"));
-//		addImage(towerResources.getString("Black_Turret"));
-//		addImage(towerResources.getString("Cannon1"));
-//		addImage(towerResources.getString("Cannon2"));
-//		addImage(towerResources.getString("Castle_Tower1"));
-//		addImage(towerResources.getString("Castle_Tower2"));
-//		addImage(towerResources.getString("Castle_Tower3"));
-//		addImage(towerResources.getString("Castle_Tower4"));
+		List<String> imageList = new ArrayList<String>(Arrays.asList("Black_Square2",
+				"Green_Turret1", "Green_Turret2", "Green_Turret3", "Green_Turret4",
+				"Green_Turret5", "Black_Turret", "Cannon1", "Cannon2", 
+				"Castle_Tower1", "Castle_Tower2", "Castle_Tower3", "Castle_Tower4"));
+		addImages(imageList);
 	}
+
+private void addImages(List<String> stringNames) {
+	for (String s : stringNames) {
+		addImage(new TowerImage(s));
+	}
+}
 }
