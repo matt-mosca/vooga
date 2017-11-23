@@ -1,7 +1,7 @@
 package engine.authoring_engine;
 
 import engine.AbstractGameController;
-import engine.AuthorController;
+import engine.AuthoringModelController;
 import packaging.Packager;
 import sprites.Sprite;
 import sprites.SpriteFactory;
@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author radithya
  * @author Ben Schwennesen
  */
-public class AuthoringController extends AbstractGameController implements AuthorController {
+public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
     private Packager packager;
 

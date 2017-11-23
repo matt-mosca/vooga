@@ -30,7 +30,7 @@ public class OrigAuthoringController extends GameController {
 
 	@Override
 	public boolean isAuthoring() {
-		return AuthoringConstants.IS_AUTHORING;
+		return true;
 	}
 
 	/**

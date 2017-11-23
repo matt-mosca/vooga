@@ -38,7 +38,7 @@ public class AuthoringStateManager extends StateManager {
 		}
 		// Serialize map of level to per-level serialized data
 		getIOController().saveGameStateForMultipleLevels(savedGameName, serializedLevelsData,
-				AuthoringConstants.IS_AUTHORING);
+				true);
 	}
 
 	Sprite createElement(String templateName, Map<String, String> properties) {

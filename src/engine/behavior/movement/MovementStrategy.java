@@ -9,14 +9,13 @@ package engine.behavior.movement;
  */
 public abstract class MovementStrategy {
 
-	private double xCoord;
-	private double yCoord;
+	private double xCoordinate;
+	private double yCoordinate;
 
-	/*
-	 * Deprecate in favor of exposing setX() and setY() as public methods for use
-	 * from Sprite (different package)? public MovementStrategy(double startX,
-	 * double startY) { xCoord = startX; yCoord = startY; }
-	 */
+	public MovementStrategy(double startX, double startY) {
+		xCoordinate = startX;
+		yCoordinate = startY;
+	}
 
 	/**
 	 * Move based on the specific movement strategy
@@ -34,7 +33,7 @@ public abstract class MovementStrategy {
 	 * @return current xCoordinate
 	 */
 	public double getX() {
-		return xCoord;
+		return xCoordinate;
 	}
 
 	/**
@@ -43,7 +42,7 @@ public abstract class MovementStrategy {
 	 * @return current yCoordinate
 	 */
 	public double getY() {
-		return yCoord;
+		return yCoordinate;
 	}
 
 	/**
@@ -53,7 +52,7 @@ public abstract class MovementStrategy {
 	 *            x-coordinate to set to
 	 */
 	public void setX(double newXCoord) {
-		xCoord = newXCoord;
+		xCoordinate = newXCoord;
 	}
 
 	/**
@@ -63,7 +62,7 @@ public abstract class MovementStrategy {
 	 *            y-coordinate to set to
 	 */
 	public void setY(double newYCoord) {
-		yCoord = newYCoord;
+		yCoordinate = newYCoord;
 	}
 
 }

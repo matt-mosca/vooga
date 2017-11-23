@@ -9,12 +9,12 @@ import java.awt.geom.Point2D;
  * @author radithya
  *
  */
-public class RandomMovementStrategy extends MovementStrategy {
+public final class RandomMovementStrategy extends MovementStrategy {
 
 	private Point2D.Double chosenDirection;
 
 	public RandomMovementStrategy(double startX, double startY, RandomMovementAssigner randomMovementAssigner) {
-		super();
+		super(startX, startY);
 		chosenDirection = randomMovementAssigner.assignMovementDirection();
 	}
 

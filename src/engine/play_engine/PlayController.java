@@ -1,12 +1,11 @@
 package engine.play_engine;
 
 import engine.AbstractGameController;
-import engine.IPlayControl;
+import engine.PlayModelController;
 import sprites.Sprite;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ import java.util.Map;
  * @author radithya
  * @author Ben Schwennesen
  */
-public class PlayController extends AbstractGameController implements IPlayControl {
+public class PlayController extends AbstractGameController implements PlayModelController {
 
 	public static final int DEFAULT_MAX_LEVELS = 1;
 	public static final String VICTORY = "victory";

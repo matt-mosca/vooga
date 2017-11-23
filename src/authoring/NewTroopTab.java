@@ -20,5 +20,9 @@ public class NewTroopTab extends NewSpriteTab {
 		addImage(troopResources.getString("Green_Tank"));
 		addImage(troopResources.getString("Black_Square"));
 		addImage(troopResources.getString("Black_Square2"));
+		addImage(troopResources.getString("Rotating_Black_Square"));
+		addImage(troopResources.getString("Green_Soldier"));
+		addImage(troopResources.getString("Blue_Soldier"));
+		addImage(troopResources.getString("Black_Soldier"));
 	}
 }
