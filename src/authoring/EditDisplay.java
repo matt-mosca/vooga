@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -37,7 +38,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
-//		super(width, height, Color.BLACK);
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
 		myMainGrid = new GameArea(this);
@@ -45,8 +45,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myGameEnvironment);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
-//		myStaticObject = new StaticObject(2, this);
-//		rootAdd(myStaticObject);
 		gridToggle = new CheckBox();
 		gridToggle.setLayoutX(GRID_X_LOCATION);
 		gridToggle.setLayoutY(GRID_Y_LOCATION);
@@ -61,6 +59,22 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override 
 	public void clicked(StaticObject object) {
+		createOptionWindow();
+		addObject(object);
+	}
+	
+	private void createOptionWindow() {
+		Button addNewButton = new Button("New");
+		Button incrementButton = new Button("+");
+		Button decrementButton = new Button("-");
+		incrementButton.setLayoutX(50);
+		decrementButton.setLayoutX(85);
+		rootAdd(addNewButton);
+		rootAdd(incrementButton);
+		rootAdd(decrementButton);
+	}
+
+	private void addObject(StaticObject object) {
 		StaticObject newObject;
 		if (object instanceof BackgroundObject) {
 			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
