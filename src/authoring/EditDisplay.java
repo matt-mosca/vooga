@@ -70,11 +70,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myMainGrid.getChildren().add(newObject);
 	}
 	
-	private void drag(MouseEvent e, StaticObject currObject) {
-		currObject.setX(e.getSceneX() - currObject.getWidth() / 2);
-		currObject.setY(e.getSceneY() - currObject.getHeight() / 2);
-	}
-	
 	private void createNewErrorWindow() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Object placement error");
