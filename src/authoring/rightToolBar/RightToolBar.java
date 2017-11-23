@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -32,11 +33,11 @@ public class RightToolBar extends VBox {
 	private TabPane topTabPane;
 	private TabPane bottomTabPane;
 	private NewSpriteTab newTower;
-	private NewTroopTab newTroop;
+	private NewSpriteTab newTroop;
 	private NewSpriteTab newProjectile;
-	private NewInventoryTower inventoryTower;
-	private NewInventoryTroop inventoryTroop;
-	private NewInventoryProjectile inventoryProjectile;
+	private NewInventoryTab inventoryTower;
+	private NewInventoryTab inventoryTroop;
+	private NewInventoryTab inventoryProjectile;
 
 	
 	
@@ -74,8 +75,8 @@ public class RightToolBar extends VBox {
 		makeTabsUnclosable();
 	}
 	
-	private void imageSelected(ImageView myImageView) {
-		
+	public void imageSelected(Image myImage) {
+		inventoryTower.addNew(myImage);
 	}
 	
 	private void makeTabsUnclosable() {

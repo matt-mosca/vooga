@@ -42,8 +42,7 @@ public abstract class NewInventoryTab extends ScrollPane {
 		return newSpriteImages;
 	}
 	
-	protected void addImage(String imageName) {
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+	public void addNew(Image image) {
 		ImageView spriteImage = new ImageView(image);
 		double spriteWidth = spriteImage.getBoundsInLocal().getWidth();
 		double spriteHeight = spriteImage.getBoundsInLocal().getHeight();
@@ -52,6 +51,12 @@ public abstract class NewInventoryTab extends ScrollPane {
 		spriteImage.setFitWidth(spriteWidth / scaleValue);
 		spriteImage.setFitHeight(spriteHeight / scaleValue);
 		newSpriteImages.add(spriteImage);
+		updateImages();
+	}
+	
+	protected void addImage(String imageName) {
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+		addNew(image);
 	}
 	
 	protected void updateImages() {

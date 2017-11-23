@@ -121,7 +121,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(ImageView imageView) {
-		rootAdd(new ImageView(imageView.getImage()));
+		myRightToolBar.imageSelected(imageView.getImage());
 	}
 
 //	@Override

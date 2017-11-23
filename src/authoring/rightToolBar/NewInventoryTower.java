@@ -12,7 +12,9 @@ public class NewInventoryTower extends NewInventoryTab {
 
 	@Override
 	protected void addDefaultImages() {
-		addImage("red_balloon.png");
+//		addImage("red_balloon.png");
 	}
+	
+
 
 }
