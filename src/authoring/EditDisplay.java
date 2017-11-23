@@ -26,16 +26,13 @@ import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
-	private static final double GRID_Y_LOCATION = 455;
-	private static final double GRID_X_LOCATION = 650;
+	private static final double GRID_X_LOCATION = 605;
+	private static final double GRID_Y_LOCATION = 30;
 	private LeftToolBar myLeftToolBar;
 	private GameArea myMainGrid;
 	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
-	private Scene drawingScene;
-	private Stage drawingStage;
 	private CheckBox gridToggle;
-	private StaticObject myStaticObject;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -51,8 +48,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		myStaticObject = new StaticObject(2, this);
 //		rootAdd(myStaticObject);
 		gridToggle = new CheckBox();
-		gridToggle.setLayoutX(605);
-		gridToggle.setLayoutY(30);
+		gridToggle.setLayoutX(GRID_X_LOCATION);
+		gridToggle.setLayoutY(GRID_Y_LOCATION);
 		gridToggle.setSelected(true);
 		gridToggle.setText("Grid");
 		gridToggle.setTextFill(Color.BLACK);
@@ -83,12 +80,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		alert.setTitle("Object placement error");
 		alert.setHeaderText("Must place object in the main grid");
 		alert.show();
-	}
-
-	//@Override
-	public void decreaseHealth() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -123,15 +114,4 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void clicked(ImageView imageView) {
 		myRightToolBar.imageSelected(imageView.getImage());
 	}
-
-//	@Override
-//	public void dropped(BackgroundObject currObject, MouseEvent e) {
-//		if(e.getButton() == MouseButton.SECONDARY) {
-//			deleteObject(currObject);
-//		}else {
-//			myMainGrid.placeInGrid(currObject);
-//			myGameEnvironment.requestFocus();
-//		}
-//		
-//	}
 }
