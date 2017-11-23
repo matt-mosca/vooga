@@ -13,14 +13,12 @@ public class StaticObject extends ImageView {
 	private int objectSize;
 	private int realSize;
 	private ClickableInterface myClickable;
-	private String	 myImageString;
+	private String myImageString;
 	
 	public StaticObject(int size, ClickableInterface clickable, String imageString) {
 		myClickable = clickable; 
 		myImageString = imageString;
-		realSize = size * CELL_SIZE;
-		this.setFitWidth(realSize);
-		this.setFitHeight(realSize);
+		setSize(size);
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageString));
 		this.setImage(image);
 		objectSize = size;
@@ -28,6 +26,12 @@ public class StaticObject extends ImageView {
 		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->dropped(e));
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->pressed(e));
 		
+	}
+
+	private void setSize(int size) {
+		realSize = size * CELL_SIZE;
+		this.setFitWidth(realSize);
+		this.setFitHeight(realSize);
 	}
 	
 	private void drag(MouseEvent e) {
@@ -61,6 +65,18 @@ public class StaticObject extends ImageView {
 	
 	public int getSize() {
 		return objectSize;
+	}
+	
+	public void incrementSize() {
+		objectSize++;
+		setSize(objectSize);
+	}
+	
+	public void decrementSize() {
+		if (objectSize > 1) {
+			objectSize--;
+			setSize(objectSize);
+		}
 	}
 
 }

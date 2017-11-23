@@ -103,8 +103,8 @@ public class PlacementGrid extends GridPane {
 				Point2D cellLocation = new Point2D(currCell.getLayoutX(), currCell.getLayoutY());
 				double totalDistance = Math.abs(cellLocation.distance(currObject.center()));
 				if (totalDistance <= minDistance && currCell.isEmpty() 
-						&& (!neighborsFull(r, c, currObject.getSize()) | 
-								currObject instanceof BackgroundObject)) {
+						&& (!neighborsFull(r, c, currObject.getSize())) | 
+								currObject instanceof BackgroundObject) {
 					minDistance = totalDistance;
 					finalLocation = cellLocation;
 					finalRow = r;
