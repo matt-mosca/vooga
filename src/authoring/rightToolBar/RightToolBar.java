@@ -27,16 +27,7 @@ import javafx.scene.layout.VBox;
 public class RightToolBar extends VBox {
 	
 	private TableView<ObjectProperties> table;
-	private ObjectProperties[] dataArray;
-	private ObservableList<ObjectProperties> data;
-	private Label label;
-	private Button addButton;
-	private TextField addFirst;
-	private TextField addLast;
-	private TableColumn<ObjectProperties, String> firstCol;
-	private TableColumn<ObjectProperties, String> lastCol;
 	private AuthorInterface myAuthor;
-	private ButtonFactory buttonMaker;
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
 	private TabPane bottomTabPane;
@@ -45,17 +36,8 @@ public class RightToolBar extends VBox {
 	private NewSpriteTab newProjectile;
 	
 	public RightToolBar(AuthorInterface author) {
-		this.setLayoutY(100);
+		this.setLayoutY(50);
 		myAuthor = author;
-	    table = new TableView<ObjectProperties>();
-	    dataArray = new ObjectProperties[] {new ObjectProperties("Tower 1", "1"),
-	            new ObjectProperties("Tower 2", "2"),
-	            new ObjectProperties("Tower 3", "3"),
-	            new ObjectProperties("Soldier 1", "20"),
-	            new ObjectProperties("Solider 2", "50")};
-	    data = FXCollections.observableArrayList(dataArray);
-	    
-	    buttonMaker = new ButtonFactory();
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
@@ -64,28 +46,8 @@ public class RightToolBar extends VBox {
 	    newTower = new NewTowerTab();   
 	    newTroop = new NewTroopTab(); 
 	    newProjectile = new NewProjectileTab(); 
-  
-        label = new Label("Table");
- 
+   
 //        table.setEditable(true);
- 
-        firstCol = new TableColumn<ObjectProperties, String>("Object");
-        firstCol.setCellValueFactory(
-                new PropertyValueFactory<ObjectProperties, String>("first"));
- 
-        lastCol = new TableColumn<ObjectProperties, String>("Property 1");
-        lastCol.setCellValueFactory(
-                new PropertyValueFactory<ObjectProperties, String>("last"));
- 
-        table.setItems(data);
-        table.getColumns().addAll(firstCol, lastCol);
- 
-        addFirst = new TextField();
-        addFirst.setPromptText("First");
-        addFirst.setMaxWidth(firstCol.getPrefWidth());
-        addLast = new TextField();
-        addLast.setMaxWidth(lastCol.getPrefWidth());
-        addLast.setPromptText("Last");
         this.setLayoutX(680);
 //      this.getChildren().add(table);
         this.getChildren().add(topTabPane);
@@ -96,22 +58,7 @@ public class RightToolBar extends VBox {
         newTower.attach(topTabPane.getTabs().get(0));
         newTroop.attach(topTabPane.getTabs().get(1));
         newProjectile.attach(topTabPane.getTabs().get(2));
-        
-        addButton = buttonMaker.buildDefaultTextButton("Add", e -> addData());
-
-        this.getChildren().addAll(addFirst, addLast, addButton);
-        this.setSpacing(3);
     }
-	
-	private void addData() {
-    	data.add(new ObjectProperties(addFirst.getText(), addLast.getText()));
-        addFirst.clear();
-        addLast.clear();
-    }
-	
-	public void updateInfo(String first, String second) {
-        data.add(new ObjectProperties(first, second));
-	}
 		
 	private void createAndAddTabs() {
 		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", topTabPane));
