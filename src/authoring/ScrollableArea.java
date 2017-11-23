@@ -20,6 +20,7 @@ public class ScrollableArea extends ScrollPane{
 		this.setLayoutX(X_OFFSET);
 		this.setLayoutY(Y_OFFSET);
 		this.setPrefSize(SIZE, SIZE);
+		this.setStyle("-fx-background: black;");
 		this.setContent(area);
 		this.addEventHandler(ZoomEvent.ZOOM, e->zoom(e));
 		this.addEventFilter(ScrollEvent.ANY, e->scroll(e));
