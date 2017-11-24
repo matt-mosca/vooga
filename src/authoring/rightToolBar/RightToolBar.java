@@ -41,7 +41,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private NewInventoryTab inventoryTower;
 	private NewInventoryTab inventoryTroop;
 	private NewInventoryTab inventoryProjectile;
-	private int counter;
+	private Pane propertiesPane;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
 
@@ -49,7 +49,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	public RightToolBar(CreationInterface created) {
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
-		counter = 0;
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
@@ -99,23 +98,20 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
-		System.out.println(imageView.getClass());
-		counter++;
-		Pane propertiesPane = new Pane();
-		Button deleteButton = new Button("Delete");
-		deleteButton.setLayoutX(50);
-		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->this.getChildren().remove(propertiesPane));
+		propertiesPane = new Pane();
+		Button deleteButton = new Button("Back");
+		deleteButton.setLayoutX(100);
+		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
 		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(imageView.clone());
-		
-
 		this.getChildren().removeAll(this.getChildren());
-		this.getChildren().add(topTabPane);
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
-//		this.getChildren().add(propertiesBox);
-//		topTabPane.toBack();
-//		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent(Integer.toString(counter), topTabPane));
-		
+	}
+	
+	private void removeButtonPressed() {
+		this.getChildren().removeAll(this.getChildren());
+		this.getChildren().add(topTabPane);
+		this.getChildren().add(bottomTabPane);
 	}
 } 
