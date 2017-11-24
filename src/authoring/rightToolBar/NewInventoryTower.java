@@ -1,9 +1,11 @@
 package authoring.rightToolBar;
 
+import interfaces.PropertiesInterface;
+
 public class NewInventoryTower extends NewInventoryTab {
 	
-	public NewInventoryTower() {
-		super();
+	public NewInventoryTower(PropertiesInterface properties) {
+		super(properties);
 		updateImages();
 	}
 
