@@ -1,11 +1,16 @@
 package authoring.rightToolBar;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import engine.authoring_engine.AuthoringController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class SpriteImage extends ImageView {
 	
 	private String myImageName;
+	private AuthoringController controller;
 	
 	
 	public SpriteImage() {
@@ -24,6 +29,9 @@ public abstract class SpriteImage extends ImageView {
 		double scaleValue = maxDimension / displaySize;
 		this.setFitWidth(spriteWidth / scaleValue);
 		this.setFitHeight(spriteHeight / scaleValue);
+	}
+	
+	public void createElement() {
 	}
 	
 	public abstract SpriteImage clone();

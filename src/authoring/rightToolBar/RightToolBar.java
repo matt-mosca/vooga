@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -26,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
  
 public class RightToolBar extends VBox implements PropertiesInterface {
@@ -40,10 +42,13 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private NewInventoryTab inventoryTroop;
 	private NewInventoryTab inventoryProjectile;
 	private int counter;
+	private final int X_LAYOUT = 680;
+	private final int Y_LAYOUT = 50;
+
 	
 	public RightToolBar(CreationInterface created) {
-        this.setLayoutX(680);
-		this.setLayoutY(50);
+        this.setLayoutX(X_LAYOUT);
+		this.setLayoutY(Y_LAYOUT);
 		counter = 0;
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
@@ -96,6 +101,17 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	public void clicked(SpriteImage imageView) {
 		System.out.println(imageView.getClass());
 		counter++;
-		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent(Integer.toString(counter), topTabPane));
+		Pane propertiesPane = new Pane();
+		propertiesPane.getChildren().add(imageView.clone());
+		
+
+		this.getChildren().removeAll(this.getChildren());
+		this.getChildren().add(topTabPane);
+		this.getChildren().add(propertiesPane);
+		this.getChildren().add(bottomTabPane);
+//		this.getChildren().add(propertiesBox);
+//		topTabPane.toBack();
+//		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent(Integer.toString(counter), topTabPane));
+		
 	}
 } 

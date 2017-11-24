@@ -17,7 +17,10 @@ public class TowerImage extends SpriteImage {
 	
 	@Override
 	public TowerImage clone() {
-		return new TowerImage(myKey);
+		TowerImage cloneImage = new TowerImage(myKey);
+		cloneImage.setFitHeight(this.getFitHeight());
+		cloneImage.setFitWidth(this.getFitWidth());
+		return cloneImage;
 	}
 
 }
