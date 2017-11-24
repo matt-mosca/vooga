@@ -7,118 +7,111 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// TODO - Just a basic outline for reference from Behavior
-// Schwen please feel free to add / change / remove as necessary
-// Could be sub-classed by -> MortalSprite -> MovingSprite etc
-public abstract class Sprite {
+import com.google.gson.FieldAttributes;
+import engine.behavior.collision.CollisionVisitable;
+import engine.behavior.collision.CollisionVisitor;
+import engine.behavior.firing.FiringStrategy;
+import engine.behavior.movement.MovementStrategy;
+import javafx.geometry.Bounds;
+import javafx.scene.image.ImageView;
 
-	private double xCoord;
-	private double yCoord;
+/**
+ * Represents displayed game objects in the backend. Responsible for controlling
+ * the object's update behavior.
+ *
+ * TODO - we need to change the way properties are set, unless we want the
+ * frontend to generate the strategies objects making this happen will require
+ * defining a set of properties we're okay with each sprite having e.g. fire
+ * rate, image path/url, destructible flag, etc. the creation of the strategy
+ * objects will then be handled in the factory
+ *
+ * @author Ben Schwennesen
+ */
+public class Sprite {
 
-	private double xVelocity;
-	private double yVelocity;
-	// ^ these might be subclass members (likely abstract subclass) instead if we want multi-genre flexibility
+	// These fields should be set through setProperties
+	private FiringStrategy firingStrategy;
+	private MovementStrategy movementStrategy;
+	private CollisionVisitor collisionVisitor;
+	private CollisionVisitable collisionVisitable;
+	// Might need custom code in setProperties for handling loading of image and
+	// subsequent construction of ImageView?
+	private ImageView spriteImageView;
 
-	// Flag to facilitate clean-up of 'dead' elements - only active elements
-	// displayed by front end
-	private boolean isActive;
-	// ^ I (Schwen) think this will be part of the State object once I make it
-
-	private String templateName;
-
-	public Sprite(Map<String, ?> properties, String templateName) {
+	public Sprite(Map<String, ?> properties) {
 		setProperties(properties);
-		this.templateName = templateName;
 	}
 
-	/**
-	 * Update self for one cycle based on current state
-	 */
-	public abstract void update();
+	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
+			CollisionVisitable collisionVisitable) {
+		this.firingStrategy = firingStrategy;
+		this.movementStrategy = movementStrategy;
+		this.collisionVisitor = collisionVisitor;
+		this.collisionVisitable = collisionVisitable;
+	}
 
 	/**
 	 * Move one cycle in direction of current velocity vector
 	 */
-	public abstract void move();
+	public void move() {
+		if (collisionVisitor.isBlocked()) {
+			movementStrategy.handleBlock();
+			collisionVisitor.unBlock();
+		}
+		movementStrategy.move();
+	}
 
 	/**
 	 * Attack in whatever way necessary Likely called by interaction_engine in
 	 * event-handlers for keys / clicks
 	 */
-	public abstract void attack();
-
-	public double getX() {
-		return xCoord;
-	}
-
-	public double getY() {
-		return yCoord;
-	}
-	
-	public double getXVelocity() {
-		return xVelocity;
-	}
-	
-	public double getYVelocity() {
-		return yVelocity;
-	}
-
-	public String getTemplateName() { return templateName; }
-
-	public boolean isActive() {
-		return isActive;
+	public void attack() {
+		firingStrategy.fire();
 	}
 
 	/**
-	 * Will cause Sprite to be displayed by front end Can be used to differentiate
-	 * between Sprites in game area and those not (dead, off-screen???, etc)
+	 * Handle the effects ON THIS SPRITE only of collision with another Sprite
+	 * 
+	 * @param other
+	 *            the other Sprite which this Sprite collided with
 	 */
-	public void setActive() {
-		isActive = true;
+	public void processCollision(Sprite other) {
+		other.collisionVisitable.accept(collisionVisitor);
 	}
 
-	protected void setX(double newX) {
-		xCoord = newX;
-	}
-
-	protected void setY(double newY) {
-		yCoord = newY;
-	}
-
-	/**
-	 * When the Sprite dies - will facilitate removal of element from
-	 * ElementManager's collection of active sprites
-	 */
-	public void deactivate() {
-		isActive = false;
+	public boolean isAlive() {
+		return collisionVisitor.isAlive();
 	}
 
 	/**
 	 * Set the properties of this sprite.
 	 *
-	 * @param properties - maps instance variables of this sprite to properties, as strings
+	 * @param properties
+	 *            - maps instance variables of this sprite to properties, as strings
 	 */
-	private void setProperties(Map<String, ?> properties)  {
-		List<Field> fields = getAllFieldsInInheritanceHierarchy();
+	public void setProperties(Map<String, ?> properties) {
+		List<Field> fields = getFieldsForAllMembers();
 		for (Field field : fields) {
 			field.setAccessible(true);
 			if (properties.containsKey(field.getName())) {
 				setField(properties, field);
 			} else {
 				// TODO - throw custom exception? set to a default value?
-				//System.out.println(String.format("%s: warning, %s was not set", this.getClass().getName(), field
-				// .getName()));
 			}
 		}
 	}
 
-	private List<Field> getAllFieldsInInheritanceHierarchy() {
+	private List<Field> getFieldsForAllMembers() {
 		List<Field> fields = new ArrayList<>(Arrays.asList(this.getClass().getDeclaredFields()));
-		Class superClass = this.getClass().getSuperclass();
-		while (superClass != null && !superClass.equals(Object.class)) {
-			fields.addAll(Arrays.asList(superClass.getDeclaredFields()));
-			superClass = superClass.getSuperclass();
-		}
+		/*
+		 * fields.addAll(Arrays.asList(firingStrategy.getClass().getDeclaredFields()));
+		 * fields.addAll(Arrays.asList(movementStrategy.getClass().getDeclaredFields()))
+		 * ;
+		 * fields.addAll(Arrays.asList(collisionVisitor.getClass().getDeclaredFields()))
+		 * ;
+		 * fields.addAll(Arrays.asList(collisionVisitable.getClass().getDeclaredFields()
+		 * ));
+		 */
 		return fields;
 	}
 
@@ -126,7 +119,8 @@ public abstract class Sprite {
 		try {
 			field.set(this, properties.get(field.getName()));
 		} catch (IllegalAccessException e) {
-			// TODO - because of setAccessible above this won't happen (?), so remove print statement
+			// TODO - because of setAccessible above this won't happen (?), so remove print
+			// statement
 			System.out.println("Sprite reflection exception: this should never happen");
 		}
 	}
@@ -134,10 +128,45 @@ public abstract class Sprite {
 	/**
 	 * Get all the field names of this sprite instance, for creating a property map.
 	 *
-	 * @return a list of all field names (regardless of accessibility) in this instance's inheritance hierarchy
+	 * @return a list of all field names (regardless of accessibility) in this
+	 *         instance's inheritance hierarchy
 	 */
 	public List<String> getFieldNames() {
-		return getAllFieldsInInheritanceHierarchy().stream()
-				.map(Field::getName).collect(Collectors.toList());
+		return getFieldsForAllMembers().stream().map(Field::getName).collect(Collectors.toList());
 	}
+
+	/**
+	 * For front end to retrieve, rescale and display
+	 * 
+	 * @return
+	 */
+	public ImageView getRepresentation() {
+		return spriteImageView;
+	}
+
+	/**
+	 * Scaling-aware boundaries of sprite's representation 
+	 * 
+	 * @return
+	 */
+	public Bounds getBounds() {
+		return spriteImageView.getBoundsInParent();
+	}
+
+	public double getX() {
+		return movementStrategy.getX();
+	}
+
+	public double getY() {
+		return movementStrategy.getY();
+	}
+
+	public void setX(double newXCoord) {
+		movementStrategy.setX(newXCoord);
+	}
+
+	public void setY(double newYCoord) {
+		movementStrategy.setY(newYCoord);
+	}
+
 }

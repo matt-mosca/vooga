@@ -2,10 +2,11 @@ package sprites;
 
 import java.util.Map;
 
+//TODO - DEPRECATE IN FAVOR OF FIRINGSTRATEGY
 /**
  * Abstraction of a Sprite that attacks periodically at a certain frequency
  * @author radithya
- *
+ * @deprecated
  */
 public abstract class PeriodicallyAttackingSprite extends MortalSprite {
 
@@ -17,14 +18,7 @@ public abstract class PeriodicallyAttackingSprite extends MortalSprite {
 		resetAttackTimer();
 	}
 
-	@Override
-	public void update() {
-		if (shouldAttack()) {
-			attack();
-		}
-	}
-
-	// TODO - launch projectile, needs Projectile class
+	// TODO - DEPRECATE AND MOVE THE FOLLOWING INTO A FIRING STRATEGY
 	@Override
 	public void attack() { }
 	

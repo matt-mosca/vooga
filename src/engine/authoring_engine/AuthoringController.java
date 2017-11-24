@@ -1,108 +1,132 @@
 package engine.authoring_engine;
 
-import java.util.Collection;
-import java.util.Map;
-import engine.GameController;
-import engine.IOController;
-import engine.StateManager;
+import engine.AbstractGameController;
+import engine.AuthoringModelController;
+import packaging.Packager;
 import sprites.Sprite;
-import util.SerializationUtils;
+import sprites.SpriteFactory;
+
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Top-level authoring controller, gateway of front end GameAuthoringEnv to back
- * end logic and IO
- * 
- * @author radithya
+ * Controls the model for a game being authored. Allows the view to modify and retrieve information about the model.
  *
+ * TODO (for Ben S)
+ *      - move sprite map/id into sprite factory or other object (?)
+ *      - implement object creation in factory via string properties
+ *              + this will entail all behavior object constructors having same parameters
+ *                  because reflection won't work otherwise
+ *                  (eg) MortalCollider needs same constructor params as ImmortalCollider
+ *      - custom error throwing
+ * @author radithya
+ * @author Ben Schwennesen
  */
+public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
-public class AuthoringController extends GameController {
+    private Packager packager;
 
-	private AuthoringStateManager authoringStateManager;
+    // TODO - move these into own object? Or have them in the sprite factory?
+    private AtomicInteger spriteIdCounter;
+    private Map<Integer, Sprite> spriteIdMap;
 
-	public AuthoringController() {
-		super();
-		authoringStateManager = new AuthoringStateManager(getIOController());
-	}
+    private SpriteFactory spriteFactory;
 
+    public AuthoringController() {
+        super();
+        packager = new Packager();
+        spriteIdCounter = new AtomicInteger();
+        spriteIdMap = new HashMap<>();
+        spriteFactory = new SpriteFactory();
+    }
+
+    @Override
+    public void exportGame() {
+        spriteFactory.exportSpriteTemplates();
+        packager.generateJar(getGameName());
+    }
+
+    @Override
+    public void defineElement(String elementName, Map<String, String> properties) {
+        spriteFactory.defineElement(elementName, properties);
+    }
+
+    @Override
+    public int placeElement(String elementName, double xCoordinate, double yCoordinate) {
+        Sprite sprite = spriteFactory.generateSprite(elementName);
+        sprite.setX(xCoordinate);
+        sprite.setY(yCoordinate);
+        spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
+        cacheGeneratedSprite(sprite);
+        return spriteIdCounter.get();
+    }
+
+    @Override
+    public void moveElement(int elementId, double xCoordinate, double yCoordinate) throws IllegalArgumentException {
+        Sprite sprite = getElement(elementId);
+        sprite.setX(xCoordinate);
+        sprite.setY(yCoordinate);
+    }
+
+    @Override
+    public void updateElementProperties(int elementId, Map<String, String> properties) throws IllegalArgumentException {
+        Sprite sprite = getElement(elementId);
+        // TODO - implement
+    }
+
+    @Override
+    public void deleteElement(int elementId) throws IllegalArgumentException {
+        Sprite removedSprite = spriteIdMap.remove(elementId);
+        getLevelSprites().get(getCurrentLevel()).remove(removedSprite);
+    }
+
+    @Override
+    public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
+        Sprite sprite = getElement(elementId);
+        // TODO - implement
+        return null;
+    }
+
+    private Sprite getElement(int elementId) throws IllegalArgumentException {
+        if (!spriteIdMap.containsKey(elementId)) {
+            throw new IllegalArgumentException();
+        }
+        return spriteIdMap.get(elementId);
+    }
+
+    @Override
+    public void createNewLevel(int level) {
+        setLevel(level);
+    }
+
+    @Override
+    public void loadGameState(String saveName, int level) throws FileNotFoundException {
+        loadGameStateElements(saveName, level);
+        loadGameStateSettings(saveName, level);
+        loadGameConditions(saveName, level);
+    }
+
+    @Override
+    public void setStatusProperty(String property, String value) {
+    		getLevelStatuses().get(getCurrentLevel()).put(property, value);
+    }
+
+    // TODO - to support multiple clients / interactive editing, need a client-id param (string or int)
+    @Override
+    public void deleteLevel(int level) throws IllegalArgumentException {
+        getLevelStatuses().remove(level);
+        getLevelSprites().remove(level);
+        getLevelConditions().remove(level);
+    }
+    
 	@Override
-	protected AuthoringStateManager getStateManager() {
-		return authoringStateManager;
-	}
-
-	@Override
-	public boolean isAuthoring() {
-		return AuthoringConstants.IS_AUTHORING;
-	}
-
-	/**
-	 * Define a new element type
-	 * 
-	 * @param name
-	 *            the name of new element to be created
-	 * @param properties
-	 *            map of properties for the new element, of the form {"image_url":
-	 *            <url>, "hp" : <hp>, ...}
-	 */
-	public Sprite createElement(String name, Map<String, String> properties) {
-		return getStateManager().createElement(name, properties);
-	}
-
-	/**
-	 * Add a previously defined element type to the game (level's) inventory BUT NOT
-	 * on map
-	 * 
-	 * @param name
-	 *            the identifier for this previously created type
-	 * @param level
-	 *            level of the game this element is being added for
-	 */
-	public Sprite addElement(String name, int level) {
-		return getStateManager().addElement(name, level);
-	}
-
-	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param x
-	 *            xCoordinate of previously created element
-	 * @param y
-	 *            yCoordinate of previously created element
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @param customProperties
-	 *            map of properties to override for this specific instance
-	 */
-	public Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties) {
-		return getStateManager().updateElement(name, x, y, level, customProperties);
-	}
-	
-	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @param customProperties
-	 *            map of properties to override for this specific instance
-	 */
-	public Sprite updateInventoryElement(String name, int level, Map<String, String> customProperties) {
-		//TODO
-		return null;
-	}
-
-
-	/**
-	 * Set a top-level game property (e.g. lives, starting resources, etc)
-	 * 
-	 * @param property
-	 *            name
-	 * @param value
-	 *            string representation of the value
-	 */
-	public void setGameParam(String property, String value) {
-		getStateManager().setGameParam(property, value);
+	protected void assertValidLevel(int level) throws IllegalArgumentException {
+		if (level < 0 || level > getLevelSprites().size()) {
+			throw new IllegalArgumentException();
+			// TODO - customize exception ?
+		}		
 	}
 
 }

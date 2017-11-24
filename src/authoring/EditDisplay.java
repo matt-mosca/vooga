@@ -1,10 +1,19 @@
 package authoring;
 
 import java.util.ArrayList;
+
+import com.sun.glass.events.KeyEvent;
+
+import authoring.rightToolBar.RightToolBar;
+import authoring.rightToolBar.SpriteImage;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -14,64 +23,76 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
+import sprites.BackgroundObject;
+import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
+	private static final double GRID_X_LOCATION = 605;
+	private static final double GRID_Y_LOCATION = 30;
 	private LeftToolBar myLeftToolBar;
 	private GameArea myMainGrid;
+	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
-	private Scene drawingScene;
-	private Stage drawingStage;
 	private CheckBox gridToggle;
+	
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
-		myLeftToolBar = new LeftToolBar(this);
-		rootAdd(myLeftToolBar);
-		myMainGrid = new GameArea(this);
-		rootAdd(myMainGrid);
-		myRightToolBar = new RightToolBar(this);
-		rootAdd(myRightToolBar);
-		
-		gridToggle = new CheckBox();
-		gridToggle.setLayoutX(650);
-		gridToggle.setLayoutY(455);
-		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
-			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
-		});
+		addItems();
+		createGridToggle();
 		rootAdd(gridToggle);
 	}
 
-	@Override
-	public void clicked(Rectangle rec) {
-		// TODO Auto-generated method stub
-		Rectangle currRectangle = new Rectangle(rec.getWidth(), rec.getHeight(), rec.getFill());
-		currRectangle.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, currRectangle));
-		currRectangle.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(currRectangle));
-		rootAdd(currRectangle);
-		myRightToolBar.updateInfo(Double.toString(currRectangle.getWidth()),
-				Double.toString(currRectangle.getWidth()));
+	private void createGridToggle() {
+		gridToggle = new CheckBox();
+		gridToggle.setLayoutX(GRID_X_LOCATION);
+		gridToggle.setLayoutY(GRID_Y_LOCATION);
+		gridToggle.setSelected(true);
+		gridToggle.setText("Grid");
+		gridToggle.setTextFill(Color.BLACK);
+		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
+		});
+	}
+
+	private void addItems() {
+		myLeftToolBar = new LeftToolBar(this);
+		rootAdd(myLeftToolBar);
+		myMainGrid = new GameArea(this);
+		myGameEnvironment = new ScrollableArea(myMainGrid);
+		rootAdd(myGameEnvironment);
+		myRightToolBar = new RightToolBar(this);
+		rootAdd(myRightToolBar);
 	}
 	
-	private void drag(MouseEvent e, Rectangle currRectangle) {
-		currRectangle.setX(e.getSceneX() - currRectangle.getWidth() / 2);
-		currRectangle.setY(e.getSceneY() - currRectangle.getHeight() / 2);
+	@Override 
+	public void clicked(StaticObject object) {
+		createOptionButtons(object);
 	}
 	
-	private void released(Rectangle currRectangle) {
-		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
-			createNewErrorWindow();
+	private void createOptionButtons(StaticObject object) {
+		Button addNewButton = new Button("New");
+		Button incrementButton = new Button("+");
+		Button decrementButton = new Button("-");
+		incrementButton.setLayoutX(50);
+		decrementButton.setLayoutX(85);
+		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
+		incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.incrementSize());
+		decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.decrementSize());
+		rootAdd(addNewButton);
+		rootAdd(incrementButton);
+		rootAdd(decrementButton);
+	}
+
+	private void addObject(StaticObject object) {
+		StaticObject newObject;
+		if (object instanceof BackgroundObject) {
+			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
+		} else {
+			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
-		getInfo(currRectangle);
-	}
-	
-	private void getInfo(Rectangle rec) {
-//		myRightToolBar.updateInfo(rec);
-		System.out.println(rec.getWidth());
-		System.out.println(rec.getHeight());
-		System.out.println(rec.getFill());
-		System.out.println(rec.getX());
-		System.out.println(rec.getY());
+		myMainGrid.getChildren().add(newObject);
 	}
 	
 	private void createNewErrorWindow() {
@@ -81,16 +102,35 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		alert.show();
 	}
 
-	//@Override
-	public void decreaseHealth() {
-		// TODO Auto-generated method stub
-		
+	@Override
+	public void dropped(StaticObject currObject, MouseEvent e) {
+		if(e.getButton() == MouseButton.SECONDARY) {
+			deleteObject(currObject);
+		} else {
+			myMainGrid.placeInGrid(currObject);
+			myGameEnvironment.requestFocus();
+		}
+	}
+
+	@Override
+	public void pressed(StaticObject currObject, MouseEvent e) {
+		e.consume();
+		myMainGrid.removeFromGrid(currObject);
 	}
 	
-//	private void insertAnimation() {
-//		String imageName = "turtleGif.gif";
-//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
-//		ImageView square = new ImageView(image);
-//		rootAdd(square);
-//	}
+	private void deleteObject(StaticObject object) {
+		myMainGrid.getChildren().remove(object);
+		myLeftToolBar.requestFocus();
+		myMainGrid.removeFromGrid(object);
+	}
+
+	@Override
+	public void newTowerSelected(ImageView myImageView) {
+		
+	}
+
+	@Override
+	public void clicked(SpriteImage imageView) {
+		myRightToolBar.imageSelected(imageView);
+	}
 }

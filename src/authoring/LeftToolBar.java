@@ -2,6 +2,8 @@ package authoring;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import interfaces.ClickableInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -13,6 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import sprites.BackgroundObject;
+import sprites.StaticObject;
 
 /**
  * Creates a re-runable HBox for old commands
@@ -21,61 +25,70 @@ import javafx.scene.shape.Rectangle;
  */
 public class LeftToolBar extends ScrollPane {
 	private static final int WIDTH = 300;
-	private List<Rectangle> myList;
-	private ListView<Rectangle> myListView;
-	private AuthorInterface myAuthor;
-	private Rectangle myrec1;
-	private Rectangle myrec2;
-	private Rectangle myrec3;
-	private Rectangle myrec4;
+	private List<StaticObject> myList;
+	private ListView<StaticObject> myListView;
+	private ClickableInterface myClickable;
+	private StaticObject myStatic1;
+	private StaticObject myStatic2;
+	private StaticObject myStatic3;
+	private BackgroundObject myBackground1;
+	private BackgroundObject myBackground2;
+	private BackgroundObject myBackground3;
+	private BackgroundObject myBackground4;
+	private BackgroundObject myBackground5;
 	
-	public LeftToolBar(AuthorInterface author) {
+	public LeftToolBar(ClickableInterface clickable) {
 		this.setLayoutY(50);
-		myAuthor = author;
-        myList = new ArrayList<Rectangle>();
-        myrec1 = createRectangle(100, 100, Color.YELLOW);
-        myrec2 = createRectangle(150, 150, Color.BLUE);
-        myrec3 = createRectangle(50, 50, Color.RED);
-        myrec4 = createRectangle(100, 400, Color.BLACK);
-        myList.add(myrec1);
-        myList.add(myrec2);
-        myList.add(myrec3);
-        myList.add(myrec4);
-        ObservableList<Rectangle> items = FXCollections.observableArrayList(myList);
-        myListView = new ListView<Rectangle>();
+		myClickable = clickable;
+        init();
+	}
+
+	public void init() {
+		createDefaultObjects();
+		addToList();
+        addToToolbar();
+	}
+
+	public void createDefaultObjects() {
+		myStatic1 = createNewStatic(1, "tortoise.png");
+		myStatic2 = createNewStatic(1, "gray_circle.png");
+		myStatic3 = createNewStatic(1, "green_soldier.gif");
+		myBackground1 = createNewBackground(3, "grass_small.png");
+		myBackground2 = createNewBackground(3, "grass2_small.png");
+		myBackground3 = createNewBackground(2, "brick_path.png");
+		myBackground4 = createNewBackground(2, "stone_path1.png");
+		myBackground4 = createNewBackground(3, "water_medium.png");
+	}
+
+	public void addToList() {
+		myList = new ArrayList<StaticObject>();
+        myList.add(myStatic1);
+        myList.add(myStatic2);
+        myList.add(myStatic3);
+        myList.add(myBackground1);
+        myList.add(myBackground2);
+        myList.add(myBackground3);
+        myList.add(myBackground4);
+        myList.add(myBackground5);
+	}
+	
+	public void addToToolbar() {
+        ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
+        myListView = new ListView<StaticObject>();
+        myListView.setOnMouseClicked(e->myClickable.clicked(
+        		myListView.getSelectionModel().getSelectedItem()));
         myListView.setItems(items);
         this.setContent(myListView);
 	}
 	
-	private Rectangle createRectangle(double width, double height, Paint color) {
-		Rectangle tempRec = new Rectangle(width, height, color);
-        tempRec.addEventHandler(MouseEvent.MOUSE_CLICKED, e->myAuthor.clicked(tempRec));
-		return tempRec;
+	private StaticObject createNewStatic(int size, String imageString) {
+		return new StaticObject(size, myClickable, imageString);
 	}
-
-//	private void drag(MouseEvent e, Rectangle myrec) {
-//		Rectangle newRectangle = new Rectangle(myrec.getX(), myrec.getY());
-//		newRectangle.setX(e.getSceneX());
-//		myrec.setY(e.getSceneY());
-//	}
-
-//	public void init() {
-//		myCommandHistoryBox = new ScrollPane();
-//		commandHistoryView = new ListView<Button>();
-//		commandHistory = new ArrayList<Button>();
-//		ObservableList<Button> items =FXCollections.observableArrayList(commandHistory);
-//        commandHistoryView.setItems(items);
-//        commandHistoryView.getSelectionModel();
-//        myCommandHistoryBox.setContent(commandHistoryView);
-//	}
 	
-//	public void addCommandToHistoryBox(String command) {
-//		Button button = new Button(command);
-//		button.addEventHandler(MouseEvent.MOUSE_CLICKED, e->System.out.println(command));
-//		commandHistory.add(button);
-//		button.setStyle(  "-fx-border-color: transparent; -fx-border-width: 0;-fx-background-radius: 0;-fx-background-color: transparent;");
-//		ObservableList<Button> items =FXCollections.observableArrayList(commandHistory);
-//        commandHistoryView.setItems(items);
-//	}
+	private BackgroundObject createNewBackground(int size, String imageString) {
+		return new BackgroundObject(size, myClickable, imageString);
+	}
+	
+
 	
 }

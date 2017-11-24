@@ -1,51 +1,104 @@
 package authoring;
 
-import java.util.LinkedList;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import authoring.path.Path;
+import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import sprites.BackgroundObject;
+import sprites.StaticObject;
 
 public class GameArea extends Pane{
-	private final int GRID_WIDTH = 400;
-	private final int GRID_HEIGHT = 400;
+	private final String WIDTH = "Game_Area_Width";
+	private final String HEIGHT = "Game_Area_Height";
+	private final String COLOR = "Game_Area_Color";
+	private final String ROW_PERCENTAGE = "Grid_Row_Percentage";
+	private final String COL_PERCENTAGE = "Grid_Column_Percentage";
 	
+	private int width;
+	private int height;
+	private int rowPercentage;
+	private int colPercentage;
+	private String backgroundColor;
+	
+	private ResourceBundle gameProperties;
 	private PlacementGrid grid;
-	private LinkedList<PathPoint> points;
-	private PathPoint activePoint;
+	private Path path;
+	private boolean gridEnabled = true;
+	
+	private List<StaticObject> currentObjects;
 	
 	public GameArea(AuthorInterface author) {
-		grid = new PlacementGrid(author, GRID_WIDTH, GRID_HEIGHT, this);
-		points = new LinkedList<>();
-		activePoint = null;
-		
-		this.getChildren().add(grid);
-		toggleGridVisibility(false);
+		initializeProperties();
 		initializeLayout();
 		initializeHandlers();
+		currentObjects = new ArrayList<StaticObject>();
+		path = new Path();
+		grid = new PlacementGrid(author, width, height, rowPercentage, colPercentage, path);
+
+		this.getChildren().add(path);
+		this.getChildren().add(grid);
+		grid.toBack();
+	}
+	
+	private void initializeProperties() {
+		gameProperties = ResourceBundle.getBundle("authoring/resources/GameArea");
+		width = Integer.parseInt(gameProperties.getString(WIDTH));
+		height = Integer.parseInt(gameProperties.getString(HEIGHT));
+		backgroundColor = gameProperties.getString(COLOR);
+		rowPercentage = Integer.parseInt(gameProperties.getString(ROW_PERCENTAGE));
+		colPercentage = Integer.parseInt(gameProperties.getString(COL_PERCENTAGE));
 	}
 	
 	private void initializeLayout() {
-		this.setMinSize(GRID_WIDTH, GRID_HEIGHT);
-		this.setStyle("-fx-background-color: #3E3F4B;");
-		this.setLayoutX(260);
-		this.setLayoutY(50);
+		this.setPrefSize(width, height);
+		this.setStyle("-fx-background-color: " + backgroundColor + ";");
 	}
 	
 	private void initializeHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addWaypoint(e, e.getX(), e.getY()));
+		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->gameAreaClicked(e));
 	}
 	
-	protected void addWaypoint(MouseEvent e, double x, double y) {
-		PathPoint point = new PathPoint(x, y);
-		if(activePoint != null) this.getChildren().add(activePoint.setConnectingLine(point));
-		activePoint = point;
-		points.add(point);
-		this.getChildren().add(point);
-		e.consume();
+	private void gameAreaClicked(MouseEvent e) {
+		path.addWaypoint(e, e.getX(), e.getY());
+	}
+	
+	protected void placeInGrid(StaticObject currObject) {
+		if (!(currObject instanceof BackgroundObject)) {
+			currentObjects.add(currObject);
+		}
+		if(gridEnabled) {
+			Point2D newLocation = grid.place(currObject);
+			currObject.setX(newLocation.getX());
+			currObject.setY(newLocation.getY());
+			for (StaticObject s : currentObjects) {
+				s.toFront();
+			}
+		}
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
 		grid.setVisible(visible);
+		gridEnabled = visible;
+	}
+	
+	protected void resizeGameArea(int width, int height) {
+		this.width = width;
+		this.height= height;
+		grid.resizeGrid(width, height);
+		this.setPrefSize(width, height);
+	}
+	
+	protected void changeBackground(String hexcode) {
+		this.setStyle("-fx-background-color: " + hexcode + ";");
+		backgroundColor = hexcode;
 	}
 
+	public void removeFromGrid(StaticObject currObject) {
+		grid.removeFromGrid(currObject);
+	}
 }

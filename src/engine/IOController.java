@@ -2,7 +2,6 @@ package engine;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +11,8 @@ import sprites.Sprite;
 import util.SerializationUtils;
 
 /**
- * Gateway of authoring and play modules to I/O through engine Represents shared
- * logic for
+ * Gateway of authoring and play modules to I/O through engine. Encapsulates
+ * shared logic for authoring and play use-cases
  * 
  * @author radithya
  *
@@ -26,8 +25,6 @@ public class IOController {
 
 	private SerializationUtils serializationUtils;
 	private GamePersistence gamePersistence;
-	// TODO - uncomment when ElementFactory is ready
-	// private ElementFactory elementFactory;
 
 	public IOController(SerializationUtils serializationUtils) {
 		this.serializationUtils = serializationUtils;
@@ -46,17 +43,16 @@ public class IOController {
 	 * @param status
 	 *            top-level status key-value pairs for heads-up display (player) or
 	 *            settings (authoring)
-	 * @param elements
-	 *            set of elements in game to be serialized
 	 * @param forAuthoring
 	 *            true if for authoring, false if for play - TODO - more flexible
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-			Map<String, String> status, Collection<Sprite> elements, boolean forAuthoring) {
+			Map<String, String> levelConditions, List<Sprite> levelSprites, Map<String, String> status,
+			boolean forAuthoring) {
 		// First extract string from file through io module
-		String serializedGameState = serializationUtils.serializeGameData(gameDescription, currentLevel, status,
-				elements);
+		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions,
+				currentLevel, status, levelSprites);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -73,15 +69,13 @@ public class IOController {
 	 *         to the front end
 	 * @throws FileNotFoundException
 	 */
-	public Collection<Sprite> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
+	public List<Sprite> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
 			throws FileNotFoundException {
 		// First extract string from file through io module
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		// deserialize string into map through utils module
-		Map<String, List<Sprite>> spritesMap = serializationUtils.deserializeGameSprites(serializedGameData, level);
-		// TODO - retrieve collection of Sprites from map through ElementFactory
-		// TODO - return this collection
-		return null;// TEMP
+		List<Sprite> levelSprites = serializationUtils.deserializeGameSprites(serializedGameData, level);
+		return levelSprites;
 	}
 
 	// TODO - throw custom exception
@@ -103,6 +97,45 @@ public class IOController {
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		// deserialize string into map through utils module
 		return serializationUtils.deserializeGameStatus(serializedGameData, level);
+	}
+
+	/**
+	 * Load conditions (victory, defeat, etc.) for the game
+	 * 
+	 * @param savedGameName
+	 *            the name used to save the game state
+	 * @param level
+	 *            the level whose conditions are to be loaded
+	 * @param forAuthoring
+	 *            true if for authoring, false if for play - TODO - more flexible
+	 *            approach? reflection?
+	 * @return map of condition key (e.g. victory, defeat) to string from which
+	 *         boolean function can be dispatched through reflection
+	 * @throws FileNotFoundException
+	 */
+	public Map<String, String> loadGameConditions(String savedGameName, int level, boolean forAuthoring)
+			throws FileNotFoundException {
+		// First extract string from file through io module
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
+		// deserialize string into map through utils module
+		return serializationUtils.deserializeGameConditions(serializedGameData, level);
+	}
+
+	/**
+	 * Get the number of levels for this game
+	 * 
+	 * @param savedGameName
+	 *            the name used to save the game state
+	 * @param forAuthoring
+	 *            true if for authoring, false if for play - TODO - more flexible
+	 *            approach? reflection?
+	 * @return number of levels that currently exist in this game
+	 * @throws FileNotFoundException
+	 */
+	public int getNumberOfLevelsForGame(String savedGameName, boolean forAuthoring) throws FileNotFoundException {
+		// First extract string from file through io module
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
+		return serializationUtils.getNumLevelsFromSerializedGame(serializedGameData);
 	}
 
 	/**
@@ -196,18 +229,21 @@ public class IOController {
 
 	/**
 	 * Get serialization of a level's data
-	 * 
+	 *
+	 * @param level
+	 *            level to get a serialization of
 	 * @param levelDescription
 	 *            description of level as set by authoring engine
 	 * @param levelStatus
 	 *            top-level status metrics of game
-	 * @param levelElements
-	 *            elements for that level
+	 * @param levelSprites
+	 *            the template-mapped game elements present in the level
 	 * @return string representing serialization of level's data
 	 */
-	public String getLevelSerialization(String levelDescription, Map<String, String> levelStatus,
-			Collection<Sprite> levelElements) {
-		return serializationUtils.serializeLevelData(levelDescription, levelStatus, levelElements);
+	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
+			Map<String, String> levelStatus, List<Sprite> levelSprites) {
+		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelStatus, levelSprites,
+				level);
 	}
 
 	/**

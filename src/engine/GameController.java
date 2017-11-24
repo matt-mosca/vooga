@@ -5,19 +5,24 @@ import java.util.Collection;
 import java.util.Map;
 
 import sprites.Sprite;
+import sprites.SpriteFactory;
 import util.SerializationUtils;
 
+/**
+ * Encapsulates shared logic for authoring and play controllers
+ * 
+ * @author radithya
+ * @deprecated 
+ *
+ */
 public abstract class GameController {
 
 	private SerializationUtils serializationUtils;
 	private IOController ioController;
-	// TODO - Initialize an ElementFactory instance when its ready
-	// private ElementFactory elementFactory;
 
 	public GameController() {
 		serializationUtils = new SerializationUtils();
 		ioController = new IOController(serializationUtils);
-		// elementFactory = new ElementFactory();
 	}
 
 	protected abstract StateManager getStateManager();
@@ -30,7 +35,6 @@ public abstract class GameController {
 	 */
 	public abstract boolean isAuthoring();
 
-	// TODO - interface methods
 	/**
 	 * Save state of currently played game - assumes only 1 game in play for a given
 	 * engine at a time?
@@ -39,7 +43,8 @@ public abstract class GameController {
 		getStateManager().saveGameState(savedGameName);
 	}
 
-	// TODO - throw custom exception
+	// TODO - Refactor in favor of approach of returning int ids corresponding to
+	// created sprites
 	/**
 	 * Load collection of elements for a previously saved game state
 	 * 
@@ -91,6 +96,8 @@ public abstract class GameController {
 		return getStateManager().getStatus();
 	}
 
+	// TODO - Refactor in favor of approach of returning int ids corresponding to
+	// created sprites
 	/**
 	 * Called to get current collection of events
 	 * 
@@ -100,6 +107,8 @@ public abstract class GameController {
 		return getStateManager().getCurrentElements();
 	}
 
+	// TODO - Refactor in favor of approach of returning int id corresponding to
+	// created sprite
 	/**
 	 * Place element of specified name at specified location
 	 * 
@@ -114,6 +123,17 @@ public abstract class GameController {
 	 */
 	public Sprite placeElement(String elementName, double x, double y) {
 		return getStateManager().placeElement(elementName, x, y);
+	}
+
+	/**
+	 * Set the current level to the given level, constraints on valid levels depend
+	 * on authoring / play use-case
+	 * 
+	 * @param level
+	 * @throws IllegalArgumentException
+	 */
+	public void setCurrentLevel(int level) throws IllegalArgumentException {
+		getStateManager().setCurrentLevel(level);
 	}
 
 	protected IOController getIOController() {
