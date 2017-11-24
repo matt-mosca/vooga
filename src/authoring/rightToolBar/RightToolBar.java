@@ -9,12 +9,14 @@ import authoring.ObjectProperties;
 import factory.ButtonFactory;
 import factory.TabFactory;
 import interfaces.CreationInterface;
+import interfaces.PropertiesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -25,9 +27,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
  
-public class RightToolBar extends VBox {
+public class RightToolBar extends VBox implements PropertiesInterface {
 	
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
@@ -38,12 +42,14 @@ public class RightToolBar extends VBox {
 	private NewInventoryTab inventoryTower;
 	private NewInventoryTab inventoryTroop;
 	private NewInventoryTab inventoryProjectile;
+	private Pane propertiesPane;
+	private final int X_LAYOUT = 680;
+	private final int Y_LAYOUT = 50;
 
 	
-	
 	public RightToolBar(CreationInterface created) {
-        this.setLayoutX(680);
-		this.setLayoutY(50);
+        this.setLayoutX(X_LAYOUT);
+		this.setLayoutY(Y_LAYOUT);
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
@@ -51,9 +57,9 @@ public class RightToolBar extends VBox {
 	    newTower = new NewTowerTab(created);   
 	    newTroop = new NewTroopTab(created); 
 	    newProjectile = new NewProjectileTab(created); 
-	    inventoryTower = new NewInventoryTower();
-	    inventoryTroop = new NewInventoryTroop();
-	    inventoryProjectile = new NewInventoryProjectile();
+	    inventoryTower = new NewInventoryTower(this);
+	    inventoryTroop = new NewInventoryTroop(this);
+	    inventoryProjectile = new NewInventoryProjectile(this);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
         
@@ -75,8 +81,10 @@ public class RightToolBar extends VBox {
 		makeTabsUnclosable();
 	}
 	
-	public void imageSelected(Image myImage) {
-		inventoryTower.addNew(myImage);
+	public void imageSelected(SpriteImage myImageView) {
+		if (myImageView instanceof TowerImage) inventoryTower.addNewImage(myImageView);
+		if (myImageView instanceof TroopImage) inventoryTroop.addNewImage(myImageView);
+		if (myImageView instanceof ProjectileImage) inventoryProjectile.addNewImage(myImageView);
 	}
 	
 	private void makeTabsUnclosable() {
@@ -88,8 +96,27 @@ public class RightToolBar extends VBox {
 			bottomTabPane.getTabs().get(i).setClosable(false);
 		}
 	}
+
+	@Override
+	public void clicked(SpriteImage imageView) {
+		propertiesPane = new Pane();
+		Button deleteButton = new Button("Back");
+		deleteButton.setLayoutX(300);
+		Label info = new Label("Properties here");
+		info.setLayoutY(100);
+		info.setFont(new Font("Arial", 30));
+		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
+		propertiesPane.getChildren().add(deleteButton);
+		propertiesPane.getChildren().add(imageView.clone());
+		propertiesPane.getChildren().add(info);
+		this.getChildren().removeAll(this.getChildren());
+		this.getChildren().add(propertiesPane);
+		this.getChildren().add(bottomTabPane);
+	}
 	
-	public void doSomething() {
-		System.out.println("Done");
+	private void removeButtonPressed() {
+		this.getChildren().removeAll(this.getChildren());
+		this.getChildren().add(topTabPane);
+		this.getChildren().add(bottomTabPane);
 	}
 } 

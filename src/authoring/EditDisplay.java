@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 import com.sun.glass.events.KeyEvent;
 
+import authoring.customize.AttackDefenseToggle;
+import authoring.customize.BackgroundColorChanger;
 import authoring.rightToolBar.RightToolBar;
+import authoring.rightToolBar.SpriteImage;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
@@ -34,17 +39,28 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
 	private CheckBox gridToggle;
+	private BackgroundColorChanger myColorChanger;
+	private AttackDefenseToggle myGameChooser;
+	private Label attackDefenseLabel;
 	
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
-		myLeftToolBar = new LeftToolBar(this);
-		rootAdd(myLeftToolBar);
-		myMainGrid = new GameArea(this);
-		myGameEnvironment = new ScrollableArea(myMainGrid);
-		rootAdd(myGameEnvironment);
-		myRightToolBar = new RightToolBar(this);
-		rootAdd(myRightToolBar);
+		addItems();
+		createGridToggle();
+		rootAdd(gridToggle);
+		createLabel();
+	}
+	
+	private void createLabel() {
+		attackDefenseLabel = new Label("Attack");
+		attackDefenseLabel.setFont(new Font("Arial", 40));
+		attackDefenseLabel.setLayoutX(300);
+		rootAdd(attackDefenseLabel);
+
+	}
+
+	private void createGridToggle() {
 		gridToggle = new CheckBox();
 		gridToggle.setLayoutX(GRID_X_LOCATION);
 		gridToggle.setLayoutY(GRID_Y_LOCATION);
@@ -54,7 +70,20 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
 		});
-		rootAdd(gridToggle);
+	}
+
+	private void addItems() {
+		myLeftToolBar = new LeftToolBar(this);
+		rootAdd(myLeftToolBar);
+		myMainGrid = new GameArea(this);
+		myGameEnvironment = new ScrollableArea(myMainGrid);
+		rootAdd(myGameEnvironment);
+		myRightToolBar = new RightToolBar(this);
+		rootAdd(myRightToolBar);
+		myColorChanger = new BackgroundColorChanger(this);
+		rootAdd(myColorChanger);
+		myGameChooser = new AttackDefenseToggle(this);
+		rootAdd(myGameChooser);
 	}
 	
 	@Override 
@@ -117,12 +146,29 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void newTowerSelected(ImageView myImageView) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void clicked(ImageView imageView) {
-		myRightToolBar.imageSelected(imageView.getImage());
+	public void clicked(SpriteImage imageView) {
+		myRightToolBar.imageSelected(imageView);
+	}
+
+	@Override
+	public void changeBackground(String color) {
+		myMainGrid.changeColor(color);
+		
+	}
+
+	@Override
+	public void attack() {
+		attackDefenseLabel.setText("Attack");
+	}
+
+	@Override
+	public void defense() {
+		attackDefenseLabel.setText("Defense");
+
+		
 	}
 }

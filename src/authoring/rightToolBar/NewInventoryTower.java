@@ -1,20 +1,17 @@
 package authoring.rightToolBar;
 
-import java.util.ResourceBundle;
+import interfaces.PropertiesInterface;
 
 public class NewInventoryTower extends NewInventoryTab {
 	
-	public NewInventoryTower() {
-		super();
-		addDefaultImages();
+	public NewInventoryTower(PropertiesInterface properties) {
+		super(properties);
 		updateImages();
 	}
 
 	@Override
-	protected void addDefaultImages() {
-//		addImage("red_balloon.png");
+	protected void addNewImage(SpriteImage spriteImage) {
+		addImage(spriteImage.clone());
+		updateImages();
 	}
-	
-
-
 }

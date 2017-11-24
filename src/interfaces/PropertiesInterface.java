@@ -1,9 +1,8 @@
 package interfaces;
 
 import authoring.rightToolBar.SpriteImage;
-import javafx.scene.image.ImageView;
 
-public interface CreationInterface {
+public interface PropertiesInterface {
 	
 	public void clicked(SpriteImage imageView);
 

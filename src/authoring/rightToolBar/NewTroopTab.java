@@ -1,5 +1,8 @@
 package authoring.rightToolBar;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import interfaces.CreationInterface;
@@ -18,22 +21,18 @@ public class NewTroopTab extends NewSpriteTab {
 
 	@Override
 	protected void addDefaultImages() {
-		addImage(troopResources.getString("Red_Balloon"));
-		addImage(troopResources.getString("Black_Square"));
-		addImage(troopResources.getString("Black_Square2"));
-		addImage(troopResources.getString("Rotating_Black_Square"));
-		addImage(troopResources.getString("Green_Soldier"));
-		addImage(troopResources.getString("Blue_Soldier"));
-		addImage(troopResources.getString("Black_Soldier"));
-		addImage(troopResources.getString("Blue_Tank"));
-		addImage(troopResources.getString("Green_Tank"));
-		addImage(troopResources.getString("Red_Tank"));
-		addImage(troopResources.getString("Cannon"));
-		addImage(troopResources.getString("Green_Tank_Animated1"));
-		addImage(troopResources.getString("Green_Tank_Animated2"));
-		addImage(troopResources.getString("Blue_Tank_Animated1"));
-		addImage(troopResources.getString("Blue_Tank_Animated2"));
-		addImage(troopResources.getString("Red_Tank_Animated1"));
-		addImage(troopResources.getString("Red_Tank_Animated2"));
+		List<String> imageList = new ArrayList<String>(Arrays.asList("Red_Balloon", 
+				"Black_Square", "Black_Square2","Rotating_Black_Square", 
+				"Green_Soldier", "Blue_Soldier","Black_Soldier", "Blue_Tank", 
+				"Green_Tank", "Red_Tank","Cannon", "Green_Tank_Animated1", 
+				"Green_Tank_Animated2", "Blue_Tank_Animated1", "Blue_Tank_Animated2", 
+				"Red_Tank_Animated1", "Red_Tank_Animated2"));
+		addImages(imageList);
+	}
+	
+	private void addImages(List<String> stringNames) {
+		for (String s : stringNames) {
+			addImage(new TroopImage(s));
+		}
 	}
 }
