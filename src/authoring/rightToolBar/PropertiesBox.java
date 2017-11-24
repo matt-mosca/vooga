@@ -2,6 +2,10 @@ package authoring.rightToolBar;
 
 
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import interfaces.CreationInterface;
 //import GUI.TableViewSample.EditingCell;
 import javafx.collections.FXCollections;
@@ -18,31 +22,37 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class PropertiesBox extends VBox {
-	public static final String[] properties = {"Direction", "X Position","Y Position", "Pen Down", "Pen Color", "Pen Size", "Pen Style"};
+	public static final String[] properties = {"HP", "Strength", "Other"};
 	private CreationInterface creation;
 	private Label text;
+	private Map<String, String> propertiesMap;
 	private TableView propertyTable;
 	private ObservableList<SpriteProperty> displayList;
-	private static String[] propertyArr = {"0.0","0.0","0.0","true", "red","1","SOLID"};
+	private String[] propertyArr;
 	private TableColumn firstCol;
 	private TableColumn lastCol;
 	
 	public PropertiesBox(CreationInterface creation) {
 		this.creation = creation;
+		propertyArr = new String[]{"50","10","23"};
+		propertiesMap = new TreeMap<String, String>();
+		for (int i = 0; i < properties.length; i++) {
+			propertiesMap.put(properties[i], propertyArr[i]);
+		}
 		text = new Label("properties");
 		text.setFont(new Font("Andale Mono", 20));
 		text.setStyle("-fx-effect: dropshadow(gaussian, rgba(67,96,156,0.25) , 0,0,2,2 )");
-		propertyTable = new TableView();
+		propertyTable = new TableView<String>();
 		// Set up table colomn
-		firstCol = new TableColumn("Property");
-        lastCol = new TableColumn("Value");
+		firstCol = new TableColumn<String, String>("Property");
+        lastCol = new TableColumn<String, String>("Value");
         propertyTable.getColumns().addAll(firstCol, lastCol);
         displayList =FXCollections.observableArrayList ();
 			for (int i = 0; i < 7; i++) {
 	        	displayList.add(new SpriteProperty(properties[i], propertyArr[i]));
 	        }
 		init();
-        lastColEditable(app);
+        lastColEditable(creation);
         
 
 		this.getChildren().add(text);
@@ -78,7 +88,7 @@ public class PropertiesBox extends VBox {
                         ).setMyName(t.getNewValue());
                     int rowNum = t.getTablePosition().getRow();
                     String val = t.getNewValue();    
-                    app.moveX(Double.parseDouble(t.getNewValue()));
+                    creation.doSomething();
                 }
             }
         );
@@ -86,8 +96,7 @@ public class PropertiesBox extends VBox {
 	
 	
 	public void updatePropertiesBox(ObservableList<SpriteProperty> displayList) {
-		creation.setDirection(Double.parseDouble(displayList.get(0).getMyValue()));
-		creation.moveX(Double.parseDouble(displayList.get(1).getMyValue()));
+		creation.doSomething();
 	}
 	
 	public void updatePropertiesBox() {
