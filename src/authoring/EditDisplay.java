@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.sun.glass.events.KeyEvent;
 
 import authoring.rightToolBar.RightToolBar;
+import authoring.rightToolBar.SpriteImage;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -38,13 +39,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
-		myLeftToolBar = new LeftToolBar(this);
-		rootAdd(myLeftToolBar);
-		myMainGrid = new GameArea(this);
-		myGameEnvironment = new ScrollableArea(myMainGrid);
-		rootAdd(myGameEnvironment);
-		myRightToolBar = new RightToolBar(this);
-		rootAdd(myRightToolBar);
+		addItems();
+		createGridToggle();
+		rootAdd(gridToggle);
+	}
+
+	private void createGridToggle() {
 		gridToggle = new CheckBox();
 		gridToggle.setLayoutX(GRID_X_LOCATION);
 		gridToggle.setLayoutY(GRID_Y_LOCATION);
@@ -54,7 +54,16 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
 		});
-		rootAdd(gridToggle);
+	}
+
+	private void addItems() {
+		myLeftToolBar = new LeftToolBar(this);
+		rootAdd(myLeftToolBar);
+		myMainGrid = new GameArea(this);
+		myGameEnvironment = new ScrollableArea(myMainGrid);
+		rootAdd(myGameEnvironment);
+		myRightToolBar = new RightToolBar(this);
+		rootAdd(myRightToolBar);
 	}
 	
 	@Override 
@@ -117,12 +126,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void newTowerSelected(ImageView myImageView) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void clicked(ImageView imageView) {
-		myRightToolBar.imageSelected(imageView.getImage());
+	public void clicked(SpriteImage imageView) {
+		myRightToolBar.imageSelected(imageView);
 	}
 }

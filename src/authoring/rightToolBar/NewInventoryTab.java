@@ -2,74 +2,48 @@ package authoring.rightToolBar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-import interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 public abstract class NewInventoryTab extends ScrollPane {
 	
 	public static final double DISPLAY_SIZE = 60;
 	
-	private List<ImageView> newSpriteImages;
-	private ObservableList<ImageView> spritesView;
-	private ListView<ImageView> list;
-	private ResourceBundle images;
+	private List<SpriteImage> newInventoryImages;
+	private ObservableList<SpriteImage> inventoryView;
+	private ListView<SpriteImage> list;
 	
 	public NewInventoryTab() {
-		newSpriteImages = new ArrayList<ImageView>();
-		list = new ListView<ImageView>();
-		spritesView = FXCollections.observableArrayList(newSpriteImages);
-		list.setItems(spritesView);
+		newInventoryImages = new ArrayList<SpriteImage>();
+		list = new ListView<SpriteImage>();
+		inventoryView = FXCollections.observableArrayList(newInventoryImages);
+		list.setItems(inventoryView);
 		this.setContent(list);
-		list.setOnMouseClicked(e->System.out.println(
-        		list.getSelectionModel().getSelectedItem()));
 	}
 	
 	public void attach(Tab newTroopTab) {
 		newTroopTab.setContent(this);
 	}
 	
-	protected List<ImageView> getImages() {
-		return newSpriteImages;
+	protected List<SpriteImage> getImages() {
+		return newInventoryImages;
 	}
 	
-	public void addNew(Image image) {
-		ImageView spriteImage = new ImageView(image);
-		double spriteWidth = spriteImage.getBoundsInLocal().getWidth();
-		double spriteHeight = spriteImage.getBoundsInLocal().getHeight();
-		double maxDimension = Math.max(spriteWidth, spriteHeight);
-		double scaleValue = maxDimension / DISPLAY_SIZE;
-		spriteImage.setFitWidth(spriteWidth / scaleValue);
-		spriteImage.setFitHeight(spriteHeight / scaleValue);
-		newSpriteImages.add(spriteImage);
-		updateImages();
-	}
-	
-	protected void addImage(String imageName) {
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
-		addNew(image);
+	protected void addImage(SpriteImage spriteImage) {
+		spriteImage.resize(DISPLAY_SIZE);
+		newInventoryImages.add(spriteImage);
 	}
 	
 	protected void updateImages() {
-		spritesView = FXCollections.observableArrayList(newSpriteImages);
-		list.setItems(spritesView);
+		inventoryView = FXCollections.observableArrayList(newInventoryImages);
+		list.setItems(inventoryView);
 		this.setContent(list);
 	}
 	
-	public void tabClicked() {
-		list.getSelectionModel().getSelectedItem().addEventHandler
-		(MouseEvent.MOUSE_CLICKED, e->System.out.println(
-				list.getSelectionModel().getSelectedItem()));
-	}
-	
-	protected abstract void addDefaultImages();
+	protected abstract void addNewImage(SpriteImage spriteImage);
+
 }

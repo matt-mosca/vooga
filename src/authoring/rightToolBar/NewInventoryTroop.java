@@ -1,11 +1,15 @@
 package authoring.rightToolBar;
 
 public class NewInventoryTroop extends NewInventoryTab {
-
-	@Override
-	protected void addDefaultImages() {
-		// TODO Auto-generated method stub
-		
+	
+	public NewInventoryTroop() {
+		super();
+		updateImages();
 	}
 
+	@Override
+	protected void addNewImage(SpriteImage spriteImage) {
+		addImage(spriteImage.clone());
+		updateImages();
+	}
 }
