@@ -14,7 +14,6 @@ public abstract class NewInventoryTab extends ScrollPane {
 	public static final double DISPLAY_SIZE = 60;
 	
 	private List<SpriteImage> newInventoryImages;
-//	private TableView<ImageView> table;
 	private ObservableList<SpriteImage> inventoryView;
 	private ListView<SpriteImage> list;
 	
@@ -44,4 +43,7 @@ public abstract class NewInventoryTab extends ScrollPane {
 		list.setItems(inventoryView);
 		this.setContent(list);
 	}
+	
+	protected abstract void addNewImage(SpriteImage spriteImage);
+
 }

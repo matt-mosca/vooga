@@ -76,7 +76,9 @@ public class RightToolBar extends VBox {
 	}
 	
 	public void imageSelected(SpriteImage myImageView) {
-		inventoryTower.addImage(myImageView);
+		if (myImageView instanceof TowerImage) inventoryTower.addNewImage(myImageView);
+		if (myImageView instanceof TroopImage) inventoryTroop.addNewImage(myImageView);
+		if (myImageView instanceof ProjectileImage) inventoryProjectile.addNewImage(myImageView);
 	}
 	
 	private void makeTabsUnclosable() {
