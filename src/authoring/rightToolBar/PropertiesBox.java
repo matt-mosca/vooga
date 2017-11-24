@@ -43,15 +43,11 @@ public class PropertiesBox extends VBox {
 		text.setFont(new Font("Andale Mono", 20));
 		text.setStyle("-fx-effect: dropshadow(gaussian, rgba(67,96,156,0.25) , 0,0,2,2 )");
 		propertyTable = new TableView<String>();
-		// Set up table colomn
 		firstCol = new TableColumn<String, String>("Property");
         lastCol = new TableColumn<String, String>("Value");
         propertyTable.getColumns().addAll(firstCol, lastCol);
         displayList =FXCollections.observableArrayList (propertiesMap.keySet());
 		init();
-//        lastColEditable(creation);
-        
-
 		this.getChildren().add(text);
 		this.getChildren().add(propertyTable);
 		this.setAlignment(Pos.CENTER);
@@ -60,6 +56,7 @@ public class PropertiesBox extends VBox {
 		this.setLayoutX(500);
 		this.setLayoutY(30);
 		this.setSpacing(20);
+		
 	}
 
 
