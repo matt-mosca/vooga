@@ -26,11 +26,11 @@ public class PropertiesBox extends VBox {
 	private CreationInterface creation;
 	private Label text;
 	private Map<String, String> propertiesMap;
-	private TableView propertyTable;
-	private ObservableList<SpriteProperty> displayList;
+	private TableView<String> propertyTable;
+	private ObservableList<String> displayList;
 	private String[] propertyArr;
-	private TableColumn firstCol;
-	private TableColumn lastCol;
+	private TableColumn<String, String> firstCol;
+	private TableColumn<String, String> lastCol;
 	
 	public PropertiesBox(CreationInterface creation) {
 		this.creation = creation;
@@ -47,12 +47,9 @@ public class PropertiesBox extends VBox {
 		firstCol = new TableColumn<String, String>("Property");
         lastCol = new TableColumn<String, String>("Value");
         propertyTable.getColumns().addAll(firstCol, lastCol);
-        displayList =FXCollections.observableArrayList ();
-			for (int i = 0; i < 7; i++) {
-	        	displayList.add(new SpriteProperty(properties[i], propertyArr[i]));
-	        }
+        displayList =FXCollections.observableArrayList (propertiesMap.keySet());
 		init();
-        lastColEditable(creation);
+//        lastColEditable(creation);
         
 
 		this.getChildren().add(text);
@@ -68,43 +65,15 @@ public class PropertiesBox extends VBox {
 
 	public void init() {
 		firstCol.setPrefWidth(189);
-        firstCol.setCellValueFactory(
-                new PropertyValueFactory<SpriteProperty, String>("myName"));
+		firstCol.setUserData(propertiesMap.keySet());
         lastCol.setPrefWidth(189);
-        lastCol.setCellValueFactory(
-                new PropertyValueFactory<SpriteProperty, String>("myValue"));
+        lastCol.setUserData(propertiesMap.values());
         propertyTable.setItems(displayList);
         lastCol.setCellFactory(TextFieldTableCell.forTableColumn());
 	}
-
-
-	public void lastColEditable(CreationInterface creation) {
-		lastCol.setOnEditCommit(
-            new EventHandler<CellEditEvent<SpriteProperty, String>>() {
-                @Override
-                public void handle(CellEditEvent<SpriteProperty, String> t) {
-                    ((SpriteProperty) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setMyName(t.getNewValue());
-                    int rowNum = t.getTablePosition().getRow();
-                    String val = t.getNewValue();    
-                    creation.doSomething();
-                }
-            }
-        );
-	}
-	
 	
 	public void updatePropertiesBox(ObservableList<SpriteProperty> displayList) {
 		creation.doSomething();
-	}
-	
-	public void updatePropertiesBox() {
-		propertyArr = creation.getInfo();
-		displayList.clear();
-		for (int i = 0; i < 7; i++) {
-        	displayList.add(new SpriteProperty(properties[i], propertyArr[i]));
-        }
 	}
 
 
