@@ -1,4 +1,4 @@
-package GUI;
+package authoring.customize;
 
 import interfaces.CustomizeInterface;
 import javafx.beans.value.ChangeListener;
@@ -6,15 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
-/**
- * Creates a toggle to put the pen up/down
- * 
- * @author Matt and Tony
- */
 public class AttackDefenseToggle extends ToggleSwitch {
 	private CustomizeInterface myCustomize;
 	
 	public AttackDefenseToggle(CustomizeInterface customize) {
+		this.setLayoutY(550);
+		this.setWidth(200);
 		myCustomize = customize;
 		this.setUpSwitch();
 	}
@@ -31,17 +28,19 @@ public class AttackDefenseToggle extends ToggleSwitch {
 	}
 
 	public void penDown() {
-		switchLabel.setText("UP");
-		setStyle("-fx-background-color: grey;");
+		switchLabel.setText("Attack");
+		setStyle("-fx-background-color: red;");
 		button.toFront();
-		app.changePenStatus(false);
+		System.out.println("Attack");
+//		myCustomize.changePenStatus(false);
 	}
 
 	public void penUp() {
-		switchLabel.setText("DOWN");
-		setStyle("-fx-background-color: green;");
+		switchLabel.setText("Defense");
+		setStyle("-fx-background-color: yellow;");
 		switchLabel.toFront();
-		app.changePenStatus(true);
+		System.out.println("Defense");
+//		myCustomize.changePenStatus(true);
 	}
 	}
 	
