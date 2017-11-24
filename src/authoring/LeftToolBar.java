@@ -6,20 +6,12 @@ import java.util.List;
 import interfaces.ClickableInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 /**
- * Creates a re-runable HBox for old commands
  * 
  * @author Matt
  */
@@ -35,7 +27,6 @@ public class LeftToolBar extends ScrollPane {
 	private BackgroundObject myBackground2;
 	private BackgroundObject myBackground3;
 	private BackgroundObject myBackground4;
-	private BackgroundObject myBackground5;
 	
 	public LeftToolBar(ClickableInterface clickable) {
 		this.setLayoutY(50);
@@ -69,7 +60,6 @@ public class LeftToolBar extends ScrollPane {
         myList.add(myBackground2);
         myList.add(myBackground3);
         myList.add(myBackground4);
-        myList.add(myBackground5);
 	}
 	
 	public void addToToolbar() {

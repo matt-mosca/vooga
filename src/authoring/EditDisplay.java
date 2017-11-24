@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.sun.glass.events.KeyEvent;
 
+import authoring.customize.AttackDefenseToggle;
+import authoring.customize.BackgroundColorChanger;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import javafx.geometry.Point2D;
@@ -35,6 +37,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
 	private CheckBox gridToggle;
+	private BackgroundColorChanger myColorChanger;
+	private AttackDefenseToggle myGameChooser;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -64,6 +68,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myGameEnvironment);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
+		myColorChanger = new BackgroundColorChanger(this);
+		rootAdd(myColorChanger);
+		myGameChooser = new AttackDefenseToggle(this);
+		rootAdd(myGameChooser);
 	}
 	
 	@Override 
@@ -132,5 +140,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void clicked(SpriteImage imageView) {
 		myRightToolBar.imageSelected(imageView);
+	}
+
+	@Override
+	public void changeBackground(String color) {
+		myMainGrid.changeColor(color);
+		
 	}
 }

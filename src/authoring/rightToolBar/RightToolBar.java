@@ -29,6 +29,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
  
 public class RightToolBar extends VBox implements PropertiesInterface {
 	
@@ -100,10 +101,14 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	public void clicked(SpriteImage imageView) {
 		propertiesPane = new Pane();
 		Button deleteButton = new Button("Back");
-		deleteButton.setLayoutX(100);
+		deleteButton.setLayoutX(300);
+		Label info = new Label("Properties here");
+		info.setLayoutY(100);
+		info.setFont(new Font("Arial", 30));
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
 		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(imageView.clone());
+		propertiesPane.getChildren().add(info);
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
