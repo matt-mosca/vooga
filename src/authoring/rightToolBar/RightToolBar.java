@@ -9,6 +9,7 @@ import authoring.ObjectProperties;
 import factory.ButtonFactory;
 import factory.TabFactory;
 import interfaces.CreationInterface;
+import interfaces.PropertiesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
  
-public class RightToolBar extends VBox {
+public class RightToolBar extends VBox implements PropertiesInterface {
 	
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
@@ -38,12 +39,12 @@ public class RightToolBar extends VBox {
 	private NewInventoryTab inventoryTower;
 	private NewInventoryTab inventoryTroop;
 	private NewInventoryTab inventoryProjectile;
-
-	
+	private int counter;
 	
 	public RightToolBar(CreationInterface created) {
         this.setLayoutX(680);
 		this.setLayoutY(50);
+		counter = 0;
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
@@ -51,9 +52,9 @@ public class RightToolBar extends VBox {
 	    newTower = new NewTowerTab(created);   
 	    newTroop = new NewTroopTab(created); 
 	    newProjectile = new NewProjectileTab(created); 
-	    inventoryTower = new NewInventoryTower();
-	    inventoryTroop = new NewInventoryTroop();
-	    inventoryProjectile = new NewInventoryProjectile();
+	    inventoryTower = new NewInventoryTower(this);
+	    inventoryTroop = new NewInventoryTroop(this);
+	    inventoryProjectile = new NewInventoryProjectile(this);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
         
@@ -90,8 +91,11 @@ public class RightToolBar extends VBox {
 			bottomTabPane.getTabs().get(i).setClosable(false);
 		}
 	}
-	
-	public void doSomething() {
-		System.out.println("Done");
+
+	@Override
+	public void clicked(SpriteImage imageView) {
+		System.out.println(imageView.getClass());
+		counter++;
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent(Integer.toString(counter), topTabPane));
 	}
 } 

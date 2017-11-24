@@ -1,9 +1,11 @@
 package authoring.rightToolBar;
 
+import interfaces.PropertiesInterface;
+
 public class NewInventoryProjectile extends NewInventoryTab {
 	
-	public NewInventoryProjectile() {
-		super();
+	public NewInventoryProjectile(PropertiesInterface properties) {
+		super(properties);
 		updateImages();
 	}
 
