@@ -42,6 +42,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private NewInventoryTab inventoryTower;
 	private NewInventoryTab inventoryTroop;
 	private NewInventoryTab inventoryProjectile;
+	private AddNewButton myNewButton;
 	private Pane propertiesPane;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
@@ -60,6 +61,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    inventoryTower = new NewInventoryTower(this);
 	    inventoryTroop = new NewInventoryTroop(this);
 	    inventoryProjectile = new NewInventoryProjectile(this);
+	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
         
