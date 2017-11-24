@@ -171,4 +171,16 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 		
 	}
+
+	@Override
+	public void doSomething() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String[] getInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

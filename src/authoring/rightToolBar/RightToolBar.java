@@ -55,6 +55,8 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
+	    topTabPane.setPrefHeight(250);
+	    bottomTabPane.setPrefHeight(250);
 	    createAndAddTabs();
 	    newTower = new NewTowerTab(created);   
 	    newTroop = new NewTroopTab(created); 
