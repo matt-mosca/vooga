@@ -11,8 +11,8 @@ import javafx.scene.input.MouseEvent;
 
 public class Path extends Group{
 	private Set<PathPoint> points;
-	private PathPoint activePoint;
 	private List<PathPoint> headPoints;
+	private PathPoint activePoint;
 	
 	public Path() {
 		points = new HashSet<>();
@@ -56,6 +56,7 @@ public class Path extends Group{
 		removeWaypointLines(point);
 		modifyLineOrder(point);
 		if(point.equals(activePoint)) activePoint = null;
+		if(headPoints.contains(point)) headPoints.remove(point);
 		this.getChildren().remove(point);
 	}
 	
