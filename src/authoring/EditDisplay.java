@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
@@ -39,6 +41,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private CheckBox gridToggle;
 	private BackgroundColorChanger myColorChanger;
 	private AttackDefenseToggle myGameChooser;
+	private Label attackDefenseLabel;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -46,6 +49,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		addItems();
 		createGridToggle();
 		rootAdd(gridToggle);
+		createLabel();
+	}
+	
+	private void createLabel() {
+		attackDefenseLabel = new Label("Attack");
+		attackDefenseLabel.setFont(new Font("Arial", 40));
+		rootAdd(attackDefenseLabel);
+
 	}
 
 	private void createGridToggle() {
@@ -145,6 +156,18 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void changeBackground(String color) {
 		myMainGrid.changeColor(color);
+		
+	}
+
+	@Override
+	public void attack() {
+		attackDefenseLabel.setText("Attack");
+	}
+
+	@Override
+	public void defense() {
+		attackDefenseLabel.setText("Defense");
+
 		
 	}
 }
