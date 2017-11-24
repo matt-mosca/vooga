@@ -101,4 +101,8 @@ public class GameArea extends Pane{
 	public void removeFromGrid(StaticObject currObject) {
 		grid.removeFromGrid(currObject);
 	}
+	
+	public void changeColor(String backgroundColor) {
+		this.setStyle("-fx-background-color: " + backgroundColor + ";");
+	}
 }

@@ -101,7 +101,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	public void clicked(SpriteImage imageView) {
 		propertiesPane = new Pane();
 		Button deleteButton = new Button("Back");
-		deleteButton.setLayoutX(100);
+		deleteButton.setLayoutX(300);
 		Label info = new Label("Properties here");
 		info.setLayoutY(100);
 		info.setFont(new Font("Arial", 30));
