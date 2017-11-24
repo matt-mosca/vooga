@@ -55,6 +55,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private void createLabel() {
 		attackDefenseLabel = new Label("Attack");
 		attackDefenseLabel.setFont(new Font("Arial", 40));
+		attackDefenseLabel.setLayoutX(300);
 		rootAdd(attackDefenseLabel);
 
 	}
