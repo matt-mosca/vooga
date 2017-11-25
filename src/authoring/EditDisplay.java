@@ -47,15 +47,28 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
+//		super(width, height, Color.GRAY);
 		addItems();
 		createGridToggle();
 		rootAdd(gridToggle);
 		createLabel();
+//		setGreen();
+//		setGold();
 	}
+//	
+//	private void setGreen() {
+//		rootStyle("authoring/resources/green.css");
+//	}
+//	
+//	private void setGold() {
+//		rootStyle("authoring/resources/gold.css");
+//	}
 	
 	private void createLabel() {
 		attackDefenseLabel = new Label("Attack");
 		attackDefenseLabel.setFont(new Font("Arial", 40));
+//		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
+//		attackDefenseLabel.setFont(new Font("Cambria", 40));
 		attackDefenseLabel.setLayoutX(300);
 		rootAdd(attackDefenseLabel);
 
