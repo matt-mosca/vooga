@@ -1,6 +1,7 @@
 package authoring;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import authoring.rightToolBar.NewSpriteTab;
@@ -10,9 +11,6 @@ import javafx.scene.control.ListView;
 import sprites.StaticObject;
 
 public class StaticTab extends NewSpriteTab{
-	private StaticObject myStatic1;
-	private StaticObject myStatic2;
-	private StaticObject myStatic3;
 	private AuthorInterface author;
 	private List<StaticObject> myList;
 	private ListView<StaticObject> myListView;
@@ -20,18 +18,13 @@ public class StaticTab extends NewSpriteTab{
 	public StaticTab(AuthorInterface ai) {
 		super(ai);
 		author = ai;
+		addDefaultImages();
 	}
 
 	@Override
 	protected void addDefaultImages() {
-		myStatic1 = createNewStatic(1, "tortoise.png");
-		myStatic2 = createNewStatic(1, "gray_circle.png");
-		myStatic3 = createNewStatic(1, "green_soldier.gif");
-		
-		myList = new ArrayList<>();
-		myList.add(myStatic1);
-		myList.add(myStatic2);
-		myList.add(myStatic3);
+		myList = new ArrayList<>(Arrays.asList(createNewStatic(1, "tortoise.png"),
+				createNewStatic(1, "gray_circle.png"),createNewStatic(1, "green_soldier.gif")));
 		
 		ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
 		myListView = new ListView<>();
@@ -41,7 +34,7 @@ public class StaticTab extends NewSpriteTab{
 		this.setContent(myListView);
 	}
 	
-	private StaticObject createNewStatic(int size, String imageString) {
+	protected StaticObject createNewStatic(int size, String imageString) {
 		return new StaticObject(size, author, imageString);
 	}
 
