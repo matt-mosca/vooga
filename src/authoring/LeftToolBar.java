@@ -1,19 +1,9 @@
 package authoring;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import factory.TabFactory;
-import interfaces.ClickableInterface;
-import interfaces.CreationInterface;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
+
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
-import sprites.BackgroundObject;
-import sprites.StaticObject;
 
 /**
  * 
@@ -32,17 +22,15 @@ public class LeftToolBar extends VBox {
 		author = ai;
 		tabPane = new TabPane();
 		tabFactory = new TabFactory();
+		staticTab = new StaticTab(author);
+		backgroundTab = new BackgroundTab(author);
 		this.getChildren().add(tabPane);
         createAndAddTabs();
 	}
 	
 	private void createAndAddTabs() {
-		tabPane.getTabs().add(tabFactory.buildTabWithoutContent("Static", tabPane));
-		tabPane.getTabs().add(tabFactory.buildTabWithoutContent("Background", tabPane));
-		staticTab = new StaticTab(author);
-		backgroundTab = new BackgroundTab(author);
-		staticTab.attach(tabPane.getTabs().get(0));
-		backgroundTab.attach(tabPane.getTabs().get(1));
+		tabPane.getTabs().add(tabFactory.buildTab("Static", staticTab, tabPane));
+		tabPane.getTabs().add(tabFactory.buildTab("Background", backgroundTab, tabPane));
 		makeTabsUnclosable();
 	}
 	
