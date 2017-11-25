@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.gson.FieldAttributes;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;
+import engine.behavior.movement.AbstractMovementStrategy;
 import engine.behavior.movement.MovementStrategy;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
@@ -19,11 +19,6 @@ import javafx.scene.image.ImageView;
  * Represents displayed game objects in the backend. Responsible for controlling
  * the object's update behavior.
  *
- * TODO - we need to change the way properties are set, unless we want the
- * frontend to generate the strategies objects making this happen will require
- * defining a set of properties we're okay with each sprite having e.g. fire
- * rate, image path/url, destructible flag, etc. the creation of the strategy
- * objects will then be handled in the factory
  *
  * @author Ben Schwennesen
  */
@@ -38,12 +33,12 @@ public class Sprite {
 	// subsequent construction of ImageView?
 	private ImageView spriteImageView;
 
-	public Sprite(Map<String, ?> properties) {
+	/*public Sprite(Map<String, ?> properties) {
 		setProperties(properties);
-	}
+	}*/
 
 	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
-			CollisionVisitable collisionVisitable) {
+				  CollisionVisitable collisionVisitable, String imageUrl) {
 		this.firingStrategy = firingStrategy;
 		this.movementStrategy = movementStrategy;
 		this.collisionVisitor = collisionVisitor;
@@ -86,8 +81,7 @@ public class Sprite {
 	/**
 	 * Set the properties of this sprite.
 	 *
-	 * @param properties
-	 *            - maps instance variables of this sprite to properties, as strings
+	 * @param properties maps instance variables of this sprite to properties, as strings
 	 */
 	public void setProperties(Map<String, ?> properties) {
 		List<Field> fields = getFieldsForAllMembers();
