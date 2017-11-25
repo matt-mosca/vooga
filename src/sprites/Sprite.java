@@ -39,7 +39,7 @@ public class Sprite {
 	private ImageView spriteImageView;
 
 	public Sprite(Map<String, ?> properties) {
-		setProperties(properties);
+		setProperties(properties, false);
 	}
 
 	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
@@ -89,13 +89,13 @@ public class Sprite {
 	 * @param properties
 	 *            - maps instance variables of this sprite to properties, as strings
 	 */
-	public void setProperties(Map<String, ?> properties) {
+	public void setProperties(Map<String, ?> properties, boolean updating) {
 		List<Field> fields = getFieldsForAllMembers();
 		for (Field field : fields) {
 			field.setAccessible(true);
 			if (properties.containsKey(field.getName())) {
 				setField(properties, field);
-			} else {
+			} else if (!updating) {
 				// TODO - throw custom exception? set to a default value?
 			}
 		}
@@ -145,7 +145,7 @@ public class Sprite {
 	}
 
 	/**
-	 * Scaling-aware boundaries of sprite's representation 
+	 * Scaling-aware boundaries of sprite's representation
 	 * 
 	 * @return
 	 */
@@ -160,7 +160,7 @@ public class Sprite {
 	public double getY() {
 		return movementStrategy.getY();
 	}
-	
+
 	/**
 	 * The current (x, y) position as a Point2D.Double
 	 * 
@@ -169,7 +169,7 @@ public class Sprite {
 	public Point2D.Double getCurrentPosition() {
 		return movementStrategy.getCurrentPosition();
 	}
-	
+
 	/**
 	 * Auto-updating (NOT snapshot) position of this MovementStrategy for tracking
 	 * 
