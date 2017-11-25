@@ -54,10 +54,13 @@ public class PropertiesBox extends VBox {
 		valuesColumn.setOnEditCommit(
 			    new EventHandler<CellEditEvent<Properties, String>>() {
 			        @Override
+			        
 			        public void handle(CellEditEvent<Properties, String> t) {
 			            ((Properties) t.getTableView().getItems().get(
 			                t.getTablePosition().getRow())
 			                ).setMyValue(t.getNewValue());
+			            System.out.println(t.getRowValue().getMyProperty() 
+			            		+ " changed to " + t.getNewValue());
 			        }
 			    }
 			);
