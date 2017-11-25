@@ -7,14 +7,16 @@ package engine.behavior.movement;
  * @author radithya
  *
  */
-public abstract class MovementStrategy {
+public abstract class MovementStrategy implements IMovementStrategy {
 
 	private double xCoordinate;
 	private double yCoordinate;
+	private double speed;
 
-	public MovementStrategy(double startX, double startY) {
+	public MovementStrategy(double startX, double startY, double speed) {
 		xCoordinate = startX;
 		yCoordinate = startY;
+		this.speed = speed;
 	}
 
 	/**
@@ -36,11 +38,7 @@ public abstract class MovementStrategy {
 		return xCoordinate;
 	}
 
-	/**
-	 * The current yCoordinate
-	 * 
-	 * @return current yCoordinate
-	 */
+	@Override
 	public double getY() {
 		return yCoordinate;
 	}
@@ -51,7 +49,7 @@ public abstract class MovementStrategy {
 	 * @param newXCoord
 	 *            x-coordinate to set to
 	 */
-	public void setX(double newXCoord) {
+	protected void setX(double newXCoord) {
 		xCoordinate = newXCoord;
 	}
 
@@ -61,7 +59,7 @@ public abstract class MovementStrategy {
 	 * @param newYCoord
 	 *            y-coordinate to set to
 	 */
-	public void setY(double newYCoord) {
+	protected void setY(double newYCoord) {
 		yCoordinate = newYCoord;
 	}
 
