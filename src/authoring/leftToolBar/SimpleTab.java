@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 public class SimpleTab extends ScrollPane{
@@ -30,7 +31,11 @@ public class SimpleTab extends ScrollPane{
 		this.setContent(myListView);
 	}
 	
-	protected void addItem(int size, String imageString) {
+	protected void addStaticItem(int size, String imageString) {
 		items.add(new StaticObject(size, clickable, imageString));
+	}
+	
+	protected void addBackgroundItem(int size, String imageString) {
+		items.add(new BackgroundObject(size, clickable, imageString));
 	}
 }
