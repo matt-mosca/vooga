@@ -21,7 +21,7 @@ public class Cell extends StackPane{
 	}
 
 	private void highlight() {
-		this.setStyle("-fx-background-color:#51525D;");
+		this.setStyle("-fx-border-color:black;");
 	}
 
 	private void removeHighlight() {

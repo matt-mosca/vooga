@@ -14,6 +14,7 @@ public class StaticObject extends ImageView {
 	private int realSize;
 	private ClickableInterface myClickable;
 	private String myImageString;
+	private boolean locked;
 	
 	public StaticObject(int size, ClickableInterface clickable, String imageString) {
 		myClickable = clickable; 
@@ -35,16 +36,26 @@ public class StaticObject extends ImageView {
 	}
 	
 	private void drag(MouseEvent e) {
-		this.setX(e.getX() - realSize / 2);
-		this.setY(e.getY() - realSize / 2);
+		if(!locked) {
+			this.setX(e.getX() - realSize / 2);
+			this.setY(e.getY() - realSize / 2);
+		}
 	}
 	
 	private void dropped(MouseEvent e) {
-		myClickable.dropped(this, e);
+		if(!locked) {
+			myClickable.dropped(this, e);
+		}
 	}
 	
 	private void pressed(MouseEvent e) {
-		myClickable.pressed(this, e);
+		if(!locked) {
+			myClickable.pressed(this, e);
+		}
+	}
+	
+	public void setLocked(boolean lock) {
+		locked = lock;
 	}
 	
 	public Point2D center() {
