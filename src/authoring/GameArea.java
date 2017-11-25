@@ -1,12 +1,11 @@
 package authoring;
 
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.path.Path;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import sprites.BackgroundObject;
@@ -30,18 +29,19 @@ public class GameArea extends Pane{
 	private Path path;
 	private boolean gridEnabled = true;
 	
-	private List<StaticObject> currentObjects;
+	private Group backObjects;
 	
 	public GameArea(AuthorInterface author) {
 		initializeProperties();
 		initializeLayout();
 		initializeHandlers();
-		currentObjects = new ArrayList<StaticObject>();
+		backObjects = new Group();
 		path = new Path();
 		grid = new PlacementGrid(author, width, height, rowPercentage, colPercentage, path);
 
-		this.getChildren().add(path);
+		this.getChildren().add(backObjects);
 		this.getChildren().add(grid);
+		this.getChildren().add(path);
 		grid.toBack();
 	}
 	
@@ -68,17 +68,18 @@ public class GameArea extends Pane{
 	}
 	
 	protected void placeInGrid(StaticObject currObject) {
-		if (!(currObject instanceof BackgroundObject)) {
-			currentObjects.add(currObject);
-		}
 		if(gridEnabled) {
 			Point2D newLocation = grid.place(currObject);
 			currObject.setX(newLocation.getX());
 			currObject.setY(newLocation.getY());
-			for (StaticObject s : currentObjects) {
-				s.toFront();
+			for (Node node: backObjects.getChildren()) {
+				if(!(node instanceof BackgroundObject)) node.toFront();
 			}
 		}
+	}
+	
+	protected void addBackObject(StaticObject object) {
+		backObjects.getChildren().add(object);
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
@@ -100,9 +101,5 @@ public class GameArea extends Pane{
 
 	public void removeFromGrid(StaticObject currObject) {
 		grid.removeFromGrid(currObject);
-	}
-	
-	public void changeColor(String backgroundColor) {
-		this.setStyle("-fx-background-color: " + backgroundColor + ";");
 	}
 }

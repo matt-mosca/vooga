@@ -36,7 +36,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_X_LOCATION = 605;
 	private static final double GRID_Y_LOCATION = 30;
 	private LeftToolBar myLeftToolBar;
-	private GameArea myMainGrid;
+	private GameArea myGameArea;
 	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
 	private CheckBox gridToggle;
@@ -69,15 +69,15 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		gridToggle.setText("Grid");
 		gridToggle.setTextFill(Color.BLACK);
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
-			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
+			myGameArea.toggleGridVisibility(gridToggle.isSelected());
 		});
 	}
 
 	private void addItems() {
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
-		myMainGrid = new GameArea(this);
-		myGameEnvironment = new ScrollableArea(myMainGrid);
+		myGameArea = new GameArea(this);
+		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
@@ -113,7 +113,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		} else {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
-		myMainGrid.getChildren().add(newObject);
+		myGameArea.addBackObject(newObject);
 	}
 	
 	private void createNewErrorWindow() {
@@ -128,7 +128,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		if(e.getButton() == MouseButton.SECONDARY) {
 			deleteObject(currObject);
 		} else {
-			myMainGrid.placeInGrid(currObject);
+			myGameArea.placeInGrid(currObject);
 			myGameEnvironment.requestFocus();
 		}
 	}
@@ -136,13 +136,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void pressed(StaticObject currObject, MouseEvent e) {
 		e.consume();
-		myMainGrid.removeFromGrid(currObject);
+		myGameArea.removeFromGrid(currObject);
 	}
 	
 	private void deleteObject(StaticObject object) {
-		myMainGrid.getChildren().remove(object);
+		myGameArea.getChildren().remove(object);
 		myLeftToolBar.requestFocus();
-		myMainGrid.removeFromGrid(object);
+		myGameArea.removeFromGrid(object);
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void changeBackground(String color) {
-		myMainGrid.changeColor(color);
+		myGameArea.changeBackground(color);
 		
 	}
 
