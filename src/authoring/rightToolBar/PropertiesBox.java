@@ -29,6 +29,7 @@ public class PropertiesBox extends VBox {
 			propertiesMap.put(properties[i], propertyArr[i]);
 		}
 		table = new TableView<Properties>();
+		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
 		valuesColumn = new TableColumn<Properties, String>("Values");
 		data = FXCollections.observableArrayList();
@@ -42,6 +43,9 @@ public class PropertiesBox extends VBox {
 		table.setItems(data);
 		table.getColumns().addAll(propertiesColumn, valuesColumn);
 		this.getChildren().add(table);
+		table.setPrefHeight(250);
+		this.setPrefHeight(250);
+		this.setLayoutX(50);
 	}
 
 
