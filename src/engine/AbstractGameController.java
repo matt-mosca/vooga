@@ -38,7 +38,6 @@ public abstract class AbstractGameController {
 	private final String DEFAULT_GAME_NAME = "untitled";
 
 	private int currentLevel;
-	private int numLevelsForGame;
 
 	public AbstractGameController() {
 		SerializationUtils serializationUtils = new SerializationUtils();
