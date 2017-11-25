@@ -141,7 +141,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	private void deleteObject(StaticObject object) {
-		myGameArea.removeBackObject(object);
+		myGameArea.removeObject(object);
 		myLeftToolBar.requestFocus();
 		myGameArea.removeFromGrid(object);
 	}
