@@ -57,6 +57,11 @@ public abstract class ScreenDisplay {
 	protected boolean rootContain(Node object) {
 		return root.getChildren().contains(object);
 	}
+	
+	protected void rootStyle(String sheet) {
+		root.getStylesheets().add(sheet);
+	}
+	
 	protected void centerScene() {
 
 	}
