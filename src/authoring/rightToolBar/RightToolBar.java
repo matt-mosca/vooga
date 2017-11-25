@@ -42,6 +42,8 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private NewInventoryTab inventoryTower;
 	private NewInventoryTab inventoryTroop;
 	private NewInventoryTab inventoryProjectile;
+	private AddNewButton myNewButton;
+	private PropertiesBox myPropertiesBox;
 	private Pane propertiesPane;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
@@ -53,6 +55,8 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
+	    topTabPane.setPrefHeight(250);
+	    bottomTabPane.setPrefHeight(250);
 	    createAndAddTabs();
 	    newTower = new NewTowerTab(created);   
 	    newTroop = new NewTroopTab(created); 
@@ -60,6 +64,8 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    inventoryTower = new NewInventoryTower(this);
 	    inventoryTroop = new NewInventoryTroop(this);
 	    inventoryProjectile = new NewInventoryProjectile(this);
+	    myPropertiesBox = new PropertiesBox(created);
+	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
         
@@ -106,11 +112,11 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		info.setLayoutY(100);
 		info.setFont(new Font("Arial", 30));
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
-		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(imageView.clone());
-		propertiesPane.getChildren().add(info);
+		propertiesPane.getChildren().add(deleteButton);
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
+		this.getChildren().add(myPropertiesBox);
 		this.getChildren().add(bottomTabPane);
 	}
 	
