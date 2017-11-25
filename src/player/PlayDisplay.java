@@ -1,8 +1,8 @@
 package player;
 
 import authoring.AuthorInterface;
-import authoring.LeftToolBar;
 import authoring.PlacementGrid;
+import authoring.leftToolBar.LeftToolBar;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;

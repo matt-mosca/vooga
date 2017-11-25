@@ -1,6 +1,6 @@
 package player;
 
-import authoring.LeftToolBar;
+import authoring.leftToolBar.LeftToolBar;
 import interfaces.ClickableInterface;
 import shared.GenericToolBar;
 import sprites.BackgroundObject;
