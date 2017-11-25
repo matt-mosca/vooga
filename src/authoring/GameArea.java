@@ -29,8 +29,8 @@ public class GameArea extends Pane{
 	private ResourceBundle gameProperties;
 	private PlacementGrid grid;
 	private Path path;
-	private boolean gridEnabled = true;
-	private boolean moveableEnabled = true;
+	private boolean gridEnabled;
+	private boolean moveableEnabled;
 	
 	private Group frontObjects;
 	private Group backObjects;
@@ -50,6 +50,9 @@ public class GameArea extends Pane{
 		this.getChildren().add(backObjects);
 		this.getChildren().add(path);
 		this.getChildren().add(frontObjects);
+		
+		toggleGridVisibility(true);
+		toggleMovement(false);
 	}
 	
 	private void initializeProperties() {

@@ -5,6 +5,8 @@ import authoring.customize.BackgroundColorChanger;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -79,11 +81,18 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		movementToggle = new ToggleButton();
 		movementToggle.setLayoutX(GRID_X_LOCATION - 40);
 		movementToggle.setLayoutY(GRID_Y_LOCATION);
-		movementToggle.setSelected(true);
+		movementToggle.setSelected(false);
 		movementToggle.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
-		movementToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
-			myGameArea.toggleMovement(movementToggle.isSelected());
-		});
+		movementToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->toggleMovement(movementToggle));
+	}
+	
+	private void toggleMovement(ToggleButton movement) {
+		myGameArea.toggleMovement(movementToggle.isSelected());
+		if(movement.isSelected()) {
+			this.getScene().setCursor(new ImageCursor(new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
+		}else {
+			this.getScene().setCursor(Cursor.DEFAULT);
+		}
 	}
 
 	private void addItems() {
