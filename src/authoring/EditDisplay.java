@@ -6,6 +6,7 @@ import com.sun.glass.events.KeyEvent;
 
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.BackgroundColorChanger;
+import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import javafx.geometry.Point2D;
