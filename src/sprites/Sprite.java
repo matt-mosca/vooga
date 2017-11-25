@@ -1,5 +1,6 @@
 package sprites;
 
+import java.awt.geom.Point2D;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.gson.FieldAttributes;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;
@@ -159,6 +159,24 @@ public class Sprite {
 
 	public double getY() {
 		return movementStrategy.getY();
+	}
+	
+	/**
+	 * The current (x, y) position as a Point2D.Double
+	 * 
+	 * @return current position
+	 */
+	public Point2D.Double getCurrentPosition() {
+		return movementStrategy.getCurrentPosition();
+	}
+	
+	/**
+	 * Auto-updating (NOT snapshot) position of this MovementStrategy for tracking
+	 * 
+	 * @return auto-updating position that changes with movement
+	 */
+	public Point2D.Double getPositionForTracking() {
+		return movementStrategy.getPositionForTracking();
 	}
 
 	public void setX(double newXCoord) {
