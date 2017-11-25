@@ -114,9 +114,9 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
 		propertiesPane.getChildren().add(imageView.clone());
 		propertiesPane.getChildren().add(deleteButton);
+		propertiesPane.getChildren().add(myPropertiesBox);
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
-		this.getChildren().add(myPropertiesBox);
 		this.getChildren().add(bottomTabPane);
 	}
 	
