@@ -1,45 +1,33 @@
 package authoring;
 
-import java.util.ArrayList;
-
-import com.sun.glass.events.KeyEvent;
-
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.BackgroundColorChanger;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
-import javafx.geometry.Point2D;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
-	private static final double GRID_X_LOCATION = 605;
-	private static final double GRID_Y_LOCATION = 30;
+	private static final double GRID_X_LOCATION = 620;
+	private static final double GRID_Y_LOCATION = 20;
 	private LeftToolBar myLeftToolBar;
 	private GameArea myGameArea;
 	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
-	private CheckBox gridToggle;
+	private ToggleButton gridToggle;
+	private ToggleButton movementToggle;
 	private BackgroundColorChanger myColorChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
@@ -50,6 +38,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		addItems();
 		createGridToggle();
 		rootAdd(gridToggle);
+		createMovementToggle();
+		rootAdd(movementToggle);
 		createLabel();
 	}
 	
@@ -62,14 +52,24 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	private void createGridToggle() {
-		gridToggle = new CheckBox();
+		gridToggle = new ToggleButton();
 		gridToggle.setLayoutX(GRID_X_LOCATION);
 		gridToggle.setLayoutY(GRID_Y_LOCATION);
 		gridToggle.setSelected(true);
-		gridToggle.setText("Grid");
-		gridToggle.setTextFill(Color.BLACK);
+		gridToggle.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("grid_icon.png"))));
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			myGameArea.toggleGridVisibility(gridToggle.isSelected());
+		});
+	}
+	
+	private void createMovementToggle() {
+		movementToggle = new ToggleButton();
+		movementToggle.setLayoutX(GRID_X_LOCATION - 40);
+		movementToggle.setLayoutY(GRID_Y_LOCATION);
+		movementToggle.setSelected(true);
+		movementToggle.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
+		movementToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			myGameArea.toggleMovement(movementToggle.isSelected());
 		});
 	}
 
@@ -116,12 +116,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea.addBackObject(newObject);
 	}
 	
-	private void createNewErrorWindow() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Object placement error");
-		alert.setHeaderText("Must place object in the main grid");
-		alert.show();
-	}
+	//No longer needed with children added to game area
+//	private void createNewErrorWindow() {
+//		Alert alert = new Alert(AlertType.INFORMATION);
+//		alert.setTitle("Object placement error");
+//		alert.setHeaderText("Must place object in the main grid");
+//		alert.show();
+//	}
 
 	@Override
 	public void dropped(StaticObject currObject, MouseEvent e) {
@@ -140,7 +141,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	private void deleteObject(StaticObject object) {
-		myGameArea.getChildren().remove(object);
+		myGameArea.removeBackObject(object);
 		myLeftToolBar.requestFocus();
 		myGameArea.removeFromGrid(object);
 	}

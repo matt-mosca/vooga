@@ -39,10 +39,9 @@ public class GameArea extends Pane{
 		path = new Path();
 		grid = new PlacementGrid(author, width, height, rowPercentage, colPercentage, path);
 
-		this.getChildren().add(backObjects);
 		this.getChildren().add(grid);
+		this.getChildren().add(backObjects);
 		this.getChildren().add(path);
-		grid.toBack();
 	}
 	
 	private void initializeProperties() {
@@ -82,9 +81,21 @@ public class GameArea extends Pane{
 		backObjects.getChildren().add(object);
 	}
 	
+	protected void removeBackObject(StaticObject object) {
+		backObjects.getChildren().remove(object);
+	}
+	
 	protected void toggleGridVisibility(boolean visible) {
 		grid.setVisible(visible);
 		gridEnabled = visible;
+	}
+	
+	protected void toggleMovement(boolean moveable) {
+		if(moveable) {
+			grid.toBack();
+		}else {
+			backObjects.toBack();
+		}
 	}
 	
 	protected void resizeGameArea(int width, int height) {
