@@ -9,27 +9,27 @@ package engine.behavior.collision;
  */
 public class MortalCollider extends GenericCollider {
 
-	private double hitPoints;
+	private double healthPoints;
 
 	public MortalCollider(double totalHitPoints) {
-		hitPoints = totalHitPoints;
+		healthPoints = totalHitPoints;
 	}
 
 	@Override
 	public void visit(DamageDealingCollisionVisitable visitable) {
-		setHitPoints(getHitPoints() - visitable.getDamageToDeal());
+		setHealthPoints(getHealthPoints() - visitable.getDamageToDeal());
 	}
 
 	@Override
 	public boolean isAlive() {
-		return hitPoints > 0;
+		return healthPoints > 0;
 	}
 
-	protected double getHitPoints() {
-		return hitPoints;
+	protected double getHealthPoints() {
+		return healthPoints;
 	}
 
-	private void setHitPoints(double newHitPoints) {
-		hitPoints = newHitPoints;
+	private void setHealthPoints(double newHitPoints) {
+		healthPoints = newHitPoints;
 	}
 }
