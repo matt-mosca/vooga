@@ -6,9 +6,12 @@ import java.util.TreeMap;
 import interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
 public class PropertiesBox extends VBox {
@@ -46,6 +49,18 @@ public class PropertiesBox extends VBox {
 		table.setPrefHeight(250);
 		this.setPrefHeight(250);
 		this.setLayoutX(50);
+		
+		valuesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+		valuesColumn.setOnEditCommit(
+			    new EventHandler<CellEditEvent<Properties, String>>() {
+			        @Override
+			        public void handle(CellEditEvent<Properties, String> t) {
+			            ((Properties) t.getTableView().getItems().get(
+			                t.getTablePosition().getRow())
+			                ).setMyValue(t.getNewValue());
+			        }
+			    }
+			);
 	}
 
 
