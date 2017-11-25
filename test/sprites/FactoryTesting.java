@@ -1,10 +1,12 @@
 package sprites;
 
-import engine.behavior.collision.ImmortalCollider;
-import engine.behavior.collision.ImperviousCollisionVisitable;
-import engine.behavior.firing.NoopFiringStrategy;
-import engine.behavior.movement.MovementStrategy;
+import engine.behavior.ParameterName;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,28 +19,30 @@ public class FactoryTesting {
 
     public static void main(String[] args) {
         SpriteFactory sf = new SpriteFactory();
-        Map<String, Object> bleh = new HashMap<>();
-        /*bleh.put("movementStrategy", new MovementStrategy(0, 0) {
-            @Override
-            public void move() {
+        Map<String, String> bleh = new HashMap<>();
+        String mc = "engine.behavior.collision.GenericCollider";
+        try{
+            Class clazz = Class.forName(mc);
+            for (Constructor c : clazz.getConstructors()) {
+                Parameter[] ps = c.getParameters();
+                for (Parameter p : c.getParameters()) {
+                    System.out.println(p.getName() + " " + p.getType()+ " " + p.getAnnotation(ParameterName.class)
+                            .value());
+                }
             }
-
-            @Override
-            public void handleBlock() {
+            for (Method m : clazz.getDeclaredMethods()) {
+                System.out.println(m.getName());
+                for (Type t : m.getGenericParameterTypes()) {
+                    System.out.println("\t" + t.getTypeName());
+                }
             }
-        });
-        bleh.put("firingStrategy", new NoopFiringStrategy());
-        bleh.put("collisionVisitor", new ImmortalCollider());
-        bleh.put("collisionVisitable", new ImperviousCollisionVisitable());
-        sf.defineElement("blehSprite", bleh);*/
-        /*XStream x = new XStream(new DomDriver());
-        String saved = "";
-        for (Sprite template : sf.getLevelSprites(1).get("blehSprite")) {
-            saved = x.toXML(template);
-            System.out.println(saved);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        Sprite loaded = (Sprite) x.fromXML(saved);
-        System.out.println(loaded.isAlive());
+        System.out.println(sf.getElementBaseConfigurationOptions());
+
+
+        /*
         sf.exportSpriteTemplates();*/
         // ^ need to manually examine the property file
     }
