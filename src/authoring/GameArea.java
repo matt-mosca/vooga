@@ -1,12 +1,13 @@
 package authoring;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.path.Path;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import sprites.BackgroundObject;
@@ -28,21 +29,30 @@ public class GameArea extends Pane{
 	private ResourceBundle gameProperties;
 	private PlacementGrid grid;
 	private Path path;
-	private boolean gridEnabled = true;
+	private boolean gridEnabled;
+	private boolean moveableEnabled;
 	
-	private List<StaticObject> currentObjects;
+	private Group frontObjects;
+	private Group backObjects;
+	private List<StaticObject> objectList;
 	
 	public GameArea(AuthorInterface author) {
 		initializeProperties();
 		initializeLayout();
 		initializeHandlers();
-		currentObjects = new ArrayList<StaticObject>();
+		objectList = new ArrayList<>();
+		frontObjects = new Group();
+		backObjects = new Group();
 		path = new Path();
 		grid = new PlacementGrid(author, width, height, rowPercentage, colPercentage, path);
 
-		this.getChildren().add(path);
 		this.getChildren().add(grid);
-		grid.toBack();
+		this.getChildren().add(backObjects);
+		this.getChildren().add(path);
+		this.getChildren().add(frontObjects);
+		
+		toggleGridVisibility(true);
+		toggleMovement(false);
 	}
 	
 	private void initializeProperties() {
@@ -68,22 +78,51 @@ public class GameArea extends Pane{
 	}
 	
 	protected void placeInGrid(StaticObject currObject) {
-		if (!(currObject instanceof BackgroundObject)) {
-			currentObjects.add(currObject);
-		}
 		if(gridEnabled) {
 			Point2D newLocation = grid.place(currObject);
 			currObject.setX(newLocation.getX());
 			currObject.setY(newLocation.getY());
-			for (StaticObject s : currentObjects) {
-				s.toFront();
+			if(frontObjects.getChildren().contains(currObject)) return;
+			for (Node node: backObjects.getChildren()) {
+				if(!(node instanceof BackgroundObject)) node.toFront();
 			}
 		}
+	}
+	
+	//For potential future extension for objects that cover paths
+	protected void addFrontObject(StaticObject object) {
+		frontObjects.getChildren().add(object);
+		objectList.add(object);
+		object.setLocked(!moveableEnabled);
+	}
+	
+	protected void addBackObject(StaticObject object) {
+		backObjects.getChildren().add(object);
+		objectList.add(object);
+		object.setLocked(!moveableEnabled);
+	}
+	
+	protected void removeObject(StaticObject object) {
+		frontObjects.getChildren().remove(object);
+		backObjects.getChildren().remove(object);
+		objectList.remove(object);
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
 		grid.setVisible(visible);
 		gridEnabled = visible;
+	}
+	
+	protected void toggleMovement(boolean moveable) {
+		moveableEnabled = moveable;
+		if(moveable) {
+			grid.toBack();
+		}else {
+			backObjects.toBack();
+		}
+		for(StaticObject s:objectList) {
+			s.setLocked(!moveable);
+		}
 	}
 	
 	protected void resizeGameArea(int width, int height) {

@@ -6,9 +6,10 @@ import packaging.Packager;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -31,6 +32,7 @@ public class AuthoringController extends AbstractGameController implements Autho
     // TODO - move these into own object? Or have them in the sprite factory?
     private AtomicInteger spriteIdCounter;
     private Map<Integer, Sprite> spriteIdMap;
+    private Map<String, Set<Integer>> templateToIdMap;
 
     private SpriteFactory spriteFactory;
 
@@ -39,6 +41,7 @@ public class AuthoringController extends AbstractGameController implements Autho
         packager = new Packager();
         spriteIdCounter = new AtomicInteger();
         spriteIdMap = new HashMap<>();
+        templateToIdMap = new HashMap<>();
         spriteFactory = new SpriteFactory();
     }
 
@@ -53,6 +56,20 @@ public class AuthoringController extends AbstractGameController implements Autho
         spriteFactory.defineElement(elementName, properties);
     }
 
+	@Override
+	public void updateElementDefinition(String elementName, Map<String, String> properties, boolean retroactive)
+			throws IllegalArgumentException {
+		spriteFactory.updateElementDefinition(elementName, properties);
+		if (retroactive) {
+			updateElementsRetroactively(elementName, properties);
+		}
+	}
+	
+	@Override
+	public void deleteElementDefinition(String elementName) throws IllegalArgumentException {
+		spriteFactory.deleteElementDefinition(elementName);	
+	}
+    
     @Override
     public int placeElement(String elementName, double xCoordinate, double yCoordinate) {
         Sprite sprite = spriteFactory.generateSprite(elementName);
@@ -60,7 +77,11 @@ public class AuthoringController extends AbstractGameController implements Autho
         sprite.setY(yCoordinate);
         spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
         cacheGeneratedSprite(sprite);
-        return spriteIdCounter.get();
+        int spriteId = spriteIdCounter.get();
+        Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
+        idsForTemplate.add(spriteId);
+        templateToIdMap.put(elementName, idsForTemplate);
+        return spriteId;
     }
 
     @Override
@@ -71,9 +92,8 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
 
     @Override
-    public void updateElementProperties(int elementId, Map<String, String> properties) throws IllegalArgumentException {
-        Sprite sprite = getElement(elementId);
-        // TODO - implement
+    public void updateElementProperties(int elementId, Map<String, String> propertiesToUpdate) throws IllegalArgumentException {
+        updateElementPropertiesById(elementId, propertiesToUpdate);
     }
 
     @Override
@@ -88,6 +108,11 @@ public class AuthoringController extends AbstractGameController implements Autho
         // TODO - implement
         return null;
     }
+    
+	@Override
+	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
+		return spriteFactory.getTemplateProperties(elementName);
+	}
 
     private Sprite getElement(int elementId) throws IllegalArgumentException {
         if (!spriteIdMap.containsKey(elementId)) {
@@ -99,13 +124,6 @@ public class AuthoringController extends AbstractGameController implements Autho
     @Override
     public void createNewLevel(int level) {
         setLevel(level);
-    }
-
-    @Override
-    public void loadGameState(String saveName, int level) throws FileNotFoundException {
-        loadGameStateElements(saveName, level);
-        loadGameStateSettings(saveName, level);
-        loadGameConditions(saveName, level);
     }
 
     @Override
@@ -123,10 +141,21 @@ public class AuthoringController extends AbstractGameController implements Autho
     
 	@Override
 	protected void assertValidLevel(int level) throws IllegalArgumentException {
-		if (level < 0 || level > getLevelSprites().size()) {
+		if (level <= 0 || level > getLevelSprites().size()) {
 			throw new IllegalArgumentException();
 			// TODO - customize exception ?
 		}		
+	}
+	
+	private void updateElementsRetroactively(String elementName, Map<String, String> propertiesToUpdate) {
+		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
+		for (int elementId : idsForTemplate) {
+			updateElementPropertiesById(elementId, propertiesToUpdate);
+		}
+	}
+	
+	private void updateElementPropertiesById(int elementId, Map<String, String> propertiesToUpdate) {
+		 getElement(elementId).setProperties(propertiesToUpdate, true);
 	}
 
 }

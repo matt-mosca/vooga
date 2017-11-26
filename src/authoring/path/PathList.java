@@ -1,18 +1,22 @@
 package authoring.path;
 
-import java.awt.List;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 import javafx.geometry.Point2D;
 
-public class PathList extends List{
+public class PathList extends LinkedList{
 	private PathNode current;
-	private PathNode constructor = null;
-	private Set<PathPoint> points;
+	private PathNode head;
+	private PathPoint headpoint;
+	private PathNode constructor;
+	private LinkedList<PathPoint> points;
 	
-	public PathList() {
-		points = new HashSet<>();
+	public PathList(PathPoint start) {
+		points = new LinkedList<>();
+		head = new PathNode(start);
+		headpoint = start;
+		current = head;
+		constructor = head;
 	}
 	
 	public Point2D next() {
@@ -22,20 +26,24 @@ public class PathList extends List{
 		return new Point2D(x, y);
 	}
 	
-	protected void add(PathPoint point) {
-		PathNode node = new PathNode(point.getCenterX(), point.getCenterY(), null);
-		if(constructor == null) {
-			constructor = node;
-			current = constructor;
+	protected boolean add(PathPoint point) {
+		PathNode node = new PathNode(point);
+		constructor.next = node;
+		constructor = constructor.next;
+		if(points.contains(point)) {
+			return false;
 		}else {
-			constructor.next = node;
-			constructor = constructor.next;
+			points.add(point);
+			return true;
 		}
-		points.add(point);
 	}
 	
-	protected boolean contains(PathPoint point) {
-		return points.contains(point);
+	public PathList clone() {
+		PathList copy = new PathList(headpoint);
+		for(PathPoint point:points) {
+			copy.add(point);
+		}
+		return copy;
 	}
 	
 	private class PathNode{
@@ -43,10 +51,10 @@ public class PathList extends List{
 		private double y;
 		private PathNode next = null;
 		
-		private PathNode(double x, double y, PathNode next) {
-			this.x = x;
-			this.y = y;
-			this.next = next;
+		private PathNode(PathPoint next) {
+			this.x = next.getCenterX();
+			this.y = next.getCenterY();
+			this.next = null;
 		}
 	}
 }

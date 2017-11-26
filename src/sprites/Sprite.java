@@ -1,5 +1,6 @@
 package sprites;
 
+import java.awt.geom.Point2D;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.gson.FieldAttributes;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;
@@ -28,7 +28,14 @@ import javafx.scene.image.ImageView;
  * @author Ben Schwennesen
  */
 public class Sprite {
-
+	
+	// Player id for any 'neutral' sprites such as obstacles, trees, etc.
+	public static final int NEUTRAL_ID = 0;
+	// Player id for AI-controlled sprites (enemies in single player)
+	public static final int AI_ID = 1;
+	// TODO - if implementing multi-player, deprecate this
+	public static final int HUMAN_ID = 2;
+		
 	// These fields should be set through setProperties
 	private FiringStrategy firingStrategy;
 	private MovementStrategy movementStrategy;
@@ -39,7 +46,7 @@ public class Sprite {
 	private ImageView spriteImageView;
 
 	public Sprite(Map<String, ?> properties) {
-		setProperties(properties);
+		setProperties(properties, false);
 	}
 
 	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
@@ -89,13 +96,13 @@ public class Sprite {
 	 * @param properties
 	 *            - maps instance variables of this sprite to properties, as strings
 	 */
-	public void setProperties(Map<String, ?> properties) {
+	public void setProperties(Map<String, ?> properties, boolean updating) {
 		List<Field> fields = getFieldsForAllMembers();
 		for (Field field : fields) {
 			field.setAccessible(true);
 			if (properties.containsKey(field.getName())) {
 				setField(properties, field);
-			} else {
+			} else if (!updating) {
 				// TODO - throw custom exception? set to a default value?
 			}
 		}
@@ -145,7 +152,7 @@ public class Sprite {
 	}
 
 	/**
-	 * Scaling-aware boundaries of sprite's representation 
+	 * Scaling-aware boundaries of sprite's representation
 	 * 
 	 * @return
 	 */
@@ -161,12 +168,48 @@ public class Sprite {
 		return movementStrategy.getY();
 	}
 
+	/**
+	 * The current (x, y) position as a Point2D.Double
+	 * 
+	 * @return current position
+	 */
+	public Point2D.Double getCurrentPosition() {
+		return movementStrategy.getCurrentPosition();
+	}
+
+	/**
+	 * Auto-updating (NOT snapshot) position of this MovementStrategy for tracking
+	 * 
+	 * @return auto-updating position that changes with movement
+	 */
+	public Point2D.Double getPositionForTracking() {
+		return movementStrategy.getPositionForTracking();
+	}
+
 	public void setX(double newXCoord) {
 		movementStrategy.setX(newXCoord);
 	}
 
 	public void setY(double newYCoord) {
 		movementStrategy.setY(newYCoord);
+	}
+	
+	/**
+	 * Player id corresponding to player owning this sprite
+	 * @return id of player controlling this sprite
+	 */
+	public int getPlayerId() {
+		return collisionVisitor.getPlayerId();
+	}
+	
+	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter 
+	public boolean isEnemy() {
+		return getPlayerId() == AI_ID;
+	}
+	
+	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter
+	public boolean isAlly() {
+		return getPlayerId() == HUMAN_ID;
 	}
 
 }

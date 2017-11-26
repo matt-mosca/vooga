@@ -7,10 +7,13 @@ package engine.behavior.collision;
  * @author radithya
  *
  */
-public abstract class VolatileCollider implements CollisionVisitor {
+public abstract class VolatileCollider extends GenericCollider {
 	
 	// Can be sub-classed by different kinds of projectiles
-	
+	public VolatileCollider(int playerId) {
+		super(playerId);
+	}
+
 	@Override
 	public void visit(ImperviousCollisionVisitable visitable) {
 		explode();

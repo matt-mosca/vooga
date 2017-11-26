@@ -1,69 +1,112 @@
 package authoring;
 
-import java.util.ArrayList;
-
-import com.sun.glass.events.KeyEvent;
-
+import authoring.customize.AttackDefenseToggle;
+import authoring.customize.BackgroundColorChanger;
+import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
-import javafx.geometry.Point2D;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
+import javafx.scene.text.Font;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
-	private static final double GRID_X_LOCATION = 605;
-	private static final double GRID_Y_LOCATION = 30;
+	private static final double GRID_X_LOCATION = 620;
+	private static final double GRID_Y_LOCATION = 20;
 	private LeftToolBar myLeftToolBar;
-	private GameArea myMainGrid;
+	private GameArea myGameArea;
 	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
-	private CheckBox gridToggle;
+	private ToggleButton gridToggle;
+	private ToggleButton movementToggle;
+	private BackgroundColorChanger myColorChanger;
+	private AttackDefenseToggle myGameChooser;
+	private Label attackDefenseLabel;
 	
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
+//		super(width, height, Color.GRAY);
 		addItems();
 		createGridToggle();
 		rootAdd(gridToggle);
+		createMovementToggle();
+		rootAdd(movementToggle);
+		createLabel();
+//		setGreen();
+//		setGold();
+	}
+//	
+//	private void setGreen() {
+//		rootStyle("authoring/resources/green.css");
+//	}
+//	
+//	private void setGold() {
+//		rootStyle("authoring/resources/gold.css");
+//	}
+	
+	private void createLabel() {
+		attackDefenseLabel = new Label("Attack");
+		attackDefenseLabel.setFont(new Font("Arial", 40));
+//		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
+//		attackDefenseLabel.setFont(new Font("Cambria", 40));
+		attackDefenseLabel.setLayoutX(300);
+		rootAdd(attackDefenseLabel);
+
 	}
 
 	private void createGridToggle() {
-		gridToggle = new CheckBox();
+		gridToggle = new ToggleButton();
 		gridToggle.setLayoutX(GRID_X_LOCATION);
 		gridToggle.setLayoutY(GRID_Y_LOCATION);
 		gridToggle.setSelected(true);
-		gridToggle.setText("Grid");
-		gridToggle.setTextFill(Color.BLACK);
+		gridToggle.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("grid_icon.png"))));
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
-			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
+			myGameArea.toggleGridVisibility(gridToggle.isSelected());
 		});
+	}
+	
+	private void createMovementToggle() {
+		movementToggle = new ToggleButton();
+		movementToggle.setLayoutX(GRID_X_LOCATION - 40);
+		movementToggle.setLayoutY(GRID_Y_LOCATION);
+		movementToggle.setSelected(false);
+		movementToggle.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
+		movementToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->toggleMovement(movementToggle));
+	}
+	
+	private void toggleMovement(ToggleButton movement) {
+		myGameArea.toggleMovement(movementToggle.isSelected());
+		if(movement.isSelected()) {
+			this.getScene().setCursor(new ImageCursor(new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
+		}else {
+			this.getScene().setCursor(Cursor.DEFAULT);
+		}
 	}
 
 	private void addItems() {
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
-		myMainGrid = new GameArea(this);
-		myGameEnvironment = new ScrollableArea(myMainGrid);
+		myGameArea = new GameArea(this);
+		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
+		myColorChanger = new BackgroundColorChanger(this);
+		rootAdd(myColorChanger);
+		myGameChooser = new AttackDefenseToggle(this);
+		rootAdd(myGameChooser);
 	}
 	
 	@Override 
@@ -92,22 +135,23 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		} else {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
-		myMainGrid.getChildren().add(newObject);
+		myGameArea.addBackObject(newObject);
 	}
 	
-	private void createNewErrorWindow() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Object placement error");
-		alert.setHeaderText("Must place object in the main grid");
-		alert.show();
-	}
+	//No longer needed with children added to game area
+//	private void createNewErrorWindow() {
+//		Alert alert = new Alert(AlertType.INFORMATION);
+//		alert.setTitle("Object placement error");
+//		alert.setHeaderText("Must place object in the main grid");
+//		alert.show();
+//	}
 
 	@Override
 	public void dropped(StaticObject currObject, MouseEvent e) {
 		if(e.getButton() == MouseButton.SECONDARY) {
 			deleteObject(currObject);
 		} else {
-			myMainGrid.placeInGrid(currObject);
+			myGameArea.placeInGrid(currObject);
 			myGameEnvironment.requestFocus();
 		}
 	}
@@ -115,13 +159,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void pressed(StaticObject currObject, MouseEvent e) {
 		e.consume();
-		myMainGrid.removeFromGrid(currObject);
+		myGameArea.removeFromGrid(currObject);
 	}
 	
 	private void deleteObject(StaticObject object) {
-		myMainGrid.getChildren().remove(object);
+		myGameArea.removeObject(object);
 		myLeftToolBar.requestFocus();
-		myMainGrid.removeFromGrid(object);
+		myGameArea.removeFromGrid(object);
 	}
 
 	@Override
@@ -132,5 +176,35 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void clicked(SpriteImage imageView) {
 		myRightToolBar.imageSelected(imageView);
+	}
+
+	@Override
+	public void changeBackground(String color) {
+		myGameArea.changeBackground(color);
+		
+	}
+
+	@Override
+	public void attack() {
+		attackDefenseLabel.setText("Attack");
+	}
+
+	@Override
+	public void defense() {
+		attackDefenseLabel.setText("Defense");
+
+		
+	}
+
+	@Override
+	public void doSomething() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String[] getInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
