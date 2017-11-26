@@ -1,5 +1,7 @@
 package engine.behavior.collision;
 
+import engine.behavior.ParameterName;
+
 /**
  * Represents mortal collider behavior - takes damage or explodes upon collision
  * with damage-dealing objects
@@ -11,8 +13,8 @@ public class MortalCollider extends GenericCollider {
 
 	private double healthPoints;
 
-	public MortalCollider(double totalHitPoints) {
-		healthPoints = totalHitPoints;
+	public MortalCollider(@ParameterName("healthPoints") double healthPoints) {
+		this.healthPoints = healthPoints;
 	}
 
 	@Override

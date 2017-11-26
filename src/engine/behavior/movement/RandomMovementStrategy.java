@@ -16,9 +16,8 @@ public final class RandomMovementStrategy extends AbstractMovementStrategy {
 	private Point2D.Double chosenDirection;
 
 	public RandomMovementStrategy(@ParameterName("startX") double startX, @ParameterName("startY") double startY,
-								  @ParameterName("speed") double speed,
 								  @ParameterName("directionProbabilities") double[] directionProbabilities) {
-		super(startX, startY, speed);
+		super(startX, startY);
 		RandomMovementAssigner randomMovementAssigner = new RandomMovementAssigner(directionProbabilities);
 		chosenDirection = randomMovementAssigner.assignMovementDirection();
 		// TODO - set velocity vector to have norm == speed

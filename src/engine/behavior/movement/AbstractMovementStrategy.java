@@ -1,5 +1,7 @@
 package engine.behavior.movement;
 
+import engine.behavior.ParameterName;
+
 /**
  * Use abstract class instead of interface to encapsulate x and y coordinate data
  * 
@@ -9,12 +11,10 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 
 	private double xCoordinate;
 	private double yCoordinate;
-	private double speed;
 
-	public AbstractMovementStrategy(double startX, double startY, double speed) {
+	public AbstractMovementStrategy(@ParameterName("startX") double startX, @ParameterName("startY") double startY) {
 		xCoordinate = startX;
 		yCoordinate = startY;
-		this.speed = speed;
 	}
 
 	@Override
@@ -22,13 +22,6 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 
 	@Override
 	public abstract void handleBlock();
-
-	/**
-	 * Retrieve speed.
-	 *
-	 * @return the speed at which the object using this strategy should use.
-	 */
-	protected double getSpeed() { return speed; }
 
 	@Override
 	public double getX() {

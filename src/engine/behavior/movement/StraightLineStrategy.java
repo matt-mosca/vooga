@@ -8,12 +8,12 @@ public class StraightLineStrategy extends AbstractMovementStrategy {
     private Point2D velocity;
 
     public StraightLineStrategy(@ParameterName("startX")  double startX, @ParameterName("startY") double startY,
-                                @ParameterName("speed")   double speed, @ParameterName("targetX") double targetX,
+                                @ParameterName("speed")   double speed,  @ParameterName("targetX") double targetX,
                                 @ParameterName("targetY") double targetY) {
-        super(startX, startY, speed);
+        super(startX, startY);
         velocity = new Point2D(targetX, targetY);
         velocity.normalize();
-        velocity.multiply(Math.sqrt(getSpeed()));
+        velocity.multiply(Math.sqrt(speed));
     }
 
     @Override
