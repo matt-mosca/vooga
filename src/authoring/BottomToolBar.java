@@ -24,12 +24,12 @@ public class BottomToolBar extends ToolBar{
 	private TabFactory tabMaker;
 	private TabPane tabPane;
 	private List<Tab> tabList;
-	private int lvCount;
+	private int currLevelCount;
 	private Button addButton;
 	
 	public BottomToolBar(AuthorInterface author) {
 		super(author);
-		lvCount = 1;
+		currLevelCount = 1;
 		this.setLayoutY(500);
 		this.setLayoutX(260);
 		table = new TableView<ObjectProperties>();
@@ -46,14 +46,14 @@ public class BottomToolBar extends ToolBar{
 	}
 	
 	private void addLevel() {
-		lvCount++;
+		currLevelCount++;
 		createTab();
 	}
 	
 	private void createTab() {
-		Tab tab = tabMaker.buildTabWithoutContent("Level" + lvCount, tabPane);
+		Tab tab = tabMaker.buildTabWithoutContent("Level" + currLevelCount, tabPane);
 		
-		if (lvCount==1) {
+		if (currLevelCount==1) {
 			tab.setClosable(false);	
 		}
 		else {
@@ -67,10 +67,10 @@ public class BottomToolBar extends ToolBar{
 		//ideally this method would just decrement the lvCounter in the backend and will 
 		//delete the previous level which existed at num
 		
-		for (int i = num; i<lvCount; i++) {
+		for (int i = num; i<currLevelCount; i++) {
 			tabPane.getTabs().get(i).setText("Level" + i);
 		}
-		lvCount--;
+		currLevelCount--;
 	}
 	
 }
