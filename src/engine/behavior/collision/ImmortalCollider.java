@@ -9,6 +9,10 @@ package engine.behavior.collision;
  */
 public class ImmortalCollider extends GenericCollider {
 
+	public ImmortalCollider(int playerId) {
+		super(playerId);
+	}
+	
 	// Immortal colliders don't take any damage
 	@Override
 	public void visit(DamageDealingCollisionVisitable visitable) {

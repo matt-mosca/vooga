@@ -28,7 +28,14 @@ import javafx.scene.image.ImageView;
  * @author Ben Schwennesen
  */
 public class Sprite {
-
+	
+	// Player id for any 'neutral' sprites such as obstacles, trees, etc.
+	public static final int NEUTRAL_ID = 0;
+	// Player id for AI-controlled sprites (enemies in single player)
+	public static final int AI_ID = 1;
+	// TODO - if implementing multi-player, deprecate this
+	public static final int HUMAN_ID = 2;
+		
 	// These fields should be set through setProperties
 	private FiringStrategy firingStrategy;
 	private MovementStrategy movementStrategy;
@@ -185,6 +192,24 @@ public class Sprite {
 
 	public void setY(double newYCoord) {
 		movementStrategy.setY(newYCoord);
+	}
+	
+	/**
+	 * Player id corresponding to player owning this sprite
+	 * @return id of player controlling this sprite
+	 */
+	public int getPlayerId() {
+		return collisionVisitor.getPlayerId();
+	}
+	
+	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter 
+	public boolean isEnemy() {
+		return getPlayerId() == AI_ID;
+	}
+	
+	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter
+	public boolean isAlly() {
+		return getPlayerId() == HUMAN_ID;
 	}
 
 }

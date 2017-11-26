@@ -1,8 +1,8 @@
 package engine.behavior.collision;
 
 /**
- * Visitor Design Pattern for handling collisions. Handle effects of collision on
- * colliding element through the visit method
+ * Visitor Design Pattern for handling collisions. Handle effects of collision
+ * on colliding element through the visit method
  * 
  * @author radithya
  *
@@ -54,10 +54,27 @@ public interface CollisionVisitor {
 	 * @return true if unit is blocked, false otherwise
 	 */
 	public boolean isBlocked();
-	
+
 	/**
 	 * Will be used by MovementStrategy after recomputing path / reversing direction
 	 */
-	public void unBlock(); 
+	public void unBlock();
+
+	/**
+	 * Whether the other CollisionVisitor is an enemy to this one
+	 * 
+	 * @param other
+	 *            CollisionVisitor instance to be checked if enemy or not
+	 * @return true if other is an enemy of this CollisionVisitor, false otherwise
+	 */
+	public boolean isEnemy(CollisionVisitor other);
+
+	/**
+	 * Player id of player controlling this CollisionVisitor instance
+	 * 
+	 * @return int representing id of player controlling this CollisionVisitor
+	 *         instance
+	 */
+	public int getPlayerId();
 
 }
