@@ -30,7 +30,7 @@ public interface AuthoringModelController {
 	 * @throws FileNotFoundException
 	 *             if the save name does not refer to an existing file
 	 */
-	void loadGameState(String saveName, int level) throws FileNotFoundException;
+	void loadOriginalGameState(String saveName, int level) throws FileNotFoundException;
 
 	/**
 	 * Export a fully authored game, including all levels, into an executable file.

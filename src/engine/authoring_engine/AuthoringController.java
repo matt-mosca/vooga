@@ -6,7 +6,6 @@ import packaging.Packager;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -128,13 +127,6 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
 
     @Override
-    public void loadGameState(String saveName, int level) throws FileNotFoundException {
-        loadGameStateElements(saveName, level);
-        loadGameStateSettings(saveName, level);
-        loadGameConditions(saveName, level);
-    }
-
-    @Override
     public void setStatusProperty(String property, String value) {
     		getLevelStatuses().get(getCurrentLevel()).put(property, value);
     }
@@ -149,7 +141,7 @@ public class AuthoringController extends AbstractGameController implements Autho
     
 	@Override
 	protected void assertValidLevel(int level) throws IllegalArgumentException {
-		if (level < 0 || level > getLevelSprites().size()) {
+		if (level <= 0 || level > getLevelSprites().size()) {
 			throw new IllegalArgumentException();
 			// TODO - customize exception ?
 		}		

@@ -64,6 +64,23 @@ public abstract class AbstractGameController {
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
 	}
 
+	/**
+	 * Load the detailed state of the original authored game for a particular level,
+	 * including high-level information and elements present.
+	 *
+	 * @param saveName
+	 *            the name used to save the game authoring data
+	 * @param level
+	 *            the level of the game which should be loaded
+	 * @throws FileNotFoundException
+	 *             if the save name does not refer to an existing file
+	 */
+	public void loadOriginalGameState(String saveName, int level) throws FileNotFoundException {
+		for (int levelToLoad = currentLevel; levelToLoad <= level; level++) {
+			loadLevelData(saveName, levelToLoad, true);
+		}
+	}
+
 	public List<List<Sprite>> getLevelSprites() {
 		return levelSpritesCache;
 	}
@@ -80,52 +97,12 @@ public abstract class AbstractGameController {
 		this.gameName = gameName;
 	}
 
-	public int getNumLevelsForGame() {
+	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
 		try {
-			return getIoController().getNumberOfLevelsForGame(getGameName(), isAuthoring());
+			// Want to load as author to get total number of levels for actual game
+			return getIoController().getNumberOfLevelsForGame(gameName, forOriginalGame);
 		} catch (FileNotFoundException e) {
 			return 0;
-		}
-	}
-
-	/**
-	 * Load collection of elements for a previously saved game state for a for all
-	 * levels up to and including the stated level
-	 *
-	 * @param savedGameName
-	 *            the name used to save the game state
-	 * @param level
-	 *            level of the game to load
-	 * @return collection of game elements for the desired level
-	 */
-	protected Collection<Sprite> loadGameStateElements(String savedGameName, int level) throws FileNotFoundException {
-		Collection<Sprite> loadedSprites = null;
-		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
-			loadedSprites = loadGameStateElementsForLevel(savedGameName, level);
-		}
-		return loadedSprites;
-	}
-
-	// TODO - throw custom exception
-	/**
-	 * Load top-level game status settings (lives left, resources left, etc.) for a
-	 * previously saved game state for all levels up to and including the stated
-	 * level
-	 *
-	 * @param savedGameName
-	 *            the name used to save the game state
-	 * @param level
-	 *            level of the game to load
-	 */
-	protected void loadGameStateSettings(String savedGameName, int level) throws FileNotFoundException {
-		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
-			loadGameStateSettingsForLevel(savedGameName, levelToLoad);
-		}
-	}
-
-	protected void loadGameConditions(String savedGameName, int level) throws FileNotFoundException {
-		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
-			loadGameConditionsForLevel(savedGameName, levelToLoad);
 		}
 	}
 
@@ -167,33 +144,49 @@ public abstract class AbstractGameController {
 		return currentLevel;
 	}
 
+	protected void loadLevelData(String saveName, int level, boolean originalGame) throws FileNotFoundException {
+		loadGameStateElementsForLevel(saveName, level, originalGame);
+		loadGameStateSettingsForLevel(saveName, level, originalGame);
+		loadGameConditionsForLevel(saveName, level, originalGame);
+	}
+	
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
-
-	private Collection<Sprite> loadGameStateElementsForLevel(String savedGameName, int level)
+	
+	private Collection<Sprite> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);
-		List<Sprite> loadedSprites = ioController.loadGameStateElements(savedGameName, level, isAuthoring());
-		levelSpritesCache.set(level, loadedSprites);
+		List<Sprite> loadedSprites = ioController.loadGameStateElements(savedGameName, level, originalGame);
+		addOrSetLevelData(levelSpritesCache, loadedSprites, level);
 		return loadedSprites;
 	}
 
-	private void loadGameStateSettingsForLevel(String savedGameName, int level) throws FileNotFoundException {
+	private void loadGameStateSettingsForLevel(String savedGameName, int level, boolean originalGame)
+			throws FileNotFoundException {
 		assertValidLevel(level);
-		Map<String, String> loadedSettings = ioController.loadGameStateSettings(savedGameName, level, isAuthoring());
-		levelStatuses.set(level, loadedSettings);
+		Map<String, String> loadedSettings = ioController.loadGameStateSettings(savedGameName, level, originalGame);
+		addOrSetLevelData(levelStatuses, loadedSettings, level);
 	}
 
-	private void loadGameConditionsForLevel(String savedGameName, int level) throws FileNotFoundException {
+	private void loadGameConditionsForLevel(String savedGameName, int level, boolean originalGame)
+			throws FileNotFoundException {
 		assertValidLevel(level);
-		Map<String, String> loadedLevelConditions = ioController.loadGameConditions(savedGameName, level,
-				isAuthoring());
-		levelConditions.set(level, loadedLevelConditions);
+		Map<String, String> loadedLevelConditions = ioController.loadGameConditions(savedGameName, level, originalGame);
+		addOrSetLevelData(levelConditions, loadedLevelConditions, level);
 	}
 
 	private boolean isAuthoring() {
 		// TODO - remove the forAuthoring param from ioController method so we don't
 		// have to do this
 		return this.getClass().equals(AuthoringController.class);
+	}
+	
+
+	private <T> void addOrSetLevelData(List<T> allLevelData, T levelData, int level) {
+		if (level == allLevelData.size()) {
+			allLevelData.add(levelData);
+		} else {
+			allLevelData.set(level, levelData);
+		}
 	}
 
 }

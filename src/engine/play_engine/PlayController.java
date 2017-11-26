@@ -36,16 +36,31 @@ public class PlayController extends AbstractGameController implements PlayModelC
     }
 
     @Override
-    public void loadGameState(String saveName, int level) throws FileNotFoundException {
-    		assertValidLevel(level);
-        setMaxLevelsForGame(getNumLevelsForGame());
-    		elementManager.setCurrentElements(loadGameStateElements(saveName, level));
-        loadGameStateSettings(saveName, level);
-        loadGameConditions(saveName, level);
-        setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
-        setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
+    public void loadOriginalGameState(String saveName, int level) throws FileNotFoundException {
+    		super.loadOriginalGameState(saveName, level);
+    		updateForLevelChange(saveName, level);
     }
 
+	@Override
+	public void loadSavedPlayState(String savePlayStateName) throws FileNotFoundException {
+		// Get number of levels in play state
+		int lastLevelPlayed = getNumLevelsForGame(savePlayStateName, false);
+		// Load levels up to that level, as played (not original)
+		for (int level = 1; level <= lastLevelPlayed; level ++) {
+			setLevel(level);
+			loadLevelData(savePlayStateName, level, false);			
+		}
+		updateForLevelChange(savePlayStateName, lastLevelPlayed);
+	}
+	
+	private void updateForLevelChange(String saveName, int level) {
+        setLevel(level);
+		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
+		elementManager.setCurrentElements(getLevelSprites().get(level));
+        setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
+        setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));		
+	}
+    
 	@Override
 	public void update() {
 		if (inPlay) {
@@ -164,6 +179,5 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private void setDefeatCondition(String conditionFunctionIdentifier) {
 		
 	}
-
 
 }
