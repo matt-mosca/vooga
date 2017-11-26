@@ -11,7 +11,8 @@ public class MortalCollider extends GenericCollider {
 
 	private double hitPoints;
 
-	public MortalCollider(double totalHitPoints) {
+	public MortalCollider(int playerId, double totalHitPoints) {
+		super(playerId);
 		hitPoints = totalHitPoints;
 	}
 

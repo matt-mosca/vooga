@@ -5,6 +5,7 @@ import com.google.gson.internal.LinkedTreeMap;
 //import com.sun.deploy.util.ArrayUtil;
 import engine.behavior.collision.AbstractVisitable;
 import engine.behavior.collision.AbstractVisitor;
+import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.collision.DamageDealingCollisionVisitable;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.ImperviousCollisionVisitable;
@@ -288,7 +289,7 @@ public class SerializationUtils {
 
 		Map<String, Object> towerMap = new HashMap<>();
 		towerMap.put("collisionVisitable", new DamageDealingCollisionVisitable(1.0));
-		towerMap.put("collisionVisitor", new ImmortalCollider());
+		towerMap.put("collisionVisitor", new ImmortalCollider(1));
 		towerMap.put("firingStrategy", new FiringStrategy() {
 			@Override
 			public void fire() {
@@ -343,6 +344,18 @@ public class SerializationUtils {
 			@Override
 			public void unBlock() {
 
+			}
+
+			@Override
+			public boolean isEnemy(CollisionVisitor other) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public int getPlayerId() {
+				// TODO Auto-generated method stub
+				return 0;
 			}
 		});
 		towerMap.put("firingStrategy", new FiringStrategy() {
