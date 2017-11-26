@@ -1,22 +1,15 @@
 package sprites;
 
-import com.sun.xml.internal.bind.v2.TODO;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import engine.behavior.ParameterName;
-import engine.behavior.movement.MovementStrategy;
-import engine.behavior.movement.RandomMovementStrategy;
+import util.SpriteOptionsGetter;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.
@@ -31,8 +24,7 @@ public class SpriteFactory {
 
     private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
 
-    // used to map pretty names of properties (displayed in frontend) to backend, ugly names
-    private Map<String, String> propertyTranslations = new HashMap<>();
+    private SpriteOptionsGetter spriteTranslator = new SpriteOptionsGetter();
 
     /**
      * Define a new/updated template with specified properties.
@@ -77,10 +69,10 @@ public class SpriteFactory {
 
     private Object generateSpriteParameter(Class parameterClass, Map<String, String> properties) throws
             ReflectiveOperationException {
-        String[] constructorParameterNames = getConstructorParameterNames(parameterClass);
-        Object[] constructorParameters = new Object[constructorParameterNames.length];
+        List<String> constructorParameterNames = spriteTranslator.getConstructorParameterNames(parameterClass);
+        Object[] constructorParameters = new Object[constructorParameterNames.size()];
         for (int i = 0; i < constructorParameters.length; i++) {
-            String propertyValueAsString = properties.getOrDefault(constructorParameterNames[i], "0");
+            String propertyValueAsString = properties.getOrDefault(constructorParameterNames.get(i), "0");
             // TODO - change default
             try {
                 constructorParameters[i] = Double.parseDouble(propertyValueAsString);
@@ -89,17 +81,6 @@ public class SpriteFactory {
             }
         }
         return parameterClass.getConstructors()[0].newInstance(constructorParameters);
-    }
-
-    private String[] getConstructorParameterNames(Class clazz) {
-        Constructor constructor = clazz.getConstructors()[0];
-        Parameter[] parameters = constructor.getParameters();
-        String[] parameterNames = new String[parameters.length];
-        // TODO - make sure getParameters() returns them in order
-        for (int i = 0; i < parameterNames.length; i++) {
-            parameterNames[i] = parameters[i].getAnnotation(ParameterName.class).value();
-        }
-        return parameterNames;
     }
 
     /**
@@ -140,38 +121,10 @@ public class SpriteFactory {
      * @return a map from the (prettily translated) name of configuration parameter to its value options
      */
     public Map<String, List<String>> getElementBaseConfigurationOptions() {
-        Map<String, List<String>> spriteParameterSubclassOptions = new HashMap<>();
-        for (Parameter spriteParameter : getSpriteParameters()) {
-            try {
-                String parameterClassName = spriteParameter.getType().getSimpleName();
-                loadOptionsForParameter(parameterClassName, spriteParameterSubclassOptions);
-            } catch (IOException e) {
-                // TODO - handle
-            }
-        }
-        System.out.println(propertyTranslations);
-        return spriteParameterSubclassOptions;
+        return spriteTranslator.getSpriteParameterSubclassOptions();
     }
 
-    private void loadOptionsForParameter(String parameterClassName, Map<String, List<String>> parameterSubclassOptions)
-            throws IOException {
-        Properties spriteConstructionProperties = new Properties();
-        System.out.println(parameterClassName);
-        InputStream parameterPossibilitiesProperties = getClass().getClassLoader()
-                .getResourceAsStream(parameterClassName + PROPERTIES_EXTENSION);
-        if (parameterPossibilitiesProperties != null) {
-            spriteConstructionProperties.load(parameterPossibilitiesProperties);
-            String parameterPrettyConfigurationName = (String) spriteConstructionProperties.remove(parameterClassName);
-            spriteConstructionProperties.forEach((subclassOption, description) ->
-                    propertyTranslations.put((String) description, (String) subclassOption));
-            List<String> prettyOptions = spriteConstructionProperties.values().stream()
-                    .map(option -> (String) option)
-                    .collect(Collectors.toList());
-            parameterSubclassOptions.put(parameterPrettyConfigurationName, prettyOptions);
-        }
-    }
-
-    public Map<String, String> getAuxiliaryElementProperties(Map<String, String> baseConfiguration) {
+    public List<String> getAuxiliaryElementProperties(Map<String, String> baseConfiguration) {
         return null;
     }
 }
