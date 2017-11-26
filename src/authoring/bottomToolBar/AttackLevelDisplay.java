@@ -1,5 +1,5 @@
 package authoring.bottomToolBar;
 
-public class AttackLevelDisplay {
+public class AttackLevelDisplay extends LevelDisplay {
 
 }
