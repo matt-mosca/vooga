@@ -33,6 +33,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private BackgroundColorChanger myColorChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
+	private Button yesButton;
+	private Button noButton;
+	private Label optionLabel;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -175,8 +178,28 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
-		myRightToolBar.imageSelected(imageView);
+		noButtonPressed(imageView);
+		optionLabel = new Label("Do you want to add this sprite to inventory?");
+		yesButton = new Button("Yes");
+		noButton = new Button("No");
+		yesButton.setLayoutX(1000);
+		noButton.setLayoutX(1050);
+		optionLabel.setLayoutX(700);
+		rootAdd(yesButton);
+		rootAdd(optionLabel);
+		rootAdd(noButton);
+		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->myRightToolBar.imageSelected(imageView));
+		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed(imageView));
 	}
+	
+	private void noButtonPressed(SpriteImage imageView) {
+		rootRemove(yesButton);
+		rootRemove(noButton);
+		rootRemove(optionLabel);
+
+	}
+
+
 
 	@Override
 	public void changeColor(String color) {

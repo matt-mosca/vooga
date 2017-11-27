@@ -105,6 +105,11 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
+		if (imageView instanceof ProjectileImage) System.out.println("Test");
+		else newPane(imageView);
+	}
+
+	private void newPane(SpriteImage imageView) {
 		propertiesPane = new Pane();
 		Button deleteButton = new Button("Back");
 		deleteButton.setLayoutX(300);
