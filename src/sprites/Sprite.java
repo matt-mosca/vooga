@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import engine.behavior.blocking.BlockingStrategy;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;
@@ -39,6 +40,7 @@ public class Sprite {
 	// These fields should be set through setProperties
 	private FiringStrategy firingStrategy;
 	private MovementStrategy movementStrategy;
+	private BlockingStrategy blockingStrategy;
 	private CollisionVisitor collisionVisitor;
 	private CollisionVisitable collisionVisitable;
 	// Might need custom code in setProperties for handling loading of image and

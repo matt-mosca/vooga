@@ -2,6 +2,13 @@ package engine.behavior.movement;
 
 import javafx.geometry.Point2D;
 
+/**
+ * Movement strategy for objects that movements depends on straight line movement
+ * 
+ * @author mscruggs
+ *
+ */
+
 public class StraightLineMovementStrategy extends MovementStrategy{
 	protected double endX;
 	protected double endY;
@@ -27,19 +34,19 @@ public class StraightLineMovementStrategy extends MovementStrategy{
 		setY(this.getY()+yVelo);
 	}
 
-	protected void setEndCoord(Point2D updatedEndCoordinates) {
-		this.endX = updatedEndCoordinates.getX();
-		this.endY = updatedEndCoordinates.getY();
+	protected void setEndCoord(double endX, double endY) {
+		this.endX = endX;
+		this.endY = endY;
 		calculateVelocityComponents();
 	}
 	
-	protected void stop() {
+	public void stop() {
 		this.xVelo = 0;
 		this.yVelo = 0;
 		this.velocityMagnitude = 0;
 	}
 	
-	protected void bounce() {
+	public void bounce() {
 		
 	}
 	
