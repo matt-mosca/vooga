@@ -205,40 +205,41 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override
 	public void changeTheme(String theme) {
-		if(theme.equals(ThemeChanger.FOREST))
-			setForestTheme();
-		else if(theme.equals(ThemeChanger.GOLD))
-			setGoldTheme();
-		else if(theme.equals(ThemeChanger.SKY))
-			setSkyTheme();
-		else if(theme.equals(ThemeChanger.DARK))
-			setDarkTheme();
-		else if(theme.equals(ThemeChanger.MIDNIGHT))
-			setMidnightTheme();
-		else if(theme.equals(ThemeChanger.STANDARD))
-			setStandardTheme();
+//		if(theme.equals(ThemeChanger.FOREST))
+//			setForestTheme();
+//		else if(theme.equals(ThemeChanger.GOLD))
+//			setGoldTheme();
+//		else if(theme.equals(ThemeChanger.SKY))
+//			setSkyTheme();
+//		else if(theme.equals(ThemeChanger.DARK))
+//			setDarkTheme();
+//		else if(theme.equals(ThemeChanger.MIDNIGHT))
+//			setMidnightTheme();
+//		else if(theme.equals(ThemeChanger.STANDARD))
+//			setStandardTheme();
+		rootStyle(myThemeChanger.getThemePath(theme));
 	}
 	
-	private void setForestTheme() {
-		rootStyle("authoring/resources/green.css");
-	}
-	
-	private void setGoldTheme() {
-		rootStyle("authoring/resources/gold.css");
-	}
-	
-	private void setSkyTheme() {
-		rootStyle("authoring/resources/blue.css");
-	}
-	
-	private void setDarkTheme() {
-		rootStyle("authoring/resources/dark.css");
-	}
-	
-	private void setMidnightTheme() {
-		rootStyle("authoring/resources/darkpurple.css");
-	}
-	
+//	private void setForestTheme() {
+//		rootStyle("authoring/resources/green.css");
+//	}
+//	
+//	private void setGoldTheme() {
+//		rootStyle("authoring/resources/gold.css");
+//	}
+//	
+//	private void setSkyTheme() {
+//		rootStyle("authoring/resources/blue.css");
+//	}
+//	
+//	private void setDarkTheme() {
+//		rootStyle("authoring/resources/dark.css");
+//	}
+//	
+//	private void setMidnightTheme() {
+//		rootStyle("authoring/resources/darkpurple.css");
+//	}
+//	
 	private void setStandardTheme() {
 		rootStyle("authoring/resources/standard.css");
 	}
