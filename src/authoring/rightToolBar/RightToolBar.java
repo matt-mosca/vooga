@@ -152,17 +152,25 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private void newProjectilesWindow() {
 		ScrollPane projectilesWindow = new ScrollPane();
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
+		if (inventoryProjectile.getImages().isEmpty()) {
+			Label emptyLabel = new Label("You have no projectiles in your inventory");
+			propertiesPane.getChildren().remove(myPropertiesBox);
+			emptyLabel.setLayoutX(100);
+			propertiesPane.getChildren().add(emptyLabel);
+		} else {
 		ObservableList<SpriteImage> items =FXCollections.observableArrayList(inventoryProjectile.getImages());
         projectilesView.setItems(items);
         projectilesView.getSelectionModel();
         projectilesWindow.setContent(projectilesView);
         projectilesWindow.setLayoutX(100);
         projectilesWindow.setPrefHeight(250);
+   
         
         projectilesView.setOnMouseClicked(e->projectileSelected(
         		projectilesView.getSelectionModel().getSelectedItem().clone()));
         propertiesPane.getChildren().remove(myPropertiesBox);
         propertiesPane.getChildren().add(projectilesWindow);
+		}
 	}
 	
 	private void projectileSelected(SpriteImage imageClone) {
