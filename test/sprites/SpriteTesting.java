@@ -46,7 +46,7 @@ public class TestSprite extends Sprite {
         });
 
         assert testSprite.getX() == 5.0;
-        assert testSprite.getY() == 10.0;
+        assert testSprite.getCurrentY() == 10.0;
         //assert testSprite.getXVelocity() == 55.0;
         //assert testSprite.getYVelocity() == 563.0;
         assert (((TestSprite) testSprite).imageUrl).equals("http://google.com/definitely_a_valid_image.png");*/

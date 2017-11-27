@@ -25,15 +25,15 @@ public final class RandomMovementStrategy extends AbstractMovementStrategy {
 
 	@Override
 	public void move() {
-		setX(getX() + chosenDirection.getX());
-		setY(getY() + chosenDirection.getY());
+		setX(getCurrentX() + chosenDirection.getX());
+		setY(getCurrentY() + chosenDirection.getY());
 	}
 /*
 	// TODO - more effective / realistic unblocking logic?
 	@Override
 	public void handleBlock() {
 		// Naive reversing
-		chosenDirection = new Point2D.Double(chosenDirection.getX() * -1, chosenDirection.getY() * -1);// TEMP
+		chosenDirection = new Point2D.Double(chosenDirection.getX() * -1, chosenDirection.getCurrentY() * -1);// TEMP
 	}
 */
 }

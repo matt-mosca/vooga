@@ -1,7 +1,6 @@
 package engine.behavior.movement;
 
 import engine.behavior.ParameterName;
-import javafx.geometry.Point2D;
 import sprites.Sprite;
 
 /**

@@ -21,7 +21,7 @@ public class StraightLineMovementStrategy extends AbstractMovementStrategy {
 	public StraightLineMovementStrategy(@ParameterName("startX") double startX,
 										@ParameterName("startY") double startY,
 										@ParameterName("velocity") double velocity) {
-		this(startX, startY, 0, 0,velocity);
+		this(startX, startY, 0, 0, velocity);
 	}
 	
 	public StraightLineMovementStrategy(@ParameterName("startX") double startX,
@@ -37,8 +37,8 @@ public class StraightLineMovementStrategy extends AbstractMovementStrategy {
 	}
 	
 	public void move() {
-		setX(this.getX()+xVelo);
-		setY(this.getY()+yVelo);
+		setX(this.getCurrentX()+xVelo);
+		setY(this.getCurrentY()+yVelo);
 	}
 
 	protected void setEndCoord(double endX, double endY) {
@@ -58,7 +58,7 @@ public class StraightLineMovementStrategy extends AbstractMovementStrategy {
 	}
 	
 	private void calculateVelocityComponents() {
-		double angle = Math.toRadians(new Point2D(this.getX(),this.getY()).angle(endX, endY));
+		double angle = Math.toRadians(new Point2D(this.getCurrentX(),this.getCurrentY()).angle(endX, endY));
 		this.xVelo = velocityMagnitude * Math.cos(angle);
 		this.yVelo = velocityMagnitude * Math.sin(angle);
 	}

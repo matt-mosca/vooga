@@ -19,14 +19,14 @@ public interface MovementStrategy {
      *
      * @return current x-coordinate
      */
-    double getX();
+    double getCurrentX();
 
     /**
      * Retrieve the current vertical coordinate for the game element
      *
      * @return current y-coordinate
      */
-    double getY();
+    double getCurrentY();
 
     /**
      * Set horizontal coordinate for the game element using this strategy object.
@@ -43,16 +43,10 @@ public interface MovementStrategy {
     void setY(double newYCoord);
 
     /**
-     * Get the current coordinates of the game element using this strategy.
-     *
-     * @return current position as a point object
-     */
-    Point2D.Double getCurrentPosition();
-
-    /**
-     * Get auto-updating position of the game element using this strategy for tracking
+     * Get auto-updating position of the game element using this strategy. This can be used to track the element as it
+     * moves in the game.
      *
      * @return point object that changes with movement
      */
-    Point2D.Double getPositionForTracking();
+    TrackingPoint getPositionForTracking();
 }
