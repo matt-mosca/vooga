@@ -132,7 +132,7 @@ public class GameArea extends Pane{
 		this.setPrefSize(width, height);
 	}
 	
-	protected void changeBackground(String hexcode) {
+	protected void changeColor(String hexcode) {
 		this.setStyle("-fx-background-color: " + hexcode + ";");
 		backgroundColor = hexcode;
 	}

@@ -15,7 +15,7 @@ public class ColorChanger extends ColorPicker {
 		this.setPrefWidth(WIDTH);
 		this.setLayoutY(Y_POS);
 		this.setPromptText(PROMPT_TEXT);
-		this.setOnAction((ActionEvent e)-> customize.changeBackground(toRGBCode(this.getValue())));
+		this.setOnAction((ActionEvent e)-> customize.changeColor(toRGBCode(this.getValue())));
 	}
 	
 	//https://stackoverflow.com/questions/17925318/how-to-get-hex-web-string-from-javafx-colorpicker-color

@@ -179,8 +179,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	@Override
-	public void changeBackground(String color) {
-		myGameArea.changeBackground(color);
+	public void changeColor(String color) {
+		myGameArea.changeColor(color);
 		
 	}
 

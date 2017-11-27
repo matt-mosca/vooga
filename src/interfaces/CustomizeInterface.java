@@ -2,7 +2,7 @@ package interfaces;
 
 public interface CustomizeInterface {
 
-	void changeBackground(String color);
+	void changeColor(String color);
 
 	void attack();
 
