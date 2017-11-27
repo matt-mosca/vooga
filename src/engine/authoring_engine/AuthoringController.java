@@ -155,7 +155,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 	
 	private void updateElementPropertiesById(int elementId, Map<String, String> propertiesToUpdate) {
-		 getElement(elementId).setProperties(propertiesToUpdate, true);
+		 // TODO - can't use old method
 	}
 
 }

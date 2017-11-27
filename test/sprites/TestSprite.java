@@ -1,7 +1,9 @@
 package sprites;
 
-import java.util.HashMap;
-import java.util.Map;
+import engine.behavior.collision.CollisionVisitable;
+import engine.behavior.collision.CollisionVisitor;
+import engine.behavior.firing.FiringStrategy;
+import engine.behavior.movement.AbstractMovementStrategy;
 
 /**
  * Tests sprite creation / field setting.
@@ -12,8 +14,9 @@ public class TestSprite extends Sprite {
 
     String imageUrl;
 
-    public TestSprite(Map<String, ?> properties, String templateName) {
-        super(properties);
+    public TestSprite(FiringStrategy firingStrategy, AbstractMovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
+                      CollisionVisitable collisionVisitable, String imageUrl) {
+        super(firingStrategy, movementStrategy, collisionVisitor, collisionVisitable, imageUrl);
     }
 
     @Override
@@ -27,7 +30,7 @@ public class TestSprite extends Sprite {
     }
 
     public static void main(String[] args) {
-        Map<String, Object> map = new HashMap<>();
+        /*Map<String, Object> map = new HashMap<>();
         map.put("xCoord", 5.0);
         map.put("yCoord", 10.0);
         map.put("imageUrl", "http://google.com/definitely_a_valid_image.png");
@@ -46,6 +49,6 @@ public class TestSprite extends Sprite {
         assert testSprite.getY() == 10.0;
         //assert testSprite.getXVelocity() == 55.0;
         //assert testSprite.getYVelocity() == 563.0;
-        assert (((TestSprite) testSprite).imageUrl).equals("http://google.com/definitely_a_valid_image.png");
+        assert (((TestSprite) testSprite).imageUrl).equals("http://google.com/definitely_a_valid_image.png");*/
     }
 }

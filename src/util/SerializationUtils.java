@@ -1,34 +1,17 @@
 package util;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.internal.LinkedTreeMap;
-//import com.sun.deploy.util.ArrayUtil;
-import engine.behavior.collision.AbstractVisitable;
-import engine.behavior.collision.AbstractVisitor;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.collision.DamageDealingCollisionVisitable;
 import engine.behavior.collision.ImmortalCollider;
-import engine.behavior.collision.ImperviousCollisionVisitable;
-import engine.behavior.collision.MortalCollider;
-import engine.behavior.collision.NoopCollisionVisitable;
 import engine.behavior.firing.FiringStrategy;
-import engine.behavior.movement.MovementStrategy;
-import engine.behavior.movement.RandomMovementAssigner;
-import engine.behavior.movement.RandomMovementStrategy;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import engine.behavior.movement.AbstractMovementStrategy;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SerializationUtils {
 
@@ -290,86 +273,6 @@ public class SerializationUtils {
 		Map<String, Object> towerMap = new HashMap<>();
 		towerMap.put("collisionVisitable", new DamageDealingCollisionVisitable(1.0));
 		towerMap.put("collisionVisitor", new ImmortalCollider(1));
-		towerMap.put("firingStrategy", new FiringStrategy() {
-			@Override
-			public void fire() {
-				//
-			}
-		});
-		towerMap.put("movementStrategy", new MovementStrategy(10, 10) {
-			@Override
-			public void move() {
-
-			}
-
-			@Override
-			public void handleBlock() {
-
-			}
-		});
-
-		Map<String, Object> soldierMap = new HashMap<>();
-		towerMap.put("collisionVisitable", new AbstractVisitable(10) {
-			@Override
-			protected double getHealthPoints() {
-				return super.getHealthPoints();
-			}
-		});
-		towerMap.put("collisionVisitor", new AbstractVisitor(50) {
-			@Override
-			public void visit(ImperviousCollisionVisitable visitable) {
-
-			}
-
-			@Override
-			public void visit(DamageDealingCollisionVisitable visitable) {
-
-			}
-
-			@Override
-			public void visit(NoopCollisionVisitable visitable) {
-
-			}
-
-			@Override
-			public boolean isAlive() {
-				return false;
-			}
-
-			@Override
-			public boolean isBlocked() {
-				return false;
-			}
-
-			@Override
-			public void unBlock() {
-
-			}
-
-			@Override
-			public boolean isEnemy(CollisionVisitor other) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public int getPlayerId() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-		});
-		towerMap.put("firingStrategy", new FiringStrategy() {
-			@Override
-			public void fire() {
-				//
-			}
-		});
-		towerMap.put("movementStrategy", new RandomMovementStrategy(10.0, 11.0,
-				new RandomMovementAssigner(new double[] { .24, .26, .27, .23 })));
-
-		JFXPanel jfxPanel = new JFXPanel(); // implicitly start fx-application thread
-		towerMap.put("spriteImageView", new ImageView(new Image("https://ih1.redbubble.net/image.115836824.6095/flat,800x800,075,t.u4.jpg")));
-
 		// TODO - don't serialize sprites; cache their properties and reconstruct using spriteFactory
 		// since the sprite serialization is causing StackOverflowError
 		// 		how to handle coordinates though?

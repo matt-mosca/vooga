@@ -1,5 +1,7 @@
 package engine.behavior.collision;
 
+import engine.behavior.ParameterName;
+
 /**
  * Captures general collision behaviors of most colliders. Specific collision
  * behaviors can be achieved by implementing visit(CollisionVisitable visitable)
@@ -13,7 +15,7 @@ public abstract class GenericCollider implements CollisionVisitor {
 	private int playerId;
 	private boolean blocked;
 
-	public GenericCollider(int playerId) {
+	public GenericCollider(@ParameterName("playerId") int playerId) {
 		this.playerId = playerId;
 	}
 	

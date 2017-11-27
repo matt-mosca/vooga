@@ -46,7 +46,7 @@ public class ElementManager {
 	}
 	
 	/*
-	 * MovementStrategy object should be created with the coordinates Method might
+	 * AbstractMovementStrategy object should be created with the coordinates Method might
 	 * still be necessary but should just do void and put in authoring game grid
 	 */
 

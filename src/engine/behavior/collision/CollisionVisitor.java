@@ -56,7 +56,7 @@ public interface CollisionVisitor {
 	public boolean isBlocked();
 
 	/**
-	 * Will be used by MovementStrategy after recomputing path / reversing direction
+	 * Will be used by AbstractMovementStrategy after recomputing path / reversing direction
 	 */
 	public void unBlock();
 
