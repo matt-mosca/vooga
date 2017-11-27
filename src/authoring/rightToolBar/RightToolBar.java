@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -26,9 +27,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
  
 public class RightToolBar extends VBox implements PropertiesInterface {
@@ -45,6 +50,9 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private AddNewButton myNewButton;
 	private PropertiesBox myPropertiesBox;
 	private Pane propertiesPane;
+	private Label projectileLabel;
+	private HBox projectileSlot;
+	private Button deleteButton;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
 
@@ -97,16 +105,77 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		for(int i = 0; i < topTabPane.getTabs().size(); i++) {
 			topTabPane.getTabs().get(i).setClosable(false);
 		}
-		
 		for(int i = 0; i < bottomTabPane.getTabs().size(); i++) {
 			bottomTabPane.getTabs().get(i).setClosable(false);
 		}
 	}
 
 	@Override
-	public void clicked(SpriteImage imageView) {
-		if (imageView instanceof ProjectileImage) System.out.println("Test");
-		else newPane(imageView);
+	public void clicked(SpriteImage imageView) {		
+		if (imageView instanceof TowerImage) newPaneWithProjectileSlot(imageView);
+		if (imageView instanceof TroopImage) newPane(imageView);
+	}
+	
+	private void newPaneWithProjectileSlot(SpriteImage imageView) {
+		/**
+		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
+		 */
+		
+		projectileLabel = new Label("Click to\nChoose a\nprojectile");
+		projectileLabel.setLayoutY(90);
+		projectileSlot = new HBox();
+		projectileSlot.setPrefWidth(80);
+		projectileSlot.setPrefHeight(80);
+		projectileSlot.setLayoutY(150);
+		projectileSlot.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+//		projectileSlot.setBackground(value);
+		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow());
+		propertiesPane = new Pane();
+		deleteButton = new Button("Back");
+		deleteButton.setLayoutX(370);
+		Label info = new Label("Properties here");
+		info.setLayoutY(100);
+		info.setFont(new Font("Arial", 30));
+		myPropertiesBox.setLayoutX(100);
+		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
+		propertiesPane.getChildren().add(imageView.clone());
+		propertiesPane.getChildren().add(deleteButton);
+		propertiesPane.getChildren().add(myPropertiesBox);
+		propertiesPane.getChildren().add(projectileLabel);
+		propertiesPane.getChildren().add(projectileSlot);
+		this.getChildren().removeAll(this.getChildren());
+		this.getChildren().add(propertiesPane);
+		this.getChildren().add(bottomTabPane);
+
+	}
+	
+	private void newProjectilesWindow() {
+		ScrollPane projectilesWindow = new ScrollPane();
+		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
+		if (inventoryProjectile.getImages().isEmpty()) {
+			Label emptyLabel = new Label("You have no projectiles in your inventory");
+			propertiesPane.getChildren().remove(myPropertiesBox);
+			emptyLabel.setLayoutX(100);
+			propertiesPane.getChildren().add(emptyLabel);
+		} else {
+		ObservableList<SpriteImage> items =FXCollections.observableArrayList(inventoryProjectile.getImages());
+        projectilesView.setItems(items);
+        projectilesView.getSelectionModel();
+        projectilesWindow.setContent(projectilesView);
+        projectilesWindow.setLayoutX(100);
+        projectilesWindow.setPrefHeight(250);
+   
+        
+        projectilesView.setOnMouseClicked(e->projectileSelected(
+        		projectilesView.getSelectionModel().getSelectedItem().clone()));
+        propertiesPane.getChildren().remove(myPropertiesBox);
+        propertiesPane.getChildren().add(projectilesWindow);
+		}
+	}
+	
+	private void projectileSelected(SpriteImage imageClone) {
+		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
+		projectileSlot.getChildren().add(imageClone);
 	}
 
 	private void newPane(SpriteImage imageView) {
