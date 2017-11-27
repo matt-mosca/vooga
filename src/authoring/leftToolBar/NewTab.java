@@ -13,6 +13,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import sprites.StaticObject;
 
 public class NewTab extends ScrollPane{
 	private final String PROMPT = "Choose Type";
@@ -58,11 +59,11 @@ public class NewTab extends ScrollPane{
 			//Add in error window here
 			return;
 		}else {
-			//Currently a problem adding to list, also missing deciding which tab to add to
 			File file = fileChooser.showOpenDialog(this.getScene().getWindow());
-			SimpleTab tab = (SimpleTab) tabPane.getTabs().get(0).getContent();
-			System.out.println(file.getPath());
-//			tab.addBackgroundItem(1, file.getPath());
+			String tabName = objectTypes.getSelectionModel().toString();
+			SimpleTab activeTab = (SimpleTab) tabPane.getTabs().get(objectTypes.getSelectionModel().getSelectedIndex()).getContent();
+			StaticObject object = new StaticObject(1, clickable, file.toURI().toString());
+			activeTab.addItem(object);
 		}
 	}
 
