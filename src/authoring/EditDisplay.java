@@ -207,12 +207,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 
-	@Override
 	public void attack() {
 		attackDefenseLabel.setText("Attack");
 	}
 
-	@Override
 	public void defense() {
 		attackDefenseLabel.setText("Defense");
 

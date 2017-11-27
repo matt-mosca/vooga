@@ -46,7 +46,7 @@ public class LeftToolBar extends VBox {
 		tabPane.getTabs().add(tabFactory.buildTab("Static", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", backgroundTab, tabPane));
 		
-		addTab = new NewTab(myClickable, tabPane, this);
+		addTab = new NewTab(myClickable, tabPane);
 		tabPane.getTabs().add(tabFactory.buildTab("Add Image", addTab, tabPane));
 		makeTabsUnclosable();
 	}

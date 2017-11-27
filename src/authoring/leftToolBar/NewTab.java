@@ -1,18 +1,22 @@
 package authoring.leftToolBar;
 
+import java.io.File;
+import java.net.MalformedURLException;
+
 import interfaces.ClickableInterface;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 public class NewTab extends ScrollPane{
 	private final String PROMPT = "Choose Type";
+	private final String ADD_PROMPT = "Click to add image";
 	
 	private ClickableInterface clickable;
 	private ComboBox<String> objectTypes;
@@ -20,19 +24,19 @@ public class NewTab extends ScrollPane{
 	private FileChooser fileChooser;
 	private VBox items;
 	private TabPane tabPane;
-	private Pane toolbar;
 	
-	public NewTab(ClickableInterface clickable, TabPane tabs, Pane tools) {
+	public NewTab(ClickableInterface clickable, TabPane tabs) {
 		this.clickable = clickable;
 		this.tabPane = tabs;
-		this.toolbar = tools;
 		this.setFitToWidth(true);
 		
 		objectTypes = new ComboBox<>();
 		initializeOptions();
 		addImage = new Button();
-		initializeAddImage();
+		addImage.setText(ADD_PROMPT);
+		addImage.setOnAction((ActionEvent e) -> addImage());
 		fileChooser= new FileChooser();
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		
 		items = new VBox();
 		items.setFillWidth(true);
@@ -49,11 +53,16 @@ public class NewTab extends ScrollPane{
 		}
 	}
 	
-	private void initializeAddImage() {
+	private void addImage() {
 		if(objectTypes.getSelectionModel().isEmpty()) {
+			//Add in error window here
 			return;
 		}else {
-			Image image = new Image(fileChooser.showOpenDialog(this.getScene().getWindow()).getName());
+			//Currently a problem adding to list, also missing deciding which tab to add to
+			File file = fileChooser.showOpenDialog(this.getScene().getWindow());
+			SimpleTab tab = (SimpleTab) tabPane.getTabs().get(0).getContent();
+			System.out.println(file.getPath());
+//			tab.addBackgroundItem(1, file.getPath());
 		}
 	}
 
