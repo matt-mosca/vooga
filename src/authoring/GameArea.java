@@ -142,4 +142,10 @@ public class GameArea extends Pane implements CustomizeInterface{
 	public void removeFromGrid(StaticObject currObject) {
 		grid.removeFromGrid(currObject);
 	}
+
+	@Override
+	public void changeTheme(String theme) {
+		// TODO Auto-generated method stub
+		
+	}
 }

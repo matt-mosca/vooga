@@ -1,5 +1,6 @@
 package engine.behavior.movement;
 
+import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 
 /**
@@ -14,8 +15,10 @@ public abstract class CircularMovementStrategy extends StraightLineMovementStrat
 	private double radius;
 	private double angularVelocity;
 	
-	public CircularMovementStrategy(double centerX, double centerY, double radius,double initialAngle,
-			double velocity) {
+	public CircularMovementStrategy(@ParameterName("centerX") double centerX, @ParameterName("centerY") double centerY,
+									@ParameterName("radius") double radius,
+									@ParameterName("initialAngle") double initialAngle,
+									@ParameterName("velocity") double velocity) {
 		super(centerX, centerY,velocity/radius);
 		this.radius = radius;
 		this.angle = Math.toRadians(initialAngle);

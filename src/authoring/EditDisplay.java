@@ -2,6 +2,7 @@ package authoring;
 
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.BackgroundColorChanger;
+import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
@@ -31,6 +32,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ToggleButton gridToggle;
 	private ToggleButton movementToggle;
 	private BackgroundColorChanger myColorChanger;
+	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
 	private Button yesButton;
@@ -39,32 +41,27 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	
 	public EditDisplay(int width, int height) {
-		super(width, height, Color.GREEN);
+//		super(width, height, Color.GREEN);
+//		super(width, height);
+		super(width, height, Color.BLACK);
 //		super(width, height, Color.GRAY);
+		setStandardTheme();
 		addItems();
 		createGridToggle();
 		rootAdd(gridToggle);
 		createMovementToggle();
 		rootAdd(movementToggle);
 		createLabel();
-//		setGreen();
-//		setGold();
 	}
-//	
-//	private void setGreen() {
-//		rootStyle("authoring/resources/green.css");
-//	}
-//	
-//	private void setGold() {
-//		rootStyle("authoring/resources/gold.css");
-//	}
 	
 	private void createLabel() {
 		attackDefenseLabel = new Label("Attack");
-		attackDefenseLabel.setFont(new Font("Arial", 40));
+//		styleLabel(attackDefenseLabel);
+		attackDefenseLabel.setFont(new Font("Times New Roman", 35));
 //		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
 //		attackDefenseLabel.setFont(new Font("Cambria", 40));
-		attackDefenseLabel.setLayoutX(300);
+		attackDefenseLabel.setLayoutX(260);
+		attackDefenseLabel.setLayoutY(25);
 		rootAdd(attackDefenseLabel);
 
 	}
@@ -108,6 +105,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myRightToolBar);
 		myColorChanger = new BackgroundColorChanger(this);
 		rootAdd(myColorChanger);
+		myThemeChanger = new ThemeChanger(this);
+		rootAdd(myThemeChanger);
 		myGameChooser = new AttackDefenseToggle(this);
 		rootAdd(myGameChooser);
 	}
@@ -178,8 +177,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
-		noButtonPressed(imageView);
-		optionLabel = new Label("Do you want to add this sprite to inventory?");
+		//TODO refactor this and make the labels and buttons their own class
+		noButtonPressed();
+		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
 		yesButton = new Button("Yes");
 		noButton = new Button("No");
 		yesButton.setLayoutX(1000);
@@ -188,23 +188,33 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(yesButton);
 		rootAdd(optionLabel);
 		rootAdd(noButton);
-		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->myRightToolBar.imageSelected(imageView));
-		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed(imageView));
+		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
+		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
+	}
+	private void yesButtonPressed(SpriteImage imageView) {
+		myRightToolBar.imageSelected(imageView);
+		noButtonPressed();
 	}
 	
-	private void noButtonPressed(SpriteImage imageView) {
+	private void noButtonPressed() {
 		rootRemove(yesButton);
 		rootRemove(noButton);
 		rootRemove(optionLabel);
 
 	}
 
-
-
 	@Override
 	public void changeColor(String color) {
 		myGameArea.changeColor(color);
-		
+	}
+	
+	@Override
+	public void changeTheme(String theme) {
+		rootStyle(myThemeChanger.getThemePath(theme));
+	}
+
+	private void setStandardTheme() {
+		rootStyle("authoring/resources/standard.css");
 	}
 
 	public void attack() {
@@ -213,8 +223,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	public void defense() {
 		attackDefenseLabel.setText("Defense");
-
-		
 	}
 
 	@Override
