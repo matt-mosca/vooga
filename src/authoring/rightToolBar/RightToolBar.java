@@ -48,6 +48,9 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private AddNewButton myNewButton;
 	private PropertiesBox myPropertiesBox;
 	private Pane propertiesPane;
+	private Label projectileLabel;
+	private Rectangle projectileSlot;
+	private Button deleteButton;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
 
@@ -112,16 +115,15 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	}
 	
 	private void newPaneWithProjectileSlot(SpriteImage imageView) {
-		Label projectileLabel = new Label("Click to\nChoose a\nprojectile");
+		projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
-		Rectangle projectileSlot = new Rectangle();
+		projectileSlot = new Rectangle();
 		projectileSlot.setWidth(80);
 		projectileSlot.setHeight(80);
 		projectileSlot.setLayoutY(150);
 		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow());
-		
 		propertiesPane = new Pane();
-		Button deleteButton = new Button("Back");
+		deleteButton = new Button("Back");
 		deleteButton.setLayoutX(370);
 		Label info = new Label("Properties here");
 		info.setLayoutY(100);
@@ -146,9 +148,10 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         projectilesView.setItems(items);
         projectilesView.getSelectionModel();
         projectilesWindow.setContent(projectilesView);
-        this.getChildren().removeAll(this.getChildren());
-        this.getChildren().add(projectilesWindow);
-		System.out.println(inventoryProjectile.getImages());
+        projectilesWindow.setLayoutX(100);
+        projectilesWindow.setPrefHeight(250);
+        propertiesPane.getChildren().remove(myPropertiesBox);
+        propertiesPane.getChildren().add(projectilesWindow);
 	}
 
 	private void newPane(SpriteImage imageView) {
