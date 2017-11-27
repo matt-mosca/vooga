@@ -62,7 +62,7 @@ public class Sprite {
 	 */
 	public void move() {
 		if (collisionVisitor.isBlocked()) {
-			movementStrategy.handleBlock();
+			//movementStrategy.handleBlock();
 			collisionVisitor.unBlock();
 		}
 		movementStrategy.move();

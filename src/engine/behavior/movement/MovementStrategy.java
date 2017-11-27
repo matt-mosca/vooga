@@ -36,11 +36,6 @@ public abstract class MovementStrategy {
 	public abstract void move();
 
 	/**
-	 * What to do when blocked
-	 */
-	public abstract void handleBlock();
-
-	/**
 	 * The current xCoordinate
 	 * 
 	 * @return current xCoordinate
