@@ -2,6 +2,7 @@ package authoring;
 
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.BackgroundColorChanger;
+import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
@@ -31,6 +32,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ToggleButton gridToggle;
 	private ToggleButton movementToggle;
 	private BackgroundColorChanger myColorChanger;
+	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
 	private Button yesButton;
@@ -39,32 +41,27 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	
 	public EditDisplay(int width, int height) {
-		super(width, height, Color.GREEN);
+//		super(width, height, Color.GREEN);
+//		super(width, height);
+		super(width, height, Color.BLACK);
 //		super(width, height, Color.GRAY);
+		setStandardTheme();
 		addItems();
 		createGridToggle();
 		rootAdd(gridToggle);
 		createMovementToggle();
 		rootAdd(movementToggle);
 		createLabel();
-//		setGreen();
-//		setGold();
 	}
-//	
-//	private void setGreen() {
-//		rootStyle("authoring/resources/green.css");
-//	}
-//	
-//	private void setGold() {
-//		rootStyle("authoring/resources/gold.css");
-//	}
 	
 	private void createLabel() {
 		attackDefenseLabel = new Label("Attack");
-		attackDefenseLabel.setFont(new Font("Arial", 40));
+//		styleLabel(attackDefenseLabel);
+		attackDefenseLabel.setFont(new Font("Times New Roman", 35));
 //		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
 //		attackDefenseLabel.setFont(new Font("Cambria", 40));
-		attackDefenseLabel.setLayoutX(300);
+		attackDefenseLabel.setLayoutX(260);
+		attackDefenseLabel.setLayoutY(25);
 		rootAdd(attackDefenseLabel);
 
 	}
@@ -108,6 +105,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myRightToolBar);
 		myColorChanger = new BackgroundColorChanger(this);
 		rootAdd(myColorChanger);
+		myThemeChanger = new ThemeChanger(this);
+		rootAdd(myThemeChanger);
 		myGameChooser = new AttackDefenseToggle(this);
 		rootAdd(myGameChooser);
 	}
@@ -199,12 +198,49 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	}
 
-
-
 	@Override
 	public void changeBackground(String color) {
 		myGameArea.changeBackground(color);
-		
+	}
+	
+	@Override
+	public void changeTheme(String theme) {
+		if(theme.equals(ThemeChanger.FOREST))
+			setForestTheme();
+		else if(theme.equals(ThemeChanger.GOLD))
+			setGoldTheme();
+		else if(theme.equals(ThemeChanger.SKY))
+			setSkyTheme();
+		else if(theme.equals(ThemeChanger.DARK))
+			setDarkTheme();
+		else if(theme.equals(ThemeChanger.MIDNIGHT))
+			setMidnightTheme();
+		else if(theme.equals(ThemeChanger.STANDARD))
+			setStandardTheme();
+	}
+	
+	private void setForestTheme() {
+		rootStyle("authoring/resources/green.css");
+	}
+	
+	private void setGoldTheme() {
+		rootStyle("authoring/resources/gold.css");
+	}
+	
+	private void setSkyTheme() {
+		rootStyle("authoring/resources/blue.css");
+	}
+	
+	private void setDarkTheme() {
+		rootStyle("authoring/resources/dark.css");
+	}
+	
+	private void setMidnightTheme() {
+		rootStyle("authoring/resources/darkpurple.css");
+	}
+	
+	private void setStandardTheme() {
+		rootStyle("authoring/resources/standard.css");
 	}
 
 	@Override
@@ -215,8 +251,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void defense() {
 		attackDefenseLabel.setText("Defense");
-
-		
 	}
 
 	@Override
@@ -230,4 +264,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+//	private void styleLabel(Label l) {
+////		l.setStyle("-fx-background-color: aliceblue; -fx-text-fill: white;");
+//		l.setFont(new Font("Arial", 40));
+//		l.setTextFill(Color.WHITE);
+//		l.setStyle("-fx-stroke: black; -fx-stroke-width: 1;");
+//	}
 }
