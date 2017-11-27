@@ -124,11 +124,10 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
 		projectileSlot = new HBox();
-		projectileSlot.setPrefWidth(80);
-		projectileSlot.setPrefHeight(80);
-		projectileSlot.setLayoutY(150);
-		projectileSlot.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-//		projectileSlot.setBackground(value);
+		projectileSlot.setPrefWidth(50);
+		projectileSlot.setPrefHeight(50);
+		projectileSlot.setLayoutY(170);
+		projectileSlot.setStyle("-fx-background-color: white");
 		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow());
 		propertiesPane = new Pane();
 		deleteButton = new Button("Back");
@@ -138,7 +137,10 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		info.setFont(new Font("Arial", 30));
 		myPropertiesBox.setLayoutX(100);
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
-		propertiesPane.getChildren().add(imageView.clone());
+		HBox imageBackground = new HBox();
+		imageBackground.setStyle("-fx-background-color: white");
+		imageBackground.getChildren().add(imageView.clone());
+		propertiesPane.getChildren().add(imageBackground);
 		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(myPropertiesBox);
 		propertiesPane.getChildren().add(projectileLabel);
@@ -153,7 +155,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		ScrollPane projectilesWindow = new ScrollPane();
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
 		if (inventoryProjectile.getImages().isEmpty()) {
-			Label emptyLabel = new Label("You have no projectiles in your inventory");
+			Label emptyLabel = new Label("You have no projectiles\nin your inventory");
 			propertiesPane.getChildren().remove(myPropertiesBox);
 			emptyLabel.setLayoutX(100);
 			propertiesPane.getChildren().add(emptyLabel);
@@ -164,8 +166,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         projectilesWindow.setContent(projectilesView);
         projectilesWindow.setLayoutX(100);
         projectilesWindow.setPrefHeight(250);
-   
-        
         projectilesView.setOnMouseClicked(e->projectileSelected(
         		projectilesView.getSelectionModel().getSelectedItem().clone()));
         propertiesPane.getChildren().remove(myPropertiesBox);
