@@ -5,7 +5,7 @@ public class TargetedFiringStrategy implements FiringStrategy {
 	HomingProjectile projectile;
 	@Override
 	public void fire() {
-		projectile = new HomingProjectile(); 
+		projectile = new HomingProjectile(null, null);
 		
 	}
 	

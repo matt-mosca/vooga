@@ -1,7 +1,10 @@
 package sprites;
 
+import engine.behavior.ParameterName;
+import javafx.geometry.Bounds;
 import util.SpriteOptionsGetter;
 
+import javax.swing.text.html.ImageView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -55,6 +58,19 @@ public class SpriteFactory {
         Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
 		return generateSprite(properties);
     }
+
+	/**
+	 * Generate a sprite from an existing template which specifies its properties.
+	 *
+	 * @param spriteTemplateName - the name of the sprite template
+	 * @return a sprite object with properties set to those specified in the template
+	 */
+	public Sprite generateSprite(String spriteTemplateName,
+								 @ParameterName("startX") double startX, @ParameterName("startY") double startY,
+								 @ParameterName("graphicalRepresentation") ImageView graphicalRepresentation) {
+		Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
+		return generateSprite(properties);
+	}
 
 	/**
 	 * TODO
