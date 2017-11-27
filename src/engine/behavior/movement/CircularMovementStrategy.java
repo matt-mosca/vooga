@@ -2,6 +2,12 @@ package engine.behavior.movement;
 
 import javafx.geometry.Point2D;
 
+/**
+ * Movement strategy for objects that move along a circular path
+ * 
+ * @author mscruggs
+ *
+ */
 public abstract class CircularMovementStrategy extends StraightLineMovementStrategy{
 
 	private double angle;
@@ -24,7 +30,7 @@ public abstract class CircularMovementStrategy extends StraightLineMovementStrat
 	}
 	
 	private void setEndCoordinates() {
-		super.setEndCoord(new Point2D(radius*Math.cos(angle),radius*Math.sin(angle)));
+		super.setEndCoord(radius*Math.cos(angle),radius*Math.sin(angle));
 	}
 	
 	private void setInitialLocation() {

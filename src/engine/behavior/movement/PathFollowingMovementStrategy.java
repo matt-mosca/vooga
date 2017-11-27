@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import javafx.geometry.Point2D;
 
+/**
+ * Movement strategy for objects that move along a defined path
+ * 
+ * @author mscruggs
+ *
+ */
 public abstract class PathFollowingMovementStrategy extends StraightLineMovementStrategy{
 	
 	private ArrayList<Point2D> coordinates;
@@ -15,17 +21,20 @@ public abstract class PathFollowingMovementStrategy extends StraightLineMovement
 	}
 
 	public void move() {
-		this.setEndCoord(coordinates.get(currentCoordinateIndex));
 		super.move();
 		checkIfLocationReached();
 	}
-	
+	/**
+	 * TODO: add check to see if location reached 
+	 */
 	private void checkIfLocationReached() {
 		if(true) {
 			currentCoordinateIndex++;
-			if(currentCoordinateIndex>coordinates.size()) {
-				currentCoordinateIndex =0;
+			if(currentCoordinateIndex>=coordinates.size()) {
+				currentCoordinateIndex = 0;
 			}
+			Point2D currentTarget = coordinates.get(currentCoordinateIndex);
+			this.setEndCoord(currentTarget.getX(), currentTarget.getY());
 		}
 	}
 }

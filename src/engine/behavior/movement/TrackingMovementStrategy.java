@@ -3,6 +3,12 @@ package engine.behavior.movement;
 import javafx.geometry.Point2D;
 import sprites.Sprite;
 
+/**
+ * Movement strategy for objects that track another sprite
+ * 
+ * @author mscruggs
+ *
+ */
 public class TrackingMovementStrategy extends StraightLineMovementStrategy{
 
 	private Sprite target;
@@ -14,7 +20,7 @@ public class TrackingMovementStrategy extends StraightLineMovementStrategy{
 	}
 	
 	public void move() {
-		this.setEndCoord(new Point2D(target.getX(),target.getY()));
+		this.setEndCoord(target.getX(),target.getY());
 		super.move();
 	}
 }
