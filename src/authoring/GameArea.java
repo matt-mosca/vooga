@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.path.Path;
+import interfaces.CustomizeInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -13,7 +14,7 @@ import javafx.scene.layout.Pane;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
 
-public class GameArea extends Pane{
+public class GameArea extends Pane implements CustomizeInterface{
 	private final String WIDTH = "Game_Area_Width";
 	private final String HEIGHT = "Game_Area_Height";
 	private final String COLOR = "Game_Area_Color";
@@ -132,12 +133,19 @@ public class GameArea extends Pane{
 		this.setPrefSize(width, height);
 	}
 	
-	protected void changeBackground(String hexcode) {
+	@Override
+	public void changeColor(String hexcode) {
 		this.setStyle("-fx-background-color: " + hexcode + ";");
 		backgroundColor = hexcode;
 	}
 
 	public void removeFromGrid(StaticObject currObject) {
 		grid.removeFromGrid(currObject);
+	}
+
+	@Override
+	public void changeTheme(String theme) {
+		// TODO Auto-generated method stub
+		
 	}
 }

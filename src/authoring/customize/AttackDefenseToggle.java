@@ -1,14 +1,15 @@
 package authoring.customize;
 
+import authoring.EditDisplay;
 import interfaces.CustomizeInterface;
 
 public class AttackDefenseToggle extends ToggleSwitch {
-	private CustomizeInterface myCustomize;
+	private EditDisplay myDisplay;
 	
-	public AttackDefenseToggle(CustomizeInterface customize) {
+	public AttackDefenseToggle(EditDisplay display) {
 		this.setLayoutY(550);
 		this.setWidth(200);
-		myCustomize = customize;
+		myDisplay = display;
 		this.setUpSwitch();
 	}
 	
@@ -28,7 +29,7 @@ public class AttackDefenseToggle extends ToggleSwitch {
 		setStyle("-fx-background-color: red;");
 //		setStyle("-fx-background-color: rgb(66, 123, 230)");
 		button.toFront();
-		myCustomize.attack();
+		myDisplay.attack();
 	}
 
 	public void attack() {
@@ -37,7 +38,7 @@ public class AttackDefenseToggle extends ToggleSwitch {
 //		setStyle("-fx-background-color: rgb(240, 200, 100);");
 		setStyle("-fx-background-color: rgb(66, 123, 230);");
 		switchLabel.toFront();
-		myCustomize.defense();
+		myDisplay.defense();
 	}
 	}
 	
