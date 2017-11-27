@@ -24,7 +24,7 @@ public class SpriteFactory {
 
     private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
 
-    private SpriteOptionsGetter spriteTranslator = new SpriteOptionsGetter();
+    private SpriteOptionsGetter spriteOptionsGetter = new SpriteOptionsGetter();
 
     /**
      * Define a new/updated template with specified properties.
@@ -69,10 +69,21 @@ public class SpriteFactory {
 
     private Object generateSpriteParameter(Class parameterClass, Map<String, String> properties) throws
             ReflectiveOperationException {
-        List<String> constructorParameterNames = spriteTranslator.getConstructorParameterNames(parameterClass);
+        String parmeterClassDescription = spriteOptionsGetter.translateClassToDescription(parameterClass.getName());
+        String chosenSubclassDescription = properties.get(parmeterClassDescription);
+        String chosenSubclassName = spriteOptionsGetter.translateDescriptionToClass(chosenSubclassDescription);
+        // TODO - more elegant (this is due to imageUrl) -- encapsulate ImageView in CollisionHandler? 
+        if (chosenSubclassName == null) {
+            return "";
+        }
+        Class chosenParameterSubclass = Class.forName(chosenSubclassName);
+        List<String> constructorParameterNames =
+                spriteOptionsGetter.getConstructorParameterNames(chosenParameterSubclass);
         Object[] constructorParameters = new Object[constructorParameterNames.size()];
         for (int i = 0; i < constructorParameters.length; i++) {
-            String propertyValueAsString = properties.getOrDefault(constructorParameterNames.get(i), "0");
+            String parameterDescription = spriteOptionsGetter.translateParameterToDescription
+                    (constructorParameterNames.get(i));
+            String propertyValueAsString = properties.getOrDefault(parameterDescription, "0");
             // TODO - change default
             try {
                 constructorParameters[i] = Double.parseDouble(propertyValueAsString);
@@ -80,7 +91,26 @@ public class SpriteFactory {
                 constructorParameters[i] = propertyValueAsString;
             }
         }
-        return parameterClass.getConstructors()[0].newInstance(constructorParameters);
+        return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
+    }
+
+    /**
+     * Obtain the base configuration options for sprites; specifically, obtain descriptive names for the subclass
+     * options for the sprite's construction parameters.
+     *
+     * @return a map from the (prettily translated) name of configuration parameter to its value options
+     */
+    public Map<String, List<String>> getElementBaseConfigurationOptions() {
+        return spriteOptionsGetter.getSpriteParameterSubclassOptions();
+    }
+
+    /**
+     *
+     * @param subclassChoices
+     * @return
+     */
+    public List<String> getAuxiliaryElementProperties(Map<String, String> subclassChoices) {
+        return spriteOptionsGetter.getAuxiliaryParametersFromSubclassChoices(subclassChoices);
     }
 
     /**
@@ -112,19 +142,5 @@ public class SpriteFactory {
                 }
             }
         }
-    }
-
-    /**
-     * Obtain the base configuration options for sprites; specifically, obtain descriptive names for the subclass
-     * options for the sprite's construction parameters.
-     *
-     * @return a map from the (prettily translated) name of configuration parameter to its value options
-     */
-    public Map<String, List<String>> getElementBaseConfigurationOptions() {
-        return spriteTranslator.getSpriteParameterSubclassOptions();
-    }
-
-    public List<String> getAuxiliaryElementProperties(Map<String, String> baseConfiguration) {
-        return null;
     }
 }

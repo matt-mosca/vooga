@@ -78,21 +78,24 @@ public class SpriteOptionsGetter {
         if (parameterClassPossibilitiesStream != null) {
             spriteParameterSubclassProperties.load(parameterClassPossibilitiesStream);
             String parameterClassFullName = spriteParameter.getType().getName();
-            List<String> subclassOptions =
-                    spriteParameterSubclassOptions.getOrDefault(parameterClassFullName, new ArrayList<>());
+            List<String> subclassOptions = new ArrayList<>();
+            String referenceClassDescription = null;
             for (String subclassOptionName : spriteParameterSubclassProperties.stringPropertyNames()) {
                 String subclassDescription = spriteParameterSubclassProperties.getProperty(subclassOptionName);
                 classToDescription.put(subclassOptionName, subclassDescription);
                 descriptionToClass.put(subclassDescription, subclassOptionName);
                 if (!subclassOptionName.equals(parameterClassFullName)) {
                     subclassOptions.add(subclassDescription);
+                } else {
+                    referenceClassDescription = subclassDescription;
                 }
                 List<String> parameterDescriptions = spriteMemberParametersMap.getOrDefault
                         (subclassOptionName, new ArrayList<>());
                 loadTranslationsForSpriteParameter(subclassOptionName, parameterDescriptions);
                 spriteMemberParametersMap.put(subclassOptionName, parameterDescriptions);
             }
-            spriteParameterSubclassOptions.put(parameterClassFullName, subclassOptions);
+            spriteParameterSubclassOptions.put(referenceClassDescription != null ?
+                    referenceClassDescription : parameterClassFullName, subclassOptions);
         }
     }
 
@@ -100,7 +103,6 @@ public class SpriteOptionsGetter {
     private void loadTranslationsForSpriteParameter(String spriteParameterSubclassName, List<String>
             parameterDescriptions) throws ReflectiveOperationException {
         Class spriteParameterSubclass = Class.forName(spriteParameterSubclassName);
-        System.out.println(spriteParameterSubclass.getName());
         Constructor[] subclassConstructors = spriteParameterSubclass.getConstructors();
         if (subclassConstructors.length > 0) {
             Constructor desiredConstructor = subclassConstructors[0];
@@ -123,7 +125,9 @@ public class SpriteOptionsGetter {
     }
 
     public List<String> getConstructorParameterNames(Class clazz) {
-        System.out.println(clazz.getName());
+        if (clazz.getConstructors().length == 0) {
+            return new ArrayList<>();
+        }
         Constructor constructor = clazz.getConstructors()[0];
         Parameter[] parameters = constructor.getParameters();
         // TODO - make sure getParameters() returns them in order
@@ -144,12 +148,23 @@ public class SpriteOptionsGetter {
             System.out.println(subclassChoiceDescription);
             String subclassChoiceName = descriptionToClass.get(subclassChoiceDescription);
             if (subclassChoiceName == null || !spriteMemberParametersMap.containsKey(subclassChoiceName)) {
-                System.out.println(subclassChoiceName);
                 throw new IllegalArgumentException();
             }
             auxiliaryParameters.addAll(spriteMemberParametersMap.get(subclassChoiceName));
         }
         return auxiliaryParameters;
+    }
+
+    public String translateDescriptionToClass(String description) {
+        return descriptionToClass.getOrDefault(description, description);
+    }
+
+    public String translateClassToDescription(String className) {
+        return classToDescription.getOrDefault(className, className);
+    }
+
+    public String translateParameterToDescription(String parameterName) {
+        return parameterToDescription.getOrDefault(parameterName, parameterName);
     }
 
     public static void main(String[] args) {

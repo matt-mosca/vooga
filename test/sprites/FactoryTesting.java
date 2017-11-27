@@ -8,7 +8,9 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Tests the sprite factory.
@@ -19,7 +21,27 @@ public class FactoryTesting {
 
     public static void main(String[] args) {
         SpriteFactory sf = new SpriteFactory();
-        Map<String, String> bleh = new HashMap<>();
+        Map<String, List<String>> baseConfig = sf.getElementBaseConfigurationOptions();
+        Scanner in = new Scanner(System.in);
+        Map<String, String> choices = new HashMap<>();
+        for (String k : baseConfig.keySet()) {
+            System.out.println(String.format("Pick one of the following options for %s", k));
+            baseConfig.get(k).forEach(option -> System.out.println("\t" + option));
+            System.out.println();
+            choices.put(k, in.nextLine().trim());
+        }
+        System.out.println(choices);
+
+        for (String k : sf.getAuxiliaryElementProperties(choices)) {
+            System.out.println(String.format("Set %s", k));
+            System.out.println();
+            choices.put(k, in.nextLine().trim());
+        }
+        System.out.println(choices);
+        sf.defineElement("Tower1", choices);
+        Sprite tower = sf.generateSprite("Tower1");
+        System.out.println(tower.getX() + " " + tower.getY());
+        /*Map<String, String> bleh = new HashMap<>();
         String mc = "engine.behavior.collision.GenericCollider";
         try{
             Class clazz = Class.forName(mc);
@@ -39,8 +61,7 @@ public class FactoryTesting {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(sf.getElementBaseConfigurationOptions());
-
+        System.out.println(sf.getElementBaseConfigurationOptions());*
 
         /*
         sf.exportSpriteTemplates();*/
