@@ -27,6 +27,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -49,7 +51,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private PropertiesBox myPropertiesBox;
 	private Pane propertiesPane;
 	private Label projectileLabel;
-	private Rectangle projectileSlot;
+	private HBox projectileSlot;
 	private Button deleteButton;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
@@ -115,12 +117,18 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	}
 	
 	private void newPaneWithProjectileSlot(SpriteImage imageView) {
+		/**
+		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
+		 */
+		
 		projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
-		projectileSlot = new Rectangle();
-		projectileSlot.setWidth(80);
-		projectileSlot.setHeight(80);
+		projectileSlot = new HBox();
+		projectileSlot.setPrefWidth(80);
+		projectileSlot.setPrefHeight(80);
 		projectileSlot.setLayoutY(150);
+		projectileSlot.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+//		projectileSlot.setBackground(value);
 		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow());
 		propertiesPane = new Pane();
 		deleteButton = new Button("Back");
@@ -150,8 +158,16 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         projectilesWindow.setContent(projectilesView);
         projectilesWindow.setLayoutX(100);
         projectilesWindow.setPrefHeight(250);
+        
+        projectilesView.setOnMouseClicked(e->projectileSelected(
+        		projectilesView.getSelectionModel().getSelectedItem().clone()));
         propertiesPane.getChildren().remove(myPropertiesBox);
         propertiesPane.getChildren().add(projectilesWindow);
+	}
+	
+	private void projectileSelected(SpriteImage imageClone) {
+		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
+		projectileSlot.getChildren().add(imageClone);
 	}
 
 	private void newPane(SpriteImage imageView) {

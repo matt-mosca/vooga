@@ -178,7 +178,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
-		noButtonPressed(imageView);
+		//TODO refactor this and make the labels and buttons their own class
+		
+		noButtonPressed();
 		optionLabel = new Label("Do you want to add this sprite to inventory?");
 		yesButton = new Button("Yes");
 		noButton = new Button("No");
@@ -188,11 +190,15 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(yesButton);
 		rootAdd(optionLabel);
 		rootAdd(noButton);
-		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->myRightToolBar.imageSelected(imageView));
-		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed(imageView));
+		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
+		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
+	}
+	private void yesButtonPressed(SpriteImage imageView) {
+		myRightToolBar.imageSelected(imageView);
+		noButtonPressed();
 	}
 	
-	private void noButtonPressed(SpriteImage imageView) {
+	private void noButtonPressed() {
 		rootRemove(yesButton);
 		rootRemove(noButton);
 		rootRemove(optionLabel);
