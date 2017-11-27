@@ -3,12 +3,12 @@ package engine.behavior.movement;
 import javafx.geometry.Point2D;
 import sprites.Sprite;
 
-public abstract class TrackingMovementStrategy extends StraightLineMovementStrategy{
+public class TrackingMovementStrategy extends StraightLineMovementStrategy{
 
 	private Sprite target;
 	
-	public TrackingMovementStrategy(double startX, double startY,Sprite target) {
-		super(startX, startY, target.getX(), target.getY());
+	public TrackingMovementStrategy(double startX, double startY,double velocity,Sprite target) {
+		super(startX, startY, target.getX(), target.getY(),velocity);
 		this.target = target;
 		// TODO Auto-generated constructor stub
 	}
@@ -17,6 +17,4 @@ public abstract class TrackingMovementStrategy extends StraightLineMovementStrat
 		this.setEndCoord(new Point2D(target.getX(),target.getY()));
 		super.move();
 	}
-	
-	public abstract void handleBlock();
 }

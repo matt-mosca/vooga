@@ -2,7 +2,7 @@ package engine.behavior.movement;
 
 import javafx.geometry.Point2D;
 
-public abstract class StraightLineMovementStrategy extends MovementStrategy{
+public class StraightLineMovementStrategy extends MovementStrategy{
 	protected double endX;
 	protected double endY;
 	protected double xVelo;
@@ -10,14 +10,15 @@ public abstract class StraightLineMovementStrategy extends MovementStrategy{
 	protected double velocityMagnitude;
 	
 	
-	public StraightLineMovementStrategy(double startX, double startY) {
-		this(startX, startY, 0, 0);
+	public StraightLineMovementStrategy(double startX, double startY,double velocity) {
+		this(startX, startY, 0, 0,velocity);
 	}
 	
-	public StraightLineMovementStrategy(double startX, double startY,double endX,double endY) {
+	public StraightLineMovementStrategy(double startX, double startY,double endX,double endY, double velocity) {
 		super(startX, startY);
 		this.endX = endX;
 		this.endY = endY;
+		this.velocityMagnitude = velocity;
 		calculateVelocityComponents();
 	}
 	
@@ -26,8 +27,6 @@ public abstract class StraightLineMovementStrategy extends MovementStrategy{
 		setY(this.getY()+yVelo);
 	}
 
-	public abstract void handleBlock();
-	
 	protected void setEndCoord(Point2D updatedEndCoordinates) {
 		this.endX = updatedEndCoordinates.getX();
 		this.endY = updatedEndCoordinates.getY();
@@ -45,7 +44,7 @@ public abstract class StraightLineMovementStrategy extends MovementStrategy{
 	}
 	
 	private void calculateVelocityComponents() {
-		double angle = new Point2D(this.getX(),this.getY()).angle(endX, endY);
+		double angle = Math.toRadians(new Point2D(this.getX(),this.getY()).angle(endX, endY));
 		this.xVelo = velocityMagnitude * Math.cos(angle);
 		this.yVelo = velocityMagnitude * Math.sin(angle);
 	}

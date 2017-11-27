@@ -9,8 +9,8 @@ public abstract class PathFollowingMovementStrategy extends StraightLineMovement
 	private ArrayList<Point2D> coordinates;
 	private int currentCoordinateIndex = 0;
 	
-	public PathFollowingMovementStrategy(double startX, double startY,ArrayList<Point2D> coordinates) {
-		super(startX, startY);
+	public PathFollowingMovementStrategy(double startX, double startY, double velocity,ArrayList<Point2D> coordinates) {
+		super(startX, startY,velocity);
 		this.coordinates = coordinates;
 	}
 
@@ -21,7 +21,12 @@ public abstract class PathFollowingMovementStrategy extends StraightLineMovement
 	}
 	
 	private void checkIfLocationReached() {
-		
+		if(true) {
+			currentCoordinateIndex++;
+			if(currentCoordinateIndex>coordinates.size()) {
+				currentCoordinateIndex =0;
+			}
+		}
 	}
 }
 

@@ -16,15 +16,7 @@ public class StationaryMovementStrategy extends MovementStrategy {
 	/**
 	 * Left empty because object does not move
 	 * */
-	public void move() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void move() {}
 
-	@Override
-	public void handleBlock() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
