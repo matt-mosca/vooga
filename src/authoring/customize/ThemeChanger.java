@@ -13,8 +13,8 @@ import javafx.scene.control.ComboBox;
  */
 public class ThemeChanger extends ComboBox<String> {
 	
-	private static final int X_POS = 890;
-	private static final int Y_POS = 10;
+	private static final int X_POS = 350;
+	private static final int Y_POS = 23;
 	private static final int WIDTH = 200;
 	private static final String PROMPT_TEXT = "Choose a theme";
 	public static final String STANDARD = "Standard";

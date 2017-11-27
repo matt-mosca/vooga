@@ -178,9 +178,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void clicked(SpriteImage imageView) {
 		//TODO refactor this and make the labels and buttons their own class
-		
 		noButtonPressed();
-		optionLabel = new Label("Do you want to add this sprite to inventory?");
+		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
 		yesButton = new Button("Yes");
 		noButton = new Button("No");
 		yesButton.setLayoutX(1000);
