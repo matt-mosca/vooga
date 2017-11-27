@@ -1,14 +1,16 @@
 package engine.behavior.movement;
 
+import engine.behavior.ParameterName;
+
 /**
  * Movement strategy for stationary object
  * 
  * @author mscruggs
  *
  */
-public class StationaryMovementStrategy extends MovementStrategy {
+public class StationaryMovementStrategy extends AbstractMovementStrategy {
 
-	public StationaryMovementStrategy(double startX, double startY) {
+	public StationaryMovementStrategy(@ParameterName("startX") double startX, @ParameterName("startY") double startY) {
 		super(startX, startY);
 		
 	}

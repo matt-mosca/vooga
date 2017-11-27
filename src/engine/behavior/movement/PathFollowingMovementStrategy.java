@@ -2,6 +2,7 @@ package engine.behavior.movement;
 
 import java.util.ArrayList;
 
+import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 
 /**
@@ -15,7 +16,10 @@ public abstract class PathFollowingMovementStrategy extends StraightLineMovement
 	private ArrayList<Point2D> coordinates;
 	private int currentCoordinateIndex = 0;
 	
-	public PathFollowingMovementStrategy(double startX, double startY, double velocity,ArrayList<Point2D> coordinates) {
+	public PathFollowingMovementStrategy(@ParameterName("startX") double startX,
+										 @ParameterName("startY") double startY,
+										 @ParameterName("velocity") double velocity,
+										 @ParameterName("coordinates") ArrayList<Point2D> coordinates) {
 		super(startX, startY,velocity);
 		this.coordinates = coordinates;
 	}

@@ -2,93 +2,57 @@ package engine.behavior.movement;
 
 import java.awt.geom.Point2D;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-
 /**
- * Use abstract class instead of interface to encapsulate x and y coordinate
- * data
- * 
- * @author radithya
+ * Used by game elements to handle movement according to various strategies which are selected during game authoring.
  *
+ * @author Ben Schwennesen
  */
-public abstract class MovementStrategy {
+public interface MovementStrategy {
 
-	// Alternative to using properties - can simply update x, y values of
-	// trackingPoint in setX and setY respectively ... preferred approach?
-	private DoubleProperty xCoordinate;
-	private DoubleProperty yCoordinate;
-	private Point2D.Double trackingPoint;
+    /**
+     * Move based on the specific movement strategy for the game element
+     */
+    void move();
 
-	public MovementStrategy(double startX, double startY) {
-		xCoordinate = new SimpleDoubleProperty(startX);
-		yCoordinate = new SimpleDoubleProperty(startY);
-		Point2D.Double trackingPoint = new Point2D.Double(getX(), getY());
-		xCoordinate.addListener(
-				(observableValue, oldValue, newValue) -> trackingPoint.setLocation(newValue.doubleValue(), getY()));
-		yCoordinate.addListener(
-				(observableValue, oldValue, newValue) -> trackingPoint.setLocation(getX(), newValue.doubleValue()));
-	}
+    /**
+     * Retrieve the current horizontal coordinate for the game element
+     *
+     * @return current x-coordinate
+     */
+    double getX();
 
-	/**
-	 * Move based on the specific movement strategy
-	 */
-	public abstract void move();
+    /**
+     * Retrieve the current vertical coordinate for the game element
+     *
+     * @return current y-coordinate
+     */
+    double getY();
 
-	/**
-	 * The current xCoordinate
-	 * 
-	 * @return current xCoordinate
-	 */
-	public double getX() {
-		return xCoordinate.get();
-	}
+    /**
+     * Set horizontal coordinate for the game element using this strategy object.
+     *
+     * @param newXCoord new x-coordinate to use
+     */
+    void setX(double newXCoord);
 
-	/**
-	 * The current yCoordinate
-	 * 
-	 * @return current yCoordinate
-	 */
-	public double getY() {
-		return yCoordinate.get();
-	}
+    /**
+     * Set vertical coordinate for the game element using this strategy object.
+     *
+     * @param newYCoord new y-coordinate to use
+     */
+    void setY(double newYCoord);
 
-	/**
-	 * The current (x, y) position as a Point2D.Double
-	 * 
-	 * @return current position
-	 */
-	public Point2D.Double getCurrentPosition() {
-		return new Point2D.Double(getX(), getY());
-	}
+    /**
+     * Get the current coordinates of the game element using this strategy.
+     *
+     * @return current position as a point object
+     */
+    Point2D.Double getCurrentPosition();
 
-	/**
-	 * Auto-updating (NOT snapshot) position of this MovementStrategy for tracking
-	 * 
-	 * @return auto-updating position that changes with movement
-	 */
-	public Point2D.Double getPositionForTracking() {
-		return trackingPoint;
-	}
-
-	/**
-	 * Set x-coordinate
-	 * 
-	 * @param newXCoord
-	 *            x-coordinate to set to
-	 */
-	public void setX(double newXCoord) {
-		xCoordinate.set(newXCoord);
-	}
-
-	/**
-	 * Set y-coordinate
-	 * 
-	 * @param newYCoord
-	 *            y-coordinate to set to
-	 */
-	public void setY(double newYCoord) {
-		yCoordinate.set(newYCoord);
-	}
-
+    /**
+     * Get auto-updating position of the game element using this strategy for tracking
+     *
+     * @return point object that changes with movement
+     */
+    Point2D.Double getPositionForTracking();
 }

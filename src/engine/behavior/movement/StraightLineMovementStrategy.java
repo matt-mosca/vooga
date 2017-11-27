@@ -1,5 +1,6 @@
 package engine.behavior.movement;
 
+import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 
 /**
@@ -9,7 +10,7 @@ import javafx.geometry.Point2D;
  *
  */
 
-public class StraightLineMovementStrategy extends MovementStrategy{
+public class StraightLineMovementStrategy extends AbstractMovementStrategy {
 	protected double endX;
 	protected double endY;
 	protected double xVelo;
@@ -17,11 +18,17 @@ public class StraightLineMovementStrategy extends MovementStrategy{
 	protected double velocityMagnitude;
 	
 	
-	public StraightLineMovementStrategy(double startX, double startY,double velocity) {
+	public StraightLineMovementStrategy(@ParameterName("startX") double startX,
+										@ParameterName("startY") double startY,
+										@ParameterName("velocity") double velocity) {
 		this(startX, startY, 0, 0,velocity);
 	}
 	
-	public StraightLineMovementStrategy(double startX, double startY,double endX,double endY, double velocity) {
+	public StraightLineMovementStrategy(@ParameterName("startX") double startX,
+										@ParameterName("startY") double startY,
+										@ParameterName("endX") double endX,
+										@ParameterName("endY") double endY,
+										@ParameterName("velocity")double velocity) {
 		super(startX, startY);
 		this.endX = endX;
 		this.endY = endY;

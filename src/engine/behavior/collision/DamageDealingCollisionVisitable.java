@@ -1,5 +1,7 @@
 package engine.behavior.collision;
 
+import engine.behavior.ParameterName;
+
 /**
  * Deals damage when collided with
  * Could be used for mines, projectiles, etc.
@@ -10,7 +12,7 @@ public class DamageDealingCollisionVisitable implements CollisionVisitable {
 
 	private double damageToDeal;
 	
-	public DamageDealingCollisionVisitable(double damageToDeal) {
+	public DamageDealingCollisionVisitable(@ParameterName("damageToDeal") double damageToDeal) {
 		this.damageToDeal = damageToDeal;
 	}
 
