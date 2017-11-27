@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -29,6 +30,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
  
 public class RightToolBar extends VBox implements PropertiesInterface {
@@ -97,16 +100,55 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		for(int i = 0; i < topTabPane.getTabs().size(); i++) {
 			topTabPane.getTabs().get(i).setClosable(false);
 		}
-		
 		for(int i = 0; i < bottomTabPane.getTabs().size(); i++) {
 			bottomTabPane.getTabs().get(i).setClosable(false);
 		}
 	}
 
 	@Override
-	public void clicked(SpriteImage imageView) {
-		if (imageView instanceof ProjectileImage) System.out.println("Test");
-		else newPane(imageView);
+	public void clicked(SpriteImage imageView) {		
+		if (imageView instanceof TowerImage) newPaneWithProjectileSlot(imageView);
+		if (imageView instanceof TroopImage) newPane(imageView);
+	}
+	
+	private void newPaneWithProjectileSlot(SpriteImage imageView) {
+		Label projectileLabel = new Label("Click to\nChoose a\nprojectile");
+		projectileLabel.setLayoutY(90);
+		Rectangle projectileSlot = new Rectangle();
+		projectileSlot.setWidth(80);
+		projectileSlot.setHeight(80);
+		projectileSlot.setLayoutY(150);
+		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow());
+		
+		propertiesPane = new Pane();
+		Button deleteButton = new Button("Back");
+		deleteButton.setLayoutX(370);
+		Label info = new Label("Properties here");
+		info.setLayoutY(100);
+		info.setFont(new Font("Arial", 30));
+		myPropertiesBox.setLayoutX(100);
+		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
+		propertiesPane.getChildren().add(imageView.clone());
+		propertiesPane.getChildren().add(deleteButton);
+		propertiesPane.getChildren().add(myPropertiesBox);
+		propertiesPane.getChildren().add(projectileLabel);
+		propertiesPane.getChildren().add(projectileSlot);
+		this.getChildren().removeAll(this.getChildren());
+		this.getChildren().add(propertiesPane);
+		this.getChildren().add(bottomTabPane);
+
+	}
+	
+	private void newProjectilesWindow() {
+		ScrollPane projectilesWindow = new ScrollPane();
+		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
+		ObservableList<SpriteImage> items =FXCollections.observableArrayList(inventoryProjectile.getImages());
+        projectilesView.setItems(items);
+        projectilesView.getSelectionModel();
+        projectilesWindow.setContent(projectilesView);
+        this.getChildren().removeAll(this.getChildren());
+        this.getChildren().add(projectilesWindow);
+		System.out.println(inventoryProjectile.getImages());
 	}
 
 	private void newPane(SpriteImage imageView) {
