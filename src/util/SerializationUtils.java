@@ -1,6 +1,7 @@
 package util;
 
 import com.google.gson.GsonBuilder;
+import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.collision.DamageDealingCollisionVisitable;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.firing.FiringStrategy;
@@ -271,25 +272,7 @@ public class SerializationUtils {
 
 		Map<String, Object> towerMap = new HashMap<>();
 		towerMap.put("collisionVisitable", new DamageDealingCollisionVisitable(1.0));
-		towerMap.put("collisionVisitor", new ImmortalCollider());
-		towerMap.put("firingStrategy", new FiringStrategy() {
-			@Override
-			public void fire() {
-				//
-			}
-		});
-		towerMap.put("movementStrategy", new AbstractMovementStrategy(10, 10) {
-			@Override
-			public void move() {
-
-			}
-
-			@Override
-			public void handleBlock() {
-
-			}
-		});
-
+		towerMap.put("collisionVisitor", new ImmortalCollider(1));
 		// TODO - don't serialize sprites; cache their properties and reconstruct using spriteFactory
 		// since the sprite serialization is causing StackOverflowError
 		// 		how to handle coordinates though?

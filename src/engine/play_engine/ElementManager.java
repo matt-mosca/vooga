@@ -3,6 +3,8 @@ package engine.play_engine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
@@ -22,8 +24,6 @@ public class ElementManager {
 
 	// TODO
 	// Reference to GridManager
-	// call double[] getGridPosition(double x, double y) to get grid position, do
-	// collision-checking at coarser granularity
 	
 	/**
 	 * Handles the collision-checking and Sprite-specific collision-handling logic
@@ -46,7 +46,7 @@ public class ElementManager {
 	}
 	
 	/*
-	 * MovementStrategy object should be created with the coordinates Method might
+	 * AbstractMovementStrategy object should be created with the coordinates Method might
 	 * still be necessary but should just do void and put in authoring game grid
 	 */
 
@@ -70,6 +70,23 @@ public class ElementManager {
 		gameElements.removeIf(element -> !element.isAlive());
 	}
 
+	boolean allEnemiesDead() {
+		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.isAlive());
+	}
+	
+	boolean allAlliesDead() {
+		return allElementsFulfillCondition(element -> !element.isAlly() || !element.isAlive());
+	}
+	
+	boolean allElementsFulfillCondition(Predicate<Sprite> condition) {
+		for (Sprite element : gameElements) {
+			if (!condition.test(element)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private void processAllCollisionsForElement(int elementIndex, Sprite element) {
 		for (int otherIndex = elementIndex + 1; otherIndex < gameElements.size(); otherIndex++) {
 			Sprite otherElement = gameElements.get(otherIndex);

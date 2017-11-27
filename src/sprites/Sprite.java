@@ -1,44 +1,39 @@
 package sprites;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import java.awt.geom.Point2D;
+import engine.behavior.blocking.BlockingStrategy;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;
-import engine.behavior.movement.AbstractMovementStrategy;
 import engine.behavior.movement.MovementStrategy;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 
 /**
- * Represents displayed game objects in the backend. Responsible for controlling
- * the object's update behavior.
- *
+ * Represents  game objects in the backend. Responsible for controlling the object's update behavior.
  *
  * @author Ben Schwennesen
  */
 public class Sprite {
 
+	private enum Team {
+		NEUTRAL,
+		COMPUTER,
+		HUMAN
+	}
+		
 	// These fields should be set through setProperties
 	private FiringStrategy firingStrategy;
 	private MovementStrategy movementStrategy;
+	private BlockingStrategy blockingStrategy;
 	private CollisionVisitor collisionVisitor;
 	private CollisionVisitable collisionVisitable;
 	// Might need custom code in setProperties for handling loading of image and
 	// subsequent construction of ImageView?
 	private ImageView spriteImageView;
 
-	/*public Sprite(Map<String, ?> properties) {
-		setProperties(properties);
-	}*/
-
 	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
-				  CollisionVisitable collisionVisitable, String imageUrl) {
+                  CollisionVisitable collisionVisitable, String imageUrl) {
 		this.firingStrategy = firingStrategy;
 		this.movementStrategy = movementStrategy;
 		this.collisionVisitor = collisionVisitor;
@@ -50,7 +45,8 @@ public class Sprite {
 	 */
 	public void move() {
 		if (collisionVisitor.isBlocked()) {
-			movementStrategy.handleBlock();
+			//movementStrategy.handleBlock();
+			// TODO - handle block
 			collisionVisitor.unBlock();
 		}
 		movementStrategy.move();
@@ -79,57 +75,6 @@ public class Sprite {
 	}
 
 	/**
-	 * Set the properties of this sprite.
-	 *
-	 * @param properties maps instance variables of this sprite to properties, as strings
-	 */
-	public void setProperties(Map<String, ?> properties) {
-		List<Field> fields = getFieldsForAllMembers();
-		for (Field field : fields) {
-			field.setAccessible(true);
-			if (properties.containsKey(field.getName())) {
-				setField(properties, field);
-			} else {
-				// TODO - throw custom exception? set to a default value?
-			}
-		}
-	}
-
-	private List<Field> getFieldsForAllMembers() {
-		List<Field> fields = new ArrayList<>(Arrays.asList(this.getClass().getDeclaredFields()));
-		/*
-		 * fields.addAll(Arrays.asList(firingStrategy.getClass().getDeclaredFields()));
-		 * fields.addAll(Arrays.asList(movementStrategy.getClass().getDeclaredFields()))
-		 * ;
-		 * fields.addAll(Arrays.asList(collisionVisitor.getClass().getDeclaredFields()))
-		 * ;
-		 * fields.addAll(Arrays.asList(collisionVisitable.getClass().getDeclaredFields()
-		 * ));
-		 */
-		return fields;
-	}
-
-	private void setField(Map<String, ?> properties, Field field) {
-		try {
-			field.set(this, properties.get(field.getName()));
-		} catch (IllegalAccessException e) {
-			// TODO - because of setAccessible above this won't happen (?), so remove print
-			// statement
-			System.out.println("Sprite reflection exception: this should never happen");
-		}
-	}
-
-	/**
-	 * Get all the field names of this sprite instance, for creating a property map.
-	 *
-	 * @return a list of all field names (regardless of accessibility) in this
-	 *         instance's inheritance hierarchy
-	 */
-	public List<String> getFieldNames() {
-		return getFieldsForAllMembers().stream().map(Field::getName).collect(Collectors.toList());
-	}
-
-	/**
 	 * For front end to retrieve, rescale and display
 	 * 
 	 * @return
@@ -139,7 +84,7 @@ public class Sprite {
 	}
 
 	/**
-	 * Scaling-aware boundaries of sprite's representation 
+	 * Scaling-aware boundaries of sprite's representation
 	 * 
 	 * @return
 	 */
@@ -155,6 +100,24 @@ public class Sprite {
 		return movementStrategy.getY();
 	}
 
+	/**
+	 * The current (x, y) position as a Point2D.Double
+	 * 
+	 * @return current position
+	 */
+	public Point2D.Double getCurrentPosition() {
+		return movementStrategy.getCurrentPosition();
+	}
+
+	/**
+	 * Auto-updating (NOT snapshot) position of this AbstractMovementStrategy for tracking
+	 * 
+	 * @return auto-updating position that changes with movement
+	 */
+	public Point2D.Double getPositionForTracking() {
+		return movementStrategy.getPositionForTracking();
+	}
+
 	public void setX(double newXCoord) {
 		movementStrategy.setX(newXCoord);
 	}
@@ -162,5 +125,22 @@ public class Sprite {
 	public void setY(double newYCoord) {
 		movementStrategy.setY(newYCoord);
 	}
-
+	
+	/**
+	 * Player id corresponding to player owning this sprite
+	 * @return id of player controlling this sprite
+	 */
+	public int getPlayerId() {
+		return collisionVisitor.getPlayerId();
+	}
+	
+	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter 
+	public boolean isEnemy() {
+		return getPlayerId() == Team.COMPUTER.ordinal();
+	}
+	
+	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter
+	public boolean isAlly() {
+		return getPlayerId() == Team.HUMAN.ordinal();
+	}
 }

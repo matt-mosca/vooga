@@ -3,10 +3,7 @@ package sprites;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.firing.FiringStrategy;
-import engine.behavior.movement.MovementStrategy;
-
-import java.util.HashMap;
-import java.util.Map;
+import engine.behavior.movement.AbstractMovementStrategy;
 
 /**
  * Tests sprite creation / field setting.
@@ -17,7 +14,7 @@ public class TestSprite extends Sprite {
 
     String imageUrl;
 
-    public TestSprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
+    public TestSprite(FiringStrategy firingStrategy, AbstractMovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
                       CollisionVisitable collisionVisitable, String imageUrl) {
         super(firingStrategy, movementStrategy, collisionVisitor, collisionVisitable, imageUrl);
     }

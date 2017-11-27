@@ -1,5 +1,7 @@
 package engine.behavior.collision;
 
+import engine.behavior.ParameterName;
+
 /**
  * Represents volatile 'explosion' behavior - simply explodes / self-destructs
  * upon colliding with (any?) other element
@@ -7,10 +9,13 @@ package engine.behavior.collision;
  * @author radithya
  *
  */
-public abstract class VolatileCollider implements CollisionVisitor {
+public abstract class VolatileCollider extends GenericCollider {
 	
 	// Can be sub-classed by different kinds of projectiles
-	
+	public VolatileCollider(@ParameterName("playerId") int playerId) {
+		super(playerId);
+	}
+
 	@Override
 	public void visit(ImperviousCollisionVisitable visitable) {
 		explode();

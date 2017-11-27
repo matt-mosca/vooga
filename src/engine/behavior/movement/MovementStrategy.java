@@ -1,5 +1,7 @@
 package engine.behavior.movement;
 
+import java.awt.geom.Point2D;
+
 /**
  * Used by game elements to handle movement according to various strategies which are selected during game authoring.
  *
@@ -11,11 +13,6 @@ public interface MovementStrategy {
      * Move based on the specific movement strategy for the game element
      */
     void move();
-
-    /**
-     * Handle situations where the game element is blocked by an obstacle
-     */
-    void handleBlock();
 
     /**
      * Retrieve the current horizontal coordinate for the game element
@@ -39,9 +36,23 @@ public interface MovementStrategy {
     void setX(double newXCoord);
 
     /**
-     * Set veritcal coordinate for the game element using this strategy object.
+     * Set vertical coordinate for the game element using this strategy object.
      *
      * @param newYCoord new y-coordinate to use
      */
     void setY(double newYCoord);
+
+    /**
+     * Get the current coordinates of the game element using this strategy.
+     *
+     * @return current position as a point object
+     */
+    Point2D.Double getCurrentPosition();
+
+    /**
+     * Get auto-updating position of the game element using this strategy for tracking
+     *
+     * @return point object that changes with movement
+     */
+    Point2D.Double getPositionForTracking();
 }

@@ -13,7 +13,9 @@ public class MortalCollider extends GenericCollider {
 
 	private double healthPoints;
 
-	public MortalCollider(@ParameterName("healthPoints") double healthPoints) {
+	public MortalCollider(@ParameterName("playerId") int playerId,
+		                  @ParameterName("healthPoints") double healthPoints) {
+		super(playerId);
 		this.healthPoints = healthPoints;
 	}
 

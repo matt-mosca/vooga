@@ -1,20 +1,22 @@
 package authoring.path;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Line;
 
 public class Path extends Group{
 	private Set<PathPoint> points;
+	private List<PathPoint> headPoints;
 	private PathPoint activePoint;
-	private PathPoint headPoint;
 	
 	public Path() {
 		points = new HashSet<>();
+		headPoints = new ArrayList<>();
 		activePoint = null;
 	}
 	
@@ -27,7 +29,7 @@ public class Path extends Group{
 		if(activePoint != null) {
 			drawLineBetween(activePoint, point);
 		}else {
-			headPoint = point;
+			headPoints.add(point);
 		}
 		
 		setActiveWaypoint(e, point);
@@ -54,6 +56,7 @@ public class Path extends Group{
 		removeWaypointLines(point);
 		modifyLineOrder(point);
 		if(point.equals(activePoint)) activePoint = null;
+		if(headPoints.contains(point)) headPoints.remove(point);
 		this.getChildren().remove(point);
 	}
 	
@@ -121,6 +124,10 @@ public class Path extends Group{
 		this.getChildren().add(line.getNode());
 		line.getNode().toBack();
 		line.addEventHandler(MouseEvent.MOUSE_PRESSED, e->handleLineClick(e, line));
+	}
+	
+	public List<PathPoint> getStartPoints(){
+		return new ArrayList<>(headPoints);
 	}
 	
 }

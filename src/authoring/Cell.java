@@ -5,20 +5,23 @@ import java.util.List;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 public class Cell extends StackPane{
 	private boolean active = false;
 	private List<StaticObject> myAssignments;
+	private List<BackgroundObject> myBackgrounds;
 	
 	public Cell() {
 		myAssignments = new ArrayList<StaticObject>();
+		myBackgrounds = new ArrayList<BackgroundObject>();
 		this.addEventHandler(MouseEvent.MOUSE_ENTERED, e->highlight());
 		this.addEventHandler(MouseEvent.MOUSE_EXITED, e->removeHighlight());
 	}
 
 	private void highlight() {
-		this.setStyle("-fx-background-color:#51525D;");
+		this.setStyle("-fx-border-color:black;");
 	}
 
 	private void removeHighlight() {
@@ -38,7 +41,11 @@ public class Cell extends StackPane{
 	}
 	
 	protected void assignToCell(StaticObject currObject) {
-		myAssignments.add(currObject);
+		if (currObject instanceof BackgroundObject) {
+			myBackgrounds.add((BackgroundObject) currObject);
+		} else {
+			myAssignments.add(currObject);
+		}
 	}
 	
 	protected boolean isEmpty() {
@@ -47,5 +54,9 @@ public class Cell extends StackPane{
 
 	public void removeAssignment(StaticObject currObject) {
 		if (!isEmpty()) myAssignments.remove(currObject);
+	}
+	
+	public List<StaticObject> saveAssignments() {
+		return myAssignments;
 	}
 }

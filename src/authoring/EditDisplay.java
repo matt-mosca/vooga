@@ -1,110 +1,160 @@
 package authoring;
 
-import java.util.ArrayList;
-
-import com.sun.glass.events.KeyEvent;
-import javafx.geometry.Point2D;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.CheckBox;
+import authoring.customize.AttackDefenseToggle;
+import authoring.customize.BackgroundColorChanger;
+import authoring.leftToolBar.LeftToolBar;
+import authoring.rightToolBar.RightToolBar;
+import authoring.rightToolBar.SpriteImage;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
+import javafx.scene.text.Font;
 import splashScreen.ScreenDisplay;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
-	private static final double GRID_Y_LOCATION = 455;
-	private static final double GRID_X_LOCATION = 650;
+	private static final double GRID_X_LOCATION = 620;
+	private static final double GRID_Y_LOCATION = 20;
 	private LeftToolBar myLeftToolBar;
-	private GameArea myMainGrid;
+	private GameArea myGameArea;
 	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
-	private Scene drawingScene;
-	private Stage drawingStage;
-	private CheckBox gridToggle;
-	private StaticObject myStaticObject;
+	private ToggleButton gridToggle;
+	private ToggleButton movementToggle;
+	private BackgroundColorChanger myColorChanger;
+	private AttackDefenseToggle myGameChooser;
+	private Label attackDefenseLabel;
+	private Button yesButton;
+	private Button noButton;
+	private Label optionLabel;
 	
 	
 	public EditDisplay(int width, int height) {
 		super(width, height, Color.GREEN);
-//		super(width, height, Color.BLACK);
+//		super(width, height, Color.GRAY);
+		addItems();
+		createGridToggle();
+		rootAdd(gridToggle);
+		createMovementToggle();
+		rootAdd(movementToggle);
+		createLabel();
+//		setGreen();
+//		setGold();
+	}
+//	
+//	private void setGreen() {
+//		rootStyle("authoring/resources/green.css");
+//	}
+//	
+//	private void setGold() {
+//		rootStyle("authoring/resources/gold.css");
+//	}
+	
+	private void createLabel() {
+		attackDefenseLabel = new Label("Attack");
+		attackDefenseLabel.setFont(new Font("Arial", 40));
+//		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
+//		attackDefenseLabel.setFont(new Font("Cambria", 40));
+		attackDefenseLabel.setLayoutX(300);
+		rootAdd(attackDefenseLabel);
+
+	}
+
+	private void createGridToggle() {
+		gridToggle = new ToggleButton();
+		gridToggle.setLayoutX(GRID_X_LOCATION);
+		gridToggle.setLayoutY(GRID_Y_LOCATION);
+		gridToggle.setSelected(true);
+		gridToggle.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("grid_icon.png"))));
+		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			myGameArea.toggleGridVisibility(gridToggle.isSelected());
+		});
+	}
+	
+	private void createMovementToggle() {
+		movementToggle = new ToggleButton();
+		movementToggle.setLayoutX(GRID_X_LOCATION - 40);
+		movementToggle.setLayoutY(GRID_Y_LOCATION);
+		movementToggle.setSelected(false);
+		movementToggle.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
+		movementToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->toggleMovement(movementToggle));
+	}
+	
+	private void toggleMovement(ToggleButton movement) {
+		myGameArea.toggleMovement(movementToggle.isSelected());
+		if(movement.isSelected()) {
+			this.getScene().setCursor(new ImageCursor(new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
+		}else {
+			this.getScene().setCursor(Cursor.DEFAULT);
+		}
+	}
+
+	private void addItems() {
 		myLeftToolBar = new LeftToolBar(this);
 		rootAdd(myLeftToolBar);
-		myMainGrid = new GameArea(this);
-		myGameEnvironment = new ScrollableArea(myMainGrid);
+		myGameArea = new GameArea(this);
+		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
-//		myStaticObject = new StaticObject(2, this);
-//		rootAdd(myStaticObject);
-		gridToggle = new CheckBox();
-		gridToggle.setLayoutX(605);
-		gridToggle.setLayoutY(30);
-		gridToggle.setSelected(true);
-		gridToggle.setText("Grid");
-		gridToggle.setTextFill(Color.BLACK);
-		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
-			myMainGrid.toggleGridVisibility(gridToggle.isSelected());
-		});
-		rootAdd(gridToggle);
+		myColorChanger = new BackgroundColorChanger(this);
+		rootAdd(myColorChanger);
+		myGameChooser = new AttackDefenseToggle(this);
+		rootAdd(myGameChooser);
 	}
 	
 	@Override 
 	public void clicked(StaticObject object) {
-		StaticObject newObject = new StaticObject(object.getSize(), this, object.getImageString());
-		myMainGrid.getChildren().add(newObject);
-//		newObject.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, newObject));
+		createOptionButtons(object);
 	}
 	
-	private void drag(MouseEvent e, StaticObject currObject) {
-		currObject.setX(e.getSceneX() - currObject.getWidth() / 2);
-		currObject.setY(e.getSceneY() - currObject.getHeight() / 2);
-	}
-	
-	private void released(Rectangle currRectangle) {
-		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
-			createNewErrorWindow();
-		}
-		getInfo(currRectangle);
-	}
-	
-	private void getInfo(Rectangle rec) {
-//		myRightToolBar.updateInfo(rec);
-		System.out.println(rec.getWidth());
-		System.out.println(rec.getHeight());
-		System.out.println(rec.getFill());
-		System.out.println(rec.getX());
-		System.out.println(rec.getY());
-	}
-	
-	private void createNewErrorWindow() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Object placement error");
-		alert.setHeaderText("Must place object in the main grid");
-		alert.show();
+	private void createOptionButtons(StaticObject object) {
+		Button addNewButton = new Button("New");
+		Button incrementButton = new Button("+");
+		Button decrementButton = new Button("-");
+		incrementButton.setLayoutX(50);
+		decrementButton.setLayoutX(85);
+		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
+		incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.incrementSize());
+		decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.decrementSize());
+		rootAdd(addNewButton);
+		rootAdd(incrementButton);
+		rootAdd(decrementButton);
 	}
 
-	//@Override
-	public void decreaseHealth() {
-		// TODO Auto-generated method stub
-		
+	private void addObject(StaticObject object) {
+		StaticObject newObject;
+		if (object instanceof BackgroundObject) {
+			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
+		} else {
+			newObject = new StaticObject(object.getSize(), this, object.getImageString());
+		}
+		myGameArea.addBackObject(newObject);
 	}
+	
+	//No longer needed with children added to game area
+//	private void createNewErrorWindow() {
+//		Alert alert = new Alert(AlertType.INFORMATION);
+//		alert.setTitle("Object placement error");
+//		alert.setHeaderText("Must place object in the main grid");
+//		alert.show();
+//	}
 
 	@Override
 	public void dropped(StaticObject currObject, MouseEvent e) {
 		if(e.getButton() == MouseButton.SECONDARY) {
 			deleteObject(currObject);
-		}else {
-			myMainGrid.placeInGrid(currObject, e);
+		} else {
+			myGameArea.placeInGrid(currObject);
 			myGameEnvironment.requestFocus();
 		}
 	}
@@ -112,18 +162,72 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void pressed(StaticObject currObject, MouseEvent e) {
 		e.consume();
-		myMainGrid.removeFromGrid(currObject, e);
+		myGameArea.removeFromGrid(currObject);
 	}
 	
 	private void deleteObject(StaticObject object) {
-		myMainGrid.getChildren().remove(object);
+		myGameArea.removeObject(object);
 		myLeftToolBar.requestFocus();
+		myGameArea.removeFromGrid(object);
+	}
+
+	@Override
+	public void newTowerSelected(ImageView myImageView) {
+		
+	}
+
+	@Override
+	public void clicked(SpriteImage imageView) {
+		noButtonPressed(imageView);
+		optionLabel = new Label("Do you want to add this sprite to inventory?");
+		yesButton = new Button("Yes");
+		noButton = new Button("No");
+		yesButton.setLayoutX(1000);
+		noButton.setLayoutX(1050);
+		optionLabel.setLayoutX(700);
+		rootAdd(yesButton);
+		rootAdd(optionLabel);
+		rootAdd(noButton);
+		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->myRightToolBar.imageSelected(imageView));
+		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed(imageView));
 	}
 	
-//	private void insertAnimation() {
-//		String imageName = "turtleGif.gif";
-//		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
-//		ImageView square = new ImageView(image);
-//		rootAdd(square);
-//	}
+	private void noButtonPressed(SpriteImage imageView) {
+		rootRemove(yesButton);
+		rootRemove(noButton);
+		rootRemove(optionLabel);
+
+	}
+
+
+
+	@Override
+	public void changeBackground(String color) {
+		myGameArea.changeBackground(color);
+		
+	}
+
+	@Override
+	public void attack() {
+		attackDefenseLabel.setText("Attack");
+	}
+
+	@Override
+	public void defense() {
+		attackDefenseLabel.setText("Defense");
+
+		
+	}
+
+	@Override
+	public void doSomething() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String[] getInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

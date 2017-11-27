@@ -1,5 +1,7 @@
 package engine.behavior.collision;
 
+import engine.behavior.ParameterName;
+
 /**
  * Captures general collision behaviors of most colliders. Specific collision
  * behaviors can be achieved by implementing visit(CollisionVisitable visitable)
@@ -10,8 +12,13 @@ package engine.behavior.collision;
  */
 public abstract class GenericCollider implements CollisionVisitor {
 
+	private int playerId;
 	private boolean blocked;
 
+	public GenericCollider(@ParameterName("playerId") int playerId) {
+		this.playerId = playerId;
+	}
+	
 	// All colliders (except perhaps an 'Unstoppable' collider type) would be
 	// blocked by collision with an obstacle
 	@Override
@@ -34,6 +41,16 @@ public abstract class GenericCollider implements CollisionVisitor {
 		blocked = false;
 	}
 
+	@Override
+	public boolean isEnemy(CollisionVisitor other) {
+		return getPlayerId() != other.getPlayerId();
+	}
+	
+	@Override
+	public int getPlayerId() {
+		return playerId;
+	}
+	
 	private void setBlocked() {
 		blocked = true;
 	}
