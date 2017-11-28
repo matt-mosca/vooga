@@ -1,6 +1,6 @@
 package engine.behavior.firing;
 
-import java.awt.geom.Point2D;
+import javafx.geometry.Point2D;
 
 /**
  * Support different ways of firing, one of which is chosen by authoring and
@@ -13,7 +13,7 @@ import java.awt.geom.Point2D;
 public interface FiringStrategy {
 
 	/**
-	 * Return the template name
+	 * Return the template name of projectile to fire
 	 */
 	public String fire();
 	
@@ -23,10 +23,9 @@ public interface FiringStrategy {
 	 */
 	public boolean shouldFire();
 
+	public void setFiringPosition(Point2D firingPosition);
 	
-	public void setFiringPosition(Point2D.Double firingPosition);
+	public void setTargetPoint(Point2D targetPoint);
 	
-	public void setTargetPoint(Point2D.Double targetPoint);
-	
-	public Point2D.Double getTargetPoint();
+	public Point2D getTargetPoint();
 }
