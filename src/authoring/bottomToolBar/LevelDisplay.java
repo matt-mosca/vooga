@@ -14,5 +14,25 @@ import javafx.stage.Stage;
 public class LevelDisplay {
 	private int myNumber;
 	private Stage myStage;
-	private Scene myScene;
+	
+	
+	
+	public LevelDisplay(int n) {
+		myNumber = n;
+		myStage = new Stage();
+	}
+	
+	public void open() {
+		//should updating happen here or in the sub
+		myStage.show();
+	}
+
+	protected Stage getStage() {
+		return myStage;
+	}
+	
+	protected int getLevelNumber() {
+		return myNumber;
+	}
+	
 }
