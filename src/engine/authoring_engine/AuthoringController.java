@@ -8,7 +8,9 @@ import javafx.scene.image.ImageView;
 import packaging.Packager;
 import sprites.Sprite;
 import sprites.SpriteFactory;
+import util.GameConditionsReader;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,7 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
     private Packager packager;
-
+    private GameConditionsReader gameConditionsReader;
+    
     // TODO - move these into own object? Or have them in the sprite factory?
     private AtomicInteger spriteIdCounter;
     private Map<Integer, Sprite> spriteIdMap;
@@ -42,6 +45,7 @@ public class AuthoringController extends AbstractGameController implements Autho
     public AuthoringController() {
         super();
         packager = new Packager();
+        gameConditionsReader = new GameConditionsReader();
         spriteIdCounter = new AtomicInteger();
         spriteIdMap = new HashMap<>();
         templateToIdMap = new HashMap<>();
@@ -53,6 +57,20 @@ public class AuthoringController extends AbstractGameController implements Autho
         spriteFactory.exportSpriteTemplates();
         packager.generateJar(getGameName());
     }
+    
+	public void setGameDescription(String gameDescription) {
+		getLevelDescriptions().set(getCurrentLevel(), gameDescription);
+	}
+    
+	@Override
+	public void setVictoryCondition(String conditionIdentifier) {
+		getLevelConditions().get(getCurrentLevel()).put(VICTORY, conditionIdentifier);
+	}
+
+	@Override
+	public void setDefeatCondition(String conditionIdentifier) {
+		getLevelConditions().get(getCurrentLevel()).put(DEFEAT, conditionIdentifier);
+	}
 
     @Override
     public void defineElement(String elementName, Map<String, String> properties) {
@@ -158,7 +176,18 @@ public class AuthoringController extends AbstractGameController implements Autho
         getLevelStatuses().remove(level);
         getLevelSprites().remove(level);
         getLevelConditions().remove(level);
+        getLevelDescriptions().remove(level);
     }
+    
+	@Override
+	public Collection<String> getPossibleVictoryConditions() {
+		return gameConditionsReader.getPossibleVictoryConditions(); 
+	}
+
+	@Override
+	public Collection<String> getPossibleDefeatConditions() {
+		return gameConditionsReader.getPossibleDefeatConditions();
+	}
     
 	@Override
 	protected void assertValidLevel(int level) throws IllegalArgumentException {

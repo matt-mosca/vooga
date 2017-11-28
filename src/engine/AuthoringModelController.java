@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 import java.io.FileNotFoundException;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -216,6 +217,24 @@ public interface AuthoringModelController {
 	void setGameDescription(String gameDescription);
 
 	/**
+	 * Set the victory condition for the current level of the game being authored
+	 * 
+	 * @param conditionIdentifier
+	 *            the description of the victory condition, which can be mapped to a
+	 *            boolean state function
+	 */
+	void setVictoryCondition(String conditionIdentifier);
+
+	/**
+	 * Set the defeat condition for the current level of the game being authored
+	 * 
+	 * @param conditionIdentifier
+	 *            the description of the defeat condition, which can be mapped to a
+	 *            boolean state function
+	 */
+	void setDefeatCondition(String conditionIdentifier);
+
+	/**
 	 * Set a top-level game status property (e.g. lives, starting resources, etc)
 	 *
 	 * @param property
@@ -224,4 +243,21 @@ public interface AuthoringModelController {
 	 *            string representation of the property's new value
 	 */
 	void setStatusProperty(String property, String value);
+
+	/**
+	 * Retrieve a collection of descriptions of the possible victory conditions
+	 * 
+	 * @return a collection of strings describing the possible victory conditions
+	 *         that can be assigned for a given level
+	 */
+	Collection<String> getPossibleVictoryConditions();
+
+	/**
+	 * Retrieve a collection of descriptions of the possible defeat conditions
+	 * 
+	 * @return a collection of strings describing the possible defeat conditions
+	 *         that can be assigned for a given level
+	 */
+	Collection<String> getPossibleDefeatConditions();
+
 }
