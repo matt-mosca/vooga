@@ -18,7 +18,7 @@ public abstract class CircularMovementStrategy extends TargetedMovementStrategy 
 									@ParameterName("radius") double radius,
 									@ParameterName("initialAngle") double initialAngle,
 									@ParameterName("velocity") double velocity) {
-		super(radius * Math.cos(initialAngle),radius * Math.sin(initialAngle), velocity);
+		super(radius * Math.cos(Math.toRadians(initialAngle)),radius * Math.sin(Math.toRadians(initialAngle)), velocity);
 		this.radius = radius;
 		this.angle = Math.toRadians(initialAngle);
 		this.angularVelocity = velocity/radius;
