@@ -234,6 +234,14 @@ public class SpriteFactory {
 		}
 		return spriteTemplates.get(spriteTemplateName);
 	}
+	
+	/**
+	 * Return a COPY of current templates for data protection
+	 * @return map of template names to their properties
+	 */
+	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
+		return spriteTemplates;
+	}
 
 	/**
 	 * Export all the stored sprite templates for an authored game to properties
