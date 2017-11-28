@@ -9,6 +9,7 @@ import authoring.GameArea;
 import authoring.PlacementGrid;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.SpriteImage;
+import authoring.rightToolBar.TowerImage;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.NoopCollisionVisitable;
@@ -48,6 +49,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
 	
+	private TowerImage tower1;
+	private double xLocation = 0;
+	private double yLocation = 0;
+	
 	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
 	private final MovementStrategy testMovement = new StationaryMovementStrategy();
@@ -61,6 +66,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myCoinDisplay);
 		
 		createTestGameArea();
+		
+		createTestImages();
 
 //		createTestSprites();
 //		createTestGameArea();
@@ -83,8 +90,20 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.play();
 	}
 	
+	private void createTestImages() {
+		tower1 = new TowerImage("Castle_Tower1");
+		tower1.setFitHeight(40);
+		tower1.setFitWidth(40);
+		myPlayArea.placeInGrid(tower1);
+	}
+	
 	private void step() {
 		myCoinDisplay.increment();
+		xLocation += 5;
+		yLocation += 5;
+		tower1.setLayoutX(xLocation);
+		tower1.setLayoutY(yLocation);
+
 	}
 
 	private void createTestGameArea() {
