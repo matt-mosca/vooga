@@ -1,9 +1,14 @@
 package authoring.bottomToolBar;
 
+import java.util.Map;
+
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.control.TextField;
 
 public class AttackLevelDisplay extends LevelDisplay {
 	private Scene myScene;
+	private Map<String, TextBox> myTextBoxes;
 	public AttackLevelDisplay(int n) {
 		super(n);
 		createScene();
@@ -11,7 +16,7 @@ public class AttackLevelDisplay extends LevelDisplay {
 		
 	}
 	private void createScene() {
-		// TODO Auto-generated method stub
+		Pane pane = new Pane();
 		
 	}
 
