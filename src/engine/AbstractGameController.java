@@ -42,7 +42,7 @@ public abstract class AbstractGameController {
 	public AbstractGameController() {
 		SerializationUtils serializationUtils = new SerializationUtils();
 		ioController = new IOController(serializationUtils);
-		setLevel(1);
+		initialize();
 		gameDescription = "";
 		gameName = DEFAULT_GAME_NAME;
 	}
@@ -121,11 +121,6 @@ public abstract class AbstractGameController {
 	protected void setLevel(int level) {
 		assertValidLevel(level);
 		currentLevel = level;
-		if (currentLevel > getLevelStatuses().size()) {
-			getLevelStatuses().add(new HashMap<>());
-			getLevelSprites().add(new ArrayList<>());
-			getLevelConditions().add(new HashMap<>());
-		}
 	}
 
 	protected IOController getIoController() {
@@ -188,5 +183,12 @@ public abstract class AbstractGameController {
 			allLevelData.set(level, levelData);
 		}
 	}
-
+	
+	private void initialize() {
+		currentLevel = 1;
+		getLevelStatuses().add(new HashMap<>());
+		getLevelSprites().add(new ArrayList<>());
+		getLevelConditions().add(new HashMap<>());
+	}
+	
 }
