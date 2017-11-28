@@ -31,9 +31,9 @@ public abstract class SpriteImage extends ImageView {
 	
 	private void setDefaultProperties() {
 		myProperties = new TreeMap<String, String>();
-		myProperties.put("Health", "1");
-		myProperties.put("Object", "2");
-		myProperties.put("Strength", "3");
+		myProperties.put("Cost", "10");
+		myProperties.put("Strength", "20");
+		myProperties.put("Health", "100");
 	}
 	
 	public void update(String newProperty, String newValue) {

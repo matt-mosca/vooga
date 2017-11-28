@@ -12,9 +12,9 @@ public class CoinDisplay extends HBox {
 	private int coins;
 	
 	public CoinDisplay() {
-		coins = 0;
+		coins = 20;
 		myLabel = new Label("Current coins:");
-		myCoins = new Label("0");
+		myCoins = new Label(Integer.toString(coins));
 		myLabel.setLayoutX(0);
 		myLabel.setFont(new Font(30));
 		myLabel.setTextFill(Color.WHITE);

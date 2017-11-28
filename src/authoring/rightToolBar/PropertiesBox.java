@@ -15,7 +15,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
 public class PropertiesBox extends VBox {
-	public static final String[] properties = {"HP", "Strength", "Other"};
 	private CreationInterface creation;
 	private Map<String, String> propertiesMap;
 	private String[] propertyArr;
@@ -26,7 +25,6 @@ public class PropertiesBox extends VBox {
 	
 	public PropertiesBox(CreationInterface creation, SpriteImage mySprite) {
 		this.creation = creation;
-		propertyArr = new String[]{"50","10","23"};
 //		propertiesMap = new TreeMap<String, String>();
 //		for (int i = 0; i < properties.length; i++) {
 //			propertiesMap.put(properties[i], propertyArr[i]);

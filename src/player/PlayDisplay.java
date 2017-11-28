@@ -57,6 +57,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myCoinDisplay = new CoinDisplay();
 		rootAdd(myCoinDisplay);
 		
+		createTestGameArea();
 
 //		createTestSprites();
 //		createTestGameArea();

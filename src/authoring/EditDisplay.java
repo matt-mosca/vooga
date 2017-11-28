@@ -195,6 +195,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		yesButton.setLayoutX(1000);
 		noButton.setLayoutX(1050);
 		optionLabel.setLayoutX(700);
+		yesButton.setLayoutY(20);
+		noButton.setLayoutY(20);
+		optionLabel.setLayoutY(20);
+
 		rootAdd(yesButton);
 		rootAdd(optionLabel);
 		rootAdd(noButton);
