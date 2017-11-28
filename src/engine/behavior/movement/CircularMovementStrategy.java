@@ -1,6 +1,7 @@
 package engine.behavior.movement;
 
 import engine.behavior.ParameterName;
+import javafx.geometry.Point2D;
 
 /**
  * Movement strategy for objects that move along a circular path
@@ -25,11 +26,12 @@ public abstract class CircularMovementStrategy extends TargetedMovementStrategy 
 		setInitialLocation();
 	}
 	
-	public void move() {
+	public Point2D move() {
 		angle += angularVelocity;
 		setTargetCoordinates(radius * Math.cos(angle),radius * Math.sin(angle));
 		setX(this.getCurrentX()+ getXVelocity());
 		setY(this.getCurrentY()+ getYVelocity());
+		return getCurrentCoordinates();
 	}
 	
 	private void setInitialLocation() {

@@ -1,10 +1,7 @@
 package engine.behavior.movement;
 
-import engine.behavior.ParameterName;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Point2D;
 
 /**
@@ -30,9 +27,6 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	}
 
 	@Override
-	public abstract void move();
-
-	@Override
 	public double getCurrentX() {
 		return xCoordinate.get();
 	}
@@ -55,5 +49,9 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	@Override
 	public void setY(double newY) {
 		yCoordinate.set(newY);
+	}
+
+	protected Point2D getCurrentCoordinates() {
+		return new Point2D(getCurrentX(), getCurrentY());
 	}
 }

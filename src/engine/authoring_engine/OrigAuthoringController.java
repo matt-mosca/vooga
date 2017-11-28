@@ -60,7 +60,8 @@ public class OrigAuthoringController extends GameController {
 	 * @return a unique ID for the element
 	 */
 	public Sprite addElement(String name, int level) throws IllegalArgumentException {
-		return getStateManager().addElement(name, level);
+		//return getStateManager().addElement(name, level);
+		return null;
 	}
 
 	/*

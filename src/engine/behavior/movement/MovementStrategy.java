@@ -1,6 +1,6 @@
 package engine.behavior.movement;
 
-import java.awt.geom.Point2D;
+import javafx.geometry.Point2D;
 
 /**
  * Used by game elements to handle movement according to various strategies which are selected during game authoring.
@@ -11,8 +11,10 @@ public interface MovementStrategy {
 
     /**
      * Move based on the specific movement strategy for the game element
+     *
+     * @return the new point-based location of the element
      */
-    void move();
+    Point2D move();
 
     /**
      * Retrieve the current horizontal coordinate for the game element
