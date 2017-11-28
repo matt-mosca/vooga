@@ -12,7 +12,12 @@ public class TowerImage extends SpriteImage {
 		super();
 		myKey = stringKey;
 		towerResources = ResourceBundle.getBundle("authoring/resources/NewTowerImages");
-		this.addImage(towerResources.getString(stringKey));
+		if(towerResources.containsKey(stringKey)) {
+			this.addImage(towerResources.getString(stringKey));
+		}else {
+			this.addImage(stringKey);
+		}
+		
 	}
 	
 	@Override

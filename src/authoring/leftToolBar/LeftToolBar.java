@@ -2,6 +2,9 @@ package authoring.leftToolBar;
 
 import java.util.ArrayList;
 
+import authoring.tabs.AddStaticTab;
+import authoring.tabs.AddTab;
+import authoring.tabs.SimpleTab;
 import factory.TabFactory;
 import interfaces.ClickableInterface;
 import javafx.scene.control.TabPane;
@@ -18,7 +21,7 @@ public class LeftToolBar extends VBox {
 	private TabFactory tabFactory;
 	private SimpleTab staticTab;
 	private SimpleTab backgroundTab;
-	private NewTab addTab;
+	private AddTab addTab;
 	
 	public LeftToolBar(ClickableInterface clickable) {
 		this.setLayoutY(50);
@@ -43,11 +46,11 @@ public class LeftToolBar extends VBox {
 		backgroundTab.addBackgroundItem(2, "stone_path1.png");
 		backgroundTab.addBackgroundItem(3, "water_medium.png");
 		
-		tabPane.getTabs().add(tabFactory.buildTab("Static", staticTab, tabPane));
-		tabPane.getTabs().add(tabFactory.buildTab("Background", backgroundTab, tabPane));
+		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
+		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));
 		
-		addTab = new NewTab(myClickable, tabPane);
-		tabPane.getTabs().add(tabFactory.buildTab("Add Image", addTab, tabPane));
+		addTab = new AddStaticTab(myClickable, tabPane);
+		tabPane.getTabs().add(tabFactory.buildTab("Add Image", null, addTab, tabPane));
 		makeTabsUnclosable();
 	}
 	

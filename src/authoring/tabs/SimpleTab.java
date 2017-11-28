@@ -1,4 +1,4 @@
-package authoring.leftToolBar;
+package authoring.tabs;
 
 import java.util.List;
 
@@ -31,15 +31,15 @@ public class SimpleTab extends ScrollPane{
 		this.setContent(myListView);
 	}
 	
-	protected void addStaticItem(int size, String imageString) {
+	public void addStaticItem(int size, String imageString) {
 		items.add(new StaticObject(size, clickable, imageString));
 	}
 	
-	protected void addBackgroundItem(int size, String imageString) {
+	public void addBackgroundItem(int size, String imageString) {
 		items.add(new BackgroundObject(size, clickable, imageString));
 	}
 	
-	protected void addItem(StaticObject object) {
+	public void addItem(StaticObject object) {
 		items.add(object);
 	}
 }
