@@ -48,8 +48,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		super(width, height);
 		super(width, height, Color.BLACK);
 //		super(width, height, Color.GRAY);
-		setStandardTheme();
 		addItems();
+		setStandardTheme();
 		createGridToggle();
 		rootAdd(gridToggle);
 		createMovementToggle();
@@ -217,10 +217,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void changeTheme(String theme) {
 		rootStyle(myThemeChanger.getThemePath(theme));
+//		myRightToolBar.getStyleClass().add("borders");
+//		myLeftToolBar.getStyleClass().add("borders");
 	}
 
 	private void setStandardTheme() {
-		rootStyle("authoring/resources/standard.css");
+		changeTheme(ThemeChanger.STANDARD);
 	}
 
 	public void attack() {
