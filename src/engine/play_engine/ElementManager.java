@@ -90,15 +90,11 @@ public class ElementManager {
 	private void processAllCollisionsForElement(int elementIndex, Sprite element) {
 		for (int otherIndex = elementIndex + 1; otherIndex < gameElements.size(); otherIndex++) {
 			Sprite otherElement = gameElements.get(otherIndex);
-			if (collidesWith(element, otherElement)) {
+			if (element.collidesWith(otherElement)) {
 				element.processCollision(otherElement);
 				otherElement.processCollision(element);
 			}
 		}
-	}
-
-	private boolean collidesWith(Sprite element, Sprite otherElement) {
-		return element.getBounds().intersects(otherElement.getBounds());
 	}
 
 	/*

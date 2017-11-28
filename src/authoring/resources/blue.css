@@ -3,15 +3,15 @@
 */
 
 .root{
-    -fx-font-size: 6pt;
-    -fx-font-family: "Courier New";
-    -fx-base: rgb(132, 145, 47);
-    -fx-background: rgb(225, 228, 203);
+    -fx-font-size: 8pt;
+    -fx-font-family: "Times New Roman";
+    -fx-base: rgb(66, 123, 230);
+    -fx-background: rgb(142, 193, 255);
 }
 
 .button{
-    -fx-text-fill: rgb(49, 89, 23);
-    -fx-border-color: rgb(49, 89, 23);
+    -fx-text-fill: rgb(23,38,72);
+    -fx-border-color: rgb(23,38,72);
     -fx-border-radius: 5;
     -fx-padding: 3 6 6 6;
 }
@@ -28,12 +28,12 @@
 	-fx-stroke: black; 
 	-fx-stroke-width: 1;
 	-fx-font-size: 16pt;
-	-fx-font-family: "Courier New"
+	-fx-font-family: "Times New Roman"
 }
 
 .check-box{
 	-fx-text-fill: rgb(240, 240, 240);
 	-fx-stroke: black; 
 	-fx-stroke-width: 1;
-	-fx-font-family: "Courier New"
+	-fx-font-family: "Times New Roman"
 }

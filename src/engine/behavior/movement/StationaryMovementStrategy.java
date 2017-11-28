@@ -10,8 +10,8 @@ import engine.behavior.ParameterName;
  */
 public class StationaryMovementStrategy extends AbstractMovementStrategy {
 
-	public StationaryMovementStrategy(@ParameterName("startX") double startX, @ParameterName("startY") double startY) {
-		super(startX, startY);
+	public StationaryMovementStrategy() {
+		super();
 		
 	}
 

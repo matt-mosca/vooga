@@ -18,6 +18,7 @@ public class LeftToolBar extends VBox {
 	private TabFactory tabFactory;
 	private SimpleTab staticTab;
 	private SimpleTab backgroundTab;
+	private NewTab addTab;
 	
 	public LeftToolBar(ClickableInterface clickable) {
 		this.setLayoutY(50);
@@ -44,6 +45,9 @@ public class LeftToolBar extends VBox {
 		
 		tabPane.getTabs().add(tabFactory.buildTab("Static", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", backgroundTab, tabPane));
+		
+		addTab = new NewTab(myClickable, tabPane);
+		tabPane.getTabs().add(tabFactory.buildTab("Add Image", addTab, tabPane));
 		makeTabsUnclosable();
 	}
 	

@@ -1,5 +1,7 @@
 package sprites;
 
+import java.io.File;
+
 import interfaces.ClickableInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -20,7 +22,12 @@ public class StaticObject extends ImageView {
 		myClickable = clickable; 
 		myImageString = imageString;
 		setSize(size);
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageString));
+		Image image;
+		try {
+			image = new Image(getClass().getClassLoader().getResourceAsStream(imageString));
+		}catch(NullPointerException e) {
+			image = new Image(imageString);
+		}
 		this.setImage(image);
 		objectSize = size;
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e));

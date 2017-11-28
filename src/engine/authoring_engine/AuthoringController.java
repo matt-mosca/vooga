@@ -2,6 +2,9 @@ package engine.authoring_engine;
 
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
+import engine.behavior.movement.TrackingPoint;
+import javafx.geometry.Point2D;
+import javafx.scene.image.ImageView;
 import packaging.Packager;
 import sprites.Sprite;
 import sprites.SpriteFactory;
@@ -71,16 +74,29 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
     
     @Override
-    public int placeElement(String elementName, double xCoordinate, double yCoordinate) {
-        Sprite sprite = spriteFactory.generateSprite(elementName);
-        sprite.setX(xCoordinate);
-        sprite.setY(yCoordinate);
+    public int placeElement(String elementTemplateName, Point2D startCoordinates, ImageView graphicalRepresentation) {
+        Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates, graphicalRepresentation, new HashMap<>());
+        return cacheAndCreateIdentifier(elementTemplateName, sprite);
+    }
+
+    @Override
+    public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates,
+                                    ImageView graphicalRepresentation, int idOfSpriteToTrack) {
+        TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
+        Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
+        auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
+        Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
+                graphicalRepresentation, auxiliarySpriteConstructionObjects);
+        return cacheAndCreateIdentifier(elementTemplateName, sprite);
+    }
+
+    private int cacheAndCreateIdentifier(String elementTemplateName, Sprite sprite) {
         spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
         cacheGeneratedSprite(sprite);
         int spriteId = spriteIdCounter.get();
-        Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
+        Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementTemplateName, new HashSet<>());
         idsForTemplate.add(spriteId);
-        templateToIdMap.put(elementName, idsForTemplate);
+        templateToIdMap.put(elementTemplateName, idsForTemplate);
         return spriteId;
     }
 

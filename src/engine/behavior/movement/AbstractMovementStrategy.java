@@ -1,10 +1,11 @@
 package engine.behavior.movement;
 
-import java.awt.geom.Point2D;
-
 import engine.behavior.ParameterName;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Point2D;
 
 /**
  * Use abstract class instead of interface to encapsulate x and y coordinate
@@ -15,52 +16,44 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public abstract class AbstractMovementStrategy implements MovementStrategy {
 
+	private final int DEFAULT_START_COORDINATE = 0;
 	// Alternative to using properties - can simply update x, y values of
 	// trackingPoint in setX and setY respectively ... preferred approach?
+	private TrackingPoint trackingPoint;
 	private DoubleProperty xCoordinate;
 	private DoubleProperty yCoordinate;
-	private Point2D.Double trackingPoint;
 
-	public AbstractMovementStrategy(@ParameterName("startX") double startX, @ParameterName("startY") double startY) {
-		xCoordinate = new SimpleDoubleProperty(startX);
-		yCoordinate = new SimpleDoubleProperty(startY);
-		Point2D.Double trackingPoint = new Point2D.Double(getX(), getY());
-		xCoordinate.addListener(
-				(observableValue, oldValue, newValue) -> trackingPoint.setLocation(newValue.doubleValue(), getY()));
-		yCoordinate.addListener(
-				(observableValue, oldValue, newValue) -> trackingPoint.setLocation(getX(), newValue.doubleValue()));
+	public AbstractMovementStrategy() {
+		xCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
+		yCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
+		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
 	}
 
 	@Override
 	public abstract void move();
 
 	@Override
-	public double getX() {
+	public double getCurrentX() {
 		return xCoordinate.get();
 	}
 
 	@Override
-	public double getY() {
+	public double getCurrentY() {
 		return yCoordinate.get();
 	}
 
 	@Override
-	public Point2D.Double getCurrentPosition() {
-		return new Point2D.Double(getX(), getY());
-	}
-
-	@Override
-	public Point2D.Double getPositionForTracking() {
+	public TrackingPoint getPositionForTracking() {
 		return trackingPoint;
 	}
 
 	@Override
-	public void setX(double newXCoord) {
-		xCoordinate.set(newXCoord);
+	public void setX(double newX) {
+		xCoordinate.set(newX);
 	}
 
 	@Override
-	public void setY(double newYCoord) {
-		yCoordinate.set(newYCoord);
+	public void setY(double newY) {
+		yCoordinate.set(newY);
 	}
 }

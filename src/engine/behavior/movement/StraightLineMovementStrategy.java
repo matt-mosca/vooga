@@ -10,58 +10,40 @@ import javafx.geometry.Point2D;
  *
  */
 
-public class StraightLineMovementStrategy extends AbstractMovementStrategy {
-	protected double endX;
-	protected double endY;
-	protected double xVelo;
-	protected double yVelo;
+public class StraightLineMovementStrategy extends TargetedMovementStrategy {
+
 	protected double velocityMagnitude;
-	
-	
-	public StraightLineMovementStrategy(@ParameterName("startX") double startX,
-										@ParameterName("startY") double startY,
-										@ParameterName("velocity") double velocity) {
-		this(startX, startY, 0, 0,velocity);
+
+	public StraightLineMovementStrategy(@ParameterName("velocity") double velocity) {
+		this(0, 0, velocity);
 	}
 	
-	public StraightLineMovementStrategy(@ParameterName("startX") double startX,
-										@ParameterName("startY") double startY,
-										@ParameterName("endX") double endX,
-										@ParameterName("endY") double endY,
-										@ParameterName("velocity")double velocity) {
-		super(startX, startY);
-		this.endX = endX;
-		this.endY = endY;
+	public StraightLineMovementStrategy(@ParameterName("targetX") double targetX,
+										@ParameterName("targetX") double targetY,
+										@ParameterName("velocity") double velocity) {
+		super(targetX, targetY, velocity);
 		this.velocityMagnitude = velocity;
 		calculateVelocityComponents();
 	}
 	
 	public void move() {
-		setX(this.getX()+xVelo);
-		setY(this.getY()+yVelo);
+		setX(this.getCurrentX()+ getXVelocity());
+		setY(this.getCurrentY()+ getYVelocity());
 	}
 
-	protected void setEndCoord(double endX, double endY) {
-		this.endX = endX;
-		this.endY = endY;
-		calculateVelocityComponents();
-	}
-	
 	public void stop() {
-		this.xVelo = 0;
-		this.yVelo = 0;
+		super.stop();
 		this.velocityMagnitude = 0;
 	}
-	
+
 	public void bounce() {
 		
 	}
 	
 	private void calculateVelocityComponents() {
-		double angle = Math.toRadians(new Point2D(this.getX(),this.getY()).angle(endX, endY));
-		this.xVelo = velocityMagnitude * Math.cos(angle);
-		this.yVelo = velocityMagnitude * Math.sin(angle);
+		double angle = Math.toRadians(new Point2D(this.getCurrentX(),this.getCurrentY()).angle(getTargetX(), getTargetY()));
+		setXVelocity(velocityMagnitude * Math.cos(angle));
+		setYVelocity(velocityMagnitude * Math.sin(angle));
 	}
-
 
 }

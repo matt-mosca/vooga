@@ -1,16 +1,15 @@
 package sprites;
 
-import java.awt.geom.Point2D;
-import engine.behavior.blocking.BlockingStrategy;
-import engine.behavior.collision.CollisionVisitable;
-import engine.behavior.collision.CollisionVisitor;
+import engine.behavior.collision.CollisionHandler;
 import engine.behavior.firing.FiringStrategy;
-import engine.behavior.movement.MovementStrategy;
-import javafx.geometry.Bounds;
+import engine.behavior.movement.MovementHandler;
+import engine.behavior.movement.TrackingPoint;
 import javafx.scene.image.ImageView;
 
 /**
- * Represents  game objects in the backend. Responsible for controlling the object's update behavior.
+ * Represents game objects in the backend. Responsible for controlling the object's update behavior.
+ *
+ * TODO - documentation
  *
  * @author Ben Schwennesen
  */
@@ -24,32 +23,32 @@ public class Sprite {
 		
 	// These fields should be set through setProperties
 	private FiringStrategy firingStrategy;
-	private MovementStrategy movementStrategy;
-	private BlockingStrategy blockingStrategy;
-	private CollisionVisitor collisionVisitor;
-	private CollisionVisitable collisionVisitable;
+	//private MovementStrategy movementStrategy;
+	//private BlockingStrategy blockingStrategy;
+	private MovementHandler movementHandler;
+	//private CollisionVisitor collisionVisitor;
+	//private CollisionVisitable collisionVisitable;
+	private CollisionHandler collisionHandler;
 	// Might need custom code in setProperties for handling loading of image and
 	// subsequent construction of ImageView?
-	private ImageView spriteImageView;
+	//private ImageView spriteImageView;
 
-	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionVisitor collisionVisitor,
-                  CollisionVisitable collisionVisitable, String imageUrl) {
+	public Sprite(FiringStrategy firingStrategy, MovementHandler movementHandler, CollisionHandler collisionHandler) {
 		this.firingStrategy = firingStrategy;
-		this.movementStrategy = movementStrategy;
-		this.collisionVisitor = collisionVisitor;
-		this.collisionVisitable = collisionVisitable;
+		this.movementHandler = movementHandler;
+		this.collisionHandler = collisionHandler;
 	}
 
 	/**
 	 * Move one cycle in direction of current velocity vector
 	 */
 	public void move() {
-		if (collisionVisitor.isBlocked()) {
+		if (collisionHandler.isBlocked()) {
 			//movementStrategy.handleBlock();
 			// TODO - handle block
-			collisionVisitor.unBlock();
+			collisionHandler.unBlock();
 		}
-		movementStrategy.move();
+		movementHandler.move();
 	}
 
 	/**
@@ -61,69 +60,60 @@ public class Sprite {
 	}
 
 	/**
-	 * Handle the effects ON THIS SPRITE only of collision with another Sprite
+	 * Check for a collision with another sprite.
+	 *
+	 * @param other the other sprite with which this sprite might be colliding
+	 * @return true if the sprites collide, false otherwise
+	 */
+	public boolean collidesWith(Sprite other) {
+		return this.collisionHandler.collidesWith(other.collisionHandler);
+	}
+
+	/**
+	 * Apply the effects of a collision with another sprite to this sprite.
 	 * 
-	 * @param other
-	 *            the other Sprite which this Sprite collided with
+	 * @param other the other sprite with which this sprite collided
 	 */
 	public void processCollision(Sprite other) {
-		other.collisionVisitable.accept(collisionVisitor);
+		this.collisionHandler.processCollision(other.collisionHandler);
 	}
 
+	/**
+	 * Check if this sprite has been destroyed during gameplay.
+	 *
+	 * @return true if the sprite has not been destroyed, false otherwise
+	 */
 	public boolean isAlive() {
-		return collisionVisitor.isAlive();
-	}
-
-	/**
-	 * For front end to retrieve, rescale and display
-	 * 
-	 * @return
-	 */
-	public ImageView getRepresentation() {
-		return spriteImageView;
-	}
-
-	/**
-	 * Scaling-aware boundaries of sprite's representation
-	 * 
-	 * @return
-	 */
-	public Bounds getBounds() {
-		return spriteImageView.getBoundsInParent();
-	}
-
-	public double getX() {
-		return movementStrategy.getX();
-	}
-
-	public double getY() {
-		return movementStrategy.getY();
-	}
-
-	/**
-	 * The current (x, y) position as a Point2D.Double
-	 * 
-	 * @return current position
-	 */
-	public Point2D.Double getCurrentPosition() {
-		return movementStrategy.getCurrentPosition();
+		return collisionHandler.isAlive();
 	}
 
 	/**
 	 * Auto-updating (NOT snapshot) position of this AbstractMovementStrategy for tracking
-	 * 
+	 *
 	 * @return auto-updating position that changes with movement
 	 */
-	public Point2D.Double getPositionForTracking() {
-		return movementStrategy.getPositionForTracking();
+	public TrackingPoint getPositionForTracking() {
+		return movementHandler.getPositionForTracking();
 	}
 
-	public void setX(double newXCoord) {
-		movementStrategy.setX(newXCoord);
+	public double getX() {
+		return movementHandler.getCurrentX();
 	}
 
-	public void setY(double newYCoord) {
-		movementStrategy.setY(newYCoord);
+	public double getY() {
+		return movementHandler.getCurrentY();
+	}
+
+	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
+		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
+	}
+
+	public void setX(double newX) {
+		movementHandler.setX(newX);
+	}
+
+	public void setY(double newY) {
+		movementHandler.setY(newY);
 	}
 	
 	/**
@@ -131,7 +121,7 @@ public class Sprite {
 	 * @return id of player controlling this sprite
 	 */
 	public int getPlayerId() {
-		return collisionVisitor.getPlayerId();
+		return collisionHandler.getPlayerId();
 	}
 	
 	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter 

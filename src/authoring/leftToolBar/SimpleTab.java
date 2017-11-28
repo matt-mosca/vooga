@@ -38,4 +38,8 @@ public class SimpleTab extends ScrollPane{
 	protected void addBackgroundItem(int size, String imageString) {
 		items.add(new BackgroundObject(size, clickable, imageString));
 	}
+	
+	protected void addItem(StaticObject object) {
+		items.add(object);
+	}
 }

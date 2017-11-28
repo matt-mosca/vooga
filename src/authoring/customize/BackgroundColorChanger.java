@@ -23,7 +23,7 @@ public class BackgroundColorChanger extends ComboBox<String> {
 		this.setLayoutY(Y_POS);
 		this.setPromptText(PROMPT_TEXT);
 		ObservableList<String> colorList = FXCollections.observableArrayList(COLORS);
-		ChangeListener<String> propertyHandler = (obs, old, cur) -> customize.changeBackground(cur);
+		ChangeListener<String> propertyHandler = (obs, old, cur) -> customize.changeColor(cur);
 		this.getSelectionModel().selectedItemProperty().addListener(propertyHandler);
 		this.setEditable(true);
 		this.setVisibleRowCount(3);

@@ -39,17 +39,14 @@ public class SpriteOptionsGetter {
         loadTranslations();
     }
 
-
-
     private void loadTranslations() {
         initializeParameterTranslations();
         Map<String, List<String>> spriteParameterSubclassOptions = new HashMap<>();
         for (Parameter spriteParameter : Sprite.class.getConstructors()[0].getParameters()) {
             try {
-                loadClassTranslationsForSpriteParameter(spriteParameter);
+                loadTranslationsForSpriteParameter(spriteParameter);
             } catch (IOException | ReflectiveOperationException failedToLoadTranslationsException) {
                 // TODO - handle
-                failedToLoadTranslationsException.printStackTrace();
             }
         }
     }
@@ -63,14 +60,13 @@ public class SpriteOptionsGetter {
                 parameterTranslationProperties.load(parameterTranslationStream);
             } catch (IOException fileDoesntExistException) {
                 // TODO - handle
-                fileDoesntExistException.printStackTrace();
             }
         }
     }
 
-    // TODO - refactor
-    private void loadClassTranslationsForSpriteParameter(Parameter spriteParameter)
-            throws IOException, ReflectiveOperationException {
+    // TODO - refactor (strongly needed)
+    private void loadTranslationsForSpriteParameter(Parameter spriteParameter) throws IOException,
+            ReflectiveOperationException {
         Properties spriteParameterSubclassProperties = new Properties();
         String parameterClassSimpleName = spriteParameter.getType().getSimpleName();
         InputStream parameterClassPossibilitiesStream = getClass().getClassLoader()
@@ -96,6 +92,14 @@ public class SpriteOptionsGetter {
             }
             spriteParameterSubclassOptions.put(referenceClassDescription != null ?
                     referenceClassDescription : parameterClassFullName, subclassOptions);
+        } else {
+            // DIDNT FIND PROP FILE --> recur on parameter's parameters
+            Class parameterClass = spriteParameter.getType();
+            if (parameterClass.getConstructors().length > 0) {
+                for (Parameter subparameter : parameterClass.getConstructors()[0].getParameters()){
+                    loadTranslationsForSpriteParameter(subparameter);
+                }
+            }
         }
     }
 
@@ -124,17 +128,22 @@ public class SpriteOptionsGetter {
         }
     }
 
-    public List<String> getConstructorParameterNames(Class clazz) {
+    public List<String> getConstructorParameterIdentifiers(Class clazz) {
         if (clazz.getConstructors().length == 0) {
             return new ArrayList<>();
         }
         Constructor constructor = clazz.getConstructors()[0];
         Parameter[] parameters = constructor.getParameters();
         // TODO - make sure getParameters() returns them in order
-        List<String> parameterNames = Arrays.stream(parameters)
-                .map(parameter -> parameter.getAnnotation(ParameterName.class).value())
-                .collect(Collectors.toList());
-        return parameterNames;
+        return Arrays.stream(parameters).map(this::getParameterIdentifier).collect(Collectors.toList());
+    }
+
+    private String getParameterIdentifier(Parameter parameter) {
+        if (parameter.isAnnotationPresent(ParameterName.class)) {
+            return parameter.getAnnotation(ParameterName.class).value();
+        } else {
+            return parameter.getType().getName();
+        }
     }
 
     public Map<String, List<String>> getSpriteParameterSubclassOptions() {
@@ -156,15 +165,26 @@ public class SpriteOptionsGetter {
     }
 
     public String translateDescriptionToClass(String description) {
-        return descriptionToClass.getOrDefault(description, description);
+        return descriptionToClass.get(description);
     }
 
     public String translateClassToDescription(String className) {
-        return classToDescription.getOrDefault(className, className);
+        return classToDescription.get(className);
     }
 
     public String translateParameterToDescription(String parameterName) {
-        return parameterToDescription.getOrDefault(parameterName, parameterName);
+        return parameterToDescription.get(parameterName);
+    }
+
+    public String getChosenSubclassName(Class parameterClass, Map<String, String> properties) throws IllegalArgumentException {
+        String parameterClassDescription = translateClassToDescription(parameterClass.getName());
+        String chosenSubclassDescription;
+        if (parameterToDescription == null ||
+                (chosenSubclassDescription = properties.get(parameterClassDescription)) == null) {
+            throw new IllegalArgumentException();
+            // TODO - custom exception
+        }
+        return translateDescriptionToClass(chosenSubclassDescription);
     }
 
     public static void main(String[] args) {
