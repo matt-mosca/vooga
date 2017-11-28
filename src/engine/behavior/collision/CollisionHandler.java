@@ -56,4 +56,8 @@ public class CollisionHandler {
     public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
         this.graphicalRepresentation = graphicalRepresentation;
     }
+    
+    public ImageView getGraphicalRepresentation() {
+    		return graphicalRepresentation;
+    }
 }

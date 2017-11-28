@@ -101,10 +101,6 @@ public abstract class AbstractGameController {
 		gameName = saveName;
 	}
 
-	public List<List<Sprite>> getLevelSprites() {
-		return levelSpritesCache;
-	}
-
 	public String getGameName() {
 		return gameName;
 	}
@@ -122,12 +118,14 @@ public abstract class AbstractGameController {
 		}
 	}
 
+	// TODO - Remove ImageView from params
 	public int placeElement(String elementTemplateName, Point2D startCoordinates, ImageView graphicalRepresentation) {
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates, graphicalRepresentation,
 				new HashMap<>());
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
 	}
 
+	// TODO - Remove ImageView from params
 	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates,
 			ImageView graphicalRepresentation, int idOfSpriteToTrack) {
 		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
@@ -136,6 +134,14 @@ public abstract class AbstractGameController {
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates, graphicalRepresentation,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+	}
+	
+	public ImageView getRepresentationFromSpriteId(int spriteId) {
+		return spriteIdMap.get(spriteId).getGraphicalRepresentation();
+	}
+	
+	protected List<List<Sprite>> getLevelSprites() {
+		return levelSpritesCache;
 	}
 
 	protected void cacheGeneratedSprite(Sprite sprite) {
