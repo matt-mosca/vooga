@@ -119,19 +119,17 @@ public abstract class AbstractGameController {
 	}
 
 	// TODO - Remove ImageView from params
-	public int placeElement(String elementTemplateName, Point2D startCoordinates, ImageView graphicalRepresentation) {
-		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates, graphicalRepresentation,
-				new HashMap<>());
+	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
+		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
 	}
 
 	// TODO - Remove ImageView from params
-	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates,
-			ImageView graphicalRepresentation, int idOfSpriteToTrack) {
+	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates, int idOfSpriteToTrack) {
 		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
 		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
-		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates, graphicalRepresentation,
+		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
 	}

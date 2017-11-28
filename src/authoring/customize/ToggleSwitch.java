@@ -18,7 +18,7 @@ public class ToggleSwitch extends HBox {
 	
 	private void init() {
 		
-		switchLabel.setText("Attack");
+		switchLabel.setText("Defense");
 		
 		getChildren().addAll(switchLabel, button);	
 		button.setOnAction((e) -> {

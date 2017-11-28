@@ -25,7 +25,7 @@ public class AttackDefenseToggle extends ToggleSwitch {
 	}
 
 	public void defense() {
-		switchLabel.setText("Attack");
+		switchLabel.setText("Defense");
 		setStyle("-fx-background-color: red;");
 //		setStyle("-fx-background-color: rgb(66, 123, 230)");
 		button.toFront();
@@ -33,7 +33,7 @@ public class AttackDefenseToggle extends ToggleSwitch {
 	}
 
 	public void attack() {
-		switchLabel.setText("Defense");
+		switchLabel.setText("Attack");
 //		setStyle("-fx-background-color: yellow;");
 //		setStyle("-fx-background-color: rgb(240, 200, 100);");
 		setStyle("-fx-background-color: rgb(66, 123, 230);");

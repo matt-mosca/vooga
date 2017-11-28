@@ -53,6 +53,8 @@ public class GenericToolBar extends ScrollPane {
         this.setContent(myListView);
 	}
 	
+
+	
 	public void init() {
 		createDefaultObjects();
 		addToList();

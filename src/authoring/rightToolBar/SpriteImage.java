@@ -1,5 +1,6 @@
 package authoring.rightToolBar;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,6 +13,7 @@ public abstract class SpriteImage extends ImageView {
 	private String myImageName;
 	private AuthoringController controller;
 	private Map<String, String> myProperties;
+	private String myName;
 	
 	
 	public SpriteImage() {
@@ -29,11 +31,21 @@ public abstract class SpriteImage extends ImageView {
 		setDefaultProperties();
 	}
 	
+	public void setName(String name) {
+		myName = name;
+		myProperties.put("Name", name);
+	}
+	
+	public String getName() {
+		return myName;
+	}
+	
 	private void setDefaultProperties() {
-		myProperties = new TreeMap<String, String>();
-		myProperties.put("Health", "1");
-		myProperties.put("Object", "2");
-		myProperties.put("Strength", "3");
+		myProperties = new HashMap<String, String>();
+		myProperties.put("Cost", "10");
+		myProperties.put("Strength", "20");
+		myProperties.put("Name", myName);
+		myProperties.put("Health", "100");
 	}
 	
 	public void update(String newProperty, String newValue) {
