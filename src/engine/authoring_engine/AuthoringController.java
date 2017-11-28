@@ -141,7 +141,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
-		return null;
+		return getSpriteFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
 	}
 
 	@Override
