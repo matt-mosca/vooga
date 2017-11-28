@@ -4,6 +4,7 @@ import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import splashScreen.ScreenDisplay;
 
 public class MainMenuBar extends MenuBar{
 	private final String RENAME = "Rename Game:";
@@ -13,9 +14,9 @@ public class MainMenuBar extends MenuBar{
 	private Menu edit;
 	private AuthoringController myController;
 	
-	public MainMenuBar(AuthoringController controller) {
-		this.prefWidthProperty().bind(this.getScene().widthProperty());
+	public MainMenuBar(AuthoringController controller, ScreenDisplay display) {
 		this.myController = controller;
+		this.prefWidthProperty().bind(display.getScene().widthProperty());
 		
 		createFileMenu();
 		createEditMenu();
