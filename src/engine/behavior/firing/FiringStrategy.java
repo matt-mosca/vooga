@@ -1,5 +1,7 @@
 package engine.behavior.firing;
 
+import java.awt.geom.Point2D;
+
 /**
  * Support different ways of firing, one of which is chosen by authoring and
  * then passed to Sprite at initialization
@@ -21,4 +23,10 @@ public interface FiringStrategy {
 	 */
 	public boolean shouldFire();
 
+	
+	public void setFiringPosition(Point2D.Double firingPosition);
+	
+	public void setTargetPoint(Point2D.Double targetPoint);
+	
+	public Point2D.Double getTargetPoint();
 }
