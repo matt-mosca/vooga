@@ -41,10 +41,10 @@ public class AuthoringStateManager extends StateManager {
 				true);
 	}
 
-	Sprite createElement(String templateName, Map<String, String> properties) {
+	/*Sprite createElement(String templateName, Map<String, String> properties) {
 		getSpriteFactory().defineElement(templateName, properties);
 		return getSpriteFactory().generateSprite(templateName);
-	}
+	}*/
 
 	@Override
 	public Sprite placeElement(String elementName, double x, double y) {
@@ -76,10 +76,10 @@ public class AuthoringStateManager extends StateManager {
 		return null; // TEMP
 	}
 
-	Sprite addElement(String templateName, int level) throws IllegalArgumentException {
+	/*Sprite addElement(String templateName, int level) throws IllegalArgumentException {
 		assertValidLevel(level);
 		return getSpriteFactory().generateSprite(templateName);
-	}
+	}*/
 
 	// If we return the sprite to the frontend, they will be able to do this themselves?
 

@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,6 +60,20 @@ public interface AuthoringModelController {
 	 *             if level does not exist
 	 */
 	void deleteLevel(int level) throws IllegalArgumentException;
+
+	/**
+	 * Get the top-level configuration options for a game element definition.
+	 *
+	 * @return a map from the name of the configuration option to set to a list of choices for that option
+	 */
+	Map<String, List<String>> getElementBaseConfigurationOptions();
+
+	/**
+	 * Get auxiliary configuration elements for a game element, based on top-level configuration choices.
+	 *
+	 * @return a map from the name of the configuration option to its class type
+	 */
+	Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices);
 
 	/**
 	 * Define a new type of element for the game being authored. Elements of this
