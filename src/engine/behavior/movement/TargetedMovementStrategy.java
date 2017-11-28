@@ -12,15 +12,17 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
 
     private double xVelocity;
     private double yVelocity;
+    private double velocityMagnitude;
 
     protected TargetedMovementStrategy(double targetX, double targetY, double velocityMagnitude) {
         super();
         setTargetCoordinates(targetX, targetY);
-        calculateVelocityComponents(velocityMagnitude);
+        this.velocityMagnitude = velocityMagnitude;
+        calculateVelocityComponents();
     }
 
-    @Override
     public void move() {
+    	calculateVelocityComponents();
         setX(this.getCurrentX()+ getXVelocity());
         setY(this.getCurrentY()+ getYVelocity());
     }
@@ -57,7 +59,7 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
         yVelocity = newYVelocity;
     }
 
-    private void calculateVelocityComponents(double velocityMagnitude) {
+    protected void calculateVelocityComponents() {
         double angle = Math.toRadians(new Point2D(this.getCurrentX(),this.getCurrentY()).angle(targetX, targetY));
         this.xVelocity = velocityMagnitude * Math.cos(angle);
         this.yVelocity = velocityMagnitude * Math.sin(angle);
@@ -66,5 +68,6 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
     public void stop() {
         this.xVelocity = 0;
         this.yVelocity = 0;
+        this.velocityMagnitude = 0;
     }
 }

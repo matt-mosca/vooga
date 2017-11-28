@@ -6,7 +6,11 @@ public class NoopFiringStrategy implements FiringStrategy {
 	// projectiles, mines, obstacles, etc.
 	@Override
 	public void fire() {
+	}
 
+	@Override
+	public boolean shouldFire() {
+		return false;
 	}
 
 }

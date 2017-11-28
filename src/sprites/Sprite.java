@@ -51,14 +51,15 @@ public class Sprite {
 		movementHandler.move();
 	}
 
-	/**
-	 * Attack in whatever way necessary Likely called by interaction_engine in
-	 * event-handlers for keys / clicks
-	 */
-	public void attack() {
-		firingStrategy.fire();
+	public boolean shouldFire() {
+		return firingStrategy.shouldFire();
 	}
-
+	
+	public String fire() {
+		return firingStrategy.fire();
+	}
+	
+	
 	/**
 	 * Check for a collision with another sprite.
 	 *

@@ -10,12 +10,10 @@ import engine.behavior.movement.StraightLineMovementStrategy;
  */
 public class UnstoppableBlockingStrategy extends BlockingStrategy{
 
-	public UnstoppableBlockingStrategy(StraightLineMovementStrategy movementStrat) {
-		super(movementStrat);
+	public UnstoppableBlockingStrategy() {
 	}
 
 	public void handleBlock() {
-		movementStrat.move();
 	}
 
 }

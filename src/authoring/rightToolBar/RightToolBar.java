@@ -60,11 +60,13 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private Label projectileLabel;
 	private HBox projectileSlot;
 	private Button deleteButton;
+	private CreationInterface created;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
 
 	
 	public RightToolBar(CreationInterface created) {
+		this.created = created;
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 	    tabMaker = new TabFactory();
@@ -79,7 +81,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    inventoryTower = new NewInventoryTower(this);
 	    inventoryTroop = new NewInventoryTroop(this);
 	    inventoryProjectile = new NewInventoryProjectile(this);
-	    myPropertiesBox = new PropertiesBox(created);
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
@@ -122,15 +123,15 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {		
-		if (imageView instanceof TowerImage) newPaneWithProjectileSlot(imageView);
+		if (imageView instanceof TowerImage) newPaneWithProjectileSlot((TowerImage) imageView);
 		if (imageView instanceof TroopImage) newPane(imageView);
 	}
 	
-	private void newPaneWithProjectileSlot(SpriteImage imageView) {
+	private void newPaneWithProjectileSlot(TowerImage imageView) {
 		/**
 		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
 		 */
-		
+		myPropertiesBox = new PropertiesBox(created, imageView);
 		projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
 		projectileSlot = new HBox();
@@ -138,7 +139,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		projectileSlot.setPrefHeight(50);
 		projectileSlot.setLayoutY(170);
 		projectileSlot.setStyle("-fx-background-color: white");
-		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow());
+		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow((TowerImage) imageView));
 		propertiesPane = new Pane();
 		deleteButton = new Button("Back");
 		deleteButton.setLayoutX(370);
@@ -150,6 +151,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		HBox imageBackground = new HBox();
 		imageBackground.setStyle("-fx-background-color: white");
 		imageBackground.getChildren().add(imageView.clone());
+		if (imageView.hasProjectile()) projectileSlot.getChildren().add(imageView.getProjectileImage());
 		propertiesPane.getChildren().add(imageBackground);
 		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(myPropertiesBox);
@@ -161,7 +163,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 
 	}
 	
-	private void newProjectilesWindow() {
+	private void newProjectilesWindow(TowerImage myTowerImage) {
 		ScrollPane projectilesWindow = new ScrollPane();
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
 		if (inventoryProjectile.getImages().isEmpty()) {
@@ -176,19 +178,22 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         projectilesWindow.setContent(projectilesView);
         projectilesWindow.setLayoutX(100);
         projectilesWindow.setPrefHeight(250);
-        projectilesView.setOnMouseClicked(e->projectileSelected(
+        projectilesView.setOnMouseClicked(e->projectileSelected(myTowerImage,
         		projectilesView.getSelectionModel().getSelectedItem().clone()));
         propertiesPane.getChildren().remove(myPropertiesBox);
         propertiesPane.getChildren().add(projectilesWindow);
 		}
 	}
 	
-	private void projectileSelected(SpriteImage imageClone) {
+	private void projectileSelected(TowerImage myTowerImage, SpriteImage imageClone) {
 		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
 		projectileSlot.getChildren().add(imageClone);
+		myTowerImage.addProjectileImage(imageClone);
+		
 	}
 
 	private void newPane(SpriteImage imageView) {
+		myPropertiesBox = new PropertiesBox(created, imageView);
 		propertiesPane = new Pane();
 		Button deleteButton = new Button("Back");
 		deleteButton.setLayoutX(300);
