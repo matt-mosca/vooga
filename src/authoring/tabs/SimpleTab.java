@@ -5,6 +5,7 @@ import java.util.List;
 import interfaces.ClickableInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import sprites.BackgroundObject;
@@ -32,11 +33,11 @@ public class SimpleTab extends ScrollPane{
 	}
 	
 	//TODO eliminate addstatic and anddbackground if possible in favor of more general additem
-	public void addStaticItem(int size, String imageString) {
+	public void addStaticItem(Point2D size, String imageString) {
 		items.add(new StaticObject(size, clickable, imageString));
 	}
 	
-	public void addBackgroundItem(int size, String imageString) {
+	public void addBackgroundItem(Point2D size, String imageString) {
 		items.add(new BackgroundObject(size, clickable, imageString));
 	}
 	

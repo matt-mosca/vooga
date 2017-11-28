@@ -12,13 +12,13 @@ import javafx.scene.input.MouseEvent;
 public class StaticObject extends ImageView {
 	
 	private static final int CELL_SIZE = 40;
-	private int objectSize;
-	private int realSize;
+	private Point2D objectSize;
+	private Point2D realSize;
 	private ClickableInterface myClickable;
 	private String myImageString;
 	private boolean locked;
 	
-	public StaticObject(int size, ClickableInterface clickable, String imageString) {
+	public StaticObject(Point2D size, ClickableInterface clickable, String imageString) {
 		myClickable = clickable; 
 		myImageString = imageString;
 		setSize(size);
@@ -36,16 +36,17 @@ public class StaticObject extends ImageView {
 		
 	}
 
-	private void setSize(int size) {
-		realSize = size * CELL_SIZE;
-		this.setFitWidth(realSize);
-		this.setFitHeight(realSize);
+	private void setSize(Point2D size) {
+		realSize = size.multiply(CELL_SIZE);
+		this.setFitWidth(realSize.getX());
+		this.setFitHeight(realSize.getY());
 	}
 	
 	private void drag(MouseEvent e) {
+		//TODO maybe fix??
 		if(!locked) {
-			this.setX(e.getX() - realSize / 2);
-			this.setY(e.getY() - realSize / 2);
+			this.setX(e.getX() - realSize.getX() / 2);
+			this.setY(e.getY() - realSize.getY() / 2);
 		}
 	}
 	
@@ -81,18 +82,18 @@ public class StaticObject extends ImageView {
 		return myImageString;
 	}
 	
-	public int getSize() {
+	public Point2D getSize() {
 		return objectSize;
 	}
 	
 	public void incrementSize() {
-		objectSize++;
+		objectSize.add(1, 1);
 		setSize(objectSize);
 	}
 	
 	public void decrementSize() {
-		if (objectSize > 1) {
-			objectSize--;
+		if (objectSize.getX() > 1 && objectSize.getY() > 1) {
+			objectSize.subtract(1,1);
 			setSize(objectSize);
 		}
 	}

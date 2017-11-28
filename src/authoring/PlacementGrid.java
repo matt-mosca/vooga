@@ -97,8 +97,8 @@ public class PlacementGrid extends GridPane {
 		Point2D finalLocation = null;
 		int finalRow = 0;
 		int finalColumn = 0;
-		for (int r = 0; r < cells.length - currObject.getSize() + 1; r++) {
-			for (int c = 0; c < cells[r].length - currObject.getSize() + 1; c++) {
+		for (int r = 0; r < cells.length - currObject.getSize().getX() + 1; r++) {
+			for (int c = 0; c < cells[r].length - currObject.getSize().getY() + 1; c++) {
 				Cell currCell = cells[r][c];
 				Point2D cellLocation = new Point2D(currCell.getLayoutX(), currCell.getLayoutY());
 				double totalDistance = Math.abs(cellLocation.distance(currObject.center()));
@@ -117,9 +117,9 @@ public class PlacementGrid extends GridPane {
 		return finalLocation;
 	}
 	
-	private boolean neighborsFull(int row, int col, int size) {
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+	private boolean neighborsFull(int row, int col, Point2D size) {
+		for (int i = 0; i < size.getX(); i++) {
+			for (int j = 0; j < size.getY(); j++) {
 				if (!cells[i+row][j+col].isEmpty()) return true;
 			}
 		}
@@ -127,16 +127,16 @@ public class PlacementGrid extends GridPane {
 	}
 	
 	private void assignToCells(int finalRow, int finalCol, StaticObject currObject) {
-		for (int i = 0; i < currObject.getSize(); i++) {
-			for (int j = 0; j < currObject.getSize(); j++) {
+		for (int i = 0; i < currObject.getSize().getX(); i++) {
+			for (int j = 0; j < currObject.getSize().getY(); j++) {
 				cells[i+finalRow][j+finalCol].assignToCell(currObject);
 			}
 		}
 	}
 	
 	private void removeAssignments(int finalRow, int finalCol, StaticObject currObject) {
-		for (int i = 0; i < currObject.getSize(); i++) {
-			for (int j = 0; j < currObject.getSize(); j++) {
+		for (int i = 0; i < currObject.getSize().getX(); i++) {
+			for (int j = 0; j < currObject.getSize().getY(); j++) {
 				cells[i + finalRow][j + finalCol].removeAssignment(currObject);
 			}
 		}
