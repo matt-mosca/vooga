@@ -4,9 +4,12 @@ import engine.behavior.collision.CollisionHandler;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementHandler;
 import engine.behavior.movement.TrackingPoint;
+import javafx.scene.image.ImageView;
 
 /**
  * Represents game objects in the backend. Responsible for controlling the object's update behavior.
+ *
+ * TODO - documentation
  *
  * @author Ben Schwennesen
  */
@@ -101,6 +104,9 @@ public class Sprite {
 		return movementHandler.getCurrentY();
 	}
 
+	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
+		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
+	}
 
 	public void setX(double newX) {
 		movementHandler.setX(newX);
