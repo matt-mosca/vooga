@@ -10,13 +10,10 @@ import engine.behavior.movement.StraightLineMovementStrategy;
  */
 public class StoppingBlockingStrategy extends BlockingStrategy {
 	
-	public StoppingBlockingStrategy(StraightLineMovementStrategy movementStrat) {
-		super(movementStrat);
-		// TODO Auto-generated constructor stub
+	public StoppingBlockingStrategy() {
 	}
 
 	public void handleBlock() {
-		movementStrat.stop();
 	}
 
 }

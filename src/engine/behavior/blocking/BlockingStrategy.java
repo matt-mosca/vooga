@@ -8,10 +8,8 @@ import engine.behavior.movement.StraightLineMovementStrategy;
  *
  */
 public abstract class BlockingStrategy implements HandleBlocking{
-	protected StraightLineMovementStrategy movementStrat;
 	
-	public BlockingStrategy(StraightLineMovementStrategy movementStrat) {
-		this.movementStrat = movementStrat;
+	public BlockingStrategy() {
 	}
 	
 	public abstract void handleBlock();
