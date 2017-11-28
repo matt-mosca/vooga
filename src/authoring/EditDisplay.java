@@ -113,7 +113,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myThemeChanger);
 		myGameChooser = new AttackDefenseToggle(this);
 		rootAdd(myGameChooser);
-		myMenuBar = new MainMenuBar();
+		myMenuBar = new MainMenuBar(controller);
 		rootAdd(myMenuBar);
 	}
 	
