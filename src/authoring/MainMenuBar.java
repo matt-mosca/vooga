@@ -1,9 +1,12 @@
 package authoring;
 
+import java.util.Optional;
+
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import splashScreen.ScreenDisplay;
 
 public class MainMenuBar extends MenuBar{
@@ -34,13 +37,36 @@ public class MainMenuBar extends MenuBar{
 		MenuItem exportMenuItem = new MenuItem("Export");
 		MenuItem renameMenuItem = new MenuItem("Rename");
 		
-		saveAsMenuItem.setOnAction(ActionEvent -> myController.saveGameState(launchInput(SAVE)));
-		exportMenuItem.setOnAction(ActionEvent -> myController.exportGame());
-		renameMenuItem.setOnAction(ActionEvent -> myController.setGameName(launchInput(RENAME)));
+		saveAsMenuItem.setOnAction(ActionEvent -> saveGame());
+		exportMenuItem.setOnAction(ActionEvent -> exportGame());
+		renameMenuItem.setOnAction(ActionEvent -> renameGame());
 		file.getItems().addAll(saveAsMenuItem, exportMenuItem, renameMenuItem);
 	}
 	
-	private String launchInput(String prompt) {
-		return null;
+	private Optional<String> launchInput(String prompt) {
+		TextInputDialog input = new TextInputDialog();
+		input.setContentText(prompt);
+		input.setGraphic(null);
+		input.setTitle(null);
+		input.setHeaderText(null);
+		return input.showAndWait();
+	}
+	
+	private void saveGame() {
+		Optional<String> saveName = launchInput(SAVE);
+		if(saveName.isPresent()) {
+			myController.saveGameState(saveName.get());
+		}
+	}
+	
+	private void exportGame() {
+		myController.exportGame();
+	}
+	
+	private void renameGame() {
+		Optional<String> newName = launchInput(RENAME);
+		if(newName.isPresent()) {
+			myController.setGameName(newName.get());
+		}
 	}
 }
