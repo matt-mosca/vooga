@@ -218,6 +218,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	private void yesButtonPressed(SpriteImage imageView) {
+		ImageView imageClne
 		imageView.setName(enterName.getText());
 		
 		myRightToolBar.imageSelected(imageView);
