@@ -5,6 +5,7 @@ import java.util.List;
 import interfaces.ClickableInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import sprites.BackgroundObject;

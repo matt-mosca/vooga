@@ -9,6 +9,7 @@ import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -17,8 +18,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import main.Main;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
@@ -43,6 +47,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Button noButton;
 	private Label optionLabel;
 	private TextField enterName;
+	private ReturnButton myReturnButton;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -50,6 +55,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		super(width, height);
 		super(width, height, Color.BLACK);
 //		super(width, height, Color.GRAY);
+		myReturnButton = new ReturnButton(this);
+		rootAdd(myReturnButton);
 		setStandardTheme();
 		addItems();
 		createGridToggle();
@@ -263,5 +270,16 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public String[] getInfo() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void returnButtonPressed() {
+		VBox newProject = new VBox();
+		Scene newScene = new Scene(newProject, 400, 400);
+		Stage myStage = new Stage();
+		myStage.setScene(newScene);
+		myStage.show();
+		Main restart = new Main();
+		restart.start(myStage);
 	}
 }

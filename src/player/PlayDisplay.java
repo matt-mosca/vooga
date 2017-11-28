@@ -43,7 +43,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlacementGrid myMainGrid;
 	private HealthBar myHealthBar;
 	private DecreaseHealthButton myDecreaseHealthButton;
-	private HBox myGameArea;
+	private PlayArea myPlayArea;
 	private PlayController myController;
 	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
@@ -88,13 +88,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void createTestGameArea() {
-		myGameArea = new HBox();
-		myGameArea.setLayoutX(300);
-		myGameArea.setLayoutY(50);
-		myGameArea.setPrefHeight(400);
-		myGameArea.setPrefWidth(400);
-		myGameArea.setStyle("-fx-background-color:white");
-		rootAdd(myGameArea);
+		myPlayArea = new PlayArea(this);
+		rootAdd(myPlayArea);
 	}
 	
 	

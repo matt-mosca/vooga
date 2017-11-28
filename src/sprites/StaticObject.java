@@ -43,6 +43,7 @@ public class StaticObject extends ImageView {
 	}
 	
 	private void drag(MouseEvent e) {
+		//TODO maybe fix??
 		if(!locked) {
 			this.setX(e.getX() - realSize / 2);
 			this.setY(e.getY() - realSize / 2);
