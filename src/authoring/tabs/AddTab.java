@@ -27,14 +27,9 @@ public abstract class AddTab extends ScrollPane{
 		this.clickable = clickable;
 		this.tabPane = tabs;
 		this.setFitToWidth(true);
-		
-		objectTypes = new ComboBox<>();
+
 		initializeOptions();
-		addImage = new Button();
-		addImage.setText(ADD_PROMPT);
-		addImage.setOnAction((ActionEvent e) -> addImage());
-		fileChooser= new FileChooser();
-		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+		initializeAddImage();
 		
 		items = new VBox();
 		items.setFillWidth(true);
@@ -42,13 +37,22 @@ public abstract class AddTab extends ScrollPane{
 		items.getChildren().add(addImage);
 		this.setContent(items);
 	}
-
+	
 	private void initializeOptions() {
+		objectTypes = new ComboBox<>();
 		objectTypes.setPromptText(PROMPT);
 		objectTypes.setMaxWidth(Integer.MAX_VALUE);
 		for(Tab tab:tabPane.getTabs()) {
 			objectTypes.getItems().add(tab.getText());
 		}
+	}
+
+	private void initializeAddImage() {
+		addImage = new Button();
+		addImage.setText(ADD_PROMPT);
+		addImage.setOnAction((ActionEvent e) -> addImage());
+		fileChooser= new FileChooser();
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 	}
 	
 	private void addImage() {

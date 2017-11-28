@@ -1,11 +1,12 @@
 package authoring;
 
 import authoring.customize.AttackDefenseToggle;
-import authoring.customize.BackgroundColorChanger;
+import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
+import engine.authoring_engine.AuthoringController;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
@@ -25,13 +26,15 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private static final double GRID_X_LOCATION = 620;
 	private static final double GRID_Y_LOCATION = 20;
+	private AuthoringController controller;
 	private LeftToolBar myLeftToolBar;
 	private GameArea myGameArea;
 	private ScrollableArea myGameEnvironment;
 	private RightToolBar myRightToolBar;
+	private MainMenuBar myMenuBar;
 	private ToggleButton gridToggle;
 	private ToggleButton movementToggle;
-	private BackgroundColorChanger myColorChanger;
+	private ColorChanger myColorChanger;
 	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
@@ -96,19 +99,22 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	private void addItems() {
-		myLeftToolBar = new LeftToolBar(this);
+		controller = new AuthoringController();
+		myLeftToolBar = new LeftToolBar(this, controller);
 		rootAdd(myLeftToolBar);
 		myGameArea = new GameArea(this);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
-		myRightToolBar = new RightToolBar(this);
+		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
-		myColorChanger = new BackgroundColorChanger(this);
+		myColorChanger = new ColorChanger(this);
 		rootAdd(myColorChanger);
 		myThemeChanger = new ThemeChanger(this);
 		rootAdd(myThemeChanger);
 		myGameChooser = new AttackDefenseToggle(this);
 		rootAdd(myGameChooser);
+		myMenuBar = new MainMenuBar(controller, this);
+		rootAdd(myMenuBar);
 	}
 	
 	@Override 
