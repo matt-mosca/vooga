@@ -8,7 +8,9 @@ import util.GameConditionsReader;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Controls the model for a game being played. Allows the view to modify and
@@ -18,10 +20,6 @@ import java.util.Map;
  * @author Ben Schwennesen
  */
 public class PlayController extends AbstractGameController implements PlayModelController {
-
-	public static final int DEFAULT_MAX_LEVELS = 1;
-	public static final String VICTORY = "victory";
-	public static final String DEFEAT = "defeat";
 
 	// The conditions don't take any arguments, at least for now
 	private final Class[] CONDITION_METHODS_PARAMETER_CLASSES = new Class[] {};
@@ -106,17 +104,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return isWon;
 	}
 
-	// TODO - IDs instead of returning sprite ?
 	@Override
-	public Sprite placeElement(String elementName, double x, double y) {
-		return elementManager.placeElement(elementName, x, y);
-	}
-
-	// TODO - IDs instead of returning sprite ?
-	@Override
-	public Collection<Sprite> getLevelSprites(int level) throws IllegalArgumentException {
+	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
 		assertValidLevel(level);
-		return getLevelSprites().get(level);
+		// Get live elements
+		Collection<Sprite> levelSprites = elementManager.getCurrentElements();
+		return levelSprites.stream().mapToInt(sprite -> getIdFromSprite(sprite)).boxed().collect(Collectors.toSet());
 	}
 
 	@Override
@@ -150,7 +143,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private boolean dispatchBooleanMethod(Method chosenBooleanMethod) {
 		try {
-			return (boolean) chosenBooleanMethod.invoke(this, new Object[] { });
+			return (boolean) chosenBooleanMethod.invoke(this, new Object[] {});
 		} catch (ReflectiveOperationException e) {
 			return false;
 		}
@@ -176,16 +169,26 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private void setVictoryCondition(String conditionFunctionIdentifier) {
-		victoryConditionMethod = getMethodForCondition(conditionFunctionIdentifier);
+		victoryConditionMethod = getMethodForVictoryCondition(conditionFunctionIdentifier);
 	}
 
 	private void setDefeatCondition(String conditionFunctionIdentifier) {
-		defeatConditionMethod = getMethodForCondition(conditionFunctionIdentifier);
+		defeatConditionMethod = getMethodForDefeatCondition(conditionFunctionIdentifier);
 	}
 
-	private Method getMethodForCondition(String conditionFunctionIdentifier) throws IllegalArgumentException {
-		String methodName = conditionsReader.getMethodNameForCondition(conditionFunctionIdentifier);
-		System.out.println("Method name: " + methodName);
+	private Method getMethodForVictoryCondition(String conditionFunctionIdentifier) throws IllegalArgumentException {
+		String methodName = conditionsReader.getMethodNameForVictoryCondition(conditionFunctionIdentifier);
+		System.out.println("Victory Method name: " + methodName);
+		return getMethodFromMethodName(methodName);
+	}
+
+	private Method getMethodForDefeatCondition(String conditionFunctionIdentifier) throws IllegalArgumentException {
+		String methodName = conditionsReader.getMethodNameForDefeatCondition(conditionFunctionIdentifier);
+		System.out.println("Defeat Method name: " + methodName);
+		return getMethodFromMethodName(methodName);
+	}
+
+	private Method getMethodFromMethodName(String methodName) throws IllegalArgumentException {
 		try {
 			return this.getClass().getDeclaredMethod(methodName, CONDITION_METHODS_PARAMETER_CLASSES);
 		} catch (NoSuchMethodException e) {
@@ -208,17 +211,26 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		System.out.println("Checking if all allies are dead");
 		return elementManager.allAlliesDead();
 	}
-	
-	/* Testing of reflection
-	public static void main(String[] args) {
-		PlayController tester = new PlayController();
-		tester.setVictoryCondition("kill all enemies");
-		tester.setDefeatCondition("lose all allies");
-		boolean goodResult = tester.checkLevelClearanceCondition();
-		boolean badResult = tester.checkDefeatCondition();
-		System.out.println("Level cleared? " + Boolean.toString(goodResult));
-		System.out.println("Defeated? " + Boolean.toString(badResult));
+
+	private int getIdFromSprite(Sprite sprite) throws IllegalArgumentException {
+		Map<Integer, Sprite> spriteIdMap = getSpriteIdMap();
+		for (Integer id : spriteIdMap.keySet()) {
+			if (spriteIdMap.get(id) == sprite) {
+				return id;
+			}
+		}
+		throw new IllegalArgumentException();
 	}
-	*/
-	
+
+	/*
+	 * Testing of reflection public static void main(String[] args) { PlayController
+	 * tester = new PlayController();
+	 * tester.setVictoryCondition("kill all enemies");
+	 * tester.setDefeatCondition("lose all allies"); boolean goodResult =
+	 * tester.checkLevelClearanceCondition(); boolean badResult =
+	 * tester.checkDefeatCondition(); System.out.println("Level cleared? " +
+	 * Boolean.toString(goodResult)); System.out.println("Defeated? " +
+	 * Boolean.toString(badResult)); }
+	 */
+
 }

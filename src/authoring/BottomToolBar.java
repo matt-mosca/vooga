@@ -51,7 +51,7 @@ public class BottomToolBar extends ToolBar{
 	}
 	
 	private void createTab() {
-		Tab tab = tabMaker.buildTabWithoutContent("Level" + lvCount, tabPane);
+		Tab tab = tabMaker.buildTabWithoutContent("Level" + lvCount, null, tabPane);
 		
 		if (lvCount==1) {
 			tab.setClosable(false);	

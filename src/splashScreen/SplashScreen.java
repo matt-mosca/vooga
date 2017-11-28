@@ -39,6 +39,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background);
 		stage = currentStage;
+		stage.setResizable(false);
 		basicSetup();
 		myNewGameButton = new NewGameButton(this);
 		rootAdd(myNewGameButton);

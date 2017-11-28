@@ -9,6 +9,7 @@ import java.awt.geom.Point2D;
  * locations, including the handling of situations where the element is blocked by an obstacle.
  *
  * @author Ben Schwennesen
+ * @deprecated
  */
 public class MovementHandler {
 

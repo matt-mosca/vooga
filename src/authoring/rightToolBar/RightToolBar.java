@@ -6,6 +6,13 @@ import java.util.List;
 
 import authoring.AuthorInterface;
 import authoring.ObjectProperties;
+import authoring.tabs.AddSpriteImageTab;
+import authoring.tabs.AddTab;
+import authoring.tabs.NewProjectileTab;
+import authoring.tabs.NewSpriteTab;
+import authoring.tabs.NewTowerTab;
+import authoring.tabs.NewTroopTab;
+import engine.authoring_engine.AuthoringController;
 import factory.ButtonFactory;
 import factory.TabFactory;
 import interfaces.CreationInterface;
@@ -41,6 +48,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
 	private TabPane bottomTabPane;
+	private AddTab addTab;
 	private NewSpriteTab newTower;
 	private NewSpriteTab newTroop;
 	private NewSpriteTab newProjectile;
@@ -53,11 +61,15 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private Label projectileLabel;
 	private HBox projectileSlot;
 	private Button deleteButton;
+	private CreationInterface created;
+	private AuthoringController myController;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
 
 	
-	public RightToolBar(CreationInterface created) {
+	public RightToolBar(CreationInterface created, AuthoringController controller) {
+		this.created = created;
+		this.myController = controller;
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 	    tabMaker = new TabFactory();
@@ -72,7 +84,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    inventoryTower = new NewInventoryTower(this);
 	    inventoryTroop = new NewInventoryTroop(this);
 	    inventoryProjectile = new NewInventoryProjectile(this);
-	    myPropertiesBox = new PropertiesBox(created);
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
@@ -86,12 +97,15 @@ public class RightToolBar extends VBox implements PropertiesInterface {
     }
 		
 	private void createAndAddTabs() {
-		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", topTabPane));
-		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Troop", topTabPane));
-		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Projectile", topTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Towers", bottomTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Troops", bottomTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Projectile", bottomTabPane));
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", "TowerImage", topTabPane));
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Troop", "TroopImage", topTabPane));
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Projectile", "ProjectileImage", topTabPane));
+		addTab = new AddSpriteImageTab(null , topTabPane);
+		topTabPane.getTabs().add(tabMaker.buildTab("Add Image", null, addTab, topTabPane));
+		
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Towers", "TowerImage", bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Troops", "TroopImage", bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Projectile", "ProjectileImage", bottomTabPane));
 		makeTabsUnclosable();
 	}
 	
@@ -112,15 +126,15 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {		
-		if (imageView instanceof TowerImage) newPaneWithProjectileSlot(imageView);
+		if (imageView instanceof TowerImage) newPaneWithProjectileSlot((TowerImage) imageView);
 		if (imageView instanceof TroopImage) newPane(imageView);
 	}
 	
-	private void newPaneWithProjectileSlot(SpriteImage imageView) {
+	private void newPaneWithProjectileSlot(TowerImage imageView) {
 		/**
 		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
 		 */
-		
+		myPropertiesBox = new PropertiesBox(created, imageView);
 		projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
 		projectileSlot = new HBox();
@@ -128,7 +142,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		projectileSlot.setPrefHeight(50);
 		projectileSlot.setLayoutY(170);
 		projectileSlot.setStyle("-fx-background-color: white");
-		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow());
+		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow((TowerImage) imageView));
 		propertiesPane = new Pane();
 		deleteButton = new Button("Back");
 		deleteButton.setLayoutX(370);
@@ -140,6 +154,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		HBox imageBackground = new HBox();
 		imageBackground.setStyle("-fx-background-color: white");
 		imageBackground.getChildren().add(imageView.clone());
+		if (imageView.hasProjectile()) projectileSlot.getChildren().add(imageView.getProjectileImage());
 		propertiesPane.getChildren().add(imageBackground);
 		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(myPropertiesBox);
@@ -151,7 +166,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 
 	}
 	
-	private void newProjectilesWindow() {
+	private void newProjectilesWindow(TowerImage myTowerImage) {
 		ScrollPane projectilesWindow = new ScrollPane();
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
 		if (inventoryProjectile.getImages().isEmpty()) {
@@ -166,19 +181,22 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         projectilesWindow.setContent(projectilesView);
         projectilesWindow.setLayoutX(100);
         projectilesWindow.setPrefHeight(250);
-        projectilesView.setOnMouseClicked(e->projectileSelected(
+        projectilesView.setOnMouseClicked(e->projectileSelected(myTowerImage,
         		projectilesView.getSelectionModel().getSelectedItem().clone()));
         propertiesPane.getChildren().remove(myPropertiesBox);
         propertiesPane.getChildren().add(projectilesWindow);
 		}
 	}
 	
-	private void projectileSelected(SpriteImage imageClone) {
+	private void projectileSelected(TowerImage myTowerImage, SpriteImage imageClone) {
 		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
 		projectileSlot.getChildren().add(imageClone);
+		myTowerImage.addProjectileImage(imageClone);
+		
 	}
 
 	private void newPane(SpriteImage imageView) {
+		myPropertiesBox = new PropertiesBox(created, imageView);
 		propertiesPane = new Pane();
 		Button deleteButton = new Button("Back");
 		deleteButton.setLayoutX(300);

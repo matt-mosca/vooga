@@ -31,7 +31,6 @@ public class ElementManager {
 	 */
 	public ElementManager() {
 		spriteFactory = new SpriteFactory();
-		gameElements = new ArrayList<>();
 	}
 
 	// Guaranteed to return only active elements (i.e. not dead ones)
@@ -41,8 +40,8 @@ public class ElementManager {
 		return gameElements;
 	}
 
-	void setCurrentElements(Collection<Sprite> newElements) {
-		gameElements = new ArrayList<>(newElements);
+	void setCurrentElements(List<Sprite> newElements) {
+		gameElements = newElements;
 	}
 	
 	/*
@@ -53,6 +52,9 @@ public class ElementManager {
 	Sprite placeElement(String elementName, double x, double y) {
 		// Use SpriteFactory to construct Sprite from elementName with these
 		// coordinates
+		
+		// Check if resources are sufficient first
+		
 		Sprite generatedSprite = spriteFactory.generateSprite(elementName);
 		generatedSprite.setX(x);
 		generatedSprite.setY(y);
@@ -64,7 +66,9 @@ public class ElementManager {
 		for (int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
 			Sprite element = gameElements.get(elementIndex);
 			element.move();
-			element.attack();
+			if (element.shouldFire()) {
+				spriteFactory.generateSprite(element.fire());
+			}
 			processAllCollisionsForElement(elementIndex, element);
 		}
 		gameElements.removeIf(element -> !element.isAlive());

@@ -37,3 +37,12 @@
 	-fx-stroke-width: 1;
 	-fx-font-family: "Times New Roman"
 }
+
+.menu .label{
+	-fx-text-fill: rgb(23,38,72);
+	-fx-font-size: 12 pt;
+}
+
+.menu{
+	-fx-padding: -1 5 1 5;
+}
