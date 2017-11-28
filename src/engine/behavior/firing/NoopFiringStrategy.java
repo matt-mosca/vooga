@@ -1,11 +1,11 @@
 package engine.behavior.firing;
 
-public class NoopFiringStrategy implements FiringStrategy {
+import engine.behavior.ParameterName;
 
-	// Just don't fire - applicable to sprites which don't / can't fire, like
-	// projectiles, mines, obstacles, etc.
-	@Override
-	public void fire() {
+public class NoopFiringStrategy extends GenericFiringStrategy {
+
+	public NoopFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate) {
+		super(projectileTemplate);
 	}
 
 	@Override
