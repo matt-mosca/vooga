@@ -13,11 +13,11 @@ import java.awt.geom.Point2D;
 public class MovementHandler {
 
     private MovementStrategy movementStrategy;
-    private BlockingStrategy blockingStrategy;
+    //private BlockingStrategy blockingStrategy;
 
-    public MovementHandler(MovementStrategy movementStrategy, BlockingStrategy blockingStrategy) {
+    public MovementHandler(MovementStrategy movementStrategy){//}, BlockingStrategy blockingStrategy) {
         this.movementStrategy = movementStrategy;
-        this.blockingStrategy = blockingStrategy;
+        //this.blockingStrategy = blockingStrategy;
     }
 
     public void move() {
@@ -25,7 +25,7 @@ public class MovementHandler {
     }
 
     public void handleBlock() {
-        blockingStrategy.handleBlock();
+        //blockingStrategy.handleBlock();
     }
 
     public TrackingPoint getPositionForTracking() {
