@@ -24,6 +24,7 @@ public class SpriteOptionsGetter {
 
     private final String PROPERTIES_EXTENSION = ".properties";
     private final String PARAMETER_TRANSLATIONS_FILE_NAME = "ParameterTranslations" + PROPERTIES_EXTENSION;
+    private final String SPRITE_BASE_PARAMETER_NAME = Sprite.class.getName();
     private Properties parameterTranslationProperties;
 
     private Map<String, List<String>> spriteParameterSubclassOptions = new HashMap<>();
@@ -31,7 +32,7 @@ public class SpriteOptionsGetter {
     private Map<String, String> classToDescription = new HashMap<>();
     private Map<String, String> descriptionToClass = new HashMap<>();
     //           spritep    param   descrip
-    private Map<String, List<String>> spriteMemberParametersMap = new HashMap<>();
+    private Map<String, Map<String, Class>> spriteMemberParametersMap = new HashMap<>();
     private Map<String, String> parameterToDescription = new HashMap<>();
     private Map<String, String> descriptionToParameter = new HashMap<>();
 
@@ -41,7 +42,6 @@ public class SpriteOptionsGetter {
 
     private void loadTranslations() {
         initializeParameterTranslations();
-        Map<String, List<String>> spriteParameterSubclassOptions = new HashMap<>();
         for (Parameter spriteParameter : Sprite.class.getConstructors()[0].getParameters()) {
             try {
                 loadTranslationsForSpriteParameter(spriteParameter);
@@ -85,8 +85,8 @@ public class SpriteOptionsGetter {
                 } else {
                     referenceClassDescription = subclassDescription;
                 }
-                List<String> parameterDescriptions = spriteMemberParametersMap.getOrDefault
-                        (subclassOptionName, new ArrayList<>());
+                Map<String, Class> parameterDescriptions = spriteMemberParametersMap.getOrDefault
+                        (subclassOptionName, new HashMap<>());
                 loadTranslationsForSpriteParameter(subclassOptionName, parameterDescriptions);
                 spriteMemberParametersMap.put(subclassOptionName, parameterDescriptions);
             }
@@ -95,6 +95,13 @@ public class SpriteOptionsGetter {
         } else {
             // DIDNT FIND PROP FILE --> recur on parameter's parameters
             Class parameterClass = spriteParameter.getType();
+            Map<String, Class> baseSpriteParameterMap = spriteMemberParametersMap.getOrDefault
+                    (SPRITE_BASE_PARAMETER_NAME, new HashMap<>());
+            if (spriteParameter.getAnnotation(ParameterName.class) != null) {
+                String parameterName = spriteParameter.getAnnotation(ParameterName.class).value();
+                baseSpriteParameterMap.put(parameterName, spriteParameter.getType());
+                spriteMemberParametersMap.put(SPRITE_BASE_PARAMETER_NAME, baseSpriteParameterMap);
+            }
             if (parameterClass.getConstructors().length > 0) {
                 for (Parameter subparameter : parameterClass.getConstructors()[0].getParameters()){
                     loadTranslationsForSpriteParameter(subparameter);
@@ -104,8 +111,8 @@ public class SpriteOptionsGetter {
     }
 
     // TODO - refactor
-    private void loadTranslationsForSpriteParameter(String spriteParameterSubclassName, List<String>
-            parameterDescriptions) throws ReflectiveOperationException {
+    private void loadTranslationsForSpriteParameter(String spriteParameterSubclassName, Map<String, Class>
+            parameterDescriptionsToClasses) throws ReflectiveOperationException {
         Class spriteParameterSubclass = Class.forName(spriteParameterSubclassName);
         Constructor[] subclassConstructors = spriteParameterSubclass.getConstructors();
         if (subclassConstructors.length > 0) {
@@ -118,11 +125,11 @@ public class SpriteOptionsGetter {
                     parameterToDescription.put(parameterName, parameterDescription);
                     descriptionToParameter.put(parameterDescription, parameterName);
                     // TODO - eliminate above?
-                    parameterDescriptions.add(parameterDescription);
+                    parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
                 } else {
                     parameterToDescription.put(parameterName, parameterName);
                     descriptionToParameter.put(parameterName, parameterName);
-                    parameterDescriptions.add(parameterName);
+                    parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
                 }
             }
         }
@@ -150,25 +157,25 @@ public class SpriteOptionsGetter {
         return spriteParameterSubclassOptions;
     }
 
-    public List<String> getAuxiliaryParametersFromSubclassChoices(Map<String, String> subclassChoices)
+    public Map<String, Class> getAuxiliaryParametersFromSubclassChoices(Map<String, String> subclassChoices)
             throws IllegalArgumentException {
-        List<String> auxiliaryParameters = new ArrayList<>();
+        Map<String, Class> auxiliaryParameters = new HashMap<>();
         for (String subclassChoiceDescription : subclassChoices.values()) {
-            System.out.println(subclassChoiceDescription);
             String subclassChoiceName = descriptionToClass.get(subclassChoiceDescription);
             if (subclassChoiceName == null || !spriteMemberParametersMap.containsKey(subclassChoiceName)) {
                 throw new IllegalArgumentException();
             }
-            auxiliaryParameters.addAll(spriteMemberParametersMap.get(subclassChoiceName));
+            auxiliaryParameters.putAll(spriteMemberParametersMap.get(subclassChoiceName));
         }
+        auxiliaryParameters.putAll(spriteMemberParametersMap.getOrDefault(SPRITE_BASE_PARAMETER_NAME, new HashMap<>()));
         return auxiliaryParameters;
     }
 
-    public String translateDescriptionToClass(String description) {
+    private String translateDescriptionToClass(String description) {
         return descriptionToClass.get(description);
     }
 
-    public String translateClassToDescription(String className) {
+    private String translateClassToDescription(String className) {
         return classToDescription.get(className);
     }
 
@@ -176,28 +183,15 @@ public class SpriteOptionsGetter {
         return parameterToDescription.get(parameterName);
     }
 
-    public String getChosenSubclassName(Class parameterClass, Map<String, String> properties) throws IllegalArgumentException {
+    public String getChosenSubclassName(Class parameterClass, Map<String, String> properties)
+            throws IllegalArgumentException {
         String parameterClassDescription = translateClassToDescription(parameterClass.getName());
         String chosenSubclassDescription;
-        if (parameterToDescription == null ||
+        if (parameterClassDescription == null ||
                 (chosenSubclassDescription = properties.get(parameterClassDescription)) == null) {
             throw new IllegalArgumentException();
             // TODO - custom exception
         }
         return translateDescriptionToClass(chosenSubclassDescription);
-    }
-
-    public static void main(String[] args) {
-        SpriteOptionsGetter spriteTranslator = new SpriteOptionsGetter();
-        System.out.println(spriteTranslator.classToDescription);
-        System.out.println(spriteTranslator.parameterToDescription);
-        System.out.println(spriteTranslator.spriteParameterSubclassOptions);
-        System.out.println(spriteTranslator.spriteMemberParametersMap);
-        Map<String, String> choices = new HashMap<>();
-        choices.put("engine.behavior.movement.MovementStrategy", "Move in a straight line to a target location");
-        choices.put("engine.behavior.collision.CollisionVisitor", "Invulnerable to collision damage");
-        choices.put("engine.behavior.firing.FiringStrategy", "Do not fire projectiles");
-        choices.put("engine.behavior.collision.CollisionVisitable", "Deal damage to colliding objects");
-        System.out.println(spriteTranslator.getAuxiliaryParametersFromSubclassChoices(choices));
     }
 }
