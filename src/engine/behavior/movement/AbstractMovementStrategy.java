@@ -23,7 +23,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	private DoubleProperty xCoordinate;
 	private DoubleProperty yCoordinate;
 
-	public AbstractMovementStrategy(@ParameterName("startX") double startX, @ParameterName("startY") double startY) {
+	public AbstractMovementStrategy() {
 		xCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
 		yCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
 		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);

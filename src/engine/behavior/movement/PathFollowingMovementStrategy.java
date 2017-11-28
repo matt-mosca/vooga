@@ -11,16 +11,15 @@ import javafx.geometry.Point2D;
  * @author mscruggs
  *
  */
-public abstract class PathFollowingMovementStrategy extends StraightLineMovementStrategy{
+public abstract class PathFollowingMovementStrategy extends TargetedMovementStrategy {
 	
 	private ArrayList<Point2D> coordinates;
 	private int currentCoordinateIndex = 0;
 	
-	public PathFollowingMovementStrategy(@ParameterName("startX") double startX,
-										 @ParameterName("startY") double startY,
-										 @ParameterName("velocity") double velocity,
+	public PathFollowingMovementStrategy(@ParameterName("velocity") double velocity,
 										 @ParameterName("coordinates") ArrayList<Point2D> coordinates) {
-		super(startX, startY,velocity);
+
+		super(coordinates.get(0).getX(), coordinates.get(0).getY(), velocity);
 		this.coordinates = coordinates;
 	}
 
@@ -35,10 +34,11 @@ public abstract class PathFollowingMovementStrategy extends StraightLineMovement
 		if(true) {
 			currentCoordinateIndex++;
 			if(currentCoordinateIndex>=coordinates.size()) {
-				currentCoordinateIndex = 0;
+				//currentCoordinateIndex = 0;
+				stop();
 			}
 			Point2D currentTarget = coordinates.get(currentCoordinateIndex);
-			this.setEndCoord(currentTarget.getX(), currentTarget.getY());
+			this.setTargetCoordinates(currentTarget.getX(), currentTarget.getY());
 		}
 	}
 }
