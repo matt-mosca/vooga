@@ -1,19 +1,14 @@
 package sprites;
 
-import engine.behavior.ParameterName;
-import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.scene.image.ImageView;
 import util.SpriteOptionsGetter;
 
-import javax.swing.text.html.ImageView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -51,25 +46,33 @@ public class SpriteFactory {
     /**
      * Generate a sprite from an existing template which specifies its properties.
      *
-     * @param spriteTemplateName - the name of the sprite template
+     * @param spriteTemplateName the name of the sprite template
      * @return a sprite object with properties set to those specified in the template
      */
     public Sprite generateSprite(String spriteTemplateName) {
         Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
-		return generateSprite(properties);
+        return null;
+        //TODO -- remove this method (always need coordinates and ImageView)
+		//return generateSprite(properties);
     }
 
 	/**
 	 * Generate a sprite from an existing template which specifies its properties.
 	 *
-	 * @param spriteTemplateName - the name of the sprite template
+	 * @param spriteTemplateName the name of the sprite template
+	 * @param startCoordinates
+	 * @param graphicalRepresentation
+	 * @param auxiliaryObjects map of optional objects needed for certain types of elements
 	 * @return a sprite object with properties set to those specified in the template
 	 */
-	public Sprite generateSprite(String spriteTemplateName,
-								 @ParameterName("startX") double startX, @ParameterName("startY") double startY,
-								 @ParameterName("graphicalRepresentation") ImageView graphicalRepresentation) {
+	public Sprite generateSprite(String spriteTemplateName, Point2D startCoordinates,
+								 ImageView graphicalRepresentation, Map<String, ?> auxiliaryObjects) {
 		Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
-		return generateSprite(properties);
+		Sprite sprite = generateSprite(properties, auxiliaryObjects);
+		sprite.setX(startCoordinates.getX());
+		sprite.setY(startCoordinates.getY());
+		sprite.setGraphicalRepresentation(graphicalRepresentation);
+		return sprite;
 	}
 
 	/**
@@ -77,16 +80,18 @@ public class SpriteFactory {
 	 * @param spriteProperties
 	 * @return
 	 */
-	public Sprite generateSprite(Map<String, String> spriteProperties) {
+	public Sprite generateSprite(Map<String, String> spriteProperties, Map<String, ?> auxiliaryObjects) {
 		Parameter[] spriteConstructionParameters = getSpriteParameters();
 		// TODO - check that params are returned in the right order
 		Object[] spriteConstructionArguments = new Object[spriteConstructionParameters.length];
 		for (int i = 0; i < spriteConstructionArguments.length; i++) {
 			Parameter parameter = spriteConstructionParameters[i];
 			try {
-				spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(), spriteProperties);
+				spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(),
+                        spriteProperties, auxiliaryObjects);
 			} catch (ReflectiveOperationException reflectionException) {
 				// TODO - throw custom exception or fallback to a default
+                reflectionException.printStackTrace();
 			}
 		}
 		try {
@@ -101,42 +106,69 @@ public class SpriteFactory {
         return Sprite.class.getConstructors()[0].getParameters();
     }
 
-    private Object generateSpriteParameter(Class parameterClass, Map<String, String> properties) throws
-            ReflectiveOperationException {
-        String parmeterClassDescription = spriteOptionsGetter.translateClassToDescription(parameterClass.getName());
-        String chosenSubclassDescription = properties.get(parmeterClassDescription);
-        String chosenSubclassName = spriteOptionsGetter.translateDescriptionToClass(chosenSubclassDescription);
-        // TODO - more elegant (this is due to imageUrl) -- encapsulate ImageView in CollisionHandler? 
-        if (chosenSubclassName == null) {
-            return "";
-        }
-        Class chosenParameterSubclass = Class.forName(chosenSubclassName);
-        List<String> constructorParameterNames =
-                spriteOptionsGetter.getConstructorParameterNames(chosenParameterSubclass);
-        Object[] constructorParameters = new Object[constructorParameterNames.size()];
-        for (int i = 0; i < constructorParameters.length; i++) {
-            String parameterDescription = spriteOptionsGetter.translateParameterToDescription
-                    (constructorParameterNames.get(i));
-            String propertyValueAsString = properties.getOrDefault(parameterDescription, "0");
-            // TODO - change default ^
-			// TODO - more elegant
-            try {
-                constructorParameters[i] = Integer.parseInt(propertyValueAsString);
-            } catch (NumberFormatException nonIntegerProperty) {
-            	try {
-					constructorParameters[i] = Double.parseDouble(propertyValueAsString);
-				} catch (NumberFormatException nonDoubleProperty) {
-					constructorParameters[i] = propertyValueAsString;
-				}
+    private Object generateSpriteParameter(Class parameterClass, Map<String, String> properties,
+										   Map<String, ?> auxiliaryObjects) throws ReflectiveOperationException {
+	    try {
+            String chosenSubclassName = spriteOptionsGetter.getChosenSubclassName(parameterClass, properties);
+            System.out.println(chosenSubclassName);
+            Class chosenParameterSubclass = Class.forName(chosenSubclassName);
+            List<String> constructorParameterIdentifiers =
+                    spriteOptionsGetter.getConstructorParameterIdentifiers(chosenParameterSubclass);
+            Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
+                    constructorParameterIdentifiers);
+            return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
+        } catch (IllegalArgumentException illegalArgumentException) {
+	        // Case where constructor has the main objects encapsulated (i.e., MovementHandler and CollisionHandler)
+            System.out.println(parameterClass.getTypeName());
+	        Parameter[] parameters = parameterClass.getConstructors()[0].getParameters();
+	        Object[] constructorParameters = new Object[parameters.length];
+	        for (int i = 0; i < parameters.length; i++) {
+	            System.out.println("\t"+parameters[i].getType().getTypeName());
+                constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties, auxiliaryObjects);
             }
+            System.out.println(parameterClass.getTypeName() + " " +
+                    Arrays.stream(parameterClass.getConstructors()[0].getParameters())
+                            .map(Parameter::getType).collect(Collectors.toList())
+                    + " " + Arrays.asList(constructorParameters));
+            return parameterClass.getConstructors()[0].newInstance(constructorParameters);
         }
-        System.out.println(Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameters()));
-        System.out.println(Arrays.stream(constructorParameters).map(cp -> cp.getClass().getName()).collect(Collectors
-				.toList()));
-        return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
     }
 
-    /**
+    private Object[] getParameterConstructorArguments(Map<String, String> properties, Map<String, ?> auxiliaryObjects,
+                                                      List<String> constructorParameterIdentifiers)
+            throws ReflectiveOperationException {
+        Object[] constructorParameters = new Object[constructorParameterIdentifiers.size()];
+        for (int i = 0; i < constructorParameters.length; i++) {
+        	String parameterIdentifier = constructorParameterIdentifiers.get(i);
+            String parameterDescription = spriteOptionsGetter.translateParameterToDescription(parameterIdentifier);
+            if (!properties.containsKey(parameterDescription)) {
+                constructorParameters[i] = auxiliaryObjects.get(parameterIdentifier);
+                // TODO - throw exception if aux objects doesn't contain key
+			} else {
+				String propertyValueAsString = properties.get(parameterDescription);
+				constructorParameters[i] = setConstructorParameter(propertyValueAsString);
+			}
+		}
+        /*System.out.println(Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameters()));
+        System.out.println(Arrays.stream(constructorParameters).map(cp -> cp.getClass().getName()).collect(Collectors
+				.toList()));*/
+        return constructorParameters;
+    }
+
+    // TODO - make more elegant if possible
+	private Object setConstructorParameter(String propertyValueAsString) {
+		try {
+            return Integer.parseInt(propertyValueAsString);
+        } catch (NumberFormatException nonIntegerProperty) {
+            try {
+                return Double.parseDouble(propertyValueAsString);
+            } catch (NumberFormatException nonDoubleProperty) {
+                return propertyValueAsString;
+            }
+        }
+	}
+
+	/**
      * Obtain the base configuration options for sprites; specifically, obtain descriptive names for the subclass
      * options for the sprite's construction parameters.
      *
@@ -154,8 +186,6 @@ public class SpriteFactory {
     public List<String> getAuxiliaryElementProperties(Map<String, String> subclassChoices) {
         return spriteOptionsGetter.getAuxiliaryParametersFromSubclassChoices(subclassChoices);
     }
-
-
 
 	/**
 	 * Update an existing template by overwriting the specified properties to their

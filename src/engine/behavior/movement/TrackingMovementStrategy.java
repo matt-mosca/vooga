@@ -1,6 +1,7 @@
 package engine.behavior.movement;
 
 import engine.behavior.ParameterName;
+import javafx.beans.property.SimpleDoubleProperty;
 import sprites.Sprite;
 
 /**
@@ -11,21 +12,22 @@ import sprites.Sprite;
  * @author mscruggs
  *
  */
-public class TrackingMovementStrategy extends StraightLineMovementStrategy{
+public class TrackingMovementStrategy extends TargetedMovementStrategy {
 
-	private Sprite target;
+	// can't be set in constructor in order for reflexive creation of sprites to work
+	private TrackingPoint targetLocation;
 	
-	public TrackingMovementStrategy(@ParameterName("startX") double startX,
-									@ParameterName("startX") double startY,
-									@ParameterName("startX") double velocity,
-									@ParameterName("target") Sprite target) {
-		super(startX, startY, target.getX(), target.getY(),velocity);
-		this.target = target;
-		// TODO Auto-generated constructor stub
+	public TrackingMovementStrategy(@ParameterName("velocity") double velocity, TrackingPoint targetLocation) {
+		super(targetLocation.getCurrentX(), targetLocation.getCurrentY(), velocity);
+		this.targetLocation = targetLocation;
+	}
+
+	public void setTargetLocation(TrackingPoint targetLocation) {
+		this.targetLocation = targetLocation;
 	}
 	
 	public void move() {
-		this.setEndCoord(target.getX(),target.getY());
+		this.setTargetCoordinates(targetLocation.getCurrentX(), targetLocation.getCurrentY());
 		super.move();
 	}
 }
