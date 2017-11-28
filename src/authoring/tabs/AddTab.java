@@ -1,7 +1,6 @@
-package authoring.leftToolBar;
+package authoring.tabs;
 
 import java.io.File;
-import java.net.MalformedURLException;
 
 import interfaces.ClickableInterface;
 import javafx.event.ActionEvent;
@@ -10,23 +9,21 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import sprites.StaticObject;
 
-public class NewTab extends ScrollPane{
+public abstract class AddTab extends ScrollPane{
 	private final String PROMPT = "Choose Type";
 	private final String ADD_PROMPT = "Click to add image";
 	
-	private ClickableInterface clickable;
-	private ComboBox<String> objectTypes;
 	private Button addImage;
 	private FileChooser fileChooser;
 	private VBox items;
-	private TabPane tabPane;
+	protected ClickableInterface clickable;
+	protected ComboBox<String> objectTypes;
+	protected TabPane tabPane;
 	
-	public NewTab(ClickableInterface clickable, TabPane tabs) {
+	public AddTab(ClickableInterface clickable, TabPane tabs) {
 		this.clickable = clickable;
 		this.tabPane = tabs;
 		this.setFitToWidth(true);
@@ -60,11 +57,14 @@ public class NewTab extends ScrollPane{
 			return;
 		}else {
 			File file = fileChooser.showOpenDialog(this.getScene().getWindow());
-			String tabName = objectTypes.getSelectionModel().toString();
-			SimpleTab activeTab = (SimpleTab) tabPane.getTabs().get(objectTypes.getSelectionModel().getSelectedIndex()).getContent();
-			StaticObject object = new StaticObject(1, clickable, file.toURI().toString());
-			activeTab.addItem(object);
+			if(file != null) {
+				String tabName = tabPane.getTabs().get(objectTypes.getSelectionModel().getSelectedIndex()).getId();
+				createResource(file, tabName);
+			}
 		}
 	}
+
+	
+	protected abstract void createResource(File file, String tabName);
 
 }

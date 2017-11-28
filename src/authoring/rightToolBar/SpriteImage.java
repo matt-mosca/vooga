@@ -18,7 +18,12 @@ public abstract class SpriteImage extends ImageView {
 	
 	public void addImage(String imageName) {
 		myImageName = imageName;
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+		Image image;
+		try {
+			image = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+		}catch (NullPointerException e) {
+			image = new Image(imageName);
+		}
 		this.setImage(image);
 	}
 	

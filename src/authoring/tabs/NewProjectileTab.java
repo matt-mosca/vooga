@@ -1,10 +1,11 @@
-package authoring.rightToolBar;
+package authoring.tabs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import authoring.rightToolBar.ProjectileImage;
 import interfaces.CreationInterface;
 
 public class NewProjectileTab extends NewSpriteTab {
@@ -15,7 +16,6 @@ public class NewProjectileTab extends NewSpriteTab {
 		super(created);
 		projectileResources = ResourceBundle.getBundle("authoring/resources/NewProjectileImages");
 		addDefaultImages();
-		updateImages();
 	}
 	
 	@Override
