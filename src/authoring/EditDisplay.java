@@ -126,6 +126,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
 		Button decrementButton = new Button("-");
+		addNewButton.setLayoutY(20);
+		incrementButton.setLayoutY(20);
+		decrementButton.setLayoutY(20);
+
 		incrementButton.setLayoutX(50);
 		decrementButton.setLayoutX(85);
 		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
