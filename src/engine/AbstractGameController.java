@@ -1,7 +1,11 @@
 package engine;
 
 import engine.authoring_engine.AuthoringController;
+import engine.behavior.movement.TrackingPoint;
+import javafx.geometry.Point2D;
+import javafx.scene.image.ImageView;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 import util.SerializationUtils;
 
 import java.io.FileNotFoundException;
@@ -10,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Encapsulates the shared fields and behavior between authoring and playing
@@ -31,12 +36,16 @@ public abstract class AbstractGameController {
 	// deletion? i.e. when level 3 is deleted, level 4 should become level 3, level
 	// 5 should become level 4, etc.
 
-	// private Map<Integer, Map<String, String>> levelStatuses;
-	// private Map<Integer, List<Sprite>> levelSpritesCache = new HashMap<>();
 	private List<Map<String, String>> levelStatuses = new ArrayList<>();
 	private List<List<Sprite>> levelSpritesCache = new ArrayList<>();
 	private List<Map<String, String>> levelConditions = new ArrayList<>();
 	private List<String> levelDescriptions = new ArrayList<>();
+
+	// TODO - move these into own object? Or have them in the sprite factory?
+	private AtomicInteger spriteIdCounter;
+	private Map<Integer, Sprite> spriteIdMap;
+
+	private SpriteFactory spriteFactory;
 
 	// this should be from a properties file? or handled in some better way?
 	private final String DEFAULT_GAME_NAME = "untitled";
@@ -48,6 +57,9 @@ public abstract class AbstractGameController {
 		ioController = new IOController(serializationUtils);
 		initialize();
 		gameName = DEFAULT_GAME_NAME;
+		spriteIdCounter = new AtomicInteger();
+		spriteIdMap = new HashMap<>();
+		spriteFactory = new SpriteFactory();
 	}
 
 	/**
@@ -57,7 +69,8 @@ public abstract class AbstractGameController {
 	 *            the name to assign to the save file
 	 */
 	public void saveGameState(String saveName) {
-		// Note : saveName overrides previously set gameName if different - need to handle this?
+		// Note : saveName overrides previously set gameName if different - need to
+		// handle this?
 		// Serialize separately for every level
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (int level = 1; level < getLevelStatuses().size(); level++) {
@@ -88,10 +101,6 @@ public abstract class AbstractGameController {
 		gameName = saveName;
 	}
 
-	public List<List<Sprite>> getLevelSprites() {
-		return levelSpritesCache;
-	}
-
 	public String getGameName() {
 		return gameName;
 	}
@@ -107,6 +116,32 @@ public abstract class AbstractGameController {
 		} catch (FileNotFoundException e) {
 			return 0;
 		}
+	}
+
+	// TODO - Remove ImageView from params
+	public int placeElement(String elementTemplateName, Point2D startCoordinates, ImageView graphicalRepresentation) {
+		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates, graphicalRepresentation,
+				new HashMap<>());
+		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+	}
+
+	// TODO - Remove ImageView from params
+	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates,
+			ImageView graphicalRepresentation, int idOfSpriteToTrack) {
+		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
+		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
+		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
+		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates, graphicalRepresentation,
+				auxiliarySpriteConstructionObjects);
+		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+	}
+	
+	public ImageView getRepresentationFromSpriteId(int spriteId) {
+		return spriteIdMap.get(spriteId).getGraphicalRepresentation();
+	}
+	
+	protected List<List<Sprite>> getLevelSprites() {
+		return levelSpritesCache;
 	}
 
 	protected void cacheGeneratedSprite(Sprite sprite) {
@@ -154,6 +189,20 @@ public abstract class AbstractGameController {
 		loadGameStateSettingsForLevel(saveName, level, originalGame);
 		loadGameConditionsForLevel(saveName, level);
 		loadGameDescriptionForLevel(saveName, level);
+	}
+
+	protected SpriteFactory getSpriteFactory() {
+		return spriteFactory;
+	}
+
+	protected Map<Integer, Sprite> getSpriteIdMap() {
+		return spriteIdMap;
+	}
+
+	protected int cacheAndCreateIdentifier(String elementTemplateName, Sprite sprite) {
+		spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
+		cacheGeneratedSprite(sprite);
+		return spriteIdCounter.get();
 	}
 
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
@@ -204,7 +253,7 @@ public abstract class AbstractGameController {
 		setLevel(1);
 	}
 
-	protected void initializeLevel() {
+	private void initializeLevel() {
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
 		getLevelConditions().add(new HashMap<>());

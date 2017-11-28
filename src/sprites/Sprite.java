@@ -108,6 +108,10 @@ public class Sprite {
 	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
 		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
 	}
+	
+	public ImageView getGraphicalRepresentation() {
+		return collisionHandler.getGraphicalRepresentation();
+	}
 
 	public void setX(double newX) {
 		movementStrategy.setX(newX);
