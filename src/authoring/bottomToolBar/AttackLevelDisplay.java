@@ -15,7 +15,7 @@ public class AttackLevelDisplay extends LevelDisplay {
 		super(n);
 		//this would have to get refactored out depending on different languages and all that.
 		//TODO
-		myResources = ResourceBundle.getBundle("/"); //ideally this path would be to a valid resource bundle.
+		myResources = ResourceBundle.getBundle("authoring/resources/AttackLevel"); //ideally this path would be to a valid resource bundle.
 		myTextBoxes = new HashMap<String, TextBox>();
 		createScene();
 		super.getStage().setScene(myScene);
