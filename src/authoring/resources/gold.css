@@ -1,0 +1,48 @@
+/* 
+    Document   : controlStyle2
+*/
+
+.root{
+    -fx-font-size: 8pt;
+    -fx-font-family: "Tahoma";
+    -fx-base: rgb(223, 185, 81);
+    -fx-background: rgb(167, 135, 50);
+    -fx-focus-color: rgb(182, 166, 120);
+}
+
+.button1{
+    -fx-text-fill: rgb(0,100,100);
+    -fx-background-color: rgb(223,185,81);
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 5;
+}
+
+.button2{
+    -fx-text-fill: rgb(193,0,0);
+    -fx-background-color: rgb(223,185,81);
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 5;
+}
+
+.slider{
+    -fx-border-color: white;
+    -fx-border-style: dashed;
+    -fx-border-width: 2;
+}
+
+.label{
+	-fx-text-fill: rgb(240, 240, 240);
+	-fx-stroke: black; 
+	-fx-stroke-width: 1;
+	-fx-font-size: 16pt;
+	-fx-font-family: "Tahoma"
+}
+
+.check-box{
+	-fx-text-fill: rgb(240, 240, 240);
+	-fx-stroke: black; 
+	-fx-stroke-width: 1;
+	-fx-font-family: "Tahoma"
+}

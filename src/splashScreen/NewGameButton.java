@@ -2,6 +2,7 @@ package splashScreen;
 
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import main.Main;
 
 /**
  * Creates a button to move forwards
@@ -11,9 +12,9 @@ import javafx.scene.input.MouseEvent;
 public class NewGameButton extends Button {
 	
 	private static final String LABEL = "Create a new game";
-	private static final double XPOS = 50;
-	private static final double YPOS = 100;
-	private static final double WIDTH = 200;
+	private static final double WIDTH = Main.WIDTH / 3;
+	private static final double XPOS = Main.WIDTH / 2 - WIDTH / 2;
+	private static final double YPOS = (4.0 / 9.0) * Main.HEIGHT;
 	
 	public NewGameButton(SplashInterface splash) {
 		this.setPrefWidth(WIDTH);

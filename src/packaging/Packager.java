@@ -1,5 +1,7 @@
 package packaging;
 
+import networking.ChatTestWindow;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +15,11 @@ import java.util.regex.Pattern;
 
 /**
  * Packages up a game for delivery as an executable JAR.
+ *
+ * Has not yet been setup to launch everything, just a test app.
+ *
+ * Ideas: use compiler programmatically -> package compiled files + resources + other JARs (gson) -> delete compiled
+ *      files from src
  *
  * @author Ben Schwennesen
  */
@@ -36,18 +43,19 @@ public class Packager {
             TESTING_PACKAGE + File.separator + "ChatTestWindow.class"
     };
 
+    private final Class LAUNCH_CLASS = ChatTestWindow.class;
+
     /**
      * Generate an executable JAR file for an authored game.
      *
      * Based on https://stackoverflow.com/questions/1281229/how-to-use-jaroutputstream-to-create-a-jar-file.
      *
      * @param gameName - the chosen name of the game
-     * @param launchClass - the class used to launch the game (the player class)
      */
-    public void generateJar(String gameName, Class launchClass) {
+    public void generateJar(String gameName) {
         Manifest manifest = new Manifest();
         manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, MANIFEST_VERSION);
-        manifest.getMainAttributes().putValue(MAIN_CLASS_KEY, launchClass.getName());
+        manifest.getMainAttributes().putValue(MAIN_CLASS_KEY, LAUNCH_CLASS.getName());
         try {
             FileOutputStream outputStream = new FileOutputStream(GAMES_ROOT + gameName + JAR_EXTENSION);
             JarOutputStream target = new JarOutputStream(outputStream, manifest);
@@ -103,5 +111,17 @@ public class Packager {
 
     private String convertPathToJarFormat(String path) {
         return path.replaceAll(WINDOWS_PATH_DELIMITER_PATTERN, File.separator);
+    }
+    
+    
+    /**
+     * @param fileName
+     * @return the resource as an InputStream
+     * Based on code from 
+     * https://www.cefns.nau.edu/~edo/Classes/CS477_WWW/Docs/pack_resources_in_jar.html
+     */
+    public InputStream accessProperties (String fileName) {
+    	ClassLoader sampleClass = this.getClass().getClassLoader();
+    	return sampleClass.getResourceAsStream(fileName);
     }
 }

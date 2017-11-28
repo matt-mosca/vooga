@@ -1,19 +1,21 @@
 package player;
 
 import authoring.AuthorInterface;
-import authoring.LeftToolBar;
-import authoring.GridGameArea;
+import authoring.PlacementGrid;
+import authoring.leftToolBar.LeftToolBar;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import splashScreen.ScreenDisplay;
+import sprites.BackgroundObject;
+import sprites.StaticObject;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
-	private LeftToolBar myLeftToolBar;
-	private GridGameArea myMainGrid;
+	private GameToolBar myGameToolBar;
+	private PlacementGrid myMainGrid;
 	private HealthBar myHealthBar;
 	private DecreaseHealthButton myDecreaseHealthButton;
 	
@@ -24,6 +26,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		myMainGrid = new MainGrid(this);
 //		rootAdd(myMainGrid);
 		rootAdd(new HealthBackground());
+		myGameToolBar = new GameToolBar(this);
+		rootAdd(myGameToolBar);
 		myHealthBar = new HealthBar();
 		rootAdd(myHealthBar);
 		myDecreaseHealthButton = new DecreaseHealthButton(this);
@@ -63,6 +67,24 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void decreaseHealth() {
 		myHealthBar.decreaseHealth(10);
+	}
+
+	@Override
+	public void clicked(StaticObject object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dropped(StaticObject rec, MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pressed(StaticObject staticObject, MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

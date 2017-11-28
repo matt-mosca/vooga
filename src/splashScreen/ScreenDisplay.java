@@ -31,6 +31,12 @@ public abstract class ScreenDisplay {
 		myScene = new Scene(root, width, height, background);
 
 	}
+	
+	public ScreenDisplay(int width, int height) {
+		init();
+		myScene = new Scene(root, width, height);
+
+	}
 
 	public Scene getScene() {
 		return myScene;
@@ -57,6 +63,12 @@ public abstract class ScreenDisplay {
 	protected boolean rootContain(Node object) {
 		return root.getChildren().contains(object);
 	}
+	
+	protected void rootStyle(String sheet) {
+		root.getStylesheets().clear();
+		root.getStylesheets().add(sheet);
+	}
+	
 	protected void centerScene() {
 
 	}

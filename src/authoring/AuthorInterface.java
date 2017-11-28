@@ -1,9 +1,12 @@
 package authoring;
 
-import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Rectangle;
+import interfaces.ClickableInterface;
+import interfaces.CreationInterface;
+import interfaces.CustomizeInterface;
+import javafx.scene.image.ImageView;
 
-public interface AuthorInterface {
-
-	public void clicked(Rectangle rec);
+public interface AuthorInterface extends ClickableInterface, CreationInterface, CustomizeInterface {
+	
+	public void newTowerSelected(ImageView myImageView);
+	
 }

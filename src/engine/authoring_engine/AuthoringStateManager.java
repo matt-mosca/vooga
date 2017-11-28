@@ -1,56 +1,49 @@
 package engine.authoring_engine;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import engine.IOController;
 import engine.StateManager;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 
 /**
  * Single-source of truth for game settings and created / added elements when
  * authoring
  * 
+ * @deprecated
  * @author radithya
- *
  */
 public class AuthoringStateManager extends StateManager {
 
-	private Map<Integer, Collection<Sprite>> elementsPerLevel;
+	private List<Collection<Sprite>> elementsPerLevel;
 
-	public AuthoringStateManager(IOController authoringIOController) {// , ElementFactory elementFactory) {
-		super(authoringIOController);// , elementFactory);
+	public AuthoringStateManager(IOController authoringIOController, SpriteFactory spriteFactory) {
+		super(authoringIOController, spriteFactory);
+		elementsPerLevel = new ArrayList<>();
+		elementsPerLevel.add(new ArrayList<>()); // Leave index 0 blank to facilitate 1-indexing from authoring
 	}
 
 	@Override
 	public void saveGameState(String savedGameName) {
 		// Serialize separately for every level
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
-		for (Integer level : elementsPerLevel.keySet()) {
-			serializedLevelsData.put(level, getIOController().getLevelSerialization(getDescription(), getStatus(),
-					elementsPerLevel.get(level)));
+		for (int level = 0; level < elementsPerLevel.size(); level++) {
+			//serializedLevelsData.put(level, getIOController().getLevelSerialization(level, getDescription(),
+			//		getStatus()));
 		}
 		// Serialize map of level to per-level serialized data
-		getIOController().saveGameStateForMultipleLevels(savedGameName, serializedLevelsData, AuthoringConstants.IS_AUTHORING);
+		getIOController().saveGameStateForMultipleLevels(savedGameName, serializedLevelsData,
+				true);
 	}
 
-	// TODO
-	Sprite createElement(String name, Map<String, String> properties) {
-		// Assume ElementFactory has 2 element-creation signatures - one with only
-		// String name, which will first check a local cache of newly created elements
-		// for the properties and if miss, read properties from file and populate cache
-		// with it
-		// and another which takes the properties directly as parameter and populates
-		// the cache with it
-		/*
-		 * return getElementFactory().createElement(name, properties);
-		 */
-		// Alternative : Save to file so that ElementFactory can simply read from file
-		// as usual? But
-		// this could cause problems with unintentional overwriting of user's
-		// save-points
-		return null; // TEMP
+	Sprite createElement(String templateName, Map<String, String> properties) {
+		getSpriteFactory().defineElement(templateName, properties);
+		return getSpriteFactory().generateSprite(templateName);
 	}
 
 	@Override
@@ -60,7 +53,7 @@ public class AuthoringStateManager extends StateManager {
 
 	@Override
 	public void setCurrentElements(Collection<Sprite> newElements) {
-		elementsPerLevel.put(getCurrentLevel(), newElements);
+		elementsPerLevel.set(getCurrentLevel(), newElements);
 	}
 
 	@Override
@@ -70,7 +63,8 @@ public class AuthoringStateManager extends StateManager {
 		return elementsPerLevel.get(getCurrentLevel());
 	}
 
-	Sprite placeElement(String elementName, double x, double y, int level) {
+	Sprite placeElement(String elementName, double x, double y, int level) throws IllegalArgumentException {
+		assertValidLevel(level);
 		// Use ElementFactory to construct Sprite from elementName with these
 		// coordinates, ElementFactory will retrieve info from file since element
 		// already exists
@@ -82,44 +76,33 @@ public class AuthoringStateManager extends StateManager {
 		return null; // TEMP
 	}
 
-	// TODO
-	Sprite addElement(String name, int level) {
-		// Use ElementFactory to construct Sprite from elementName with these
-		// coordinates, ElementFactory will retrieve info from file since element
-		// already exists
-		/*
-		 * Sprite elementToPlace = getElementFactory().instantiateElement(elementName);
-		 * // Add created Sprite to gameElements currentElements.add(elementToPlace);
-		 * return elementToPlace;
-		 */
-		return null; // TEMP
+	Sprite addElement(String templateName, int level) throws IllegalArgumentException {
+		assertValidLevel(level);
+		return getSpriteFactory().generateSprite(templateName);
 	}
 
+	// If we return the sprite to the frontend, they will be able to do this themselves?
+
 	// TODO
-	Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties) {
-		// find element and customize its properties
-		Sprite elementToUpdate = findElementByLevelAndPosition(level, x, y);
-		// Pass sprite and new properties to ElementFactory to let it update sprite
-		// accordingly by calling Sprite API methods
-		/*
-		elementFactory.updateElement(elementToUpdate, customProperties);
-		*/
-		return elementToUpdate;
+	void updateElement(int spriteId, Map<String, Object> customProperties)
+			throws IllegalArgumentException {
+		// @Ben or @Adi to fill this in
 	}
 
 	void setGameParam(String property, String value) {
 		getStatus().put(property, value);
 	}
 
-	// TODO - more efficient implementation?
-	private Sprite findElementByLevelAndPosition(int level, double x, double y) {
-		Collection<Sprite> elementsForLevel = elementsPerLevel.get(level);
-		for (Sprite element : elementsForLevel) {
-			if (element.getX() == x && element.getY() == y) {
-				return element;
-			}
-		}
-		return null;
+	void deleteLevel(int level) throws IllegalArgumentException {
+		assertValidLevel(level);
+		elementsPerLevel.remove(level);
 	}
 
+	@Override
+	protected void assertValidLevel(int level) throws IllegalArgumentException {
+		if (level < 0 || level > elementsPerLevel.size()) {
+			throw new IllegalArgumentException();
+			// TODO - customize exception ?
+		}
+	}
 }

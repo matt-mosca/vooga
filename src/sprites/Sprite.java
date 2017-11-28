@@ -1,143 +1,136 @@
 package sprites;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import engine.behavior.collision.CollisionHandler;
+import engine.behavior.firing.FiringStrategy;
+import engine.behavior.movement.MovementHandler;
+import engine.behavior.movement.TrackingPoint;
+import javafx.scene.image.ImageView;
 
-// TODO - Just a basic outline for reference from Behavior
-// Schwen please feel free to add / change / remove as necessary
-// Could be sub-classed by -> MortalSprite -> MovingSprite etc
-public abstract class Sprite {
+/**
+ * Represents game objects in the backend. Responsible for controlling the object's update behavior.
+ *
+ * TODO - documentation
+ *
+ * @author Ben Schwennesen
+ */
+public class Sprite {
 
-	private double xCoord;
-	private double yCoord;
-
-	private double xVelocity;
-	private double yVelocity;
-	// ^ these might be subclass members (likely abstract subclass) instead if we want multi-genre flexibility
-
-	// Flag to facilitate clean-up of 'dead' elements - only active elements
-	// displayed by front end
-	private boolean isActive;
-	// ^ I (Schwen) think this will be part of the State object once I make it
-
-	private String templateName;
-
-	public Sprite(Map<String, ?> properties, String templateName) {
-		setProperties(properties);
-		this.templateName = templateName;
+	private enum Team {
+		NEUTRAL,
+		COMPUTER,
+		HUMAN
 	}
+		
+	// These fields should be set through setProperties
+	private FiringStrategy firingStrategy;
+	//private MovementStrategy movementStrategy;
+	//private BlockingStrategy blockingStrategy;
+	private MovementHandler movementHandler;
+	//private CollisionVisitor collisionVisitor;
+	//private CollisionVisitable collisionVisitable;
+	private CollisionHandler collisionHandler;
+	// Might need custom code in setProperties for handling loading of image and
+	// subsequent construction of ImageView?
+	//private ImageView spriteImageView;
 
-	/**
-	 * Update self for one cycle based on current state
-	 */
-	public abstract void update();
+	public Sprite(FiringStrategy firingStrategy, MovementHandler movementHandler, CollisionHandler collisionHandler) {
+		this.firingStrategy = firingStrategy;
+		this.movementHandler = movementHandler;
+		this.collisionHandler = collisionHandler;
+	}
 
 	/**
 	 * Move one cycle in direction of current velocity vector
 	 */
-	public abstract void move();
+	public void move() {
+		if (collisionHandler.isBlocked()) {
+			//movementStrategy.handleBlock();
+			// TODO - handle block
+			collisionHandler.unBlock();
+		}
+		movementHandler.move();
+	}
 
 	/**
 	 * Attack in whatever way necessary Likely called by interaction_engine in
 	 * event-handlers for keys / clicks
 	 */
-	public abstract void attack();
+	public void attack() {
+		firingStrategy.fire();
+	}
+
+	/**
+	 * Check for a collision with another sprite.
+	 *
+	 * @param other the other sprite with which this sprite might be colliding
+	 * @return true if the sprites collide, false otherwise
+	 */
+	public boolean collidesWith(Sprite other) {
+		return this.collisionHandler.collidesWith(other.collisionHandler);
+	}
+
+	/**
+	 * Apply the effects of a collision with another sprite to this sprite.
+	 * 
+	 * @param other the other sprite with which this sprite collided
+	 */
+	public void processCollision(Sprite other) {
+		this.collisionHandler.processCollision(other.collisionHandler);
+	}
+
+	/**
+	 * Check if this sprite has been destroyed during gameplay.
+	 *
+	 * @return true if the sprite has not been destroyed, false otherwise
+	 */
+	public boolean isAlive() {
+		return collisionHandler.isAlive();
+	}
+
+	/**
+	 * Auto-updating (NOT snapshot) position of this AbstractMovementStrategy for tracking
+	 *
+	 * @return auto-updating position that changes with movement
+	 */
+	public TrackingPoint getPositionForTracking() {
+		return movementHandler.getPositionForTracking();
+	}
 
 	public double getX() {
-		return xCoord;
+		return movementHandler.getCurrentX();
 	}
 
 	public double getY() {
-		return yCoord;
+		return movementHandler.getCurrentY();
+	}
+
+	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
+		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
+	}
+
+	public void setX(double newX) {
+		movementHandler.setX(newX);
+	}
+
+	public void setY(double newY) {
+		movementHandler.setY(newY);
 	}
 	
-	public double getXVelocity() {
-		return xVelocity;
+	/**
+	 * Player id corresponding to player owning this sprite
+	 * @return id of player controlling this sprite
+	 */
+	public int getPlayerId() {
+		return collisionHandler.getPlayerId();
 	}
 	
-	public double getYVelocity() {
-		return yVelocity;
+	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter 
+	public boolean isEnemy() {
+		return getPlayerId() == Team.COMPUTER.ordinal();
 	}
-
-	public String getTemplateName() { return templateName; }
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	/**
-	 * Will cause Sprite to be displayed by front end Can be used to differentiate
-	 * between Sprites in game area and those not (dead, off-screen???, etc)
-	 */
-	public void setActive() {
-		isActive = true;
-	}
-
-	protected void setX(double newX) {
-		xCoord = newX;
-	}
-
-	protected void setY(double newY) {
-		yCoord = newY;
-	}
-
-	/**
-	 * When the Sprite dies - will facilitate removal of element from
-	 * ElementManager's collection of active sprites
-	 */
-	public void deactivate() {
-		isActive = false;
-	}
-
-	/**
-	 * Set the properties of this sprite.
-	 *
-	 * @param properties - maps instance variables of this sprite to properties, as strings
-	 */
-	private void setProperties(Map<String, ?> properties)  {
-		List<Field> fields = getAllFieldsInInheritanceHierarchy();
-		for (Field field : fields) {
-			field.setAccessible(true);
-			if (properties.containsKey(field.getName())) {
-				setField(properties, field);
-			} else {
-				// TODO - throw custom exception? set to a default value?
-				//System.out.println(String.format("%s: warning, %s was not set", this.getClass().getName(), field
-				// .getName()));
-			}
-		}
-	}
-
-	private List<Field> getAllFieldsInInheritanceHierarchy() {
-		List<Field> fields = new ArrayList<>(Arrays.asList(this.getClass().getDeclaredFields()));
-		Class superClass = this.getClass().getSuperclass();
-		while (superClass != null && !superClass.equals(Object.class)) {
-			fields.addAll(Arrays.asList(superClass.getDeclaredFields()));
-			superClass = superClass.getSuperclass();
-		}
-		return fields;
-	}
-
-	private void setField(Map<String, ?> properties, Field field) {
-		try {
-			field.set(this, properties.get(field.getName()));
-		} catch (IllegalAccessException e) {
-			// TODO - because of setAccessible above this won't happen (?), so remove print statement
-			System.out.println("Sprite reflection exception: this should never happen");
-		}
-	}
-
-	/**
-	 * Get all the field names of this sprite instance, for creating a property map.
-	 *
-	 * @return a list of all field names (regardless of accessibility) in this instance's inheritance hierarchy
-	 */
-	public List<String> getFieldNames() {
-		return getAllFieldsInInheritanceHierarchy().stream()
-				.map(Field::getName).collect(Collectors.toList());
+	
+	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter
+	public boolean isAlly() {
+		return getPlayerId() == Team.HUMAN.ordinal();
 	}
 }
