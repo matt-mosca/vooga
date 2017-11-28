@@ -1,7 +1,7 @@
 package authoring;
 
 import authoring.customize.AttackDefenseToggle;
-import authoring.customize.BackgroundColorChanger;
+import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
@@ -31,7 +31,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private RightToolBar myRightToolBar;
 	private ToggleButton gridToggle;
 	private ToggleButton movementToggle;
-	private BackgroundColorChanger myColorChanger;
+	private ColorChanger myColorChanger;
 	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
@@ -103,7 +103,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myGameEnvironment);
 		myRightToolBar = new RightToolBar(this);
 		rootAdd(myRightToolBar);
-		myColorChanger = new BackgroundColorChanger(this);
+		myColorChanger = new ColorChanger(this);
 		rootAdd(myColorChanger);
 		myThemeChanger = new ThemeChanger(this);
 		rootAdd(myThemeChanger);

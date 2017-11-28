@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
  * @author Matt
  */
 public class LeftToolBar extends VBox {
-	private static final int WIDTH = 300;
+	private static final int Y_POSITION = 50;
 	private ClickableInterface myClickable;
 	private TabPane tabPane;
 	private TabFactory tabFactory;
@@ -24,7 +24,7 @@ public class LeftToolBar extends VBox {
 	private AddTab addTab;
 	
 	public LeftToolBar(ClickableInterface clickable) {
-		this.setLayoutY(50);
+		this.setLayoutY(Y_POSITION);
 		myClickable = clickable;
 		tabPane = new TabPane();
 		tabFactory = new TabFactory();
