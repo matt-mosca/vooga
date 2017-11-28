@@ -125,9 +125,20 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void setStatusProperty(String property, String value) {
+	public void setStatusProperty(String property, Double value) {
 		getLevelStatuses().get(getCurrentLevel()).put(property, value);
 	}
+	
+	@Override
+	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
+		getLevelBanks().get(getCurrentLevel()).setResourceEndowments(resourceEndowments);
+	}
+
+	@Override
+	public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
+		getLevelBanks().get(getCurrentLevel()).setUnitCost(elementName, unitCosts);
+	}
+
 
 	// TODO - to support multiple clients / interactive editing, need a client-id
 	// param (string or int)
