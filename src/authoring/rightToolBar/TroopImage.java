@@ -23,6 +23,7 @@ public class TroopImage extends SpriteImage {
 	@Override
 	public TroopImage clone() {
 		TroopImage cloneImage = new TroopImage(myKey);
+		cloneImage.setName(this.getName());
 		cloneImage.setFitHeight(this.getFitHeight());
 		cloneImage.setFitWidth(this.getFitWidth());
 		return cloneImage;

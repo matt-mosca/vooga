@@ -64,7 +64,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private CreationInterface created;
 	private AuthoringController myController;
 	private final int X_LAYOUT = 680;
-	private final int Y_LAYOUT = 50;
+	private final int Y_LAYOUT = 75;
 
 	
 	public RightToolBar(CreationInterface created, AuthoringController controller) {
@@ -163,7 +163,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
-
 	}
 	
 	private void newProjectilesWindow(TowerImage myTowerImage) {
