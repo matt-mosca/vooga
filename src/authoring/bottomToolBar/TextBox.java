@@ -10,6 +10,7 @@ public class TextBox {
 	}
 	
 	public void recordInfo() {
-		
+		//this would be an inherited method that is overriden in each individual textbox, allowing for the update of 
+		//that particular backend element.
 	}
 }
