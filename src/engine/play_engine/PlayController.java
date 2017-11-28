@@ -2,6 +2,8 @@ package engine.play_engine;
 
 import engine.AbstractGameController;
 import engine.PlayModelController;
+import javafx.geometry.Point2D;
+import javafx.scene.image.ImageView;
 import sprites.Sprite;
 import util.GameConditionsReader;
 
@@ -107,14 +109,28 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
 		assertValidLevel(level);
-		// Get live elements
 		Collection<Sprite> levelSprites = elementManager.getCurrentElements();
 		return levelSprites.stream().mapToInt(sprite -> getIdFromSprite(sprite)).boxed().collect(Collectors.toSet());
 	}
 
 	@Override
-	public Map<String, String> getStatus() {
-		return getLevelStatuses().get(getCurrentLevel());
+	public int placeElement(String elementTemplateName, Point2D startCoordinates, ImageView graphicalRepresentation) {
+		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
+			return super.placeElement(elementTemplateName, startCoordinates, graphicalRepresentation);
+		}
+		// TODO - Custom Exception ?
+		throw new IllegalArgumentException();
+	}
+
+	@Override
+	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates,
+			ImageView graphicalRepresentation, int idOfSpriteToTrack) {
+		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
+			return super.placeTrackingElement(elementTemplateName, startCoordinates, graphicalRepresentation,
+					idOfSpriteToTrack);
+		}
+		// TODO - Custom Exception ?
+		throw new IllegalArgumentException();
 	}
 
 	boolean isLevelCleared() {
@@ -223,14 +239,18 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	/*
-	 * Testing of reflection public static void main(String[] args) { PlayController
-	 * tester = new PlayController();
+	 * For testing of reflection and streams public static void main(String[] args)
+	 * { PlayController tester = new PlayController();
 	 * tester.setVictoryCondition("kill all enemies");
 	 * tester.setDefeatCondition("lose all allies"); boolean goodResult =
 	 * tester.checkLevelClearanceCondition(); boolean badResult =
 	 * tester.checkDefeatCondition(); System.out.println("Level cleared? " +
 	 * Boolean.toString(goodResult)); System.out.println("Defeated? " +
-	 * Boolean.toString(badResult)); }
+	 * Boolean.toString(badResult)); for (String s
+	 * :tester.conditionsReader.getPossibleVictoryConditions()) {
+	 * System.out.println("Victory Condition : " + s); } for (String s :
+	 * tester.conditionsReader.getPossibleDefeatConditions()) {
+	 * System.out.println("Defeat Condition: " + s); } }
 	 */
 
 }
