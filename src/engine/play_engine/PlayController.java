@@ -114,20 +114,18 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public int placeElement(String elementTemplateName, Point2D startCoordinates, ImageView graphicalRepresentation) {
+	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
-			return super.placeElement(elementTemplateName, startCoordinates, graphicalRepresentation);
+			return super.placeElement(elementTemplateName, startCoordinates);
 		}
 		// TODO - Custom Exception ?
 		throw new IllegalArgumentException();
 	}
 
 	@Override
-	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates,
-			ImageView graphicalRepresentation, int idOfSpriteToTrack) {
+	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates, int idOfSpriteToTrack) {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
-			return super.placeTrackingElement(elementTemplateName, startCoordinates, graphicalRepresentation,
-					idOfSpriteToTrack);
+			return super.placeTrackingElement(elementTemplateName, startCoordinates, idOfSpriteToTrack);
 		}
 		// TODO - Custom Exception ?
 		throw new IllegalArgumentException();
