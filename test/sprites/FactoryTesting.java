@@ -22,22 +22,18 @@ public class FactoryTesting {
         Map<String, List<String>> baseConfig = sf.getElementBaseConfigurationOptions();
         Scanner in = new Scanner(System.in);
         Map<String, String> choices = new HashMap<>();
-        System.out.println(baseConfig.keySet());
         for (String k : baseConfig.keySet()) {
             System.out.println(String.format("Pick one of the following options for %s", k));
             baseConfig.get(k).forEach(option -> System.out.println("\t" + option));
             choices.put(k, in.nextLine().trim());
         }
-        System.out.println(choices);
-
-        for (String k : sf.getAuxiliaryElementProperties(choices)) {
-            System.out.println(String.format("Set %s", k));
-            choices.put(k, in.nextLine().trim());
+        for (Map.Entry<String, Class> e : sf.getAuxiliaryElementProperties(choices).entrySet()) {
+            System.out.println(String.format("Set %s (%s)", e.getKey(), e.getValue().getName()));
+            choices.put(e.getKey(), in.nextLine().trim());
         }
-        System.out.println(choices);
         sf.defineElement("Tower1", choices);
-        JFXPanel jfxPanel = new JFXPanel();
-        Sprite tower = sf.generateSprite("Tower1", new Point2D(10,10), new ImageView(new Image("https://users.cs.duke.edu/~rcd/images/rcd.jpg")), new HashMap<>());
+        JFXPanel jfxPanel = new JFXPanel(); // so that ImageView can be made
+        Sprite tower = sf.generateSprite("Tower1", new Point2D(10,10));
         System.out.println(tower.getX() + " " + tower.getY());
 
         /*
