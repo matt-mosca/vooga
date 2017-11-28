@@ -4,7 +4,6 @@ import engine.authoring_engine.AuthoringController;
 import sprites.Sprite;
 import util.SerializationUtils;
 
-import javafx.geometry.Point2D;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,8 +20,11 @@ import java.util.Map;
  */
 public abstract class AbstractGameController {
 
+	public static final int DEFAULT_MAX_LEVELS = 1;
+	public static final String VICTORY = "victory";
+	public static final String DEFEAT = "defeat";
+
 	private String gameName;
-	private String gameDescription;
 	private IOController ioController;
 
 	// @Ben : Use list instead of map to facilitate 'fall-through' behavior for
@@ -34,6 +36,7 @@ public abstract class AbstractGameController {
 	private List<Map<String, String>> levelStatuses = new ArrayList<>();
 	private List<List<Sprite>> levelSpritesCache = new ArrayList<>();
 	private List<Map<String, String>> levelConditions = new ArrayList<>();
+	private List<String> levelDescriptions = new ArrayList<>();
 
 	// this should be from a properties file? or handled in some better way?
 	private final String DEFAULT_GAME_NAME = "untitled";
@@ -44,7 +47,6 @@ public abstract class AbstractGameController {
 		SerializationUtils serializationUtils = new SerializationUtils();
 		ioController = new IOController(serializationUtils);
 		initialize();
-		gameDescription = "";
 		gameName = DEFAULT_GAME_NAME;
 	}
 
@@ -55,11 +57,14 @@ public abstract class AbstractGameController {
 	 *            the name to assign to the save file
 	 */
 	public void saveGameState(String saveName) {
+		// Note : saveName overrides previously set gameName if different - need to handle this?
 		// Serialize separately for every level
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (int level = 1; level < getLevelStatuses().size(); level++) {
-			serializedLevelsData.put(level, getIoController().getLevelSerialization(level, gameDescription,
-					getLevelConditions().get(level), getLevelStatuses().get(level), levelSpritesCache.get(level)));
+			serializedLevelsData.put(level,
+					getIoController().getLevelSerialization(level, getLevelDescriptions().get(level),
+							getLevelConditions().get(level), getLevelStatuses().get(level),
+							levelSpritesCache.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
@@ -80,6 +85,7 @@ public abstract class AbstractGameController {
 		for (int levelToLoad = currentLevel; levelToLoad <= level; level++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
+		gameName = saveName;
 	}
 
 	public List<List<Sprite>> getLevelSprites() {
@@ -88,10 +94,6 @@ public abstract class AbstractGameController {
 
 	public String getGameName() {
 		return gameName;
-	}
-
-	public void setGameDescription(String gameDescription) {
-		this.gameDescription = gameDescription;
 	}
 
 	public void setGameName(String gameName) {
@@ -139,6 +141,10 @@ public abstract class AbstractGameController {
 		return levelConditions;
 	}
 
+	protected List<String> getLevelDescriptions() {
+		return levelDescriptions;
+	}
+
 	protected int getCurrentLevel() {
 		return currentLevel;
 	}
@@ -146,11 +152,12 @@ public abstract class AbstractGameController {
 	protected void loadLevelData(String saveName, int level, boolean originalGame) throws FileNotFoundException {
 		loadGameStateElementsForLevel(saveName, level, originalGame);
 		loadGameStateSettingsForLevel(saveName, level, originalGame);
-		loadGameConditionsForLevel(saveName, level, originalGame);
+		loadGameConditionsForLevel(saveName, level);
+		loadGameDescriptionForLevel(saveName, level);
 	}
-	
+
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
-	
+
 	private Collection<Sprite> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);
@@ -166,11 +173,15 @@ public abstract class AbstractGameController {
 		addOrSetLevelData(levelStatuses, loadedSettings, level);
 	}
 
-	private void loadGameConditionsForLevel(String savedGameName, int level, boolean originalGame)
-			throws FileNotFoundException {
+	private void loadGameConditionsForLevel(String savedGameName, int level) throws FileNotFoundException {
 		assertValidLevel(level);
-		Map<String, String> loadedLevelConditions = ioController.loadGameConditions(savedGameName, level, originalGame);
+		Map<String, String> loadedLevelConditions = ioController.loadGameConditions(savedGameName, level);
 		addOrSetLevelData(levelConditions, loadedLevelConditions, level);
+	}
+
+	private void loadGameDescriptionForLevel(String savedGameName, int level) throws FileNotFoundException {
+		assertValidLevel(level);
+		addOrSetLevelData(levelDescriptions, ioController.loadGameDescription(savedGameName, level), level);
 	}
 
 	private boolean isAuthoring() {
@@ -178,7 +189,6 @@ public abstract class AbstractGameController {
 		// have to do this
 		return this.getClass().equals(AuthoringController.class);
 	}
-	
 
 	private <T> void addOrSetLevelData(List<T> allLevelData, T levelData, int level) {
 		if (level == allLevelData.size()) {
@@ -187,17 +197,18 @@ public abstract class AbstractGameController {
 			allLevelData.set(level, levelData);
 		}
 	}
-	
+
 	private void initialize() {
 		// To adjust for 1-indexing
 		initializeLevel();
 		setLevel(1);
 	}
-	
+
 	protected void initializeLevel() {
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
-		getLevelConditions().add(new HashMap<>());		
+		getLevelConditions().add(new HashMap<>());
+		getLevelDescriptions().add(new String());
 	}
-	
+
 }

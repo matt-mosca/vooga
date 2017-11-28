@@ -106,19 +106,22 @@ public class IOController {
 	 *            the name used to save the game state
 	 * @param level
 	 *            the level whose conditions are to be loaded
-	 * @param forAuthoring
-	 *            true if for authoring, false if for play - TODO - more flexible
-	 *            approach? reflection?
 	 * @return map of condition key (e.g. victory, defeat) to string from which
 	 *         boolean function can be dispatched through reflection
 	 * @throws FileNotFoundException
 	 */
-	public Map<String, String> loadGameConditions(String savedGameName, int level, boolean forAuthoring)
-			throws FileNotFoundException {
+	public Map<String, String> loadGameConditions(String savedGameName, int level) throws FileNotFoundException {
 		// First extract string from file through io module
-		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, false));
 		// deserialize string into map through utils module
 		return serializationUtils.deserializeGameConditions(serializedGameData, level);
+	}
+
+	public String loadGameDescription(String savedGameName, int level) throws FileNotFoundException {
+		// First extract string from file through io module
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
+		// deserialize string into map through utils module
+		return serializationUtils.deserializeGameDescription(serializedGameData, level);
 	}
 
 	/**

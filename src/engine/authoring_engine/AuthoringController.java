@@ -53,6 +53,20 @@ public class AuthoringController extends AbstractGameController implements Autho
         spriteFactory.exportSpriteTemplates();
         packager.generateJar(getGameName());
     }
+    
+	public void setGameDescription(String gameDescription) {
+		getLevelDescriptions().set(getCurrentLevel(), gameDescription);
+	}
+    
+	@Override
+	public void setVictoryCondition(String conditionIdentifier) {
+		getLevelConditions().get(getCurrentLevel()).put(VICTORY, conditionIdentifier);
+	}
+
+	@Override
+	public void setDefeatCondition(String conditionIdentifier) {
+		getLevelConditions().get(getCurrentLevel()).put(DEFEAT, conditionIdentifier);
+	}
 
     @Override
     public void defineElement(String elementName, Map<String, String> properties) {
@@ -158,6 +172,7 @@ public class AuthoringController extends AbstractGameController implements Autho
         getLevelStatuses().remove(level);
         getLevelSprites().remove(level);
         getLevelConditions().remove(level);
+        getLevelDescriptions().remove(level);
     }
     
 	@Override

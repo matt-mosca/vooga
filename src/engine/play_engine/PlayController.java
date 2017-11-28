@@ -19,10 +19,6 @@ import java.util.Map;
  */
 public class PlayController extends AbstractGameController implements PlayModelController {
 
-	public static final int DEFAULT_MAX_LEVELS = 1;
-	public static final String VICTORY = "victory";
-	public static final String DEFEAT = "defeat";
-
 	// The conditions don't take any arguments, at least for now
 	private final Class[] CONDITION_METHODS_PARAMETER_CLASSES = new Class[] {};
 
@@ -123,7 +119,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public Map<String, String> getStatus() {
 		return getLevelStatuses().get(getCurrentLevel());
 	}
-
+	
 	boolean isLevelCleared() {
 		return levelCleared;
 	}
