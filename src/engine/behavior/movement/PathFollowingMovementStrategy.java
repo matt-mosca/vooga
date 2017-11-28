@@ -1,9 +1,9 @@
 package engine.behavior.movement;
 
+import java.util.ArrayList;
+
 import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
-
-import java.util.ArrayList;
 
 /**
  * Movement strategy for objects that move along a defined path
