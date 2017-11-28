@@ -4,6 +4,7 @@ import engine.authoring_engine.AuthoringController;
 import sprites.Sprite;
 import util.SerializationUtils;
 
+import javafx.geometry.Point2D;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,6 +122,9 @@ public abstract class AbstractGameController {
 	protected void setLevel(int level) {
 		assertValidLevel(level);
 		currentLevel = level;
+		if (level == getLevelSprites().size()) {
+			initializeLevel();
+		}
 	}
 
 	protected IOController getIoController() {
@@ -185,10 +189,15 @@ public abstract class AbstractGameController {
 	}
 	
 	private void initialize() {
-		currentLevel = 1;
+		// To adjust for 1-indexing
+		initializeLevel();
+		setLevel(1);
+	}
+	
+	protected void initializeLevel() {
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
-		getLevelConditions().add(new HashMap<>());
+		getLevelConditions().add(new HashMap<>());		
 	}
 	
 }
