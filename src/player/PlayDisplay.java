@@ -51,7 +51,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
 	private final MovementStrategy testMovement = new StationaryMovementStrategy();
-	private final CollisionHandler testCollision = new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable());
+	private final CollisionHandler testCollision =
+			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
+					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
@@ -172,6 +174,5 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		System.out.println(sprite.toString());
 		
 	}
-	
 	
 }
