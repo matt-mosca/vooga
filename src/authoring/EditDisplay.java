@@ -100,12 +100,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	private void addItems() {
 		controller = new AuthoringController();
-		myLeftToolBar = new LeftToolBar(this);
+		myLeftToolBar = new LeftToolBar(this, controller);
 		rootAdd(myLeftToolBar);
 		myGameArea = new GameArea(this);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
-		myRightToolBar = new RightToolBar(this);
+		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
 		myColorChanger = new ColorChanger(this);
 		rootAdd(myColorChanger);

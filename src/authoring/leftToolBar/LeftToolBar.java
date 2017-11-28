@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import authoring.tabs.AddStaticTab;
 import authoring.tabs.AddTab;
 import authoring.tabs.SimpleTab;
+import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
 import interfaces.ClickableInterface;
 import javafx.scene.control.TabPane;
@@ -16,15 +17,17 @@ import javafx.scene.layout.VBox;
 public class LeftToolBar extends VBox {
 	private static final int Y_POSITION = 50;
 	private ClickableInterface myClickable;
+	private AuthoringController myController;
 	private TabPane tabPane;
 	private TabFactory tabFactory;
 	private SimpleTab staticTab;
 	private SimpleTab backgroundTab;
 	private AddTab addTab;
 	
-	public LeftToolBar(ClickableInterface clickable) {
+	public LeftToolBar(ClickableInterface clickable, AuthoringController controller) {
 		this.setLayoutY(Y_POSITION);
 		myClickable = clickable;
+		myController = controller;
 		tabPane = new TabPane();
 		tabFactory = new TabFactory();
 		this.getChildren().add(tabPane);
