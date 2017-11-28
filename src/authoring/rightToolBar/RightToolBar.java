@@ -12,6 +12,7 @@ import authoring.tabs.NewProjectileTab;
 import authoring.tabs.NewSpriteTab;
 import authoring.tabs.NewTowerTab;
 import authoring.tabs.NewTroopTab;
+import engine.authoring_engine.AuthoringController;
 import factory.ButtonFactory;
 import factory.TabFactory;
 import interfaces.CreationInterface;
@@ -61,12 +62,14 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private HBox projectileSlot;
 	private Button deleteButton;
 	private CreationInterface created;
+	private AuthoringController myController;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 50;
 
 	
-	public RightToolBar(CreationInterface created) {
+	public RightToolBar(CreationInterface created, AuthoringController controller) {
 		this.created = created;
+		this.myController = controller;
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 	    tabMaker = new TabFactory();

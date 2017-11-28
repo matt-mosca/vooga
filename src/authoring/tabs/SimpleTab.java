@@ -31,6 +31,7 @@ public class SimpleTab extends ScrollPane{
 		this.setContent(myListView);
 	}
 	
+	//TODO eliminate addstatic and anddbackground if possible in favor of more general additem
 	public void addStaticItem(int size, String imageString) {
 		items.add(new StaticObject(size, clickable, imageString));
 	}
