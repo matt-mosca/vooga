@@ -23,6 +23,7 @@ public class ProjectileImage extends SpriteImage {
 	@Override
 	public ProjectileImage clone() {
 		ProjectileImage cloneImage = new ProjectileImage(myKey);
+		cloneImage.setName(this.getName());
 		cloneImage.setFitHeight(this.getFitHeight());
 		cloneImage.setFitWidth(this.getFitWidth());
 		return cloneImage;
