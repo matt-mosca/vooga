@@ -31,8 +31,10 @@ public class CoinDisplay extends HBox {
 		myCoins.setText(Integer.toString(coins));
 	}
 	
-	public void decrease(int number) {
-		coins -= number;
+	public void decrease() {
+		if (coins >= 5) {
+			coins -= 5;
+		}
 		myCoins.setText(Integer.toString(coins));
 	}
 

@@ -8,6 +8,7 @@ import authoring.AuthorInterface;
 import authoring.GameArea;
 import authoring.PlacementGrid;
 import authoring.leftToolBar.LeftToolBar;
+import authoring.rightToolBar.SpriteImage;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.NoopCollisionVisitable;
@@ -123,15 +124,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		tempSprite.setGraphicalRepresentation(myImageView);
 		return tempSprite;
 	}
-
-	@Override
-	public void clicked(Rectangle rec) {
-		// TODO Auto-generated method stub
-		Rectangle currRectangle = new Rectangle(rec.getWidth(), rec.getHeight(), rec.getFill());
-		currRectangle.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e, currRectangle));
-		currRectangle.addEventHandler(MouseEvent.MOUSE_RELEASED, e->released(currRectangle));
-		rootAdd(currRectangle);
-	}
 	
 	private void drag(MouseEvent e, Rectangle currRectangle) {
 		currRectangle.setX(e.getSceneX() - currRectangle.getWidth() / 2);
@@ -159,6 +151,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void clicked(StaticObject object) {
 		// TODO Auto-generated method stub
+		myCoinDisplay.decrease();
 		
 	}
 
@@ -171,6 +164,12 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void pressed(StaticObject staticObject, MouseEvent e) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clicked(SpriteImage sprite) {
+		System.out.println(sprite.toString());
 		
 	}
 	

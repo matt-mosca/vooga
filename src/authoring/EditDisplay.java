@@ -11,6 +11,7 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,6 +42,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Button yesButton;
 	private Button noButton;
 	private Label optionLabel;
+	private TextField enterName;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -58,7 +60,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	private void createLabel() {
-		attackDefenseLabel = new Label("Attack");
+		attackDefenseLabel = new Label("Defense");
 //		styleLabel(attackDefenseLabel);
 		attackDefenseLabel.setFont(new Font("Times New Roman", 35));
 //		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
@@ -189,6 +191,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void clicked(SpriteImage imageView) {
 		//TODO refactor this and make the labels and buttons their own class
 		noButtonPressed();
+		createTextField();
 		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
 		yesButton = new Button("Yes");
 		noButton = new Button("No");
@@ -205,7 +208,17 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
 		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
 	}
+	
+	private void createTextField() {
+		enterName = new TextField();
+		enterName.setPromptText("Enter name");
+		enterName.setLayoutX(1000);
+		enterName.setLayoutY(50);
+		rootAdd(enterName);
+	}
+	
 	private void yesButtonPressed(SpriteImage imageView) {
+		imageView.setName(enterName.getText());
 		myRightToolBar.imageSelected(imageView);
 		noButtonPressed();
 	}
@@ -214,6 +227,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootRemove(yesButton);
 		rootRemove(noButton);
 		rootRemove(optionLabel);
+		rootRemove(enterName);
 
 	}
 
@@ -232,11 +246,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void attack() {
-		attackDefenseLabel.setText("Attack");
+		attackDefenseLabel.setText("Defense");
 	}
 
 	public void defense() {
-		attackDefenseLabel.setText("Defense");
+		attackDefenseLabel.setText("Attack");
 	}
 
 	@Override
