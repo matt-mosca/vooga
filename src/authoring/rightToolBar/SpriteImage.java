@@ -11,6 +11,7 @@ public abstract class SpriteImage extends ImageView {
 	
 	private String myImageName;
 	private AuthoringController controller;
+	private Map<String, String> myProperties;
 	
 	
 	public SpriteImage() {
@@ -25,6 +26,22 @@ public abstract class SpriteImage extends ImageView {
 			image = new Image(imageName);
 		}
 		this.setImage(image);
+		setDefaultProperties();
+	}
+	
+	private void setDefaultProperties() {
+		myProperties = new TreeMap<String, String>();
+		myProperties.put("Health", "1");
+		myProperties.put("Object", "2");
+		myProperties.put("Strength", "3");
+	}
+	
+	public void update(String newProperty, String newValue) {
+		myProperties.put(newProperty, newValue);
+	}
+	
+	public Map<String, String> getMyProperties() {
+		return myProperties;
 	}
 	
 	public void resize(double displaySize) {

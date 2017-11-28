@@ -11,7 +11,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 
 /**
- * 
  * @author Matt
  */
 public class LeftToolBar extends VBox {

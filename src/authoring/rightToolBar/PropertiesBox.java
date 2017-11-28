@@ -24,13 +24,14 @@ public class PropertiesBox extends VBox {
 	private TableColumn<Properties, String> propertiesColumn;
 	private TableColumn<Properties, String> valuesColumn;
 	
-	public PropertiesBox(CreationInterface creation) {
+	public PropertiesBox(CreationInterface creation, SpriteImage mySprite) {
 		this.creation = creation;
 		propertyArr = new String[]{"50","10","23"};
-		propertiesMap = new TreeMap<String, String>();
-		for (int i = 0; i < properties.length; i++) {
-			propertiesMap.put(properties[i], propertyArr[i]);
-		}
+//		propertiesMap = new TreeMap<String, String>();
+//		for (int i = 0; i < properties.length; i++) {
+//			propertiesMap.put(properties[i], propertyArr[i]);
+//		}
+		propertiesMap = mySprite.getMyProperties();
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
@@ -59,8 +60,8 @@ public class PropertiesBox extends VBox {
 			            ((Properties) t.getTableView().getItems().get(
 			                t.getTablePosition().getRow())
 			                ).setMyValue(t.getNewValue());
-			            System.out.println(t.getRowValue().getMyProperty() 
-			            		+ " changed to " + t.getNewValue());
+			            mySprite.update(t.getRowValue().getMyProperty(), t.getNewValue());
+			        
 			        }
 			    }
 			);
