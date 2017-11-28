@@ -1,8 +1,7 @@
 package engine.behavior.movement;
 
 import engine.behavior.ParameterName;
-import javafx.beans.property.SimpleDoubleProperty;
-import sprites.Sprite;
+import javafx.geometry.Point2D;
 
 /**
  * Movement strategy for objects that track another sprite.
@@ -26,8 +25,9 @@ public class TrackingMovementStrategy extends TargetedMovementStrategy {
 		this.targetLocation = targetLocation;
 	}
 	
-	public void move() {
+	public Point2D move() {
 		this.setTargetCoordinates(targetLocation.getCurrentX(), targetLocation.getCurrentY());
 		super.move();
+		return getCurrentCoordinates();
 	}
 }

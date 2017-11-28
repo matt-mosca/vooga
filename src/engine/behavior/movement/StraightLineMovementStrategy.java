@@ -1,7 +1,6 @@
 package engine.behavior.movement;
 
 import engine.behavior.ParameterName;
-import javafx.geometry.Point2D;
 
 /**
  * Movement strategy for objects that movements depends on straight line movement
@@ -29,5 +28,4 @@ public class StraightLineMovementStrategy extends TargetedMovementStrategy {
 	public void bounce() {
 		
 	}
-
 }

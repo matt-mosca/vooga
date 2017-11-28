@@ -1,9 +1,5 @@
 package engine.behavior.movement;
 
-import engine.behavior.blocking.BlockingStrategy;
-
-import java.awt.geom.Point2D;
-
 /**
  * Encapsulates movement behavior of game elements. Responsible for coordinating the tracking and updating the elements'
  * locations, including the handling of situations where the element is blocked by an obstacle.

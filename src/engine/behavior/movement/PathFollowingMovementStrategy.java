@@ -1,9 +1,9 @@
 package engine.behavior.movement;
 
-import java.util.ArrayList;
-
 import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
+
+import java.util.ArrayList;
 
 /**
  * Movement strategy for objects that move along a defined path
@@ -23,9 +23,10 @@ public abstract class PathFollowingMovementStrategy extends TargetedMovementStra
 		this.coordinates = coordinates;
 	}
 
-	public void move() {
+	public Point2D move() {
 		super.move();
 		checkIfLocationReached();
+		return getCurrentCoordinates();
 	}
 	/**
 	 * TODO: add check to see if location reached 
