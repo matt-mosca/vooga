@@ -1,7 +1,5 @@
 package engine;
 
-import sprites.Sprite;
-
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Map;
