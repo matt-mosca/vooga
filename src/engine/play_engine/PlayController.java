@@ -172,16 +172,26 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private void setVictoryCondition(String conditionFunctionIdentifier) {
-		victoryConditionMethod = getMethodForCondition(conditionFunctionIdentifier);
+		victoryConditionMethod = getMethodForVictoryCondition(conditionFunctionIdentifier);
 	}
 
 	private void setDefeatCondition(String conditionFunctionIdentifier) {
-		defeatConditionMethod = getMethodForCondition(conditionFunctionIdentifier);
+		defeatConditionMethod = getMethodForDefeatCondition(conditionFunctionIdentifier);
 	}
 
-	private Method getMethodForCondition(String conditionFunctionIdentifier) throws IllegalArgumentException {
-		String methodName = conditionsReader.getMethodNameForCondition(conditionFunctionIdentifier);
-		System.out.println("Method name: " + methodName);
+	private Method getMethodForVictoryCondition(String conditionFunctionIdentifier) throws IllegalArgumentException {
+		String methodName = conditionsReader.getMethodNameForVictoryCondition(conditionFunctionIdentifier);
+		System.out.println("Victory Method name: " + methodName);
+		return getMethodFromMethodName(methodName);
+	}
+	
+	private Method getMethodForDefeatCondition(String conditionFunctionIdentifier) throws IllegalArgumentException {
+		String methodName = conditionsReader.getMethodNameForDefeatCondition(conditionFunctionIdentifier);
+		System.out.println("Defeat Method name: " + methodName);
+		return getMethodFromMethodName(methodName);
+	}
+	
+	private Method getMethodFromMethodName(String methodName) throws IllegalArgumentException {
 		try {
 			return this.getClass().getDeclaredMethod(methodName, CONDITION_METHODS_PARAMETER_CLASSES);
 		} catch (NoSuchMethodException e) {
