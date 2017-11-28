@@ -6,6 +6,12 @@ import java.util.List;
 
 import authoring.AuthorInterface;
 import authoring.ObjectProperties;
+import authoring.tabs.AddSpriteImageTab;
+import authoring.tabs.AddTab;
+import authoring.tabs.NewProjectileTab;
+import authoring.tabs.NewSpriteTab;
+import authoring.tabs.NewTowerTab;
+import authoring.tabs.NewTroopTab;
 import factory.ButtonFactory;
 import factory.TabFactory;
 import interfaces.CreationInterface;
@@ -41,6 +47,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
 	private TabPane bottomTabPane;
+	private AddTab addTab;
 	private NewSpriteTab newTower;
 	private NewSpriteTab newTroop;
 	private NewSpriteTab newProjectile;
@@ -86,12 +93,15 @@ public class RightToolBar extends VBox implements PropertiesInterface {
     }
 		
 	private void createAndAddTabs() {
-		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", topTabPane));
-		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Troop", topTabPane));
-		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Projectile", topTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Towers", bottomTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Troops", bottomTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Projectile", bottomTabPane));
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", "TowerImage", topTabPane));
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Troop", "TroopImage", topTabPane));
+		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Projectile", "ProjectileImage", topTabPane));
+		addTab = new AddSpriteImageTab(null , topTabPane);
+		topTabPane.getTabs().add(tabMaker.buildTab("Add Image", null, addTab, topTabPane));
+		
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Towers", "TowerImage", bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Troops", "TroopImage", bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Projectile", "ProjectileImage", bottomTabPane));
 		makeTabsUnclosable();
 	}
 	

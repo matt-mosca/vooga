@@ -12,7 +12,11 @@ public class ProjectileImage extends SpriteImage {
 		super();
 		myKey = stringKey;
 		projectileResources = ResourceBundle.getBundle("authoring/resources/NewProjectileImages");
-		this.addImage(projectileResources.getString(stringKey));
+		if(projectileResources.containsKey(stringKey)) {
+			this.addImage(projectileResources.getString(stringKey));
+		}else {
+			this.addImage(stringKey);
+		}
 
 	}
 

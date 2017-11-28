@@ -1,9 +1,10 @@
-package authoring.rightToolBar;
+package authoring.tabs;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import authoring.rightToolBar.SpriteImage;
 import interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,13 +49,7 @@ public abstract class NewSpriteTab extends ScrollPane {
 	
 	protected void addImage(SpriteImage spriteImage) {
 		spriteImage.resize(DISPLAY_SIZE);
-		newSpriteImages.add(spriteImage);
-	}
-	
-	protected void updateImages() {
-		spritesView = FXCollections.observableArrayList(newSpriteImages);
-		list.setItems(spritesView);
-		this.setContent(list);
+		spritesView.add(spriteImage);
 	}
 	
 	public void tabClicked() {

@@ -12,7 +12,11 @@ public class TroopImage extends SpriteImage {
 		super();
 		myKey = stringKey;
 		troopResources = ResourceBundle.getBundle("authoring/resources/NewTroopImages");
-		this.addImage(troopResources.getString(stringKey));
+		if(troopResources.containsKey(stringKey)) {
+			this.addImage(troopResources.getString(stringKey));
+		}else {
+			this.addImage(stringKey);
+		}
 
 	}
 	

@@ -2,14 +2,14 @@ package engine.behavior.firing;
 
 public class TargetedFiringStrategy implements FiringStrategy {
 
-	HomingProjectile projectile;
+	TargetedProjectile projectile;
 	@Override
 	public void fire() {
-		projectile = new HomingProjectile(null, null);
+		projectile = new TargetedProjectile(null, null);
 		
 	}
 	
-	public HomingProjectile getProjectile() {
+	public TargetedProjectile getProjectile() {
 		return projectile;
 	}
 
