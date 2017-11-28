@@ -219,6 +219,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private void yesButtonPressed(SpriteImage imageView) {
 		imageView.setName(enterName.getText());
+		
 		myRightToolBar.imageSelected(imageView);
 		noButtonPressed();
 	}
@@ -228,7 +229,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootRemove(noButton);
 		rootRemove(optionLabel);
 		rootRemove(enterName);
-
 	}
 
 	@Override

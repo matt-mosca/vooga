@@ -1,5 +1,6 @@
 package authoring.rightToolBar;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -32,7 +33,7 @@ public abstract class SpriteImage extends ImageView {
 	
 	public void setName(String name) {
 		myName = name;
-		
+		myProperties.put("Name", name);
 	}
 	
 	public String getName() {
@@ -40,9 +41,10 @@ public abstract class SpriteImage extends ImageView {
 	}
 	
 	private void setDefaultProperties() {
-		myProperties = new TreeMap<String, String>();
+		myProperties = new HashMap<String, String>();
 		myProperties.put("Cost", "10");
 		myProperties.put("Strength", "20");
+		myProperties.put("Name", myName);
 		myProperties.put("Health", "100");
 	}
 	

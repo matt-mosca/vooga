@@ -163,7 +163,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
-
 	}
 	
 	private void newProjectilesWindow(TowerImage myTowerImage) {
