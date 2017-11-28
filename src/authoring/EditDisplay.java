@@ -7,6 +7,8 @@ import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
+import interfaces.ClickableInterface;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
@@ -107,6 +109,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea = new GameArea(this);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
+		this.SetDroppable(myGameArea);
 		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
 		myColorChanger = new ColorChanger(this);
@@ -119,12 +122,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMenuBar);
 	}
 	
-	@Override 
-	public void clicked(StaticObject object) {
-		createOptionButtons(object);
-	}
-	
-	private void createOptionButtons(StaticObject object) {
+	public void launchCreateButton(ClickableInterface clickable) {
+		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
 		Button decrementButton = new Button("-");
@@ -161,19 +160,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //	}
 
 	@Override
-	public void dropped(StaticObject currObject, MouseEvent e) {
-		if(e.getButton() == MouseButton.SECONDARY) {
-			deleteObject(currObject);
-		} else {
-			myGameArea.placeInGrid(currObject);
-			myGameEnvironment.requestFocus();
-		}
+	public void dropped(MouseEvent e) {
+		
 	}
 
 	@Override
-	public void pressed(StaticObject currObject, MouseEvent e) {
-		e.consume();
-		myGameArea.removeFromGrid(currObject);
+	public void pressed(MouseEvent e) {
+		
 	}
 	
 	private void deleteObject(StaticObject object) {
@@ -261,6 +254,42 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public String[] getInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double getX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setX(double x) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setY(double y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Point2D center() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -3,23 +3,28 @@ package sprites;
 import java.io.File;
 
 import interfaces.ClickableInterface;
+import interfaces.Droppable;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import splashScreen.ScreenDisplay;
 
-public class StaticObject extends ImageView {
+public class StaticObject extends ImageView implements ClickableInterface{
 	
 	private static final int CELL_SIZE = 40;
 	private int objectSize;
 	private int realSize;
-	private ClickableInterface myClickable;
+	private ScreenDisplay myDisplay;
+	private Droppable droppable;
 	private String myImageString;
 	private boolean locked;
 	
-	public StaticObject(int size, ClickableInterface clickable, String imageString) {
-		myClickable = clickable; 
+	public StaticObject(int size, ScreenDisplay display, String imageString) {
+		myDisplay = display; 
+		droppable = myDisplay.getDroppable();
 		myImageString = imageString;
 		setSize(size);
 		Image image;
@@ -30,7 +35,7 @@ public class StaticObject extends ImageView {
 		}
 		this.setImage(image);
 		objectSize = size;
-		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->drag(e));
+		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->dragged(e));
 		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->dropped(e));
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->pressed(e));
 		
@@ -42,29 +47,11 @@ public class StaticObject extends ImageView {
 		this.setFitHeight(realSize);
 	}
 	
-	private void drag(MouseEvent e) {
-		if(!locked) {
-			this.setX(e.getX() - realSize / 2);
-			this.setY(e.getY() - realSize / 2);
-		}
-	}
-	
-	private void dropped(MouseEvent e) {
-		if(!locked) {
-			myClickable.dropped(this, e);
-		}
-	}
-	
-	private void pressed(MouseEvent e) {
-		if(!locked) {
-			myClickable.pressed(this, e);
-		}
-	}
-	
 	public void setLocked(boolean lock) {
 		locked = lock;
 	}
 	
+	@Override
 	public Point2D center() {
 		return new Point2D(this.getX(), this.getY());
 	}
@@ -96,5 +83,30 @@ public class StaticObject extends ImageView {
 			setSize(objectSize);
 		}
 	}
+	
+	@Override
+	public void dragged(MouseEvent e) {
+		if(!locked) {
+			this.setX(e.getX() - realSize / 2);
+			this.setY(e.getY() - realSize / 2);
+		}
+	}
 
+	@Override
+	public void dropped(MouseEvent e) {
+		if(!locked) {
+			droppable.droppedInto(this);
+		}
+	}
+
+	@Override
+	public void pressed(MouseEvent e) {
+		if(!locked && droppable != null) {
+			e.consume();
+			if(e.getButton() == MouseButton.SECONDARY) {
+				droppable.objectRemoved(this);
+			}
+			droppable.freeFromDroppable(this);
+		}
+	}
 }
