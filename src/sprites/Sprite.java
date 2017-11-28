@@ -6,6 +6,8 @@ import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.TrackingPoint;
 import javafx.scene.image.ImageView;
 
+import javafx.geometry.Point2D;
+
 /**
  * Represents game objects in the backend. Responsible for controlling the object's update behavior.
  *
@@ -48,7 +50,9 @@ public class Sprite {
 			// TODO - handle block
 			collisionHandler.unBlock();
 		}
-		movementStrategy.move();
+		Point2D newLocation = movementStrategy.move();
+		collisionHandler.getGraphicalRepresentation().setX(newLocation.getX());
+		collisionHandler.getGraphicalRepresentation().setY(newLocation.getY());
 	}
 
 	public boolean shouldFire() {

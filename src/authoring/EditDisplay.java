@@ -9,15 +9,20 @@ import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import main.Main;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
@@ -41,6 +46,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Button yesButton;
 	private Button noButton;
 	private Label optionLabel;
+	private TextField enterName;
+	private ReturnButton myReturnButton;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -48,6 +55,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		super(width, height);
 		super(width, height, Color.BLACK);
 //		super(width, height, Color.GRAY);
+		myReturnButton = new ReturnButton(this);
+		rootAdd(myReturnButton);
 		setStandardTheme();
 		addItems();
 		createGridToggle();
@@ -58,7 +67,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	private void createLabel() {
-		attackDefenseLabel = new Label("Attack");
+		attackDefenseLabel = new Label("Defense");
 //		styleLabel(attackDefenseLabel);
 		attackDefenseLabel.setFont(new Font("Times New Roman", 35));
 //		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
@@ -126,6 +135,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
 		Button decrementButton = new Button("-");
+		addNewButton.setLayoutY(20);
+		incrementButton.setLayoutY(20);
+		decrementButton.setLayoutY(20);
+
 		incrementButton.setLayoutX(50);
 		decrementButton.setLayoutX(85);
 		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
@@ -185,19 +198,35 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void clicked(SpriteImage imageView) {
 		//TODO refactor this and make the labels and buttons their own class
 		noButtonPressed();
+		createTextField();
 		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
 		yesButton = new Button("Yes");
 		noButton = new Button("No");
 		yesButton.setLayoutX(1000);
 		noButton.setLayoutX(1050);
 		optionLabel.setLayoutX(700);
+		yesButton.setLayoutY(20);
+		noButton.setLayoutY(20);
+		optionLabel.setLayoutY(20);
+
 		rootAdd(yesButton);
 		rootAdd(optionLabel);
 		rootAdd(noButton);
 		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
 		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
 	}
+	
+	private void createTextField() {
+		enterName = new TextField();
+		enterName.setPromptText("Enter name");
+		enterName.setLayoutX(1000);
+		enterName.setLayoutY(50);
+		rootAdd(enterName);
+	}
+	
 	private void yesButtonPressed(SpriteImage imageView) {
+		imageView.setName(enterName.getText());
+		
 		myRightToolBar.imageSelected(imageView);
 		noButtonPressed();
 	}
@@ -206,7 +235,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootRemove(yesButton);
 		rootRemove(noButton);
 		rootRemove(optionLabel);
-
+		rootRemove(enterName);
 	}
 
 	@Override
@@ -224,11 +253,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void attack() {
-		attackDefenseLabel.setText("Attack");
+		attackDefenseLabel.setText("Defense");
 	}
 
 	public void defense() {
-		attackDefenseLabel.setText("Defense");
+		attackDefenseLabel.setText("Attack");
 	}
 
 	@Override
@@ -241,5 +270,16 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public String[] getInfo() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void returnButtonPressed() {
+		VBox newProject = new VBox();
+		Scene newScene = new Scene(newProject, 400, 400);
+		Stage myStage = new Stage();
+		myStage.setScene(newScene);
+		myStage.show();
+		Main restart = new Main();
+		restart.start(myStage);
 	}
 }

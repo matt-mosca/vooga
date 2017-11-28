@@ -21,10 +21,11 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
         calculateVelocityComponents();
     }
 
-    public void move() {
+    public Point2D move() {
     	calculateVelocityComponents();
         setX(this.getCurrentX()+ getXVelocity());
         setY(this.getCurrentY()+ getYVelocity());
+        return getCurrentCoordinates();
     }
 
     protected void setTargetCoordinates(double targetX, double targetY) {

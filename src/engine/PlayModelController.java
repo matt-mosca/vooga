@@ -80,12 +80,10 @@ public interface PlayModelController {
 	 *            the template name for the element
 	 * @param startCoordinates
 	 *            the coordinates at which the element should be placed
-	 * @param graphicalRepresentation
-	 *            the frontend representation of the element
 	 * @return a unique identifier for the sprite abstraction representing the game
 	 *         element
 	 */
-	int placeElement(String elementName, Point2D startCoordinates, ImageView graphicalRepresentation);
+	int placeElement(String elementName, Point2D startCoordinates);
 
 	/**
 	 * Place a game element of previously defined (or default) type within the game.
@@ -95,15 +93,12 @@ public interface PlayModelController {
 	 *            the template name for the element
 	 * @param startCoordinates
 	 *            the coordinates at which the element should be placed
-	 * @param graphicalRepresentation
-	 *            the frontend representation of the element
 	 * @param idOfElementToTrack
 	 *            the unique identifier of the (previously placed) element to track
 	 * @return a unique identifier for the sprite abstraction representing the game
 	 *         element
 	 */
-	int placeTrackingElement(String elementName, Point2D startCoordinates, ImageView graphicalRepresentation,
-			int idOfElementToTrack);
+	int placeTrackingElement(String elementName, Point2D startCoordinates, int idOfElementToTrack);
 
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
