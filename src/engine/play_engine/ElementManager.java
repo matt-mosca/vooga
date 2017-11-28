@@ -64,7 +64,9 @@ public class ElementManager {
 		for (int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
 			Sprite element = gameElements.get(elementIndex);
 			element.move();
-			element.attack();
+			if (element.shouldFire()) {
+				spriteFactory.generateSprite(element.fire());
+			}
 			processAllCollisionsForElement(elementIndex, element);
 		}
 		gameElements.removeIf(element -> !element.isAlive());
