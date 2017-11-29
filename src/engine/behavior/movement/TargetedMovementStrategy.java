@@ -5,7 +5,7 @@ import javafx.geometry.Point2D;
 /**
  * @author mscruggs
  */
-public abstract class TargetedMovementStrategy extends AbstractMovementStrategy {
+public class TargetedMovementStrategy extends AbstractMovementStrategy {
 
     private double targetX;
     private double targetY;
