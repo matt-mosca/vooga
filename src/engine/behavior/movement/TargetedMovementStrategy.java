@@ -23,8 +23,24 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
 
     public void move() {
     	calculateVelocityComponents();
-        setX(this.getCurrentX()+ getXVelocity());
-        setY(this.getCurrentY()+ getYVelocity());
+    	if(targetReached()) {
+    		setX(this.getTargetX());
+    		setY(this.getTargetY());
+    	}
+    	else{
+    		setX(this.getCurrentX()+ getXVelocity());
+        	setY(this.getCurrentY()+ getYVelocity());
+    	}
+    }
+    
+    public void stop() {
+        this.xVelocity = 0;
+        this.yVelocity = 0;
+        this.velocityMagnitude = 0;
+    }
+    
+    public boolean targetReached() {
+    	return (Math.hypot(targetX-this.getCurrentX(), targetY-this.getCurrentY())<velocityMagnitude);
     }
 
     protected void setTargetCoordinates(double targetX, double targetY) {
@@ -65,9 +81,5 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
         this.yVelocity = velocityMagnitude * Math.sin(angle);
     }
 
-    public void stop() {
-        this.xVelocity = 0;
-        this.yVelocity = 0;
-        this.velocityMagnitude = 0;
-    }
+    
 }
