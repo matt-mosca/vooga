@@ -4,8 +4,8 @@ import javafx.scene.input.KeyEvent;
 
 public class WaveTextBox extends TextBox {
 
-	public WaveTextBox() {
-		super();
+	public WaveTextBox(String s) {
+		super(s);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -33,12 +34,13 @@ public class DefenseLevelDisplay extends LevelDisplay{
 	private void createScene() {
 		pane = new GridPane();
 		myScene = new Scene(pane); 
-		placeTextAndTextBoxes();
+		createTextBoxes();
 	}
 
-	private void placeTextAndTextBoxes() {
-		myTextBoxes.add(new WaveTextBox());
-	    myTextBoxes.add(new WaveComponentsTextBox());
+	private void createTextBoxes() {
+		myTextBoxes.add(new WaveTextBox(myResources.getString("waves")));
+	    myTextBoxes.add(new WaveComponentsTextBox(myResources.getString("order")));
+	    myTextBoxes.add(new GameDurationTextBox(myResources.getString("duration")));
 		for (TextBox t : myTextBoxes) {
 			t.getTextField().setOnKeyPressed(new EventHandler<KeyEvent>() {
 
@@ -51,6 +53,14 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		});
 		}
 		
+	}
+	
+	private void placeTextAndTextFields() {
+		int height = 30;
+		for (TextBox t: myTextBoxes) {
+			pane.add(new Label(t.getString()), 10, height);
+			height+=10;
+		}
 	}
 
 }

@@ -4,9 +4,11 @@ import javafx.scene.control.TextField;
 
 public abstract class TextBox {
 	private TextField myText;
+	private String myString;
 	
-	public TextBox() {
+	public TextBox(String s) {
 		myText = new TextField();
+		myString = s;
 	}
 	
 	public void recordInfo() {
@@ -19,5 +21,9 @@ public abstract class TextBox {
 	
 	public TextField getTextField() {
 		return myText;
+	}
+	
+	public String getString() {
+		return myString;
 	}
 }
