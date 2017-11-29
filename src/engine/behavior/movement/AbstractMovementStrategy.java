@@ -57,6 +57,10 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	public void setY(double newY) {
 		yCoordinate.set(newY);
 	}
+	
+	public boolean targetReached() {
+		return false;
+	}
 
 	protected Point2D getCurrentCoordinates() {
 		return new Point2D(getCurrentX(), getCurrentY());
