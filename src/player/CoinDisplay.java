@@ -24,6 +24,7 @@ public class CoinDisplay extends HBox {
 		this.getChildren().add(myLabel);
 		this.getChildren().add(myCoins);
 		this.setLayoutX(400);
+//		this.getStyleClass().add("coin-display");
 	}
 	
 	public void increment() {
@@ -38,4 +39,13 @@ public class CoinDisplay extends HBox {
 		myCoins.setText(Integer.toString(coins));
 	}
 
+	public boolean decreaseByAmount(int amount) {
+		if(coins >= amount)
+			coins -= amount;
+		return coins >= amount;
+	}
+	
+	public void increaseByAmount(int amount) {
+		coins += amount;
+	}
 }
