@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import engine.authoring_engine.AuthoringController;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -20,8 +21,8 @@ public class DefenseLevelDisplay extends LevelDisplay{
 	private List<TextBox> myTextBoxes;
 	private ResourceBundle myResources;
 	
-	public DefenseLevelDisplay(int n, LevelTab lv) {
-		super(n, lv);
+	public DefenseLevelDisplay(int n, LevelTab lv, AuthoringController myController) {
+		super(n, lv, myController);
 		//this would have to get refactored out depending on different languages and all that.
 		//TODO
 		myResources = ResourceBundle.getBundle("authoring/resources/DefenseLevel"); //ideally this path would be to a valid resource bundle.

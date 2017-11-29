@@ -164,7 +164,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
 		myGameArea.addBackObject(newObject);
-		newObject.setElementId(controller.placeElement(object.getImageString(), new Point2D(object.getX(),object.getY())));
+//		newObject.setElementId(controller.placeElement(object.getImageString(), new Point2D(object.getX(),object.getY())));
 	}
 
 	@Override

@@ -121,7 +121,7 @@ public abstract class AbstractGameController {
 
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
-		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
+     	TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
 		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,

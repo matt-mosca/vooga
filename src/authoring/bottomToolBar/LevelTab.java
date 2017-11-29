@@ -1,5 +1,6 @@
 package authoring.bottomToolBar;
 
+import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,12 +16,12 @@ public class LevelTab extends ScrollPane{
 	private LevelDisplay myLevelDisplay;
 	private boolean edited;
 	
-	public LevelTab(int n) {
+	public LevelTab(int n, AuthoringController myController) {
 		myNumber = n;
 		//needs to be a check for what kind of level it is, so that we either create an attackleveldisplay or a 
 		//defenseleveldisplay
 		
-		myLevelDisplay = new DefenseLevelDisplay(n, this); //for now assuming it has to be a defense one.
+		myLevelDisplay = new DefenseLevelDisplay(n, this, myController); //for now assuming it has to be a defense one.
 		Label initialLabel = new Label("You have to add content to this first! Click the edit button!");
 		editLevel = new Button("Edit Level");
 		editLevel.setAlignment(Pos.CENTER);

@@ -2,6 +2,7 @@ package authoring.bottomToolBar;
 
 import java.util.ResourceBundle;
 
+import engine.authoring_engine.AuthoringController;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -20,12 +21,14 @@ public class LevelDisplay {
 	private int myNumber;
 	private Stage myStage;
 	private LevelTab myLv;
-	ResourceBundle rb;
+	private AuthoringController myController;
+	private ResourceBundle rb;
 	
 	
 	
-	public LevelDisplay(int n, LevelTab lv) {
+	public LevelDisplay(int n, LevelTab lv, AuthoringController controller) {
 		myNumber = n;
+		myController = controller;
 		myStage = new Stage();
 //		myStage.setTitle(rb.getString("lvNum")+ " " + n);
 		myStage.setTitle("Level Number " + n);
