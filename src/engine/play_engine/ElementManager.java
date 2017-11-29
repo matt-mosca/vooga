@@ -26,7 +26,7 @@ public class ElementManager {
 
 	// TODO
 	// Reference to GridManager
-	
+
 	/**
 	 * Handles the collision-checking and Sprite-specific collision-handling logic
 	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md
@@ -45,18 +45,19 @@ public class ElementManager {
 	void setCurrentElements(List<Sprite> newElements) {
 		gameElements = newElements;
 	}
-	
+
 	/*
-	 * AbstractMovementStrategy object should be created with the coordinates Method might
-	 * still be necessary but should just do void and put in authoring game grid
+	 * AbstractMovementStrategy object should be created with the coordinates Method
+	 * might still be necessary but should just do void and put in authoring game
+	 * grid
 	 */
 
 	Sprite placeElement(String elementName, Point2D startCoordinates) {
 		// Use SpriteFactory to construct Sprite from elementName with these
 		// coordinates
-		
+
 		// Check if resources are sufficient first
-		
+
 		Sprite generatedSprite = spriteFactory.generateSprite(elementName, startCoordinates);
 		// Add created Sprite to gameElements
 		return generatedSprite;
@@ -77,11 +78,15 @@ public class ElementManager {
 	boolean allEnemiesDead() {
 		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.isAlive());
 	}
-	
+
 	boolean allAlliesDead() {
 		return allElementsFulfillCondition(element -> !element.isAlly() || !element.isAlive());
 	}
-	
+
+	boolean enemyReachedTarget() {
+		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
+	}
+
 	boolean allElementsFulfillCondition(Predicate<Sprite> condition) {
 		for (Sprite element : gameElements) {
 			if (!condition.test(element)) {
@@ -90,7 +95,7 @@ public class ElementManager {
 		}
 		return true;
 	}
-	
+
 	private void processAllCollisionsForElement(int elementIndex, Sprite element) {
 		for (int otherIndex = elementIndex + 1; otherIndex < gameElements.size(); otherIndex++) {
 			Sprite otherElement = gameElements.get(otherIndex);
@@ -103,9 +108,9 @@ public class ElementManager {
 
 	/*
 	 * Santo's GridManager is not ready, so might as well skip this for now and use
-	 * the exact collision-checking logic above // TEMP - SIMPLIFIED CHECKING OF COLLISIONS,
-	 * JUST BY GRID POSITION private boolean collidesWith(Sprite element, Sprite
-	 * otherElement) { // TODO return false; // TEMP }
+	 * the exact collision-checking logic above // TEMP - SIMPLIFIED CHECKING OF
+	 * COLLISIONS, JUST BY GRID POSITION private boolean collidesWith(Sprite
+	 * element, Sprite otherElement) { // TODO return false; // TEMP }
 	 */
 
 }

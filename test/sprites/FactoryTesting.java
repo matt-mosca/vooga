@@ -61,11 +61,11 @@ public class FactoryTesting {
         choices.put("Collided-with effects", "Deal damage to colliding objects");
         choices.put("Firing Behavior", "Shoot periodically");
         Map<String, Class> auxProperties = spriteFactory.getAuxiliaryElementProperties(choices);
-        choices.put("Target y-coordinate", "0.0");
+        choices.put("Target y-coordinate", "1.0");
         choices.put("imageWidth", "10.0");
         choices.put("Damage dealt to colliding objects", "1.0");
         choices.put("Health points", "50.0");
-        choices.put("Target x-coordinate", "0.0");
+        choices.put("Target x-coordinate", "1.0");
         choices.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
         choices.put("Speed of movement", "1");
         choices.put("Numerical \"team\" association", "1");

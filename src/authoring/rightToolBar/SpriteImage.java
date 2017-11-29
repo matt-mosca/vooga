@@ -14,17 +14,38 @@ import sprites.InteractiveObject;
 public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
 	private AuthoringController controller;
-	private Map<String, String> myProperties;
 	private Map<String, String> myPossibleProperties;
 	private Map<String, String> myBaseProperties;
 	private String myName;
 	private ResourceBundle myResourceBundle;
+	private Map<String, String> defaultValues;
+	private Map<String, String> allProperties;
+
 	
 	public SpriteImage(ScreenDisplay display) {
-		super(display);
+		super(display,null);
+		defaultValues = new HashMap<>();
 		myResourceBundle = ResourceBundle.getBundle("authoring/resources/SpriteProperties");
 		myBaseProperties = new HashMap<String, String>();
 		myPossibleProperties = new HashMap<String, String>();
+		addDefaultValues();
+		allProperties = new HashMap<String, String>();
+
+	}
+	
+	private void addDefaultValues() {
+		defaultValues.put("imageWidth", "20");
+		defaultValues.put("imageHeight", "20");
+		defaultValues.put("Numerical \"team\" association", "0");
+		defaultValues.put("Health points", "50");
+		defaultValues.put("Damage dealt to colliding objects", "20");
+		defaultValues.put("Speed of movement", "5");
+		defaultValues.put("initialAngle", "0");
+		defaultValues.put("radius", "10");
+		defaultValues.put("centerY", "0");
+		defaultValues.put("centerX", "0");
+		defaultValues.put("Target y-coordinate", "0");
+		defaultValues.put("Target x-coordinate", "0");
 	}
 	
 	public void addImage(String imageName) {
@@ -35,12 +56,12 @@ public abstract class SpriteImage extends InteractiveObject {
 		}catch (NullPointerException e) {
 			image = new Image(imageName);
 		}
+		defaultValues.put("imageUrl", imageName);
 		this.setImage(image);
 	}
 	
 	public void setName(String name) {
 		myName = name;
-		myProperties.put("Name", name);
 	}
 	
 	public String getName() {
@@ -48,11 +69,11 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	public void createInitialProperties(Map<String, Class> newMap) {
-
+		
 		if (myPossibleProperties.isEmpty()) {
+			myPossibleProperties.put("Name", myName);
 			for (String s : newMap.keySet()) {
-				System.out.println(myResourceBundle.getString(s));
-				myPossibleProperties.put(s, myResourceBundle.getString(s));
+				myPossibleProperties.put(s, getDefault(s));
 			}
 		} 
 	}
@@ -62,8 +83,7 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	public Map<String, String> getMyProperties() {
-//		return myPossibleProperties;
-		return myProperties;
+		return myPossibleProperties;
 	}
 	
 	public void setMyProperties(Map<String, String> newMap) {
@@ -90,10 +110,21 @@ public abstract class SpriteImage extends InteractiveObject {
 		return myBaseProperties;
 	}
 	
+	public Map<String, String> getAllProperties() {
+		allProperties.putAll(myPossibleProperties);		
+		allProperties.putAll(myBaseProperties);
+		return allProperties;
+	}
+	
 	@Override
 	public int getSize() {
 		//TODO modify to let spriteimages occupy cells as well
 		return 0;
+	}
+	
+	private String getDefault(String property) {
+		return defaultValues.get(property);
+		
 	}
 	
 	public abstract SpriteImage clone();

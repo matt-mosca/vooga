@@ -18,6 +18,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
+import sprites.InteractiveObject;
 import sprites.Sprite;
 import sprites.StaticObject;
 
@@ -28,8 +29,9 @@ import sprites.StaticObject;
  */
 public class GenericToolBar extends ScrollPane {
 	private static final int WIDTH = 300;
-	private List<StaticObject> myList;
-	private ListView<StaticObject> myListView;
+	private List<InteractiveObject> myList;
+	private ListView<InteractiveObject> myListView;
+	protected ObservableList<InteractiveObject> items;
 	private ScreenDisplay myDisplay;
 	private StaticObject myStatic1;
 	private StaticObject myStatic2;
@@ -47,8 +49,8 @@ public class GenericToolBar extends ScrollPane {
 	}
 	
 	public void addToStaticToolbar() {
-        ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
-        myListView = new ListView<StaticObject>();
+        items = FXCollections.observableArrayList(myList);
+        myListView = new ListView<>();
         myListView.setOnMouseClicked(e->myDisplay.listItemClicked(
         		myListView.getSelectionModel().getSelectedItem()));
         myListView.setItems(items);
@@ -69,7 +71,7 @@ public class GenericToolBar extends ScrollPane {
 	}
 
 	public void addToList() {
-		myList = new ArrayList<StaticObject>();
+		myList = new ArrayList<>();
         myList.add(myStatic1);
         myList.add(myStatic2);
         myList.add(myBackground3);
@@ -77,8 +79,8 @@ public class GenericToolBar extends ScrollPane {
 	}
 	
 	public void addToToolbar() {
-        ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
-        myListView = new ListView<StaticObject>();
+        items = FXCollections.observableArrayList(myList);
+        myListView = new ListView<>();
         myListView.setOnMouseClicked(e->myDisplay.listItemClicked(
         		myListView.getSelectionModel().getSelectedItem()));
         myListView.setItems(items);
