@@ -80,5 +80,7 @@ public abstract class ScreenDisplay {
 		droppable = drop;
 	}
 	
+	public abstract void save(String saveName);
+	
 	public abstract void listItemClicked(ClickableInterface clickable);
 }

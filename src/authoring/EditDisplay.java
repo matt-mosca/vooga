@@ -113,7 +113,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		controller = new AuthoringController();
 		myLeftToolBar = new LeftToolBar(this, controller);
 		rootAdd(myLeftToolBar);
-		myGameArea = new GameArea(this);
+		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
 		this.SetDroppable(myGameArea);
@@ -125,7 +125,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myThemeChanger);
 		myGameChooser = new AttackDefenseToggle(this);
 		rootAdd(myGameChooser);
-		myMenuBar = new MainMenuBar(controller, this);
+		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
 	}
 	
@@ -210,6 +210,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void changeColor(String color) {
 		myGameArea.changeColor(color);
+	}
+	
+	@Override
+	public void save(String saveName) {
+		controller.saveGameState(saveName);
+		myGameArea.savePath();
 	}
 
 	public void changeTheme(String theme) {

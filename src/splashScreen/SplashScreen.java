@@ -181,6 +181,12 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		
 	}
 
+	@Override
+	public void save(String saveName) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

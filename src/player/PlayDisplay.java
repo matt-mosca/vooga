@@ -176,5 +176,11 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void save(String saveName) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

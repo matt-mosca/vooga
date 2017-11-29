@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.path.Path;
+import authoring.path.PathParser;
+import engine.authoring_engine.AuthoringController;
 import interfaces.ClickableInterface;
 import interfaces.CustomizeInterface;
 import interfaces.Droppable;
@@ -30,9 +32,11 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private int colPercentage;
 	private String backgroundColor;
 	
+	private AuthoringController myController;
 	private ResourceBundle gameProperties;
 	private PlacementGrid grid;
 	private Path path;
+	private PathParser parser;
 	private boolean gridEnabled;
 	private boolean moveableEnabled;
 	
@@ -40,15 +44,17 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private Group backObjects;
 	private List<StaticObject> objectList;
 	
-	public GameArea(AuthorInterface author) {
+	public GameArea(AuthoringController controller) {
 		initializeProperties();
 		initializeLayout();
 		initializeHandlers();
+		myController = controller;
 		objectList = new ArrayList<>();
 		frontObjects = new Group();
 		backObjects = new Group();
 		path = new Path();
-		grid = new PlacementGrid(author, width, height, rowPercentage, colPercentage, path);
+		parser = new PathParser();
+		grid = new PlacementGrid(width, height, rowPercentage, colPercentage, path);
 
 		this.getChildren().add(grid);
 		this.getChildren().add(backObjects);
@@ -118,6 +124,11 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		this.setPrefSize(width, height);
 	}
 	
+	protected void savePath() {
+		//parser.parse(path);
+		//Method to save path to controller
+	}
+	
 	@Override
 	public void changeColor(String hexcode) {
 		this.setStyle("-fx-background-color: " + hexcode + ";");
@@ -135,6 +146,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 				if(!(node instanceof BackgroundObject)) node.toFront();
 			}
 		}
+		myController.moveElement(interactive.getElementId(), interactive.getX(), interactive.getY());
 	}
 
 	@Override
@@ -142,6 +154,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		frontObjects.getChildren().remove(interactive);
 		backObjects.getChildren().remove(interactive);
 		objectList.remove(interactive);
+		myController.deleteElement(interactive.getElementId());
 	}
 
 	@Override

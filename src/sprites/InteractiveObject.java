@@ -10,9 +10,11 @@ import splashScreen.ScreenDisplay;
 
 public abstract class InteractiveObject extends ImageView implements ClickableInterface{
 	private boolean locked;
+	private int id;
 	private Droppable droppable;
 	private ScreenDisplay myDisplay;
 	
+	//TODO set ID
 	public InteractiveObject(ScreenDisplay display) {
 		myDisplay = display; 
 		droppable = myDisplay.getDroppable();
@@ -54,6 +56,10 @@ public abstract class InteractiveObject extends ImageView implements ClickableIn
 	
 	public Point2D center() {
 		return new Point2D(this.getX(), this.getY());
+	}
+	
+	public int getElementId() {
+		return id;
 	}
 	
 	public abstract int getSize();
