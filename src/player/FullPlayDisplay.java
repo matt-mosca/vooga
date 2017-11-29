@@ -3,6 +3,7 @@ package player;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import authoring.AuthorInterface;
 import authoring.GameArea;
@@ -24,6 +25,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
@@ -106,6 +108,15 @@ public class FullPlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		for(String title:myController.getAvailableGames().keySet()) {
 //			games.add(title);
 //		}
+		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
+		loadChoices.setTitle("Load Game");
+		loadChoices.setContentText(null);
+		loadChoices.setDialogPane(null);
+		
+		Optional<String> result = loadChoices.showAndWait();
+		if(result.isPresent()) {
+//			loadPlayDisplay();
+		}
 	}
 
 	private void createTestImages() {
