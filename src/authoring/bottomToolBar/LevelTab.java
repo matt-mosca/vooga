@@ -1,6 +1,7 @@
 package authoring.bottomToolBar;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 
@@ -14,9 +15,18 @@ public class LevelTab extends ScrollPane{
 		myNumber = n;
 		//needs to be a check for what kind of level it is, so that we either create an attackleveldisplay or a 
 		//defenseleveldisplay
-		myLevelDisplay = new LevelDisplay(n, this);
-		editLevel = new Button();
-		editLevel.setOnAction(e->openLevelDisplay());
+		
+		myLevelDisplay = new DefenseLevelDisplay(n, this); //for now assuming it has to be a defense one.
+		Label initialLabel = new Label("You have to add content to this first! Click the edit button!");
+		editLevel = new Button("Edit Level");
+		//Need to put the button somewhere first.
+		editLevel.setOnAction(e->{
+			openLevelDisplay(); 
+			this.getChildren().remove(initialLabel);
+			this.update();
+			});
+		this.getChildren().add(initialLabel);
+		this.getChildren().add(editLevel);
 	}
 
 
@@ -35,7 +45,7 @@ public class LevelTab extends ScrollPane{
 	public void update() {
 		//TODO
 		//this method will update the different components in this tab, for the display. 	
-		//probably will involve using a lot of get methods to get stuff from teh back end in order to display them.
+		//probably will involve using a lot of get methods to get stuff from the back end in order to display them.
 	}
 
 
