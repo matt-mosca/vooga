@@ -139,6 +139,7 @@ public class SpriteFactory {
                 }
                 return parameterClass.getConstructors()[0].newInstance(constructorParameters);
             } else {
+                System.out.println("Fucks");
                 return null;
             }
         }
