@@ -207,29 +207,34 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	// TODO (extension) - for multiplayer, take a playerId parameter in this method
 	// and call for every playing playerId in game loop
 	private boolean allEnemiesDead() {
-		System.out.println("Checking if all enemies are dead");
 		return elementManager.allEnemiesDead();
 	}
 
 	// TODO - Boolean defeat conditions
 	private boolean allAlliesDead() {
-		System.out.println("Checking if all allies are dead");
 		return elementManager.allAlliesDead();
 	}
 
-	/*
-	 * For testing of reflection and streams public static void main(String[] args)
-	 * { PlayController tester = new PlayController();
-	 * tester.setVictoryCondition("kill all enemies");
-	 * tester.setDefeatCondition("lose all allies"); boolean goodResult =
-	 * tester.checkLevelClearanceCondition(); boolean badResult =
-	 * tester.checkDefeatCondition(); System.out.println("Level cleared? " +
-	 * Boolean.toString(goodResult)); System.out.println("Defeated? " +
-	 * Boolean.toString(badResult)); for (String s
-	 * :tester.conditionsReader.getPossibleVictoryConditions()) {
-	 * System.out.println("Victory Condition : " + s); } for (String s :
-	 * tester.conditionsReader.getPossibleDefeatConditions()) {
-	 * System.out.println("Defeat Condition: " + s); } }
-	 */
+	private boolean enemyReachedTarget() {
+		return elementManager.enemyReachedTarget();
+	}
+
+	/* For testing of reflection and streams
+	public static void main(String[] args) {
+		PlayController tester = new PlayController();
+		tester.setVictoryCondition("kill all enemies");
+		tester.setDefeatCondition("lose all allies");
+		boolean goodResult = tester.checkLevelClearanceCondition();
+		boolean badResult = tester.checkDefeatCondition();
+		System.out.println("Level cleared? " + Boolean.toString(goodResult));
+		System.out.println("Defeated? " + Boolean.toString(badResult));
+		for (String s : tester.conditionsReader.getPossibleVictoryConditions()) {
+			System.out.println("Victory Condition : " + s);
+		}
+		for (String s : tester.conditionsReader.getPossibleDefeatConditions()) {
+			System.out.println("Defeat Condition: " + s);
+		}
+	}
+	*/
 
 }
