@@ -24,6 +24,6 @@ public class StraightLineMovementStrategy extends TargetedMovementStrategy {
 	
 	public void bounce() {
 		
-	}
+	}   
 
 }
