@@ -211,8 +211,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void changeColor(String color) {
 		myGameArea.changeColor(color);
 	}
-	
-	@Override
+
 	public void changeTheme(String theme) {
 		rootStyle(myThemeChanger.getThemePath(theme));
 //		myRightToolBar.getStyleClass().add("borders");

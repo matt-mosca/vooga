@@ -3,16 +3,15 @@ package authoring;
 import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.ClickableInterface;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import sprites.BackgroundObject;
-import sprites.StaticObject;
+import sprites.InteractiveObject;
 
 public class Cell extends StackPane{
 	private boolean active = false;
-	private List<ClickableInterface> myAssignments;
-	private List<ClickableInterface> myBackgrounds;
+	private List<InteractiveObject> myAssignments;
+	private List<InteractiveObject> myBackgrounds;
 	
 	public Cell() {
 		myAssignments = new ArrayList<>();
@@ -41,7 +40,7 @@ public class Cell extends StackPane{
 		active = false;
 	}
 	
-	protected void assignToCell(ClickableInterface currObject) {
+	protected void assignToCell(InteractiveObject currObject) {
 		if (currObject instanceof BackgroundObject) {
 			myBackgrounds.add((BackgroundObject) currObject);
 		} else {
@@ -53,11 +52,11 @@ public class Cell extends StackPane{
 		return myAssignments.isEmpty();
 	}
 
-	public void removeAssignment(ClickableInterface currObject) {
-		if (!isEmpty()) myAssignments.remove(currObject);
+	public void removeAssignment(InteractiveObject interactive) {
+		if (!isEmpty()) myAssignments.remove(interactive);
 	}
 	
-	public List<ClickableInterface> saveAssignments() {
+	public List<InteractiveObject> saveAssignments() {
 		return myAssignments;
 	}
 }

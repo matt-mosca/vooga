@@ -2,15 +2,19 @@ package authoring.rightToolBar;
 
 import java.util.ResourceBundle;
 
+import splashScreen.ScreenDisplay;
+
 
 public class TowerImage extends SpriteImage {
 	
+	private ScreenDisplay myDisplay;
 	private ResourceBundle towerResources;
 	private String myKey;
 	private SpriteImage myProjectile;
 	
-	public TowerImage(String stringKey) {
-		super();
+	public TowerImage(ScreenDisplay display, String stringKey) {
+		super(display);
+		myDisplay = display;
 		myKey = stringKey;
 		towerResources = ResourceBundle.getBundle("authoring/resources/NewTowerImages");
 		if(towerResources.containsKey(stringKey)) {
@@ -34,7 +38,7 @@ public class TowerImage extends SpriteImage {
 	
 	@Override
 	public TowerImage clone() {
-		TowerImage cloneImage = new TowerImage(myKey);
+		TowerImage cloneImage = new TowerImage(myDisplay, myKey);
 		cloneImage.setName(this.getName());
 		cloneImage.setFitHeight(this.getFitHeight());
 		cloneImage.setFitWidth(this.getFitWidth());

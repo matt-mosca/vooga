@@ -5,15 +5,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import authoring.EditDisplay;
 import authoring.rightToolBar.ProjectileImage;
 import interfaces.CreationInterface;
 
 public class NewProjectileTab extends NewSpriteTab {
 	
 	private ResourceBundle projectileResources;
+	private EditDisplay myDisplay;
 	
-	public NewProjectileTab(CreationInterface created) {
-		super(created);
+	public NewProjectileTab(EditDisplay display) {
+		super(display);
+		myDisplay = display;
 		projectileResources = ResourceBundle.getBundle("authoring/resources/NewProjectileImages");
 		addDefaultImages();
 	}
@@ -27,7 +30,7 @@ public class NewProjectileTab extends NewSpriteTab {
 	
 	private void addImages(List<String> stringNames) {
 		for (String s : stringNames) {
-			addImage(new ProjectileImage(s));
+			addImage(new ProjectileImage(myDisplay, s));
 		}
 	}
 }

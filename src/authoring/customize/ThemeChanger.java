@@ -1,10 +1,12 @@
 package authoring.customize;
 
+import authoring.EditDisplay;
 import interfaces.CustomizeInterface;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
+import splashScreen.ScreenDisplay;
 
 /**
  * Creates a button to change the background
@@ -24,14 +26,14 @@ public class ThemeChanger extends ComboBox<String> {
 	public static final String GOLD = "Gold";
 	public static final String MIDNIGHT = "Midnight";
 	
-	public ThemeChanger(CustomizeInterface customize) {
+	public ThemeChanger(EditDisplay display) {
 		this.setPrefWidth(WIDTH);
 		this.setLayoutX(X_POS);
 		this.setLayoutY(Y_POS);
 		this.setPromptText(PROMPT_TEXT);
 		String[] themes = {STANDARD, DARK, FOREST, SKY, GOLD, MIDNIGHT};
 		ObservableList<String> colorList = FXCollections.observableArrayList(themes);
-		ChangeListener<String> propertyHandler = (obs, old, cur) -> customize.changeTheme(cur);
+		ChangeListener<String> propertyHandler = (obs, old, cur) -> display.changeTheme(cur);
 		this.getSelectionModel().selectedItemProperty().addListener(propertyHandler);
 		this.setEditable(true);
 		this.setVisibleRowCount(3);

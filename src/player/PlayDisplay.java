@@ -92,7 +92,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	private void createTestImages() {
-		tower1 = new TowerImage("Castle_Tower1");
+		tower1 = new TowerImage(this, "Castle_Tower1");
 		tower1.setFitHeight(40);
 		tower1.setFitWidth(40);
 		myPlayArea.placeInGrid(tower1);

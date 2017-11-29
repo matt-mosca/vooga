@@ -1,8 +1,5 @@
 package sprites;
 
-import interfaces.ClickableInterface;
-import javafx.geometry.Point2D;
-import javafx.scene.input.MouseEvent;
 import splashScreen.ScreenDisplay;
 
 public class BackgroundObject extends StaticObject {
