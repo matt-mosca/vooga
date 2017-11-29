@@ -1,9 +1,5 @@
 package engine.behavior.firing;
 
-import com.thoughtworks.xstream.XStream;
-import javafx.geometry.Point2D;
-
-import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringStrategy {

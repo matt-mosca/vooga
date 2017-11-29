@@ -109,6 +109,7 @@ public class SpriteFactory {
 			return (Sprite) Sprite.class.getConstructors()[0].newInstance(spriteConstructionArguments);
 		} catch (ReflectiveOperationException reflectionException) {
 			// TODO - custom exception or default
+            reflectionException.printStackTrace();
 			return null;
 		}
 	}

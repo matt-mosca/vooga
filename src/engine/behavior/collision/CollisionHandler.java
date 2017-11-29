@@ -3,6 +3,7 @@ package engine.behavior.collision;
 import engine.behavior.ParameterName;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import util.Exclude;
 
 /**
  * Encapsulates game elements' collision fields and behavior. Responsible for checking for and handling collisions.
@@ -20,7 +21,7 @@ public class CollisionHandler {
     private String imageUrl;
     private double imageHeight;
     private double imageWidth;
-    private transient ImageView graphicalRepresentation;
+    @Exclude private ImageView graphicalRepresentation;
 
     public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
                             @ParameterName("imageUrl") String imageUrl,

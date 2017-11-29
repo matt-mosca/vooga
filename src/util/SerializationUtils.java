@@ -1,7 +1,6 @@
 package util;
 
 import com.google.gson.GsonBuilder;
-import com.thoughtworks.xstream.XStream;
 
 import engine.Bank;
 import engine.behavior.collision.CollisionVisitor;
@@ -35,6 +34,9 @@ public class SerializationUtils {
 
 	public SerializationUtils() {
 		gsonBuilder = new GsonBuilder();
+		gsonBuilder.setExclusionStrategies(new AnnotationExclusionStrategy());
+		gsonBuilder.serializeSpecialFloatingPointValues();
+		gsonBuilder.setLenient();
 	}
 
 	/**

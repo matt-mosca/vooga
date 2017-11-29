@@ -13,7 +13,7 @@ import javafx.geometry.Point2D;
  */
 public abstract class AbstractMovementStrategy implements MovementStrategy {
 
-	private final int DEFAULT_START_COORDINATE = 0;
+	private final int DEFAULT_START_COORDINATE = -1;
 	// Alternative to using properties - can simply update x, y values of
 	// trackingPoint in setX and setY respectively ... preferred approach?
 	private TrackingPoint trackingPoint;
