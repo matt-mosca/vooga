@@ -147,7 +147,7 @@ public abstract class AbstractGameController {
 	public Map<String, Double> getStatus() {
 		return getLevelStatuses().get(getCurrentLevel());
 	}
-	
+
 	public Map<String, Double> getResourceEndowments() {
 		return getLevelBanks().get(getCurrentLevel()).getResourceEndowments();
 	}
@@ -191,11 +191,11 @@ public abstract class AbstractGameController {
 	protected List<String> getLevelDescriptions() {
 		return levelDescriptions;
 	}
-	
+
 	protected List<List<Sprite>> getLevelSprites() {
 		return levelSpritesCache;
 	}
-	
+
 	protected List<Bank> getLevelBanks() {
 		return levelBanks;
 	}
@@ -253,8 +253,9 @@ public abstract class AbstractGameController {
 		assertValidLevel(level);
 		addOrSetLevelData(levelDescriptions, ioController.loadGameDescription(savedGameName, level), level);
 	}
-	
-	private void loadGameBankForLevel(String savedGameName, int level, boolean originalGame) throws FileNotFoundException {
+
+	private void loadGameBankForLevel(String savedGameName, int level, boolean originalGame)
+			throws FileNotFoundException {
 		assertValidLevel(level);
 		addOrSetLevelData(levelBanks, ioController.loadGameBank(savedGameName, level, originalGame), level);
 	}
@@ -284,7 +285,7 @@ public abstract class AbstractGameController {
 		getLevelSprites().add(new ArrayList<>());
 		getLevelConditions().add(new HashMap<>());
 		getLevelDescriptions().add(new String());
-		getLevelBanks().add(new Bank());
+		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
 	}
 
 }
