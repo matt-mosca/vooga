@@ -3,6 +3,7 @@ package player;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import authoring.AuthorInterface;
 import authoring.GameArea;
@@ -23,6 +24,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -64,6 +66,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
+		initializeGameState();
 		myCoinDisplay = new CoinDisplay();
 		rootAdd(myCoinDisplay);
 		
@@ -105,6 +108,22 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		tower1.setFitHeight(40);
 		tower1.setFitWidth(40);
 		myPlayArea.placeInGrid(tower1);
+	}
+	
+	private void initializeGameState() {
+		List<String> games = new ArrayList<>();
+//		for(String title:myController.getAvailableGames().keySet()) {
+//			games.add(title);
+//		}
+		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
+		loadChoices.setTitle("Load Game");
+		loadChoices.setContentText(null);
+		loadChoices.setDialogPane(null);
+		
+		Optional<String> result = loadChoices.showAndWait();
+		if(result.isPresent()) {
+//			loadPlayDisplay();
+		}
 	}
 	
 	private void step() {

@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
+import player.FullPlayDisplay;
 import player.PlayDisplay;
 import sprites.InteractiveObject;
 
@@ -168,7 +169,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	@Override
 	public void playExisting() {
-		PlayDisplay myScene = new PlayDisplay(MAINWIDTH, MAINHEIGHT);
+		FullPlayDisplay myScene = new FullPlayDisplay(MAINWIDTH, MAINHEIGHT);
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		stage.setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		stage.setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
