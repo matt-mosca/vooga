@@ -43,5 +43,9 @@ public class LevelDisplay {
 	protected int getLevelNumber() {
 		return myNumber;
 	}
+
+	public void decrementLevel() {
+		myNumber-=1;
+	}
 	
 }

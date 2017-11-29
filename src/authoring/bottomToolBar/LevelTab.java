@@ -25,13 +25,23 @@ public class LevelTab extends ScrollPane{
 	}
 	
 	public void attach(Tab level) {
-		
+		level.setContent(this);
 	}
 
+	public int getLvNumber() {
+		return myNumber;
+	}
 
 	public void update() {
 		//TODO
 		//this method will update the different components in this tab, for the display. 	
 		//probably will involve using a lot of get methods to get stuff from teh back end in order to display them.
+	}
+
+
+	public void decrementLevel() {
+		myNumber-=1;
+		myLevelDisplay.decrementLevel();
+		
 	}
 }
