@@ -59,7 +59,6 @@ public class SelectionWindow extends Stage {
 	}
 	
 	private void yesButtonPressed(SpriteImage imageView) {
-		
 		imageView.setName(enterName.getText());
 		author.imageSelected(imageView);
 		noButtonPressed();

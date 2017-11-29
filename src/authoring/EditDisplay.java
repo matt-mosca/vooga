@@ -12,6 +12,7 @@ import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
+import engine.play_engine.PlayController;
 import interfaces.ClickableInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -54,6 +55,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private  ReturnButton myReturnButton;
 	private Map<String, String> basePropertyMap;
 	private BottomToolBar myBottomToolBar;
+	private PlayController tester;
 
 	
 	
@@ -61,6 +63,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		super(width, height, Color.GREEN);
 //		super(width, height);
 		super(width, height, Color.BLACK);
+		tester = new PlayController();
 //		super(width, height, Color.GRAY);
 		myReturnButton = new ReturnButton(this);
 		rootAdd(myReturnButton);
@@ -145,7 +148,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		addNewButton.setLayoutY(20);
 		incrementButton.setLayoutY(20);
 		decrementButton.setLayoutY(20);
-
 		incrementButton.setLayoutX(50);
 		decrementButton.setLayoutX(85);
 		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
@@ -232,10 +234,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void imageSelected(SpriteImage imageView) {
 		imageView.addBasePropertyMap(basePropertyMap);
-//		System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		myRightToolBar.imageSelected(imageView);
 		
+		controller.defineElement(imageView.getName(), imageView.getAllProperties());
 	}
 
 	@Override
