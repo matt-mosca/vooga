@@ -136,6 +136,13 @@ public interface AuthoringModelController {
 	int placeElement(String elementName, Point2D startCoordinates);
 
 	/**
+	 * Add element of given name
+	 * 
+	 * @param elementName
+	 */
+	void addElementToInventory(String elementName);
+
+	/**
 	 * Get the ImageView corresponding to a particular spriteId
 	 * 
 	 * @param spriteId
@@ -152,13 +159,6 @@ public interface AuthoringModelController {
 	 * @return a map of relevant details to display or modify about the game
 	 */
 	Map<String, Double> getStatus();
-
-	/**
-	 * Retrieve information on the quantity of each resource left
-	 * 
-	 * @return map of resource name to quantity of that resource left
-	 */
-	Map<String, Double> getResourceEndowments();
 
 	/**
 	 * Retrieve information on the cost of each element in terms of the various
@@ -236,6 +236,8 @@ public interface AuthoringModelController {
 	 * @return map of template names to properties of each template
 	 */
 	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
+
+	Map<String, Double> getResourceEndowments();
 
 	/**
 	 * Set the name of the game being authored.

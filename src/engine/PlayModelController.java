@@ -66,6 +66,9 @@ public interface PlayModelController {
 	 */
 	boolean isLost();
 
+	
+	boolean isLevelCleared();
+	
 	/**
 	 * Determine whether the game in-progress has been won.
 	 *

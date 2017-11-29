@@ -41,6 +41,8 @@ public abstract class AbstractGameController {
 	private List<Map<String, String>> levelConditions = new ArrayList<>();
 	private List<String> levelDescriptions = new ArrayList<>();
 	private List<Bank> levelBanks = new ArrayList<>();
+	// TODO - change to just List<List<String>>
+	private List<Map<String, Integer>> levelInventories = new ArrayList<>();
 
 	// TODO - move these into own object? Or have them in the sprite factory?
 	private AtomicInteger spriteIdCounter;
@@ -78,7 +80,7 @@ public abstract class AbstractGameController {
 			serializedLevelsData.put(level,
 					getIoController().getLevelSerialization(level, getLevelDescriptions().get(level),
 							getLevelConditions().get(level), getLevelBanks().get(level), getLevelStatuses().get(level),
-							levelSpritesCache.get(level)));
+							levelSpritesCache.get(level), levelInventories.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
@@ -160,7 +162,7 @@ public abstract class AbstractGameController {
 	public Map<String, String> getAvailableGames() {
 		return ioController.getAvailableGames();
 	}
-	
+
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs) {
 		Map<String, Object> auxiliarySpriteConstructionObjects = getAuxiliarySpriteConstructionObjectMap(
 				elementTemplateName, startCoordinates);
@@ -212,6 +214,10 @@ public abstract class AbstractGameController {
 		return levelSpritesCache;
 	}
 
+	protected List<Map<String, Integer>> getLevelInventories() {
+		return levelInventories;
+	}
+
 	protected List<Bank> getLevelBanks() {
 		return levelBanks;
 	}
@@ -226,6 +232,7 @@ public abstract class AbstractGameController {
 		loadGameConditionsForLevel(saveName, level);
 		loadGameDescriptionForLevel(saveName, level);
 		loadGameBankForLevel(saveName, level, originalGame);
+		loadGameInventoryElementsForLevel(saveName, level, originalGame);
 	}
 
 	protected SpriteFactory getSpriteFactory() {
@@ -275,6 +282,13 @@ public abstract class AbstractGameController {
 		addOrSetLevelData(levelConditions, loadedLevelConditions, level);
 	}
 
+	private void loadGameInventoryElementsForLevel(String savedGameName, int level, boolean originalGame)
+			throws FileNotFoundException {
+		assertValidLevel(level);
+		Map<String, Integer> loadedInventories = ioController.loadGameInventories(savedGameName, level, originalGame);
+		addOrSetLevelData(levelInventories, loadedInventories, level);
+	}
+
 	private void loadGameDescriptionForLevel(String savedGameName, int level) throws FileNotFoundException {
 		assertValidLevel(level);
 		addOrSetLevelData(levelDescriptions, ioController.loadGameDescription(savedGameName, level), level);
@@ -309,6 +323,7 @@ public abstract class AbstractGameController {
 	private void initializeLevel() {
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
+		getLevelInventories().add(new HashMap<>());
 		getLevelConditions().add(new HashMap<>());
 		getLevelDescriptions().add(new String());
 		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
@@ -327,7 +342,7 @@ public abstract class AbstractGameController {
 		}
 		return nearestSpriteId;
 	}
-	
+
 	private Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String elementTemplateName,
 			Point2D startCoordinates) {
 		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
