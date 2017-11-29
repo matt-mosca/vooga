@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import authoring.AuthorInterface;
+import authoring.EditDisplay;
 import authoring.ObjectProperties;
 import authoring.tabs.AddSpriteImageTab;
 import authoring.tabs.AddTab;
@@ -67,7 +68,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private final int Y_LAYOUT = 75;
 
 	
-	public RightToolBar(CreationInterface created, AuthoringController controller) {
+	public RightToolBar(EditDisplay display, AuthoringController controller) {
 		this.created = created;
 		this.myController = controller;
         this.setLayoutX(X_LAYOUT);
@@ -78,9 +79,9 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    topTabPane.setPrefHeight(250);
 	    bottomTabPane.setPrefHeight(250);
 	    createAndAddTabs();
-	    newTower = new NewTowerTab(created);   
-	    newTroop = new NewTroopTab(created); 
-	    newProjectile = new NewProjectileTab(created); 
+	    newTower = new NewTowerTab(display);   
+	    newTroop = new NewTroopTab(display); 
+	    newProjectile = new NewProjectileTab(display); 
 	    inventoryTower = new NewInventoryTower(this);
 	    inventoryTroop = new NewInventoryTroop(this);
 	    inventoryProjectile = new NewInventoryProjectile(this);
