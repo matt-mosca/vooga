@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import authoring.AuthorInterface;
-import authoring.GameArea;
 import authoring.PlacementGrid;
-import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.SpriteImage;
 import authoring.rightToolBar.TowerImage;
 import engine.behavior.collision.CollisionHandler;
@@ -19,27 +17,21 @@ import engine.behavior.firing.NoopFiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.StationaryMovementStrategy;
 import engine.play_engine.PlayController;
-import interfaces.ClickableInterface;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 import splashScreen.ScreenDisplay;
-import sprites.BackgroundObject;
 import sprites.InteractiveObject;
 import sprites.Sprite;
-import sprites.StaticObject;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
@@ -52,6 +44,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlayController myController;
 	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
+	private Button pause;
+	private Button play;
 	
 	private TowerImage tower1;
 	private double xLocation = 0;
@@ -66,26 +60,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
-		initializeGameState();
-		myCoinDisplay = new CoinDisplay();
-		rootAdd(myCoinDisplay);
-		
+		myController = new PlayController();
+		//TODO this method will allow the user to select a saved game
+//		initializeGameState();
+		initializeButtons();
 		createTestGameArea();
-		
 		createTestImages();
-
 //		createTestSprites();
 //		createTestGameArea();
-		myController = new PlayController();
-		rootAdd(new HealthBackground());
-		myGameToolBar = new GameToolBar(this);
-		rootAdd(myGameToolBar);
-		myHealthBar = new HealthBar();
-		rootAdd(myHealthBar);
-		
-		
-		myDecreaseHealthButton = new DecreaseHealthButton(this);
-		rootAdd(myDecreaseHealthButton);
+		addItems();
 		
 //		initializeSprites();
 		
@@ -95,6 +78,18 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
+	}
+
+	private void addItems() {
+		myCoinDisplay = new CoinDisplay();
+		rootAdd(myCoinDisplay);
+		rootAdd(new HealthBackground());
+		myGameToolBar = new GameToolBar(this);
+		rootAdd(myGameToolBar);
+		myHealthBar = new HealthBar();
+		rootAdd(myHealthBar);
+		myDecreaseHealthButton = new DecreaseHealthButton(this);
+		rootAdd(myDecreaseHealthButton);
 	}
 	
 //	private void initializeSprites() {
@@ -112,9 +107,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private void initializeGameState() {
 		List<String> games = new ArrayList<>();
-//		for(String title:myController.getAvailableGames().keySet()) {
-//			games.add(title);
-//		}
+		for(String title:myController.getAvailableGames().keySet()) {
+			games.add(title);
+		}
 		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
 		loadChoices.setTitle("Load Game");
 		loadChoices.setContentText(null);
@@ -122,8 +117,20 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 		Optional<String> result = loadChoices.showAndWait();
 		if(result.isPresent()) {
-//			loadPlayDisplay();
+
 		}
+	}
+	
+	private void initializeButtons() {
+		pause = new Button();
+		pause.setOnAction(e-> myController.pause());
+		pause.setText("Pause");
+		rootAdd(pause);
+		
+		play = new Button();
+		play.setOnAction(e-> myController.resume());
+		play.setText("Play");
+		rootAdd(play);
 	}
 	
 	private void step() {
@@ -132,7 +139,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		yLocation += 5;
 		tower1.setLayoutX(xLocation);
 		tower1.setLayoutY(yLocation);
-
+		myController.update();
 	}
 
 	private void createTestGameArea() {
