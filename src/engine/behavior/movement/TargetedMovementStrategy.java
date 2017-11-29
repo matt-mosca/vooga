@@ -12,6 +12,7 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
 
     private double xVelocity;
     private double yVelocity;
+
     private double velocityMagnitude;
 
     protected TargetedMovementStrategy(double targetX, double targetY, double velocityMagnitude) {
@@ -65,7 +66,6 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
     protected double getYVelocity() {
         return yVelocity;
     }
-
 
     protected void setXVelocity(double newXVelocity) {
         xVelocity = newXVelocity;
