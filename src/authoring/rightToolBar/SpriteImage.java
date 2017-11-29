@@ -20,7 +20,7 @@ public abstract class SpriteImage extends InteractiveObject {
 	private ResourceBundle myResourceBundle;
 	
 	public SpriteImage(ScreenDisplay display) {
-		super(display);
+		super(display,null);
 		myResourceBundle = ResourceBundle.getBundle("authoring/resources/SpriteProperties");
 		myBaseProperties = new HashMap<String, String>();
 		myPossibleProperties = new HashMap<String, String>();
