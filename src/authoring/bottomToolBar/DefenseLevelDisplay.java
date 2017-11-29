@@ -9,14 +9,17 @@ import java.util.ResourceBundle;
 import engine.authoring_engine.AuthoringController;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class DefenseLevelDisplay extends LevelDisplay{
-	private Scene myScene;
-	private GridPane pane;
+	
 //	private Map<String, TextBox> myTextBoxes;
 	private List<TextBox> myTextBoxes;
 	private ResourceBundle myResources;
@@ -29,14 +32,16 @@ public class DefenseLevelDisplay extends LevelDisplay{
 //		myTextBoxes = new HashMap<String, TextBox>();
 		myTextBoxes = new ArrayList<>();
 		createScene();
-		super.getStage().setScene(myScene);	
+		
 		}
 
 	private void createScene() {
-		pane = new GridPane();
-		myScene = new Scene(pane); 
+		
 		createTextBoxes();
 		placeTextAndTextFields();
+		Button createNewResource = new Button("Create a new Resource!");
+		createNewResource.setOnAction(e->createNewResource());
+		super.getLevelPane().getChildren().add(createNewResource);
 	}
 
 	private void createTextBoxes() {
@@ -57,11 +62,15 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		
 	}
 	
+	private void createNewResource() {
+		
+	}
+	
 	private void placeTextAndTextFields() {
 		int height = 30;
 		for (TextBox t: myTextBoxes) {
-			pane.add(new Label(t.getString()), 10, height);
-			pane.add(t.getTextField(), 50, height);
+			super.getLevelPane().add(new Label(t.getString()), 10, height);
+			super.getLevelPane().add(t.getTextField(), 50, height);
 			height+=10;
 		}
 	}
