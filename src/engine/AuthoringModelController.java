@@ -198,6 +198,13 @@ public interface AuthoringModelController {
 	void deleteElement(int elementId);
 
 	/**
+	 * Fetch all available game names and their corresponding descriptions
+	 * 
+	 * @return map where keys are game names and values are game descriptions
+	 */
+	Map<String, String> getAvailableGames();
+	
+	/**
 	 * Get a map of properties for a particular game element, so as to allow for
 	 * their displaying in a modification area of the display.
 	 *
