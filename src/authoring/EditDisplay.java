@@ -240,6 +240,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myRightToolBar.imageSelected(imageView);
 		
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
+		controller.addElementToInventory(imageView.getName());
 	}
 
 	@Override

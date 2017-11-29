@@ -40,12 +40,12 @@ public class LeftToolBar extends VBox {
 	
 	private void createAndAddTabs() {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
-		staticTab = new SimpleTab(myDisplay, myController, new ArrayList<>());
+		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
 		staticTab.addItem(new StaticObject(1, myDisplay, "tortoise.png"));
 		staticTab.addItem(new StaticObject(2, myDisplay, "gray_circle.png"));
 		staticTab.addItem(new StaticObject(1, myDisplay, "green_soldier.gif"));
 		
-		backgroundTab = new SimpleTab(myDisplay, myController, new ArrayList<>());
+		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
 		backgroundTab.addBackgroundItem(2, "grass_small.png");
 		backgroundTab.addBackgroundItem(1, "grass2_small.png");
 		backgroundTab.addBackgroundItem(1, "brick_path.png");

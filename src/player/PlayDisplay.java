@@ -37,7 +37,7 @@ import sprites.Sprite;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
-	private GameToolBar myGameToolBar;
+	private InventoryToolBar myInventoryToolBar;
 	private List<List<Sprite>> levelSpritesCache;
 	private PlacementGrid myMainGrid;
 	private HealthBar myHealthBar;
@@ -98,8 +98,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myCoinDisplay = new CoinDisplay();
 		rootAdd(myCoinDisplay);
 		rootAdd(new HealthBackground());
-		myGameToolBar = new GameToolBar(this);
-		rootAdd(myGameToolBar);
+		myInventoryToolBar = new InventoryToolBar(this);
+		rootAdd(myInventoryToolBar);
 		myHealthBar = new HealthBar();
 		rootAdd(myHealthBar);
 		myDecreaseHealthButton = new DecreaseHealthButton(this);
@@ -124,7 +124,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		for(String title:myController.getAvailableGames().keySet()) {
-			games.add(title);
+			games.add(title.replace(".voog", ""));
 		}
 		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
 		loadChoices.setTitle("Load Game");

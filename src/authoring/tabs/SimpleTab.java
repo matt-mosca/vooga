@@ -2,7 +2,6 @@ package authoring.tabs;
 
 import java.util.List;
 
-import engine.authoring_engine.AuthoringController;
 import interfaces.ClickableInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,11 +18,9 @@ public class SimpleTab extends ScrollPane{
 	private List<InteractiveObject> myList;
 	private ListView<InteractiveObject> myListView;
 	private ObservableList<InteractiveObject> items;
-	private AuthoringController myController;
 	
-	public SimpleTab(ScreenDisplay display, AuthoringController controller, List<InteractiveObject> defaults) {
+	public SimpleTab(ScreenDisplay display, List<InteractiveObject> defaults) {
 		this.display = display;
-		this.myController = controller;
 		addDefaultImages(defaults);
 	}
 
@@ -48,7 +45,5 @@ public class SimpleTab extends ScrollPane{
 	
 	public void addItem(InteractiveObject object) {
 		items.add(object);
-		//TODO get this to work with properties map
-//		myController.defineElement(object.getImageString(), null);
 	}
 }
