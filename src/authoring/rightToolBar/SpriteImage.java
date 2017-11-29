@@ -14,7 +14,6 @@ import sprites.InteractiveObject;
 public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
 	private AuthoringController controller;
-	private Map<String, String> myProperties;
 	private Map<String, String> myPossibleProperties;
 	private Map<String, String> myBaseProperties;
 	private String myName;
@@ -40,7 +39,6 @@ public abstract class SpriteImage extends InteractiveObject {
 	
 	public void setName(String name) {
 		myName = name;
-		myProperties.put("Name", name);
 	}
 	
 	public String getName() {
@@ -51,7 +49,6 @@ public abstract class SpriteImage extends InteractiveObject {
 
 		if (myPossibleProperties.isEmpty()) {
 			for (String s : newMap.keySet()) {
-				System.out.println(myResourceBundle.getString(s));
 				myPossibleProperties.put(s, myResourceBundle.getString(s));
 			}
 		} 
@@ -62,8 +59,7 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	public Map<String, String> getMyProperties() {
-//		return myPossibleProperties;
-		return myProperties;
+		return myPossibleProperties;
 	}
 	
 	public void setMyProperties(Map<String, String> newMap) {
