@@ -1,7 +1,6 @@
 package util;
 
 import com.google.gson.GsonBuilder;
-
 import engine.Bank;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.collision.DamageDealingCollisionVisitable;

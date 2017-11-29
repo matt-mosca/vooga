@@ -42,6 +42,7 @@ public class TowerImage extends SpriteImage {
 		cloneImage.setName(this.getName());
 		cloneImage.setFitHeight(this.getFitHeight());
 		cloneImage.setFitWidth(this.getFitWidth());
+		cloneImage.setMyProperties(this.getMyProperties());
 		return cloneImage;
 	}
 }

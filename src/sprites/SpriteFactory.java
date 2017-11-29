@@ -2,17 +2,11 @@ package sprites;
 
 import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
 import util.SpriteOptionsGetter;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.

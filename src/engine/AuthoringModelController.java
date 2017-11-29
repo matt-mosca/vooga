@@ -64,12 +64,14 @@ public interface AuthoringModelController {
 	/**
 	 * Get the top-level configuration options for a game element definition.
 	 *
-	 * @return a map from the name of the configuration option to set to a list of choices for that option
+	 * @return a map from the name of the configuration option to set to a list of
+	 *         choices for that option
 	 */
 	Map<String, List<String>> getElementBaseConfigurationOptions();
 
 	/**
-	 * Get auxiliary configuration elements for a game element, based on top-level configuration choices.
+	 * Get auxiliary configuration elements for a game element, based on top-level
+	 * configuration choices.
 	 *
 	 * @return a map from the name of the configuration option to its class type
 	 */
@@ -198,6 +200,13 @@ public interface AuthoringModelController {
 	void deleteElement(int elementId);
 
 	/**
+	 * Fetch all available game names and their corresponding descriptions
+	 * 
+	 * @return map where keys are game names and values are game descriptions
+	 */
+	Map<String, String> getAvailableGames();
+
+	/**
 	 * Get a map of properties for a particular game element, so as to allow for
 	 * their displaying in a modification area of the display.
 	 *
@@ -291,6 +300,16 @@ public interface AuthoringModelController {
 	 *            element
 	 */
 	void setUnitCost(String elementName, Map<String, Double> unitCosts);
+
+	/**
+	 * Set the behavior and parameters of the wave
+	 * 
+	 * @param properties
+	 *            a map containing the properties of the wave to be created
+	 * @param spawningPoint
+	 *            the point at which to spawn the wave
+	 */
+	void setWaveProperties(Map<String, String> waveProperties, Point2D spawningPoint);
 
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions

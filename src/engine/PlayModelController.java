@@ -84,6 +84,13 @@ public interface PlayModelController {
 	 *         element
 	 */
 	int placeElement(String elementName, Point2D startCoordinates);
+	
+	/**
+	 * Fetch all available game names and their corresponding descriptions
+	 * 
+	 * @return map where keys are game names and values are game descriptions
+	 */
+	Map<String, String> getAvailableGames();
 
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
