@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.paint.Paint;
+import sprites.InteractiveObject;
 
 public abstract class ScreenDisplay {
 
@@ -80,5 +81,7 @@ public abstract class ScreenDisplay {
 		droppable = drop;
 	}
 	
-	public abstract void listItemClicked(ClickableInterface clickable);
+	public abstract void save(String saveName);
+	
+	public abstract void listItemClicked(InteractiveObject object);
 }
