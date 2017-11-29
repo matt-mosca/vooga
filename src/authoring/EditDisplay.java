@@ -59,7 +59,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private  ReturnButton myReturnButton;
 	private Map<String, String> basePropertyMap;
 	private BottomToolBar myBottomToolBar;
-	private PlayController tester;
+	
 
 	
 	
@@ -67,7 +67,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		super(width, height, Color.GREEN);
 //		super(width, height);
 		super(width, height, Color.BLACK);
-		tester = new PlayController();
 //		super(width, height, Color.GRAY);
 		myReturnButton = new ReturnButton(this);
 		rootAdd(myReturnButton);
@@ -246,6 +245,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		myRightToolBar.imageSelected(imageView);
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
+		controller.addElementToInventory(imageView.getName());
+		
+//		System.out.println(tester.getAllDefinedTemplateProperties());
+
 	}
 
 	@Override

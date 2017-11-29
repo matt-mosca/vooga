@@ -80,7 +80,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 		
 		
-		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
 		animation = new Timeline();
@@ -88,17 +87,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		
-//		tester.getLevelSprites(0);
-//		try {
-//			tester.loadSavedPlayState("game1");
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		Collection<Integer> currentSprites = tester.getLevelSprites(0);
-//		for (int i : currentSprites) {
-//			rootAdd(tester.getRepresentationFromSpriteId(i));
-//		}
+		tester.getLevelSprites(0);
+		try {
+			tester.loadSavedPlayState("game1");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Collection<Integer> currentSprites = tester.getLevelSprites(0);
+		for (int i : currentSprites) {
+			rootAdd(tester.getRepresentationFromSpriteId(i));
+		}
 	}
 
 	private void addItems() {
@@ -240,10 +239,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myPlayArea.getChildren().add(clickable);
 		clickable.setLocked(false);
 	}
+//
+//	@Override
+//	public void save(String saveName) {
+//		myController.saveGameState(saveName);
+//	}
 
 	@Override
-	public void save(File saveName) {
-		myController.saveGameState(saveName);
+	public void save(File saveFile) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
