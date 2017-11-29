@@ -28,7 +28,9 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private Packager packager;
 	private GameConditionsReader gameConditionsReader;
 	private SpriteTemplateExporter spriteExporter;
-
+	//Making a hard-coded map just so we can test in the front end with author and player
+	//We'll fix it soon 
+	
 	private final String WAVE = "wave_";
 
 	private Map<String, Set<Integer>> templateToIdMap;
@@ -40,6 +42,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 		gameConditionsReader = new GameConditionsReader();
 		templateToIdMap = new HashMap<>();
 	}
+	
+	
 
 	@Override
 	public void exportGame() {
@@ -208,5 +212,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private String getNameForWave() {
 		return WAVE + Integer.toString(gameWaveCounter.incrementAndGet());
 	}
+	
+	
 
 }

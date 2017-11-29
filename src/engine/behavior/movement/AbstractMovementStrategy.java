@@ -13,16 +13,14 @@ import javafx.geometry.Point2D;
  */
 public abstract class AbstractMovementStrategy implements MovementStrategy {
 
-	private final int DEFAULT_START_COORDINATE = 0;
+	private final int DEFAULT_START_COORDINATE = -1;
 	// Alternative to using properties - can simply update x, y values of
 	// trackingPoint in setX and setY respectively ... preferred approach?
 	private TrackingPoint trackingPoint;
-	private DoubleProperty xCoordinate;
-	private DoubleProperty yCoordinate;
 
 	public AbstractMovementStrategy() {
-		xCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
-		yCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
+		DoubleProperty xCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
+		DoubleProperty yCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
 		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
 	}
 
@@ -35,12 +33,12 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	
 	@Override
 	public double getCurrentX() {
-		return xCoordinate.get();
+		return trackingPoint.getCurrentX();
 	}
 
 	@Override
 	public double getCurrentY() {
-		return yCoordinate.get();
+		return trackingPoint.getCurrentY();
 	}
 
 	@Override
@@ -50,12 +48,12 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 
 	@Override
 	public void setX(double newX) {
-		xCoordinate.set(newX);
+		trackingPoint.setX(newX);
 	}
 
 	@Override
 	public void setY(double newY) {
-		yCoordinate.set(newY);
+		trackingPoint.setY(newY);
 	}
 	
 	public boolean targetReached() {

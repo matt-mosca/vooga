@@ -103,6 +103,7 @@ public class SpriteFactory {
 			return (Sprite) Sprite.class.getConstructors()[0].newInstance(spriteConstructionArguments);
 		} catch (ReflectiveOperationException reflectionException) {
 			// TODO - custom exception or default
+            reflectionException.printStackTrace();
 			return null;
 		}
 	}
@@ -138,6 +139,7 @@ public class SpriteFactory {
                 }
                 return parameterClass.getConstructors()[0].newInstance(constructorParameters);
             } else {
+                System.out.println("Fucks");
                 return null;
             }
         }
