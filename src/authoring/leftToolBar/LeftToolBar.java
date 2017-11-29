@@ -13,6 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import splashScreen.ScreenDisplay;
+import sprites.StaticObject;
 
 /**
  * @author Matt
@@ -39,12 +40,12 @@ public class LeftToolBar extends VBox {
 	
 	private void createAndAddTabs() {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
-		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
-		staticTab.addStaticItem(1, "tortoise.png");
-		staticTab.addStaticItem(2, "gray_circle.png");
-		staticTab.addStaticItem(1, "green_soldier.gif");
+		staticTab = new SimpleTab(myDisplay, myController, new ArrayList<>());
+		staticTab.addItem(new StaticObject(1, myDisplay, "tortoise.png"));
+		staticTab.addItem(new StaticObject(2, myDisplay, "gray_circle.png"));
+		staticTab.addItem(new StaticObject(1, myDisplay, "green_soldier.gif"));
 		
-		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
+		backgroundTab = new SimpleTab(myDisplay, myController, new ArrayList<>());
 		backgroundTab.addBackgroundItem(2, "grass_small.png");
 		backgroundTab.addBackgroundItem(1, "grass2_small.png");
 		backgroundTab.addBackgroundItem(1, "brick_path.png");

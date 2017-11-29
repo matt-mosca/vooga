@@ -3,6 +3,7 @@ package engine.behavior.collision;
 import engine.behavior.ParameterName;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import util.Exclude;
 
 /**
  * Encapsulates game elements' collision fields and behavior. Responsible for checking for and handling collisions.
@@ -16,7 +17,11 @@ public class CollisionHandler {
 
     private CollisionVisitor collisionVisitor;
     private CollisionVisitable collisionVisitable;
-    private ImageView graphicalRepresentation;
+
+    private String imageUrl;
+    private double imageHeight;
+    private double imageWidth;
+    @Exclude private ImageView graphicalRepresentation;
 
     public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
                             @ParameterName("imageUrl") String imageUrl,
@@ -24,10 +29,18 @@ public class CollisionHandler {
                             @ParameterName("imageWidth") double imageWidth) {
         this.collisionVisitor = collisionVisitor;
         this.collisionVisitable = collisionVisitable;
+        this.imageUrl = imageUrl;
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
+        constructGraphicalRepresentation();
+    }
+
+    private void constructGraphicalRepresentation() {
         graphicalRepresentation = new ImageView(new Image(imageUrl));
         graphicalRepresentation.setFitHeight(imageHeight);
         graphicalRepresentation.setFitWidth(imageWidth);
     }
+
 
     public boolean collidesWith(CollisionHandler other) {
         return other.graphicalRepresentation.getBoundsInLocal()
@@ -60,6 +73,9 @@ public class CollisionHandler {
     }
 
     public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
+        if (graphicalRepresentation == null) {
+            constructGraphicalRepresentation();
+        }
         this.graphicalRepresentation = graphicalRepresentation;
     }
     

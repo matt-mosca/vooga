@@ -1,13 +1,13 @@
 package player;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import authoring.AuthorInterface;
-import authoring.GameArea;
 import authoring.PlacementGrid;
-import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.SpriteImage;
 import authoring.rightToolBar.TowerImage;
 import engine.behavior.collision.CollisionHandler;
@@ -18,25 +18,21 @@ import engine.behavior.firing.NoopFiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.StationaryMovementStrategy;
 import engine.play_engine.PlayController;
-import interfaces.ClickableInterface;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 import splashScreen.ScreenDisplay;
-import sprites.BackgroundObject;
+import sprites.InteractiveObject;
 import sprites.Sprite;
-import sprites.StaticObject;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
@@ -49,10 +45,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlayController myController;
 	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
+	private Button pause;
+	private Button play;
 	
 	private TowerImage tower1;
 	private double xLocation = 0;
 	private double yLocation = 0;
+	private int level = 1;
 	
 	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
@@ -61,27 +60,21 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
 					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	
+	//TODO uncomment the initialization and get rid of tester
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
-		myCoinDisplay = new CoinDisplay();
-		rootAdd(myCoinDisplay);
-		
+		myController = new PlayController();
+		addItems();
+		this.SetDroppable(myPlayArea);
+//		initializeGameState();
+//		initializeSprites();
+		initializeButtons();
 		createTestGameArea();
-		
 		createTestImages();
-
 //		createTestSprites();
 //		createTestGameArea();
-		myController = new PlayController();
-		rootAdd(new HealthBackground());
-		myGameToolBar = new GameToolBar(this);
-		rootAdd(myGameToolBar);
-		myHealthBar = new HealthBar();
-		rootAdd(myHealthBar);
 		
 		
-		myDecreaseHealthButton = new DecreaseHealthButton(this);
-		rootAdd(myDecreaseHealthButton);
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
@@ -90,7 +83,19 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 	}
-	
+
+	private void addItems() {
+		myCoinDisplay = new CoinDisplay();
+		rootAdd(myCoinDisplay);
+		rootAdd(new HealthBackground());
+		myGameToolBar = new GameToolBar(this);
+		rootAdd(myGameToolBar);
+		myHealthBar = new HealthBar();
+		rootAdd(myHealthBar);
+		myDecreaseHealthButton = new DecreaseHealthButton(this);
+		rootAdd(myDecreaseHealthButton);
+	}
+
 	private void createTestImages() {
 		tower1 = new TowerImage(this, "Castle_Tower1");
 		tower1.setFitHeight(40);
@@ -98,13 +103,57 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myPlayArea.placeInGrid(tower1);
 	}
 	
+	//TODO Make sure this works once saved files are all good
+	private void initializeSprites() {
+		for(Integer id:myController.getLevelSprites(level)) {
+			ImageView imageView = myController.getRepresentationFromSpriteId(id);
+			myPlayArea.getChildren().add(imageView);
+		}
+	}
+	
+	//TODO Same as above
+	private void initializeGameState() {
+		List<String> games = new ArrayList<>();
+		for(String title:myController.getAvailableGames().keySet()) {
+			games.add(title);
+		}
+		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
+		loadChoices.setTitle("Load Game");
+		loadChoices.setContentText(null);
+		loadChoices.setDialogPane(null);
+		
+		Optional<String> result = loadChoices.showAndWait();
+		if(result.isPresent()) {
+			//Insert method here that will cue the rest of initialization
+			try {
+				myController.loadOriginalGameState(result.get(), level);
+			} catch (FileNotFoundException e) {
+				// TODO Change to alert for the user 
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	//TODO there is a problem where the buttons here aren't appearing
+	private void initializeButtons() {
+		pause = new Button();
+		pause.setOnAction(e-> myController.pause());
+		pause.setText("Pause");
+		rootAdd(pause);
+		
+		play = new Button();
+		play.setOnAction(e-> myController.resume());
+		play.setText("Play");
+		rootAdd(play);
+	}
+	
 	private void step() {
 		myCoinDisplay.increment();
-		xLocation += 5;
-		yLocation += 5;
+		xLocation += 1;
+		yLocation += 1;
 		tower1.setLayoutX(xLocation);
 		tower1.setLayoutY(yLocation);
-
+		myController.update();
 	}
 
 	private void createTestGameArea() {
@@ -142,17 +191,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		return tempSprite;
 	}
 	
-	private void drag(MouseEvent e, Rectangle currRectangle) {
-		currRectangle.setX(e.getSceneX() - currRectangle.getWidth() / 2);
-		currRectangle.setY(e.getSceneY() - currRectangle.getHeight() / 2);
-	}
-	
-	private void released(Rectangle currRectangle) {
-		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
-			createNewErrorWindow();
-		}
-	}
-	
 	private void createNewErrorWindow() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Object placement error");
@@ -171,10 +209,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 	}
 
+	//TODO clone objects so that they don't dissappear out of the list
 	@Override
-	public void listItemClicked(ClickableInterface clickable) {
-		// TODO Auto-generated method stub
-		
+	public void listItemClicked(InteractiveObject clickable) {
+		myPlayArea.getChildren().add(clickable);
+		clickable.setLocked(false);
+	}
+
+	@Override
+	public void save(String saveName) {
+		myController.saveGameState(saveName);
 	}
 	
 }

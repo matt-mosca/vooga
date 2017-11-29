@@ -84,22 +84,21 @@ public interface PlayModelController {
 	 *         element
 	 */
 	int placeElement(String elementName, Point2D startCoordinates);
+	
+	/**
+	 * Fetch all available game names and their corresponding descriptions
+	 * 
+	 * @return map where keys are game names and values are game descriptions
+	 */
+	Map<String, String> getAvailableGames();
 
 	/**
-	 * Place a game element of previously defined (or default) type within the game.
-	 * Special case where the element tracks the movement of another game element.
-	 *
-	 * @param elementName
-	 *            the template name for the element
-	 * @param startCoordinates
-	 *            the coordinates at which the element should be placed
-	 * @param idOfElementToTrack
-	 *            the unique identifier of the (previously placed) element to track
-	 * @return a unique identifier for the sprite abstraction representing the game
-	 *         element
+	 * Get map of all defined template names to their properties
+	 * 
+	 * @return map of template names to properties of each template
 	 */
-	int placeTrackingElement(String elementName, Point2D startCoordinates, int idOfElementToTrack);
-
+	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
+	
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
 	 * 

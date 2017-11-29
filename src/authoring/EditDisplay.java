@@ -1,5 +1,11 @@
 package authoring;
 
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+
+
+import authoring.bottomToolBar.BottomToolBar;
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
@@ -7,6 +13,7 @@ import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
+import engine.play_engine.PlayController;
 import interfaces.ClickableInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -27,6 +34,7 @@ import javafx.stage.Stage;
 import main.Main;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
+import sprites.InteractiveObject;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
@@ -45,17 +53,18 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
-	private Button yesButton;
-	private Button noButton;
-	private Label optionLabel;
-	private TextField enterName;
-	private ReturnButton myReturnButton;
+	private  ReturnButton myReturnButton;
+	private Map<String, String> basePropertyMap;
+	private BottomToolBar myBottomToolBar;
+	private PlayController tester;
+
 	
 	
 	public EditDisplay(int width, int height) {
 //		super(width, height, Color.GREEN);
 //		super(width, height);
 		super(width, height, Color.BLACK);
+		tester = new PlayController();
 //		super(width, height, Color.GRAY);
 		myReturnButton = new ReturnButton(this);
 		rootAdd(myReturnButton);
@@ -66,6 +75,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		createMovementToggle();
 		rootAdd(movementToggle);
 		createLabel();
+		basePropertyMap = new HashMap<String, String>();
 	}
 	
 	private void createLabel() {
@@ -113,7 +123,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		controller = new AuthoringController();
 		myLeftToolBar = new LeftToolBar(this, controller);
 		rootAdd(myLeftToolBar);
-		myGameArea = new GameArea(this);
+		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
 		this.SetDroppable(myGameArea);
@@ -125,11 +135,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myThemeChanger);
 		myGameChooser = new AttackDefenseToggle(this);
 		rootAdd(myGameChooser);
-		myMenuBar = new MainMenuBar(controller, this);
+		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
+//		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
+//		rootAdd(myBottomToolBar);
 	}
 	
-	public void listItemClicked(ClickableInterface clickable) {
+	public void listItemClicked(InteractiveObject clickable) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
@@ -137,7 +149,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		addNewButton.setLayoutY(20);
 		incrementButton.setLayoutY(20);
 		decrementButton.setLayoutY(20);
-
 		incrementButton.setLayoutX(50);
 		decrementButton.setLayoutX(85);
 		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
@@ -148,14 +159,15 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(decrementButton);
 	}
 
-	private void addObject(StaticObject object) {
-		StaticObject newObject;
+	private void addObject(InteractiveObject object) {
+		InteractiveObject newObject;
 		if (object instanceof BackgroundObject) {
 			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
 		} else {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
 		myGameArea.addBackObject(newObject);
+//		newObject.setElementId(controller.placeElement(object.getImageString(), new Point2D(object.getX(),object.getY())));
 	}
 
 	@Override
@@ -165,51 +177,18 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
-		//TODO refactor this and make the labels and buttons their own class
-		noButtonPressed();
-		createTextField();
-		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
-		yesButton = new Button("Yes");
-		noButton = new Button("No");
-		yesButton.setLayoutX(1000);
-		noButton.setLayoutX(1050);
-		optionLabel.setLayoutX(700);
-		yesButton.setLayoutY(20);
-		noButton.setLayoutY(20);
-		optionLabel.setLayoutY(20);
-
-		rootAdd(yesButton);
-		rootAdd(optionLabel);
-		rootAdd(noButton);
-		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
-		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
-	}
-	
-	private void createTextField() {
-		enterName = new TextField();
-		enterName.setPromptText("Enter name");
-		enterName.setLayoutX(1000);
-		enterName.setLayoutY(50);
-		rootAdd(enterName);
-	}
-	
-	private void yesButtonPressed(SpriteImage imageView) {
-		imageView.setName(enterName.getText());
-		
-		myRightToolBar.imageSelected(imageView);
-		noButtonPressed();
-	}
-	
-	private void noButtonPressed() {
-		rootRemove(yesButton);
-		rootRemove(noButton);
-		rootRemove(optionLabel);
-		rootRemove(enterName);
+		SelectionWindow mySelectionWindow = new SelectionWindow(imageView, this, controller);
 	}
 
 	@Override
 	public void changeColor(String color) {
 		myGameArea.changeColor(color);
+	}
+	
+	@Override
+	public void save(String saveName) {
+		controller.saveGameState(saveName);
+		myGameArea.savePath();
 	}
 
 	public void changeTheme(String theme) {
@@ -233,7 +212,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void doSomething() {
 		// TODO Auto-generated method stub
-		
+				
 	}
 
 	@Override
@@ -251,5 +230,21 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myStage.show();
 		Main restart = new Main();
 		restart.start(myStage);
+	}
+
+	@Override
+	public void imageSelected(SpriteImage imageView) {
+		imageView.addBasePropertyMap(basePropertyMap);
+		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
+		myRightToolBar.imageSelected(imageView);
+		
+		controller.defineElement(imageView.getName(), imageView.getAllProperties());
+	}
+
+	@Override
+	public void addToMap(String baseProperty, String value) {
+		basePropertyMap.put(baseProperty, value);
+//		myRightToolBar.addToMap(baseProperty, value);
+		
 	}
 }

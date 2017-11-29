@@ -118,15 +118,13 @@ public abstract class AbstractGameController {
 			return 0;
 		}
 	}
-
-	// TODO - Remove ImageView from params
-	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
-		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates);
-		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+	
+	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
+		return getSpriteFactory().getAllDefinedTemplateProperties();
 	}
 
-	// TODO - Remove ImageView from params
-	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates, int idOfSpriteToTrack) {
+	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
+		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
 		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
 		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
@@ -156,6 +154,15 @@ public abstract class AbstractGameController {
 		return getLevelBanks().get(getCurrentLevel()).getUnitCosts();
 	}
 
+	/**
+	 * Fetch all available game names and their corresponding descriptions
+	 * 
+	 * @return map where keys are game names and values are game descriptions
+	 */
+	public Map<String, String> getAvailableGames() {
+		return ioController.getAvailableGames();
+	}
+	
 	protected void cacheGeneratedSprite(Sprite sprite) {
 		List<Sprite> levelSprites = levelSpritesCache.get(currentLevel);
 		levelSprites.add(sprite);
@@ -225,6 +232,17 @@ public abstract class AbstractGameController {
 		cacheGeneratedSprite(sprite);
 		return spriteIdCounter.get();
 	}
+	
+	protected int getIdFromSprite(Sprite sprite) throws IllegalArgumentException {
+		Map<Integer, Sprite> spriteIdMap = getSpriteIdMap();
+		for (Integer id : spriteIdMap.keySet()) {
+			if (spriteIdMap.get(id) == sprite) {
+				return id;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
+
 
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
 
@@ -286,6 +304,20 @@ public abstract class AbstractGameController {
 		getLevelConditions().add(new HashMap<>());
 		getLevelDescriptions().add(new String());
 		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
+	}
+	
+	private int getNearestSpriteIdToPoint(Point2D coordinates) {
+		double nearestDistance = Double.MAX_VALUE;
+		int nearestSpriteId = -1;
+		List<Sprite> spritesForLevel = getLevelSprites().get(getCurrentLevel());
+		for (Sprite sprite : spritesForLevel) {
+			double distanceToSprite = new Point2D(sprite.getX(), sprite.getY()).distance(coordinates);
+			if (distanceToSprite < nearestDistance) {
+				nearestDistance = distanceToSprite;
+				nearestSpriteId = getIdFromSprite(sprite);
+			}
+		}
+		return nearestSpriteId;
 	}
 
 }

@@ -15,11 +15,13 @@ public class MainMenuBar extends MenuBar{
 	
 	private Menu file;
 	private Menu edit;
+	private ScreenDisplay myDisplay;
 	private AuthoringController myController;
 	
-	public MainMenuBar(AuthoringController controller, ScreenDisplay display) {
-		this.myController = controller;
+	public MainMenuBar(ScreenDisplay display, AuthoringController controller) {
 		this.prefWidthProperty().bind(display.getScene().widthProperty());
+		myDisplay = display;
+		myController = controller;
 		
 		createFileMenu();
 		createEditMenu();
@@ -55,7 +57,7 @@ public class MainMenuBar extends MenuBar{
 	private void saveGame() {
 		Optional<String> saveName = launchInput(SAVE);
 		if(saveName.isPresent()) {
-			myController.saveGameState(saveName.get());
+			myDisplay.save(saveName.get());
 		}
 	}
 	

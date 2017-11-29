@@ -1,17 +1,22 @@
 package util;
 
 import com.google.gson.GsonBuilder;
-import com.thoughtworks.xstream.XStream;
-
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.oracle.javafx.jmx.json.JSONReader;
 import engine.Bank;
+import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.collision.DamageDealingCollisionVisitable;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.AbstractMovementStrategy;
+import engine.behavior.movement.MovementStrategy;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
+import java.io.StringReader;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +40,14 @@ public class SerializationUtils {
 
 	public SerializationUtils() {
 		gsonBuilder = new GsonBuilder();
+		gsonBuilder.setExclusionStrategies(new AnnotationExclusionStrategy());
+		gsonBuilder.serializeSpecialFloatingPointValues();
+		InterfaceAdapter interfaceAdapter = new InterfaceAdapter();
+		gsonBuilder.registerTypeAdapter(CollisionVisitable.class, interfaceAdapter);
+		gsonBuilder.registerTypeAdapter(CollisionVisitor.class, interfaceAdapter);
+		gsonBuilder.registerTypeAdapter(MovementStrategy.class, interfaceAdapter);
+		gsonBuilder.registerTypeAdapter(FiringStrategy.class, interfaceAdapter);
+		gsonBuilder.setLenient();
 	}
 
 	/**
@@ -248,26 +261,30 @@ public class SerializationUtils {
 	private String serializeSprites(List<Sprite> levelSprites, int level) {
 		Map<String, List<Sprite>> spritesMap = new HashMap<>();
 		spritesMap.put(SPRITES, levelSprites);
-		return gsonBuilder.create().toJson(levelSprites);
+		return gsonBuilder.create().toJson(spritesMap);
 	}
 
 	private String deserializeDescription(String serializedDescription) {
-		Map<String, String> descriptionMap = gsonBuilder.create().fromJson(serializedDescription, Map.class);
+		Type mapType = new TypeToken<Map<String, String>>(){}.getType();
+		Map<String, String> descriptionMap = gsonBuilder.create().fromJson(serializedDescription, mapType);
 		return descriptionMap.get(DESCRIPTION);
 	}
 
 	private Map<String, String> deserializeConditions(String serializedConditions) {
-		Map<String, Map<String, String>> conditionsMap = gsonBuilder.create().fromJson(serializedConditions, Map.class);
+		Type mapType = new TypeToken<Map<String, Map<String, String>>>(){}.getType();
+		Map<String, Map<String, String>> conditionsMap = gsonBuilder.create().fromJson(serializedConditions, mapType);
 		return conditionsMap.get(CONDITIONS);
 	}
 
 	private Bank deserializeBank(String serializedBank) {
-		Map<String, Bank> bankMap = gsonBuilder.create().fromJson(serializedBank, Map.class);
+		Type mapType = new TypeToken<Map<String, Bank>>(){}.getType();
+		Map<String, Bank> bankMap = gsonBuilder.create().fromJson(serializedBank, mapType);
 		return bankMap.get(BANK);
 	}
 
 	private Map<String, Double> deserializeStatus(String serializedStatus) {
-		Map<String, Map<String, Double>> statusMap = gsonBuilder.create().fromJson(serializedStatus, Map.class);
+		Type mapType = new TypeToken<Map<String, Map<String, Double>>>(){}.getType();
+		Map<String, Map<String, Double>> statusMap = gsonBuilder.create().fromJson(serializedStatus, mapType);
 		return statusMap.get(STATUS);
 	}
 
@@ -277,13 +294,17 @@ public class SerializationUtils {
 		// TODO - fix this, it will eventually cause:
 		// Exception in thread "main" java.lang.ClassCastException:
 		// com.google.gson.internal.LinkedTreeMap cannot be cast to sprites.Sprite
-		Map<String, List<Sprite>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, Map.class);
+		Type mapType = new TypeToken<Map<String, List<Sprite>>>(){}.getType();
+		System.out.println("HEY:"+serializedSprites);
+		Map<String, List<Sprite>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, mapType);
 		return spritesMap.get(SPRITES);
 	}
 
 	private String[] retrieveSerializedSectionsForLevel(String serializedGameData, int level)
 			throws IllegalArgumentException {
-		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(serializedGameData, Map.class);
+		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(new JsonReader(new
+				StringReader(serializedGameData)),	Map.class);
+		System.out.println("MAP: " + serializedLevelData);
 		String levelString = Integer.toString(level);
 		if (!serializedLevelData.containsKey(levelString)) {
 			throw new IllegalArgumentException();

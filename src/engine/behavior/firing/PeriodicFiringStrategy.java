@@ -4,39 +4,24 @@ import engine.behavior.ParameterName;
 
 /**
  * Shoots periodically (once every x number of cycles, where x is any positive
- * integer) with limited range
+ * integer).
  * 
  * @author tyler
  * @author radithya
  *
  */
-public class PeriodicFiringStrategy extends GenericFiringStrategy {
+public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 
-	private double attackPeriod;
-	private double attackCounter;
+	private String projectileTemplate;
 
 	public PeriodicFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate,
 			@ParameterName("attackPeriod") double attackPeriod) {
-		super(projectileTemplate);
-		this.attackPeriod = attackPeriod;
-		resetAttackTimer();
+		super(attackPeriod);
+		this.projectileTemplate = projectileTemplate;
 	}
 
 	@Override
-	public boolean shouldFire() {
-		return updateAndCheckTimer();
+	public String fire() {
+		return projectileTemplate;
 	}
-
-	private boolean updateAndCheckTimer() {
-		if (attackCounter-- == 0) {
-			resetAttackTimer();
-			return true;
-		}
-		return false;
-	}
-
-	private void resetAttackTimer() {
-		attackCounter = attackPeriod;
-	}
-
 }

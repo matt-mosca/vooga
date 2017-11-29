@@ -64,12 +64,14 @@ public interface AuthoringModelController {
 	/**
 	 * Get the top-level configuration options for a game element definition.
 	 *
-	 * @return a map from the name of the configuration option to set to a list of choices for that option
+	 * @return a map from the name of the configuration option to set to a list of
+	 *         choices for that option
 	 */
 	Map<String, List<String>> getElementBaseConfigurationOptions();
 
 	/**
-	 * Get auxiliary configuration elements for a game element, based on top-level configuration choices.
+	 * Get auxiliary configuration elements for a game element, based on top-level
+	 * configuration choices.
 	 *
 	 * @return a map from the name of the configuration option to its class type
 	 */
@@ -134,21 +136,6 @@ public interface AuthoringModelController {
 	int placeElement(String elementName, Point2D startCoordinates);
 
 	/**
-	 * Place a game element of previously defined (or default) type within the game.
-	 * Special case where the element tracks the movement of another game element.
-	 *
-	 * @param elementName
-	 *            the template name for the element
-	 * @param startCoordinates
-	 *            the coordinates at which the element should be placed
-	 * @param idOfElementToTrack
-	 *            the unique identifier of the (previously placed) element to track
-	 * @return a unique identifier for the sprite abstraction representing the game
-	 *         element
-	 */
-	int placeTrackingElement(String elementName, Point2D startCoordinates, int idOfElementToTrack);
-
-	/**
 	 * Get the ImageView corresponding to a particular spriteId
 	 * 
 	 * @param spriteId
@@ -211,6 +198,13 @@ public interface AuthoringModelController {
 	 *            the unique identifier for the element
 	 */
 	void deleteElement(int elementId);
+
+	/**
+	 * Fetch all available game names and their corresponding descriptions
+	 * 
+	 * @return map where keys are game names and values are game descriptions
+	 */
+	Map<String, String> getAvailableGames();
 
 	/**
 	 * Get a map of properties for a particular game element, so as to allow for
@@ -306,6 +300,16 @@ public interface AuthoringModelController {
 	 *            element
 	 */
 	void setUnitCost(String elementName, Map<String, Double> unitCosts);
+
+	/**
+	 * Set the behavior and parameters of the wave
+	 * 
+	 * @param properties
+	 *            a map containing the properties of the wave to be created
+	 * @param spawningPoint
+	 *            the point at which to spawn the wave
+	 */
+	void setWaveProperties(Map<String, String> waveProperties, Point2D spawningPoint);
 
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions

@@ -2,6 +2,7 @@ package engine.authoring_engine;
 
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
+import javafx.geometry.Point2D;
 import packaging.Packager;
 import sprites.Sprite;
 import util.GameConditionsReader;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -26,8 +28,13 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private Packager packager;
 	private GameConditionsReader gameConditionsReader;
 	private SpriteTemplateExporter spriteExporter;
+	//Making a hard-coded map just so we can test in the front end with author and player
+	//We'll fix it soon 
+	
+	private final String WAVE = "wave_";
 
 	private Map<String, Set<Integer>> templateToIdMap;
+	private AtomicInteger gameWaveCounter;
 
 	public AuthoringController() {
 		super();
@@ -35,6 +42,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 		gameConditionsReader = new GameConditionsReader();
 		templateToIdMap = new HashMap<>();
 	}
+	
+	
 
 	@Override
 	public void exportGame() {
@@ -106,11 +115,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 		return getSpriteFactory().getTemplateProperties(elementName);
 	}
 
-	@Override
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
-		return getSpriteFactory().getAllDefinedTemplateProperties();
-	}
-
 	private Sprite getElement(int elementId) throws IllegalArgumentException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
@@ -155,9 +159,18 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
+	public void setWaveProperties(Map<String, String> waveProperties, Point2D spawningPoint) {
+		String waveName = getNameForWave();
+		defineElement(waveName, waveProperties);
+		placeElement(waveName, spawningPoint);
+	}
+	
+	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
 		return getSpriteFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
 	}
+	
+	
 
 	@Override
 	public Collection<String> getPossibleVictoryConditions() {
@@ -197,5 +210,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private void updateElementPropertiesById(int elementId, Map<String, String> propertiesToUpdate) {
 		// TODO - can't use old method
 	}
+	
+	private String getNameForWave() {
+		return WAVE + Integer.toString(gameWaveCounter.incrementAndGet());
+	}
+	
+	
 
 }

@@ -2,17 +2,11 @@ package sprites;
 
 import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
 import util.SpriteOptionsGetter;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.
@@ -109,6 +103,7 @@ public class SpriteFactory {
 			return (Sprite) Sprite.class.getConstructors()[0].newInstance(spriteConstructionArguments);
 		} catch (ReflectiveOperationException reflectionException) {
 			// TODO - custom exception or default
+            reflectionException.printStackTrace();
 			return null;
 		}
 	}
@@ -144,6 +139,7 @@ public class SpriteFactory {
                 }
                 return parameterClass.getConstructors()[0].newInstance(constructorParameters);
             } else {
+                System.out.println("Fucks");
                 return null;
             }
         }
@@ -248,11 +244,12 @@ public class SpriteFactory {
 	}
 	
 	/**
-	 * Return a COPY of current templates for data protection
+	 * Return a copy of current templates (for data protection)
+     *
 	 * @return map of template names to their properties
 	 */
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
-		return spriteTemplates;
+		return new HashMap<>(spriteTemplates);
 	}
 
 
