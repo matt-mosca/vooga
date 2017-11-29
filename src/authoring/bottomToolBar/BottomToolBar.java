@@ -54,7 +54,7 @@ public class BottomToolBar extends VBox {
 	}
 
 	private void addLevel() {
-		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), myTabPane);
+		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), null, myTabPane);
 		LevelTab newLv = new LevelTab(myLevels.size()+1);	
 		myGameAreas.add(new GameArea(myCreated));
 		if (myLevels.size()==0) {
