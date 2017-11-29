@@ -46,8 +46,9 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	public void createInitialProperties(Map<String, Class> newMap) {
-
+		
 		if (myPossibleProperties.isEmpty()) {
+			myPossibleProperties.put("Name", myName);
 			for (String s : newMap.keySet()) {
 				myPossibleProperties.put(s, myResourceBundle.getString(s));
 			}
