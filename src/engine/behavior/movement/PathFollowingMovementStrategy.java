@@ -2,6 +2,7 @@ package engine.behavior.movement;
 
 import java.util.ArrayList;
 
+import authoring.path.PathList;
 import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 
@@ -13,14 +14,11 @@ import javafx.geometry.Point2D;
  */
 public abstract class PathFollowingMovementStrategy extends TargetedMovementStrategy {
 	
-	private ArrayList<Point2D> coordinates;
-	private int currentCoordinateIndex = 0;
+	private PathList coordinates;
+	private Point2D target;
 	
-	public PathFollowingMovementStrategy(@ParameterName("velocity") double velocity,
-										 @ParameterName("coordinates") ArrayList<Point2D> coordinates) {
-
-		super(coordinates.get(0).getX(), coordinates.get(0).getY(), velocity);
-		this.coordinates = coordinates;
+	public PathFollowingMovementStrategy(@ParameterName("velocity") double velocity) {
+		super(0, 0, velocity);
 	}
 
 	public Point2D move() {
@@ -28,18 +26,31 @@ public abstract class PathFollowingMovementStrategy extends TargetedMovementStra
 		checkIfLocationReached();
 		return getCurrentCoordinates();
 	}
+	
+	
+	public void setPathCoordinates(PathList coordinates) {
+		this.coordinates = coordinates;
+		this.target = this.coordinates.next();
+		setTargetCoordinates(target.getX(),target.getY());
+	}
+	
+	public boolean targetReached() {
+		return (target == null);
+	}
+	
+	
 	/**
-	 * TODO: add check to see if location reached 
+	 * Check to see if one point in the coordinates was reached
 	 */
 	private void checkIfLocationReached() {
-		if(true) {
-			currentCoordinateIndex++;
-			if(currentCoordinateIndex>=coordinates.size()) {
-				//currentCoordinateIndex = 0;
+		if(super.targetReached()) {
+			target = coordinates.next();
+			if(target == null) {
 				stop();
 			}
-			Point2D currentTarget = coordinates.get(currentCoordinateIndex);
-			this.setTargetCoordinates(currentTarget.getX(), currentTarget.getY());
+			else {
+				this.setTargetCoordinates(target.getX(), target.getY());
+			}
 		}
 	}
 }

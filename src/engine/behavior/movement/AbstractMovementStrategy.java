@@ -27,6 +27,13 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	}
 
 	@Override
+	public abstract Point2D move();
+
+	public void handleBlock(String blockMethodName) {
+		move();
+	}
+	
+	@Override
 	public double getCurrentX() {
 		return xCoordinate.get();
 	}

@@ -20,5 +20,11 @@ public class StationaryMovementStrategy extends AbstractMovementStrategy {
 	 **/
 	public Point2D move() { return getCurrentCoordinates(); }
 
+	@Override
+	public void handleBlock(String blockMethodName) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
