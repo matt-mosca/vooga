@@ -7,6 +7,7 @@ import javafx.geometry.Point2D;
  * Shoots periodically (once every x number of cycles, where x is any positive
  * integer) with limited range
  * 
+ * @author tyler
  * @author radithya
  *
  */

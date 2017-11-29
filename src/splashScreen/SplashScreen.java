@@ -43,8 +43,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		basicSetup();
 		myNewGameButton = new NewGameButton(this);
 		rootAdd(myNewGameButton);
-		myEditGameButton = new EditGameButton(this);
-		rootAdd(myEditGameButton);
+//		myEditGameButton = new EditGameButton(this);
+//		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
 	}

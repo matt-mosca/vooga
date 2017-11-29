@@ -6,6 +6,7 @@ import engine.behavior.ParameterName;
  * Represents strategy of not firing at all, applies to sprites whose firing is
  * to be disabled
  * 
+ * @author tyler
  * @author radithya
  *
  */

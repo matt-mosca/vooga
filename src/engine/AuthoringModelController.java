@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,6 +62,20 @@ public interface AuthoringModelController {
 	void deleteLevel(int level) throws IllegalArgumentException;
 
 	/**
+	 * Get the top-level configuration options for a game element definition.
+	 *
+	 * @return a map from the name of the configuration option to set to a list of choices for that option
+	 */
+	Map<String, List<String>> getElementBaseConfigurationOptions();
+
+	/**
+	 * Get auxiliary configuration elements for a game element, based on top-level configuration choices.
+	 *
+	 * @return a map from the name of the configuration option to its class type
+	 */
+	Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices);
+
+	/**
 	 * Define a new type of element for the game being authored. Elements of this
 	 * type will be created by the model based on its properties, assuming defaults
 	 * where necessary. This method should not be used for updating properties of an
@@ -113,12 +128,10 @@ public interface AuthoringModelController {
 	 *            the template name for the element
 	 * @param startCoordinates
 	 *            the coordinates at which the element should be placed
-	 * @param graphicalRepresentation
-	 *            the frontend representation of the element
 	 * @return a unique identifier for the sprite abstraction representing the game
 	 *         element
 	 */
-	int placeElement(String elementName, Point2D startCoordinates, ImageView graphicalRepresentation);
+	int placeElement(String elementName, Point2D startCoordinates);
 
 	/**
 	 * Place a game element of previously defined (or default) type within the game.
@@ -128,15 +141,12 @@ public interface AuthoringModelController {
 	 *            the template name for the element
 	 * @param startCoordinates
 	 *            the coordinates at which the element should be placed
-	 * @param graphicalRepresentation
-	 *            the frontend representation of the element
 	 * @param idOfElementToTrack
 	 *            the unique identifier of the (previously placed) element to track
 	 * @return a unique identifier for the sprite abstraction representing the game
 	 *         element
 	 */
-	int placeTrackingElement(String elementName, Point2D startCoordinates, ImageView graphicalRepresentation,
-			int idOfElementToTrack);
+	int placeTrackingElement(String elementName, Point2D startCoordinates, int idOfElementToTrack);
 
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
@@ -147,6 +157,29 @@ public interface AuthoringModelController {
 	 * @return ImageView representing the Sprite
 	 */
 	ImageView getRepresentationFromSpriteId(int spriteId);
+
+	/**
+	 * Get the high-level status of a game in-progress, notably points, lives, etc
+	 * 
+	 *
+	 * @return a map of relevant details to display or modify about the game
+	 */
+	Map<String, Double> getStatus();
+
+	/**
+	 * Retrieve information on the quantity of each resource left
+	 * 
+	 * @return map of resource name to quantity of that resource left
+	 */
+	Map<String, Double> getResourceEndowments();
+
+	/**
+	 * Retrieve information on the cost of each element in terms of the various
+	 * resources
+	 * 
+	 * @return map of element name to its cost in terms of each resource
+	 */
+	Map<String, Map<String, Double>> getElementCosts();
 
 	/**
 	 * Move a previously created game element to a new location.
@@ -252,7 +285,27 @@ public interface AuthoringModelController {
 	 * @param value
 	 *            string representation of the property's new value
 	 */
-	void setStatusProperty(String property, String value);
+	void setStatusProperty(String property, Double value);
+
+	/**
+	 * Set the resource endowments for the current level
+	 * 
+	 * @param resourceEndowments
+	 *            map of resource name to amount of that resource to begin that
+	 *            level with
+	 */
+	void setResourceEndowments(Map<String, Double> resourceEndowments);
+
+	/**
+	 * Set the cost of an element in terms of various resources
+	 * 
+	 * @param elementName
+	 *            the template name for the element
+	 * @param unitCosts
+	 *            map of resource name to cost in terms of that resource for this
+	 *            element
+	 */
+	void setUnitCost(String elementName, Map<String, Double> unitCosts);
 
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions

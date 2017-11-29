@@ -2,9 +2,11 @@ package engine.play_engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javafx.geometry.Point2D;
 import sprites.Sprite;
 import sprites.SpriteFactory;
 
@@ -49,15 +51,13 @@ public class ElementManager {
 	 * still be necessary but should just do void and put in authoring game grid
 	 */
 
-	Sprite placeElement(String elementName, double x, double y) {
+	Sprite placeElement(String elementName, Point2D startCoordinates) {
 		// Use SpriteFactory to construct Sprite from elementName with these
 		// coordinates
 		
 		// Check if resources are sufficient first
 		
-		Sprite generatedSprite = spriteFactory.generateSprite(elementName);
-		generatedSprite.setX(x);
-		generatedSprite.setY(y);
+		Sprite generatedSprite = spriteFactory.generateSprite(elementName, startCoordinates);
 		// Add created Sprite to gameElements
 		return generatedSprite;
 	}
@@ -67,7 +67,7 @@ public class ElementManager {
 			Sprite element = gameElements.get(elementIndex);
 			element.move();
 			if (element.shouldFire()) {
-				spriteFactory.generateSprite(element.fire());
+				spriteFactory.generateSprite(element.fire(), new Point2D(element.getX(), element.getY()));
 			}
 			processAllCollisionsForElement(elementIndex, element);
 		}

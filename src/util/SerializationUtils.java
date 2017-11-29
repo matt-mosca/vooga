@@ -1,6 +1,8 @@
 package util;
 
 import com.google.gson.GsonBuilder;
+
+import engine.Bank;
 import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.collision.DamageDealingCollisionVisitable;
 import engine.behavior.collision.ImmortalCollider;
@@ -17,15 +19,17 @@ public class SerializationUtils {
 
 	public static final String DESCRIPTION = "description";
 	public static final String CONDITIONS = "conditions";
+	public static final String BANK = "bank";
 	public static final String STATUS = "status";
 	public static final String SPRITES = "sprites";
 	public static final String DELIMITER = "\n";
 	// Description, Status, Sprites
-	public static final int NUM_SERIALIZATION_SECTIONS = 4;
+	public static final int NUM_SERIALIZATION_SECTIONS = 5;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
 	public static final int CONDITIONS_SERIALIZATION_INDEX = 1;
-	public static final int STATUS_SERIALIZATION_INDEX = 2;
-	public static final int SPRITES_SERIALIZATION_INDEX = 3;
+	public static final int BANK_SERIALIZATION_INDEX = 2;
+	public static final int STATUS_SERIALIZATION_INDEX = 3;
+	public static final int SPRITES_SERIALIZATION_INDEX = 4;
 	private GsonBuilder gsonBuilder;
 
 	public SerializationUtils() {
@@ -52,11 +56,11 @@ public class SerializationUtils {
 	 *            the cache of generated sprites for a level
 	 * @return serialization of map of level to serialized level data
 	 */
-	public String serializeGameData(String gameDescription, Map<String, String> gameConditions, int level,
-			Map<String, String> status, List<Sprite> levelSprites) {
+	public String serializeGameData(String gameDescription, Map<String, String> gameConditions, Bank gameBank,
+			int level, Map<String, Double> status, List<Sprite> levelSprites) {
 		Map<String, String> serializedLevelData = new HashMap<>();
 		serializedLevelData.put(Integer.toString(level),
-				serializeLevelData(gameDescription, gameConditions, status, levelSprites, level));
+				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelSprites, level));
 		return gsonBuilder.create().toJson(serializedLevelData);
 	}
 
@@ -94,12 +98,14 @@ public class SerializationUtils {
 	 *            the cache of generated sprites for a level
 	 * @return serialization of level data
 	 */
-	public String serializeLevelData(String gameDescription, Map<String, String> levelConditions,
-			Map<String, String> status, List<Sprite> levelSprites, int level) {
+	public String serializeLevelData(String gameDescription, Map<String, String> levelConditions, Bank bank,
+			Map<String, Double> status, List<Sprite> levelSprites, int level) {
 		StringBuilder gameDataStringBuilder = new StringBuilder();
 		gameDataStringBuilder.append(serializeGameDescription(gameDescription));
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeConditions(levelConditions));
+		gameDataStringBuilder.append(DELIMITER);
+		gameDataStringBuilder.append(serializeBank(bank));
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeStatus(status));
 		gameDataStringBuilder.append(DELIMITER);
@@ -144,6 +150,22 @@ public class SerializationUtils {
 	}
 
 	/**
+	 * Deserialize previously serialized bank into a Bank object
+	 * 
+	 * @param serializedGameData
+	 *            string of serialized game conditions
+	 * @param level
+	 *            the level whose description is to be deserialized
+	 * @return Bank instance corresponding to serialized bank data
+	 * @throws IllegalArgumentException
+	 *             if serialization is ill-formatted
+	 */
+	public Bank deserializeGameBank(String serializedGameData, int level) throws IllegalArgumentException {
+		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
+		return deserializeBank(serializedSections[BANK_SERIALIZATION_INDEX]);
+	}
+
+	/**
 	 * Deserialize previously serialized game data into a game status map
 	 *
 	 * @param serializedGameData
@@ -155,7 +177,7 @@ public class SerializationUtils {
 	 * @throws IllegalArgumentException
 	 *             if serialization is ill-formatted
 	 */
-	public Map<String, String> deserializeGameStatus(String serializedGameData, int level)
+	public Map<String, Double> deserializeGameStatus(String serializedGameData, int level)
 			throws IllegalArgumentException {
 		String[] serializedPortions = retrieveSerializedSectionsForLevel(serializedGameData, level);
 		return deserializeStatus(serializedPortions[STATUS_SERIALIZATION_INDEX]);
@@ -207,8 +229,14 @@ public class SerializationUtils {
 		return gsonBuilder.create().toJson(conditionsMap);
 	}
 
-	private String serializeStatus(Map<String, String> status) {
-		Map<String, Map<String, String>> statusMap = new HashMap<>();
+	private String serializeBank(Bank bank) {
+		Map<String, Bank> bankMap = new HashMap<>();
+		bankMap.put(BANK, bank);
+		return gsonBuilder.create().toJson(bankMap);
+	}
+
+	private String serializeStatus(Map<String, Double> status) {
+		Map<String, Map<String, Double>> statusMap = new HashMap<>();
 		statusMap.put(STATUS, status);
 		return gsonBuilder.create().toJson(status);
 	}
@@ -230,8 +258,13 @@ public class SerializationUtils {
 		return conditionsMap.get(CONDITIONS);
 	}
 
-	private Map<String, String> deserializeStatus(String serializedStatus) {
-		Map<String, Map<String, String>> statusMap = gsonBuilder.create().fromJson(serializedStatus, Map.class);
+	private Bank deserializeBank(String serializedBank) {
+		Map<String, Bank> bankMap = gsonBuilder.create().fromJson(serializedBank, Map.class);
+		return bankMap.get(BANK);
+	}
+
+	private Map<String, Double> deserializeStatus(String serializedStatus) {
+		Map<String, Map<String, Double>> statusMap = gsonBuilder.create().fromJson(serializedStatus, Map.class);
 		return statusMap.get(STATUS);
 	}
 
@@ -273,9 +306,10 @@ public class SerializationUtils {
 		Map<String, Object> towerMap = new HashMap<>();
 		towerMap.put("collisionVisitable", new DamageDealingCollisionVisitable(1.0));
 		towerMap.put("collisionVisitor", new ImmortalCollider(1));
-		// TODO - don't serialize sprites; cache their properties and reconstruct using spriteFactory
+		// TODO - don't serialize sprites; cache their properties and reconstruct using
+		// spriteFactory
 		// since the sprite serialization is causing StackOverflowError
-		// 		how to handle coordinates though?
+		// how to handle coordinates though?
 
 		/*
 		 * Sprite testTower = factory.defineElement("testTower", towerMap); Sprite

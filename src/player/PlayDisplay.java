@@ -9,6 +9,7 @@ import authoring.GameArea;
 import authoring.PlacementGrid;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.SpriteImage;
+import authoring.rightToolBar.TowerImage;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.NoopCollisionVisitable;
@@ -43,15 +44,21 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlacementGrid myMainGrid;
 	private HealthBar myHealthBar;
 	private DecreaseHealthButton myDecreaseHealthButton;
-	private HBox myGameArea;
+	private PlayArea myPlayArea;
 	private PlayController myController;
 	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
 	
+	private TowerImage tower1;
+	private double xLocation = 0;
+	private double yLocation = 0;
+	
 	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
 	private final MovementStrategy testMovement = new StationaryMovementStrategy();
-	private final CollisionHandler testCollision = new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable());
+	private final CollisionHandler testCollision =
+			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
+					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
@@ -59,6 +66,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myCoinDisplay);
 		
 		createTestGameArea();
+		
+		createTestImages();
 
 //		createTestSprites();
 //		createTestGameArea();
@@ -81,18 +90,25 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.play();
 	}
 	
+	private void createTestImages() {
+		tower1 = new TowerImage("Castle_Tower1");
+		tower1.setFitHeight(40);
+		tower1.setFitWidth(40);
+		myPlayArea.placeInGrid(tower1);
+	}
+	
 	private void step() {
 		myCoinDisplay.increment();
+		xLocation += 5;
+		yLocation += 5;
+		tower1.setLayoutX(xLocation);
+		tower1.setLayoutY(yLocation);
+
 	}
 
 	private void createTestGameArea() {
-		myGameArea = new HBox();
-		myGameArea.setLayoutX(300);
-		myGameArea.setLayoutY(50);
-		myGameArea.setPrefHeight(400);
-		myGameArea.setPrefWidth(400);
-		myGameArea.setStyle("-fx-background-color:white");
-		rootAdd(myGameArea);
+		myPlayArea = new PlayArea(this);
+		rootAdd(myPlayArea);
 	}
 	
 	
@@ -172,6 +188,5 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		System.out.println(sprite.toString());
 		
 	}
-	
 	
 }

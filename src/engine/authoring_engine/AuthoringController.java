@@ -8,18 +8,13 @@ import util.GameConditionsReader;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
  * retrieve information about the model.
- *
- * TODO (for Ben S) - move sprite map/id into sprite factory or other object (?)
- * - implement object creation in factory via string properties + this will
- * entail all behavior object constructors having same parameters because
- * reflection won't work otherwise (eg) MortalCollider needs same constructor
- * params as ImmortalCollider - custom error throwing
  * 
  * @author radithya
  * @author Ben Schwennesen
@@ -125,9 +120,20 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void setStatusProperty(String property, String value) {
+	public void setStatusProperty(String property, Double value) {
 		getLevelStatuses().get(getCurrentLevel()).put(property, value);
 	}
+	
+	@Override
+	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
+		getLevelBanks().get(getCurrentLevel()).setResourceEndowments(resourceEndowments);
+	}
+
+	@Override
+	public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
+		getLevelBanks().get(getCurrentLevel()).setUnitCost(elementName, unitCosts);
+	}
+
 
 	// TODO - to support multiple clients / interactive editing, need a client-id
 	// param (string or int)
@@ -137,6 +143,16 @@ public class AuthoringController extends AbstractGameController implements Autho
 		getLevelSprites().remove(level);
 		getLevelConditions().remove(level);
 		getLevelDescriptions().remove(level);
+	}
+
+	@Override
+	public Map<String, List<String>> getElementBaseConfigurationOptions() {
+		return getSpriteFactory().getElementBaseConfigurationOptions();
+	}
+
+	@Override
+	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
+		return getSpriteFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
 	}
 
 	@Override

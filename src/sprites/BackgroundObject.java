@@ -1,6 +1,7 @@
 package sprites;
 
 import interfaces.ClickableInterface;
+import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 
 public class BackgroundObject extends StaticObject {

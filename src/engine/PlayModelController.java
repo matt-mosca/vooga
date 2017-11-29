@@ -1,7 +1,5 @@
 package engine;
 
-import sprites.Sprite;
-
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Map;
@@ -82,12 +80,10 @@ public interface PlayModelController {
 	 *            the template name for the element
 	 * @param startCoordinates
 	 *            the coordinates at which the element should be placed
-	 * @param graphicalRepresentation
-	 *            the frontend representation of the element
 	 * @return a unique identifier for the sprite abstraction representing the game
 	 *         element
 	 */
-	int placeElement(String elementName, Point2D startCoordinates, ImageView graphicalRepresentation);
+	int placeElement(String elementName, Point2D startCoordinates);
 
 	/**
 	 * Place a game element of previously defined (or default) type within the game.
@@ -97,15 +93,12 @@ public interface PlayModelController {
 	 *            the template name for the element
 	 * @param startCoordinates
 	 *            the coordinates at which the element should be placed
-	 * @param graphicalRepresentation
-	 *            the frontend representation of the element
 	 * @param idOfElementToTrack
 	 *            the unique identifier of the (previously placed) element to track
 	 * @return a unique identifier for the sprite abstraction representing the game
 	 *         element
 	 */
-	int placeTrackingElement(String elementName, Point2D startCoordinates, ImageView graphicalRepresentation,
-			int idOfElementToTrack);
+	int placeTrackingElement(String elementName, Point2D startCoordinates, int idOfElementToTrack);
 
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
@@ -116,15 +109,29 @@ public interface PlayModelController {
 	 * @return ImageView representing the Sprite
 	 */
 	ImageView getRepresentationFromSpriteId(int spriteId);
-	
 
 	/**
-	 * Get the high-level status of a game in-progress, notably lives remaining and
-	 * resources available.
+	 * Get the high-level status of a game in-progress, notably points, lives, etc
+	 * 
 	 *
 	 * @return a map of relevant details to display or modify about the game
 	 */
-	Map<String, String> getStatus();
+	Map<String, Double> getStatus();
+
+	/**
+	 * Retrieve information on the quantity of each resource left
+	 * 
+	 * @return map of resource name to quantity of that resource left
+	 */
+	Map<String, Double> getResourceEndowments();
+
+	/**
+	 * Retrieve information on the cost of each element in terms of the various
+	 * resources
+	 * 
+	 * @return map of element name to its cost in terms of each resource
+	 */
+	Map<String, Map<String, Double>> getElementCosts();
 
 	/**
 	 * Get the elements of a game (represented as sprites) for a particular level.
