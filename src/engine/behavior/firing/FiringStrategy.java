@@ -1,7 +1,5 @@
 package engine.behavior.firing;
 
-import javafx.geometry.Point2D;
-
 /**
  * Support different ways of firing, one of which is chosen by authoring and
  * then passed to Sprite at initialization
