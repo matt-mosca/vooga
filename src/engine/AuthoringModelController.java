@@ -3,6 +3,7 @@ package engine;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface AuthoringModelController {
 	 * @param saveName
 	 *            the name to assign to the save file
 	 */
-	void saveGameState(String saveName);
+	void saveGameState(File saveName);
 
 	/**
 	 * Load the detailed state of a game for a particular level, including
@@ -304,12 +305,15 @@ public interface AuthoringModelController {
 	/**
 	 * Set the behavior and parameters of the wave
 	 * 
-	 * @param properties
+	 * @param waveProperties
 	 *            a map containing the properties of the wave to be created
+	 * @param elementNames
+	 *            name of elements to spawn
 	 * @param spawningPoint
 	 *            the point at which to spawn the wave
 	 */
-	void setWaveProperties(Map<String, String> waveProperties, Point2D spawningPoint);
+	void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
+			Point2D spawningPoint);
 
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions

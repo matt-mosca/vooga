@@ -29,8 +29,7 @@ public class RandomWaveFiringStrategy extends AbstractWaveFiringStrategy {
     }
 
     @Override
-    public String fire() {
-    		decrementWavesLeft();
+    protected String chooseElementToSpawn() {
         // Todo - comment / refactor
         double movementRand = Math.random();
         int insertionPoint = -1 * Collections.binarySearch(probabilities, movementRand) - 1;
