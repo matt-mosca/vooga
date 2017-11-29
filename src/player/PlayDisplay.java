@@ -149,8 +149,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private void step() {
 		myCoinDisplay.increment();
-		xLocation += 5;
-		yLocation += 5;
+		xLocation += 1;
+		yLocation += 1;
 		tower1.setLayoutX(xLocation);
 		tower1.setLayoutY(yLocation);
 		myController.update();
