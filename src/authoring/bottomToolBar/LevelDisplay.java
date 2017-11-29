@@ -27,7 +27,8 @@ public class LevelDisplay {
 	public LevelDisplay(int n, LevelTab lv) {
 		myNumber = n;
 		myStage = new Stage();
-		myStage.setTitle(rb.getString("lvNum")+ " " + n);
+//		myStage.setTitle(rb.getString("lvNum")+ " " + n);
+		myStage.setTitle("Level Number " + n);
 		myStage.setOnCloseRequest(e->myLv.update());
 	}
 	

@@ -1,5 +1,6 @@
 package authoring;
 
+import authoring.bottomToolBar.BottomToolBar;
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.BackgroundColorChanger;
 import authoring.leftToolBar.LeftToolBar;
@@ -33,6 +34,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private BackgroundColorChanger myColorChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
+	private BottomToolBar myBottomToolBar;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -107,6 +109,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myColorChanger);
 		myGameChooser = new AttackDefenseToggle(this);
 		rootAdd(myGameChooser);
+		myBottomToolBar = new BottomToolBar(this);
+		rootAdd(myBottomToolBar);
 	}
 	
 	@Override 

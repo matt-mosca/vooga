@@ -10,6 +10,7 @@ public class LevelTab extends ScrollPane{
 	private int myNumber;
 	private Button editLevel;
 	private LevelDisplay myLevelDisplay;
+	private boolean edited;
 	
 	public LevelTab(int n) {
 		myNumber = n;
@@ -21,8 +22,11 @@ public class LevelTab extends ScrollPane{
 		editLevel = new Button("Edit Level");
 		//Need to put the button somewhere first.
 		editLevel.setOnAction(e->{
+			if (!edited) {
+				this.getChildren().remove(initialLabel);
+			}
 			openLevelDisplay(); 
-			this.getChildren().remove(initialLabel);
+			edited = true;
 			this.update();
 			});
 		this.getChildren().add(initialLabel);
