@@ -1,7 +1,5 @@
 package engine.behavior.firing;
 
-import javafx.geometry.Point2D;
-
 import engine.behavior.ParameterName;
 
 /**
