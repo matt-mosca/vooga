@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.Sprite;
 import sprites.StaticObject;
@@ -29,17 +30,17 @@ public class GenericToolBar extends ScrollPane {
 	private static final int WIDTH = 300;
 	private List<StaticObject> myList;
 	private ListView<StaticObject> myListView;
-	private ClickableInterface myClickable;
+	private ScreenDisplay myDisplay;
 	private StaticObject myStatic1;
 	private StaticObject myStatic2;
 	private BackgroundObject myBackground3;
 	private BackgroundObject myBackground4;
 	private Class<?> myCls;
 	
-	public GenericToolBar(ClickableInterface clickable, Class<?> cls) {
+	public GenericToolBar(ScreenDisplay display, Class<?> cls) {
 		myCls = cls;
 		this.setLayoutY(50);
-		myClickable = clickable;
+		myDisplay = display;
 		init();
 //		if (cls == StaticObject.class) addToStaticToolbar();
 //		else System.out.println("Fails.");
@@ -48,13 +49,11 @@ public class GenericToolBar extends ScrollPane {
 	public void addToStaticToolbar() {
         ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
         myListView = new ListView<StaticObject>();
-        myListView.setOnMouseClicked(e->myClickable.clicked(
+        myListView.setOnMouseClicked(e->myDisplay.listItemClicked(
         		myListView.getSelectionModel().getSelectedItem()));
         myListView.setItems(items);
         this.setContent(myListView);
 	}
-	
-
 	
 	public void init() {
 		createDefaultObjects();
@@ -80,18 +79,18 @@ public class GenericToolBar extends ScrollPane {
 	public void addToToolbar() {
         ObservableList<StaticObject> items = FXCollections.observableArrayList(myList);
         myListView = new ListView<StaticObject>();
-        myListView.setOnMouseClicked(e->myClickable.clicked(
+        myListView.setOnMouseClicked(e->myDisplay.listItemClicked(
         		myListView.getSelectionModel().getSelectedItem()));
         myListView.setItems(items);
         this.setContent(myListView);
 	}
 	
 	private StaticObject createNewStatic(int size, String imageString) {
-		return new StaticObject(size, myClickable, imageString);
+		return new StaticObject(size, myDisplay, imageString);
 	}
 	
 	private BackgroundObject createNewBackground(int size, String imageString) {
-		return new BackgroundObject(size, myClickable, imageString);
+		return new BackgroundObject(size, myDisplay, imageString);
 	}
 	
 

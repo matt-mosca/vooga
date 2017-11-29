@@ -7,6 +7,8 @@ import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
+import interfaces.ClickableInterface;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -57,8 +59,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		super(width, height, Color.GRAY);
 		myReturnButton = new ReturnButton(this);
 		rootAdd(myReturnButton);
-		setStandardTheme();
 		addItems();
+		setStandardTheme();
 		createGridToggle();
 		rootAdd(gridToggle);
 		createMovementToggle();
@@ -114,6 +116,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea = new GameArea(this);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
+		this.SetDroppable(myGameArea);
 		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
 		myColorChanger = new ColorChanger(this);
@@ -126,12 +129,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMenuBar);
 	}
 	
-	@Override 
-	public void clicked(StaticObject object) {
-		createOptionButtons(object);
-	}
-	
-	private void createOptionButtons(StaticObject object) {
+	public void listItemClicked(ClickableInterface clickable) {
+		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
 		Button decrementButton = new Button("-");
@@ -157,36 +156,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
 		myGameArea.addBackObject(newObject);
-	}
-	
-	//No longer needed with children added to game area
-//	private void createNewErrorWindow() {
-//		Alert alert = new Alert(AlertType.INFORMATION);
-//		alert.setTitle("Object placement error");
-//		alert.setHeaderText("Must place object in the main grid");
-//		alert.show();
-//	}
-
-	@Override
-	public void dropped(StaticObject currObject, MouseEvent e) {
-		if(e.getButton() == MouseButton.SECONDARY) {
-			deleteObject(currObject);
-		} else {
-			myGameArea.placeInGrid(currObject);
-			myGameEnvironment.requestFocus();
-		}
-	}
-
-	@Override
-	public void pressed(StaticObject currObject, MouseEvent e) {
-		e.consume();
-		myGameArea.removeFromGrid(currObject);
-	}
-	
-	private void deleteObject(StaticObject object) {
-		myGameArea.removeObject(object);
-		myLeftToolBar.requestFocus();
-		myGameArea.removeFromGrid(object);
 	}
 
 	@Override
@@ -242,14 +211,15 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void changeColor(String color) {
 		myGameArea.changeColor(color);
 	}
-	
-	@Override
+
 	public void changeTheme(String theme) {
 		rootStyle(myThemeChanger.getThemePath(theme));
+//		myRightToolBar.getStyleClass().add("borders");
+//		myLeftToolBar.getStyleClass().add("borders");
 	}
 
 	private void setStandardTheme() {
-		rootStyle("authoring/resources/standard.css");
+		changeTheme(ThemeChanger.STANDARD);
 	}
 
 	public void attack() {
