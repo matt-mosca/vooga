@@ -9,7 +9,9 @@ public class LevelTab {
 	
 	public LevelTab(int n) {
 		myNumber = n;
-		myLevelDisplay = new LevelDisplay(n);
+		//needs to be a check for what kind of level it is, so that we either create an attackleveldisplay or a 
+		//defenseleveldisplay
+		myLevelDisplay = new LevelDisplay(n, this);
 		editLevel = new Button();
 		editLevel.setOnAction(e->openLevelDisplay());
 	}
@@ -17,5 +19,11 @@ public class LevelTab {
 
 	private void openLevelDisplay() {
 		myLevelDisplay.open();
+	}
+
+
+	public void update() {
+		//TODO
+		//this method will update the different components in this tab, for the display. 	
 	}
 }

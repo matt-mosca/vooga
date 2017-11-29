@@ -11,8 +11,8 @@ public class AttackLevelDisplay extends LevelDisplay {
 	private Scene myScene;
 	private Map<String, TextBox> myTextBoxes;
 	private ResourceBundle myResources;
-	public AttackLevelDisplay(int n) {
-		super(n);
+	public AttackLevelDisplay(int n, LevelTab lv) {
+		super(n, lv);
 		//this would have to get refactored out depending on different languages and all that.
 		//TODO
 		myResources = ResourceBundle.getBundle("authoring/resources/AttackLevel"); //ideally this path would be to a valid resource bundle.
@@ -24,6 +24,7 @@ public class AttackLevelDisplay extends LevelDisplay {
 	private void createScene() {
 		GridPane pane = new GridPane();
 		myScene = new Scene(pane);
+		
 	}
 	
 	

@@ -14,12 +14,14 @@ import javafx.stage.Stage;
 public class LevelDisplay {
 	private int myNumber;
 	private Stage myStage;
+	private LevelTab myLv;
 	
 	
 	
-	public LevelDisplay(int n) {
+	public LevelDisplay(int n, LevelTab lv) {
 		myNumber = n;
 		myStage = new Stage();
+		myStage.setOnCloseRequest(e->myLv.update());
 	}
 	
 	public void open() {
