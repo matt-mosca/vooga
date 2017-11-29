@@ -150,6 +150,15 @@ public abstract class AbstractGameController {
 		return getLevelBanks().get(getCurrentLevel()).getUnitCosts();
 	}
 
+	/**
+	 * Fetch all available game names and their corresponding descriptions
+	 * 
+	 * @return map where keys are game names and values are game descriptions
+	 */
+	public Map<String, String> getAvailableGames() {
+		return ioController.getAvailableGames();
+	}
+	
 	protected void cacheGeneratedSprite(Sprite sprite) {
 		List<Sprite> levelSprites = levelSpritesCache.get(currentLevel);
 		levelSprites.add(sprite);
