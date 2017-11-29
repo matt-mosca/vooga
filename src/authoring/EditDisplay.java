@@ -1,5 +1,8 @@
 package authoring;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
@@ -7,6 +10,8 @@ import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
+import interfaces.ClickableInterface;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -48,6 +53,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Label optionLabel;
 	private TextField enterName;
 	private ReturnButton myReturnButton;
+	private Map<String, String> basePropertyMap;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -64,6 +70,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		createMovementToggle();
 		rootAdd(movementToggle);
 		createLabel();
+		basePropertyMap = new HashMap<String, String>();
 	}
 	
 	private void createLabel() {
@@ -114,6 +121,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea = new GameArea(this);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
+		this.SetDroppable(myGameArea);
 		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
 		myColorChanger = new ColorChanger(this);
@@ -126,12 +134,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMenuBar);
 	}
 	
-	@Override 
-	public void clicked(StaticObject object) {
-		createOptionButtons(object);
-	}
-	
-	private void createOptionButtons(StaticObject object) {
+	public void listItemClicked(ClickableInterface clickable) {
+		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
 		Button decrementButton = new Button("-");
@@ -157,36 +161,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
 		myGameArea.addBackObject(newObject);
-	}
-	
-	//No longer needed with children added to game area
-//	private void createNewErrorWindow() {
-//		Alert alert = new Alert(AlertType.INFORMATION);
-//		alert.setTitle("Object placement error");
-//		alert.setHeaderText("Must place object in the main grid");
-//		alert.show();
-//	}
-
-	@Override
-	public void dropped(StaticObject currObject, MouseEvent e) {
-		if(e.getButton() == MouseButton.SECONDARY) {
-			deleteObject(currObject);
-		} else {
-			myGameArea.placeInGrid(currObject);
-			myGameEnvironment.requestFocus();
-		}
-	}
-
-	@Override
-	public void pressed(StaticObject currObject, MouseEvent e) {
-		e.consume();
-		myGameArea.removeFromGrid(currObject);
-	}
-	
-	private void deleteObject(StaticObject object) {
-		myGameArea.removeObject(object);
-		myLeftToolBar.requestFocus();
-		myGameArea.removeFromGrid(object);
 	}
 
 	@Override
@@ -244,8 +218,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void changeColor(String color) {
 		myGameArea.changeColor(color);
 	}
-	
-	@Override
+
 	public void changeTheme(String theme) {
 		rootStyle(myThemeChanger.getThemePath(theme));
 //		myRightToolBar.getStyleClass().add("borders");
@@ -289,7 +262,15 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void imageSelected(SpriteImage imageView) {
+		imageView.addBasePropertyMap(basePropertyMap);
 		myRightToolBar.imageSelected(imageView);
+		
+	}
+
+	@Override
+	public void addToMap(String baseProperty, String value) {
+		basePropertyMap.put(baseProperty, value);
+//		myRightToolBar.addToMap(baseProperty, value);
 		
 	}
 }

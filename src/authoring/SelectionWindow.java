@@ -1,5 +1,6 @@
 package authoring;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,6 @@ public class SelectionWindow extends Stage {
 	
 	private Button yesButton;
 	private Button noButton;
-	private Label optionLabel;
 	private TextField enterName;
 	private VBox newProject;
 	private Scene newScene;
@@ -37,19 +37,15 @@ public class SelectionWindow extends Stage {
 		this.show();
 		createTextField();
 		createComboBoxes();
-		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
-		yesButton = new Button("Yes");
-		noButton = new Button("No");
+		yesButton = new Button("Commit");
+		noButton = new Button("Back");
 		yesButton.setLayoutX(1000);
 		noButton.setLayoutX(1050);
-		optionLabel.setLayoutX(700);
 		yesButton.setLayoutY(20);
 		noButton.setLayoutY(20);
-		optionLabel.setLayoutY(20);
 		
 		newProject.getChildren().add(yesButton);
 		newProject.getChildren().add(noButton);
-		newProject.getChildren().add(optionLabel);
 		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
 		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
 	}
@@ -63,6 +59,7 @@ public class SelectionWindow extends Stage {
 	}
 	
 	private void yesButtonPressed(SpriteImage imageView) {
+		
 		imageView.setName(enterName.getText());
 		author.imageSelected(imageView);
 		noButtonPressed();
@@ -74,7 +71,6 @@ public class SelectionWindow extends Stage {
 	
 	private void createComboBoxes() {
 		Map<String, List<String>> baseOptions = controller.getElementBaseConfigurationOptions();
-		System.out.println(controller.getElementBaseConfigurationOptions());
 		for (String s : baseOptions.keySet()) {
 			BaseComboBox newComboBox = new BaseComboBox(s, baseOptions.get(s), author);
 			newComboBox.setLayoutY(200);

@@ -7,16 +7,19 @@ import java.util.TreeMap;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import splashScreen.ScreenDisplay;
+import sprites.InteractiveObject;
 
-public abstract class SpriteImage extends ImageView {
-	
+public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
 	private AuthoringController controller;
 	private Map<String, String> myProperties;
+	private Map<String, String> myBaseProperties;
 	private String myName;
 	
-	
-	public SpriteImage() {
+	public SpriteImage(ScreenDisplay display) {
+		super(display);
+		myBaseProperties = new HashMap<String, String>();
 	}
 	
 	public void addImage(String imageName) {
@@ -66,6 +69,20 @@ public abstract class SpriteImage extends ImageView {
 	}
 	
 	public void createElement() {
+	}
+	
+	public void addBasePropertyMap(Map<String, String> newMap) {
+		myBaseProperties = newMap;
+	}
+	
+	public Map<String, String> getPropertiesMap() {
+		return myBaseProperties;
+	}
+	
+	@Override
+	public int getSize() {
+		//TODO modify to let spriteimages occupy cells as well
+		return 0;
 	}
 	
 	public abstract SpriteImage clone();

@@ -1,22 +1,21 @@
 package splashScreen;
 
-import java.util.List;
+import interfaces.ClickableInterface;
+import interfaces.Droppable;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
-import javafx.util.Duration;
 
 public abstract class ScreenDisplay {
 
 	public double FRAMES_PER_SECOND = 1;
 	public double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public double SECOND_DELAY = 100.0 / FRAMES_PER_SECOND;
+	private Droppable droppable;
 	private KeyFrame frame;
 	private Timeline animation = new Timeline();
 	private Scene myScene;
@@ -72,4 +71,14 @@ public abstract class ScreenDisplay {
 	protected void centerScene() {
 
 	}
+	
+	public Droppable getDroppable() {
+		return droppable;
+	}
+	
+	public void SetDroppable(Droppable drop) {
+		droppable = drop;
+	}
+	
+	public abstract void listItemClicked(ClickableInterface clickable);
 }

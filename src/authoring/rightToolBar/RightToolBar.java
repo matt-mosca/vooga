@@ -2,9 +2,12 @@ package authoring.rightToolBar;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import authoring.AuthorInterface;
+import authoring.EditDisplay;
 import authoring.ObjectProperties;
 import authoring.tabs.AddSpriteImageTab;
 import authoring.tabs.AddTab;
@@ -63,11 +66,12 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private Button deleteButton;
 	private CreationInterface created;
 	private AuthoringController myController;
+	private Map<String, String> basePropertyMap;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 75;
 
 	
-	public RightToolBar(CreationInterface created, AuthoringController controller) {
+	public RightToolBar(EditDisplay display, AuthoringController controller) {
 		this.created = created;
 		myController = controller;
         this.setLayoutX(X_LAYOUT);
@@ -78,9 +82,9 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    topTabPane.setPrefHeight(250);
 	    bottomTabPane.setPrefHeight(250);
 	    createAndAddTabs();
-	    newTower = new NewTowerTab(created);   
-	    newTroop = new NewTroopTab(created); 
-	    newProjectile = new NewProjectileTab(created); 
+	    newTower = new NewTowerTab(display);   
+	    newTroop = new NewTroopTab(display); 
+	    newProjectile = new NewProjectileTab(display); 
 	    inventoryTower = new NewInventoryTower(this);
 	    inventoryTroop = new NewInventoryTroop(this);
 	    inventoryProjectile = new NewInventoryProjectile(this);
@@ -94,6 +98,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         inventoryTower.attach(bottomTabPane.getTabs().get(0));
         inventoryTroop.attach(bottomTabPane.getTabs().get(1));
         inventoryProjectile.attach(bottomTabPane.getTabs().get(2));
+        basePropertyMap = new HashMap<String, String>();
     }
 		
 	private void createAndAddTabs() {
@@ -175,14 +180,18 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 			emptyLabel.setLayoutX(100);
 			propertiesPane.getChildren().add(emptyLabel);
 		} else {
-		ObservableList<SpriteImage> items =FXCollections.observableArrayList(inventoryProjectile.getImages());
-        projectilesView.setItems(items);
-        projectilesView.getSelectionModel();
-        projectilesWindow.setContent(projectilesView);
-        projectilesWindow.setLayoutX(100);
-        projectilesWindow.setPrefHeight(250);
-        projectilesView.setOnMouseClicked(e->projectileSelected(myTowerImage,
-        		projectilesView.getSelectionModel().getSelectedItem().clone()));
+			List<SpriteImage> cloneList = new ArrayList<>();
+			for (SpriteImage s : inventoryProjectile.getImages()) {
+				cloneList.add(s.clone());
+			}
+			ObservableList<SpriteImage> items =FXCollections.observableArrayList(cloneList);
+	        projectilesView.setItems(items);
+	        projectilesView.getSelectionModel();
+	        projectilesWindow.setContent(projectilesView);
+	        projectilesWindow.setLayoutX(100);
+	        projectilesWindow.setPrefHeight(250);
+	        projectilesView.setOnMouseClicked(e->projectileSelected(myTowerImage,
+	        		projectilesView.getSelectionModel().getSelectedItem().clone()));
         propertiesPane.getChildren().remove(myPropertiesBox);
         propertiesPane.getChildren().add(projectilesWindow);
 		}
@@ -216,5 +225,9 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(topTabPane);
 		this.getChildren().add(bottomTabPane);
+	}
+	
+	public void addToMap(String property, String value) {
+		basePropertyMap.put(property, value);
 	}
 } 

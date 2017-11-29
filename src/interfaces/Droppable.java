@@ -1,8 +1,12 @@
 package interfaces;
 
+import sprites.InteractiveObject;
+
 public interface Droppable {
 
-	public void droppedInto(ClickableInterface clickable);
+	public void droppedInto(InteractiveObject interactive);
 	
-	public void objectRemoved(ClickableInterface clickable);
+	public void objectRemoved(InteractiveObject interactive);
+	
+	public void freeFromDroppable(InteractiveObject interactive);
 }

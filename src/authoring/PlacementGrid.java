@@ -5,7 +5,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import sprites.BackgroundObject;
-import sprites.StaticObject;
+import sprites.InteractiveObject;
 import authoring.path.Path;
 import javafx.geometry.Point2D;
 
@@ -92,19 +92,19 @@ public class PlacementGrid extends GridPane {
 	 * Need to update it to account for different sized objects 
 	 * Change the assignToCell method and do different checking for odd/set
 	 */
-	public Point2D place(StaticObject currObject) {
+	public Point2D place(InteractiveObject interactive) {
 		double minDistance = Double.MAX_VALUE;
 		Point2D finalLocation = null;
 		int finalRow = 0;
 		int finalColumn = 0;
-		for (int r = 0; r < cells.length - currObject.getSize() + 1; r++) {
-			for (int c = 0; c < cells[r].length - currObject.getSize() + 1; c++) {
+		for (int r = 0; r < cells.length - interactive.getSize() + 1; r++) {
+			for (int c = 0; c < cells[r].length - interactive.getSize() + 1; c++) {
 				Cell currCell = cells[r][c];
 				Point2D cellLocation = new Point2D(currCell.getLayoutX(), currCell.getLayoutY());
-				double totalDistance = Math.abs(cellLocation.distance(currObject.center()));
+				double totalDistance = Math.abs(cellLocation.distance(interactive.center()));
 				if ((totalDistance <= minDistance) && (currCell.isEmpty() &&
-						(!neighborsFull(r, c, currObject.getSize()))) | 
-						(currObject instanceof BackgroundObject)) {
+						(!neighborsFull(r, c, interactive.getSize()))) | 
+						(interactive instanceof BackgroundObject)) {
 					minDistance = totalDistance;
 					finalLocation = cellLocation;
 					finalRow = r;
@@ -113,7 +113,7 @@ public class PlacementGrid extends GridPane {
 				
 			}
 		}
-		assignToCells(finalRow, finalColumn, currObject);
+		assignToCells(finalRow, finalColumn, interactive);
 		return finalLocation;
 	}
 	
@@ -126,7 +126,7 @@ public class PlacementGrid extends GridPane {
 		return false;
 	}
 	
-	private void assignToCells(int finalRow, int finalCol, StaticObject currObject) {
+	private void assignToCells(int finalRow, int finalCol, InteractiveObject currObject) {
 		for (int i = 0; i < currObject.getSize(); i++) {
 			for (int j = 0; j < currObject.getSize(); j++) {
 				cells[i+finalRow][j+finalCol].assignToCell(currObject);
@@ -134,19 +134,19 @@ public class PlacementGrid extends GridPane {
 		}
 	}
 	
-	private void removeAssignments(int finalRow, int finalCol, StaticObject currObject) {
-		for (int i = 0; i < currObject.getSize(); i++) {
-			for (int j = 0; j < currObject.getSize(); j++) {
-				cells[i + finalRow][j + finalCol].removeAssignment(currObject);
+	private void removeAssignments(int finalRow, int finalCol, InteractiveObject interactive) {
+		for (int i = 0; i < interactive.getSize(); i++) {
+			for (int j = 0; j < interactive.getSize(); j++) {
+				cells[i + finalRow][j + finalCol].removeAssignment(interactive);
 			}
 		}
 	}
 
-	public void removeFromGrid(StaticObject currObject) {
-		int col = (int) ((currObject.getX()) / cellSize);
+	public void removeFromGrid(InteractiveObject interactive) {
+		int col = (int) ((interactive.getX()) / cellSize);
 		if (col >= 0) {
-			int row = (int) ((currObject.getY()) / cellSize);
-			removeAssignments(row, col, currObject);
+			int row = (int) ((interactive.getY()) / cellSize);
+			removeAssignments(row, col, interactive);
 		}
 
 	}
