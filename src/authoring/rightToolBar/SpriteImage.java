@@ -44,7 +44,8 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("radius", "10");
 		defaultValues.put("centerY", "0");
 		defaultValues.put("centerX", "0");
-
+		defaultValues.put("Target y-coordinate", "0");
+		defaultValues.put("Target x-coordinate", "0");
 	}
 	
 	public void addImage(String imageName) {

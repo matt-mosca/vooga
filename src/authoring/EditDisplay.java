@@ -1,5 +1,6 @@
 package authoring;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -211,7 +212,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void doSomething() {
 		// TODO Auto-generated method stub
-		
+				
 	}
 
 	@Override
