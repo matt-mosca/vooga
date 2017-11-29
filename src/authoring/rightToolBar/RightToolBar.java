@@ -68,7 +68,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private AuthoringController myController;
 	private Map<String, String> basePropertyMap;
 	private final int X_LAYOUT = 680;
-	private final int Y_LAYOUT = 75;
+	private final int Y_LAYOUT = 25;
 
 	
 	public RightToolBar(EditDisplay display, AuthoringController controller) {
