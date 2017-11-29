@@ -7,6 +7,7 @@ import engine.behavior.ParameterName;
 /**
  * Captures whatever is common across all implementations of FiringStrategy
  * 
+ * @author tyler
  * @author radithya
  *
  */

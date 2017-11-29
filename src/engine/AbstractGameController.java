@@ -36,10 +36,11 @@ public abstract class AbstractGameController {
 	// deletion? i.e. when level 3 is deleted, level 4 should become level 3, level
 	// 5 should become level 4, etc.
 
-	private List<Map<String, String>> levelStatuses = new ArrayList<>();
+	private List<Map<String, Double>> levelStatuses = new ArrayList<>();
 	private List<List<Sprite>> levelSpritesCache = new ArrayList<>();
 	private List<Map<String, String>> levelConditions = new ArrayList<>();
 	private List<String> levelDescriptions = new ArrayList<>();
+	private List<Bank> levelBanks = new ArrayList<>();
 
 	// TODO - move these into own object? Or have them in the sprite factory?
 	private AtomicInteger spriteIdCounter;
@@ -76,7 +77,7 @@ public abstract class AbstractGameController {
 		for (int level = 1; level < getLevelStatuses().size(); level++) {
 			serializedLevelsData.put(level,
 					getIoController().getLevelSerialization(level, getLevelDescriptions().get(level),
-							getLevelConditions().get(level), getLevelStatuses().get(level),
+							getLevelConditions().get(level), getLevelBanks().get(level), getLevelStatuses().get(level),
 							levelSpritesCache.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
@@ -133,13 +134,26 @@ public abstract class AbstractGameController {
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
 	}
-	
+
 	public ImageView getRepresentationFromSpriteId(int spriteId) {
 		return spriteIdMap.get(spriteId).getGraphicalRepresentation();
 	}
-	
-	protected List<List<Sprite>> getLevelSprites() {
-		return levelSpritesCache;
+
+	/**
+	 * Get resources left for current level
+	 * 
+	 * @return map of resource name to quantity left
+	 */
+	public Map<String, Double> getStatus() {
+		return getLevelStatuses().get(getCurrentLevel());
+	}
+
+	public Map<String, Double> getResourceEndowments() {
+		return getLevelBanks().get(getCurrentLevel()).getResourceEndowments();
+	}
+
+	public Map<String, Map<String, Double>> getElementCosts() {
+		return getLevelBanks().get(getCurrentLevel()).getUnitCosts();
 	}
 
 	protected void cacheGeneratedSprite(Sprite sprite) {
@@ -166,7 +180,7 @@ public abstract class AbstractGameController {
 		return ioController;
 	}
 
-	protected List<Map<String, String>> getLevelStatuses() {
+	protected List<Map<String, Double>> getLevelStatuses() {
 		return levelStatuses;
 	}
 
@@ -178,6 +192,14 @@ public abstract class AbstractGameController {
 		return levelDescriptions;
 	}
 
+	protected List<List<Sprite>> getLevelSprites() {
+		return levelSpritesCache;
+	}
+
+	protected List<Bank> getLevelBanks() {
+		return levelBanks;
+	}
+
 	protected int getCurrentLevel() {
 		return currentLevel;
 	}
@@ -187,6 +209,7 @@ public abstract class AbstractGameController {
 		loadGameStateSettingsForLevel(saveName, level, originalGame);
 		loadGameConditionsForLevel(saveName, level);
 		loadGameDescriptionForLevel(saveName, level);
+		loadGameBankForLevel(saveName, level, originalGame);
 	}
 
 	protected SpriteFactory getSpriteFactory() {
@@ -216,7 +239,7 @@ public abstract class AbstractGameController {
 	private void loadGameStateSettingsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);
-		Map<String, String> loadedSettings = ioController.loadGameStateSettings(savedGameName, level, originalGame);
+		Map<String, Double> loadedSettings = ioController.loadGameStateSettings(savedGameName, level, originalGame);
 		addOrSetLevelData(levelStatuses, loadedSettings, level);
 	}
 
@@ -229,6 +252,12 @@ public abstract class AbstractGameController {
 	private void loadGameDescriptionForLevel(String savedGameName, int level) throws FileNotFoundException {
 		assertValidLevel(level);
 		addOrSetLevelData(levelDescriptions, ioController.loadGameDescription(savedGameName, level), level);
+	}
+
+	private void loadGameBankForLevel(String savedGameName, int level, boolean originalGame)
+			throws FileNotFoundException {
+		assertValidLevel(level);
+		addOrSetLevelData(levelBanks, ioController.loadGameBank(savedGameName, level, originalGame), level);
 	}
 
 	private boolean isAuthoring() {
@@ -256,6 +285,7 @@ public abstract class AbstractGameController {
 		getLevelSprites().add(new ArrayList<>());
 		getLevelConditions().add(new HashMap<>());
 		getLevelDescriptions().add(new String());
+		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
 	}
 
 }
