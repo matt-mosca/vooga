@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import main.Main;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
+import sprites.InteractiveObject;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
@@ -129,7 +130,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMenuBar);
 	}
 	
-	public void listItemClicked(ClickableInterface clickable) {
+	public void listItemClicked(InteractiveObject clickable) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
@@ -148,14 +149,15 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(decrementButton);
 	}
 
-	private void addObject(StaticObject object) {
-		StaticObject newObject;
+	private void addObject(InteractiveObject object) {
+		InteractiveObject newObject;
 		if (object instanceof BackgroundObject) {
 			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
 		} else {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
 		myGameArea.addBackObject(newObject);
+		newObject.setElementId(controller.placeElement(object.getImageString(), new Point2D(object.getX(),object.getY())));
 	}
 
 	@Override

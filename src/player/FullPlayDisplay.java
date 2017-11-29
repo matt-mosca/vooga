@@ -39,7 +39,7 @@ import sprites.InteractiveObject;
 import sprites.Sprite;
 import sprites.StaticObject;
 
-public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
+public class FullPlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private GameToolBar myGameToolBar;
 	private List<List<Sprite>> levelSpritesCache;
@@ -62,8 +62,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
 					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	
-	public PlayDisplay(int width, int height) {
+	public FullPlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
+		initializeGameState();
 		myCoinDisplay = new CoinDisplay();
 		rootAdd(myCoinDisplay);
 		
@@ -99,6 +100,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //			ImageView imageView = myController.getRepresentationFromSpriteId(id);
 //		}
 //	}
+	
+	private void initializeGameState() {
+		List<String> games = new ArrayList<>();
+//		for(String title:myController.getAvailableGames().keySet()) {
+//			games.add(title);
+//		}
+	}
 
 	private void createTestImages() {
 		tower1 = new TowerImage(this, "Castle_Tower1");

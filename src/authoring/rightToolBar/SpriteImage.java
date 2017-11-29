@@ -17,7 +17,7 @@ public abstract class SpriteImage extends InteractiveObject {
 	private String myName;
 	
 	public SpriteImage(ScreenDisplay display) {
-		super(display);
+		super(display, null);
 	}
 	
 	public void addImage(String imageName) {

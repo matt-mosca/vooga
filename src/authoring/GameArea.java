@@ -42,7 +42,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	
 	private Group frontObjects;
 	private Group backObjects;
-	private List<StaticObject> objectList;
+	private List<InteractiveObject> objectList;
 	
 	public GameArea(AuthoringController controller) {
 		initializeProperties();
@@ -94,10 +94,10 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		object.setLocked(!moveableEnabled);
 	}
 	
-	protected void addBackObject(StaticObject object) {
-		backObjects.getChildren().add(object);
-		objectList.add(object);
-		object.setLocked(!moveableEnabled);
+	protected void addBackObject(InteractiveObject newObject) {
+		backObjects.getChildren().add(newObject);
+		objectList.add(newObject);
+		newObject.setLocked(!moveableEnabled);
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
@@ -112,7 +112,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		}else {
 			backObjects.toBack();
 		}
-		for(StaticObject s:objectList) {
+		for(InteractiveObject s:objectList) {
 			s.setLocked(!moveable);
 		}
 	}
