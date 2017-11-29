@@ -65,12 +65,12 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
 		myController = new PlayController();
-		addItems();
 		this.SetDroppable(myPlayArea);
+		createTestGameArea(height);
+		addItems();
 //		initializeGameState();
 //		initializeSprites();
 		initializeButtons();
-		createTestGameArea();
 		createTestImages();
 //		createTestSprites();
 //		createTestGameArea();
@@ -83,6 +83,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
+		
+//		rootStyle("authoring/resources/standardLabel.css");
+//		myCoinDisplay.getStylesheets().add("authoring/resources/standardLabel.css");
+//		myCoinDisplay.getStyleClass().add("coin-display");
+		Rectangle rect = new Rectangle(100, 100);
+//		rootStyle("authoring/resources/standardLabel.css");
+		getScene().getStylesheets().add("authoring/resources/standardLabel.css");
+		rect.getStyleClass().add("rect");
+		rootAdd(rect);
 	}
 
 	private void addItems() {
@@ -157,8 +166,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController.update();
 	}
 
-	private void createTestGameArea() {
-		myPlayArea = new PlayArea(this);
+	private void createTestGameArea(int height) {
+		myPlayArea = new PlayArea(this, height, height);
 		rootAdd(myPlayArea);
 	}
 	
