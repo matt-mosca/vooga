@@ -21,7 +21,7 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
         calculateVelocityComponents();
     }
 
-    public void move() {
+    public Point2D move() {
     	calculateVelocityComponents();
     	if(targetReached()) {
     		setX(this.getTargetX());

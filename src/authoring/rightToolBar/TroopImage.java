@@ -2,23 +2,32 @@ package authoring.rightToolBar;
 
 import java.util.ResourceBundle;
 
+import splashScreen.ScreenDisplay;
+
 
 public class TroopImage extends SpriteImage {
 	
+	private ScreenDisplay myDisplay;
 	private ResourceBundle troopResources;
 	private String myKey;
 	
-	public TroopImage(String stringKey) {
-		super();
+	public TroopImage(ScreenDisplay display, String stringKey) {
+		super(display);
+		myDisplay = display;
 		myKey = stringKey;
 		troopResources = ResourceBundle.getBundle("authoring/resources/NewTroopImages");
-		this.addImage(troopResources.getString(stringKey));
+		if(troopResources.containsKey(stringKey)) {
+			this.addImage(troopResources.getString(stringKey));
+		}else {
+			this.addImage(stringKey);
+		}
 
 	}
 	
 	@Override
 	public TroopImage clone() {
-		TroopImage cloneImage = new TroopImage(myKey);
+		TroopImage cloneImage = new TroopImage(myDisplay, myKey);
+		cloneImage.setName(this.getName());
 		cloneImage.setFitHeight(this.getFitHeight());
 		cloneImage.setFitWidth(this.getFitWidth());
 		return cloneImage;

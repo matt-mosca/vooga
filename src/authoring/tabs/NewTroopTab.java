@@ -1,22 +1,25 @@
-package authoring.rightToolBar;
+package authoring.tabs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import authoring.EditDisplay;
+import authoring.rightToolBar.TroopImage;
 import interfaces.CreationInterface;
 import javafx.scene.image.ImageView;
 
 public class NewTroopTab extends NewSpriteTab {
 	
 	private ResourceBundle troopResources;
+	private EditDisplay myDisplay;
 	
-	public NewTroopTab(CreationInterface created) {
-		super(created);
+	public NewTroopTab(EditDisplay display) {
+		super(display);
+		myDisplay = display;
 		troopResources = ResourceBundle.getBundle("authoring/resources/NewTroopImages");
 		addDefaultImages();
-		updateImages();
 	}
 
 	@Override
@@ -32,7 +35,7 @@ public class NewTroopTab extends NewSpriteTab {
 	
 	private void addImages(List<String> stringNames) {
 		for (String s : stringNames) {
-			addImage(new TroopImage(s));
+			addImage(new TroopImage(myDisplay, s));
 		}
 	}
 }

@@ -18,18 +18,11 @@
     -fx-padding: 5;
 }
 
-.button2{
-    -fx-text-fill: rgb(193,0,0);
-    -fx-background-color: rgb(223,185,81);
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
-    -fx-padding: 5;
-}
-
-.slider{
-    -fx-border-color: white;
-    -fx-border-style: dashed;
-    -fx-border-width: 2;
+.borders{
+    -fx-border-color: rgb(223,185,81);
+    -fx-border-style: solid;
+    -fx-border-width: 1.5;
+    -fx-border-insets: -5;
 }
 
 .label{
@@ -45,4 +38,13 @@
 	-fx-stroke: black; 
 	-fx-stroke-width: 1;
 	-fx-font-family: "Tahoma"
+}
+
+.menu .label{
+	-fx-text-fill: rgb(0,100,100);
+	-fx-font-size: 12 pt;
+}
+
+.menu{
+	-fx-padding: -1 5 1 5;
 }

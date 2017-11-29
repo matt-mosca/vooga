@@ -1,6 +1,7 @@
 package splashScreen;
 
 import authoring.EditDisplay;
+import interfaces.ClickableInterface;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
@@ -39,11 +40,12 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background);
 		stage = currentStage;
+		stage.setResizable(false);
 		basicSetup();
 		myNewGameButton = new NewGameButton(this);
 		rootAdd(myNewGameButton);
-		myEditGameButton = new EditGameButton(this);
-		rootAdd(myEditGameButton);
+//		myEditGameButton = new EditGameButton(this);
+//		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
 	}
@@ -170,6 +172,12 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		stage.setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		stage.setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
 		stage.setScene(myScene.getScene());
+		
+	}
+
+	@Override
+	public void listItemClicked(ClickableInterface clickable) {
+		// TODO Auto-generated method stub
 		
 	}
 

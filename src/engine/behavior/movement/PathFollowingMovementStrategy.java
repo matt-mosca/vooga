@@ -21,9 +21,10 @@ public abstract class PathFollowingMovementStrategy extends TargetedMovementStra
 		super(0, 0, velocity);
 	}
 
-	public void move() {
+	public Point2D move() {
 		super.move();
 		checkIfLocationReached();
+		return getCurrentCoordinates();
 	}
 	
 	

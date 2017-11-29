@@ -5,16 +5,19 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.path.Path;
+import interfaces.ClickableInterface;
 import interfaces.CustomizeInterface;
+import interfaces.Droppable;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import sprites.BackgroundObject;
+import sprites.InteractiveObject;
 import sprites.StaticObject;
 
-public class GameArea extends Pane implements CustomizeInterface{
+public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private final String WIDTH = "Game_Area_Width";
 	private final String HEIGHT = "Game_Area_Height";
 	private final String COLOR = "Game_Area_Color";
@@ -78,18 +81,6 @@ public class GameArea extends Pane implements CustomizeInterface{
 		path.addWaypoint(e, e.getX(), e.getY());
 	}
 	
-	protected void placeInGrid(StaticObject currObject) {
-		if(gridEnabled) {
-			Point2D newLocation = grid.place(currObject);
-			currObject.setX(newLocation.getX());
-			currObject.setY(newLocation.getY());
-			if(frontObjects.getChildren().contains(currObject)) return;
-			for (Node node: backObjects.getChildren()) {
-				if(!(node instanceof BackgroundObject)) node.toFront();
-			}
-		}
-	}
-	
 	//For potential future extension for objects that cover paths
 	protected void addFrontObject(StaticObject object) {
 		frontObjects.getChildren().add(object);
@@ -101,12 +92,6 @@ public class GameArea extends Pane implements CustomizeInterface{
 		backObjects.getChildren().add(object);
 		objectList.add(object);
 		object.setLocked(!moveableEnabled);
-	}
-	
-	protected void removeObject(StaticObject object) {
-		frontObjects.getChildren().remove(object);
-		backObjects.getChildren().remove(object);
-		objectList.remove(object);
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
@@ -139,13 +124,32 @@ public class GameArea extends Pane implements CustomizeInterface{
 		backgroundColor = hexcode;
 	}
 
-	public void removeFromGrid(StaticObject currObject) {
-		grid.removeFromGrid(currObject);
+	@Override
+	public void droppedInto(InteractiveObject interactive) {
+		if(gridEnabled) {
+			Point2D newLocation = grid.place(interactive);
+			interactive.setX(newLocation.getX());
+			interactive.setY(newLocation.getY());
+			if(frontObjects.getChildren().contains(interactive)) return;
+			for (Node node: backObjects.getChildren()) {
+				if(!(node instanceof BackgroundObject)) node.toFront();
+			}
+		}
 	}
 
 	@Override
-	public void changeTheme(String theme) {
-		// TODO Auto-generated method stub
+	public void objectRemoved(InteractiveObject interactive) {
+		frontObjects.getChildren().remove(interactive);
+		backObjects.getChildren().remove(interactive);
+		objectList.remove(interactive);
+	}
+
+	@Override
+	public void freeFromDroppable(InteractiveObject interactive) {
+		grid.removeFromGrid(interactive);
+	}
 		
+	public void returnButtonPressed() {
+		// TODO Auto-generated method stub
 	}
 }

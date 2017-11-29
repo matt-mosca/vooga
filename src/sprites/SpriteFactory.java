@@ -1,5 +1,6 @@
 package sprites;
 
+import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import util.SpriteOptionsGetter;
@@ -7,6 +8,8 @@ import util.SpriteOptionsGetter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,11 +21,11 @@ import java.util.stream.Collectors;
  */
 public class SpriteFactory {
 
-	private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
-	private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-templates/";
-	private final String PROPERTIES_EXTENSION = ".properties";
+
 
 	private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
+
+	private Map<Sprite, String> spriteToTemplate = new HashMap<>();
 
     private SpriteOptionsGetter spriteOptionsGetter = new SpriteOptionsGetter();
 
@@ -56,22 +59,30 @@ public class SpriteFactory {
 		//return generateSprite(properties);
     }
 
+    /**
+     * Generate a sprite from an existing template which specifies its properties.
+     *
+     * @param spriteTemplateName the name of the sprite template
+     * @param startCoordinates
+     * @return a sprite object with properties set to those specified in the template
+     */
+    public Sprite generateSprite(String spriteTemplateName, Point2D startCoordinates) {
+        return generateSprite(spriteTemplateName, startCoordinates, new HashMap<>());
+    }
+
 	/**
 	 * Generate a sprite from an existing template which specifies its properties.
 	 *
 	 * @param spriteTemplateName the name of the sprite template
 	 * @param startCoordinates
-	 * @param graphicalRepresentation
 	 * @param auxiliaryObjects map of optional objects needed for certain types of elements
 	 * @return a sprite object with properties set to those specified in the template
 	 */
-	public Sprite generateSprite(String spriteTemplateName, Point2D startCoordinates,
-								 ImageView graphicalRepresentation, Map<String, ?> auxiliaryObjects) {
+	public Sprite generateSprite(String spriteTemplateName, Point2D startCoordinates, Map<String, ?> auxiliaryObjects) {
 		Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
 		Sprite sprite = generateSprite(properties, auxiliaryObjects);
 		sprite.setX(startCoordinates.getX());
 		sprite.setY(startCoordinates.getY());
-		sprite.setGraphicalRepresentation(graphicalRepresentation);
 		return sprite;
 	}
 
@@ -110,7 +121,6 @@ public class SpriteFactory {
 										   Map<String, ?> auxiliaryObjects) throws ReflectiveOperationException {
 	    try {
             String chosenSubclassName = spriteOptionsGetter.getChosenSubclassName(parameterClass, properties);
-            System.out.println(chosenSubclassName);
             Class chosenParameterSubclass = Class.forName(chosenSubclassName);
             List<String> constructorParameterIdentifiers =
                     spriteOptionsGetter.getConstructorParameterIdentifiers(chosenParameterSubclass);
@@ -119,18 +129,23 @@ public class SpriteFactory {
             return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
         } catch (IllegalArgumentException illegalArgumentException) {
 	        // Case where constructor has the main objects encapsulated (i.e., MovementHandler and CollisionHandler)
-            System.out.println(parameterClass.getTypeName());
-	        Parameter[] parameters = parameterClass.getConstructors()[0].getParameters();
-	        Object[] constructorParameters = new Object[parameters.length];
-	        for (int i = 0; i < parameters.length; i++) {
-	            System.out.println("\t"+parameters[i].getType().getTypeName());
-                constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties, auxiliaryObjects);
+            // or where constructor has aux parameter encapsulated (but not bottom level behavior object)
+            Constructor[] parameterClassConstructors = parameterClass.getConstructors();
+            if (parameterClassConstructors.length > 0) {
+                Parameter[] parameters = parameterClassConstructors[0].getParameters();
+                Object[] constructorParameters = new Object[parameters.length];
+                for (int i = 0; i < parameters.length; i++) {
+                    ParameterName parameterNameAnnotation = parameters[i].getAnnotation(ParameterName.class);
+                    if (parameterNameAnnotation != null) {
+                        constructorParameters[i] = setConstructorParameter(properties.get(parameterNameAnnotation.value()));
+                    } else {
+                        constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties, auxiliaryObjects);
+                    }
+                }
+                return parameterClass.getConstructors()[0].newInstance(constructorParameters);
+            } else {
+                return null;
             }
-            System.out.println(parameterClass.getTypeName() + " " +
-                    Arrays.stream(parameterClass.getConstructors()[0].getParameters())
-                            .map(Parameter::getType).collect(Collectors.toList())
-                    + " " + Arrays.asList(constructorParameters));
-            return parameterClass.getConstructors()[0].newInstance(constructorParameters);
         }
     }
 
@@ -149,9 +164,6 @@ public class SpriteFactory {
 				constructorParameters[i] = setConstructorParameter(propertyValueAsString);
 			}
 		}
-        /*System.out.println(Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameters()));
-        System.out.println(Arrays.stream(constructorParameters).map(cp -> cp.getClass().getName()).collect(Collectors
-				.toList()));*/
         return constructorParameters;
     }
 
@@ -172,18 +184,18 @@ public class SpriteFactory {
      * Obtain the base configuration options for sprites; specifically, obtain descriptive names for the subclass
      * options for the sprite's construction parameters.
      *
-     * @return a map from the (prettily translated) name of configuration parameter to its value options
+     * @return a map from the (pretty) name of configuration parameter to its value options
      */
     public Map<String, List<String>> getElementBaseConfigurationOptions() {
         return spriteOptionsGetter.getSpriteParameterSubclassOptions();
     }
 
     /**
+     * Get auxiliary configuration elements for a game element, based on top-level configuration choices.
      *
-     * @param subclassChoices
-     * @return
+     * @return a map from the (pretty) name of the configuration parameter to its class type
      */
-    public List<String> getAuxiliaryElementProperties(Map<String, String> subclassChoices) {
+    public Map<String, Class> getAuxiliaryElementProperties(Map<String, String> subclassChoices) {
         return spriteOptionsGetter.getAuxiliaryParametersFromSubclassChoices(subclassChoices);
     }
 
@@ -234,36 +246,14 @@ public class SpriteFactory {
 		}
 		return spriteTemplates.get(spriteTemplateName);
 	}
-
+	
 	/**
-	 * Export all the stored sprite templates for an authored game to properties
-	 * files.
+	 * Return a COPY of current templates for data protection
+	 * @return map of template names to their properties
 	 */
-	public void exportSpriteTemplates() {
-		for (String templateName : spriteTemplates.keySet()) {
-			Properties templateProperties = new Properties();
-			Map<String, String> templatePropertiesMap = spriteTemplates.get(templateName);
-			templatePropertiesMap.forEach(templateProperties::setProperty);
-			File exportFile = new File(TEMPLATE_FILE_OUTPUT_PATH + templateName + PROPERTIES_EXTENSION);
-			writeTemplateToFile(templateProperties, exportFile);
-		}
+	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
+		return spriteTemplates;
 	}
 
-	private void writeTemplateToFile(Properties templateProperties, File exportFile) {
-		FileOutputStream fileOut = null;
-		try {
-			fileOut = new FileOutputStream(exportFile);
-			templateProperties.store(fileOut, PROPERTIES_COMMENT);
-		} catch (IOException e) {
-			// TODO - throw custom exception
-		} finally {
-			if (fileOut != null) {
-				try {
-					fileOut.close();
-				} catch (IOException e) {
-					// TODO - throw custom exception
-				}
-			}
-		}
-	}
+
 }

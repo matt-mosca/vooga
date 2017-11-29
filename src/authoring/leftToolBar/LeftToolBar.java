@@ -2,27 +2,35 @@ package authoring.leftToolBar;
 
 import java.util.ArrayList;
 
+import authoring.tabs.AddStaticTab;
+import authoring.tabs.AddTab;
+import authoring.tabs.SimpleTab;
+import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
-import interfaces.ClickableInterface;
+
+import javafx.geometry.Point2D;
+
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
+import splashScreen.ScreenDisplay;
 
 /**
- * 
  * @author Matt
  */
 public class LeftToolBar extends VBox {
-	private static final int WIDTH = 300;
-	private ClickableInterface myClickable;
+	private static final int Y_POSITION = 50;
+	private ScreenDisplay myDisplay;
+	private AuthoringController myController;
 	private TabPane tabPane;
 	private TabFactory tabFactory;
 	private SimpleTab staticTab;
 	private SimpleTab backgroundTab;
-	private NewTab addTab;
+	private AddTab addTab;
 	
-	public LeftToolBar(ClickableInterface clickable) {
-		this.setLayoutY(50);
-		myClickable = clickable;
+	public LeftToolBar(ScreenDisplay display, AuthoringController controller) {
+		this.setLayoutY(Y_POSITION);
+		myDisplay = display;
+		myController = controller;
 		tabPane = new TabPane();
 		tabFactory = new TabFactory();
 		this.getChildren().add(tabPane);
@@ -31,23 +39,23 @@ public class LeftToolBar extends VBox {
 	
 	private void createAndAddTabs() {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
-		staticTab = new SimpleTab(myClickable, new ArrayList<>());
+		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
 		staticTab.addStaticItem(1, "tortoise.png");
-		staticTab.addStaticItem(1, "gray_circle.png");
+		staticTab.addStaticItem(2, "gray_circle.png");
 		staticTab.addStaticItem(1, "green_soldier.gif");
 		
-		backgroundTab = new SimpleTab(myClickable, new ArrayList<>());
-		backgroundTab.addBackgroundItem(3, "grass_small.png");
-		backgroundTab.addBackgroundItem(3, "grass2_small.png");
-		backgroundTab.addBackgroundItem(2, "brick_path.png");
-		backgroundTab.addBackgroundItem(2, "stone_path1.png");
-		backgroundTab.addBackgroundItem(3, "water_medium.png");
+		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
+		backgroundTab.addBackgroundItem(2, "grass_small.png");
+		backgroundTab.addBackgroundItem(1, "grass2_small.png");
+		backgroundTab.addBackgroundItem(1, "brick_path.png");
+		backgroundTab.addBackgroundItem(1, "stone_path1.png");
+		backgroundTab.addBackgroundItem(1, "water_medium.png");
 		
-		tabPane.getTabs().add(tabFactory.buildTab("Static", staticTab, tabPane));
-		tabPane.getTabs().add(tabFactory.buildTab("Background", backgroundTab, tabPane));
+		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
+		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));
 		
-		addTab = new NewTab(myClickable, tabPane);
-		tabPane.getTabs().add(tabFactory.buildTab("Add Image", addTab, tabPane));
+		addTab = new AddStaticTab(myDisplay, tabPane);
+		tabPane.getTabs().add(tabFactory.buildTab("Add Image", null, addTab, tabPane));
 		makeTabsUnclosable();
 	}
 	
