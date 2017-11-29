@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.path.Path;
+import interfaces.ClickableInterface;
 import interfaces.CustomizeInterface;
+import interfaces.Droppable;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -14,7 +16,7 @@ import javafx.scene.layout.Pane;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
 
-public class GameArea extends Pane implements CustomizeInterface{
+public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private final String WIDTH = "Game_Area_Width";
 	private final String HEIGHT = "Game_Area_Height";
 	private final String COLOR = "Game_Area_Color";
@@ -78,7 +80,7 @@ public class GameArea extends Pane implements CustomizeInterface{
 		path.addWaypoint(e, e.getX(), e.getY());
 	}
 	
-	protected void placeInGrid(StaticObject currObject) {
+	protected void placeInGrid(ClickableInterface currObject) {
 		if(gridEnabled) {
 			Point2D newLocation = grid.place(currObject);
 			currObject.setX(newLocation.getX());
@@ -103,10 +105,10 @@ public class GameArea extends Pane implements CustomizeInterface{
 		object.setLocked(!moveableEnabled);
 	}
 	
-	protected void removeObject(StaticObject object) {
-		frontObjects.getChildren().remove(object);
-		backObjects.getChildren().remove(object);
-		objectList.remove(object);
+	protected void removeObject(ClickableInterface clickable) {
+		frontObjects.getChildren().remove(clickable);
+		backObjects.getChildren().remove(clickable);
+		objectList.remove(clickable);
 	}
 	
 	protected void toggleGridVisibility(boolean visible) {
@@ -139,7 +141,7 @@ public class GameArea extends Pane implements CustomizeInterface{
 		backgroundColor = hexcode;
 	}
 
-	public void removeFromGrid(StaticObject currObject) {
+	public void removeFromGrid(ClickableInterface currObject) {
 		grid.removeFromGrid(currObject);
 	}
 
@@ -150,8 +152,21 @@ public class GameArea extends Pane implements CustomizeInterface{
 	}
 
 	@Override
+	public void droppedInto(ClickableInterface clickable) {
+		placeInGrid(clickable);
+	}
+
+	@Override
+	public void objectRemoved(ClickableInterface clickable) {
+		removeObject(clickable);
+	}
+
+	@Override
+	public void freeFromDroppable(ClickableInterface clickable) {
+		removeFromGrid(clickable);
+	}
+		
 	public void returnButtonPressed() {
 		// TODO Auto-generated method stub
-		
 	}
 }

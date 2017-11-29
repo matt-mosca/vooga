@@ -3,12 +3,12 @@ package sprites;
 import interfaces.ClickableInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
+import splashScreen.ScreenDisplay;
 
 public class BackgroundObject extends StaticObject {
 	
-	public BackgroundObject(int size, ClickableInterface clickable, String imageString) {
-		super(size, clickable, imageString);
+	public BackgroundObject(int size, ScreenDisplay display, String imageString) {
+		super(size, display, imageString);
 		this.toBack();
-		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->clickable.dropped(this, e));
 	}
 }

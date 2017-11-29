@@ -18,6 +18,7 @@ import engine.behavior.firing.NoopFiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.StationaryMovementStrategy;
 import engine.play_engine.PlayController;
+import interfaces.ClickableInterface;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
@@ -165,27 +166,14 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	@Override
-	public void clicked(StaticObject object) {
-		// TODO Auto-generated method stub
-		myCoinDisplay.decrease();
-		
-	}
-
-	@Override
-	public void dropped(StaticObject rec, MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pressed(StaticObject staticObject, MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void clicked(SpriteImage sprite) {
 		System.out.println(sprite.toString());
+		
+	}
+
+	@Override
+	public void listItemClicked(ClickableInterface clickable) {
+		// TODO Auto-generated method stub
 		
 	}
 	

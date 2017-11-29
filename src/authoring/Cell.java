@@ -3,6 +3,7 @@ package authoring;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.ClickableInterface;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import sprites.BackgroundObject;
@@ -10,12 +11,12 @@ import sprites.StaticObject;
 
 public class Cell extends StackPane{
 	private boolean active = false;
-	private List<StaticObject> myAssignments;
-	private List<BackgroundObject> myBackgrounds;
+	private List<ClickableInterface> myAssignments;
+	private List<ClickableInterface> myBackgrounds;
 	
 	public Cell() {
-		myAssignments = new ArrayList<StaticObject>();
-		myBackgrounds = new ArrayList<BackgroundObject>();
+		myAssignments = new ArrayList<>();
+		myBackgrounds = new ArrayList<>();
 		this.addEventHandler(MouseEvent.MOUSE_ENTERED, e->highlight());
 		this.addEventHandler(MouseEvent.MOUSE_EXITED, e->removeHighlight());
 	}
@@ -40,7 +41,7 @@ public class Cell extends StackPane{
 		active = false;
 	}
 	
-	protected void assignToCell(StaticObject currObject) {
+	protected void assignToCell(ClickableInterface currObject) {
 		if (currObject instanceof BackgroundObject) {
 			myBackgrounds.add((BackgroundObject) currObject);
 		} else {
@@ -52,11 +53,11 @@ public class Cell extends StackPane{
 		return myAssignments.isEmpty();
 	}
 
-	public void removeAssignment(StaticObject currObject) {
+	public void removeAssignment(ClickableInterface currObject) {
 		if (!isEmpty()) myAssignments.remove(currObject);
 	}
 	
-	public List<StaticObject> saveAssignments() {
+	public List<ClickableInterface> saveAssignments() {
 		return myAssignments;
 	}
 }
