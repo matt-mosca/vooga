@@ -136,8 +136,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myGameChooser);
 		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
-		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
-		rootAdd(myBottomToolBar);
+//		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
+//		rootAdd(myBottomToolBar);
 	}
 	
 	public void listItemClicked(InteractiveObject clickable) {
@@ -166,7 +166,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
 		myGameArea.addBackObject(newObject);
-		newObject.setElementId(controller.placeElement(object.getImageString(), new Point2D(object.getX(),object.getY())));
+//		newObject.setElementId(controller.placeElement(object.getImageString(), new Point2D(object.getX(),object.getY())));
 	}
 
 	@Override
