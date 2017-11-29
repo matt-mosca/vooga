@@ -248,11 +248,12 @@ public class SpriteFactory {
 	}
 	
 	/**
-	 * Return a COPY of current templates for data protection
+	 * Return a copy of current templates (for data protection)
+     *
 	 * @return map of template names to their properties
 	 */
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
-		return spriteTemplates;
+		return new HashMap<>(spriteTemplates);
 	}
 
 

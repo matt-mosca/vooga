@@ -134,21 +134,6 @@ public interface AuthoringModelController {
 	int placeElement(String elementName, Point2D startCoordinates);
 
 	/**
-	 * Place a game element of previously defined (or default) type within the game.
-	 * Special case where the element tracks the movement of another game element.
-	 *
-	 * @param elementName
-	 *            the template name for the element
-	 * @param startCoordinates
-	 *            the coordinates at which the element should be placed
-	 * @param idOfElementToTrack
-	 *            the unique identifier of the (previously placed) element to track
-	 * @return a unique identifier for the sprite abstraction representing the game
-	 *         element
-	 */
-	int placeTrackingElement(String elementName, Point2D startCoordinates, int idOfElementToTrack);
-
-	/**
 	 * Get the ImageView corresponding to a particular spriteId
 	 * 
 	 * @param spriteId
@@ -212,6 +197,13 @@ public interface AuthoringModelController {
 	 */
 	void deleteElement(int elementId);
 
+	/**
+	 * Fetch all available game names and their corresponding descriptions
+	 * 
+	 * @return map where keys are game names and values are game descriptions
+	 */
+	Map<String, String> getAvailableGames();
+	
 	/**
 	 * Get a map of properties for a particular game element, so as to allow for
 	 * their displaying in a modification area of the display.

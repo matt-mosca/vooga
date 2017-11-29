@@ -1,6 +1,7 @@
 package util;
 
 import com.google.gson.GsonBuilder;
+import com.thoughtworks.xstream.XStream;
 
 import engine.Bank;
 import engine.behavior.collision.CollisionVisitor;
@@ -111,6 +112,7 @@ public class SerializationUtils {
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeSprites(levelSprites, level));
 		return gameDataStringBuilder.toString();
+		
 	}
 
 	// TODO - for all deserialization methods : take level as parameter
@@ -212,6 +214,7 @@ public class SerializationUtils {
 	 * @throws IllegalArgumentException
 	 *             if serialization is ill-formatted
 	 */
+	@SuppressWarnings("unchecked")
 	public int getNumLevelsFromSerializedGame(String serializedGameData) throws IllegalArgumentException {
 		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(serializedGameData, Map.class);
 		return serializedLevelData.keySet().size();

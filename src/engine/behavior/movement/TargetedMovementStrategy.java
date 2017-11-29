@@ -12,6 +12,7 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
 
     private double xVelocity;
     private double yVelocity;
+
     private double velocityMagnitude;
 
     protected TargetedMovementStrategy(double targetX, double targetY, double velocityMagnitude) {
@@ -23,9 +24,25 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
 
     public Point2D move() {
     	calculateVelocityComponents();
-        setX(this.getCurrentX()+ getXVelocity());
-        setY(this.getCurrentY()+ getYVelocity());
-        return getCurrentCoordinates();
+    	if(targetReached()) {
+    		setX(this.getTargetX());
+    		setY(this.getTargetY());
+    	}
+    	else{
+    		setX(this.getCurrentX()+ getXVelocity());
+        	setY(this.getCurrentY()+ getYVelocity());
+    	}
+    	return getCurrentCoordinates();
+    }
+    
+    public void stop() {
+        this.xVelocity = 0;
+        this.yVelocity = 0;
+        this.velocityMagnitude = 0;
+    }
+    
+    public boolean targetReached() {
+    	return (Math.hypot(targetX-this.getCurrentX(), targetY-this.getCurrentY())<velocityMagnitude);
     }
 
     protected void setTargetCoordinates(double targetX, double targetY) {
@@ -50,7 +67,6 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
         return yVelocity;
     }
 
-
     protected void setXVelocity(double newXVelocity) {
         xVelocity = newXVelocity;
     }
@@ -66,9 +82,5 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
         this.yVelocity = velocityMagnitude * Math.sin(angle);
     }
 
-    public void stop() {
-        this.xVelocity = 0;
-        this.yVelocity = 0;
-        this.velocityMagnitude = 0;
-    }
+    
 }
