@@ -8,5 +8,6 @@ public class CoinDisplay extends ValueDisplay {
 		setStandardDisplayImage(IMAGE);
 		setStandardImageViewSize();
 		setBoxPosition(400, 0);
+		addItems();
 	}
 }

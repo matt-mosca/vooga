@@ -4,8 +4,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 public class ValueDisplay extends HBox {
 	private static final double IMAGE_WIDTH= 40;
@@ -20,12 +18,11 @@ public class ValueDisplay extends HBox {
 		quantity = 0;
 		myValue = new Label(Integer.toString(quantity));
 		setStandardDisplayValue();
-		addItems();
 		setStandardBoxStyle();
 //		this.getStyleClass().add("coin-display");
 	}
 	
-	private void addItems() {
+	protected void addItems() {
 //		this.getChildren().add(myLabel);
 		this.getChildren().add(myValueImage);
 		this.getChildren().add(myValue);
