@@ -1,5 +1,7 @@
 package splashScreen;
 
+import java.io.File;
+
 import interfaces.ClickableInterface;
 import interfaces.Droppable;
 import javafx.animation.KeyFrame;
@@ -81,7 +83,7 @@ public abstract class ScreenDisplay {
 		droppable = drop;
 	}
 	
-	public abstract void save(String saveName);
+	public abstract void save(File saveFile);
 	
 	public abstract void listItemClicked(InteractiveObject object);
 }

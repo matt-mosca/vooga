@@ -8,6 +8,7 @@ import sprites.Sprite;
 import sprites.SpriteFactory;
 import util.SerializationUtils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,7 +70,7 @@ public abstract class AbstractGameController {
 	 * @param saveName
 	 *            the name to assign to the save file
 	 */
-	public void saveGameState(String saveName) {
+	public void saveGameState(File saveName) {
 		// Note : saveName overrides previously set gameName if different - need to
 		// handle this?
 		// Serialize separately for every level
