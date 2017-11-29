@@ -68,7 +68,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		this.SetDroppable(myPlayArea);
 		createTestGameArea(height);
 		addItems();
-//		initializeGameState();
+		initializeGameState();
 //		initializeSprites();
 		initializeButtons();
 		createTestImages();
@@ -121,7 +121,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 	}
 	
-	//TODO Same as above
 	private void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		for(String title:myController.getAvailableGames().keySet()) {
@@ -130,11 +129,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
 		loadChoices.setTitle("Load Game");
 		loadChoices.setContentText(null);
-		loadChoices.setDialogPane(null);
 		
 		Optional<String> result = loadChoices.showAndWait();
 		if(result.isPresent()) {
-			//Insert method here that will cue the rest of initialization
 			try {
 				myController.loadOriginalGameState(result.get(), level);
 			} catch (FileNotFoundException e) {
