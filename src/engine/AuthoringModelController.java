@@ -1,5 +1,6 @@
 package engine;
 
+import authoring.path.PathList;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
@@ -125,7 +126,7 @@ public interface AuthoringModelController {
 	void deleteElementDefinition(String elementName) throws IllegalArgumentException;
 
 	/**
-	 * Place a game element of previously defined (or default) type within the game.
+	 * Place a game element of previously defined type within the game.
 	 *
 	 * @param elementName
 	 *            the template name for the element
@@ -135,6 +136,18 @@ public interface AuthoringModelController {
 	 *         element
 	 */
 	int placeElement(String elementName, Point2D startCoordinates);
+
+	/**
+	 * Place a game element of previously defined type within the game which follows a path defined in the authoring
+	 * environment as it moves.
+	 *
+	 * @param elementName
+	 * 			 the template name for the element
+	 * @param pathList
+	 * 			 a list of points the object should target as it moves
+	 * @return a unique identifier for the sprite abstraction representing the game element
+	 */
+	int placePathFollowingElement(String elementName, PathList pathList);
 
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
