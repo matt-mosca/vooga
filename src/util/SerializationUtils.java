@@ -1,6 +1,7 @@
 package util;
 
 import com.google.gson.GsonBuilder;
+import com.thoughtworks.xstream.XStream;
 
 import engine.Bank;
 import engine.behavior.collision.CollisionVisitor;
@@ -30,10 +31,12 @@ public class SerializationUtils {
 	public static final int BANK_SERIALIZATION_INDEX = 2;
 	public static final int STATUS_SERIALIZATION_INDEX = 3;
 	public static final int SPRITES_SERIALIZATION_INDEX = 4;
-	private GsonBuilder gsonBuilder;
+	//private GsonBuilder gsonBuilder;
+	XStream xStream;
 
 	public SerializationUtils() {
-		gsonBuilder = new GsonBuilder();
+		//gsonBuilder = new GsonBuilder();
+		xStream = new XStream();
 	}
 
 	/**
@@ -61,7 +64,8 @@ public class SerializationUtils {
 		Map<String, String> serializedLevelData = new HashMap<>();
 		serializedLevelData.put(Integer.toString(level),
 				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelSprites, level));
-		return gsonBuilder.create().toJson(serializedLevelData);
+		//return gsonBuilder.create().toJson(serializedLevelData);
+		return xStream.toXML(serializedLevelData);
 	}
 
 	/**
@@ -78,7 +82,8 @@ public class SerializationUtils {
 		for (Integer level : serializedLevelsData.keySet()) {
 			serializedLevelsDataMap.put(Integer.toString(level), serializedLevelsData.get(level));
 		}
-		return gsonBuilder.create().toJson(serializedLevelsDataMap);
+		//return gsonBuilder.create().toJson(serializedLevelsDataMap);
+		return xStream.toXML(serializedLevelsDataMap);
 	}
 
 	/**
@@ -111,6 +116,7 @@ public class SerializationUtils {
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeSprites(levelSprites, level));
 		return gameDataStringBuilder.toString();
+		
 	}
 
 	// TODO - for all deserialization methods : take level as parameter
@@ -212,59 +218,74 @@ public class SerializationUtils {
 	 * @throws IllegalArgumentException
 	 *             if serialization is ill-formatted
 	 */
+	@SuppressWarnings("unchecked")
 	public int getNumLevelsFromSerializedGame(String serializedGameData) throws IllegalArgumentException {
-		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(serializedGameData, Map.class);
+		//Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(serializedGameData, Map.class);
+		Map<String, String> serializedLevelData = (Map<String, String>) xStream.fromXML(serializedGameData, Map.class);
 		return serializedLevelData.keySet().size();
 	}
 
 	private String serializeGameDescription(String gameDescription) {
 		Map<String, String> descriptionMap = new HashMap<>();
 		descriptionMap.put(DESCRIPTION, gameDescription);
-		return gsonBuilder.create().toJson(descriptionMap);
+		//return gsonBuilder.create().toJson(descriptionMap);
+		return xStream.toXML(descriptionMap);
 	}
 
 	private String serializeConditions(Map<String, String> gameConditions) {
 		Map<String, Map<String, String>> conditionsMap = new HashMap<>();
 		conditionsMap.put(CONDITIONS, gameConditions);
-		return gsonBuilder.create().toJson(conditionsMap);
+		//return gsonBuilder.create().toJson(conditionsMap);
+		return xStream.toXML(conditionsMap);
 	}
 
 	private String serializeBank(Bank bank) {
 		Map<String, Bank> bankMap = new HashMap<>();
 		bankMap.put(BANK, bank);
-		return gsonBuilder.create().toJson(bankMap);
+		//return gsonBuilder.create().toJson(bankMap);
+		return xStream.toXML(bankMap);
 	}
 
 	private String serializeStatus(Map<String, Double> status) {
 		Map<String, Map<String, Double>> statusMap = new HashMap<>();
 		statusMap.put(STATUS, status);
-		return gsonBuilder.create().toJson(status);
+		//return gsonBuilder.create().toJson(status);
+		return xStream.toXML(status);
 	}
 
 	// Collect multiple sprites into a top-level map
 	private String serializeSprites(List<Sprite> levelSprites, int level) {
 		Map<String, List<Sprite>> spritesMap = new HashMap<>();
 		spritesMap.put(SPRITES, levelSprites);
-		return gsonBuilder.create().toJson(levelSprites);
+		//return gsonBuilder.create().toJson(levelSprites);
+		return xStream.toXML(levelSprites);
 	}
 
+	@SuppressWarnings("unchecked")
 	private String deserializeDescription(String serializedDescription) {
-		Map<String, String> descriptionMap = gsonBuilder.create().fromJson(serializedDescription, Map.class);
+		//Map<String, String> descriptionMap = gsonBuilder.create().fromJson(serializedDescription, Map.class);
+		Map<String, String> descriptionMap = (Map<String, String>) xStream.fromXML(serializedDescription, Map.class);
 		return descriptionMap.get(DESCRIPTION);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Map<String, String> deserializeConditions(String serializedConditions) {
-		Map<String, Map<String, String>> conditionsMap = gsonBuilder.create().fromJson(serializedConditions, Map.class);
+		//Map<String, Map<String, String>> conditionsMap = gsonBuilder.create().fromJson(serializedConditions, Map.class);
+		Map<String, Map<String, String>> conditionsMap = (Map<String, Map<String, String>>) xStream.fromXML(serializedConditions, Map.class);
 		return conditionsMap.get(CONDITIONS);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Bank deserializeBank(String serializedBank) {
-		Map<String, Bank> bankMap = gsonBuilder.create().fromJson(serializedBank, Map.class);
+		//Map<String, Bank> bankMap = gsonBuilder.create().fromJson(serializedBank, Map.class);
+		Map<String, Bank> bankMap = (Map<String, Bank>) xStream.fromXML(serializedBank, Map.class);
 		return bankMap.get(BANK);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Map<String, Double> deserializeStatus(String serializedStatus) {
-		Map<String, Map<String, Double>> statusMap = gsonBuilder.create().fromJson(serializedStatus, Map.class);
+		//Map<String, Map<String, Double>> statusMap = gsonBuilder.create().fromJson(serializedStatus, Map.class);
+		Map<String, Map<String, Double>> statusMap = (Map<String, Map<String, Double>>) xStream.fromXML(serializedStatus, Map.class);
 		return statusMap.get(STATUS);
 	}
 
@@ -274,13 +295,17 @@ public class SerializationUtils {
 		// TODO - fix this, it will eventually cause:
 		// Exception in thread "main" java.lang.ClassCastException:
 		// com.google.gson.internal.LinkedTreeMap cannot be cast to sprites.Sprite
-		Map<String, List<Sprite>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, Map.class);
+		//Map<String, List<Sprite>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, Map.class);
+		@SuppressWarnings("unchecked")
+		Map<String, List<Sprite>> spritesMap = (Map<String, List<Sprite>>) xStream.fromXML(serializedSprites, Map.class);
 		return spritesMap.get(SPRITES);
 	}
 
+	@SuppressWarnings("unchecked")
 	private String[] retrieveSerializedSectionsForLevel(String serializedGameData, int level)
 			throws IllegalArgumentException {
-		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(serializedGameData, Map.class);
+		//Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(serializedGameData, Map.class);
+		Map<String, String> serializedLevelData = (Map<String, String>) xStream.fromXML(serializedGameData, Map.class);
 		String levelString = Integer.toString(level);
 		if (!serializedLevelData.containsKey(levelString)) {
 			throw new IllegalArgumentException();
