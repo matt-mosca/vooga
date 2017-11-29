@@ -28,7 +28,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private Packager packager;
 	private GameConditionsReader gameConditionsReader;
 	private SpriteTemplateExporter spriteExporter;
-	
+
 	private final String WAVE = "wave_";
 
 	private Map<String, Set<Integer>> templateToIdMap;
@@ -127,7 +127,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void setStatusProperty(String property, Double value) {
 		getLevelStatuses().get(getCurrentLevel()).put(property, value);
 	}
-	
+
 	@Override
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
 		getLevelBanks().get(getCurrentLevel()).setResourceEndowments(resourceEndowments);
@@ -137,7 +137,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
 		getLevelBanks().get(getCurrentLevel()).setUnitCost(elementName, unitCosts);
 	}
-
 
 	// TODO - to support multiple clients / interactive editing, need a client-id
 	// param (string or int)
@@ -155,18 +154,17 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void setWaveProperties(Map<String, String> waveProperties, Point2D spawningPoint) {
+	public void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
+			Point2D spawningPoint) {
 		String waveName = getNameForWave();
 		defineElement(waveName, waveProperties);
-		placeElement(waveName, spawningPoint);
+		placeElement(waveName, spawningPoint, elementNamesToSpawn);
 	}
-	
+
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
 		return getSpriteFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
 	}
-	
-	
 
 	@Override
 	public Collection<String> getPossibleVictoryConditions() {
@@ -206,7 +204,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private void updateElementPropertiesById(int elementId, Map<String, String> propertiesToUpdate) {
 		// TODO - can't use old method
 	}
-	
+
 	private String getNameForWave() {
 		return WAVE + Integer.toString(gameWaveCounter.incrementAndGet());
 	}

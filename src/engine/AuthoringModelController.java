@@ -304,12 +304,15 @@ public interface AuthoringModelController {
 	/**
 	 * Set the behavior and parameters of the wave
 	 * 
-	 * @param properties
+	 * @param waveProperties
 	 *            a map containing the properties of the wave to be created
+	 * @param elementNames
+	 *            name of elements to spawn
 	 * @param spawningPoint
 	 *            the point at which to spawn the wave
 	 */
-	void setWaveProperties(Map<String, String> waveProperties, Point2D spawningPoint);
+	void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
+			Point2D spawningPoint);
 
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions
