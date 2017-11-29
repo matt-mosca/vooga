@@ -1,5 +1,7 @@
 package engine.authoring_engine;
 
+import authoring.path.PathList;
+import authoring.path.PathPoint;
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
@@ -8,6 +10,7 @@ import sprites.Sprite;
 import util.GameConditionsReader;
 import util.SpriteTemplateExporter;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,10 +44,9 @@ public class AuthoringController extends AbstractGameController implements Autho
 		packager = new Packager();
 		gameConditionsReader = new GameConditionsReader();
 		templateToIdMap = new HashMap<>();
+		spriteExporter = new SpriteTemplateExporter();
 	}
 	
-	
-
 	@Override
 	public void exportGame() {
 		spriteExporter.exportSpriteTemplates(getGameName(), getSpriteFactory().getAllDefinedTemplateProperties());
@@ -85,6 +87,12 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
+	public int placePathFollowingElement(String elementName, PathList pathList) {
+		Point2D startPoint = pathList.next();
+		return placeElement(elementName, startPoint, Arrays.asList(pathList));
+	}
+
+	@Override
 	public void moveElement(int elementId, double xCoordinate, double yCoordinate) throws IllegalArgumentException {
 		Sprite sprite = getElement(elementId);
 		sprite.setX(xCoordinate);
@@ -102,6 +110,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 		Sprite removedSprite = getSpriteIdMap().remove(elementId);
 		getLevelSprites().get(getCurrentLevel()).remove(removedSprite);
 	}
+	
+	@Override
+	public void addElementToInventory(String elementName) {
+		getLevelInventories().get(getCurrentLevel()).add(elementName);
+	}
 
 	@Override
 	public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
@@ -114,7 +127,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
 		return getSpriteFactory().getTemplateProperties(elementName);
 	}
-
+	
 	private Sprite getElement(int elementId) throws IllegalArgumentException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
@@ -131,7 +144,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void setStatusProperty(String property, Double value) {
 		getLevelStatuses().get(getCurrentLevel()).put(property, value);
 	}
-	
+
 	@Override
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
 		getLevelBanks().get(getCurrentLevel()).setResourceEndowments(resourceEndowments);
@@ -141,7 +154,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
 		getLevelBanks().get(getCurrentLevel()).setUnitCost(elementName, unitCosts);
 	}
-
 
 	// TODO - to support multiple clients / interactive editing, need a client-id
 	// param (string or int)
@@ -159,18 +171,17 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void setWaveProperties(Map<String, String> waveProperties, Point2D spawningPoint) {
+	public void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
+			Point2D spawningPoint) {
 		String waveName = getNameForWave();
 		defineElement(waveName, waveProperties);
-		placeElement(waveName, spawningPoint);
+		placeElement(waveName, spawningPoint, elementNamesToSpawn);
 	}
-	
+
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
 		return getSpriteFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
 	}
-	
-	
 
 	@Override
 	public Collection<String> getPossibleVictoryConditions() {
@@ -210,7 +221,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private void updateElementPropertiesById(int elementId, Map<String, String> propertiesToUpdate) {
 		// TODO - can't use old method
 	}
-	
+
 	private String getNameForWave() {
 		return WAVE + Integer.toString(gameWaveCounter.incrementAndGet());
 	}

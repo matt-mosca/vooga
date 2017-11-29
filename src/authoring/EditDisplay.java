@@ -1,5 +1,7 @@
 package authoring;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -185,7 +187,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	@Override
-	public void save(String saveName) {
+	public void save(File saveName) {
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}
@@ -211,7 +213,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void doSomething() {
 		// TODO Auto-generated method stub
-		
+				
 	}
 
 	@Override
