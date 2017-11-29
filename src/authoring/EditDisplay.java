@@ -1,5 +1,8 @@
 package authoring;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
@@ -51,6 +54,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Label optionLabel;
 	private TextField enterName;
 	private ReturnButton myReturnButton;
+	private Map<String, String> basePropertyMap;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -67,6 +71,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		createMovementToggle();
 		rootAdd(movementToggle);
 		createLabel();
+		basePropertyMap = new HashMap<String, String>();
 	}
 	
 	private void createLabel() {
@@ -167,24 +172,26 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
+		SelectionWindow mySelectionWindow = new SelectionWindow(imageView, this, controller);
+		
 		//TODO refactor this and make the labels and buttons their own class
-		noButtonPressed();
-		createTextField();
-		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
-		yesButton = new Button("Yes");
-		noButton = new Button("No");
-		yesButton.setLayoutX(1000);
-		noButton.setLayoutX(1050);
-		optionLabel.setLayoutX(700);
-		yesButton.setLayoutY(20);
-		noButton.setLayoutY(20);
-		optionLabel.setLayoutY(20);
-
-		rootAdd(yesButton);
-		rootAdd(optionLabel);
-		rootAdd(noButton);
-		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
-		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
+//		noButtonPressed();
+//		createTextField();
+//		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
+//		yesButton = new Button("Yes");
+//		noButton = new Button("No");
+//		yesButton.setLayoutX(1000);
+//		noButton.setLayoutX(1050);
+//		optionLabel.setLayoutX(700);
+//		yesButton.setLayoutY(20);
+//		noButton.setLayoutY(20);
+//		optionLabel.setLayoutY(20);
+//
+//		rootAdd(yesButton);
+//		rootAdd(optionLabel);
+//		rootAdd(noButton);
+//		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
+//		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
 	}
 	
 	private void createTextField() {
@@ -259,5 +266,21 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myStage.show();
 		Main restart = new Main();
 		restart.start(myStage);
+	}
+
+	@Override
+	public void imageSelected(SpriteImage imageView) {
+		imageView.addBasePropertyMap(basePropertyMap);
+//		System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
+		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
+		myRightToolBar.imageSelected(imageView);
+		
+	}
+
+	@Override
+	public void addToMap(String baseProperty, String value) {
+		basePropertyMap.put(baseProperty, value);
+//		myRightToolBar.addToMap(baseProperty, value);
+		
 	}
 }
