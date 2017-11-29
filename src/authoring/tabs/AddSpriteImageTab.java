@@ -5,14 +5,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import authoring.rightToolBar.SpriteImage;
-import interfaces.ClickableInterface;
 import javafx.scene.control.TabPane;
+import splashScreen.ScreenDisplay;
 
 public class AddSpriteImageTab extends AddTab{
 	private final String PACKAGE = "authoring.rightToolBar.";
 
-	public AddSpriteImageTab(ClickableInterface clickable, TabPane tabs) {
-		super(clickable, tabs);
+	public AddSpriteImageTab(ScreenDisplay display, TabPane tabs) {
+		super(display, tabs);
 	}
 
 	@Override

@@ -21,9 +21,7 @@ import java.util.stream.Collectors;
  */
 public class SpriteFactory {
 
-	private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
-	private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-templates/";
-	private final String PROPERTIES_EXTENSION = ".properties";
+
 
 	private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
 
@@ -257,35 +255,5 @@ public class SpriteFactory {
 		return spriteTemplates;
 	}
 
-	/**
-	 * Export all the stored sprite templates for an authored game to properties
-	 * files.
-	 */
-	public void exportSpriteTemplates() {
-		for (String templateName : spriteTemplates.keySet()) {
-			Properties templateProperties = new Properties();
-			Map<String, String> templatePropertiesMap = spriteTemplates.get(templateName);
-			templatePropertiesMap.forEach(templateProperties::setProperty);
-			File exportFile = new File(TEMPLATE_FILE_OUTPUT_PATH + templateName + PROPERTIES_EXTENSION);
-			writeTemplateToFile(templateProperties, exportFile);
-		}
-	}
 
-	private void writeTemplateToFile(Properties templateProperties, File exportFile) {
-		FileOutputStream fileOut = null;
-		try {
-			fileOut = new FileOutputStream(exportFile);
-			templateProperties.store(fileOut, PROPERTIES_COMMENT);
-		} catch (IOException e) {
-			// TODO - throw custom exception
-		} finally {
-			if (fileOut != null) {
-				try {
-					fileOut.close();
-				} catch (IOException e) {
-					// TODO - throw custom exception
-				}
-			}
-		}
-	}
 }
