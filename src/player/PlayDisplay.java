@@ -52,6 +52,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private double xLocation = 0;
 	private double yLocation = 0;
 	private int level = 1;
+	private Timeline animation;
 	
 	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
@@ -59,6 +60,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final CollisionHandler testCollision =
 			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
 					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
+	private PlayController tester;
 	
 	//TODO uncomment the initialization and get rid of tester
 	public PlayDisplay(int width, int height) {
@@ -76,12 +78,25 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 		
 		
+		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
-		Timeline animation = new Timeline();
+		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
+		
+		tester.getLevelSprites(0);
+		try {
+			tester.loadSavedPlayState("game1");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Collection<Integer> currentSprites = tester.getLevelSprites(0);
+		for (int i : currentSprites) {
+			rootAdd(tester.getRepresentationFromSpriteId(i));
+		}
 	}
 
 	private void addItems() {
@@ -148,12 +163,20 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	private void step() {
+		
 		myCoinDisplay.increment();
 		xLocation += 1;
 		yLocation += 1;
 		tower1.setLayoutX(xLocation);
 		tower1.setLayoutY(yLocation);
-		myController.update();
+		tester.update();
+		if (tester.isWon()) {
+			System.out.println("You win!");
+			animation.stop();
+		} if (tester.isLost()) {
+			System.out.println("You lose!");
+			animation.stop();
+		}
 	}
 
 	private void createTestGameArea() {

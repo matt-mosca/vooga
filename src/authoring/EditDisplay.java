@@ -1,6 +1,7 @@
 package authoring;
 
 import java.io.FileNotFoundException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import main.Main;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.InteractiveObject;
+import sprites.Sprite;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
@@ -76,6 +78,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(movementToggle);
 		createLabel();
 		basePropertyMap = new HashMap<String, String>();
+		Button saveButton = new Button("Save");
+		saveButton.setLayoutY(600);
+		rootAdd(saveButton);
+		
+		
 	}
 	
 	private void createLabel() {
@@ -237,7 +244,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		imageView.addBasePropertyMap(basePropertyMap);
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		myRightToolBar.imageSelected(imageView);
-		
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
 	}
 
