@@ -263,6 +263,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void imageSelected(SpriteImage imageView) {
 		imageView.addBasePropertyMap(basePropertyMap);
+//		System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
+		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		myRightToolBar.imageSelected(imageView);
 		
 	}

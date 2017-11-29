@@ -116,6 +116,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	
 	@Override
 	public void imageSelected(SpriteImage myImageView) {
+		myPropertiesBox = new PropertiesBox(created, myImageView);
 		if (myImageView instanceof TowerImage) inventoryTower.addNewImage(myImageView);
 		if (myImageView instanceof TroopImage) inventoryTroop.addNewImage(myImageView);
 		if (myImageView instanceof ProjectileImage) inventoryProjectile.addNewImage(myImageView);
@@ -131,7 +132,8 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	}
 
 	@Override
-	public void clicked(SpriteImage imageView) {		
+	public void clicked(SpriteImage imageView) {	
+		myPropertiesBox = new PropertiesBox(created, imageView);
 		if (imageView instanceof TowerImage) newPaneWithProjectileSlot((TowerImage) imageView);
 		if (imageView instanceof TroopImage) newPane(imageView);
 	}
@@ -140,7 +142,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		/**
 		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
 		 */
-		myPropertiesBox = new PropertiesBox(created, imageView);
 		projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
 		projectileSlot = new HBox();
@@ -169,6 +170,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
+
 	}
 	
 	private void newProjectilesWindow(TowerImage myTowerImage) {
@@ -205,7 +207,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	}
 
 	private void newPane(SpriteImage imageView) {
-		myPropertiesBox = new PropertiesBox(created, imageView);
+//		myPropertiesBox = new PropertiesBox(created, imageView);
 		propertiesPane = new Pane();
 		Button deleteButton = new Button("Back");
 		deleteButton.setLayoutX(300);
