@@ -12,13 +12,14 @@ import javafx.geometry.Point2D;
  * @author mscruggs
  *
  */
-public abstract class PathFollowingMovementStrategy extends TargetedMovementStrategy {
+public class PathFollowingMovementStrategy extends TargetedMovementStrategy {
 
 	private PathList coordinates;
 	private Point2D target;
 
-	public PathFollowingMovementStrategy(@ParameterName("velocity") double velocity) {
+	public PathFollowingMovementStrategy(@ParameterName("velocity") double velocity, PathList coordinates) {
 		super(new Point2D(0, 0), velocity);
+		setPathCoordinates(coordinates);
 	}
 
 	public Point2D move() {

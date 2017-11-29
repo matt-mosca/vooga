@@ -1,5 +1,7 @@
 package engine.authoring_engine;
 
+import authoring.path.PathList;
+import authoring.path.PathPoint;
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
@@ -8,6 +10,7 @@ import sprites.Sprite;
 import util.GameConditionsReader;
 import util.SpriteTemplateExporter;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,6 +44,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 		packager = new Packager();
 		gameConditionsReader = new GameConditionsReader();
 		templateToIdMap = new HashMap<>();
+		spriteExporter = new SpriteTemplateExporter();
 	}
 	
 	@Override
@@ -80,6 +84,12 @@ public class AuthoringController extends AbstractGameController implements Autho
 	@Override
 	public void deleteElementDefinition(String elementName) throws IllegalArgumentException {
 		getSpriteFactory().deleteElementDefinition(elementName);
+	}
+
+	@Override
+	public int placePathFollowingElement(String elementName, PathList pathList) {
+		Point2D startPoint = pathList.next();
+		return placeElement(elementName, startPoint, Arrays.asList(pathList));
 	}
 
 	@Override
