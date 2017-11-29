@@ -122,15 +122,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		throw new IllegalArgumentException();
 	}
 
-	@Override
-	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates, int idOfSpriteToTrack) {
-		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
-			return super.placeTrackingElement(elementTemplateName, startCoordinates, idOfSpriteToTrack);
-		}
-		// TODO - Custom Exception ?
-		throw new IllegalArgumentException();
-	}
-
 	boolean isLevelCleared() {
 		return levelCleared;
 	}
@@ -224,16 +215,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private boolean allAlliesDead() {
 		System.out.println("Checking if all allies are dead");
 		return elementManager.allAlliesDead();
-	}
-
-	private int getIdFromSprite(Sprite sprite) throws IllegalArgumentException {
-		Map<Integer, Sprite> spriteIdMap = getSpriteIdMap();
-		for (Integer id : spriteIdMap.keySet()) {
-			if (spriteIdMap.get(id) == sprite) {
-				return id;
-			}
-		}
-		throw new IllegalArgumentException();
 	}
 
 	/*
