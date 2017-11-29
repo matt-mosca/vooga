@@ -51,4 +51,6 @@ public interface MovementStrategy {
      * @return point object that changes with movement
      */
     TrackingPoint getPositionForTracking();
+    
+    boolean targetReached();
 }
