@@ -174,8 +174,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void clicked(SpriteImage imageView) {
 		SelectionWindow mySelectionWindow = new SelectionWindow(imageView, this, controller);
 	}
-	
-
 
 	@Override
 	public void changeColor(String color) {
