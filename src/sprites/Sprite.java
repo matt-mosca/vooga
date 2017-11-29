@@ -91,6 +91,10 @@ public class Sprite {
 	public boolean isAlive() {
 		return collisionHandler.isAlive();
 	}
+	
+	public boolean reachedTarget() {
+		return movementStrategy.targetReached();
+	}
 
 	/**
 	 * Auto-updating (NOT snapshot) position of this AbstractMovementStrategy for tracking
