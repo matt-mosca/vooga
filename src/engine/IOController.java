@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import io.GamePersistence;
 import sprites.Sprite;
@@ -48,7 +49,7 @@ public class IOController {
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-			Map<String, String> levelConditions, Bank levelBank, List<Sprite> levelSprites, Map<String, Integer> levelInventories, Map<String, Double> status,
+			Map<String, String> levelConditions, Bank levelBank, List<Sprite> levelSprites, Set<String> levelInventories, Map<String, Double> status,
 			boolean forAuthoring) {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
@@ -142,7 +143,7 @@ public class IOController {
 		return serializationUtils.deserializeGameDescription(serializedGameData, level);
 	}
 	
-	public Map<String, Integer> loadGameInventories(String savedGameName, int level, boolean forAuthoring) throws FileNotFoundException {
+	public Set<String> loadGameInventories(String savedGameName, int level, boolean forAuthoring) throws FileNotFoundException {
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		return serializationUtils.deserializeGameInventories(serializedGameData, level);
 	}
@@ -267,7 +268,7 @@ public class IOController {
 	 * @return string representing serialization of level's data
 	 */
 	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
-			Bank levelBank, Map<String, Double> levelStatus, List<Sprite> levelSprites, Map<String, Integer> levelInventories) {
+			Bank levelBank, Map<String, Double> levelStatus, List<Sprite> levelSprites, Set<String> levelInventories) {
 		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelBank, levelStatus,
 				levelSprites, levelInventories, level);
 	}

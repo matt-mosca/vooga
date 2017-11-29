@@ -113,7 +113,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	
 	@Override
 	public void addElementToInventory(String elementName) {
-		
+		getLevelInventories().get(getCurrentLevel()).add(elementName);
 	}
 
 	@Override
