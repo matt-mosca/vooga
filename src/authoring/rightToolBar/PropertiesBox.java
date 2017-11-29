@@ -25,10 +25,6 @@ public class PropertiesBox extends VBox {
 	
 	public PropertiesBox(CreationInterface creation, SpriteImage mySprite) {
 		this.creation = creation;
-//		propertiesMap = new TreeMap<String, String>();
-//		for (int i = 0; i < properties.length; i++) {
-//			propertiesMap.put(properties[i], propertyArr[i]);
-//		}
 		propertiesMap = mySprite.getMyProperties();
 		table = new TableView<Properties>();
 		table.setEditable(true);
@@ -59,14 +55,10 @@ public class PropertiesBox extends VBox {
 			                t.getTablePosition().getRow())
 			                ).setMyValue(t.getNewValue());
 			            mySprite.update(t.getRowValue().getMyProperty(), t.getNewValue());
-			        
+			        System.out.println(mySprite.getMyProperties());
 			        }
 			    }
 			);
 	}
-
-
-	
-	
 	
 }

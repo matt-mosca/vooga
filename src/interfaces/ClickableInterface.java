@@ -1,5 +1,6 @@
 package interfaces;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public interface ClickableInterface{
