@@ -1,5 +1,7 @@
 package splashScreen;
 
+import java.io.File;
+
 import authoring.EditDisplay;
 import interfaces.ClickableInterface;
 import javafx.geometry.Pos;
@@ -183,7 +185,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	@Override
-	public void save(String saveName) {
+	public void save(File saveName) {
 		// TODO Auto-generated method stub
 		
 	}
