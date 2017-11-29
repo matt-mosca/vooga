@@ -1,5 +1,6 @@
 package player;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -50,6 +51,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private TowerImage tower1;
 	private double xLocation = 0;
 	private double yLocation = 0;
+	private int level = 1;
 	
 	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
@@ -58,19 +60,19 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
 					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	
+	//TODO uncomment the initialization and get rid of tester
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
 		myController = new PlayController();
-		//TODO this method will allow the user to select a saved game
 //		initializeGameState();
+//		initializeSprites();
 		initializeButtons();
 		createTestGameArea();
 		createTestImages();
 //		createTestSprites();
 //		createTestGameArea();
 		addItems();
-		
-//		initializeSprites();
+		this.SetDroppable(myPlayArea);
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
@@ -91,12 +93,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myDecreaseHealthButton = new DecreaseHealthButton(this);
 		rootAdd(myDecreaseHealthButton);
 	}
-	
-//	private void initializeSprites() {
-//		for(Integer id:myController.getLevelSprites(1)) {
-//			ImageView imageView = myController.getRepresentationFromSpriteId(id);
-//		}
-//	}
 
 	private void createTestImages() {
 		tower1 = new TowerImage(this, "Castle_Tower1");
@@ -105,6 +101,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myPlayArea.placeInGrid(tower1);
 	}
 	
+	//TODO Make sure this works once saved files are all good
+	private void initializeSprites() {
+		for(Integer id:myController.getLevelSprites(level)) {
+			ImageView imageView = myController.getRepresentationFromSpriteId(id);
+			myPlayArea.getChildren().add(imageView);
+		}
+	}
+	
+	//TODO Same as above
 	private void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		for(String title:myController.getAvailableGames().keySet()) {
@@ -117,10 +122,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 		Optional<String> result = loadChoices.showAndWait();
 		if(result.isPresent()) {
-
+			//Insert method here that will cue the rest of initialization
+			try {
+				myController.loadOriginalGameState(result.get(), level);
+			} catch (FileNotFoundException e) {
+				// TODO Change to alert for the user 
+				e.printStackTrace();
+			}
 		}
 	}
 	
+	//TODO there is a problem where the buttons here aren't appearing
 	private void initializeButtons() {
 		pause = new Button();
 		pause.setOnAction(e-> myController.pause());
@@ -208,14 +220,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	@Override
 	public void listItemClicked(InteractiveObject clickable) {
-		// TODO Auto-generated method stub
-		
+		myPlayArea.getChildren().add(clickable);
+		clickable.setLocked(false);
 	}
 
 	@Override
 	public void save(String saveName) {
-		// TODO Auto-generated method stub
-		
+		myController.saveGameState(saveName);
 	}
 	
 }
