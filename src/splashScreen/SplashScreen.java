@@ -176,7 +176,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	@Override
-	public void launchCreateButton(ClickableInterface clickable) {
+	public void listItemClicked(ClickableInterface clickable) {
 		// TODO Auto-generated method stub
 		
 	}

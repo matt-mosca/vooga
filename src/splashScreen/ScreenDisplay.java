@@ -1,7 +1,5 @@
 package splashScreen;
 
-import java.util.List;
-
 import interfaces.ClickableInterface;
 import interfaces.Droppable;
 import javafx.animation.KeyFrame;
@@ -10,10 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
-import javafx.util.Duration;
 
 public abstract class ScreenDisplay {
 
@@ -85,5 +80,5 @@ public abstract class ScreenDisplay {
 		droppable = drop;
 	}
 	
-	public abstract void launchCreateButton(ClickableInterface clickable);
+	public abstract void listItemClicked(ClickableInterface clickable);
 }

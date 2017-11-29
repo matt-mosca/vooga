@@ -2,7 +2,6 @@ package authoring.tabs;
 
 import java.io.File;
 
-import interfaces.ClickableInterface;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -11,6 +10,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import splashScreen.ScreenDisplay;
 
 public abstract class AddTab extends ScrollPane{
 	private final String PROMPT = "Choose Type";
@@ -19,12 +19,12 @@ public abstract class AddTab extends ScrollPane{
 	private Button addImage;
 	private FileChooser fileChooser;
 	private VBox items;
-	protected ClickableInterface clickable;
+	protected ScreenDisplay myDisplay;
 	protected ComboBox<String> objectTypes;
 	protected TabPane tabPane;
 	
-	public AddTab(ClickableInterface clickable, TabPane tabs) {
-		this.clickable = clickable;
+	public AddTab(ScreenDisplay display, TabPane tabs) {
+		this.myDisplay = display;
 		this.tabPane = tabs;
 		this.setFitToWidth(true);
 

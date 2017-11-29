@@ -122,7 +122,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMenuBar);
 	}
 	
-	public void launchCreateButton(ClickableInterface clickable) {
+	public void listItemClicked(ClickableInterface clickable) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
@@ -149,30 +149,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getSize(), this, object.getImageString());
 		}
 		myGameArea.addBackObject(newObject);
-	}
-	
-	//No longer needed with children added to game area
-//	private void createNewErrorWindow() {
-//		Alert alert = new Alert(AlertType.INFORMATION);
-//		alert.setTitle("Object placement error");
-//		alert.setHeaderText("Must place object in the main grid");
-//		alert.show();
-//	}
-
-	@Override
-	public void dropped(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void pressed(MouseEvent e) {
-		
-	}
-	
-	private void deleteObject(StaticObject object) {
-		myGameArea.removeObject(object);
-		myLeftToolBar.requestFocus();
-		myGameArea.removeFromGrid(object);
 	}
 
 	@Override
@@ -258,39 +234,4 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		return null;
 	}
 
-	@Override
-	public double getX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setX(double x) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setY(double y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Point2D center() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

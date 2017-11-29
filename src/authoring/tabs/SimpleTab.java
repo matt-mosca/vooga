@@ -13,20 +13,20 @@ import sprites.StaticObject;
 
 public class SimpleTab extends ScrollPane{
 	private ScreenDisplay display;
-	private List<StaticObject> myList;
-	private ListView<StaticObject> myListView;
-	private ObservableList<StaticObject> items;
+	private List<ClickableInterface> myList;
+	private ListView<ClickableInterface> myListView;
+	private ObservableList<ClickableInterface> items;
 	
-	public SimpleTab(ScreenDisplay display, List<StaticObject> defaults) {
+	public SimpleTab(ScreenDisplay display, List<ClickableInterface> defaults) {
 		this.display = display;
 		addDefaultImages(defaults);
 	}
 
-	private void addDefaultImages(List<StaticObject> defaults) {
+	private void addDefaultImages(List<ClickableInterface> defaults) {
 		myList = defaults;
 		items = FXCollections.observableArrayList(myList);
 		myListView = new ListView<>();
-		myListView.setOnMouseClicked(e->display.launchCreateButton(
+		myListView.setOnMouseClicked(e->display.listItemClicked(
       		myListView.getSelectionModel().getSelectedItem()));
 		myListView.setItems(items);
 		this.setContent(myListView);
@@ -41,7 +41,7 @@ public class SimpleTab extends ScrollPane{
 		items.add(new BackgroundObject(size, display, imageString));
 	}
 	
-	public void addItem(StaticObject object) {
+	public void addItem(ClickableInterface object) {
 		items.add(object);
 	}
 }

@@ -2,13 +2,11 @@ package authoring.leftToolBar;
 
 import java.util.ArrayList;
 
-import authoring.EditDisplay;
 import authoring.tabs.AddStaticTab;
 import authoring.tabs.AddTab;
 import authoring.tabs.SimpleTab;
 import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
-import interfaces.ClickableInterface;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import splashScreen.ScreenDisplay;
@@ -18,7 +16,7 @@ import splashScreen.ScreenDisplay;
  */
 public class LeftToolBar extends VBox {
 	private static final int Y_POSITION = 50;
-	private EditDisplay myDisplay;
+	private ScreenDisplay myDisplay;
 	private AuthoringController myController;
 	private TabPane tabPane;
 	private TabFactory tabFactory;
@@ -26,7 +24,7 @@ public class LeftToolBar extends VBox {
 	private SimpleTab backgroundTab;
 	private AddTab addTab;
 	
-	public LeftToolBar(EditDisplay display, AuthoringController controller) {
+	public LeftToolBar(ScreenDisplay display, AuthoringController controller) {
 		this.setLayoutY(Y_POSITION);
 		myDisplay = display;
 		myController = controller;
