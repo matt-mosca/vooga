@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -144,16 +145,25 @@ public interface AuthoringModelController {
 	 */
 	void addElementToInventory(String elementName);
 
-	/* Place a game element of previously defined type within the game which follows a path defined in the authoring
-	 * environment as it moves.
+	/*
+	 * Place a game element of previously defined type within the game which follows
+	 * a path defined in the authoring environment as it moves.
 	 *
-	 * @param elementName
-	 * 			 the template name for the element
-	 * @param pathList
-	 * 			 a list of points the object should target as it moves
-	 * @return a unique identifier for the sprite abstraction representing the game element
+	 * @param elementName the template name for the element
+	 * 
+	 * @param pathList a list of points the object should target as it moves
+	 * 
+	 * @return a unique identifier for the sprite abstraction representing the game
+	 * element
 	 */
 	int placePathFollowingElement(String elementName, PathList pathList);
+
+	/**
+	 * Retrieve the inventory for the current level
+	 * 
+	 * @return set of element names that can be placed in the current level
+	 */
+	Set<String> getInventory();
 
 	/**
 	 * Get the ImageView corresponding to a particular spriteId

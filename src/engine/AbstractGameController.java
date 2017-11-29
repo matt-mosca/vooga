@@ -135,6 +135,10 @@ public abstract class AbstractGameController {
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
 	}
 
+	public Set<String> getInventory() {
+		return getLevelInventories().get(getCurrentLevel());
+	}
+	
 	public ImageView getRepresentationFromSpriteId(int spriteId) {
 		return spriteIdMap.get(spriteId).getGraphicalRepresentation();
 	}

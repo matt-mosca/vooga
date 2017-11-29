@@ -3,6 +3,7 @@ package engine;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
@@ -101,6 +102,13 @@ public interface PlayModelController {
 	 * @return map of template names to properties of each template
 	 */
 	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
+	
+	/**
+	 * Retrieve the inventory for the current level
+	 * 
+	 * @return set of element names that can be placed in the current level
+	 */
+	Set<String> getInventory();
 	
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
