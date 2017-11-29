@@ -29,7 +29,7 @@ public class LevelDisplay {
 		myStage = new Stage();
 //		myStage.setTitle(rb.getString("lvNum")+ " " + n);
 		myStage.setTitle("Level Number " + n);
-		myStage.setOnCloseRequest(e->myLv.update());
+//		myStage.setOnCloseRequest(e->myLv.update());
 	}
 	
 	public void open() {

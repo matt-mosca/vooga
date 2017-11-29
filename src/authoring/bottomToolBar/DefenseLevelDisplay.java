@@ -35,6 +35,7 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		pane = new GridPane();
 		myScene = new Scene(pane); 
 		createTextBoxes();
+		placeTextAndTextFields();
 	}
 
 	private void createTextBoxes() {
@@ -59,6 +60,7 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		int height = 30;
 		for (TextBox t: myTextBoxes) {
 			pane.add(new Label(t.getString()), 10, height);
+			pane.add(t.getTextField(), 50, height);
 			height+=10;
 		}
 	}

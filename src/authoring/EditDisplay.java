@@ -109,7 +109,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myColorChanger);
 		myGameChooser = new AttackDefenseToggle(this);
 		rootAdd(myGameChooser);
-		myBottomToolBar = new BottomToolBar(this);
+		myBottomToolBar = new BottomToolBar(this, myGameEnvironment);
 		rootAdd(myBottomToolBar);
 	}
 	

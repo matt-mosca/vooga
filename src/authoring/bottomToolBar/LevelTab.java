@@ -1,11 +1,14 @@
 package authoring.bottomToolBar;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 
 public class LevelTab extends ScrollPane{
+	
+	//could/SHOULD be refactored to just hold the tab it's a part of?
 	private final int DISPLAY_SIZE = 40;
 	private int myNumber;
 	private Button editLevel;
@@ -20,6 +23,7 @@ public class LevelTab extends ScrollPane{
 		myLevelDisplay = new DefenseLevelDisplay(n, this); //for now assuming it has to be a defense one.
 		Label initialLabel = new Label("You have to add content to this first! Click the edit button!");
 		editLevel = new Button("Edit Level");
+		editLevel.setAlignment(Pos.CENTER);
 		//Need to put the button somewhere first.
 		editLevel.setOnAction(e->{
 			if (!edited) {
@@ -34,7 +38,7 @@ public class LevelTab extends ScrollPane{
 	}
 
 
-	private void openLevelDisplay() {
+	public void openLevelDisplay() {
 		myLevelDisplay.open();
 	}
 	
