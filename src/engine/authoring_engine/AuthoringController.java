@@ -111,11 +111,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 		return getSpriteFactory().getTemplateProperties(elementName);
 	}
 
-	@Override
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
-		return getSpriteFactory().getAllDefinedTemplateProperties();
-	}
-
 	private Sprite getElement(int elementId) throws IllegalArgumentException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();

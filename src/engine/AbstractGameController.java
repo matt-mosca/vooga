@@ -118,6 +118,10 @@ public abstract class AbstractGameController {
 			return 0;
 		}
 	}
+	
+	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
+		return getSpriteFactory().getAllDefinedTemplateProperties();
+	}
 
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
