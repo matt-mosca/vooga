@@ -20,5 +20,11 @@ public class StationaryMovementStrategy extends AbstractMovementStrategy {
 	 * */
 	public void move() {}
 
+	@Override
+	public void handleBlock(String blockMethodName) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
