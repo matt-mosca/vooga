@@ -13,12 +13,12 @@ import javafx.geometry.Point2D;
  *
  */
 public abstract class PathFollowingMovementStrategy extends TargetedMovementStrategy {
-	
+
 	private PathList coordinates;
 	private Point2D target;
-	
+
 	public PathFollowingMovementStrategy(@ParameterName("velocity") double velocity) {
-		super(0, 0, velocity);
+		super(new Point2D(0, 0), velocity);
 	}
 
 	public Point2D move() {
@@ -26,32 +26,28 @@ public abstract class PathFollowingMovementStrategy extends TargetedMovementStra
 		checkIfLocationReached();
 		return getCurrentCoordinates();
 	}
-	
-	
+
 	public void setPathCoordinates(PathList coordinates) {
 		this.coordinates = coordinates;
 		this.target = this.coordinates.next();
-		setTargetCoordinates(target.getX(),target.getY());
+		setTargetCoordinates(target.getX(), target.getY());
 	}
-	
+
 	public boolean targetReached() {
 		return (target == null);
 	}
-	
-	
+
 	/**
 	 * Check to see if one point in the coordinates was reached
 	 */
 	private void checkIfLocationReached() {
-		if(super.targetReached()) {
+		if (super.targetReached()) {
 			target = coordinates.next();
-			if(target == null) {
+			if (target == null) {
 				stop();
-			}
-			else {
+			} else {
 				this.setTargetCoordinates(target.getX(), target.getY());
 			}
 		}
 	}
 }
-

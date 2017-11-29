@@ -15,9 +15,9 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
 
     private double velocityMagnitude;
 
-    protected TargetedMovementStrategy(double targetX, double targetY, double velocityMagnitude) {
+    protected TargetedMovementStrategy(Point2D targetPoint, double velocityMagnitude) {
         super();
-        setTargetCoordinates(targetX, targetY);
+        setTargetCoordinates(targetPoint.getX(), targetPoint.getY());
         this.velocityMagnitude = velocityMagnitude;
         calculateVelocityComponents();
     }
