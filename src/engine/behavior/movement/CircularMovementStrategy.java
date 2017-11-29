@@ -9,7 +9,7 @@ import javafx.geometry.Point2D;
  * @author mscruggs
  *
  */
-public abstract class CircularMovementStrategy extends TargetedMovementStrategy {
+public class CircularMovementStrategy extends TargetedMovementStrategy {
 
 	private double angle;
 	private double radius;
