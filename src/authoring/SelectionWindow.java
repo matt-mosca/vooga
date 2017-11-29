@@ -1,6 +1,10 @@
 package authoring;
 
+import java.util.List;
+import java.util.Map;
+
 import authoring.rightToolBar.SpriteImage;
+import engine.authoring_engine.AuthoringController;
 import interfaces.PropertiesInterface;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,16 +24,19 @@ public class SelectionWindow extends Stage {
 	private VBox newProject;
 	private Scene newScene;
 	private AuthorInterface author;
+	private AuthoringController controller;
 	
-	public SelectionWindow(SpriteImage imageView, AuthorInterface author) {
+	public SelectionWindow(SpriteImage imageView, AuthorInterface author, AuthoringController controller) {
 		this.author = author;
+		this.controller = controller;
 		newProject = new VBox();
 		newScene = new Scene(newProject, 400, 400);
 		this.setScene(newScene);
-		this.show();
 		
 		noButtonPressed();
+		this.show();
 		createTextField();
+		createComboBoxes();
 		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
 		yesButton = new Button("Yes");
 		noButton = new Button("No");
@@ -57,13 +64,22 @@ public class SelectionWindow extends Stage {
 	
 	private void yesButtonPressed(SpriteImage imageView) {
 		imageView.setName(enterName.getText());
-		
 		author.imageSelected(imageView);
 		noButtonPressed();
 	}
 	
 	private void noButtonPressed() {
-		newProject.getChildren().removeAll(newProject.getChildren());
+		this.hide();
+	}
+	
+	private void createComboBoxes() {
+		Map<String, List<String>> baseOptions = controller.getElementBaseConfigurationOptions();
+		System.out.println(controller.getElementBaseConfigurationOptions());
+		for (String s : baseOptions.keySet()) {
+			BaseComboBox newComboBox = new BaseComboBox(s, baseOptions.get(s), author);
+			newComboBox.setLayoutY(200);
+			newProject.getChildren().add(newComboBox);
+		}
 	}
 
 }

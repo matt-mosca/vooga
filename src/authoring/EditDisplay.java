@@ -196,7 +196,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
-		SelectionWindow mySelectionWindow = new SelectionWindow(imageView, this);
+		SelectionWindow mySelectionWindow = new SelectionWindow(imageView, this, controller);
 		
 		//TODO refactor this and make the labels and buttons their own class
 //		noButtonPressed();
