@@ -47,13 +47,13 @@ public class IOController {
 	 *            true if for authoring, false if for play - TODO - more flexible
 	 *            approach? reflection?
 	 */
-	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
+	public void saveGameState(File savedGameName, String gameDescription, int currentLevel,
 			Map<String, String> levelConditions, Bank levelBank, List<Sprite> levelSprites, Map<String, Double> status,
 			boolean forAuthoring) {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
 				currentLevel, status, levelSprites);
-		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
+		gamePersistence.saveGameState(savedGameName, serializedGameState);
 	}
 
 	// TODO - throw custom exception
@@ -272,7 +272,7 @@ public class IOController {
 	 * for level Especially useful for authoring use-case where a (partially) built
 	 * game with many levels of data has to be saved, differentiating between levels
 	 * 
-	 * @param savedGameName
+	 * @param saveName
 	 *            name for game state to be saved to
 	 * @param serializedLevelsData
 	 *            map of level to serialized data for level
@@ -280,10 +280,11 @@ public class IOController {
 	 *            true if for authoring, false if for play - TODO - more flexible
 	 *            approach? reflection?
 	 */
-	public void saveGameStateForMultipleLevels(String savedGameName, Map<Integer, String> serializedLevelsData,
+	public void saveGameStateForMultipleLevels(File saveName, Map<Integer, String> serializedLevelsData,
 			boolean forAuthoring) {
 		String serializedGameData = serializationUtils.serializeLevelsData(serializedLevelsData);
-		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameData);
+		//gamePersistence.saveGameState(getResolvedGameName(saveName, forAuthoring), serializedGameData);
+		gamePersistence.saveGameState(saveName, serializedGameData);
 	}
 
 	private String getResolvedGameName(String savedGameName, boolean forAuthoring) {

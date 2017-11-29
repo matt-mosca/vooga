@@ -1,5 +1,6 @@
 package authoring;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -193,7 +194,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	@Override
-	public void save(String saveName) {
+	public void save(File saveName) {
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}

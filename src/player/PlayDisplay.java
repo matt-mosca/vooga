@@ -1,5 +1,6 @@
 package player;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -240,7 +241,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	@Override
-	public void save(String saveName) {
+	public void save(File saveName) {
 		myController.saveGameState(saveName);
 	}
 	

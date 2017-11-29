@@ -8,6 +8,7 @@ import sprites.Sprite;
 import sprites.SpriteFactory;
 import util.SerializationUtils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,7 +70,7 @@ public abstract class AbstractGameController {
 	 * @param saveName
 	 *            the name to assign to the save file
 	 */
-	public void saveGameState(String saveName) {
+	public void saveGameState(File saveName) {
 		// Note : saveName overrides previously set gameName if different - need to
 		// handle this?
 		// Serialize separately for every level
@@ -118,16 +119,14 @@ public abstract class AbstractGameController {
 			return 0;
 		}
 	}
-	
+
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
 		return getSpriteFactory().getAllDefinedTemplateProperties();
 	}
 
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
-		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
-		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
-		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
-		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
+		Map<String, Object> auxiliarySpriteConstructionObjects = getAuxiliarySpriteConstructionObjectMap(
+				elementTemplateName, startCoordinates);
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
@@ -163,6 +162,17 @@ public abstract class AbstractGameController {
 		return ioController.getAvailableGames();
 	}
 	
+	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs) {
+		Map<String, Object> auxiliarySpriteConstructionObjects = getAuxiliarySpriteConstructionObjectMap(
+				elementTemplateName, startCoordinates);
+		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
+			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
+		}
+		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
+				auxiliarySpriteConstructionObjects);
+		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+	}
+
 	protected void cacheGeneratedSprite(Sprite sprite) {
 		List<Sprite> levelSprites = levelSpritesCache.get(currentLevel);
 		levelSprites.add(sprite);
@@ -232,7 +242,7 @@ public abstract class AbstractGameController {
 		cacheGeneratedSprite(sprite);
 		return spriteIdCounter.get();
 	}
-	
+
 	protected int getIdFromSprite(Sprite sprite) throws IllegalArgumentException {
 		Map<Integer, Sprite> spriteIdMap = getSpriteIdMap();
 		for (Integer id : spriteIdMap.keySet()) {
@@ -242,7 +252,6 @@ public abstract class AbstractGameController {
 		}
 		throw new IllegalArgumentException();
 	}
-
 
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
 
@@ -305,7 +314,7 @@ public abstract class AbstractGameController {
 		getLevelDescriptions().add(new String());
 		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
 	}
-	
+
 	private int getNearestSpriteIdToPoint(Point2D coordinates) {
 		double nearestDistance = Double.MAX_VALUE;
 		int nearestSpriteId = -1;
@@ -318,6 +327,17 @@ public abstract class AbstractGameController {
 			}
 		}
 		return nearestSpriteId;
+	}
+	
+	private Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String elementTemplateName,
+			Point2D startCoordinates) {
+		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
+		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
+		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
+		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
+		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
+		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
+		return auxiliarySpriteConstructionObjects;
 	}
 
 }
