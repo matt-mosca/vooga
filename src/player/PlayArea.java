@@ -12,11 +12,11 @@ import sprites.StaticObject;
 
 public class PlayArea extends Pane implements Droppable{
 	
-	public PlayArea(PlayerInterface player) {
-		this.setLayoutX(300);
-		this.setLayoutY(50);
-		this.setPrefHeight(400);
-		this.setPrefWidth(400);
+	public PlayArea(PlayerInterface player, int width, int height) {
+		this.setLayoutX(350);
+//		this.setLayoutY(50);
+		this.setPrefHeight(width);
+		this.setPrefWidth(height);
 		this.setStyle("-fx-background-color:white");
 	}
 	
