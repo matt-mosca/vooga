@@ -2,7 +2,7 @@ package engine.behavior.movement;
 
 import engine.behavior.ParameterName;
 
-import java.awt.geom.Point2D;
+import javafx.geometry.Point2D;
 
 /**
  * Move in one of a set of directions, chosen randomly based on an
@@ -13,19 +13,24 @@ import java.awt.geom.Point2D;
  */
 public final class RandomMovementStrategy extends AbstractMovementStrategy {
 
-	private Point2D.Double chosenDirection;
+	private Point2D chosenDirection;
 
-	public RandomMovementStrategy(@ParameterName("directionProbabilities") double[] directionProbabilities) {
+	public RandomMovementStrategy(@ParameterName("northProbability") double northProbability,
+								  @ParameterName("southProbability") double southProbability,
+								  @ParameterName("eastProbability") double eastProbability,
+								  @ParameterName("westProbability") double westProbability) {
 		super();
-		RandomMovementAssigner randomMovementAssigner = new RandomMovementAssigner(directionProbabilities);
+		RandomMovementAssigner randomMovementAssigner = new RandomMovementAssigner(new double[]{northProbability,
+				southProbability, eastProbability, westProbability});
 		chosenDirection = randomMovementAssigner.assignMovementDirection();
 		// TODO - set velocity vector to have norm == speed
 	}
 
 	@Override
-	public void move() {
+	public Point2D move() {
 		setX(getCurrentX() + chosenDirection.getX());
 		setY(getCurrentY() + chosenDirection.getY());
+		return getCurrentCoordinates();
 	}
 /*
 	// TODO - more effective / realistic unblocking logic?

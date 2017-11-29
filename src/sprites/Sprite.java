@@ -2,9 +2,11 @@ package sprites;
 
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.firing.FiringStrategy;
-import engine.behavior.movement.MovementHandler;
+import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.TrackingPoint;
 import javafx.scene.image.ImageView;
+
+import javafx.geometry.Point2D;
 
 /**
  * Represents game objects in the backend. Responsible for controlling the object's update behavior.
@@ -25,7 +27,7 @@ public class Sprite {
 	private FiringStrategy firingStrategy;
 	//private MovementStrategy movementStrategy;
 	//private BlockingStrategy blockingStrategy;
-	private MovementHandler movementHandler;
+	private MovementStrategy movementStrategy;
 	//private CollisionVisitor collisionVisitor;
 	//private CollisionVisitable collisionVisitable;
 	private CollisionHandler collisionHandler;
@@ -33,9 +35,9 @@ public class Sprite {
 	// subsequent construction of ImageView?
 	//private ImageView spriteImageView;
 
-	public Sprite(FiringStrategy firingStrategy, MovementHandler movementHandler, CollisionHandler collisionHandler) {
+	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionHandler collisionHandler) {
 		this.firingStrategy = firingStrategy;
-		this.movementHandler = movementHandler;
+		this.movementStrategy = movementStrategy;
 		this.collisionHandler = collisionHandler;
 	}
 
@@ -48,17 +50,20 @@ public class Sprite {
 			// TODO - handle block
 			collisionHandler.unBlock();
 		}
-		movementHandler.move();
+		Point2D newLocation = movementStrategy.move();
+		collisionHandler.getGraphicalRepresentation().setX(newLocation.getX());
+		collisionHandler.getGraphicalRepresentation().setY(newLocation.getY());
 	}
 
-	/**
-	 * Attack in whatever way necessary Likely called by interaction_engine in
-	 * event-handlers for keys / clicks
-	 */
-	public void attack() {
-		firingStrategy.fire();
+	public boolean shouldFire() {
+		return firingStrategy.shouldFire();
 	}
-
+	
+	public String fire() {
+		return firingStrategy.fire();
+	}
+	
+	
 	/**
 	 * Check for a collision with another sprite.
 	 *
@@ -93,27 +98,31 @@ public class Sprite {
 	 * @return auto-updating position that changes with movement
 	 */
 	public TrackingPoint getPositionForTracking() {
-		return movementHandler.getPositionForTracking();
+		return movementStrategy.getPositionForTracking();
 	}
 
 	public double getX() {
-		return movementHandler.getCurrentX();
+		return movementStrategy.getCurrentX();
 	}
 
 	public double getY() {
-		return movementHandler.getCurrentY();
+		return movementStrategy.getCurrentY();
 	}
 
 	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
 		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
 	}
+	
+	public ImageView getGraphicalRepresentation() {
+		return collisionHandler.getGraphicalRepresentation();
+	}
 
 	public void setX(double newX) {
-		movementHandler.setX(newX);
+		movementStrategy.setX(newX);
 	}
 
 	public void setY(double newY) {
-		movementHandler.setY(newY);
+		movementStrategy.setY(newY);
 	}
 	
 	/**

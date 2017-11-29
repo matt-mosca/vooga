@@ -1,7 +1,11 @@
 package engine;
 
 import engine.authoring_engine.AuthoringController;
+import engine.behavior.movement.TrackingPoint;
+import javafx.geometry.Point2D;
+import javafx.scene.image.ImageView;
 import sprites.Sprite;
+import sprites.SpriteFactory;
 import util.SerializationUtils;
 
 import java.io.FileNotFoundException;
@@ -10,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Encapsulates the shared fields and behavior between authoring and playing
@@ -20,19 +25,28 @@ import java.util.Map;
  */
 public abstract class AbstractGameController {
 
+	public static final int DEFAULT_MAX_LEVELS = 1;
+	public static final String VICTORY = "victory";
+	public static final String DEFEAT = "defeat";
+
 	private String gameName;
-	private String gameDescription;
 	private IOController ioController;
 
 	// @Ben : Use list instead of map to facilitate 'fall-through' behavior for
 	// deletion? i.e. when level 3 is deleted, level 4 should become level 3, level
 	// 5 should become level 4, etc.
 
-	// private Map<Integer, Map<String, String>> levelStatuses;
-	// private Map<Integer, List<Sprite>> levelSpritesCache = new HashMap<>();
-	private List<Map<String, String>> levelStatuses = new ArrayList<>();
+	private List<Map<String, Double>> levelStatuses = new ArrayList<>();
 	private List<List<Sprite>> levelSpritesCache = new ArrayList<>();
 	private List<Map<String, String>> levelConditions = new ArrayList<>();
+	private List<String> levelDescriptions = new ArrayList<>();
+	private List<Bank> levelBanks = new ArrayList<>();
+
+	// TODO - move these into own object? Or have them in the sprite factory?
+	private AtomicInteger spriteIdCounter;
+	private Map<Integer, Sprite> spriteIdMap;
+
+	private SpriteFactory spriteFactory;
 
 	// this should be from a properties file? or handled in some better way?
 	private final String DEFAULT_GAME_NAME = "untitled";
@@ -42,9 +56,11 @@ public abstract class AbstractGameController {
 	public AbstractGameController() {
 		SerializationUtils serializationUtils = new SerializationUtils();
 		ioController = new IOController(serializationUtils);
-		setLevel(1);
-		gameDescription = "";
+		initialize();
 		gameName = DEFAULT_GAME_NAME;
+		spriteIdCounter = new AtomicInteger();
+		spriteIdMap = new HashMap<>();
+		spriteFactory = new SpriteFactory();
 	}
 
 	/**
@@ -54,11 +70,15 @@ public abstract class AbstractGameController {
 	 *            the name to assign to the save file
 	 */
 	public void saveGameState(String saveName) {
+		// Note : saveName overrides previously set gameName if different - need to
+		// handle this?
 		// Serialize separately for every level
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (int level = 1; level < getLevelStatuses().size(); level++) {
-			serializedLevelsData.put(level, getIoController().getLevelSerialization(level, gameDescription,
-					getLevelConditions().get(level), getLevelStatuses().get(level), levelSpritesCache.get(level)));
+			serializedLevelsData.put(level,
+					getIoController().getLevelSerialization(level, getLevelDescriptions().get(level),
+							getLevelConditions().get(level), getLevelBanks().get(level), getLevelStatuses().get(level),
+							levelSpritesCache.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
@@ -79,18 +99,11 @@ public abstract class AbstractGameController {
 		for (int levelToLoad = currentLevel; levelToLoad <= level; level++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
-	}
-
-	public List<List<Sprite>> getLevelSprites() {
-		return levelSpritesCache;
+		gameName = saveName;
 	}
 
 	public String getGameName() {
 		return gameName;
-	}
-
-	public void setGameDescription(String gameDescription) {
-		this.gameDescription = gameDescription;
 	}
 
 	public void setGameName(String gameName) {
@@ -104,6 +117,43 @@ public abstract class AbstractGameController {
 		} catch (FileNotFoundException e) {
 			return 0;
 		}
+	}
+
+	// TODO - Remove ImageView from params
+	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
+		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates);
+		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+	}
+
+	// TODO - Remove ImageView from params
+	public int placeTrackingElement(String elementTemplateName, Point2D startCoordinates, int idOfSpriteToTrack) {
+		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
+		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
+		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
+		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
+				auxiliarySpriteConstructionObjects);
+		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+	}
+
+	public ImageView getRepresentationFromSpriteId(int spriteId) {
+		return spriteIdMap.get(spriteId).getGraphicalRepresentation();
+	}
+
+	/**
+	 * Get resources left for current level
+	 * 
+	 * @return map of resource name to quantity left
+	 */
+	public Map<String, Double> getStatus() {
+		return getLevelStatuses().get(getCurrentLevel());
+	}
+	
+	public Map<String, Double> getResourceEndowments() {
+		return getLevelBanks().get(getCurrentLevel()).getResourceEndowments();
+	}
+
+	public Map<String, Map<String, Double>> getElementCosts() {
+		return getLevelBanks().get(getCurrentLevel()).getUnitCosts();
 	}
 
 	protected void cacheGeneratedSprite(Sprite sprite) {
@@ -121,10 +171,8 @@ public abstract class AbstractGameController {
 	protected void setLevel(int level) {
 		assertValidLevel(level);
 		currentLevel = level;
-		if (currentLevel > getLevelStatuses().size()) {
-			getLevelStatuses().add(new HashMap<>());
-			getLevelSprites().add(new ArrayList<>());
-			getLevelConditions().add(new HashMap<>());
+		if (level == getLevelSprites().size()) {
+			initializeLevel();
 		}
 	}
 
@@ -132,12 +180,24 @@ public abstract class AbstractGameController {
 		return ioController;
 	}
 
-	protected List<Map<String, String>> getLevelStatuses() {
+	protected List<Map<String, Double>> getLevelStatuses() {
 		return levelStatuses;
 	}
 
 	protected List<Map<String, String>> getLevelConditions() {
 		return levelConditions;
+	}
+
+	protected List<String> getLevelDescriptions() {
+		return levelDescriptions;
+	}
+	
+	protected List<List<Sprite>> getLevelSprites() {
+		return levelSpritesCache;
+	}
+	
+	protected List<Bank> getLevelBanks() {
+		return levelBanks;
 	}
 
 	protected int getCurrentLevel() {
@@ -147,11 +207,27 @@ public abstract class AbstractGameController {
 	protected void loadLevelData(String saveName, int level, boolean originalGame) throws FileNotFoundException {
 		loadGameStateElementsForLevel(saveName, level, originalGame);
 		loadGameStateSettingsForLevel(saveName, level, originalGame);
-		loadGameConditionsForLevel(saveName, level, originalGame);
+		loadGameConditionsForLevel(saveName, level);
+		loadGameDescriptionForLevel(saveName, level);
+		loadGameBankForLevel(saveName, level, originalGame);
 	}
-	
+
+	protected SpriteFactory getSpriteFactory() {
+		return spriteFactory;
+	}
+
+	protected Map<Integer, Sprite> getSpriteIdMap() {
+		return spriteIdMap;
+	}
+
+	protected int cacheAndCreateIdentifier(String elementTemplateName, Sprite sprite) {
+		spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
+		cacheGeneratedSprite(sprite);
+		return spriteIdCounter.get();
+	}
+
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
-	
+
 	private Collection<Sprite> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);
@@ -163,15 +239,24 @@ public abstract class AbstractGameController {
 	private void loadGameStateSettingsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);
-		Map<String, String> loadedSettings = ioController.loadGameStateSettings(savedGameName, level, originalGame);
+		Map<String, Double> loadedSettings = ioController.loadGameStateSettings(savedGameName, level, originalGame);
 		addOrSetLevelData(levelStatuses, loadedSettings, level);
 	}
 
-	private void loadGameConditionsForLevel(String savedGameName, int level, boolean originalGame)
-			throws FileNotFoundException {
+	private void loadGameConditionsForLevel(String savedGameName, int level) throws FileNotFoundException {
 		assertValidLevel(level);
-		Map<String, String> loadedLevelConditions = ioController.loadGameConditions(savedGameName, level, originalGame);
+		Map<String, String> loadedLevelConditions = ioController.loadGameConditions(savedGameName, level);
 		addOrSetLevelData(levelConditions, loadedLevelConditions, level);
+	}
+
+	private void loadGameDescriptionForLevel(String savedGameName, int level) throws FileNotFoundException {
+		assertValidLevel(level);
+		addOrSetLevelData(levelDescriptions, ioController.loadGameDescription(savedGameName, level), level);
+	}
+	
+	private void loadGameBankForLevel(String savedGameName, int level, boolean originalGame) throws FileNotFoundException {
+		assertValidLevel(level);
+		addOrSetLevelData(levelBanks, ioController.loadGameBank(savedGameName, level, originalGame), level);
 	}
 
 	private boolean isAuthoring() {
@@ -179,7 +264,6 @@ public abstract class AbstractGameController {
 		// have to do this
 		return this.getClass().equals(AuthoringController.class);
 	}
-	
 
 	private <T> void addOrSetLevelData(List<T> allLevelData, T levelData, int level) {
 		if (level == allLevelData.size()) {
@@ -187,6 +271,20 @@ public abstract class AbstractGameController {
 		} else {
 			allLevelData.set(level, levelData);
 		}
+	}
+
+	private void initialize() {
+		// To adjust for 1-indexing
+		initializeLevel();
+		setLevel(1);
+	}
+
+	private void initializeLevel() {
+		getLevelStatuses().add(new HashMap<>());
+		getLevelSprites().add(new ArrayList<>());
+		getLevelConditions().add(new HashMap<>());
+		getLevelDescriptions().add(new String());
+		getLevelBanks().add(new Bank());
 	}
 
 }

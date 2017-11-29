@@ -25,6 +25,7 @@ public class Main extends Application {
 		ScreenDisplay myScene = new SplashScreen(WIDTH, HEIGHT, BACKGROUND, s);
 		s.setScene(myScene.getScene());
 		s.setTitle(TITLE);
+		s.setResizable(false);
 		s.show();
 	}
 

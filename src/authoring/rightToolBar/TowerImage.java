@@ -7,6 +7,7 @@ public class TowerImage extends SpriteImage {
 	
 	private ResourceBundle towerResources;
 	private String myKey;
+	private SpriteImage myProjectile;
 	
 	public TowerImage(String stringKey) {
 		super();
@@ -17,15 +18,26 @@ public class TowerImage extends SpriteImage {
 		}else {
 			this.addImage(stringKey);
 		}
-		
+	}
+	
+	public void addProjectileImage(SpriteImage newProjectile) {
+		myProjectile = newProjectile;
+	}
+	
+	public SpriteImage getProjectileImage() {
+		return myProjectile;
+	}
+	
+	public boolean hasProjectile() {
+		return myProjectile != null;
 	}
 	
 	@Override
 	public TowerImage clone() {
 		TowerImage cloneImage = new TowerImage(myKey);
+		cloneImage.setName(this.getName());
 		cloneImage.setFitHeight(this.getFitHeight());
 		cloneImage.setFitWidth(this.getFitWidth());
 		return cloneImage;
 	}
-
 }

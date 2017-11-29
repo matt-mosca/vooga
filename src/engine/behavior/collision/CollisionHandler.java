@@ -1,5 +1,6 @@
 package engine.behavior.collision;
 
+import engine.behavior.ParameterName;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -17,10 +18,15 @@ public class CollisionHandler {
     private CollisionVisitable collisionVisitable;
     private ImageView graphicalRepresentation;
 
-    public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable) {
+    public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
+                            @ParameterName("imageUrl") String imageUrl,
+                            @ParameterName("imageHeight") double imageHeight,
+                            @ParameterName("imageWidth") double imageWidth) {
         this.collisionVisitor = collisionVisitor;
         this.collisionVisitable = collisionVisitable;
-        graphicalRepresentation = new ImageView(new Image(DEFAULT_IMAGE_PATH));
+        graphicalRepresentation = new ImageView(new Image(imageUrl));
+        graphicalRepresentation.setFitHeight(imageHeight);
+        graphicalRepresentation.setFitWidth(imageWidth);
     }
 
     public boolean collidesWith(CollisionHandler other) {
@@ -55,5 +61,9 @@ public class CollisionHandler {
 
     public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
         this.graphicalRepresentation = graphicalRepresentation;
+    }
+    
+    public ImageView getGraphicalRepresentation() {
+    		return graphicalRepresentation;
     }
 }
