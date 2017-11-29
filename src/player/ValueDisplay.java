@@ -22,9 +22,13 @@ public class ValueDisplay extends HBox {
 //		this.getStyleClass().add("coin-display");
 	}
 	
-	protected void addItems() {
-//		this.getChildren().add(myLabel);
+	protected void addItemsWithImage() {
 		this.getChildren().add(myValueImage);
+		this.getChildren().add(myValue);
+	}
+	
+	protected void addItemsWithLabel() {
+		this.getChildren().add(myLabel);
 		this.getChildren().add(myValue);
 	}
 	
