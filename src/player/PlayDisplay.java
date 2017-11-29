@@ -64,6 +64,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
 		myController = new PlayController();
+		addItems();
+		this.SetDroppable(myPlayArea);
 //		initializeGameState();
 //		initializeSprites();
 		initializeButtons();
@@ -71,8 +73,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		createTestImages();
 //		createTestSprites();
 //		createTestGameArea();
-		addItems();
-		this.SetDroppable(myPlayArea);
+		
+		
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
@@ -189,17 +191,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		return tempSprite;
 	}
 	
-	private void drag(MouseEvent e, Rectangle currRectangle) {
-		currRectangle.setX(e.getSceneX() - currRectangle.getWidth() / 2);
-		currRectangle.setY(e.getSceneY() - currRectangle.getHeight() / 2);
-	}
-	
-	private void released(Rectangle currRectangle) {
-		if (!currRectangle.intersects(myMainGrid.getBoundsInParent())) {
-			createNewErrorWindow();
-		}
-	}
-	
 	private void createNewErrorWindow() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Object placement error");
@@ -218,6 +209,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 	}
 
+	//TODO clone objects so that they don't dissappear out of the list
 	@Override
 	public void listItemClicked(InteractiveObject clickable) {
 		myPlayArea.getChildren().add(clickable);
