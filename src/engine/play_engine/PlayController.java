@@ -100,7 +100,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public boolean isLost() {
 		return isLost;
 	}
-
+	
 	@Override
 	public boolean isWon() {
 		return isWon;
@@ -122,7 +122,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		throw new IllegalArgumentException();
 	}
 
-	boolean isLevelCleared() {
+	public boolean isLevelCleared() {
 		return levelCleared;
 	}
 

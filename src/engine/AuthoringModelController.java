@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -138,16 +139,31 @@ public interface AuthoringModelController {
 	int placeElement(String elementName, Point2D startCoordinates);
 
 	/**
-	 * Place a game element of previously defined type within the game which follows a path defined in the authoring
-	 * environment as it moves.
-	 *
+	 * Add element of given name
+	 * 
 	 * @param elementName
-	 * 			 the template name for the element
-	 * @param pathList
-	 * 			 a list of points the object should target as it moves
-	 * @return a unique identifier for the sprite abstraction representing the game element
+	 */
+	void addElementToInventory(String elementName);
+
+	/*
+	 * Place a game element of previously defined type within the game which follows
+	 * a path defined in the authoring environment as it moves.
+	 *
+	 * @param elementName the template name for the element
+	 * 
+	 * @param pathList a list of points the object should target as it moves
+	 * 
+	 * @return a unique identifier for the sprite abstraction representing the game
+	 * element
 	 */
 	int placePathFollowingElement(String elementName, PathList pathList);
+
+	/**
+	 * Retrieve the inventory for the current level
+	 * 
+	 * @return set of element names that can be placed in the current level
+	 */
+	Set<String> getInventory();
 
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
@@ -166,13 +182,6 @@ public interface AuthoringModelController {
 	 * @return a map of relevant details to display or modify about the game
 	 */
 	Map<String, Double> getStatus();
-
-	/**
-	 * Retrieve information on the quantity of each resource left
-	 * 
-	 * @return map of resource name to quantity of that resource left
-	 */
-	Map<String, Double> getResourceEndowments();
 
 	/**
 	 * Retrieve information on the cost of each element in terms of the various
@@ -250,6 +259,8 @@ public interface AuthoringModelController {
 	 * @return map of template names to properties of each template
 	 */
 	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
+
+	Map<String, Double> getResourceEndowments();
 
 	/**
 	 * Set the name of the game being authored.

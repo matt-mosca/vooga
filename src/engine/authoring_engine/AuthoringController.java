@@ -47,8 +47,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 		spriteExporter = new SpriteTemplateExporter();
 	}
 	
-	
-
 	@Override
 	public void exportGame() {
 		spriteExporter.exportSpriteTemplates(getGameName(), getSpriteFactory().getAllDefinedTemplateProperties());
@@ -112,6 +110,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 		Sprite removedSprite = getSpriteIdMap().remove(elementId);
 		getLevelSprites().get(getCurrentLevel()).remove(removedSprite);
 	}
+	
+	@Override
+	public void addElementToInventory(String elementName) {
+		getLevelInventories().get(getCurrentLevel()).add(elementName);
+	}
 
 	@Override
 	public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
@@ -124,7 +127,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
 		return getSpriteFactory().getTemplateProperties(elementName);
 	}
-
+	
 	private Sprite getElement(int elementId) throws IllegalArgumentException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
