@@ -3,9 +3,8 @@ package util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Properties;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GameConditionsReader {
 
@@ -13,7 +12,7 @@ public class GameConditionsReader {
 	private final String DEFEAT_CONDITIONS_PROPERTIES_FILE = "resources/DefeatConditions.properties";
 	private final Properties VICTORY_CONDITIONS_PROPERTIES;
 	private final Properties DEFEAT_CONDITIONS_PROPERTIES;
-	private final String READABLE_REGEX = "\\s+";
+	private final String READABLE_REGEX = " ";
 	private final String WRITABLE_REGEX = "_";
 
 	public GameConditionsReader() {
@@ -49,11 +48,9 @@ public class GameConditionsReader {
 	}
 
 	private Collection<String> getReadablePropertiesFromRawProperties(Properties properties) {
-		Set<String> rawPropertyNames = properties.stringPropertyNames();
-		Set<String> readablePropertyNames = new HashSet<>();
-		rawPropertyNames.forEach(rawPropertyName -> readablePropertyNames
-				.add(rawPropertyName.replaceAll(WRITABLE_REGEX, READABLE_REGEX)));
-		return readablePropertyNames;
+		return properties.stringPropertyNames().parallelStream()
+				.map(rawPropertyName -> rawPropertyName.replaceAll(WRITABLE_REGEX, READABLE_REGEX))
+				.collect(Collectors.toSet());
 	}
-	
+
 }

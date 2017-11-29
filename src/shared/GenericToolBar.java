@@ -6,6 +6,7 @@ import java.util.List;
 import interfaces.ClickableInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -61,9 +62,9 @@ public class GenericToolBar extends ScrollPane {
 	}
 
 	public void createDefaultObjects() {
-		myStatic1 = createNewStatic(1, "black_square.png");
+		myStatic1 = createNewStatic(3, "black_square.png");
 		myStatic2 = createNewStatic(1, "black_square2.png");
-		myBackground3 = createNewBackground(3, "green_tank.png");
+		myBackground3 = createNewBackground(1, "green_tank.png");
 		myBackground4 = createNewBackground(2, "red_balloon.png");
 	}
 
