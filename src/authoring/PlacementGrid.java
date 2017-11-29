@@ -7,6 +7,7 @@ import javafx.scene.layout.RowConstraints;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
 import authoring.path.Path;
+import interfaces.ClickableInterface;
 import javafx.geometry.Point2D;
 
 /**
@@ -92,7 +93,7 @@ public class PlacementGrid extends GridPane {
 	 * Need to update it to account for different sized objects 
 	 * Change the assignToCell method and do different checking for odd/set
 	 */
-	public Point2D place(StaticObject currObject) {
+	public Point2D place(ClickableInterface currObject) {
 		double minDistance = Double.MAX_VALUE;
 		Point2D finalLocation = null;
 		int finalRow = 0;
@@ -126,7 +127,7 @@ public class PlacementGrid extends GridPane {
 		return false;
 	}
 	
-	private void assignToCells(int finalRow, int finalCol, StaticObject currObject) {
+	private void assignToCells(int finalRow, int finalCol, ClickableInterface currObject) {
 		for (int i = 0; i < currObject.getSize(); i++) {
 			for (int j = 0; j < currObject.getSize(); j++) {
 				cells[i+finalRow][j+finalCol].assignToCell(currObject);
@@ -134,7 +135,7 @@ public class PlacementGrid extends GridPane {
 		}
 	}
 	
-	private void removeAssignments(int finalRow, int finalCol, StaticObject currObject) {
+	private void removeAssignments(int finalRow, int finalCol, ClickableInterface currObject) {
 		for (int i = 0; i < currObject.getSize(); i++) {
 			for (int j = 0; j < currObject.getSize(); j++) {
 				cells[i + finalRow][j + finalCol].removeAssignment(currObject);
@@ -142,7 +143,7 @@ public class PlacementGrid extends GridPane {
 		}
 	}
 
-	public void removeFromGrid(StaticObject currObject) {
+	public void removeFromGrid(ClickableInterface currObject) {
 		int col = (int) ((currObject.getX()) / cellSize);
 		if (col >= 0) {
 			int row = (int) ((currObject.getY()) / cellSize);

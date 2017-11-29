@@ -7,17 +7,19 @@ import authoring.tabs.AddTab;
 import authoring.tabs.SimpleTab;
 import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
-import interfaces.ClickableInterface;
+
 import javafx.geometry.Point2D;
+
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
+import splashScreen.ScreenDisplay;
 
 /**
  * @author Matt
  */
 public class LeftToolBar extends VBox {
 	private static final int Y_POSITION = 50;
-	private ClickableInterface myClickable;
+	private ScreenDisplay myDisplay;
 	private AuthoringController myController;
 	private TabPane tabPane;
 	private TabFactory tabFactory;
@@ -25,9 +27,9 @@ public class LeftToolBar extends VBox {
 	private SimpleTab backgroundTab;
 	private AddTab addTab;
 	
-	public LeftToolBar(ClickableInterface clickable, AuthoringController controller) {
+	public LeftToolBar(ScreenDisplay display, AuthoringController controller) {
 		this.setLayoutY(Y_POSITION);
-		myClickable = clickable;
+		myDisplay = display;
 		myController = controller;
 		tabPane = new TabPane();
 		tabFactory = new TabFactory();
@@ -37,12 +39,12 @@ public class LeftToolBar extends VBox {
 	
 	private void createAndAddTabs() {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
-		staticTab = new SimpleTab(myClickable, new ArrayList<>());
+		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
 		staticTab.addStaticItem(1, "tortoise.png");
 		staticTab.addStaticItem(2, "gray_circle.png");
 		staticTab.addStaticItem(1, "green_soldier.gif");
 		
-		backgroundTab = new SimpleTab(myClickable, new ArrayList<>());
+		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
 		backgroundTab.addBackgroundItem(2, "grass_small.png");
 		backgroundTab.addBackgroundItem(1, "grass2_small.png");
 		backgroundTab.addBackgroundItem(1, "brick_path.png");
@@ -52,7 +54,7 @@ public class LeftToolBar extends VBox {
 		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));
 		
-		addTab = new AddStaticTab(myClickable, tabPane);
+		addTab = new AddStaticTab(myDisplay, tabPane);
 		tabPane.getTabs().add(tabFactory.buildTab("Add Image", null, addTab, tabPane));
 		makeTabsUnclosable();
 	}

@@ -1,12 +1,5 @@
 package sprites;
 
-import engine.behavior.collision.CollisionHandler;
-import engine.behavior.collision.CollisionVisitable;
-import engine.behavior.collision.CollisionVisitor;
-import engine.behavior.firing.FiringStrategy;
-import engine.behavior.movement.AbstractMovementStrategy;
-import engine.behavior.movement.MovementHandler;
-
 /**
  * Tests sprite creation / field setting.
  *

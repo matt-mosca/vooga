@@ -15,6 +15,13 @@ public class Bank {
 	private Map<String, Double> resourceEndowments;
 	private Map<String, Map<String, Double>> unitCosts;
 
+	public Bank fromBank() {
+		Bank bankCopy = new Bank();
+		bankCopy.setResourceEndowments(getResourceEndowments());
+		bankCopy.setUnitCosts(getUnitCosts());
+		return bankCopy;
+	}
+	
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
 		this.resourceEndowments = resourceEndowments;
 	}
@@ -73,5 +80,9 @@ public class Bank {
 		}
 		resourceEndowments = resourcesAfterPurchase;
 		return true;
+	}
+	
+	private void setUnitCosts(Map<String, Map<String, Double>> unitCosts) {
+		this.unitCosts = unitCosts;
 	}
 }
