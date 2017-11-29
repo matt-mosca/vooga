@@ -39,6 +39,11 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("Numerical \"team\" association", "0");
 		defaultValues.put("Health points", "50");
 		defaultValues.put("Damage dealt to colliding objects", "20");
+		defaultValues.put("Speed of movement", "5");
+		defaultValues.put("initialAngle", "0");
+		defaultValues.put("radius", "10");
+		defaultValues.put("centerY", "0");
+		defaultValues.put("centerX", "0");
 
 	}
 	
