@@ -6,6 +6,7 @@ import java.util.List;
 import authoring.AuthorInterface;
 import authoring.GameArea;
 import authoring.ScrollableArea;
+import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
 import interfaces.CreationInterface;
 import javafx.geometry.Pos;
@@ -15,6 +16,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 
 public class BottomToolBar extends VBox {
+	private AuthoringController myController;
 	private TabPane myTabPane;
 	private List<LevelTab> myLevels;
 	private List<GameArea> myGameAreas;
@@ -27,9 +29,10 @@ public class BottomToolBar extends VBox {
 	private int currentDisplay;
 	private AuthorInterface myCreated;
 	
-	public BottomToolBar (AuthorInterface created, ScrollableArea area) {
+	public BottomToolBar (AuthorInterface created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
 		myCreated = created;
+		myController = controller;
 		myGameAreas = new ArrayList<>();
 		this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
@@ -54,9 +57,9 @@ public class BottomToolBar extends VBox {
 	}
 
 	private void addLevel() {
-		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1),null,myTabPane);
+		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), null, myTabPane);
 		LevelTab newLv = new LevelTab(myLevels.size()+1);	
-		myGameAreas.add(new GameArea(myCreated));
+		myGameAreas.add(new GameArea(myController));
 		if (myLevels.size()==0) {
 			newTab.setClosable(false);
 		}else {

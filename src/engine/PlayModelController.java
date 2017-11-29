@@ -93,6 +93,13 @@ public interface PlayModelController {
 	Map<String, String> getAvailableGames();
 
 	/**
+	 * Get map of all defined template names to their properties
+	 * 
+	 * @return map of template names to properties of each template
+	 */
+	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
+	
+	/**
 	 * Get the ImageView corresponding to a particular spriteId
 	 * 
 	 * @param spriteId

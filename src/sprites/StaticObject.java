@@ -8,11 +8,9 @@ public class StaticObject extends InteractiveObject{
 	private static final int CELL_SIZE = 40;
 	private int objectSize;
 	private int realSize;
-	private String myImageString;
 	
 	public StaticObject(int size, ScreenDisplay display, String imageString) {
-		super(display);
-		myImageString = imageString;
+		super(display, imageString);
 		setSize(size);
 		Image image;
 		try {
@@ -37,10 +35,6 @@ public class StaticObject extends InteractiveObject{
 	
 	public double getWidth() {
 		return this.getFitWidth();
-	}
-	
-	public String getImageString() {
-		return myImageString;
 	}
 	
 	@Override
