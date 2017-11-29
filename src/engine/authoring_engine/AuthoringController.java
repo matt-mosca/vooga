@@ -5,8 +5,10 @@ import engine.AuthoringModelController;
 import packaging.Packager;
 import sprites.Sprite;
 import util.GameConditionsReader;
+import util.SpriteTemplateExporter;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	private Packager packager;
 	private GameConditionsReader gameConditionsReader;
+	private SpriteTemplateExporter spriteExporter;
 
 	private Map<String, Set<Integer>> templateToIdMap;
 
@@ -30,11 +33,12 @@ public class AuthoringController extends AbstractGameController implements Autho
 		super();
 		packager = new Packager();
 		gameConditionsReader = new GameConditionsReader();
+		templateToIdMap = new HashMap<>();
 	}
 
 	@Override
 	public void exportGame() {
-		getSpriteFactory().exportSpriteTemplates();
+		spriteExporter.exportSpriteTemplates(getGameName(), getSpriteFactory().getAllDefinedTemplateProperties());
 		packager.generateJar(getGameName());
 	}
 
