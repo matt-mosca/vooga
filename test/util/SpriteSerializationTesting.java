@@ -1,8 +1,12 @@
 package util;
 
 import com.thoughtworks.xstream.XStream;
+import engine.Bank;
 import sprites.FactoryTesting;
 import sprites.Sprite;
+
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class SpriteSerializationTesting {
 
@@ -10,16 +14,8 @@ public class SpriteSerializationTesting {
         FactoryTesting factoryTesting = new FactoryTesting();
         Sprite sprite = factoryTesting.generateSingleTestSprite();
         System.out.println(sprite.getX() + " " + sprite.getY());
-        XStream xStream = new XStream();
-        String spriteSerialization = xStream.toXML(sprite);
-        System.out.println(spriteSerialization);
-        Sprite deserialized = (Sprite) xStream.fromXML(spriteSerialization);
-        System.out.println(deserialized.getX() + " " + deserialized.getY());
-        //YaGson yaGson = new YaGson();
-        //String ss = yaGson.toJson(sprite);
-        //Sprite ds = (Sprite) yaGson.fromJson(ss, Sprite.class.getComponentType());
-        //System.out.println(ds.getX());
-        //SerializationUtils serializationUtils = new SerializationUtils();
-        //serializationUtils.serializeLevelData("bleh", new HashMap<>(), new HashMap<>(), Arrays.asList(sprite), 1);
+        SerializationUtils serializationUtils = new SerializationUtils();
+        serializationUtils.serializeLevelData("bleh", new HashMap<>(), new Bank(), new HashMap<>(), Arrays.asList
+                (sprite), 1);
     }
 }
