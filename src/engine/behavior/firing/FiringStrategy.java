@@ -15,17 +15,11 @@ public interface FiringStrategy {
 	/**
 	 * Return the template name of projectile to fire
 	 */
-	public String fire();
+	String fire();
 	
 	/**
 	 * Whether the projectile should fire in this cycle
 	 * @return
 	 */
-	public boolean shouldFire();
-
-	public void setFiringPosition(Point2D firingPosition);
-	
-	public void setTargetPoint(Point2D targetPoint);
-	
-	public Point2D getTargetPoint();
+	boolean shouldFire();
 }
