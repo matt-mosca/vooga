@@ -174,7 +174,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void dropped(StaticObject rec, MouseEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

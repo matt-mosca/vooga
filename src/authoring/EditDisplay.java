@@ -196,24 +196,26 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {
+		SelectionWindow mySelectionWindow = new SelectionWindow(imageView, this);
+		
 		//TODO refactor this and make the labels and buttons their own class
-		noButtonPressed();
-		createTextField();
-		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
-		yesButton = new Button("Yes");
-		noButton = new Button("No");
-		yesButton.setLayoutX(1000);
-		noButton.setLayoutX(1050);
-		optionLabel.setLayoutX(700);
-		yesButton.setLayoutY(20);
-		noButton.setLayoutY(20);
-		optionLabel.setLayoutY(20);
-
-		rootAdd(yesButton);
-		rootAdd(optionLabel);
-		rootAdd(noButton);
-		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
-		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
+//		noButtonPressed();
+//		createTextField();
+//		optionLabel = new Label("Do you want to add this sprite\nto inventory?");
+//		yesButton = new Button("Yes");
+//		noButton = new Button("No");
+//		yesButton.setLayoutX(1000);
+//		noButton.setLayoutX(1050);
+//		optionLabel.setLayoutX(700);
+//		yesButton.setLayoutY(20);
+//		noButton.setLayoutY(20);
+//		optionLabel.setLayoutY(20);
+//
+//		rootAdd(yesButton);
+//		rootAdd(optionLabel);
+//		rootAdd(noButton);
+//		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->yesButtonPressed(imageView));
+//		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->noButtonPressed());
 	}
 	
 	private void createTextField() {
@@ -281,5 +283,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myStage.show();
 		Main restart = new Main();
 		restart.start(myStage);
+	}
+
+	@Override
+	public void imageSelected(SpriteImage imageView) {
+		myRightToolBar.imageSelected(imageView);
+		
 	}
 }

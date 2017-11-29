@@ -69,7 +69,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	
 	public RightToolBar(CreationInterface created, AuthoringController controller) {
 		this.created = created;
-		this.myController = controller;
+		myController = controller;
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 	    tabMaker = new TabFactory();
@@ -109,6 +109,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		makeTabsUnclosable();
 	}
 	
+	@Override
 	public void imageSelected(SpriteImage myImageView) {
 		if (myImageView instanceof TowerImage) inventoryTower.addNewImage(myImageView);
 		if (myImageView instanceof TroopImage) inventoryTroop.addNewImage(myImageView);
