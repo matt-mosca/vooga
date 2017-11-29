@@ -44,6 +44,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 		packager = new Packager();
 		gameConditionsReader = new GameConditionsReader();
 		templateToIdMap = new HashMap<>();
+		spriteExporter = new SpriteTemplateExporter();
 	}
 	
 	
