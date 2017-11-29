@@ -85,13 +85,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.play();
 		
 //		rootStyle("authoring/resources/standardLabel.css");
-//		myCoinDisplay.getStylesheets().add("authoring/resources/standardLabel.css");
+//		myCoinDisplay.getStylesheets().add("authoring/resources/coinDisplay.css");
 //		myCoinDisplay.getStyleClass().add("coin-display");
-		Rectangle rect = new Rectangle(100, 100);
+//		Rectangle rect = new Rectangle(100, 100);
 //		rootStyle("authoring/resources/standardLabel.css");
-		getScene().getStylesheets().add("authoring/resources/standardLabel.css");
-		rect.getStyleClass().add("rect");
-		rootAdd(rect);
+//		getScene().getStylesheets().add("authoring/resources/standardLabel.css");
+//		rect.getStyleClass().add("rect");
+//		rootAdd(rect);
 	}
 
 	private void addItems() {
