@@ -26,7 +26,6 @@ public class TrackingMovementStrategy extends TargetedMovementStrategy {
 	
 	public Point2D move() {
 		this.setTargetCoordinates(targetLocation.getCurrentX(), targetLocation.getCurrentY());
-		super.move();
-		return getCurrentCoordinates();
+		return super.move();
 	}
 }

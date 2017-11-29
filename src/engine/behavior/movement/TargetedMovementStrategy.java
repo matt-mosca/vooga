@@ -31,6 +31,7 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
     		setX(this.getCurrentX()+ getXVelocity());
         	setY(this.getCurrentY()+ getYVelocity());
     	}
+    	return getCurrentCoordinates();
     }
     
     public void stop() {

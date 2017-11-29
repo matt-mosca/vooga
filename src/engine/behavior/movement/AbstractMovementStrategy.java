@@ -27,7 +27,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	}
 
 	@Override
-	public abstract void move();
+	public abstract Point2D move();
 
 	public void handleBlock(String blockMethodName) {
 		move();
