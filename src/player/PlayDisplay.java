@@ -162,7 +162,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	//TODO Make sure this works once saved files are all good
 	private void initializeSprites() {
-		for(Integer id:myController.getLevelSprites(level)) {
+		for(Integer id : myController.getLevelSprites(level)) {
 			ImageView imageView = myController.getRepresentationFromSpriteId(id);
 			myPlayArea.getChildren().add(imageView);
 		}
