@@ -67,12 +67,12 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public PlayDisplay(int width, int height) {
 		super(width, height, Color.BLUE);
 		myController = new PlayController();
-		addItems();
 		this.SetDroppable(myPlayArea);
+		createTestGameArea(height);
+		addItems();
 //		initializeGameState();
 //		initializeSprites();
 		initializeButtons();
-		createTestGameArea();
 		createTestImages();
 //		createTestSprites();
 //		createTestGameArea();
@@ -180,8 +180,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 	}
 
-	private void createTestGameArea() {
-		myPlayArea = new PlayArea(this);
+	private void createTestGameArea(int height) {
+		myPlayArea = new PlayArea(this, height, height);
 		rootAdd(myPlayArea);
 	}
 	

@@ -66,8 +66,12 @@ public abstract class ScreenDisplay {
 		return root.getChildren().contains(object);
 	}
 	
-	protected void rootStyle(String sheet) {
+	protected void rootStyleAndClear(String sheet) {
 		root.getStylesheets().clear();
+		root.getStylesheets().add(sheet);
+	}
+	
+	protected void rootStyle(String sheet) {
 		root.getStylesheets().add(sheet);
 	}
 	

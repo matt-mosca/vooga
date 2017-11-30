@@ -199,7 +199,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void changeTheme(String theme) {
-		rootStyle(myThemeChanger.getThemePath(theme));
+		rootStyleAndClear(myThemeChanger.getThemePath(theme));
 //		myRightToolBar.getStyleClass().add("borders");
 //		myLeftToolBar.getStyleClass().add("borders");
 	}
