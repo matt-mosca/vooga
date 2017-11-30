@@ -31,8 +31,8 @@ public class ElementManager {
 	 * Handles the collision-checking and Sprite-specific collision-handling logic
 	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md
 	 */
-	public ElementManager() {
-		spriteFactory = new SpriteFactory();
+	public ElementManager(SpriteFactory spriteFactory) {
+		this.spriteFactory = spriteFactory;
 	}
 
 	// Guaranteed to return only active elements (i.e. not dead ones)

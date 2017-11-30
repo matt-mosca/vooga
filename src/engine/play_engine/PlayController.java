@@ -39,7 +39,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	public PlayController() {
 		super();
-		elementManager = new ElementManager();
+		elementManager = new ElementManager(getSpriteFactory());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
 	}
@@ -73,6 +73,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public void update() {
 		if (inPlay) {
+			System.out.println("update");
+			/*
 			if (checkLevelClearanceCondition()) {
 				if (checkVictoryCondition()) {
 					registerVictory();
@@ -85,6 +87,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				// Move elements, check and handle collisions
 				elementManager.update();
 			}
+			*/
+			elementManager.update();
 		}
 	}
 
