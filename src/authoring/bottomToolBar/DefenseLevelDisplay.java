@@ -29,7 +29,7 @@ public class DefenseLevelDisplay extends LevelDisplay {
 	private ResourceBundle myResources;
 	private Map<String, List<String>> defaults;
 	private List<ComboBox> myDropDowns;
-	private static String DEFAULT_IMAGE_URL = "";
+	private static String DEFAULT_IMAGE_URL = "https://users.cs.duke.edu/~rcd/images/rcd.jpg\"";
 
 	public DefenseLevelDisplay(int n, LevelTab lv, AuthoringController myController) {
 		super(n, lv, myController);

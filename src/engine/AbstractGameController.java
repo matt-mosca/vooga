@@ -149,6 +149,7 @@ public abstract class AbstractGameController {
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		Map<String, Object> auxiliarySpriteConstructionObjects = getAuxiliarySpriteConstructionObjectMap(
 				elementTemplateName, startCoordinates);
+//		System.out.println(startCoordinates.getX());
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
@@ -298,6 +299,9 @@ public abstract class AbstractGameController {
 			throws FileNotFoundException {
 		assertValidLevel(level);
 		List<Sprite> loadedSprites = ioController.loadGameStateElements(savedGameName, level, originalGame);
+		for (Sprite sprite : loadedSprites) {
+			spriteIdMap.put(spriteIdCounter.getAndIncrement(), sprite);
+		}
 		addOrSetLevelData(levelSpritesCache, loadedSprites, level);
 		return loadedSprites;
 	}

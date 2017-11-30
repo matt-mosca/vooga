@@ -80,13 +80,11 @@ public class CollisionHandler {
     }
 
     public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
-        if (graphicalRepresentation == null) {
-            constructGraphicalRepresentation();
-        }
         this.graphicalRepresentation = graphicalRepresentation;
     }
     
     public ImageView getGraphicalRepresentation() {
-    		return graphicalRepresentation;
+    	constructGraphicalRepresentation();
+        return graphicalRepresentation;
     }
 }

@@ -138,7 +138,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	public void clicked(SpriteImage imageView) {	
 		myPropertiesBox = new PropertiesBox(created, imageView);
 		if (imageView instanceof TowerImage) newPaneWithProjectileSlot((TowerImage) imageView);
-		if (imageView instanceof TroopImage) newPane(imageView);
+		if (imageView instanceof TroopImage || imageView instanceof ProjectileImage) newPane(imageView);
 	}
 	
 	private void newPaneWithProjectileSlot(TowerImage imageView) {
@@ -230,6 +230,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(topTabPane);
 		this.getChildren().add(bottomTabPane);
+		this.getChildren().add(retB);
 	}
 	
 	public void addToMap(String property, String value) {

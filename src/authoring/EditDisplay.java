@@ -270,6 +270,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
 		controller.addElementToInventory(imageView.getName());
 		
+		
+		
 //		System.out.println(tester.getAllDefinedTemplateProperties());
 
 	}
