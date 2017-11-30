@@ -17,10 +17,25 @@
 }
 
 .borders{
-    -fx-border-color: rgb(49, 89, 23);
+    -fx-background-color: rgb(225, 228, 203);
+    -fx-border-color: rgb(132, 145, 47);
+    -fx-background-radius: 5;
+	-fx-background-insets: -10;
 	-fx-border-style: solid;
-    -fx-border-width: 1.5;
-    -fx-border-insets: -5;
+    -fx-border-width: 5;
+    -fx-border-insets: -11;
+    -fx-border-radius: 5;
+}
+
+.outer-border{
+    -fx-background-color: rgb(49, 89, 23);
+    -fx-border-color: rgb(49, 89, 23);
+    -fx-background-radius: 5;
+	-fx-background-insets: -10;
+	-fx-border-style: solid;
+    -fx-border-width: 5;
+    -fx-border-insets: -11;
+    -fx-border-radius: 5;
 }
 
 .label{

@@ -19,10 +19,25 @@
 }
 
 .borders{
-    -fx-border-color: rgb(223,185,81);
-    -fx-border-style: solid;
-    -fx-border-width: 1.5;
-    -fx-border-insets: -5;
+    -fx-background-color: rgb(182, 166, 120);
+    -fx-border-color: rgb(223, 185, 81);
+    -fx-background-radius: 5;
+	-fx-background-insets: -10;
+	-fx-border-style: solid;
+    -fx-border-width: 5;
+    -fx-border-insets: -11;
+    -fx-border-radius: 5;
+}
+
+.outer-border{
+    -fx-background-color: rgb(167, 135, 50);
+    -fx-border-color: rgb(167, 135, 50);
+    -fx-background-radius: 5;
+	-fx-background-insets: -10;
+	-fx-border-style: solid;
+    -fx-border-width: 5;
+    -fx-border-insets: -11;
+    -fx-border-radius: 5;
 }
 
 .label{
