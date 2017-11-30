@@ -84,8 +84,6 @@ public class SpriteFactory {
 	public Sprite generateSprite(String spriteTemplateName, Point2D startCoordinates, Map<String, ?> auxiliaryObjects) {
 		System.out.println(spriteTemplateName);
 	    Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
-	    System.out.println(properties);
-	    System.out.println(spriteTemplates);
 		Sprite sprite = generateSprite(properties, auxiliaryObjects);
 		sprite.setX(startCoordinates.getX());
 		sprite.setY(startCoordinates.getY());
