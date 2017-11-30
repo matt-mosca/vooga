@@ -15,13 +15,15 @@ public class LevelTab extends ScrollPane{
 	private Button editLevel;
 	private LevelDisplay myLevelDisplay;
 	private boolean edited;
+	private AuthoringController myController;
 	
-	public LevelTab(int n, AuthoringController myController) {
+	public LevelTab(int n, AuthoringController controller) {
 		myNumber = n;
+		myController = controller;
 		//needs to be a check for what kind of level it is, so that we either create an attackleveldisplay or a 
 		//defenseleveldisplay
 		
-		myLevelDisplay = new DefenseLevelDisplay(n, this, myController); //for now assuming it has to be a defense one.
+		myLevelDisplay = new DefenseLevelDisplay(n, this, controller); //for now assuming it has to be a defense one.
 		Label initialLabel = new Label("You have to add content to this first! Click the edit button!");
 		editLevel = new Button("Edit Level");
 		editLevel.setAlignment(Pos.CENTER);
@@ -55,6 +57,8 @@ public class LevelTab extends ScrollPane{
 		//TODO
 		//this method will update the different components in this tab, for the display. 	
 		//probably will involve using a lot of get methods to get stuff from the back end in order to display them.
+		//waiting on a get method in back end.
+		
 	}
 
 
