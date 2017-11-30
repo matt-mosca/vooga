@@ -1,6 +1,8 @@
 package authoring.leftToolBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import authoring.tabs.AddStaticTab;
 import authoring.tabs.AddTab;
@@ -27,8 +29,10 @@ public class LeftToolBar extends VBox {
 	private SimpleTab staticTab;
 	private SimpleTab backgroundTab;
 	private AddTab addTab;
+	private Map<String, String> propertiesMap;
 	
 	public LeftToolBar(ScreenDisplay display, AuthoringController controller) {
+//		createPropertiesMap();
 		this.setLayoutY(Y_POSITION);
 		myDisplay = display;
 		myController = controller;
@@ -38,9 +42,17 @@ public class LeftToolBar extends VBox {
         createAndAddTabs();
 	}
 	
+	private void createPropertiesMap() {
+		propertiesMap = new HashMap<String, String>();
+		propertiesMap.put("Collision effects", "Invulnerable to collision damage");
+		propertiesMap.put("Collided-with effects", "Do nothing to collided objects");
+		propertiesMap.put("Firing behavior", "Do not fire projectiles");
+	}
+	
 	private void createAndAddTabs() {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
 		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
+		
 		staticTab.addItem(new StaticObject(1, myDisplay, "tortoise.png"));
 		staticTab.addItem(new StaticObject(2, myDisplay, "gray_circle.png"));
 		staticTab.addItem(new StaticObject(1, myDisplay, "green_soldier.gif"));
@@ -60,9 +72,19 @@ public class LeftToolBar extends VBox {
 		makeTabsUnclosable();
 	}
 	
+	private StaticObject createStaticObject(String name, int size, String image) {
+		StaticObject tempStatic = new StaticObject(size, myDisplay, image);
+//		myController.defineElement(name, properties);
+		return null;
+	}
+	
 	private void makeTabsUnclosable() {
 		for(int i = 0; i < tabPane.getTabs().size(); i++) {
 			tabPane.getTabs().get(i).setClosable(false);
 		}
 	}
+	
+//	private defineStaticElements() {
+//		
+//	}
 }
