@@ -34,8 +34,10 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	private void addDefaultValues() {
-		defaultValues.put("imageWidth", "20");
-		defaultValues.put("imageHeight", "20");
+		defaultValues.put("Move an object", "Object will stay at desired location");
+		defaultValues.put("Collision effects", "Invulnerable to collision damage");
+		defaultValues.put("Collided-with effects", "Do nothing to colliding objects");
+		defaultValues.put("Firing Behavior", "Do not fire projectiles");
 		defaultValues.put("Numerical \"team\" association", "0");
 		if (this instanceof TroopImage) defaultValues.put("Numerical \"team\" association", "1");
 		if (this instanceof TowerImage) defaultValues.put("Numerical \"team\" association", "2");

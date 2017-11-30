@@ -47,21 +47,6 @@ public class SpriteFactory {
 	 *
 	 * @param spriteTemplateName
 	 *            the name of the sprite template
-	 * @return a sprite object with properties set to those specified in the
-	 *         template
-	 */
-	public Sprite generateSprite(String spriteTemplateName) {
-		Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
-		return null;
-		// TODO -- remove this method (always need coordinates and ImageView)
-		// return generateSprite(properties);
-	}
-
-	/**
-	 * Generate a sprite from an existing template which specifies its properties.
-	 *
-	 * @param spriteTemplateName
-	 *            the name of the sprite template
 	 * @param startCoordinates
 	 * @return a sprite object with properties set to those specified in the
 	 *         template

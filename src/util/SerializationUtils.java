@@ -305,9 +305,6 @@ public class SerializationUtils {
 	// Return a map of sprite name to list of elements, which can be used by
 	// ElementFactory to construct sprite objects
 	private List<Sprite> deserializeSprites(String serializedSprites) {
-		// TODO - fix this, it will eventually cause:
-		// Exception in thread "main" java.lang.ClassCastException:
-		// com.google.gson.internal.LinkedTreeMap cannot be cast to sprites.Sprite
 		Type mapType = new TypeToken<Map<String, List<Sprite>>>(){}.getType();
 		Map<String, List<Sprite>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, mapType);
 		return spritesMap.get(SPRITES);
