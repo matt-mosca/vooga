@@ -248,4 +248,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		myRightToolBar.addToMap(baseProperty, value);
 		
 	}
+	
+	public void setGameArea(GameArea game) {
+		this.myGameArea = game;
+	}
 }
