@@ -11,8 +11,10 @@ import engine.authoring_engine.AuthoringController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -23,28 +25,32 @@ import javafx.stage.Stage;
 
 public class DefenseLevelDisplay extends LevelDisplay{
 	
-//	private Map<String, TextBox> myTextBoxes;
-	private List<TextBox> myTextBoxes;
 	private Button newWave;
 	private ResourceBundle myResources;
+	private Map<String, List<String>> defaults;
+	private List<ComboBox> myDropDowns;
 	
 	public DefenseLevelDisplay(int n, LevelTab lv, AuthoringController myController) {
 		super(n, lv, myController);
+		defaults = myController.getElementBaseConfigurationOptions();
+		myDropDowns = new ArrayList<ComboBox>();
+		for(String s:myController.getElementBaseConfigurationOptions().keySet()) {
+			System.out.println(s);
+			System.out.println(myController.getElementBaseConfigurationOptions().get(s).toString());
+		}
 		//this would have to get refactored out depending on different languages and all that.
 		//TODO
 		myResources = ResourceBundle.getBundle("authoring/resources/DefenseLevel"); //ideally this path would be to a valid resource bundle.
-//		myTextBoxes = new HashMap<String, TextBox>();
-		myTextBoxes = new ArrayList<>();
 		createScene();
+		
 		
 		}
 
 	private void createScene() {
 		newWave = new Button("Create new wave.");
 		newWave.setOnAction(e->createNewWave());
+		newWave.setLayoutX(400);
 		super.getLevelPane().getChildren().add(newWave);
-//		createTextBoxes();
-//		placeTextAndTextFields();
 	}
 
 	private void createNewWave() {
@@ -58,6 +64,14 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		TextField number = new TextField();
 		number.setPromptText("How many times do you want this wave to spawn?");
 		Button addWave = new Button("Add this wave!");
+		for(String s: defaults.keySet()) {
+			ComboBox x = new ComboBox();
+			x.setPromptText(s);
+			x.getItems().addAll(defaults.get(s));
+			myDropDowns.add(x);
+			super.getLevelPane().getChildren().add(x);
+		}
+		
 		/*
 		 * There are some other properties over here, I'm sure, that I need to care about, but I'm not sure what 
 		 * they are.
@@ -66,6 +80,9 @@ public class DefenseLevelDisplay extends LevelDisplay{
 			Map<String, String> fun = new HashMap<>();
 			fun.put("frequency", frequency.getText());
 			fun.put("number", number.getText());
+			for (int i=0; i<defaults.size(); i++) {
+				fun.put((String) defaults.keySet().toArray()[i], (String) myDropDowns.get(i).getValue());
+			}
 			super.getAuthor().setWaveProperties(fun, Arrays.asList(order.getText().split(",")),
 					new Point2D(Double.parseDouble(start.getText().split(",")[0]), Double.parseDouble(start.getText().split(",")[1])));
 			
@@ -75,35 +92,5 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		
 		
 	}
-
-//	private void createTextBoxes() {
-//		myTextBoxes.add(new WaveTextBox(myResources.getString("waves")));
-//	    myTextBoxes.add(new WaveComponentsTextBox(myResources.getString("order")));
-//	    myTextBoxes.add(new GameDurationTextBox(myResources.getString("duration")));
-//		for (TextBox t : myTextBoxes) {
-//			t.getTextField().setOnKeyPressed(new EventHandler<KeyEvent>() {
-//
-//			@Override
-//			public void handle(KeyEvent e) {
-//				if(e.getCode()==KeyCode.ENTER) {
-//					t.recordInfo();
-//				}
-//			}
-//		});
-//		}
-//		
-//	}
-
 	
-//	private void placeTextAndTextFields() {
-//		int height = 30;
-//		for (TextBox t: myTextBoxes) {
-//			super.getLevelPane().add(new Label(t.getString()), 10, height);
-//			super.getLevelPane().add(t.getTextField(), 50, height);
-//			height+=10;
-//		}
-//	}
-	
-	
-
 }
