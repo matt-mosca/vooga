@@ -24,12 +24,13 @@ public class NewTroopTab extends NewSpriteTab {
 
 	@Override
 	protected void addDefaultImages() {
-		List<String> imageList = new ArrayList<String>(Arrays.asList("Red_Balloon", 
+		List<String> imageList = new ArrayList<String>(Arrays.asList( 
 				"Black_Square", "Black_Square2","Rotating_Black_Square", 
 				"Green_Soldier", "Blue_Soldier","Black_Soldier", "Blue_Tank", 
 				"Green_Tank", "Red_Tank","Cannon", "Green_Tank_Animated1", 
 				"Green_Tank_Animated2", "Blue_Tank_Animated1", "Blue_Tank_Animated2", 
-				"Red_Tank_Animated1", "Red_Tank_Animated2"));
+				"Red_Tank_Animated1", "Red_Tank_Animated2", "Red_Balloon", "Blue_Balloon",
+				"Green_Balloon", "Yellow_Balloon"));
 		addImages(imageList);
 	}
 	

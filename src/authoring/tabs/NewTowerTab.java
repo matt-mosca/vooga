@@ -24,7 +24,7 @@ public class NewTowerTab extends NewSpriteTab {
 	
 	@Override
 	protected void addDefaultImages() {
-		List<String> imageList = new ArrayList<String>(Arrays.asList("Black_Square2",
+		List<String> imageList = new ArrayList<String>(Arrays.asList("Black_Square2", "Monkey",
 				"Green_Turret1", "Green_Turret2", "Green_Turret3", "Green_Turret4",
 				"Green_Turret5", "Black_Turret", "Cannon1", "Cannon2", 
 				"Castle_Tower1", "Castle_Tower2", "Castle_Tower3", "Castle_Tower4"));
