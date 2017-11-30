@@ -18,15 +18,11 @@ public class NewTest extends HBox {
 	private void mouseClicked(MouseEvent e) {
 		startX = e.getX();
 		startY = e.getY();
-		System.out.println(startX);
-		System.out.println(startY);
 	}
 	
 	private void mouseReleased(MouseEvent e) {
 		endX = e.getX();
 		endY = e.getY();
-		System.out.println(endX);
-		System.out.println(endY);
 		this.getChildren().add(new Line(startX, startY, endX, endY));
 	}
 //	public void addDrawer() {

@@ -228,7 +228,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void clicked(SpriteImage sprite) {
 		System.out.println(sprite.toString());
-		
 	}
 
 	//TODO clone objects so that they don't dissappear out of the list
