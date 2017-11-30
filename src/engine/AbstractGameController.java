@@ -2,7 +2,6 @@ package engine;
 
 import engine.authoring_engine.AuthoringController;
 import engine.behavior.movement.TrackingPoint;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
@@ -270,6 +269,12 @@ public abstract class AbstractGameController {
 	}
 
 	protected int cacheAndCreateIdentifier(String elementTemplateName, Sprite sprite) {
+		spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
+		cacheGeneratedSprite(sprite);
+		return spriteIdCounter.get();
+	}
+	
+	protected int cacheAndCreateIdentifier(Sprite sprite) {
 		spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
 		cacheGeneratedSprite(sprite);
 		return spriteIdCounter.get();
