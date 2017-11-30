@@ -56,7 +56,7 @@ public class FactoryTesting {
     private Sprite generateSingleTestSprite(SpriteFactory spriteFactory) {
         System.out.println(spriteFactory.getElementBaseConfigurationOptions());
         Map<String, String> choices = new HashMap<>();
-        choices.put("Movement behavior", "Move in a straight line to a target location");
+        choices.put("Move an object", "Move in a straight line toward a desired location");
         choices.put("Collision effects", "Takes damage from collisions");
         choices.put("Collided-with effects", "Deal damage to colliding objects");
         choices.put("Firing Behavior", "Shoot periodically");
