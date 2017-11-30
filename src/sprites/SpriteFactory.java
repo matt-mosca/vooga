@@ -15,8 +15,6 @@ import java.util.*;
  */
 public class SpriteFactory {
 
-
-
 	private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
 
 	private Map<Sprite, String> spriteToTemplate = new HashMap<>();
@@ -139,7 +137,6 @@ public class SpriteFactory {
                 }
                 return parameterClass.getConstructors()[0].newInstance(constructorParameters);
             } else {
-                System.out.println("Fucks");
                 return null;
             }
         }
@@ -244,7 +241,7 @@ public class SpriteFactory {
 	}
 	
 	/**
-	 * Return a copy of current templates (for data protection)
+	 * Return a copy of current templates (for data protection).
      *
 	 * @return map of template names to their properties
 	 */
@@ -252,5 +249,12 @@ public class SpriteFactory {
 		return new HashMap<>(spriteTemplates);
 	}
 
-
+    /**
+     * Load the authored templates for a game already authored.
+     *
+     * @param loadedTemplates the previously refined templates loaded in from memory
+     */
+    public void loadSpriteTemplates(Map<String, Map<String, String>> loadedTemplates) {
+	    spriteTemplates.putAll(loadedTemplates);
+    }
 }
