@@ -153,6 +153,7 @@ public class SpriteFactory {
 								auxiliaryObjects);
 					}
 				}
+				System.out.println(Arrays.asList(constructorParameters));
 				return parameterClass.getConstructors()[0].newInstance(constructorParameters);
 			} else {
 				return null;
@@ -187,6 +188,8 @@ public class SpriteFactory {
 				return Double.parseDouble(propertyValueAsString);
 			} catch (NumberFormatException nonDoubleProperty) {
 				return propertyValueAsString;
+			} catch (NullPointerException nullptr) {
+				return null;
 			}
 		}
 	}
