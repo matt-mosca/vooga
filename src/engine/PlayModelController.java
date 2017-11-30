@@ -1,6 +1,7 @@
 package engine;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +33,10 @@ public interface PlayModelController {
 	 *            the name the save file was assigned
 	 * @param level
 	 *            the level of the game which should be loaded
+	 * @throws IOException
+	 * 			  if the save name does not refer to a previously saved game state
 	 */
-	void loadOriginalGameState(String saveName, int level) throws FileNotFoundException;
+	void loadOriginalGameState(String saveName, int level) throws IOException;
 
 	/**
 	 * Load state of previously saved play

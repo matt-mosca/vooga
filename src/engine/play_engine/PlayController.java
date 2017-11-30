@@ -8,6 +8,7 @@ import sprites.Sprite;
 import util.GameConditionsReader;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,7 +44,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public void loadOriginalGameState(String saveName, int level) throws FileNotFoundException {
+	public void loadOriginalGameState(String saveName, int level) throws IOException {
 		super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
 	}
