@@ -1,5 +1,6 @@
 package engine.behavior.movement;
 
+import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 
 /**
@@ -12,12 +13,12 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
 
     private double xVelocity;
     private double yVelocity;
-
     private double velocityMagnitude;
 
-    protected TargetedMovementStrategy(double targetX, double targetY, double velocityMagnitude) {
+    protected TargetedMovementStrategy(Point2D targetPoint,
+                                       @ParameterName("velocityMagnitude") double velocityMagnitude) {
         super();
-        setTargetCoordinates(targetX, targetY);
+        setTargetCoordinates(targetPoint.getX(), targetPoint.getY());
         this.velocityMagnitude = velocityMagnitude;
         calculateVelocityComponents();
     }
@@ -42,7 +43,7 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
     }
     
     public boolean targetReached() {
-    	return (calculateDistance()<velocityMagnitude);
+    	return (Math.hypot(targetX-this.getCurrentX(), targetY-this.getCurrentY())<velocityMagnitude);
     }
 
     protected void setTargetCoordinates(double targetX, double targetY) {
@@ -67,6 +68,7 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
         return yVelocity;
     }
 
+
     protected void setXVelocity(double newXVelocity) {
         xVelocity = newXVelocity;
     }
@@ -76,29 +78,10 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
         yVelocity = newYVelocity;
     }
 
-    /*protected void calculateVelocityComponents() {
+    protected void calculateVelocityComponents() {
         double angle = Math.toRadians(new Point2D(this.getCurrentX(),this.getCurrentY()).angle(targetX, targetY));
         this.xVelocity = velocityMagnitude * Math.cos(angle);
         this.yVelocity = velocityMagnitude * Math.sin(angle);
-    }*/
-    
-    protected void calculateVelocityComponents() {
-    	if(calculateDistance()!=0) {
-    		this.xVelocity = calculateVelocity(this.getTargetX()-this.getCurrentX());
-    		this.yVelocity = calculateVelocity(this.getTargetY()-this.getCurrentY());
-    	}
-    	else {
-    		this.xVelocity = 0;
-    		this.yVelocity = 0;
-    	}
-    }
-    
-    private double calculateVelocity(double deltaDistance) {
-    	return deltaDistance * velocityMagnitude / calculateDistance();
-    }
-    
-    private double calculateDistance() {
-    	return (Math.hypot(targetX-this.getCurrentX(), targetY-this.getCurrentY()));
     }
 
     

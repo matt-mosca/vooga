@@ -9,6 +9,9 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 
 	public AbstractWaveFiringStrategy(Set<String> templatesToFire, double period, int totalWaves) {
 		super(period);
+		if (templatesToFire.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 		this.templatesToFire = templatesToFire;
 		wavesLeft = totalWaves;
 	}
@@ -18,10 +21,18 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 	}
 
 	@Override
+	public String fire() {
+		decrementWavesLeft();
+		return chooseElementToSpawn();
+	}
+	
+	@Override
 	public boolean shouldFire() {
 		return wavesLeft >= 0 && super.shouldFire();
 	}
 
+	protected abstract String chooseElementToSpawn();
+	
 	protected int getWavesLeft() {
 		return wavesLeft;
 	}

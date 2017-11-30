@@ -17,7 +17,7 @@ public class TrackingMovementStrategy extends TargetedMovementStrategy {
 	private TrackingPoint targetLocation;
 	
 	public TrackingMovementStrategy(@ParameterName("velocity") double velocity) {
-		super(0, 0, velocity);
+		super(new Point2D(0, 0), velocity);
 	}
 
 	public void setTargetLocation(TrackingPoint targetLocation) {

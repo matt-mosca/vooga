@@ -1,5 +1,6 @@
 package authoring;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,7 +127,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
-		this.SetDroppable(myGameArea);
+		this.setDroppable(myGameArea);
 		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
 		myColorChanger = new ColorChanger(this);
@@ -186,13 +187,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	@Override
-	public void save(String saveName) {
+	public void save(File saveName) {
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}
 
 	public void changeTheme(String theme) {
-		rootStyle(myThemeChanger.getThemePath(theme));
+		rootStyleAndClear(myThemeChanger.getThemePath(theme));
 //		myRightToolBar.getStyleClass().add("borders");
 //		myLeftToolBar.getStyleClass().add("borders");
 	}

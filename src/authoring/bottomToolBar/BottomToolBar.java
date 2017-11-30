@@ -76,7 +76,7 @@ public class BottomToolBar extends VBox {
 	private void changeDisplay(int i) {
 		currentDisplay = i;
 		myScrollableArea.setContent(myGameAreas.get(i-1));
-		myCreated.SetDroppable(myGameAreas.get(i-1));
+		myCreated.setDroppable(myGameAreas.get(i-1));
 	}
 
 	private void deleteLevel(int lvNumber) {

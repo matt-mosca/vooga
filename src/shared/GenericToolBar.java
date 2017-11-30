@@ -94,7 +94,4 @@ public class GenericToolBar extends ScrollPane {
 	private BackgroundObject createNewBackground(int size, String imageString) {
 		return new BackgroundObject(size, myDisplay, imageString);
 	}
-	
-
-	
 }

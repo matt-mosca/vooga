@@ -100,7 +100,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public boolean isLost() {
 		return isLost;
 	}
-
+	
 	@Override
 	public boolean isWon() {
 		return isWon;
@@ -122,7 +122,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		throw new IllegalArgumentException();
 	}
 
-	boolean isLevelCleared() {
+	public boolean isLevelCleared() {
 		return levelCleared;
 	}
 
@@ -217,6 +217,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private boolean enemyReachedTarget() {
 		return elementManager.enemyReachedTarget();
+	}
+
+	@Override
+	public void saveGameState(String saveName) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/* For testing of reflection and streams
