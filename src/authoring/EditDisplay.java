@@ -208,6 +208,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override
 	public void save(File saveName) {
+		controller.setGameName(saveName.getName().replace(".voog", ""));
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}
