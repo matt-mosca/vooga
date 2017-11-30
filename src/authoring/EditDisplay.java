@@ -138,11 +138,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myGameChooser);
 		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
-//		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
-//		rootAdd(myBottomToolBar);
+		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
+		rootAdd(myBottomToolBar);
 	}
 	
-	public void listItemClicked(InteractiveObject clickable) {
+	public void listItemClicked(ImageView clickable) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
@@ -240,6 +240,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myRightToolBar.imageSelected(imageView);
 		
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
+		controller.addElementToInventory(imageView.getName());
 	}
 
 	@Override
@@ -247,5 +248,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		basePropertyMap.put(baseProperty, value);
 //		myRightToolBar.addToMap(baseProperty, value);
 		
+	}
+	
+	public void setGameArea(GameArea game) {
+		this.myGameArea = game;
 	}
 }

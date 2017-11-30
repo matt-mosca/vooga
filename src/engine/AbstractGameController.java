@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import sprites.Sprite;
 import sprites.SpriteFactory;
+import util.GameConditionsReader;
 import util.SerializationUtils;
 import util.SpriteTemplateIoHandler;
 
@@ -38,6 +39,7 @@ public abstract class AbstractGameController {
 
 	private String gameName;
 	private IOController ioController;
+	private GameConditionsReader gameConditionsReader;
 
 	// @Ben : Use list instead of map to facilitate 'fall-through' behavior for
 	// deletion? i.e. when level 3 is deleted, level 4 should become level 3, level
@@ -64,6 +66,7 @@ public abstract class AbstractGameController {
 	public AbstractGameController() {
 		SerializationUtils serializationUtils = new SerializationUtils();
 		ioController = new IOController(serializationUtils);
+		gameConditionsReader = new GameConditionsReader();
 		initialize();
 		gameName = DEFAULT_GAME_NAME;
 		spriteIdCounter = new AtomicInteger();
@@ -210,6 +213,10 @@ public abstract class AbstractGameController {
 	protected IOController getIoController() {
 		return ioController;
 	}
+	
+	protected GameConditionsReader getGameConditionsReader() {
+		return gameConditionsReader;
+	}
 
 
 	protected SpriteTemplateIoHandler getSpriteTemplateIoHandler() {
@@ -239,7 +246,7 @@ public abstract class AbstractGameController {
 	protected List<Bank> getLevelBanks() {
 		return levelBanks;
 	}
-
+	
 	protected int getCurrentLevel() {
 		return currentLevel;
 	}
@@ -276,7 +283,7 @@ public abstract class AbstractGameController {
 		}
 		throw new IllegalArgumentException();
 	}
-
+	
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
 
 	private Collection<Sprite> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
@@ -337,14 +344,14 @@ public abstract class AbstractGameController {
 		initializeLevel();
 		setLevel(1);
 	}
-
+	
 	private void initializeLevel() {
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
 		getLevelInventories().add(new HashSet<>());
-		getLevelConditions().add(new HashMap<>());
 		getLevelDescriptions().add(new String());
 		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
+		initializeLevelConditions();
 	}
 
 	private int getNearestSpriteIdToPoint(Point2D coordinates) {
@@ -370,6 +377,20 @@ public abstract class AbstractGameController {
 		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
 		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
 		return auxiliarySpriteConstructionObjects;
+	}
+	
+	private void initializeLevelConditions() {
+		getLevelConditions().add(new HashMap<>());
+		getLevelConditions().get(getCurrentLevel()).put(VICTORY, getDefaultVictoryCondition());
+		getLevelConditions().get(getCurrentLevel()).put(DEFEAT, getDefaultDefeatCondition());
+	}
+	
+	private String getDefaultVictoryCondition() {
+		return new ArrayList<>(gameConditionsReader.getPossibleVictoryConditions()).get(0);
+	}
+	
+	private String getDefaultDefeatCondition() {
+		return new ArrayList<>(gameConditionsReader.getPossibleDefeatConditions()).get(0);
 	}
 
 }
