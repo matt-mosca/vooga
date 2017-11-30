@@ -26,6 +26,7 @@ public abstract class NewInventoryTab extends ScrollPane {
 		this.setContent(list);
 		list.setOnMouseClicked(e->properties.clicked(
         		list.getSelectionModel().getSelectedItem()));
+		
 	}
 	
 	public void attach(Tab newTroopTab) {
