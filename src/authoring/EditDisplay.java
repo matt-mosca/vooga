@@ -127,7 +127,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
-		this.SetDroppable(myGameArea);
+		this.setDroppable(myGameArea);
 		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
 		myColorChanger = new ColorChanger(this);
@@ -193,7 +193,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void changeTheme(String theme) {
-		rootStyle(myThemeChanger.getThemePath(theme));
+		rootStyleAndClear(myThemeChanger.getThemePath(theme));
 //		myRightToolBar.getStyleClass().add("borders");
 //		myLeftToolBar.getStyleClass().add("borders");
 	}

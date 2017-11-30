@@ -27,6 +27,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final int PREFSIZE = 80;
 	private static final int MAINWIDTH = 1100;
 	private static final int MAINHEIGHT = 750;
+	private static final int PLAYWIDTH = 1000;
+	private static final int PLAYHEIGHT = 700;
 	private static final String TITLEFONT = "Verdana";
 	private static final String TITLE = "Welcome to VOOGA";
 	private static final double STANDARD_PATH_WIDTH = Main.WIDTH / 15;
@@ -170,10 +172,10 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	@Override
 	public void playExisting() {
-		PlayDisplay myScene = new PlayDisplay(MAINWIDTH, MAINHEIGHT);
+		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT);
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		stage.setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
-		stage.setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
+		stage.setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
+		stage.setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
 		stage.setScene(myScene.getScene());
 		
 	}
