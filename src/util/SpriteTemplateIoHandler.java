@@ -28,7 +28,13 @@ public class SpriteTemplateIoHandler {
      * @param spriteTemplates the sprite templates defined in the game
      */
     public void exportSpriteTemplates(String gameName, Map<String, Map<String, String>> spriteTemplates) {
-        String directoryPath = TEMPLATE_FILE_OUTPUT_PATH + gameName + File.separator;
+        String directoryPath;
+        if (gameName.contains(DOT)) {
+            directoryPath = TEMPLATE_FILE_OUTPUT_PATH + gameName.substring(0, gameName.indexOf(DOT)) + File
+                    .separator;
+        } else {
+            directoryPath =  TEMPLATE_FILE_OUTPUT_PATH + gameName + File.separator;
+        }
         createDirectoryIfNonExistent(directoryPath);
         for (String templateName : spriteTemplates.keySet()) {
             Properties templateProperties = new Properties();
@@ -48,8 +54,13 @@ public class SpriteTemplateIoHandler {
      */
     public Map<String, Map<String, String>> loadSpriteTemplates(String gameName) throws IOException {
         Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
-        String directoryPath = TEMPLATE_FILE_OUTPUT_PATH + gameName.substring(0, gameName.indexOf(DOT)) + File.separator;
-        File propertiesDirectory = new File(directoryPath);
+        String directoryPath;
+        if (gameName.contains(DOT)) {
+            directoryPath = TEMPLATE_FILE_OUTPUT_PATH + gameName.substring(0, gameName.indexOf(DOT)) + File
+                    .separator;
+        } else {
+            directoryPath =  TEMPLATE_FILE_OUTPUT_PATH + gameName + File.separator;
+        }        File propertiesDirectory = new File(directoryPath);
         File[] spritePropertiesFiles = propertiesDirectory.listFiles();
         if (spritePropertiesFiles != null) {
             for (File spritePropertiesFile : spritePropertiesFiles) {
