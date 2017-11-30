@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import authoring.tabs.SimpleTab;
 import factory.TabFactory;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import splashScreen.ScreenDisplay;
 
@@ -28,6 +29,10 @@ public class InventoryToolBar extends VBox{
 		towerTab = new SimpleTab(myDisplay, new ArrayList<>());
 		tabPane.getTabs().add(tabFactory.buildTab("Towers", "TowerImage", towerTab, tabPane));
 		makeTabsUnclosable();
+	}
+	
+	protected void addToToolbar(ImageView imageView) {
+		towerTab.addItem(imageView);
 	}
 	
 	private void makeTabsUnclosable() {

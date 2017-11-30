@@ -100,7 +100,7 @@ public abstract class AbstractGameController {
 	 *             if the save name does not refer to an existing file
 	 */
 	public void loadOriginalGameState(String saveName, int level) throws FileNotFoundException {
-		for (int levelToLoad = currentLevel; levelToLoad <= level; level++) {
+		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;

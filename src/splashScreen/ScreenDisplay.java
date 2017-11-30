@@ -10,8 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Paint;
-import sprites.InteractiveObject;
 
 public abstract class ScreenDisplay {
 
@@ -89,5 +89,5 @@ public abstract class ScreenDisplay {
 	
 	public abstract void save(File saveFile);
 	
-	public abstract void listItemClicked(InteractiveObject object);
+	public abstract void listItemClicked(ImageView object);
 }

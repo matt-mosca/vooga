@@ -20,7 +20,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
 import player.PlayDisplay;
-import sprites.InteractiveObject;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
@@ -179,7 +178,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	@Override
-	public void listItemClicked(InteractiveObject clickable) {
+	public void listItemClicked(ImageView clickable) {
 		// TODO Auto-generated method stub
 		
 	}

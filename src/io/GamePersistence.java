@@ -25,7 +25,6 @@ public class GamePersistence {
 	
 	public void saveGameState(File saveName, String serializedRepresentation) {
 		System.out.println(serializedRepresentation);
-		System.out.println(saveName.getName());
 		File gameStateFile = saveName;
 		Writer gameStateWriter;
 		try {
