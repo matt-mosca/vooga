@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /*
@@ -28,20 +29,20 @@ public class LevelDisplay {
 	private ResourceDisplay resources;
 	private ResourceBundle rb;
 	private Scene myScene;
-	private GridPane centerPane;
+	private VBox centerPane;
 	private BorderPane myRoot;
 	
 	
 	
 	public LevelDisplay(int n, LevelTab lv, AuthoringController controller) {
 		myRoot = new BorderPane();
-		centerPane = new GridPane();
+		centerPane = new VBox();
 		resources = new ResourceDisplay(controller);
 		myRoot.setRight(resources.getRoot());
 		myRoot.setCenter(centerPane);
 		myScene = new Scene(myRoot); 
-		myRoot.setPrefWidth(900);
-		myRoot.setPrefHeight(800);
+		myRoot.setPrefWidth(500);
+		myRoot.setPrefHeight(200);
 		myNumber = n;
 		myController = controller;
 		myStage = new Stage();
@@ -74,7 +75,7 @@ public class LevelDisplay {
 	}
 	
 	
-	protected GridPane getLevelPane() {
+	protected VBox getLevelPane() {
 		return centerPane;
 	}
 	

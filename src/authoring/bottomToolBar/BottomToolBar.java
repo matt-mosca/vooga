@@ -84,7 +84,7 @@ public class BottomToolBar extends VBox {
 		 * this deletes the level in the backend and then proceeds to decrement the levelNumbers
 		 * of all of the consecutive levels
 		 */
-		//authoringController.deleteLevel();
+		myController.deleteLevel(lvNumber);
 		myLevels.remove(lvNumber-1);
 		myGameAreas.remove(lvNumber-1);
 		for (int i = lvNumber-1; i<myLevels.size(); i++) {

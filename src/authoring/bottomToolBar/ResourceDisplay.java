@@ -30,8 +30,10 @@ public class ResourceDisplay extends VBox{
 
 	private void changeResourceVal() {
 		this.getChildren().clear();
-		TextField name = new TextField("Name");
-		TextField value = new TextField("Value");
+		TextField name = new TextField();
+		name.setPromptText("Name");
+		TextField value = new TextField();
+		value.setPromptText("Value");
 		Button enter = new Button("add!");
 		enter.setOnAction(e->{
 			if (myController.getResourceEndowments().containsKey(name.getText())) {
