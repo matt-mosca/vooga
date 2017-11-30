@@ -138,7 +138,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	public void clicked(SpriteImage imageView) {	
 		myPropertiesBox = new PropertiesBox(created, imageView);
 		if (imageView instanceof TowerImage) newPaneWithProjectileSlot((TowerImage) imageView);
-		if (imageView instanceof TroopImage) newPane(imageView);
+		if (imageView instanceof TroopImage || imageView instanceof ProjectileImage) newPane(imageView);
 	}
 	
 	private void newPaneWithProjectileSlot(TowerImage imageView) {

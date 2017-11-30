@@ -195,6 +195,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		tower1.setLayoutX(xLocation);
 		tower1.setLayoutY(yLocation);
 		myController.update();
+//		myPlayArea.getChildren().removeAll(myPlayArea.getChildren());
+		initializeSprites();
 	}
 
 	private void createGameArea(int sideLength) {
