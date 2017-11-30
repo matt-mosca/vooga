@@ -232,7 +232,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void listItemClicked(ImageView image) {
 		StaticObject placeable = new StaticObject(1, this, (String) image.getUserData());
-		placeable.setElementName(placeable.getId());
+		placeable.setElementName(image.getId());
 		myPlayArea.getChildren().add(placeable);
 	}
 
