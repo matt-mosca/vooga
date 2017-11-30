@@ -70,8 +70,9 @@ public class ElementManager {
 				String elementTemplateName = element.fire();
 				List<Sprite> exclusionOfSelf = new ArrayList<>(gameElements);
 				exclusionOfSelf.remove(element);
-				
-				Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(elementTemplateName, new Point2D(element.getX(), element.getY()), 
+				int elementId = element.getPlayerId();
+				Map<String, Object> auxiliaryObjects = spriteQueryHandler
+						.getAuxiliarySpriteConstructionObjectMap(elementId, new Point2D(element.getX(), element.getY()),
 						exclusionOfSelf);
 				Sprite projectileSprite = spriteFactory.generateSprite(elementTemplateName,
 						new Point2D(element.getX(), element.getY()), auxiliaryObjects);
