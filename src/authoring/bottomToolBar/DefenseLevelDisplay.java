@@ -23,32 +23,34 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class DefenseLevelDisplay extends LevelDisplay{
-	
+public class DefenseLevelDisplay extends LevelDisplay {
+
 	private Button newWave;
 	private ResourceBundle myResources;
 	private Map<String, List<String>> defaults;
 	private List<ComboBox> myDropDowns;
-	
+	private static String DEFAULT_IMAGE_URL = "";
+
 	public DefenseLevelDisplay(int n, LevelTab lv, AuthoringController myController) {
 		super(n, lv, myController);
 		defaults = myController.getElementBaseConfigurationOptions();
 		myDropDowns = new ArrayList<ComboBox>();
-		for(String s:myController.getElementBaseConfigurationOptions().keySet()) {
+		for (String s : myController.getElementBaseConfigurationOptions().keySet()) {
 			System.out.println(s);
 			System.out.println(myController.getElementBaseConfigurationOptions().get(s).toString());
 		}
-		//this would have to get refactored out depending on different languages and all that.
-		//TODO
-		myResources = ResourceBundle.getBundle("authoring/resources/DefenseLevel"); //ideally this path would be to a valid resource bundle.
+		// this would have to get refactored out depending on different languages and
+		// all that.
+		// TODO
+		myResources = ResourceBundle.getBundle("authoring/resources/DefenseLevel"); // ideally this path would be to a
+																					// valid resource bundle.
 		createScene();
-		
-		
-		}
+
+	}
 
 	private void createScene() {
 		newWave = new Button("Create new wave.");
-		newWave.setOnAction(e->createNewWave());
+		newWave.setOnAction(e -> createNewWave());
 		newWave.setLayoutX(400);
 		super.getLevelPane().getChildren().add(newWave);
 	}
@@ -64,33 +66,49 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		TextField number = new TextField();
 		number.setPromptText("How many times do you want this wave to spawn?");
 		Button addWave = new Button("Add this wave!");
-		for(String s: defaults.keySet()) {
-			ComboBox x = new ComboBox();
-			x.setPromptText(s);
-			x.getItems().addAll(defaults.get(s));
-			myDropDowns.add(x);
-			super.getLevelPane().getChildren().add(x);
-		}
-		
 		/*
-		 * There are some other properties over here, I'm sure, that I need to care about, but I'm not sure what 
-		 * they are.
+		 * for(String s: defaults.keySet()) { ComboBox x = new ComboBox();
+		 * x.setPromptText(s); x.getItems().addAll(defaults.get(s)); myDropDowns.add(x);
+		 * super.getLevelPane().getChildren().add(x); }
 		 */
-		addWave.setOnAction(e->{
+		/*
+		 * There are some other properties over here, I'm sure, that I need to care
+		 * about, but I'm not sure what they are.
+		 */
+		addWave.setOnAction(e -> {
 			Map<String, String> fun = new HashMap<>();
 			fun.put("frequency", frequency.getText());
 			fun.put("number", number.getText());
-			for (int i=0; i<defaults.size(); i++) {
-				fun.put((String) defaults.keySet().toArray()[i], (String) myDropDowns.get(i).getValue());
-			}
+			/*
+			 * for (int i=0; i<defaults.size(); i++) { fun.put((String)
+			 * defaults.keySet().toArray()[i], (String) defaults.entrySet().toArray()[i]); }
+			 */
+			fun.put("Collision effects", "Invulnerable to collision damage");
+			fun.put("Collided-with effects", "Do nothing to colliding objects");
+			fun.put("Move an object", "Object will stay at desired location");
+			fun.put("Firing Behavior", "Shoot periodically");
+			fun.put("imageUrl", DEFAULT_IMAGE_URL);
+			fun.put("imageWidth", "20");
+			fun.put("imageHeight", "20");
+			fun.put("Numerical \"team\" association", "0");
+			fun.put("Health points", "50");
+			fun.put("Damage dealt to colliding objects", "20");
+			fun.put("Speed of movement", "5");
+			fun.put("initialAngle", "0");
+			fun.put("radius", "10");
+			fun.put("centerY", "0");
+			fun.put("centerX", "0");
+			fun.put("Target y-coordinate", "0");
+			fun.put("Target x-coordinate", "0");
+			fun.put("Projectile Type Name", "No projectile selected");
+			fun.put("Attack period", "10");
 			super.getAuthor().setWaveProperties(fun, Arrays.asList(order.getText().split(",")),
-					new Point2D(Double.parseDouble(start.getText().split(",")[0]), Double.parseDouble(start.getText().split(",")[1])));
-			
+					new Point2D(Double.parseDouble(start.getText().split(",")[0]),
+							Double.parseDouble(start.getText().split(",")[1])));
+
 		});
 		super.getLevelPane().getChildren().addAll(order, start, frequency, number, addWave);
-		
-		
-		
+
 	}
-	
+
 }
