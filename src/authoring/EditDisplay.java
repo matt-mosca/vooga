@@ -142,7 +142,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myBottomToolBar);
 	}
 	
-	public void listItemClicked(InteractiveObject clickable) {
+	public void listItemClicked(ImageView clickable) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
@@ -240,6 +240,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myRightToolBar.imageSelected(imageView);
 		
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
+		controller.addElementToInventory(imageView.getName());
 	}
 
 	@Override
