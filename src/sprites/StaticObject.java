@@ -9,14 +9,14 @@ public class StaticObject extends InteractiveObject{
 	private int objectSize;
 	private int realSize;
 	
-	public StaticObject(int size, ScreenDisplay display, String imageString) {
-		super(display, imageString);
+	public StaticObject(int size, ScreenDisplay display, String name) {
+		super(display, name);
 		setSize(size);
 		Image image;
 		try {
-			image = new Image(getClass().getClassLoader().getResourceAsStream(imageString));
+			image = new Image(getClass().getClassLoader().getResourceAsStream(name));
 		}catch(NullPointerException e) {
-			image = new Image(imageString);
+			image = new Image(name);
 		}
 		this.setImage(image);
 		objectSize = size;

@@ -97,7 +97,7 @@ public abstract class AbstractGameController {
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
 		System.out.println("SPRITES: " + spriteFactory.getAllDefinedTemplateProperties());
-		spriteTemplateIoHandler.exportSpriteTemplates(gameName, spriteFactory.getAllDefinedTemplateProperties());
+		spriteTemplateIoHandler.exportSpriteTemplates(saveName.getName(), spriteFactory.getAllDefinedTemplateProperties());
 		try {
 			System.out.println("LOADED: " + spriteTemplateIoHandler.loadSpriteTemplates(gameName));
 		} catch (IOException e) {
