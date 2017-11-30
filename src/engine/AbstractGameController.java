@@ -299,6 +299,9 @@ public abstract class AbstractGameController {
 			throws FileNotFoundException {
 		assertValidLevel(level);
 		List<Sprite> loadedSprites = ioController.loadGameStateElements(savedGameName, level, originalGame);
+		for (Sprite sprite : loadedSprites) {
+			spriteIdMap.put(spriteIdCounter.getAndIncrement(), sprite);
+		}
 		addOrSetLevelData(levelSpritesCache, loadedSprites, level);
 		return loadedSprites;
 	}

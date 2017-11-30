@@ -85,6 +85,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		createTestImages();
 //		createTestSprites();
 //		createTestGameArea();
+
 		
 		
 		
@@ -161,7 +162,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	//TODO Make sure this works once saved files are all good
 	private void initializeSprites() {
-		for(Integer id:myController.getLevelSprites(level)) {
+		for(Integer id : myController.getLevelSprites(level)) {
 			ImageView imageView = myController.getRepresentationFromSpriteId(id);
 			myPlayArea.getChildren().add(imageView);
 		}
@@ -194,6 +195,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		tower1.setLayoutX(xLocation);
 		tower1.setLayoutY(yLocation);
 		myController.update();
+//		myPlayArea.getChildren().removeAll(myPlayArea.getChildren());
+		initializeSprites();
 	}
 
 	private void createGameArea(int sideLength) {

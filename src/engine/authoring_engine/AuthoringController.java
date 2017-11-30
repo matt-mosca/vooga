@@ -147,6 +147,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
 		getLevelBanks().get(getCurrentLevel()).setResourceEndowments(resourceEndowments);
 	}
+	
+	@Override
+	public void setResourceEndowment(String resourceName, double newResourceEndowment) {
+		getLevelBanks().get(getCurrentLevel()).setResourceEndowment(resourceName, newResourceEndowment);
+	}
 
 	@Override
 	public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
