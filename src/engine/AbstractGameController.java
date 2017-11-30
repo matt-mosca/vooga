@@ -8,9 +8,11 @@ import sprites.Sprite;
 import sprites.SpriteFactory;
 import util.GameConditionsReader;
 import util.SerializationUtils;
+import util.SpriteTemplateIoHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,6 +34,8 @@ public abstract class AbstractGameController {
 	public static final int DEFAULT_MAX_LEVELS = 1;
 	public static final String VICTORY = "victory";
 	public static final String DEFEAT = "defeat";
+
+	private SpriteTemplateIoHandler spriteTemplateIoHandler;
 
 	private String gameName;
 	private IOController ioController;
@@ -68,6 +72,7 @@ public abstract class AbstractGameController {
 		spriteIdCounter = new AtomicInteger();
 		spriteIdMap = new HashMap<>();
 		spriteFactory = new SpriteFactory();
+		spriteTemplateIoHandler = new SpriteTemplateIoHandler();
 	}
 
 	/**
@@ -89,6 +94,7 @@ public abstract class AbstractGameController {
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
+		spriteTemplateIoHandler.exportSpriteTemplates(gameName, spriteFactory.getAllDefinedTemplateProperties());
 	}
 
 	/**
@@ -99,14 +105,15 @@ public abstract class AbstractGameController {
 	 *            the name used to save the game authoring data
 	 * @param level
 	 *            the level of the game which should be loaded
-	 * @throws FileNotFoundException
-	 *             if the save name does not refer to an existing file
+	 * @throws IOException
+	 *             if the save name does not refer to existing files
 	 */
-	public void loadOriginalGameState(String saveName, int level) throws FileNotFoundException {
-		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
+	public void loadOriginalGameState(String saveName, int level) throws IOException {
+		for (int levelToLoad = currentLevel; levelToLoad <= level; level++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;
+		spriteFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
 	}
 
 	public String getGameName() {
@@ -209,6 +216,11 @@ public abstract class AbstractGameController {
 	
 	protected GameConditionsReader getGameConditionsReader() {
 		return gameConditionsReader;
+	}
+
+
+	protected SpriteTemplateIoHandler getSpriteTemplateIoHandler() {
+		return spriteTemplateIoHandler;
 	}
 
 	protected List<Map<String, Double>> getLevelStatuses() {
