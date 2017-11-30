@@ -85,6 +85,10 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
     protected double getYVelocity() {
         return yVelocity;
     }
+    
+    protected void setVelocityMagnitude(double veloMagnitude) {
+    	this.velocityMagnitude = veloMagnitude;
+    }
 
     protected void setXVelocity(double newXVelocity) {
         xVelocity = newXVelocity;
