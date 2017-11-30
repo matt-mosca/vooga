@@ -109,7 +109,7 @@ public abstract class AbstractGameController {
 	 *             if the save name does not refer to existing files
 	 */
 	public void loadOriginalGameState(String saveName, int level) throws IOException {
-		for (int levelToLoad = currentLevel; levelToLoad <= level; level++) {
+		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;

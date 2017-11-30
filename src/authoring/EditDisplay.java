@@ -238,7 +238,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		imageView.addBasePropertyMap(basePropertyMap);
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		myRightToolBar.imageSelected(imageView);
-		
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
 		controller.addElementToInventory(imageView.getName());
 	}
