@@ -168,6 +168,7 @@ public class SpriteOptionsGetter {
             auxiliaryParameters.putAll(spriteMemberParametersMap.get(subclassChoiceName));
         }
         auxiliaryParameters.putAll(spriteMemberParametersMap.getOrDefault(SPRITE_BASE_PARAMETER_NAME, new HashMap<>()));
+        System.out.println("\n\n" + auxiliaryParameters + "\n\n");
         return auxiliaryParameters;
     }
 
