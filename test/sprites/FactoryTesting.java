@@ -57,9 +57,9 @@ public class FactoryTesting {
         System.out.println(spriteFactory.getElementBaseConfigurationOptions());
         spriteFactory.getElementBaseConfigurationOptions();
         Map<String, String> choices = new HashMap<>();
-        choices.put("Move an object", "Object will stay at desired location");
+        choices.put("Move an object", "Track an object as it moves");
         choices.put("Collision effects", "Invulnerable to collision damage");
-        choices.put("Collided-with effects", "Do nothing to colliding objects");
+        choices.put("Collided-with effects", "Deal damage to colliding objects");
         choices.put("Firing Behavior", "Do not fire projectiles");
         Map<String, Class> auxProperties = spriteFactory.getAuxiliaryElementProperties(choices);
         System.out.println(auxProperties);
