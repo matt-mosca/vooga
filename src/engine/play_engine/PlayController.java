@@ -113,6 +113,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		assertValidLevel(level);
 		Collection<Sprite> levelSprites = elementManager.getCurrentElements();
 		System.out.println(levelSprites);
+		System.out.println("getLevelSprites");
 		return levelSprites.stream().mapToInt(sprite -> getIdFromSprite(sprite)).boxed().collect(Collectors.toSet());
 	}
 
