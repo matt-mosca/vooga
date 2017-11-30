@@ -36,16 +36,16 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	
 	private HBox titleBox = new HBox();
 	private Text VoogaTitle;
-	private Stage stage;
+	
 	private NewGameButton myNewGameButton;
 	private EditGameButton myEditGameButton;
 	private PlayExistingGameButton myLoadGameButton;
 
 
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
-		super(width, height, background);
-		stage = currentStage;
-		stage.setResizable(false);
+		super(width, height, background, currentStage);
+		
+		getStage().setResizable(false);
 		basicSetup();
 		myNewGameButton = new NewGameButton(this);
 		rootAdd(myNewGameButton);
@@ -163,20 +163,20 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	
 	@Override
 	public void switchScreen() {
-		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT);
+		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage());
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		stage.setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
-		stage.setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
-		stage.setScene(myScene.getScene());
+		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
+		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
+		getStage().setScene(myScene.getScene());
 	}
 
 	@Override
 	public void playExisting() {
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT);
+		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage());
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		stage.setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
-		stage.setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
-		stage.setScene(myScene.getScene());
+		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
+		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
+		getStage().setScene(myScene.getScene());
 		
 	}
 

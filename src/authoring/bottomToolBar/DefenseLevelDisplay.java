@@ -11,6 +11,7 @@ import engine.authoring_engine.AuthoringController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,8 +24,6 @@ import javafx.stage.Stage;
 
 public class DefenseLevelDisplay extends LevelDisplay{
 	
-//	private Map<String, TextBox> myTextBoxes;
-	private List<TextBox> myTextBoxes;
 	private Button newWave;
 	private ResourceBundle myResources;
 	
@@ -33,8 +32,6 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		//this would have to get refactored out depending on different languages and all that.
 		//TODO
 		myResources = ResourceBundle.getBundle("authoring/resources/DefenseLevel"); //ideally this path would be to a valid resource bundle.
-//		myTextBoxes = new HashMap<String, TextBox>();
-		myTextBoxes = new ArrayList<>();
 		createScene();
 		
 		}
@@ -42,9 +39,8 @@ public class DefenseLevelDisplay extends LevelDisplay{
 	private void createScene() {
 		newWave = new Button("Create new wave.");
 		newWave.setOnAction(e->createNewWave());
+		newWave.setLayoutX(400);
 		super.getLevelPane().getChildren().add(newWave);
-//		createTextBoxes();
-//		placeTextAndTextFields();
 	}
 
 	private void createNewWave() {
@@ -75,35 +71,5 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		
 		
 	}
-
-//	private void createTextBoxes() {
-//		myTextBoxes.add(new WaveTextBox(myResources.getString("waves")));
-//	    myTextBoxes.add(new WaveComponentsTextBox(myResources.getString("order")));
-//	    myTextBoxes.add(new GameDurationTextBox(myResources.getString("duration")));
-//		for (TextBox t : myTextBoxes) {
-//			t.getTextField().setOnKeyPressed(new EventHandler<KeyEvent>() {
-//
-//			@Override
-//			public void handle(KeyEvent e) {
-//				if(e.getCode()==KeyCode.ENTER) {
-//					t.recordInfo();
-//				}
-//			}
-//		});
-//		}
-//		
-//	}
-
 	
-//	private void placeTextAndTextFields() {
-//		int height = 30;
-//		for (TextBox t: myTextBoxes) {
-//			super.getLevelPane().add(new Label(t.getString()), 10, height);
-//			super.getLevelPane().add(t.getTextField(), 50, height);
-//			height+=10;
-//		}
-//	}
-	
-	
-
 }

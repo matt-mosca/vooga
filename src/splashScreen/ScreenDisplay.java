@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
 import sprites.InteractiveObject;
 
 public abstract class ScreenDisplay {
@@ -22,14 +23,17 @@ public abstract class ScreenDisplay {
 	private KeyFrame frame;
 	private Timeline animation = new Timeline();
 	private Scene myScene;
+	private Stage stage;
 	private Group root = new Group();
 
 	/**
 	 * Constructor: Screen Display class
+	 * @param currentStage 
 	 */
 
-	public ScreenDisplay(int width, int height, Paint background) {
+	public ScreenDisplay(int width, int height, Paint background, Stage currentStage) {
 		init();
+		stage = currentStage;
 		myScene = new Scene(root, width, height, background);
 
 	}
@@ -74,6 +78,11 @@ public abstract class ScreenDisplay {
 	protected void rootStyle(String sheet) {
 		root.getStylesheets().add(sheet);
 	}
+	
+	protected Stage getStage() {
+		return stage;
+	}
+
 	
 	protected void centerScene() {
 
