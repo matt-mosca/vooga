@@ -82,7 +82,7 @@ public class SpriteFactory {
 	 *         template
 	 */
 	public Sprite generateSprite(String spriteTemplateName, Point2D startCoordinates, Map<String, ?> auxiliaryObjects) {
-		Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
+	    Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
 		Sprite sprite = generateSprite(properties, auxiliaryObjects);
 		sprite.setX(startCoordinates.getX());
 		sprite.setY(startCoordinates.getY());
@@ -142,10 +142,8 @@ public class SpriteFactory {
 				Parameter[] parameters = parameterClassConstructors[0].getParameters();
 				Object[] constructorParameters = new Object[parameters.length];
 				for (int i = 0; i < parameters.length; i++) {
-					System.out.println(parameters[i]);
 					ParameterName parameterNameAnnotation = parameters[i].getAnnotation(ParameterName.class);
 					if (parameterNameAnnotation != null) {
-						System.out.println(parameterNameAnnotation.value());
 						constructorParameters[i] = setConstructorParameter(
 								properties.get(parameterNameAnnotation.value()));
 					} else {
@@ -180,7 +178,6 @@ public class SpriteFactory {
 
 	// TODO - make more elegant if possible
 	private Object setConstructorParameter(String propertyValueAsString) {
-		System.out.println(propertyValueAsString);
 		try {
 			return Integer.parseInt(propertyValueAsString);
 		} catch (NumberFormatException nonIntegerProperty) {

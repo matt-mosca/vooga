@@ -67,9 +67,6 @@ public class LeftToolBar extends VBox {
 		addBackgroundObjectToTab(1, "stone_path1.png");
 		addBackgroundObjectToTab(1, "water_medium.png");
 		
-		System.out.println("TEMPLATES");
-		System.out.println(myController.getAllDefinedTemplateProperties());
-		
 		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));
 		
