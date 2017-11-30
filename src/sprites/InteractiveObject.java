@@ -72,5 +72,9 @@ public abstract class InteractiveObject extends ImageView implements ClickableIn
 		return elementName;
 	}
 	
+	public void setElementName(String name) {
+		elementName = name;
+	}
+	
 	public abstract int getSize();
 }
