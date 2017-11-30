@@ -32,9 +32,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class AbstractGameController {
 
-	public static final int DEFAULT_MAX_LEVELS = 1;
-	public static final String VICTORY = "victory";
-	public static final String DEFEAT = "defeat";
+	protected static final int DEFAULT_MAX_LEVELS = 1;
+	protected static final String VICTORY = "victory";
+	protected static final String DEFEAT = "defeat";
+
+	private final int ASSUMED_PLAYER_ID = -1;
 
 	private SpriteTemplateIoHandler spriteTemplateIoHandler;
 	private SpriteQueryHandler spriteQueryHandler;
@@ -142,7 +144,7 @@ public abstract class AbstractGameController {
 
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-				elementTemplateName, startCoordinates, levelSpritesCache.get(currentLevel));
+				ASSUMED_PLAYER_ID, startCoordinates, levelSpritesCache.get(currentLevel));
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
@@ -184,7 +186,7 @@ public abstract class AbstractGameController {
 
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs) {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-				elementTemplateName, startCoordinates, levelSpritesCache.get(currentLevel));
+				ASSUMED_PLAYER_ID, startCoordinates, levelSpritesCache.get(currentLevel));
 		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}

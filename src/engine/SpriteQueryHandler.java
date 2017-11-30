@@ -17,12 +17,12 @@ import sprites.Sprite;
  */
 public class SpriteQueryHandler {
 	
-	private Sprite getNearestSpriteToPoint(Point2D coordinates, List<Sprite> levelSprites) {
+	private Sprite getNearestSpriteToPoint(int toGenerateId, Point2D coordinates, List<Sprite> levelSprites) {
 		double nearestDistance = Double.MAX_VALUE;
 		Sprite nearestSprite = null;
 		for (Sprite sprite : levelSprites) {
 			double distanceToSprite = new Point2D(sprite.getX(), sprite.getY()).distance(coordinates);
-			if (distanceToSprite < nearestDistance) {
+			if (distanceToSprite < nearestDistance && sprite.getPlayerId() != toGenerateId) {
 				nearestDistance = distanceToSprite;
 				nearestSprite = sprite;
 			}
@@ -30,9 +30,9 @@ public class SpriteQueryHandler {
 		return nearestSprite;
 	}
 
-	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String elementTemplateName,
-			Point2D startCoordinates, List<Sprite> levelSprites) {
-		Sprite spriteToTrack = getNearestSpriteToPoint(startCoordinates, levelSprites);
+	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(int elementPlayerId, Point2D startCoordinates,
+																	   List<Sprite> levelSprites) {
+		Sprite spriteToTrack = getNearestSpriteToPoint(elementPlayerId, startCoordinates, levelSprites);
 		TrackingPoint targetLocation;
 		if (spriteToTrack != null)
 			targetLocation = spriteToTrack.getPositionForTracking();

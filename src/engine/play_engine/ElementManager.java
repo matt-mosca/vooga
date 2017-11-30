@@ -22,10 +22,13 @@ public class ElementManager {
 
 	private SpriteFactory spriteFactory;
 
+	private final String TEAM_NUMBER_KEY = "Numerical \"team\" association", ZERO = "0";
+
 	// Use list to enforce an ordering of elements to facilitate consideration of
 	// every element pair only once
 	private List<Sprite> gameElements;
 	private List<Sprite> newElements;
+	private List<Sprite> deadElements;
 	
 	private SpriteQueryHandler spriteQueryHandler;
 
@@ -38,7 +41,8 @@ public class ElementManager {
 	 */
 	public ElementManager(SpriteFactory spriteFactory) {
 		this.spriteFactory = spriteFactory;
-		newElements = new ArrayList<Sprite>();
+		newElements = new ArrayList<>();
+		deadElements = new ArrayList<>();
 		spriteQueryHandler = new SpriteQueryHandler();
 	}
 
@@ -68,8 +72,10 @@ public class ElementManager {
 				String elementTemplateName = element.fire();
 				List<Sprite> exclusionOfSelf = new ArrayList<>(gameElements);
 				exclusionOfSelf.remove(element);
-				
-				Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(elementTemplateName, new Point2D(element.getX(), element.getY()), 
+				Map<String, String> spriteToGenerateTemplate = spriteFactory.getTemplateProperties(elementTemplateName);
+				int toGenerateId = Integer.parseInt(spriteToGenerateTemplate.getOrDefault(TEAM_NUMBER_KEY, ZERO));
+				Map<String, Object> auxiliaryObjects = spriteQueryHandler
+						.getAuxiliarySpriteConstructionObjectMap(element.getPlayerId(), new Point2D(element.getX(), element.getY()),
 						exclusionOfSelf);
 				Sprite projectileSprite = spriteFactory.generateSprite(elementTemplateName,
 						new Point2D(element.getX(), element.getY()), auxiliaryObjects);
@@ -80,10 +86,23 @@ public class ElementManager {
 			}
 			processAllCollisionsForElement(elementIndex, element);
 		}
+		gameElements.forEach(element -> {
+			if (!element.isAlive() || (element.reachedTarget() && element.shouldRemoveUponCompletion())) {
+				deadElements.add(element);
+			}
+		});
+		gameElements.removeAll(deadElements);
 		gameElements.addAll(newElements);
-		gameElements.removeIf(
-				element -> !element.isAlive() || (element.reachedTarget() && element.shouldRemoveUponCompletion()));
 	}
+
+	List<Sprite> getDeadElements() {
+		return deadElements;
+	}
+
+	void clearDeadElements() {
+		deadElements.clear();
+	}
+
 
 	List<Sprite> getNewlyGeneratedElements() {
 		return newElements;
