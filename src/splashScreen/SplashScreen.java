@@ -151,13 +151,11 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	@Override
 	public void editButtonPressed() {
 		// TODO Auto-generated method stub
-		System.out.println("Edit");
 	}
 
 	@Override
 	public void newGameButtonPressed() {
 		// TODO Auto-generated method stub
-		System.out.println("New");
 	}
 	
 	@Override

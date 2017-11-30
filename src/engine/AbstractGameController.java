@@ -293,15 +293,8 @@ public abstract class AbstractGameController {
 		List<Sprite> loadedSprites = ioController.loadGameStateElements(savedGameName, level, originalGame);
 		for (Sprite loadedSprite : loadedSprites) {
 			spriteIdMap.put(spriteIdCounter.getAndIncrement(), loadedSprite);
-			
-			System.out.println("X: " + loadedSprite.getX());
-			System.out.println("Y: " + loadedSprite.getY());
-			
 			loadedSprite.setX(loadedSprite.getX());
 			loadedSprite.setY(loadedSprite.getY());
-			
-			System.out.println("ImageX: " + loadedSprite.getGraphicalRepresentation().getX());
-			System.out.print("ImageY: " + loadedSprite.getGraphicalRepresentation().getY());
 		}
 		addOrSetLevelData(levelSpritesCache, loadedSprites, level);
 		return loadedSprites;

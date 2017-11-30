@@ -18,7 +18,7 @@ import sprites.InteractiveObject;
 
 public abstract class ScreenDisplay {
 
-	public double FRAMES_PER_SECOND = 60;
+	public double FRAMES_PER_SECOND = 6;
 	public double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public double SECOND_DELAY = 100.0 / FRAMES_PER_SECOND;
 	private Droppable droppable;
