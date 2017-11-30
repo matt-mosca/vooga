@@ -77,13 +77,10 @@ public class BottomToolBar extends VBox {
 		currentDisplay = i;
 		myScrollableArea.setContent(myGameAreas.get(i-1));
 		myCreated.setDroppable(myGameAreas.get(i-1));
+		myController.createNewLevel(i);
 	}
 
 	private void deleteLevel(int lvNumber) {
-		/*TODO
-		 * this deletes the level in the backend and then proceeds to decrement the levelNumbers
-		 * of all of the consecutive levels
-		 */
 		myController.deleteLevel(lvNumber);
 		myLevels.remove(lvNumber-1);
 		myGameAreas.remove(lvNumber-1);
