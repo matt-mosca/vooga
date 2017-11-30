@@ -71,15 +71,12 @@ public class SpriteOptionsGetter {
         String parameterClassSimpleName = spriteParameter.getType().getSimpleName();
         InputStream parameterClassPossibilitiesStream = getClass().getClassLoader()
                 .getResourceAsStream(parameterClassSimpleName + PROPERTIES_EXTENSION);
-        System.out.println(parameterClassSimpleName);
         if (parameterClassPossibilitiesStream != null) {
             spriteParameterSubclassProperties.load(parameterClassPossibilitiesStream);
             String parameterClassFullName = spriteParameter.getType().getName();
             List<String> subclassOptions = new ArrayList<>();
             String referenceClassDescription = null;
             for (String subclassOptionName : spriteParameterSubclassProperties.stringPropertyNames()) {
-                System.out.println(parameterClassFullName + " " + subclassOptionName);
-                System.out.println("\n\n\n" + spriteParameterSubclassProperties + "\n\n\n");
                 String subclassDescription = spriteParameterSubclassProperties.getProperty(subclassOptionName);
                 classToDescription.put(subclassOptionName, subclassDescription);
                 descriptionToClass.put(subclassDescription, subclassOptionName);
@@ -166,7 +163,6 @@ public class SpriteOptionsGetter {
     }
 
     public Map<String, List<String>> getSpriteParameterSubclassOptions() {
-        System.out.println(spriteParameterSubclassOptions);
         return spriteParameterSubclassOptions;
     }
 
@@ -182,7 +178,6 @@ public class SpriteOptionsGetter {
             auxiliaryParameters.putAll(spriteMemberParametersMap.get(subclassChoiceName));
         }
         auxiliaryParameters.putAll(spriteMemberParametersMap.getOrDefault(SPRITE_BASE_PARAMETER_NAME, new HashMap<>()));
-        System.out.println("\n\n" + auxiliaryParameters + "\n\n");
         return auxiliaryParameters;
     }
 

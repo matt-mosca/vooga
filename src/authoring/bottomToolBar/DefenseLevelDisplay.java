@@ -36,8 +36,6 @@ public class DefenseLevelDisplay extends LevelDisplay {
 		defaults = myController.getElementBaseConfigurationOptions();
 		myDropDowns = new ArrayList<ComboBox>();
 		for (String s : myController.getElementBaseConfigurationOptions().keySet()) {
-			System.out.println(s);
-			System.out.println(myController.getElementBaseConfigurationOptions().get(s).toString());
 		}
 		// this would have to get refactored out depending on different languages and
 		// all that.

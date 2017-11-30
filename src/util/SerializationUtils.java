@@ -309,7 +309,6 @@ public class SerializationUtils {
 		// Exception in thread "main" java.lang.ClassCastException:
 		// com.google.gson.internal.LinkedTreeMap cannot be cast to sprites.Sprite
 		Type mapType = new TypeToken<Map<String, List<Sprite>>>(){}.getType();
-		System.out.println("HEY:"+serializedSprites);
 		Map<String, List<Sprite>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, mapType);
 		return spritesMap.get(SPRITES);
 	}
