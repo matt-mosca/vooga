@@ -32,6 +32,7 @@ public class BottomToolBar extends VBox {
 	
 	public BottomToolBar (EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
+		currentDisplay = 1;
 		myCreated = created;
 		myController = controller;
 		myGameAreas = new ArrayList<>();
@@ -43,8 +44,8 @@ public class BottomToolBar extends VBox {
 		newLevel =  new Button("New Level");
 		newLevel.setOnAction(e->addLevel());
 		myTabPane = new TabPane();
-		
 		addLevel();
+		created.setGameArea(myGameAreas.get(0));
 		editLevel = new Button("Edit Level");
 		//Need to put the button somewhere first.
 		editLevel.setOnAction(e->{
@@ -61,6 +62,8 @@ public class BottomToolBar extends VBox {
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), null, myTabPane);
 		LevelTab newLv = new LevelTab(myLevels.size()+1, myController);	
 		myGameAreas.add(new GameArea(myController));
+		myController.createNewLevel(myLevels.size()+1);
+		myController.createNewLevel(currentDisplay);
 		if (myLevels.size()==0) {
 			newTab.setClosable(false);
 		}else {
@@ -78,6 +81,7 @@ public class BottomToolBar extends VBox {
 		myScrollableArea.setContent(myGameAreas.get(i-1));
 		myCreated.setDroppable(myGameAreas.get(i-1));
 		myController.createNewLevel(i);
+		myCreated.setGameArea(myGameAreas.get(i-1));
 	}
 
 	private void deleteLevel(int lvNumber) {

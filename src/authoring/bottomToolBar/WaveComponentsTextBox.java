@@ -1,5 +1,6 @@
 package authoring.bottomToolBar;
 
+@Deprecated
 public class WaveComponentsTextBox extends TextBox {
 
 	public WaveComponentsTextBox(String s) {

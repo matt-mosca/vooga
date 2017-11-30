@@ -30,6 +30,7 @@ public class LevelDisplay {
 	private ResourceBundle rb;
 	private Scene myScene;
 	private VBox centerPane;
+	private GameEnder ender;
 	private BorderPane myRoot;
 	
 	
@@ -38,10 +39,12 @@ public class LevelDisplay {
 		myRoot = new BorderPane();
 		centerPane = new VBox();
 		resources = new ResourceDisplay(controller);
+		ender = new GameEnder(controller);
+		myRoot.setLeft(ender);
 		myRoot.setRight(resources.getRoot());
 		myRoot.setCenter(centerPane);
 		myScene = new Scene(myRoot); 
-		myRoot.setPrefWidth(500);
+		myRoot.setPrefWidth(700);
 		myRoot.setPrefHeight(200);
 		myNumber = n;
 		myController = controller;
