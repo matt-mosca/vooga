@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import authoring.AuthorInterface;
 import authoring.EditDisplay;
 import authoring.ObjectProperties;
@@ -170,7 +169,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
-
 	}
 	
 	private void newProjectilesWindow(TowerImage myTowerImage) {
