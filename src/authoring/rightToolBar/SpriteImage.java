@@ -39,9 +39,9 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("Collided-with effects", "Do nothing to colliding objects");
 		defaultValues.put("Firing Behavior", "Do not fire projectiles");
 		defaultValues.put("Numerical \"team\" association", "0");
-		defaultValues.put("imageWidth", "42.0");
+		defaultValues.put("imageWidth", "45.0");
 		defaultValues.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
-		defaultValues.put("imageHeight", "42.0");
+		defaultValues.put("imageHeight", "45.0");
 	}
 	
 	public void addImage(String imageName) {

@@ -95,9 +95,9 @@ public class LeftToolBar extends VBox {
 		defaultValues.put("Collided-with effects", "Do nothing to colliding objects");
 		defaultValues.put("Firing Behavior", "Do not fire projectiles");
 		defaultValues.put("Numerical \"team\" association", "0");
-		defaultValues.put("imageWidth", "42.0");
+		defaultValues.put("imageWidth", "45.0");
 		defaultValues.put("imageUrl", imageString);
-		defaultValues.put("imageHeight", "42.0");
+		defaultValues.put("imageHeight", "45.0");
 		myController.defineElement(imageString, defaultValues);
 	}
 	
