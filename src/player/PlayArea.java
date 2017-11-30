@@ -27,7 +27,6 @@ public class PlayArea extends Pane implements Droppable{
 	}
 	
 	protected void placeInGrid(InteractiveObject currObject) {
-		this.getChildren().add(currObject);
 //		myController.placeElement(currObject.getElementName(), new Point2D(currObject.getX(), currObject.getY()));
 	}
 
