@@ -122,10 +122,12 @@ public class Sprite {
 	}
 
 	public void setX(double newX) {
+		collisionHandler.getGraphicalRepresentation().setX(newX);
 		movementStrategy.setX(newX);
 	}
 
 	public void setY(double newY) {
+		collisionHandler.getGraphicalRepresentation().setY(newY);
 		movementStrategy.setY(newY);
 	}
 	
