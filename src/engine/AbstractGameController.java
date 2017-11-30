@@ -149,6 +149,7 @@ public abstract class AbstractGameController {
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		Map<String, Object> auxiliarySpriteConstructionObjects = getAuxiliarySpriteConstructionObjectMap(
 				elementTemplateName, startCoordinates);
+//		System.out.println(startCoordinates.getX());
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
