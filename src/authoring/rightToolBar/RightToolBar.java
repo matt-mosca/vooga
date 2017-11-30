@@ -203,6 +203,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
 		projectileSlot.getChildren().add(imageClone);
 		myTowerImage.addProjectileImage(imageClone);
+		myTowerImage.assignProjectile(imageClone.getName());
 		
 	}
 

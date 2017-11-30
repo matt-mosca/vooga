@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import splashScreen.ScreenDisplay;
 import sprites.InteractiveObject;
 
@@ -30,7 +31,6 @@ public abstract class SpriteImage extends InteractiveObject {
 		myPossibleProperties = new HashMap<String, String>();
 		addDefaultValues();
 		allProperties = new HashMap<String, String>();
-
 	}
 	
 	private void addDefaultValues() {
@@ -46,6 +46,8 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("centerX", "0");
 		defaultValues.put("Target y-coordinate", "0");
 		defaultValues.put("Target x-coordinate", "0");
+		defaultValues.put("Projectile Type Name", "No projectile selected");
+		defaultValues.put("Attack period", "10");
 	}
 	
 	public void addImage(String imageName) {
@@ -80,6 +82,10 @@ public abstract class SpriteImage extends InteractiveObject {
 	
 	public void update(String newProperty, String newValue) {
 		myPossibleProperties.put(newProperty, newValue);
+	}
+	
+	public void assignProjectile(String imageName) {
+		myPossibleProperties.put("Projectile Type Name", imageName);
 	}
 	
 	public Map<String, String> getMyProperties() {
