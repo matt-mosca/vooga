@@ -90,7 +90,6 @@ public class SpriteOptionsGetter {
                 loadTranslationsForSpriteParameter(subclassOptionName, parameterDescriptions);
                 spriteMemberParametersMap.put(subclassOptionName, parameterDescriptions);
             }
-            System.out.println(referenceClassDescription);
             spriteParameterSubclassOptions.put(referenceClassDescription != null ?
                     referenceClassDescription : parameterClassFullName, subclassOptions);
         } else {
@@ -171,7 +170,6 @@ public class SpriteOptionsGetter {
         Map<String, Class> auxiliaryParameters = new HashMap<>();
         for (String subclassChoiceDescription : subclassChoices.values()) {
             String subclassChoiceName = descriptionToClass.get(subclassChoiceDescription);
-            System.out.println(subclassChoiceDescription);
             if (subclassChoiceName == null || !spriteMemberParametersMap.containsKey(subclassChoiceName)) {
                 throw new IllegalArgumentException();
             }

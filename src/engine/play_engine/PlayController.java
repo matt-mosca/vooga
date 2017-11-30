@@ -73,7 +73,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public void update() {
 		if (inPlay) {
-			System.out.println("update");
 			/*
 			if (checkLevelClearanceCondition()) {
 				if (checkVictoryCondition()) {
@@ -189,13 +188,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private Method getMethodForVictoryCondition(String conditionFunctionIdentifier) throws IllegalArgumentException {
 		String methodName = conditionsReader.getMethodNameForVictoryCondition(conditionFunctionIdentifier);
-		System.out.println("Victory Method name: " + methodName);
 		return getMethodFromMethodName(methodName);
 	}
 
 	private Method getMethodForDefeatCondition(String conditionFunctionIdentifier) throws IllegalArgumentException {
 		String methodName = conditionsReader.getMethodNameForDefeatCondition(conditionFunctionIdentifier);
-		System.out.println("Defeat Method name: " + methodName);
 		return getMethodFromMethodName(methodName);
 	}
 
