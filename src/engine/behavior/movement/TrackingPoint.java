@@ -62,7 +62,7 @@ public class TrackingPoint {
      * Set the current y-coordinate of the point.
      */
     public void setY(double newYCoordinate) {
-        xCoordinateSerializable = newYCoordinate;
+        yCoordinateSerializable = newYCoordinate;
         reinitializeYPropertyIfNecessaryAndSet();
     }
 
