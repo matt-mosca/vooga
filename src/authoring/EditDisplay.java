@@ -2,6 +2,7 @@ package authoring;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
+import authoring.rightToolBar.ReturnButton;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
@@ -36,6 +38,7 @@ import main.Main;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.InteractiveObject;
+import sprites.Sprite;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
@@ -54,22 +57,23 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
-	private  ReturnButton myReturnButton;
 	private Map<String, String> basePropertyMap;
 	private BottomToolBar myBottomToolBar;
 	private PlayController tester;
-
+	private VBox myLeftBar;
+	private VBox myLeftButtonsBar;
 	
 	
-	public EditDisplay(int width, int height) {
+	public EditDisplay(int width, int height, Stage stage) {
 //		super(width, height, Color.GREEN);
 //		super(width, height);
-		super(width, height, Color.BLACK);
+		super(width, height, Color.BLACK, stage);
+		myLeftButtonsBar = new VBox();
+		myLeftBar = new VBox();
+
 		tester = new PlayController();
-//		super(width, height, Color.GRAY);
-		myReturnButton = new ReturnButton(this);
-		rootAdd(myReturnButton);
 		addItems();
+		formatLeftBar();
 		setStandardTheme();
 		createGridToggle();
 		rootAdd(gridToggle);
@@ -77,6 +81,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(movementToggle);
 		createLabel();
 		basePropertyMap = new HashMap<String, String>();
+		Button saveButton = new Button("Save");
+		saveButton.setLayoutY(600);
+		rootAdd(saveButton);
 	}
 	
 	private void createLabel() {
@@ -119,23 +126,33 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			this.getScene().setCursor(Cursor.DEFAULT);
 		}
 	}
+	
+	private void addToLeftButtonsBar() {
+		myColorChanger = new ColorChanger(this);
+		myLeftButtonsBar.getChildren().add(myColorChanger);
+		myGameChooser = new AttackDefenseToggle(this);
+		myLeftButtonsBar.getChildren().add(myGameChooser);
+	}
+	
+	private void addToLeftBar() {
+		myLeftToolBar = new LeftToolBar(this, controller);
+		myLeftBar.getChildren().add(myLeftToolBar);
+		addToLeftButtonsBar();
+		myLeftBar.getChildren().add(myLeftButtonsBar);
+	}
 
 	private void addItems() {
 		controller = new AuthoringController();
-		myLeftToolBar = new LeftToolBar(this, controller);
-		rootAdd(myLeftToolBar);
 		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
 		this.setDroppable(myGameArea);
+		addToLeftBar();
+		rootAdd(myLeftBar);
 		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
-		myColorChanger = new ColorChanger(this);
-		rootAdd(myColorChanger);
 		myThemeChanger = new ThemeChanger(this);
 		rootAdd(myThemeChanger);
-		myGameChooser = new AttackDefenseToggle(this);
-		rootAdd(myGameChooser);
 		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
 		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
@@ -163,12 +180,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private void addObject(InteractiveObject object) {
 		InteractiveObject newObject;
 		if (object instanceof BackgroundObject) {
-			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
+			newObject = new BackgroundObject(object.getSize(), this, object.getElementName());
 		} else {
-			newObject = new StaticObject(object.getSize(), this, object.getImageString());
+			newObject = new StaticObject(object.getSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
-//		newObject.setElementId(controller.placeElement(object.getImageString(), new Point2D(object.getX(),object.getY())));
+		newObject.setElementId(controller.placeElement(newObject.getElementName(), new Point2D(0,0)));
 	}
 
 	@Override
@@ -188,18 +205,27 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override
 	public void save(File saveName) {
+		controller.setGameName(saveName.getName().replace(".voog", ""));
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}
 
 	public void changeTheme(String theme) {
 		rootStyleAndClear(myThemeChanger.getThemePath(theme));
-//		myRightToolBar.getStyleClass().add("borders");
-//		myLeftToolBar.getStyleClass().add("borders");
+		myRightToolBar.getStyleClass().add("borders");
+		myLeftToolBar.getStyleClass().add("borders");
+		myLeftBar.getStyleClass().add("outer-border");
+		myLeftButtonsBar.getStyleClass().add("borders");
 	}
 
 	private void setStandardTheme() {
 		changeTheme(ThemeChanger.STANDARD);
+	}
+	
+	private void formatLeftBar() {
+		myLeftBar.setLayoutY(30);
+		myLeftBar.setSpacing(30);
+		myLeftButtonsBar.setSpacing(20);
 	}
 
 	public void attack() {
@@ -231,6 +257,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myStage.show();
 		Main restart = new Main();
 		restart.start(myStage);
+		getStage().close();
+		
+		
 	}
 
 	@Override
@@ -238,9 +267,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		imageView.addBasePropertyMap(basePropertyMap);
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		myRightToolBar.imageSelected(imageView);
-		
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
 		controller.addElementToInventory(imageView.getName());
+		
+//		System.out.println(tester.getAllDefinedTemplateProperties());
+
 	}
 
 	@Override

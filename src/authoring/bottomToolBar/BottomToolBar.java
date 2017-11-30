@@ -24,7 +24,7 @@ public class BottomToolBar extends VBox {
 	private ScrollableArea myScrollableArea;
 	private TabFactory tabMaker;
 	private final int X_LAYOUT = 260;
-	private final int Y_LAYOUT = 560;
+	private final int Y_LAYOUT = 470;
 	private Button newLevel;
 	private Button editLevel;
 	private int currentDisplay;
@@ -39,11 +39,13 @@ public class BottomToolBar extends VBox {
 		this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 		this.setWidth(400);
-		tabMaker = new TabFactory();
 		myLevels = new ArrayList<>();
 		newLevel =  new Button("New Level");
 		newLevel.setOnAction(e->addLevel());
 		myTabPane = new TabPane();
+		tabMaker = new TabFactory();
+		myTabPane.setMaxSize(400, 200);
+		myTabPane.setPrefSize(400, 200);
 		addLevel();
 		created.setGameArea(myGameAreas.get(0));
 		editLevel = new Button("Edit Level");

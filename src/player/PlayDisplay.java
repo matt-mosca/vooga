@@ -33,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import splashScreen.ScreenDisplay;
 import sprites.Sprite;
@@ -69,17 +70,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	
 	//TODO uncomment the initialization and get rid of tester
-	public PlayDisplay(int width, int height) {
-		super(width, height, Color.rgb(20, 20, 20));
+	public PlayDisplay(int width, int height, Stage stage) {
+		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = new PlayController();
 		myLeftBar = new VBox();
 		formatLeftBar();
-		this.setDroppable(myPlayArea);
 		createGameArea(height - 20);
 		addItems();
+		this.setDroppable(myPlayArea);
 		initializeGameState();
 //		initializeSprites();
-//		initializeInventory();
+		initializeInventory();
 		initializeButtons();
 		createTestImages();
 //		createTestSprites();
@@ -104,7 +105,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myPointsDisplay);
 //		rootAdd(new HealthBackground());
 		myInventoryToolBar = new InventoryToolBar(this);
-		rootAdd(myInventoryToolBar);
+		myLeftBar.getChildren().add(myInventoryToolBar);
 		rootAdd(myLeftBar);
 //		myHealthBar = new HealthBar();
 //		rootAdd(myHealthBar);
@@ -116,7 +117,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		tower1 = new TowerImage(this, "Castle_Tower1");
 		tower1.setFitHeight(40);
 		tower1.setFitWidth(40);
-		myPlayArea.placeInGrid(tower1);
+		myPlayArea.getChildren().add(tower1);
 	}
 	
 	private void initializeGameState() {
@@ -141,13 +142,20 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private void initializeInventory() {
 		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
+		ImageView newImage;
 		for(String s:myController.getInventory()) {
+			ImageView imageView;
 			try {
-				myInventoryToolBar.addToToolbar(new ImageView(new Image(templates.get(s).get("imageUrl"))));
+				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
+				
 			}catch(NullPointerException e) {
-				myInventoryToolBar.addToToolbar(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL")))));
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL"))));
 			}
-			
+			imageView.setFitHeight(70);
+			imageView.setFitWidth(60);
+			imageView.setId(s);
+			imageView.setUserData(templates.get(s).get("imageUrl"));
+			myInventoryToolBar.addToToolbar(imageView);
 		}
 	}
 	
@@ -189,7 +197,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(this, sideLength, sideLength);
+		myPlayArea = new PlayArea(myController, sideLength, sideLength);
 		rootAdd(myPlayArea);
 	}
 	
@@ -223,17 +231,14 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	//TODO clone objects so that they don't dissappear out of the list
 	@Override
 	public void listItemClicked(ImageView image) {
-		StaticObject placeable = new StaticObject(1, this, image.getId());
+		StaticObject placeable = new StaticObject(1, this, (String) image.getUserData());
+		placeable.setElementName(placeable.getId());
 		myPlayArea.getChildren().add(placeable);
 	}
 
 	@Override
 	public void save(File saveName) {
 		myController.saveGameState(saveName);
-	}
-	
-	private void addToLeftBar(Node n) {
-		myLeftBar.getChildren().add(n);
 	}
 	
 	private void formatLeftBar() {

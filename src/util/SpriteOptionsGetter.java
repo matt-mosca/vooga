@@ -71,12 +71,15 @@ public class SpriteOptionsGetter {
         String parameterClassSimpleName = spriteParameter.getType().getSimpleName();
         InputStream parameterClassPossibilitiesStream = getClass().getClassLoader()
                 .getResourceAsStream(parameterClassSimpleName + PROPERTIES_EXTENSION);
+        System.out.println(parameterClassSimpleName);
         if (parameterClassPossibilitiesStream != null) {
             spriteParameterSubclassProperties.load(parameterClassPossibilitiesStream);
             String parameterClassFullName = spriteParameter.getType().getName();
             List<String> subclassOptions = new ArrayList<>();
             String referenceClassDescription = null;
             for (String subclassOptionName : spriteParameterSubclassProperties.stringPropertyNames()) {
+                System.out.println(parameterClassFullName + " " + subclassOptionName);
+                System.out.println("\n\n\n" + spriteParameterSubclassProperties + "\n\n\n");
                 String subclassDescription = spriteParameterSubclassProperties.getProperty(subclassOptionName);
                 classToDescription.put(subclassOptionName, subclassDescription);
                 descriptionToClass.put(subclassDescription, subclassOptionName);
@@ -90,6 +93,7 @@ public class SpriteOptionsGetter {
                 loadTranslationsForSpriteParameter(subclassOptionName, parameterDescriptions);
                 spriteMemberParametersMap.put(subclassOptionName, parameterDescriptions);
             }
+            System.out.println(referenceClassDescription);
             spriteParameterSubclassOptions.put(referenceClassDescription != null ?
                     referenceClassDescription : parameterClassFullName, subclassOptions);
         } else {
@@ -119,17 +123,25 @@ public class SpriteOptionsGetter {
             Constructor desiredConstructor = subclassConstructors[0];
             Parameter[] constructorParameters = desiredConstructor.getParameters();
             for (Parameter constructorParameter : constructorParameters) {
-                String parameterName = constructorParameter.getAnnotation(ParameterName.class).value();
-                String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
-                if (parameterDescription != null) {
-                    parameterToDescription.put(parameterName, parameterDescription);
-                    descriptionToParameter.put(parameterDescription, parameterName);
-                    // TODO - eliminate above?
-                    parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
+                ParameterName parameterNameAnnotation = constructorParameter.getAnnotation(ParameterName.class);
+                if (parameterNameAnnotation != null) {
+                    String parameterName = parameterNameAnnotation.value();
+                    String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
+                    if (parameterDescription != null) {
+                        parameterToDescription.put(parameterName, parameterDescription);
+                        descriptionToParameter.put(parameterDescription, parameterName);
+                        // TODO - eliminate above?
+                        parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
+                    } else {
+                        parameterToDescription.put(parameterName, parameterName);
+                        descriptionToParameter.put(parameterName, parameterName);
+                        parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
+                    }
                 } else {
-                    parameterToDescription.put(parameterName, parameterName);
-                    descriptionToParameter.put(parameterName, parameterName);
-                    parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
+                    String parameterTypeSimple = constructorParameter.getType().getSimpleName();
+                    parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
+                    descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);
+                    parameterDescriptionsToClasses.put(parameterTypeSimple, constructorParameter.getType());
                 }
             }
         }
@@ -154,6 +166,7 @@ public class SpriteOptionsGetter {
     }
 
     public Map<String, List<String>> getSpriteParameterSubclassOptions() {
+        System.out.println(spriteParameterSubclassOptions);
         return spriteParameterSubclassOptions;
     }
 
@@ -162,12 +175,14 @@ public class SpriteOptionsGetter {
         Map<String, Class> auxiliaryParameters = new HashMap<>();
         for (String subclassChoiceDescription : subclassChoices.values()) {
             String subclassChoiceName = descriptionToClass.get(subclassChoiceDescription);
+            System.out.println(subclassChoiceDescription);
             if (subclassChoiceName == null || !spriteMemberParametersMap.containsKey(subclassChoiceName)) {
                 throw new IllegalArgumentException();
             }
             auxiliaryParameters.putAll(spriteMemberParametersMap.get(subclassChoiceName));
         }
         auxiliaryParameters.putAll(spriteMemberParametersMap.getOrDefault(SPRITE_BASE_PARAMETER_NAME, new HashMap<>()));
+        System.out.println("\n\n" + auxiliaryParameters + "\n\n");
         return auxiliaryParameters;
     }
 
