@@ -371,6 +371,7 @@ public abstract class AbstractGameController {
 	private Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String elementTemplateName,
 			Point2D startCoordinates) {
 		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
+		System.out.println("ID of sprite: " + spriteIdMap.get(idOfSpriteToTrack));
 		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
 		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
