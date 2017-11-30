@@ -126,13 +126,11 @@ public class Sprite {
 	}
 
 	public void setX(double newX) {
-		System.out.println("Setting imageX to " + newX);
 		collisionHandler.getGraphicalRepresentation().setX(newX);
 		movementStrategy.setX(newX);
 	}
 
 	public void setY(double newY) {
-		System.out.println("Setting imageY to " + newY);
 		collisionHandler.getGraphicalRepresentation().setY(newY);
 		movementStrategy.setY(newY);
 	}
