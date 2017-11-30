@@ -1,8 +1,10 @@
 package util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -11,7 +13,7 @@ import java.util.Properties;
  *
  * @author Ben Schwennesen
  */
-public class SpriteTemplateExporter {
+public class SpriteTemplateIoHandler {
 
     private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
     private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-templates/";
@@ -34,6 +36,30 @@ public class SpriteTemplateExporter {
             File exportFile = new File(directoryPath + File.separator + fileName);
             writeTemplateToFile(templateProperties, exportFile);
         }
+    }
+
+    /**
+     * Import all the stored sprite templates for an authored game.
+     *
+     * @param gameName the name of the authored game
+     * @return the sprite templates defined in the game in a map
+     */
+    public Map<String, Map<String, String>> loadSpriteTemplates(String gameName) throws IOException {
+        Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
+        String directoryPath = TEMPLATE_FILE_OUTPUT_PATH + gameName + File.separator;
+        File propertiesDirectory = new File(directoryPath);
+        for (File spritePropertiesFile : propertiesDirectory.listFiles()) {
+            if (spritePropertiesFile.getPath().endsWith(PROPERTIES_EXTENSION)) {
+                Properties spriteProperties = new Properties();
+                spriteProperties.load(new FileInputStream(spritePropertiesFile));
+                Map<String, String> spritePropertiesMap = new HashMap<>();
+                spriteProperties.stringPropertyNames().forEach(propertyName ->
+                        spritePropertiesMap.put(propertyName, spriteProperties.getProperty(propertyName)));
+                String templateName = spritePropertiesFile.getName().replace(PROPERTIES_EXTENSION, "");
+                spriteTemplates.put(templateName, spritePropertiesMap);
+            }
+        }
+        return spriteTemplates;
     }
 
     private void createDirectoryIfNonExistent(String directoryPath) {
