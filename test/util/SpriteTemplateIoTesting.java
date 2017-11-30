@@ -15,7 +15,6 @@ public class SpriteTemplateIoTesting {
         spriteTemplateExporter.exportSpriteTemplates("test", mapMap);
         try {
             Map<String, Map<String, String>> recovered = spriteTemplateExporter.loadSpriteTemplates("test");
-            System.out.println(recovered);
         } catch (IOException e) {
             e.printStackTrace();
         }

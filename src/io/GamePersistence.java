@@ -24,7 +24,6 @@ public class GamePersistence {
 	}
 	
 	public void saveGameState(File saveName, String serializedRepresentation) {
-		System.out.println(serializedRepresentation);
 		File gameStateFile = saveName;
 		Writer gameStateWriter;
 		try {
@@ -41,7 +40,6 @@ public class GamePersistence {
 		}
 		catch(IOException e) {
 			// TODO - throw custom exception
-			System.out.println("I HATE OUTPUT");
 		}
 	}
 

@@ -96,13 +96,7 @@ public abstract class AbstractGameController {
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
-		System.out.println("SPRITES: " + spriteFactory.getAllDefinedTemplateProperties());
 		spriteTemplateIoHandler.exportSpriteTemplates(saveName.getName(), spriteFactory.getAllDefinedTemplateProperties());
-		try {
-			System.out.println("LOADED: " + spriteTemplateIoHandler.loadSpriteTemplates(gameName));
-		} catch (IOException e) {
-			// do nothing
-		}
 	}
 
 	/**
@@ -383,7 +377,6 @@ public abstract class AbstractGameController {
 	private Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String elementTemplateName,
 			Point2D startCoordinates) {
 		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
-		System.out.println(idOfSpriteToTrack);
 		TrackingPoint targetLocation;
 		if (idOfSpriteToTrack != -1)
 			targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
