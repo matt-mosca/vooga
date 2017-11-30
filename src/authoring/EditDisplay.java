@@ -180,12 +180,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private void addObject(InteractiveObject object) {
 		InteractiveObject newObject;
 		if (object instanceof BackgroundObject) {
-			newObject = new BackgroundObject(object.getSize(), this, object.getImageString());
+			newObject = new BackgroundObject(object.getSize(), this, object.getElementName());
 		} else {
-			newObject = new StaticObject(object.getSize(), this, object.getImageString());
+			newObject = new StaticObject(object.getSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
-		newObject.setElementId(controller.placeElement(newObject.getImageString(), new Point2D(0,0)));
+		newObject.setElementId(controller.placeElement(newObject.getElementName(), new Point2D(0,0)));
 	}
 
 	@Override
@@ -205,6 +205,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override
 	public void save(File saveName) {
+		controller.setGameName(saveName.getName().replace(".voog", ""));
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}

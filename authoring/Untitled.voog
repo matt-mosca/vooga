@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"1":"{\"description\":\"\"}\n{\"conditions\":{\"defeat\":\"enemy reached target\",\"victory\":\"kill all enemies\"}}\n{\"bank\":{\"resourceEndowments\":{}}}\n{}\n{\"sprites\":[]}\n{\"inventory\":[\"Tower3\",\"Tower1\",\"Tower2\"]}"}
-=======
-{"1":"{\"description\":\"\"}\n{\"conditions\":{\"defeat\":\"enemy reached target\",\"victory\":\"kill all enemies\"}}\n{\"bank\":{\"resourceEndowments\":{}}}\n{}\n{\"sprites\":[]}\n{\"inventory\":[\"bi\"]}"}
->>>>>>> 63bbdaecbac1312079df2e36150f6ace6ccaeead
+{"1":"{\"description\":\"\"}\n{\"conditions\":{\"defeat\":\"enemy reached target\",\"victory\":\"kill all enemies\"}}\n{\"bank\":{\"resourceEndowments\":{}}}\n{}\n{\"sprites\":[]}\n{\"inventory\":[]}"}
