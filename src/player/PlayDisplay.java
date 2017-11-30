@@ -85,6 +85,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		createTestImages();
 //		createTestSprites();
 //		createTestGameArea();
+
 		
 		
 		

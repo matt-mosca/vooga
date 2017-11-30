@@ -230,6 +230,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(topTabPane);
 		this.getChildren().add(bottomTabPane);
+		this.getChildren().add(retB);
 	}
 	
 	public void addToMap(String property, String value) {
