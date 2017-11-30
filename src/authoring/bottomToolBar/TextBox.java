@@ -1,7 +1,7 @@
 package authoring.bottomToolBar;
 
 import javafx.scene.control.TextField;
-
+@Deprecated
 public abstract class TextBox {
 	private TextField myText;
 	private String myString;
