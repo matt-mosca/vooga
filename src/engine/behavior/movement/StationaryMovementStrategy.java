@@ -12,7 +12,7 @@ public class StationaryMovementStrategy extends AbstractMovementStrategy {
 
 	public StationaryMovementStrategy() {
 		super();
-		
+
 	}
 
 	/**
