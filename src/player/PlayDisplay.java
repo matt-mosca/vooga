@@ -106,7 +106,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myPointsDisplay);
 //		rootAdd(new HealthBackground());
 		myInventoryToolBar = new InventoryToolBar(this);
-		rootAdd(myInventoryToolBar);
+		myLeftBar.getChildren().add(myInventoryToolBar);
 		rootAdd(myLeftBar);
 //		myHealthBar = new HealthBar();
 //		rootAdd(myHealthBar);
