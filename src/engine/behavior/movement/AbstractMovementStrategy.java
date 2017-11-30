@@ -24,7 +24,11 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
 	}
 
-	@Override
+	/**
+	 * Moves an object and returns its new location
+	 * 
+	 * @return objects new location
+	 * */
 	public abstract Point2D move();
 
 	/**
@@ -91,6 +95,11 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 		return false;
 	}
 
+	/**
+	 * Returns if the object should be removed when it reached its target
+	 * 
+	 * @return True if target should be removed, false if it should not
+	 * */
 	public boolean removeUponCompletion() {
 		return true;
 	}
