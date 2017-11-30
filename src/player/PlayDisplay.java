@@ -63,7 +63,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private double yLocation = 0;
 	private int level = 1;
 	private Collection<Sprite> testCollection;
-	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
+	private final FiringStrategy testFiring =  new NoopFiringStrategy();
 	private final MovementStrategy testMovement = new StationaryMovementStrategy();
 	private final CollisionHandler testCollision =
 			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
@@ -162,7 +162,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	//TODO Make sure this works once saved files are all good
 	private void initializeSprites() {
-		for(Integer id:myController.getLevelSprites(level)) {
+		for(Integer id : myController.getLevelSprites(level)) {
 			ImageView imageView = myController.getRepresentationFromSpriteId(id);
 			myPlayArea.getChildren().add(imageView);
 		}

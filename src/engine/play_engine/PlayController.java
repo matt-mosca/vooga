@@ -64,6 +64,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private void updateForLevelChange(String saveName, int level) {
 		setLevel(level);
 		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
+		System.out.println(getLevelSprites().get(level));
 		elementManager.setCurrentElements(getLevelSprites().get(level));
 		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
 		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
@@ -111,6 +112,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
 		assertValidLevel(level);
 		Collection<Sprite> levelSprites = elementManager.getCurrentElements();
+		System.out.println(levelSprites);
 		return levelSprites.stream().mapToInt(sprite -> getIdFromSprite(sprite)).boxed().collect(Collectors.toSet());
 	}
 

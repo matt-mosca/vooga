@@ -52,17 +52,6 @@ public class ElementManager {
 	 * grid
 	 */
 
-	Sprite placeElement(String elementName, Point2D startCoordinates) {
-		// Use SpriteFactory to construct Sprite from elementName with these
-		// coordinates
-
-		// Check if resources are sufficient first
-
-		Sprite generatedSprite = spriteFactory.generateSprite(elementName, startCoordinates);
-		// Add created Sprite to gameElements
-		return generatedSprite;
-	}
-
 	void update() {
 		for (int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
 			Sprite element = gameElements.get(elementIndex);
