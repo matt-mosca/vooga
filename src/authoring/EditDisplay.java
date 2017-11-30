@@ -138,8 +138,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myGameChooser);
 		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
-//		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
-//		rootAdd(myBottomToolBar);
+		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
+		rootAdd(myBottomToolBar);
 	}
 	
 	public void listItemClicked(InteractiveObject clickable) {

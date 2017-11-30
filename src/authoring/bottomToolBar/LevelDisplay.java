@@ -2,7 +2,12 @@ package authoring.bottomToolBar;
 
 import java.util.ResourceBundle;
 
+import engine.authoring_engine.AuthoringController;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /*
@@ -20,16 +25,31 @@ public class LevelDisplay {
 	private int myNumber;
 	private Stage myStage;
 	private LevelTab myLv;
-	ResourceBundle rb;
+	private AuthoringController myController;
+	private ResourceDisplay resources;
+	private ResourceBundle rb;
+	private Scene myScene;
+	private VBox centerPane;
+	private BorderPane myRoot;
 	
 	
 	
-	public LevelDisplay(int n, LevelTab lv) {
+	public LevelDisplay(int n, LevelTab lv, AuthoringController controller) {
+		myRoot = new BorderPane();
+		centerPane = new VBox();
+		resources = new ResourceDisplay(controller);
+		myRoot.setRight(resources.getRoot());
+		myRoot.setCenter(centerPane);
+		myScene = new Scene(myRoot); 
+		myRoot.setPrefWidth(500);
+		myRoot.setPrefHeight(200);
 		myNumber = n;
+		myController = controller;
 		myStage = new Stage();
 //		myStage.setTitle(rb.getString("lvNum")+ " " + n);
 		myStage.setTitle("Level Number " + n);
 //		myStage.setOnCloseRequest(e->myLv.update());
+		myStage.setScene(myScene);
 	}
 	
 	public void open() {
@@ -47,6 +67,16 @@ public class LevelDisplay {
 
 	public void decrementLevel() {
 		myNumber-=1;
+	}
+
+	public AuthoringController getAuthor() {
+		// TODO Auto-generated method stub
+		return myController;
+	}
+	
+	
+	protected VBox getLevelPane() {
+		return centerPane;
 	}
 	
 }
