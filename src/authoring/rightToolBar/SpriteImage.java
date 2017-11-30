@@ -48,6 +48,7 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("Target x-coordinate", "0");
 		defaultValues.put("Projectile Type Name", "No projectile selected");
 		defaultValues.put("Attack period", "10");
+		defaultValues.put("PathList", "CurrentPath");
 	}
 	
 	public void addImage(String imageName) {
