@@ -4,7 +4,8 @@ import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 
 /**
- * Movement strategy for objects that movements depends on straight line movement
+ * Movement strategy for objects that movements depends on straight line
+ * movement
  * 
  * @author mscruggs
  *
@@ -13,14 +14,13 @@ import javafx.geometry.Point2D;
 public class StraightLineMovementStrategy extends TargetedMovementStrategy {
 
 	public StraightLineMovementStrategy(@ParameterName("targetX") double targetX,
-										@ParameterName("targetY") double targetY,
-										@ParameterName("velocity") double velocity) {
-		super(targetX, targetY, velocity);
-		calculateVelocityComponents();
+			@ParameterName("targetY") double targetY, @ParameterName("velocity") double velocity) {
+		super(new Point2D(targetX, targetY), velocity);
+		setVelocityComponents();
 	}
-	
+
 	public void bounce() {
-		
+
 	}
 
 }

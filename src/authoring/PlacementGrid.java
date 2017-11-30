@@ -23,7 +23,7 @@ public class PlacementGrid extends GridPane {
 	private int colPercentage;
 	private int cellSize;
 	
-	public PlacementGrid(AuthorInterface author, int width, int height, int rowPercent, int colPercent, Path path) {
+	public PlacementGrid(int width, int height, int rowPercent, int colPercent, Path path) {
 		this.width = width;
 		this.height = height;
 		this.path = path;

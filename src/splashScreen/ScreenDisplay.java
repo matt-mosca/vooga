@@ -1,5 +1,7 @@
 package splashScreen;
 
+import java.io.File;
+
 import interfaces.ClickableInterface;
 import interfaces.Droppable;
 import javafx.animation.KeyFrame;
@@ -8,25 +10,32 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
+import sprites.InteractiveObject;
+
 
 public abstract class ScreenDisplay {
 
-	public double FRAMES_PER_SECOND = 1;
+	public double FRAMES_PER_SECOND = 60;
 	public double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public double SECOND_DELAY = 100.0 / FRAMES_PER_SECOND;
 	private Droppable droppable;
 	private KeyFrame frame;
 	private Timeline animation = new Timeline();
 	private Scene myScene;
+	private Stage stage;
 	private Group root = new Group();
 
 	/**
 	 * Constructor: Screen Display class
+	 * @param currentStage 
 	 */
 
-	public ScreenDisplay(int width, int height, Paint background) {
+	public ScreenDisplay(int width, int height, Paint background, Stage currentStage) {
 		init();
+		stage = currentStage;
 		myScene = new Scene(root, width, height, background);
 
 	}
@@ -63,10 +72,19 @@ public abstract class ScreenDisplay {
 		return root.getChildren().contains(object);
 	}
 	
-	protected void rootStyle(String sheet) {
+	protected void rootStyleAndClear(String sheet) {
 		root.getStylesheets().clear();
 		root.getStylesheets().add(sheet);
 	}
+	
+	protected void rootStyle(String sheet) {
+		root.getStylesheets().add(sheet);
+	}
+	
+	protected Stage getStage() {
+		return stage;
+	}
+
 	
 	protected void centerScene() {
 
@@ -76,9 +94,11 @@ public abstract class ScreenDisplay {
 		return droppable;
 	}
 	
-	public void SetDroppable(Droppable drop) {
+	public void setDroppable(Droppable drop) {
 		droppable = drop;
 	}
 	
-	public abstract void listItemClicked(ClickableInterface clickable);
+	public abstract void save(File saveFile);
+	
+	public abstract void listItemClicked(ImageView object);
 }

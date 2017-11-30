@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import io.GamePersistence;
 import sprites.Sprite;
@@ -48,11 +49,11 @@ public class IOController {
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-			Map<String, String> levelConditions, Bank levelBank, List<Sprite> levelSprites, Map<String, Double> status,
+			Map<String, String> levelConditions, Bank levelBank, List<Sprite> levelSprites, Set<String> levelInventories, Map<String, Double> status,
 			boolean forAuthoring) {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
-				currentLevel, status, levelSprites);
+				currentLevel, status, levelSprites, levelInventories);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -112,7 +113,7 @@ public class IOController {
 	 */
 	public Map<String, String> loadGameConditions(String savedGameName, int level) throws FileNotFoundException {
 		// First extract string from file through io module
-		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, false));
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
 		// deserialize string into map through utils module
 		return serializationUtils.deserializeGameConditions(serializedGameData, level);
 	}
@@ -140,6 +141,11 @@ public class IOController {
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
 		// deserialize string into map through utils module
 		return serializationUtils.deserializeGameDescription(serializedGameData, level);
+	}
+	
+	public Set<String> loadGameInventories(String savedGameName, int level, boolean forAuthoring) throws FileNotFoundException {
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
+		return serializationUtils.deserializeGameInventories(serializedGameData, level);
 	}
 
 	/**
@@ -262,9 +268,9 @@ public class IOController {
 	 * @return string representing serialization of level's data
 	 */
 	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
-			Bank levelBank, Map<String, Double> levelStatus, List<Sprite> levelSprites) {
+			Bank levelBank, Map<String, Double> levelStatus, List<Sprite> levelSprites, Set<String> levelInventories) {
 		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelBank, levelStatus,
-				levelSprites, level);
+				levelSprites, levelInventories, level);
 	}
 
 	/**
@@ -272,7 +278,7 @@ public class IOController {
 	 * for level Especially useful for authoring use-case where a (partially) built
 	 * game with many levels of data has to be saved, differentiating between levels
 	 * 
-	 * @param savedGameName
+	 * @param saveName
 	 *            name for game state to be saved to
 	 * @param serializedLevelsData
 	 *            map of level to serialized data for level
@@ -280,10 +286,11 @@ public class IOController {
 	 *            true if for authoring, false if for play - TODO - more flexible
 	 *            approach? reflection?
 	 */
-	public void saveGameStateForMultipleLevels(String savedGameName, Map<Integer, String> serializedLevelsData,
+	public void saveGameStateForMultipleLevels(File saveName, Map<Integer, String> serializedLevelsData,
 			boolean forAuthoring) {
 		String serializedGameData = serializationUtils.serializeLevelsData(serializedLevelsData);
-		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameData);
+		//gamePersistence.saveGameState(getResolvedGameName(saveName, forAuthoring), serializedGameData);
+		gamePersistence.saveGameState(saveName, serializedGameData);
 	}
 
 	private String getResolvedGameName(String savedGameName, boolean forAuthoring) {

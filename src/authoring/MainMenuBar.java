@@ -1,7 +1,9 @@
 package authoring;
 
+import java.io.File;
 import java.util.Optional;
 
+import authoring.tabs.SaveDialog;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -15,11 +17,13 @@ public class MainMenuBar extends MenuBar{
 	
 	private Menu file;
 	private Menu edit;
+	private ScreenDisplay myDisplay;
 	private AuthoringController myController;
 	
-	public MainMenuBar(AuthoringController controller, ScreenDisplay display) {
-		this.myController = controller;
+	public MainMenuBar(ScreenDisplay display, AuthoringController controller) {
 		this.prefWidthProperty().bind(display.getScene().widthProperty());
+		myDisplay = display;
+		myController = controller;
 		
 		createFileMenu();
 		createEditMenu();
@@ -53,10 +57,16 @@ public class MainMenuBar extends MenuBar{
 	}
 	
 	private void saveGame() {
-		Optional<String> saveName = launchInput(SAVE);
-		if(saveName.isPresent()) {
-			myController.saveGameState(saveName.get());
+//		Optional<String> saveName = launchInput(SAVE);
+//		if(saveName.isPresent()) {
+//			myDisplay.save(saveName.get());
+//		}
+		
+		File saveFile = SaveDialog.SaveLocation(getScene());
+		if(saveFile != null) {
+			myDisplay.save(saveFile);
 		}
+		
 	}
 	
 	private void exportGame() {

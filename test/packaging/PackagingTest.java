@@ -32,6 +32,7 @@ public class PackagingTest {
             testPathConversion(packager);
         } catch (Exception e) {
             // ignore
+            e.printStackTrace();
         }
     }
 

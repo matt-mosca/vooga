@@ -8,17 +8,15 @@ public class StaticObject extends InteractiveObject{
 	private static final int CELL_SIZE = 40;
 	private int objectSize;
 	private int realSize;
-	private String myImageString;
 	
-	public StaticObject(int size, ScreenDisplay display, String imageString) {
-		super(display);
-		myImageString = imageString;
+	public StaticObject(int size, ScreenDisplay display, String name) {
+		super(display, name);
 		setSize(size);
 		Image image;
 		try {
-			image = new Image(getClass().getClassLoader().getResourceAsStream(imageString));
+			image = new Image(getClass().getClassLoader().getResourceAsStream(name));
 		}catch(NullPointerException e) {
-			image = new Image(imageString);
+			image = new Image(name);
 		}
 		this.setImage(image);
 		objectSize = size;
@@ -39,13 +37,13 @@ public class StaticObject extends InteractiveObject{
 		return this.getFitWidth();
 	}
 	
-	public String getImageString() {
-		return myImageString;
-	}
-	
 	@Override
 	public int getSize() {
 		return objectSize;
+	}
+	
+	public int getRealSize() {
+		return realSize;
 	}
 	
 	public void incrementSize() {

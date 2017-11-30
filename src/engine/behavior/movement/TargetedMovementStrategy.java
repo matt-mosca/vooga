@@ -1,30 +1,37 @@
 package engine.behavior.movement;
 
+import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 
 /**
+ * Movement Strategy that moves towards a targeted location
+ * 
+ * 
  * @author mscruggs
  */
-public abstract class TargetedMovementStrategy extends AbstractMovementStrategy {
+public class TargetedMovementStrategy extends AbstractMovementStrategy {
 
     private double targetX;
     private double targetY;
-
     private double xVelocity;
     private double yVelocity;
-
     private double velocityMagnitude;
 
-    protected TargetedMovementStrategy(double targetX, double targetY, double velocityMagnitude) {
+    protected TargetedMovementStrategy(Point2D targetPoint,
+                                       @ParameterName("velocityMagnitude") double velocityMagnitude) {
         super();
-        setTargetCoordinates(targetX, targetY);
+        setTargetCoordinates(targetPoint.getX(), targetPoint.getY());
         this.velocityMagnitude = velocityMagnitude;
-        calculateVelocityComponents();
     }
 
+    /**
+     * Move the object in straight line towards a targeted direction
+     * 
+     * @return the updated coordinates of the object
+     * */
     public Point2D move() {
-    	calculateVelocityComponents();
-    	if(targetReached()) {
+    	setVelocityComponents();
+    	if(targetReached() && removeUponCompletion()) {
     		setX(this.getTargetX());
     		setY(this.getTargetY());
     	}
@@ -35,16 +42,28 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
     	return getCurrentCoordinates();
     }
     
+    /**
+     * Stop the object from moving
+     * 
+     * */
     public void stop() {
         this.xVelocity = 0;
         this.yVelocity = 0;
         this.velocityMagnitude = 0;
     }
     
+    /**
+     * Returns if the target has reached its destination
+     * 
+     * @return True if target is within one movement of its location, false otherwise
+     * */
     public boolean targetReached() {
-    	return (Math.hypot(targetX-this.getCurrentX(), targetY-this.getCurrentY())<velocityMagnitude);
+    	return (getDistance()<velocityMagnitude);
     }
 
+    /**
+     * Sets the target coordinates of the object to move towards
+     * */
     protected void setTargetCoordinates(double targetX, double targetY) {
         this.targetX = targetX;
         this.targetY = targetY;
@@ -58,7 +77,6 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
         return targetY;
     }
 
-
     protected double getXVelocity() {
         return xVelocity;
     }
@@ -66,21 +84,58 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
     protected double getYVelocity() {
         return yVelocity;
     }
+    
+    protected void setVelocityMagnitude(double veloMagnitude) {
+    	this.velocityMagnitude = veloMagnitude;
+    }
 
     protected void setXVelocity(double newXVelocity) {
         xVelocity = newXVelocity;
     }
 
-
     protected void setYVelocity(double newYVelocity) {
         yVelocity = newYVelocity;
     }
 
-    protected void calculateVelocityComponents() {
-        double angle = Math.toRadians(new Point2D(this.getCurrentX(),this.getCurrentY()).angle(targetX, targetY));
-        this.xVelocity = velocityMagnitude * Math.cos(angle);
-        this.yVelocity = velocityMagnitude * Math.sin(angle);
+    /**
+     * Sets the velocity components given nothing.
+     * Uses the current location and the target location
+     * 
+     * */
+    protected void setVelocityComponents() {
+        setXVelocity(getVelocityComponent(getTargetX()-getCurrentX()));  
+        setYVelocity(getVelocityComponent(getTargetY()-getCurrentY()));
+    }
+    
+    /**
+     * Sets the velocity components given an angle.
+     * Sets components based on passed angle.
+     * 
+     * @param angle Angle to calculate velocity components
+     * */
+    protected void setVelocityComponents(double angle) {
+    	setXVelocity(velocityMagnitude * Math.cos(angle));
+        setYVelocity(velocityMagnitude * Math.sin(angle));
     }
 
+    /**
+     * Get the distance between the current location and the targeted location
+     * 
+     * @return the distance between the target and the current location
+     * */
+    private double getDistance() {
+    	return Math.hypot(this.getTargetX()-this.getCurrentX(), this.getTargetY()-this.getCurrentY());
+    }
     
+    /**
+     * Get the velocity component based on the component distance
+     * 
+     * @return the velocity component of passed distance
+     * */
+    private double getVelocityComponent(double componentDistance) {
+    	if(getDistance() == 0.0) {
+    		return 0.0;
+    	}
+    	return componentDistance*velocityMagnitude/getDistance();
+    }
 }

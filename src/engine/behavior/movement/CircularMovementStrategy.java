@@ -9,7 +9,7 @@ import javafx.geometry.Point2D;
  * @author mscruggs
  *
  */
-public abstract class CircularMovementStrategy extends TargetedMovementStrategy {
+public class CircularMovementStrategy extends TargetedMovementStrategy {
 
 	private double angle;
 	private double radius;
@@ -19,13 +19,18 @@ public abstract class CircularMovementStrategy extends TargetedMovementStrategy 
 									@ParameterName("radius") double radius,
 									@ParameterName("initialAngle") double initialAngle,
 									@ParameterName("velocity") double velocity) {
-		super(radius * Math.cos(Math.toRadians(initialAngle)),radius * Math.sin(Math.toRadians(initialAngle)), velocity);
+		super(new Point2D(radius * Math.cos(Math.toRadians(initialAngle)),radius * Math.sin(Math.toRadians(initialAngle))), radius);
 		this.radius = radius;
 		this.angle = Math.toRadians(initialAngle);
 		this.angularVelocity = velocity/radius;
 		setInitialLocation();
 	}
 	
+	/**
+	 * Moves the object in a circular path 
+	 * 
+	 * @return The coordinates of the object in Point2D format
+	 * */
 	public Point2D move() {
 		angle += angularVelocity;
 		setTargetCoordinates(radius * Math.cos(angle),radius * Math.sin(angle));
@@ -34,6 +39,22 @@ public abstract class CircularMovementStrategy extends TargetedMovementStrategy 
 		return getCurrentCoordinates();
 	}
 	
+	/**
+	 * Tells if the target location was reached. 
+	 * Will always return false since the circle is continuous.
+	 * 
+	 * @return false since a circle is continuous
+	 * 
+	 * */
+	public boolean targetReached() {
+		return false;
+	}
+	
+	/**
+	 * Sets the initial starting location of the 
+	 * Will always return false since the circle is continuous.
+	 * 
+	 * */
 	private void setInitialLocation() {
 		this.setX(Math.cos(angle)*radius);
 		this.setY(Math.sin(angle)*radius);

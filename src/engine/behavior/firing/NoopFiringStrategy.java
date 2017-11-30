@@ -10,10 +10,12 @@ import engine.behavior.ParameterName;
  * @author radithya
  *
  */
-public class NoopFiringStrategy extends GenericFiringStrategy {
+public class NoopFiringStrategy implements FiringStrategy {
 
-	public NoopFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate) {
-		super(projectileTemplate);
+	@Override
+	public String fire() {
+		// won't get called because of shouldFire() returning false
+		return null;
 	}
 
 	@Override

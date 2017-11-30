@@ -1,12 +1,16 @@
 package engine;
 
+import authoring.path.PathList;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -22,7 +26,7 @@ public interface AuthoringModelController {
 	 * @param saveName
 	 *            the name to assign to the save file
 	 */
-	void saveGameState(String saveName);
+	void saveGameState(File saveName);
 
 	/**
 	 * Load the detailed state of a game for a particular level, including
@@ -32,10 +36,10 @@ public interface AuthoringModelController {
 	 *            the name used to save the game authoring data
 	 * @param level
 	 *            the level of the game which should be loaded
-	 * @throws FileNotFoundException
-	 *             if the save name does not refer to an existing file
+	 * @throws IOException
+	 *             if the save name does not refer to existing files
 	 */
-	void loadOriginalGameState(String saveName, int level) throws FileNotFoundException;
+	void loadOriginalGameState(String saveName, int level) throws IOException;
 
 	/**
 	 * Export a fully authored game, including all levels, into an executable file.
@@ -64,12 +68,14 @@ public interface AuthoringModelController {
 	/**
 	 * Get the top-level configuration options for a game element definition.
 	 *
-	 * @return a map from the name of the configuration option to set to a list of choices for that option
+	 * @return a map from the name of the configuration option to set to a list of
+	 *         choices for that option
 	 */
 	Map<String, List<String>> getElementBaseConfigurationOptions();
 
 	/**
-	 * Get auxiliary configuration elements for a game element, based on top-level configuration choices.
+	 * Get auxiliary configuration elements for a game element, based on top-level
+	 * configuration choices.
 	 *
 	 * @return a map from the name of the configuration option to its class type
 	 */
@@ -122,7 +128,7 @@ public interface AuthoringModelController {
 	void deleteElementDefinition(String elementName) throws IllegalArgumentException;
 
 	/**
-	 * Place a game element of previously defined (or default) type within the game.
+	 * Place a game element of previously defined type within the game.
 	 *
 	 * @param elementName
 	 *            the template name for the element
@@ -132,6 +138,33 @@ public interface AuthoringModelController {
 	 *         element
 	 */
 	int placeElement(String elementName, Point2D startCoordinates);
+
+	/**
+	 * Add element of given name
+	 * 
+	 * @param elementName
+	 */
+	void addElementToInventory(String elementName);
+
+	/*
+	 * Place a game element of previously defined type within the game which follows
+	 * a path defined in the authoring environment as it moves.
+	 *
+	 * @param elementName the template name for the element
+	 * 
+	 * @param pathList a list of points the object should target as it moves
+	 * 
+	 * @return a unique identifier for the sprite abstraction representing the game
+	 * element
+	 */
+	int placePathFollowingElement(String elementName, PathList pathList);
+
+	/**
+	 * Retrieve the inventory for the current level
+	 * 
+	 * @return set of element names that can be placed in the current level
+	 */
+	Set<String> getInventory();
 
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
@@ -150,13 +183,6 @@ public interface AuthoringModelController {
 	 * @return a map of relevant details to display or modify about the game
 	 */
 	Map<String, Double> getStatus();
-
-	/**
-	 * Retrieve information on the quantity of each resource left
-	 * 
-	 * @return map of resource name to quantity of that resource left
-	 */
-	Map<String, Double> getResourceEndowments();
 
 	/**
 	 * Retrieve information on the cost of each element in terms of the various
@@ -203,7 +229,7 @@ public interface AuthoringModelController {
 	 * @return map where keys are game names and values are game descriptions
 	 */
 	Map<String, String> getAvailableGames();
-	
+
 	/**
 	 * Get a map of properties for a particular game element, so as to allow for
 	 * their displaying in a modification area of the display.
@@ -234,6 +260,8 @@ public interface AuthoringModelController {
 	 * @return map of template names to properties of each template
 	 */
 	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
+
+	Map<String, Double> getResourceEndowments();
 
 	/**
 	 * Set the name of the game being authored.
@@ -289,6 +317,13 @@ public interface AuthoringModelController {
 	void setResourceEndowments(Map<String, Double> resourceEndowments);
 
 	/**
+	 * Set the resource endowment of a specific resource name
+	 * @param resourceName
+	 * @param newResourceEndowment
+	 */
+	void setResourceEndowment(String resourceName, double newResourceEndowment);
+	
+	/**
 	 * Set the cost of an element in terms of various resources
 	 * 
 	 * @param elementName
@@ -298,6 +333,19 @@ public interface AuthoringModelController {
 	 *            element
 	 */
 	void setUnitCost(String elementName, Map<String, Double> unitCosts);
+
+	/**
+	 * Set the behavior and parameters of the wave
+	 * 
+	 * @param waveProperties
+	 *            a map containing the properties of the wave to be created
+	 * @param elementNames
+	 *            name of elements to spawn
+	 * @param spawningPoint
+	 *            the point at which to spawn the wave
+	 */
+	void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
+			Point2D spawningPoint);
 
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions

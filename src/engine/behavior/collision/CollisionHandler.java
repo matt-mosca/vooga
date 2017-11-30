@@ -3,6 +3,7 @@ package engine.behavior.collision;
 import engine.behavior.ParameterName;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import util.Exclude;
 
 /**
  * Encapsulates game elements' collision fields and behavior. Responsible for checking for and handling collisions.
@@ -20,7 +21,7 @@ public class CollisionHandler {
     private String imageUrl;
     private double imageHeight;
     private double imageWidth;
-    private transient ImageView graphicalRepresentation;
+    @Exclude private ImageView graphicalRepresentation;
 
     public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
                             @ParameterName("imageUrl") String imageUrl,
@@ -35,9 +36,16 @@ public class CollisionHandler {
     }
 
     private void constructGraphicalRepresentation() {
-        graphicalRepresentation = new ImageView(new Image(imageUrl));
-        graphicalRepresentation.setFitHeight(imageHeight);
-        graphicalRepresentation.setFitWidth(imageWidth);
+        Image image;
+        try {
+            image = new Image(imageUrl);
+            graphicalRepresentation = new ImageView(image);
+            graphicalRepresentation.setFitHeight(imageHeight);
+            graphicalRepresentation.setFitWidth(imageWidth);
+        } catch (NullPointerException | IllegalArgumentException imageUrlNotValidException) {
+            graphicalRepresentation = new ImageView();
+            graphicalRepresentation.setVisible(false);
+        }
     }
 
 
@@ -72,13 +80,13 @@ public class CollisionHandler {
     }
 
     public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
-        if (graphicalRepresentation == null) {
-            constructGraphicalRepresentation();
-        }
         this.graphicalRepresentation = graphicalRepresentation;
     }
     
     public ImageView getGraphicalRepresentation() {
-    		return graphicalRepresentation;
+    	if (graphicalRepresentation == null) {
+        	constructGraphicalRepresentation();    		
+    	}
+        return graphicalRepresentation;
     }
 }

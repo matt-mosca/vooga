@@ -91,6 +91,10 @@ public class Sprite {
 	public boolean isAlive() {
 		return collisionHandler.isAlive();
 	}
+	
+	public boolean reachedTarget() {
+		return movementStrategy.targetReached();
+	}
 
 	/**
 	 * Auto-updating (NOT snapshot) position of this AbstractMovementStrategy for tracking
@@ -108,6 +112,10 @@ public class Sprite {
 	public double getY() {
 		return movementStrategy.getCurrentY();
 	}
+	
+	public boolean shouldRemoveUponCompletion() {
+		return movementStrategy.removeUponCompletion();
+	}
 
 	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
 		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
@@ -118,10 +126,12 @@ public class Sprite {
 	}
 
 	public void setX(double newX) {
+		collisionHandler.getGraphicalRepresentation().setX(newX);
 		movementStrategy.setX(newX);
 	}
 
 	public void setY(double newY) {
+		collisionHandler.getGraphicalRepresentation().setY(newY);
 		movementStrategy.setY(newY);
 	}
 	

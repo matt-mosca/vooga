@@ -106,7 +106,6 @@ public class ChatClient {
                 InetAddress i = (InetAddress) ee.nextElement();
                 if (i.isSiteLocalAddress() && !i.isAnyLocalAddress() && !i.isLinkLocalAddress()
                         && !i.isLoopbackAddress() && !i.isMulticastAddress()) {
-                    System.out.println(n.getName());
                     socket.setNetworkInterface(NetworkInterface.getByName(n.getName()));
                 }
             }

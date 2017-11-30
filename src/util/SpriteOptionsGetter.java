@@ -119,17 +119,25 @@ public class SpriteOptionsGetter {
             Constructor desiredConstructor = subclassConstructors[0];
             Parameter[] constructorParameters = desiredConstructor.getParameters();
             for (Parameter constructorParameter : constructorParameters) {
-                String parameterName = constructorParameter.getAnnotation(ParameterName.class).value();
-                String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
-                if (parameterDescription != null) {
-                    parameterToDescription.put(parameterName, parameterDescription);
-                    descriptionToParameter.put(parameterDescription, parameterName);
-                    // TODO - eliminate above?
-                    parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
+                ParameterName parameterNameAnnotation = constructorParameter.getAnnotation(ParameterName.class);
+                if (parameterNameAnnotation != null) {
+                    String parameterName = parameterNameAnnotation.value();
+                    String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
+                    if (parameterDescription != null) {
+                        parameterToDescription.put(parameterName, parameterDescription);
+                        descriptionToParameter.put(parameterDescription, parameterName);
+                        // TODO - eliminate above?
+                        parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
+                    } else {
+                        parameterToDescription.put(parameterName, parameterName);
+                        descriptionToParameter.put(parameterName, parameterName);
+                        parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
+                    }
                 } else {
-                    parameterToDescription.put(parameterName, parameterName);
-                    descriptionToParameter.put(parameterName, parameterName);
-                    parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
+                    String parameterTypeSimple = constructorParameter.getType().getSimpleName();
+                    parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
+                    descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);
+                    parameterDescriptionsToClasses.put(parameterTypeSimple, constructorParameter.getType());
                 }
             }
         }

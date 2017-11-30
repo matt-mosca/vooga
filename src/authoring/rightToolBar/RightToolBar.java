@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import authoring.AuthorInterface;
 import authoring.EditDisplay;
 import authoring.ObjectProperties;
@@ -64,18 +63,21 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private Label projectileLabel;
 	private HBox projectileSlot;
 	private Button deleteButton;
+	private ReturnButton retB;
 	private CreationInterface created;
 	private AuthoringController myController;
 	private Map<String, String> basePropertyMap;
 	private final int X_LAYOUT = 680;
-	private final int Y_LAYOUT = 75;
+	private final int Y_LAYOUT = 30;
 
 	
 	public RightToolBar(EditDisplay display, AuthoringController controller) {
 		this.created = created;
+		retB = new ReturnButton(display);
 		myController = controller;
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
+		this.setSpacing(20);
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
@@ -91,6 +93,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
+        this.getChildren().add(retB);
         
         newTower.attach(topTabPane.getTabs().get(0));
         newTroop.attach(topTabPane.getTabs().get(1));
@@ -116,7 +119,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	
 	@Override
 	public void imageSelected(SpriteImage myImageView) {
-		myPropertiesBox = new PropertiesBox(created, myImageView);
+		myPropertiesBox = new PropertiesBox(created, myImageView, myController);
 		if (myImageView instanceof TowerImage) inventoryTower.addNewImage(myImageView);
 		if (myImageView instanceof TroopImage) inventoryTroop.addNewImage(myImageView);
 		if (myImageView instanceof ProjectileImage) inventoryProjectile.addNewImage(myImageView);
@@ -133,9 +136,9 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {	
-		myPropertiesBox = new PropertiesBox(created, imageView);
+		myPropertiesBox = new PropertiesBox(created, imageView, myController);
 		if (imageView instanceof TowerImage) newPaneWithProjectileSlot((TowerImage) imageView);
-		if (imageView instanceof TroopImage) newPane(imageView);
+		if (imageView instanceof TroopImage || imageView instanceof ProjectileImage) newPane(imageView);
 	}
 	
 	private void newPaneWithProjectileSlot(TowerImage imageView) {
@@ -170,7 +173,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
-
 	}
 	
 	private void newProjectilesWindow(TowerImage myTowerImage) {
@@ -203,6 +205,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
 		projectileSlot.getChildren().add(imageClone);
 		myTowerImage.addProjectileImage(imageClone);
+		myTowerImage.assignProjectile(imageClone.getName());
 		
 	}
 
@@ -227,6 +230,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(topTabPane);
 		this.getChildren().add(bottomTabPane);
+		this.getChildren().add(retB);
 	}
 	
 	public void addToMap(String property, String value) {

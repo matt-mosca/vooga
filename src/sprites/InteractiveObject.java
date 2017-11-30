@@ -10,13 +10,16 @@ import splashScreen.ScreenDisplay;
 
 public abstract class InteractiveObject extends ImageView implements ClickableInterface{
 	private boolean locked;
+	private int id;
 	private Droppable droppable;
 	private ScreenDisplay myDisplay;
+	private String elementName;
 	
-	public InteractiveObject(ScreenDisplay display) {
+	//TODO set ID
+	public InteractiveObject(ScreenDisplay display, String name) {
 		myDisplay = display; 
 		droppable = myDisplay.getDroppable();
-		
+		elementName = name;
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->dragged(e));
 		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->dropped(e));
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->pressed(e));
@@ -54,6 +57,22 @@ public abstract class InteractiveObject extends ImageView implements ClickableIn
 	
 	public Point2D center() {
 		return new Point2D(this.getX(), this.getY());
+	}
+	
+	public int getElementId() {
+		return id;
+	}
+	
+	public void setElementId(int id) {
+		this.id = id;
+	}
+	
+	public String getElementName() {
+		return elementName;
+	}
+	
+	public void setElementName(String name) {
+		elementName = name;
 	}
 	
 	public abstract int getSize();

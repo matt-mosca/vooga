@@ -18,6 +18,7 @@ public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 			@ParameterName("attackPeriod") double attackPeriod) {
 		super(attackPeriod);
 		this.projectileTemplate = projectileTemplate;
+		
 	}
 
 	@Override
