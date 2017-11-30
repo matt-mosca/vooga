@@ -29,7 +29,7 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 	/**
 	 * Moves the object in a circular path 
 	 * 
-	 * @return The current coordinates of the object in Point2D format
+	 * @return The coordinates of the object in Point2D format
 	 * */
 	public Point2D move() {
 		angle += angularVelocity;

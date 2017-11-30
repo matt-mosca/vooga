@@ -61,7 +61,8 @@ public class ElementManager {
 			}
 			processAllCollisionsForElement(elementIndex, element);
 		}
-		gameElements.removeIf(element -> !element.isAlive());
+		gameElements.removeIf(
+				element -> !element.isAlive() || (element.reachedTarget() && element.shouldRemoveUponCompletion()));
 	}
 
 	boolean allEnemiesDead() {
