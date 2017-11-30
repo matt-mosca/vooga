@@ -75,9 +75,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController = new PlayController();
 		myLeftBar = new VBox();
 		formatLeftBar();
-		this.setDroppable(myPlayArea);
 		createGameArea(height - 20);
 		addItems();
+		this.setDroppable(myPlayArea);
 		initializeGameState();
 //		initializeSprites();
 		initializeInventory();
@@ -117,7 +117,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		tower1 = new TowerImage(this, "Castle_Tower1");
 		tower1.setFitHeight(40);
 		tower1.setFitWidth(40);
-		myPlayArea.placeInGrid(tower1);
+		myPlayArea.getChildren().add(tower1);
 	}
 	
 	private void initializeGameState() {
@@ -142,14 +142,19 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private void initializeInventory() {
 		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
+		ImageView newImage;
 		for(String s:myController.getInventory()) {
 			ImageView imageView;
 			try {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
+				
 			}catch(NullPointerException e) {
 				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL"))));
 			}
+			imageView.setFitHeight(70);
+			imageView.setFitWidth(60);
 			imageView.setId(s);
+			imageView.setUserData(templates.get(s).get("imageUrl"));
 			myInventoryToolBar.addToToolbar(imageView);
 		}
 	}
@@ -226,7 +231,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	//TODO clone objects so that they don't dissappear out of the list
 	@Override
 	public void listItemClicked(ImageView image) {
-		StaticObject placeable = new StaticObject(1, this, image.getId());
+		StaticObject placeable = new StaticObject(1, this, (String) image.getUserData());
+		placeable.setElementName(placeable.getId());
 		myPlayArea.getChildren().add(placeable);
 	}
 

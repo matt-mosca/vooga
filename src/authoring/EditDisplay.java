@@ -70,8 +70,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.BLACK, stage);
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
+
 		tester = new PlayController();
-//		super(width, height, Color.GRAY);
 		addItems();
 		formatLeftBar();
 		setStandardTheme();
@@ -84,8 +84,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Button saveButton = new Button("Save");
 		saveButton.setLayoutY(600);
 		rootAdd(saveButton);
-		
-		
 	}
 	
 	private void createLabel() {
@@ -187,7 +185,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
-//		newObject.setElementId(controller.placeElement(object.getImageString(), new Point2D(object.getX(),object.getY())));
+		newObject.setElementId(controller.placeElement(newObject.getElementName(), new Point2D(0,0)));
 	}
 
 	@Override
@@ -207,6 +205,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	@Override
 	public void save(File saveName) {
+		controller.setGameName(saveName.getName().replace(".voog", ""));
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}
