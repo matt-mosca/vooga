@@ -2,6 +2,8 @@ package engine;
 
 import engine.authoring_engine.AuthoringController;
 import engine.behavior.movement.TrackingPoint;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import sprites.Sprite;
@@ -148,7 +150,7 @@ public abstract class AbstractGameController {
 	public Set<String> getInventory() {
 		return getLevelInventories().get(getCurrentLevel());
 	}
-	
+
 	public ImageView getRepresentationFromSpriteId(int spriteId) {
 		return spriteIdMap.get(spriteId).getGraphicalRepresentation();
 	}
@@ -213,11 +215,10 @@ public abstract class AbstractGameController {
 	protected IOController getIoController() {
 		return ioController;
 	}
-	
+
 	protected GameConditionsReader getGameConditionsReader() {
 		return gameConditionsReader;
 	}
-
 
 	protected SpriteTemplateIoHandler getSpriteTemplateIoHandler() {
 		return spriteTemplateIoHandler;
@@ -246,7 +247,7 @@ public abstract class AbstractGameController {
 	protected List<Bank> getLevelBanks() {
 		return levelBanks;
 	}
-	
+
 	protected int getCurrentLevel() {
 		return currentLevel;
 	}
@@ -283,7 +284,7 @@ public abstract class AbstractGameController {
 		}
 		throw new IllegalArgumentException();
 	}
-	
+
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
 
 	private Collection<Sprite> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
@@ -344,7 +345,7 @@ public abstract class AbstractGameController {
 		initializeLevel();
 		setLevel(1);
 	}
-	
+
 	private void initializeLevel() {
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
@@ -371,24 +372,29 @@ public abstract class AbstractGameController {
 	private Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String elementTemplateName,
 			Point2D startCoordinates) {
 		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
-		TrackingPoint targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
+		System.out.println(idOfSpriteToTrack);
+		TrackingPoint targetLocation;
+		if (idOfSpriteToTrack != -1)
+			targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
+		else
+			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
 		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
 		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
 		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
 		return auxiliarySpriteConstructionObjects;
 	}
-	
+
 	private void initializeLevelConditions() {
 		getLevelConditions().add(new HashMap<>());
 		getLevelConditions().get(getCurrentLevel()).put(VICTORY, getDefaultVictoryCondition());
 		getLevelConditions().get(getCurrentLevel()).put(DEFEAT, getDefaultDefeatCondition());
 	}
-	
+
 	private String getDefaultVictoryCondition() {
 		return new ArrayList<>(gameConditionsReader.getPossibleVictoryConditions()).get(0);
 	}
-	
+
 	private String getDefaultDefeatCondition() {
 		return new ArrayList<>(gameConditionsReader.getPossibleDefeatConditions()).get(0);
 	}
