@@ -29,8 +29,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
 	private Packager packager;
-	private GameConditionsReader gameConditionsReader;
-	private SpriteTemplateExporter spriteExporter;
 	//Making a hard-coded map just so we can test in the front end with author and player
 	//We'll fix it soon 
 	

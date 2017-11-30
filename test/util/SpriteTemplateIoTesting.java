@@ -13,13 +13,12 @@ public class SpriteTemplateIoTesting {
         Map<String, Map<String, String>> mapMap = new HashMap<>();
         mapMap.put("a", map);
         spriteTemplateExporter.exportSpriteTemplates("test", mapMap);
-        Map<String, Map<String, String>> recovered = new HashMap<>();
         try {
-            spriteTemplateExporter.loadSpriteTemplates("test", recovered);
+            Map<String, Map<String, String>> recovered = spriteTemplateExporter.loadSpriteTemplates("test");
+            System.out.println(recovered);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(recovered);
     }
 
 }

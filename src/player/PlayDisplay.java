@@ -2,6 +2,7 @@ package player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -131,7 +132,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		if(result.isPresent()) {
 			try {
 				myController.loadOriginalGameState(result.get(), 1);
-			} catch (FileNotFoundException e) {
+			} catch (IOException e) {
 				// TODO Change to alert for the user 
 				e.printStackTrace();
 			}
