@@ -57,6 +57,7 @@ public class ElementManager {
 			Sprite element = gameElements.get(elementIndex);
 			element.move();
 			if (element.shouldFire()) {
+
 				spriteFactory.generateSprite(element.fire(), new Point2D(element.getX(), element.getY()));
 			}
 			processAllCollisionsForElement(elementIndex, element);
