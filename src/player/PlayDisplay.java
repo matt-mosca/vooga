@@ -150,6 +150,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		ImageView newImage;
 		for(String s:myController.getInventory()) {
 			ImageView imageView;
+			System.out.println(s);
 			try {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
 				
