@@ -143,13 +143,14 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void initializeInventory() {
 		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
 		for(String s:myController.getInventory()) {
+			ImageView imageView;
 			try {
-				myInventoryToolBar.addToToolbar(new ImageView(new Image(templates.get(s).get("imageUrl"))));
+				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
 			}catch(NullPointerException e) {
-				myInventoryToolBar.addToToolbar(new ImageView(new Image(getClass().getClassLoader()
-						.getResourceAsStream(templates.get(s).get("imageURL")))));
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL"))));
 			}
-			
+			imageView.setId(s);
+			myInventoryToolBar.addToToolbar(imageView);
 		}
 	}
 	
@@ -191,7 +192,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(this, sideLength, sideLength);
+		myPlayArea = new PlayArea(myController, sideLength, sideLength);
 		rootAdd(myPlayArea);
 	}
 	
@@ -232,10 +233,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void save(File saveName) {
 		myController.saveGameState(saveName);
-	}
-	
-	private void addToLeftBar(Node n) {
-		myLeftBar.getChildren().add(n);
 	}
 	
 	private void formatLeftBar() {
