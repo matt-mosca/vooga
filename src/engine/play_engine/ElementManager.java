@@ -39,7 +39,8 @@ public class ElementManager {
 	 */
 	public ElementManager(SpriteFactory spriteFactory) {
 		this.spriteFactory = spriteFactory;
-		newElements = new ArrayList<Sprite>();
+		newElements = new ArrayList<>();
+		deadElements = new ArrayList<>();
 		spriteQueryHandler = new SpriteQueryHandler();
 	}
 
@@ -81,12 +82,13 @@ public class ElementManager {
 			}
 			processAllCollisionsForElement(elementIndex, element);
 		}
-		gameElements.addAll(newElements);
 		gameElements.forEach(element -> {
 			if (!element.isAlive() || (element.reachedTarget() && element.shouldRemoveUponCompletion())) {
 				deadElements.add(element);
 			}
 		});
+		gameElements.removeAll(deadElements);
+		gameElements.addAll(newElements);
 	}
 
 	List<Sprite> getDeadElements() {
@@ -96,6 +98,7 @@ public class ElementManager {
 	void clearDeadElements() {
 		deadElements.clear();
 	}
+
 
 	List<Sprite> getNewlyGeneratedElements() {
 		return newElements;
