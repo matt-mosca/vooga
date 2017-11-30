@@ -317,6 +317,13 @@ public interface AuthoringModelController {
 	void setResourceEndowments(Map<String, Double> resourceEndowments);
 
 	/**
+	 * Set the resource endowment of a specific resource name
+	 * @param resourceName
+	 * @param newResourceEndowment
+	 */
+	void setResourceEndowment(String resourceName, double newResourceEndowment);
+	
+	/**
 	 * Set the cost of an element in terms of various resources
 	 * 
 	 * @param elementName
