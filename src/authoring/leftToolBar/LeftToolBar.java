@@ -15,6 +15,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import splashScreen.ScreenDisplay;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 /**
@@ -45,7 +46,7 @@ public class LeftToolBar extends VBox {
 	private void createPropertiesMap() {
 		propertiesMap = new HashMap<String, String>();
 		propertiesMap.put("Collision effects", "Invulnerable to collision damage");
-		propertiesMap.put("Collided-with effects", "Do nothing to collided objects");
+		propertiesMap.put("Collided-with effects", "Do nothing to colliding objects");
 		propertiesMap.put("Firing behavior", "Do not fire projectiles");
 		propertiesMap.put("Projectile Type Name", "Projectile");
 		propertiesMap.put("Numerical \"team\" association", "0");
@@ -61,11 +62,11 @@ public class LeftToolBar extends VBox {
 		
 		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
 		
-		addBackgroundObjectToTab(2, "grass_small.png");
-		addBackgroundObjectToTab(1, "grass2_medium.png");
-		addBackgroundObjectToTab(1, "brick_path.png");
-		addBackgroundObjectToTab(1, "stone_path1.png");
-		addBackgroundObjectToTab(1, "water_medium.png");
+		backgroundTab.addItem(createBackgroundObject(2, "grass_small.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "grass2_medium.png"));		
+		backgroundTab.addItem(createBackgroundObject(1, "brick_path.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "stone_path1.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "water_medium.png"));
 		
 		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));
@@ -75,23 +76,38 @@ public class LeftToolBar extends VBox {
 		makeTabsUnclosable();
 	}
 	
-	private void addBackgroundObjectToTab(int size, String imageString) {
-		defineElement(size, imageString);
-		backgroundTab.addBackgroundItem(size, imageString);
-
+	private StaticObject createBackgroundObject(int size, String imageString) {
+		BackgroundObject tempStatic = new BackgroundObject(size, myDisplay, imageString);
+		defineElement(tempStatic.getRealSize()*size, imageString);
+		return tempStatic;
 	}
 	
 	private StaticObject createStaticObject(int size, String imageString) {
 		StaticObject tempStatic = new StaticObject(size, myDisplay, imageString);
-		defineElement(size, imageString);
+		defineElement(tempStatic.getRealSize()*size, imageString);
 		return tempStatic;
 	}
 
 	public void defineElement(int size, String imageString) {
-		propertiesMap.put("imageWidth", String.valueOf(size));
-		propertiesMap.put("imageHeight", String.valueOf(size));
-		propertiesMap.put("imageUrl", imageString);
-		myController.defineElement(imageString, propertiesMap);
+		Map<String, String> defaultValues = new HashMap<>(propertiesMap);
+		defaultValues.put("Numerical \"team\" association", "0");
+		defaultValues.put("Health points", "50");
+		defaultValues.put("Damage dealt to colliding objects", "20");
+		defaultValues.put("Speed of movement", "5");
+		defaultValues.put("initialAngle", "0");
+		defaultValues.put("radius", "10");
+		defaultValues.put("centerY", "0");
+		defaultValues.put("centerX", "0");
+		defaultValues.put("Target y-coordinate", "0");
+		defaultValues.put("Target x-coordinate", "0");
+		defaultValues.put("Projectile Type Name", "No projectile selected");
+		defaultValues.put("Attack period", "10");
+		defaultValues.put("PathList", "CurrentPath");
+		defaultValues.put("Move an object", "Object will stay at desired location");
+		defaultValues.put("imageWidth", String.valueOf(size));
+		defaultValues.put("imageHeight", String.valueOf(size));
+		defaultValues.put("imageUrl", imageString);
+		myController.defineElement(imageString, defaultValues);
 	}
 	
 	private void makeTabsUnclosable() {

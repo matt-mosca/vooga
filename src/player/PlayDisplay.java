@@ -150,7 +150,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
 				
 			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL"))));
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
 			}
 			imageView.setFitHeight(70);
 			imageView.setFitWidth(60);
@@ -234,7 +234,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void listItemClicked(ImageView image) {
 		StaticObject placeable = new StaticObject(1, this, (String) image.getUserData());
-		placeable.setElementName(placeable.getId());
+		placeable.setElementName(image.getId());
 		myPlayArea.getChildren().add(placeable);
 	}
 

@@ -112,6 +112,10 @@ public class Sprite {
 	public double getY() {
 		return movementStrategy.getCurrentY();
 	}
+	
+	public boolean shouldRemoveUponCompletion() {
+		return movementStrategy.removeUponCompletion();
+	}
 
 	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
 		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
