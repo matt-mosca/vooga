@@ -26,6 +26,7 @@ public class ElementManager {
 	// every element pair only once
 	private List<Sprite> gameElements;
 	private List<Sprite> newElements;
+	private List<Sprite> deadElements;
 	
 	private SpriteQueryHandler spriteQueryHandler;
 
@@ -38,7 +39,8 @@ public class ElementManager {
 	 */
 	public ElementManager(SpriteFactory spriteFactory) {
 		this.spriteFactory = spriteFactory;
-		newElements = new ArrayList<Sprite>();
+		newElements = new ArrayList<>();
+		deadElements = new ArrayList<>();
 		spriteQueryHandler = new SpriteQueryHandler();
 	}
 
@@ -80,10 +82,23 @@ public class ElementManager {
 			}
 			processAllCollisionsForElement(elementIndex, element);
 		}
+		gameElements.forEach(element -> {
+			if (!element.isAlive() || (element.reachedTarget() && element.shouldRemoveUponCompletion())) {
+				deadElements.add(element);
+			}
+		});
+		gameElements.removeAll(deadElements);
 		gameElements.addAll(newElements);
-		gameElements.removeIf(
-				element -> !element.isAlive() || (element.reachedTarget() && element.shouldRemoveUponCompletion()));
 	}
+
+	List<Sprite> getDeadElements() {
+		return deadElements;
+	}
+
+	void clearDeadElements() {
+		deadElements.clear();
+	}
+
 
 	List<Sprite> getNewlyGeneratedElements() {
 		return newElements;
