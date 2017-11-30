@@ -122,7 +122,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
 		assertValidLevel(level);
 		Collection<Sprite> levelSprites = elementManager.getCurrentElements();
-		return levelSprites.stream().mapToInt(sprite -> getIdFromSprite(sprite)).boxed().collect(Collectors.toSet());
+		return levelSprites.stream().mapToInt(this::getIdFromSprite).boxed().collect(Collectors.toSet());
 	}
 
 	@Override

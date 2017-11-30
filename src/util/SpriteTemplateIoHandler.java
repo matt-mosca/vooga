@@ -39,6 +39,7 @@ public class SpriteTemplateIoHandler {
         for (String templateName : spriteTemplates.keySet()) {
             Properties templateProperties = new Properties();
             Map<String, String> templatePropertiesMap = spriteTemplates.get(templateName);
+            System.out.println(templatePropertiesMap);
             templatePropertiesMap.forEach(templateProperties::setProperty);
             String fileName = templateName + PROPERTIES_EXTENSION;
             File exportFile = new File(directoryPath + File.separator + fileName);
