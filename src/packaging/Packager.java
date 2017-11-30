@@ -23,31 +23,19 @@ import java.util.zip.ZipInputStream;
 /**
  * Packages up a game for delivery as an executable JAR.
  *
- * Has not yet been setup to launch everything, just a test app.
- *
- * Ideas: use compiler programmatically -> package compiled files + resources + other JARs (gson) -> delete compiled
- *      files from src
+ * TODO - Currently packages everything; need to make Player extend Application to be able to have game itself launch.
+ * TODO - extract raw strings 
  *
  * @author Ben Schwennesen
  */
 public class Packager {
 
-    public static final int MAX_ENTRY_LENGTH = 1024;
-    // no need for these in properties files since they will never change
+    private final int MAX_ENTRY_LENGTH = 1024;
     private final String WINDOWS_PATH_DELIMITER_PATTERN = Pattern.quote("\\");
     private final String MANIFEST_VERSION = "1.0";
     private final String GAMES_ROOT = "data/games/";
     private final String JAR_EXTENSION = ".jar";
-
-    // this will eventually be all game engine classes, among other things to include like resource files
-    // for now, they're just a bunch of files for testing purposes
-    private final String TESTING_PACKAGE = "networking";
-    private final String[] FILES_TO_INCLUDE = { "src", };//"images", "resources", "authoring", "data" };
-           /* TESTING_PACKAGE + File.separator + "ChatClient.class",
-            TESTING_PACKAGE + File.separator + "ChatThread.class",
-            TESTING_PACKAGE + File.separator + "ChatTestWindow.class"
-    };*/
-
+    private final File SOURCE_DIRECTORY = new File("src");
     private final Class LAUNCH_CLASS = Main.class;
 
     private JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
@@ -63,13 +51,11 @@ public class Packager {
         compile(new File("src"));
         Manifest manifest = new Manifest();
         manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, MANIFEST_VERSION);
-        manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS,Main.class.getName());
+        manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, LAUNCH_CLASS.getName());
         try {
             FileOutputStream outputStream = new FileOutputStream(GAMES_ROOT + gameName + JAR_EXTENSION);
             JarOutputStream target = new JarOutputStream(outputStream, manifest);
-            for (String fileName : FILES_TO_INCLUDE) {
-                addToJar(new File(fileName), target);
-            }
+            addToJar(SOURCE_DIRECTORY, target);
             writeResources(target);
             addLibraries(target);
             target.close();
@@ -178,17 +164,5 @@ public class Packager {
             // ignore
             ioException.printStackTrace();
         }
-    }
-
-
-    /**
-     * @param fileName
-     * @return the resource as an InputStream
-     * Based on code from 
-     * https://www.cefns.nau.edu/~edo/Classes/CS477_WWW/Docs/pack_resources_in_jar.html
-     */
-    public InputStream accessProperties (String fileName) {
-    	ClassLoader sampleClass = this.getClass().getClassLoader();
-    	return sampleClass.getResourceAsStream(fileName);
     }
 }
