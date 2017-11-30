@@ -16,8 +16,9 @@ public class TrackingMovementStrategy extends TargetedMovementStrategy {
 	// can't be set in constructor in order for reflexive creation of sprites to work
 	private TrackingPoint targetLocation;
 	
-	public TrackingMovementStrategy(@ParameterName("velocity") double velocity) {
-		super(new Point2D(0, 0), velocity);
+	public TrackingMovementStrategy(TrackingPoint targetLocation, @ParameterName("velocity") double velocity) {
+		super(new Point2D(targetLocation.getCurrentX(),targetLocation.getCurrentY()), velocity);
+		this.targetLocation = targetLocation;
 	}
 
 	public void setTargetLocation(TrackingPoint targetLocation) {

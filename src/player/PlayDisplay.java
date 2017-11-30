@@ -23,6 +23,7 @@ import engine.behavior.movement.StationaryMovementStrategy;
 import engine.play_engine.PlayController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
@@ -236,6 +237,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public void listItemClicked(ImageView image) {
 		StaticObject placeable = new StaticObject(1, this, (String) image.getUserData());
 		placeable.setElementName(image.getId());
+		myController.placeElement(placeable.getElementName(), new Point2D(50,50));
 		myPlayArea.getChildren().add(placeable);
 	}
 
