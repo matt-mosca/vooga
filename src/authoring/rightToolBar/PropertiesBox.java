@@ -59,7 +59,7 @@ public class PropertiesBox extends VBox {
 			            mySprite.update(t.getRowValue().getMyProperty(), t.getNewValue());
 			            Map<String, String> newPropertiesMap = new HashMap<String, String>();
 			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getNewValue());
-			            author.updateElementDefinition(mySprite.getName(), mySprite.getAllProperties(), false);
+			            author.updateElementDefinition(mySprite.getName(), mySprite.getAllProperties(), true);
 			        }
 			    }
 			);

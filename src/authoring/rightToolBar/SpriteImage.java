@@ -42,6 +42,8 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("imageWidth", "45.0");
 		defaultValues.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
 		defaultValues.put("imageHeight", "45.0");
+		if (this instanceof TroopImage) defaultValues.put("Numerical \"team\" association", "1");
+		if (this instanceof TowerImage) defaultValues.put("Numerical \"team\" association", "2");
 	}
 	
 	public void addImage(String imageName) {
