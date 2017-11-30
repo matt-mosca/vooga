@@ -12,6 +12,7 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
+import authoring.rightToolBar.ReturnButton;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
@@ -56,7 +57,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
-	private  ReturnButton myReturnButton;
 	private Map<String, String> basePropertyMap;
 	private BottomToolBar myBottomToolBar;
 	private PlayController tester;
@@ -64,16 +64,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private VBox myLeftButtonsBar;
 	
 	
-	public EditDisplay(int width, int height) {
+	public EditDisplay(int width, int height, Stage stage) {
 //		super(width, height, Color.GREEN);
 //		super(width, height);
-		super(width, height, Color.BLACK);
-//		super(width, height, Color.GRAY);
-		myReturnButton = new ReturnButton(this);
-		rootAdd(myReturnButton);
+		super(width, height, Color.BLACK, stage);
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
-	
+
+		tester = new PlayController();
 		addItems();
 		formatLeftBar();
 		setStandardTheme();
@@ -258,6 +256,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myStage.show();
 		Main restart = new Main();
 		restart.start(myStage);
+		getStage().close();
+		
+		
 	}
 
 	@Override
