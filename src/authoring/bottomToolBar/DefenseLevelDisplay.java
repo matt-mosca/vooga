@@ -39,9 +39,6 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		
 		createTextBoxes();
 		placeTextAndTextFields();
-		Button createNewResource = new Button("Create a new Resource!");
-		createNewResource.setOnAction(e->createNewResource());
-		super.getLevelPane().getChildren().add(createNewResource);
 	}
 
 	private void createTextBoxes() {
@@ -61,10 +58,7 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		}
 		
 	}
-	
-	private void createNewResource() {
-		
-	}
+
 	
 	private void placeTextAndTextFields() {
 		int height = 30;

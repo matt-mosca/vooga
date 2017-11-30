@@ -36,10 +36,12 @@ public class LevelDisplay {
 	public LevelDisplay(int n, LevelTab lv, AuthoringController controller) {
 		myRoot = new BorderPane();
 		centerPane = new GridPane();
+		resources = new ResourceDisplay(controller);
 		myRoot.setRight(resources.getRoot());
 		myRoot.setCenter(centerPane);
-		centerPane.setAlignment(Pos.CENTER);	
 		myScene = new Scene(myRoot); 
+		myRoot.setPrefWidth(900);
+		myRoot.setPrefHeight(800);
 		myNumber = n;
 		myController = controller;
 		myStage = new Stage();

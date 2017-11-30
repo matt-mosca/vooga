@@ -24,13 +24,14 @@ public class ResourceDisplay extends VBox{
 		editResources = new Button("Edit or add a resource.");
 		editResources.setOnAction(e->changeResourceVal());
 		
+		this.getChildren().add(editResources);
 		update();
 	}
 
 	private void changeResourceVal() {
 		this.getChildren().clear();
-		TextField name = new TextField("Enter the name of your resource.");
-		TextField value = new TextField("How much of this resource would you like in this level?");
+		TextField name = new TextField("Name");
+		TextField value = new TextField("Value");
 		Button enter = new Button("add!");
 		enter.setOnAction(e->{
 			if (myController.getResourceEndowments().containsKey(name.getText())) {
@@ -40,12 +41,17 @@ public class ResourceDisplay extends VBox{
 			else {
 				resourceEndowments.put(name.getText(), Double.parseDouble(value.getText()));
 			}
+			this.getChildren().clear();
+			this.getChildren().add(editResources);
+			update();
 		});
-		this.getChildren().clear();
-		update();
+		this.getChildren().addAll(name, value, enter);
+		
 	}
 
 	private void update() {
+		myController.setResourceEndowments(resourceEndowments); //hopefully you're doing some modifications 
+		//and passing me a differnent map for the next step.
 		Map<String, Double> resources = myController.getResourceEndowments();
 		Label l = new Label("These are your current resources.");
 		this.getChildren().add(l);
