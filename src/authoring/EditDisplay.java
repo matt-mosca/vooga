@@ -86,8 +86,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Button saveButton = new Button("Save");
 		saveButton.setLayoutY(600);
 		rootAdd(saveButton);
-		
-		
 	}
 	
 	private void createLabel() {
