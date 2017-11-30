@@ -23,6 +23,7 @@ public class ElementManager {
 	// Use list to enforce an ordering of elements to facilitate consideration of
 	// every element pair only once
 	private List<Sprite> gameElements;
+	private List<Sprite> newElements;
 
 	// TODO
 	// Reference to GridManager
@@ -33,6 +34,7 @@ public class ElementManager {
 	 */
 	public ElementManager(SpriteFactory spriteFactory) {
 		this.spriteFactory = spriteFactory;
+		newElements = new ArrayList<Sprite>();
 	}
 
 	// Guaranteed to return only active elements (i.e. not dead ones)
@@ -53,17 +55,30 @@ public class ElementManager {
 	 */
 
 	void update() {
+
+		newElements.clear();
+
 		for (int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
 			Sprite element = gameElements.get(elementIndex);
 			element.move();
 			if (element.shouldFire()) {
 
-				spriteFactory.generateSprite(element.fire(), new Point2D(element.getX(), element.getY()));
+				Sprite projectileSprite = spriteFactory.generateSprite(element.fire(),
+						new Point2D(element.getX(), element.getY()));
+				System.out.println(element.fire());
+				System.out.println("X: " + element.getX());
+				System.out.println("Y: " + element.getY());
+				newElements.add(projectileSprite);
 			}
 			processAllCollisionsForElement(elementIndex, element);
 		}
+		gameElements.addAll(newElements);
 		gameElements.removeIf(
 				element -> !element.isAlive() || (element.reachedTarget() && element.shouldRemoveUponCompletion()));
+	}
+
+	List<Sprite> getNewlyGeneratedElements() {
+		return newElements;
 	}
 
 	boolean allEnemiesDead() {

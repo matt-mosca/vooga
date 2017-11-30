@@ -88,6 +88,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			}
 			*/
 			elementManager.update();
+			for(Sprite s : elementManager.getNewlyGeneratedElements()) {
+				cacheAndCreateIdentifier(s);
+			}
 		}
 	}
 
