@@ -150,7 +150,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
 				
 			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL"))));
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
 			}
 			imageView.setFitHeight(70);
 			imageView.setFitWidth(60);

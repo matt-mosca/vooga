@@ -15,6 +15,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import splashScreen.ScreenDisplay;
+import sprites.BackgroundObject;
 import sprites.StaticObject;
 
 /**
@@ -61,14 +62,11 @@ public class LeftToolBar extends VBox {
 		
 		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
 		
-		addBackgroundObjectToTab(2, "grass_small.png");
-		addBackgroundObjectToTab(1, "grass2_medium.png");
-		addBackgroundObjectToTab(1, "brick_path.png");
-		addBackgroundObjectToTab(1, "stone_path1.png");
-		addBackgroundObjectToTab(1, "water_medium.png");
-		
-		System.out.println("TEMPLATES");
-		System.out.println(myController.getAllDefinedTemplateProperties());
+		backgroundTab.addItem(createBackgroundObject(2, "grass_small.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "grass2_medium.png"));		
+		backgroundTab.addItem(createBackgroundObject(1, "brick_path.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "stone_path1.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "water_medium.png"));
 		
 		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));
@@ -78,15 +76,15 @@ public class LeftToolBar extends VBox {
 		makeTabsUnclosable();
 	}
 	
-	private void addBackgroundObjectToTab(int size, String imageString) {
-		defineElement(size, imageString);
-		backgroundTab.addBackgroundItem(size, imageString);
-
+	private StaticObject createBackgroundObject(int size, String imageString) {
+		BackgroundObject tempStatic = new BackgroundObject(size, myDisplay, imageString);
+		defineElement(tempStatic.getRealSize()*size, imageString);
+		return tempStatic;
 	}
 	
 	private StaticObject createStaticObject(int size, String imageString) {
 		StaticObject tempStatic = new StaticObject(size, myDisplay, imageString);
-		defineElement(size, imageString);
+		defineElement(tempStatic.getRealSize()*size, imageString);
 		return tempStatic;
 	}
 
