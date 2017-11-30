@@ -39,6 +39,7 @@ public class CollisionHandler {
         Image image;
         try {
             image = new Image(imageUrl);
+            System.out.println("Initializing imageView");
             graphicalRepresentation = new ImageView(image);
             graphicalRepresentation.setFitHeight(imageHeight);
             graphicalRepresentation.setFitWidth(imageWidth);
@@ -84,7 +85,9 @@ public class CollisionHandler {
     }
     
     public ImageView getGraphicalRepresentation() {
-    	constructGraphicalRepresentation();
+    	if (graphicalRepresentation == null) {
+        	constructGraphicalRepresentation();    		
+    	}
         return graphicalRepresentation;
     }
 }
