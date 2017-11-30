@@ -17,12 +17,12 @@ import sprites.Sprite;
  */
 public class SpriteQueryHandler {
 	
-	private Sprite getNearestSpriteToPoint(int elementPlayerId, Point2D coordinates, List<Sprite> levelSprites) {
+	private Sprite getNearestSpriteToPoint(int toGenerateId, Point2D coordinates, List<Sprite> levelSprites) {
 		double nearestDistance = Double.MAX_VALUE;
 		Sprite nearestSprite = null;
 		for (Sprite sprite : levelSprites) {
 			double distanceToSprite = new Point2D(sprite.getX(), sprite.getY()).distance(coordinates);
-			if (distanceToSprite < nearestDistance && sprite.getPlayerId() != elementPlayerId) {
+			if (distanceToSprite < nearestDistance && sprite.getPlayerId() != toGenerateId) {
 				nearestDistance = distanceToSprite;
 				nearestSprite = sprite;
 			}

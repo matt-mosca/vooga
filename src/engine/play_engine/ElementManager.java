@@ -22,6 +22,8 @@ public class ElementManager {
 
 	private SpriteFactory spriteFactory;
 
+	private final String TEAM_NUMBER_KEY = "Numerical \"team\" association", ZERO = "0";
+
 	// Use list to enforce an ordering of elements to facilitate consideration of
 	// every element pair only once
 	private List<Sprite> gameElements;
@@ -70,9 +72,10 @@ public class ElementManager {
 				String elementTemplateName = element.fire();
 				List<Sprite> exclusionOfSelf = new ArrayList<>(gameElements);
 				exclusionOfSelf.remove(element);
-				int elementId = element.getPlayerId();
+				Map<String, String> spriteToGenerateTemplate = spriteFactory.getTemplateProperties(elementTemplateName);
+				int toGenerateId = Integer.parseInt(spriteToGenerateTemplate.getOrDefault(TEAM_NUMBER_KEY, ZERO));
 				Map<String, Object> auxiliaryObjects = spriteQueryHandler
-						.getAuxiliarySpriteConstructionObjectMap(elementId, new Point2D(element.getX(), element.getY()),
+						.getAuxiliarySpriteConstructionObjectMap(element.getPlayerId(), new Point2D(element.getX(), element.getY()),
 						exclusionOfSelf);
 				Sprite projectileSprite = spriteFactory.generateSprite(elementTemplateName,
 						new Point2D(element.getX(), element.getY()), auxiliaryObjects);
