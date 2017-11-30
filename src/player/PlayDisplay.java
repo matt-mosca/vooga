@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
 import authoring.AuthorInterface;
 import authoring.PlacementGrid;
 import authoring.rightToolBar.SpriteImage;
@@ -21,6 +21,7 @@ import engine.behavior.movement.StationaryMovementStrategy;
 import engine.play_engine.PlayController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Alert.AlertType;
@@ -28,16 +29,19 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import splashScreen.ScreenDisplay;
-import sprites.InteractiveObject;
 import sprites.Sprite;
+import sprites.StaticObject;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
-	private GameToolBar myGameToolBar;
+	private InventoryToolBar myInventoryToolBar;
+
+	private VBox myLeftBar;
 	private List<List<Sprite>> levelSpritesCache;
 	private PlacementGrid myMainGrid;
 	private HealthBar myHealthBar;
@@ -46,14 +50,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlayController myController;
 	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
+	private HealthDisplay myHealthDisplay;
+	private PointsDisplay myPointsDisplay;
 	private Button pause;
 	private Button play;
-	
+	private Timeline animation;
+
 	private TowerImage tower1;
 	private double xLocation = 0;
 	private double yLocation = 0;
 	private int level = 1;
-	
 	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
 	private final MovementStrategy testMovement = new StationaryMovementStrategy();
@@ -63,14 +69,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	//TODO uncomment the initialization and get rid of tester
 	public PlayDisplay(int width, int height) {
-		super(width, height, Color.BLUE);
+		super(width, height, Color.rgb(20, 20, 20));
 		myController = new PlayController();
+		myLeftBar = new VBox();
+		formatLeftBar();
+		this.setDroppable(myPlayArea);
+		createGameArea(height - 20);
 		addItems();
-		this.SetDroppable(myPlayArea);
-//		initializeGameState();
+		initializeGameState();
 //		initializeSprites();
+//		initializeInventory();
 		initializeButtons();
-		createTestGameArea();
 		createTestImages();
 //		createTestSprites();
 //		createTestGameArea();
@@ -79,7 +88,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
-		Timeline animation = new Timeline();
+		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
@@ -88,13 +97,18 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void addItems() {
 		myCoinDisplay = new CoinDisplay();
 		rootAdd(myCoinDisplay);
-		rootAdd(new HealthBackground());
-		myGameToolBar = new GameToolBar(this);
-		rootAdd(myGameToolBar);
-		myHealthBar = new HealthBar();
-		rootAdd(myHealthBar);
-		myDecreaseHealthButton = new DecreaseHealthButton(this);
-		rootAdd(myDecreaseHealthButton);
+		myHealthDisplay = new HealthDisplay();
+		rootAdd(myHealthDisplay);
+		myPointsDisplay = new PointsDisplay();
+		rootAdd(myPointsDisplay);
+//		rootAdd(new HealthBackground());
+		myInventoryToolBar = new InventoryToolBar(this);
+		rootAdd(myInventoryToolBar);
+		rootAdd(myLeftBar);
+//		myHealthBar = new HealthBar();
+//		rootAdd(myHealthBar);
+//		myDecreaseHealthButton = new DecreaseHealthButton(this);
+//		rootAdd(myDecreaseHealthButton);
 	}
 
 	private void createTestImages() {
@@ -104,15 +118,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myPlayArea.placeInGrid(tower1);
 	}
 	
-	//TODO Make sure this works once saved files are all good
-	private void initializeSprites() {
-		for(Integer id:myController.getLevelSprites(level)) {
-			ImageView imageView = myController.getRepresentationFromSpriteId(id);
-			myPlayArea.getChildren().add(imageView);
-		}
-	}
-	
-	//TODO Same as above
 	private void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		for(String title:myController.getAvailableGames().keySet()) {
@@ -121,13 +126,11 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
 		loadChoices.setTitle("Load Game");
 		loadChoices.setContentText(null);
-		loadChoices.setDialogPane(null);
 		
 		Optional<String> result = loadChoices.showAndWait();
 		if(result.isPresent()) {
-			//Insert method here that will cue the rest of initialization
 			try {
-				myController.loadOriginalGameState(result.get(), level);
+				myController.loadOriginalGameState(result.get(), 1);
 			} catch (FileNotFoundException e) {
 				// TODO Change to alert for the user 
 				e.printStackTrace();
@@ -135,17 +138,44 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 	}
 	
-	//TODO there is a problem where the buttons here aren't appearing
+	private void initializeInventory() {
+		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
+		for(String s:myController.getInventory()) {
+			try {
+				myInventoryToolBar.addToToolbar(new ImageView(new Image(templates.get(s).get("imageUrl"))));
+			}catch(NullPointerException e) {
+				myInventoryToolBar.addToToolbar(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL")))));
+			}
+			
+		}
+	}
+	
+	//TODO Make sure this works once saved files are all good
+	private void initializeSprites() {
+		for(Integer id:myController.getLevelSprites(level)) {
+			ImageView imageView = myController.getRepresentationFromSpriteId(id);
+			myPlayArea.getChildren().add(imageView);
+		}
+	}
+
 	private void initializeButtons() {
 		pause = new Button();
-		pause.setOnAction(e-> myController.pause());
+		pause.setOnAction(e-> {
+			myController.pause();
+			animation.pause();
+		});
 		pause.setText("Pause");
 		rootAdd(pause);
-		
+		pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
+
 		play = new Button();
-		play.setOnAction(e-> myController.resume());
+		play.setOnAction(e-> {
+			myController.resume();
+			animation.play();
+		});
 		play.setText("Play");
 		rootAdd(play);
+		play.setLayoutY(pause.getLayoutY() + 30);
 	}
 	
 	private void step() {
@@ -157,30 +187,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController.update();
 	}
 
-	private void createTestGameArea() {
-		myPlayArea = new PlayArea(this);
+	private void createGameArea(int sideLength) {
+		myPlayArea = new PlayArea(this, sideLength, sideLength);
 		rootAdd(myPlayArea);
-	}
-	
-	
-	
-	private void createTestSprites() {
-		//Method to work on player before linking with backend
-		Sprite test1_0 = createSprite();
-		Sprite test1_1 = createSprite();
-		Sprite test1_2 = createSprite();
-		Sprite test2_0 = createSprite();
-		Sprite test2_1 = createSprite();
-		Sprite test3_0 = createSprite();
-		Sprite test3_1 = createSprite();
-		List<Sprite> spriteList = new ArrayList<>();
-		spriteList.add(test1_0);
-		spriteList.add(test1_1);
-		spriteList.add(test1_2);
-		spriteList.add(test2_0);
-		spriteList.add(test2_1);
-		spriteList.add(test3_0);
-		spriteList.add(test3_1);
 	}
 	
 	private Sprite createSprite() {
@@ -212,9 +221,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	//TODO clone objects so that they don't dissappear out of the list
 	@Override
-	public void listItemClicked(InteractiveObject clickable) {
-		myPlayArea.getChildren().add(clickable);
-		clickable.setLocked(false);
+	public void listItemClicked(ImageView image) {
+		StaticObject placeable = new StaticObject(1, this, image.getId());
+		myPlayArea.getChildren().add(placeable);
 	}
 
 	@Override
@@ -222,4 +231,14 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController.saveGameState(saveName);
 	}
 	
+	private void addToLeftBar(Node n) {
+		myLeftBar.getChildren().add(n);
+	}
+	
+	private void formatLeftBar() {
+		myLeftBar.setPrefHeight(650);
+		myLeftBar.setLayoutY(25);
+		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
+		myLeftBar.getStyleClass().add("left-bar");
+	}
 }

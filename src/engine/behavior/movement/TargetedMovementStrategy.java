@@ -1,11 +1,12 @@
 package engine.behavior.movement;
 
+import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 
 /**
  * @author mscruggs
  */
-public abstract class TargetedMovementStrategy extends AbstractMovementStrategy {
+public class TargetedMovementStrategy extends AbstractMovementStrategy {
 
     private double targetX;
     private double targetY;
@@ -14,9 +15,10 @@ public abstract class TargetedMovementStrategy extends AbstractMovementStrategy 
     private double yVelocity;
     private double velocityMagnitude;
 
-    protected TargetedMovementStrategy(double targetX, double targetY, double velocityMagnitude) {
+    protected TargetedMovementStrategy(Point2D targetPoint,
+                                       @ParameterName("velocityMagnitude") double velocityMagnitude) {
         super();
-        setTargetCoordinates(targetX, targetY);
+        setTargetCoordinates(targetPoint.getX(), targetPoint.getY());
         this.velocityMagnitude = velocityMagnitude;
         calculateVelocityComponents();
     }

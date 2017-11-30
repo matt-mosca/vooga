@@ -1,11 +1,11 @@
 package player;
 
-public class CoinDisplay extends ValueDisplay {
-	private static final String IMAGE = "coins.png";
-	private static final double XPOS = 700;
+public class HealthDisplay extends ValueDisplay {
+	private static final String IMAGE = "heart.png";
+	private static final double XPOS = 600;
 	private static final double YPOS = 0;
 	
-	public CoinDisplay() {
+	public HealthDisplay() {
 		super();
 		setStandardDisplayImage(IMAGE);
 		setStandardImageViewSize();

@@ -1,4 +1,4 @@
-package shared;
+package player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +94,4 @@ public class GenericToolBar extends ScrollPane {
 	private BackgroundObject createNewBackground(int size, String imageString) {
 		return new BackgroundObject(size, myDisplay, imageString);
 	}
-	
-
-	
 }

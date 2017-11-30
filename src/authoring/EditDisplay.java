@@ -127,7 +127,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
-		this.SetDroppable(myGameArea);
+		this.setDroppable(myGameArea);
 		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
 		myColorChanger = new ColorChanger(this);
@@ -138,11 +138,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myGameChooser);
 		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
-//		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
-//		rootAdd(myBottomToolBar);
+		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
+		rootAdd(myBottomToolBar);
 	}
 	
-	public void listItemClicked(InteractiveObject clickable) {
+	public void listItemClicked(ImageView clickable) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
@@ -193,7 +193,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void changeTheme(String theme) {
-		rootStyle(myThemeChanger.getThemePath(theme));
+		rootStyleAndClear(myThemeChanger.getThemePath(theme));
 //		myRightToolBar.getStyleClass().add("borders");
 //		myLeftToolBar.getStyleClass().add("borders");
 	}
@@ -240,6 +240,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myRightToolBar.imageSelected(imageView);
 		
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
+		controller.addElementToInventory(imageView.getName());
 	}
 
 	@Override
@@ -247,5 +248,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		basePropertyMap.put(baseProperty, value);
 //		myRightToolBar.addToMap(baseProperty, value);
 		
+	}
+	
+	public void setGameArea(GameArea game) {
+		this.myGameArea = game;
 	}
 }

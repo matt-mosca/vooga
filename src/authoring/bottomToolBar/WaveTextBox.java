@@ -2,6 +2,7 @@ package authoring.bottomToolBar;import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+@Deprecated
 public class WaveTextBox extends TextBox {
 
 	public WaveTextBox(String s) {

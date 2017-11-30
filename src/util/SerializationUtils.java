@@ -9,7 +9,6 @@ import engine.behavior.collision.CollisionVisitor;
 import engine.behavior.collision.DamageDealingCollisionVisitable;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.firing.FiringStrategy;
-import engine.behavior.movement.AbstractMovementStrategy;
 import engine.behavior.movement.MovementStrategy;
 import sprites.Sprite;
 import sprites.SpriteFactory;
@@ -19,6 +18,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SerializationUtils {
 
@@ -27,14 +27,16 @@ public class SerializationUtils {
 	public static final String BANK = "bank";
 	public static final String STATUS = "status";
 	public static final String SPRITES = "sprites";
+	public static final String INVENTORY = "inventory";
 	public static final String DELIMITER = "\n";
 	// Description, Status, Sprites
-	public static final int NUM_SERIALIZATION_SECTIONS = 5;
+	public static final int NUM_SERIALIZATION_SECTIONS = 6;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
 	public static final int CONDITIONS_SERIALIZATION_INDEX = 1;
 	public static final int BANK_SERIALIZATION_INDEX = 2;
 	public static final int STATUS_SERIALIZATION_INDEX = 3;
 	public static final int SPRITES_SERIALIZATION_INDEX = 4;
+	public static final int INVENTORY_SERIALIZATION_INDEX = 5;
 	private GsonBuilder gsonBuilder;
 
 	public SerializationUtils() {
@@ -70,10 +72,10 @@ public class SerializationUtils {
 	 * @return serialization of map of level to serialized level data
 	 */
 	public String serializeGameData(String gameDescription, Map<String, String> gameConditions, Bank gameBank,
-			int level, Map<String, Double> status, List<Sprite> levelSprites) {
+			int level, Map<String, Double> status, List<Sprite> levelSprites, Set<String> levelInventories) {
 		Map<String, String> serializedLevelData = new HashMap<>();
 		serializedLevelData.put(Integer.toString(level),
-				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelSprites, level));
+				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelSprites, levelInventories, level));
 		return gsonBuilder.create().toJson(serializedLevelData);
 	}
 
@@ -112,7 +114,7 @@ public class SerializationUtils {
 	 * @return serialization of level data
 	 */
 	public String serializeLevelData(String gameDescription, Map<String, String> levelConditions, Bank bank,
-			Map<String, Double> status, List<Sprite> levelSprites, int level) {
+			Map<String, Double> status, List<Sprite> levelSprites, Set<String> levelInventories, int level) {
 		StringBuilder gameDataStringBuilder = new StringBuilder();
 		gameDataStringBuilder.append(serializeGameDescription(gameDescription));
 		gameDataStringBuilder.append(DELIMITER);
@@ -123,6 +125,8 @@ public class SerializationUtils {
 		gameDataStringBuilder.append(serializeStatus(status));
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeSprites(levelSprites, level));
+		gameDataStringBuilder.append(DELIMITER);
+		gameDataStringBuilder.append(serializeInventories(levelInventories, level));
 		return gameDataStringBuilder.toString();
 		
 	}
@@ -214,6 +218,11 @@ public class SerializationUtils {
 		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
 		return deserializeSprites(serializedSections[SPRITES_SERIALIZATION_INDEX]);
 	}
+	
+	public Set<String> deserializeGameInventories(String serializedGameData, int level) throws IllegalArgumentException {
+		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
+		return deserializeInventories(serializedSections[INVENTORY_SERIALIZATION_INDEX]);
+	}
 
 	/**
 	 * The number of levels that exist in this game currently, as set by the
@@ -262,6 +271,12 @@ public class SerializationUtils {
 		spritesMap.put(SPRITES, levelSprites);
 		return gsonBuilder.create().toJson(spritesMap);
 	}
+	
+	private String serializeInventories(Set<String> levelInventories, int level) {
+		Map<String, Set<String>> inventoriesMap = new HashMap<>();
+		inventoriesMap.put(INVENTORY, levelInventories);
+		return gsonBuilder.create().toJson(inventoriesMap);
+	}
 
 	private String deserializeDescription(String serializedDescription) {
 		Type mapType = new TypeToken<Map<String, String>>(){}.getType();
@@ -297,6 +312,12 @@ public class SerializationUtils {
 		System.out.println("HEY:"+serializedSprites);
 		Map<String, List<Sprite>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, mapType);
 		return spritesMap.get(SPRITES);
+	}
+	
+	private Set<String> deserializeInventories(String serializedInventories) {
+		Type mapType = new TypeToken<Map<String, Set<String>>>(){}.getType();
+		Map<String, Set<String>> inventoriesMap = gsonBuilder.create().fromJson(serializedInventories, mapType);
+		return inventoriesMap.get(INVENTORY);
 	}
 
 	private String[] retrieveSerializedSectionsForLevel(String serializedGameData, int level)

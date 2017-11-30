@@ -1,5 +1,6 @@
 package authoring.bottomToolBar;
 
+@Deprecated
 public class GameDurationTextBox extends TextBox{
 
 	public GameDurationTextBox(String s) {
