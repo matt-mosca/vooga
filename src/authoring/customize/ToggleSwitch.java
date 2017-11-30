@@ -48,8 +48,5 @@ public class ToggleSwitch extends HBox {
 	
 	public ToggleSwitch() {
 		init();
-
-
-	
-}
+	}
 }
