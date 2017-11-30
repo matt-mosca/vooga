@@ -100,7 +100,7 @@ public class DefenseLevelDisplay extends LevelDisplay {
 			fun.put("centerX", "0");
 			fun.put("Target y-coordinate", "0");
 			fun.put("Target x-coordinate", "0");
-			fun.put("Projectile Type Name", "No projectile selected");
+			fun.put("Projectile Type Name", Arrays.asList(order.getText().split(",")).get(0));
 			fun.put("Attack period", "10");
 			super.getAuthor().setWaveProperties(fun, Arrays.asList(order.getText().split(",")),
 					new Point2D(Double.parseDouble(start.getText().split(",")[0]),
