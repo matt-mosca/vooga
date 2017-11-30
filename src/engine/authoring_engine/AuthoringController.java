@@ -1,14 +1,13 @@
 package engine.authoring_engine;
 
 import authoring.path.PathList;
-import authoring.path.PathPoint;
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
 import packaging.Packager;
 import sprites.Sprite;
 import util.GameConditionsReader;
-import util.SpriteTemplateExporter;
+import util.SpriteTemplateIoHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
 	private Packager packager;
+	private GameConditionsReader gameConditionsReader;
 	private SpriteTemplateExporter spriteExporter;
 	//Making a hard-coded map just so we can test in the front end with author and player
 	//We'll fix it soon 
@@ -49,7 +49,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 	
 	@Override
 	public void exportGame() {
-		spriteExporter.exportSpriteTemplates(getGameName(), getSpriteFactory().getAllDefinedTemplateProperties());
+		getSpriteTemplateIoHandler().exportSpriteTemplates(getGameName(),
+				getSpriteFactory().getAllDefinedTemplateProperties());
 		packager.generateJar(getGameName());
 	}
 

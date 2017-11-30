@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +36,10 @@ public interface AuthoringModelController {
 	 *            the name used to save the game authoring data
 	 * @param level
 	 *            the level of the game which should be loaded
-	 * @throws FileNotFoundException
-	 *             if the save name does not refer to an existing file
+	 * @throws IOException
+	 *             if the save name does not refer to existing files
 	 */
-	void loadOriginalGameState(String saveName, int level) throws FileNotFoundException;
+	void loadOriginalGameState(String saveName, int level) throws IOException;
 
 	/**
 	 * Export a fully authored game, including all levels, into an executable file.

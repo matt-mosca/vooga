@@ -5,10 +5,7 @@ import engine.Bank;
 import sprites.FactoryTesting;
 import sprites.Sprite;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SpriteSerializationTesting {
 
@@ -19,7 +16,7 @@ public class SpriteSerializationTesting {
         System.out.println(sprite.getX() + " " + sprite.getY());
         SerializationUtils serializationUtils = new SerializationUtils();
         String ss = serializationUtils.serializeLevelData("bleh", new HashMap<>(), new Bank(),
-                new HashMap<>(), Arrays.asList(sprite), 1);
+                new HashMap<>(), Arrays.asList(sprite), new HashSet<>(),1);
         Map<Integer, String> map = new HashMap<>();
         map.put(1, ss);
         String sssss = serializationUtils.serializeLevelsData(map);
