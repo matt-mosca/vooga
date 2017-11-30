@@ -55,6 +55,7 @@ public class LeftToolBar extends VBox {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
 		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
 		
+<<<<<<< HEAD
 		staticTab.addItem(createStaticObject(1, "tortoise.png"));
 		staticTab.addItem(createStaticObject(2, "gray_circle.png"));		
 		staticTab.addItem(createStaticObject(2, "green_soldier.gif"));		
@@ -66,6 +67,20 @@ public class LeftToolBar extends VBox {
 		addBackgroundObjectToTab(1, "brick_path.png");
 		addBackgroundObjectToTab(1, "stone_path1.png");
 		addBackgroundObjectToTab(1, "water_medium.png");
+=======
+		staticTab.addItem(createStaticObject("turtle", 1, "tortoise.png"));
+		staticTab.addItem(createStaticObject("grayCircle", 2, "gray_circle.png"));		
+		staticTab.addItem(createStaticObject("greenSoldier", 2, "green_soldier.gif"));	
+		staticTab.addItem(createStaticObject("tree", 2, "tree1.png"));
+		
+		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
+		
+		addBackgroundObjectToTab("grass1", 1, "grass_small.png");
+		addBackgroundObjectToTab("grass2", 2, "grass2_medium.png");
+		addBackgroundObjectToTab("brickPath", 1, "brick_path.png");
+		addBackgroundObjectToTab("stonePath", 1, "stone_path1.png");
+		addBackgroundObjectToTab("water", 1, "water_medium.png");
+>>>>>>> mjm141
 		
 		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));
