@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 public class GameConditionsReader {
 
-	private final String VICTORY_CONDITIONS_PROPERTIES_FILE = "resources/VictoryConditions.properties";
-	private final String DEFEAT_CONDITIONS_PROPERTIES_FILE = "resources/DefeatConditions.properties";
+	private final String VICTORY_CONDITIONS_PROPERTIES_FILE = "VictoryConditions.properties";
+	private final String DEFEAT_CONDITIONS_PROPERTIES_FILE = "DefeatConditions.properties";
 	private final Properties VICTORY_CONDITIONS_PROPERTIES;
 	private final Properties DEFEAT_CONDITIONS_PROPERTIES;
 	private final String READABLE_REGEX = " ";
