@@ -1,8 +1,10 @@
 package authoring.rightToolBar;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import engine.authoring_engine.AuthoringController;
 import interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +25,7 @@ public class PropertiesBox extends VBox {
 	private TableColumn<Properties, String> propertiesColumn;
 	private TableColumn<Properties, String> valuesColumn;
 	
-	public PropertiesBox(CreationInterface creation, SpriteImage mySprite) {
+	public PropertiesBox(CreationInterface creation, SpriteImage mySprite, AuthoringController author) {
 		this.creation = creation;
 		propertiesMap = mySprite.getMyProperties();
 		table = new TableView<Properties>();
@@ -55,7 +57,9 @@ public class PropertiesBox extends VBox {
 			                t.getTablePosition().getRow())
 			                ).setMyValue(t.getNewValue());
 			            mySprite.update(t.getRowValue().getMyProperty(), t.getNewValue());
-			        System.out.println(mySprite.getMyProperties());
+			            Map<String, String> newPropertiesMap = new HashMap<String, String>();
+			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getNewValue());
+			            author.updateElementDefinition(mySprite.getName(), mySprite.getAllProperties(), false);
 			        }
 			    }
 			);

@@ -119,7 +119,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	
 	@Override
 	public void imageSelected(SpriteImage myImageView) {
-		myPropertiesBox = new PropertiesBox(created, myImageView);
+		myPropertiesBox = new PropertiesBox(created, myImageView, myController);
 		if (myImageView instanceof TowerImage) inventoryTower.addNewImage(myImageView);
 		if (myImageView instanceof TroopImage) inventoryTroop.addNewImage(myImageView);
 		if (myImageView instanceof ProjectileImage) inventoryProjectile.addNewImage(myImageView);
@@ -136,7 +136,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 
 	@Override
 	public void clicked(SpriteImage imageView) {	
-		myPropertiesBox = new PropertiesBox(created, imageView);
+		myPropertiesBox = new PropertiesBox(created, imageView, myController);
 		if (imageView instanceof TowerImage) newPaneWithProjectileSlot((TowerImage) imageView);
 		if (imageView instanceof TroopImage || imageView instanceof ProjectileImage) newPane(imageView);
 	}

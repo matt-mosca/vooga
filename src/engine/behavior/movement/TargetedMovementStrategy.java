@@ -22,7 +22,6 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
         super();
         setTargetCoordinates(targetPoint.getX(), targetPoint.getY());
         this.velocityMagnitude = velocityMagnitude;
-        setVelocityComponents();
     }
 
     /**
