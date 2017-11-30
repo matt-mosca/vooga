@@ -145,6 +145,7 @@ public class SpriteFactory {
 					System.out.println(parameters[i]);
 					ParameterName parameterNameAnnotation = parameters[i].getAnnotation(ParameterName.class);
 					if (parameterNameAnnotation != null) {
+						System.out.println(parameterNameAnnotation.value());
 						constructorParameters[i] = setConstructorParameter(
 								properties.get(parameterNameAnnotation.value()));
 					} else {

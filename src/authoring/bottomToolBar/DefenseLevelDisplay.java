@@ -64,6 +64,7 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		TextField number = new TextField();
 		number.setPromptText("How many times do you want this wave to spawn?");
 		Button addWave = new Button("Add this wave!");
+		/*
 		for(String s: defaults.keySet()) {
 			ComboBox x = new ComboBox();
 			x.setPromptText(s);
@@ -71,7 +72,7 @@ public class DefenseLevelDisplay extends LevelDisplay{
 			myDropDowns.add(x);
 			super.getLevelPane().getChildren().add(x);
 		}
-		
+		*/
 		/*
 		 * There are some other properties over here, I'm sure, that I need to care about, but I'm not sure what 
 		 * they are.
@@ -80,8 +81,16 @@ public class DefenseLevelDisplay extends LevelDisplay{
 			Map<String, String> fun = new HashMap<>();
 			fun.put("frequency", frequency.getText());
 			fun.put("number", number.getText());
+			/*
 			for (int i=0; i<defaults.size(); i++) {
-				fun.put((String) defaults.keySet().toArray()[i], (String) myDropDowns.get(i).getValue());
+				fun.put((String) defaults.keySet().toArray()[i], (String) defaults.entrySet().toArray()[i]);
+			}
+			*/
+			for(String s : defaults.keySet()) {
+				fun.put(s, defaults.get(s).get(0));
+				System.out.println(s);
+				System.out.println(defaults.get(s).get(0));
+				System.out.println("");
 			}
 			super.getAuthor().setWaveProperties(fun, Arrays.asList(order.getText().split(",")),
 					new Point2D(Double.parseDouble(start.getText().split(",")[0]), Double.parseDouble(start.getText().split(",")[1])));
