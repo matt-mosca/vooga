@@ -24,6 +24,8 @@ import engine.play_engine.PlayController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
@@ -31,6 +33,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -38,6 +41,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import splashScreen.ScreenDisplay;
+import sprites.InteractiveObject;
 import sprites.Sprite;
 import sprites.StaticObject;
 
@@ -51,6 +55,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private HealthBar myHealthBar;
 	private DecreaseHealthButton myDecreaseHealthButton;
 	private PlayArea myPlayArea;
+	private List<ImageView> currentElements;
 	private PlayController myController;
 	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
@@ -70,6 +75,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final CollisionHandler testCollision =
 			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
 					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
+	private boolean selected = false;
+	private StaticObject placeable;
 	
 	//TODO uncomment the initialization and get rid of tester
 	public PlayDisplay(int width, int height, Stage stage) {
@@ -167,10 +174,12 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	//TODO Make sure this works once saved files are all good
 	private void initializeSprites() {
+		currentElements.clear();
 		for(Integer id : myController.getLevelSprites(level)) {
-			ImageView imageView = myController.getRepresentationFromSpriteId(id);
-			myPlayArea.getChildren().add(imageView);
+			//ImageView imageView = myController.getRepresentationFromSpriteId(id);
+			currentElements.add(myController.getRepresentationFromSpriteId(id));
 		}
+		myPlayArea.getChildren().addAll(currentElements);
 	}
 
 	private void initializeButtons() {
@@ -200,15 +209,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		tower1.setLayoutX(xLocation);
 		tower1.setLayoutY(yLocation);
 		myController.update();
-		myPlayArea.getChildren().removeAll(myPlayArea.getChildren());
+		myPlayArea.getChildren().removeAll(currentElements);
 		initializeSprites();
 	}
 
 	private void createGameArea(int sideLength) {
 		myPlayArea = new PlayArea(myController, sideLength, sideLength);
+		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e->this.dropElement(e));
+		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
 	}
-	
+
 	private Sprite createSprite() {
 		Sprite tempSprite = new Sprite(testFiring, testMovement, testCollision);
 		Image myImage = new Image(getClass().getClassLoader().getResourceAsStream("black_soldier.gif"));
@@ -236,11 +247,19 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	//TODO clone objects so that they don't dissappear out of the list
 	@Override
-	public void listItemClicked(ImageView image) {
-		StaticObject placeable = new StaticObject(1, this, (String) image.getUserData());
+	public void listItemClicked(ImageView image, MouseEvent event) {
+		placeable = new StaticObject(1, this, (String) image.getUserData());
 		placeable.setElementName(image.getId());
-		myController.placeElement(placeable.getElementName(), new Point2D(50,50));
-		myPlayArea.getChildren().add(placeable);
+		myScene.setCursor(new ImageCursor(image.getImage()));
+		selected = true;
+	}
+	
+	private void dropElement(MouseEvent e) {
+		if(selected) {
+			selected = false;
+			myScene.setCursor(Cursor.DEFAULT);
+			if(e.getButton().equals(MouseButton.PRIMARY)) myController.placeElement(placeable.getElementName(), new Point2D(e.getX(),e.getY()));
+		}
 	}
 
 	@Override

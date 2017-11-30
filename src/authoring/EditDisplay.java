@@ -159,7 +159,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myBottomToolBar);
 	}
 	
-	public void listItemClicked(ImageView clickable) {
+	public void listItemClicked(ImageView clickable, MouseEvent event) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");

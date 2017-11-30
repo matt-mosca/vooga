@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import sprites.InteractiveObject;
@@ -24,7 +25,7 @@ public abstract class ScreenDisplay {
 	private Droppable droppable;
 	private KeyFrame frame;
 	private Timeline animation = new Timeline();
-	private Scene myScene;
+	protected Scene myScene;
 	private Stage stage;
 	private Group root = new Group();
 
@@ -100,5 +101,5 @@ public abstract class ScreenDisplay {
 	
 	public abstract void save(File saveFile);
 	
-	public abstract void listItemClicked(ImageView object);
+	public abstract void listItemClicked(ImageView object, MouseEvent event);
 }
