@@ -22,6 +22,10 @@ public class Bank {
 		return bankCopy;
 	}
 	
+	public void setResourceEndowment(String resourceName, double newResourceEndowment) {
+		resourceEndowments.put(resourceName, newResourceEndowment);
+	}
+	
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
 		this.resourceEndowments = resourceEndowments;
 	}
