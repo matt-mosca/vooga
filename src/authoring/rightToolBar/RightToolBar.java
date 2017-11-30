@@ -64,15 +64,17 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private Label projectileLabel;
 	private HBox projectileSlot;
 	private Button deleteButton;
+	private ReturnButton retB;
 	private CreationInterface created;
 	private AuthoringController myController;
 	private Map<String, String> basePropertyMap;
 	private final int X_LAYOUT = 680;
-	private final int Y_LAYOUT = 25;
+	private final int Y_LAYOUT = 30;
 
 	
 	public RightToolBar(EditDisplay display, AuthoringController controller) {
 		this.created = created;
+		retB = new ReturnButton(display);
 		myController = controller;
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
@@ -91,6 +93,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
+        this.getChildren().add(retB);
         
         newTower.attach(topTabPane.getTabs().get(0));
         newTroop.attach(topTabPane.getTabs().get(1));
@@ -203,6 +206,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
 		projectileSlot.getChildren().add(imageClone);
 		myTowerImage.addProjectileImage(imageClone);
+		myTowerImage.assignProjectile(imageClone.getName());
 		
 	}
 

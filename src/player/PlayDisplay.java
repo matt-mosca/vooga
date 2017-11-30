@@ -33,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import splashScreen.ScreenDisplay;
 import sprites.Sprite;
@@ -69,8 +70,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	
 	//TODO uncomment the initialization and get rid of tester
-	public PlayDisplay(int width, int height) {
-		super(width, height, Color.rgb(20, 20, 20));
+	public PlayDisplay(int width, int height, Stage stage) {
+		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = new PlayController();
 		myLeftBar = new VBox();
 		formatLeftBar();
@@ -79,7 +80,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		addItems();
 		initializeGameState();
 //		initializeSprites();
-//		initializeInventory();
+		initializeInventory();
 		initializeButtons();
 		createTestImages();
 //		createTestSprites();
