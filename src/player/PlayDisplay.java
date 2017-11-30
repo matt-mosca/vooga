@@ -79,7 +79,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		addItems();
 		initializeGameState();
 //		initializeSprites();
-//		initializeInventory();
+		initializeInventory();
 		initializeButtons();
 		createTestImages();
 //		createTestSprites();
