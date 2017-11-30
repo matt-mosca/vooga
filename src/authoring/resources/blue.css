@@ -17,10 +17,25 @@
 }
 
 .borders{
+	-fx-background-color: rgb(142, 193, 255);
+    -fx-border-color: rgb(66, 123, 230);
+    -fx-background-radius: 5;
+	-fx-background-insets: -10;
+	-fx-border-style: solid;
+    -fx-border-width: 5;
+    -fx-border-insets: -11;
+    -fx-border-radius: 5;
+}
+
+.outer-border{
+    -fx-background-color: rgb(23,38,72);
     -fx-border-color: rgb(23,38,72);
-    -fx-border-style: solid;
-    -fx-border-width: 1.5;
-    -fx-border-insets: -5;
+    -fx-background-radius: 5;
+	-fx-background-insets: -10;
+	-fx-border-style: solid;
+    -fx-border-width: 5;
+    -fx-border-insets: -11;
+    -fx-border-radius: 5;
 }
 
 .label{

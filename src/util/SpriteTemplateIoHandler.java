@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -18,6 +19,7 @@ public class SpriteTemplateIoHandler {
     private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
     private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-templates/";
     private final String PROPERTIES_EXTENSION = ".properties";
+    private final String DOT = ".";
 
     /**
      * Export all the stored sprite templates for an authored game to properties files.
@@ -46,17 +48,20 @@ public class SpriteTemplateIoHandler {
      */
     public Map<String, Map<String, String>> loadSpriteTemplates(String gameName) throws IOException {
         Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
-        String directoryPath = TEMPLATE_FILE_OUTPUT_PATH + gameName + File.separator;
+        String directoryPath = TEMPLATE_FILE_OUTPUT_PATH + gameName.substring(0, gameName.indexOf(DOT)) + File.separator;
         File propertiesDirectory = new File(directoryPath);
-        for (File spritePropertiesFile : propertiesDirectory.listFiles()) {
-            if (spritePropertiesFile.getPath().endsWith(PROPERTIES_EXTENSION)) {
-                Properties spriteProperties = new Properties();
-                spriteProperties.load(new FileInputStream(spritePropertiesFile));
-                Map<String, String> spritePropertiesMap = new HashMap<>();
-                spriteProperties.stringPropertyNames().forEach(propertyName ->
-                        spritePropertiesMap.put(propertyName, spriteProperties.getProperty(propertyName)));
-                String templateName = spritePropertiesFile.getName().replace(PROPERTIES_EXTENSION, "");
-                spriteTemplates.put(templateName, spritePropertiesMap);
+        File[] spritePropertiesFiles = propertiesDirectory.listFiles();
+        if (spritePropertiesFiles != null) {
+            for (File spritePropertiesFile : spritePropertiesFiles) {
+                if (spritePropertiesFile.getPath().endsWith(PROPERTIES_EXTENSION)) {
+                    Properties spriteProperties = new Properties();
+                    spriteProperties.load(new FileInputStream(spritePropertiesFile));
+                    Map<String, String> spritePropertiesMap = new HashMap<>();
+                    spriteProperties.stringPropertyNames().forEach(propertyName ->
+                            spritePropertiesMap.put(propertyName, spriteProperties.getProperty(propertyName)));
+                    String templateName = spritePropertiesFile.getName().replace(PROPERTIES_EXTENSION, "");
+                    spriteTemplates.put(templateName, spritePropertiesMap);
+                }
             }
         }
         return spriteTemplates;

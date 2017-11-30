@@ -96,7 +96,13 @@ public abstract class AbstractGameController {
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
+		System.out.println("SPRITES: " + spriteFactory.getAllDefinedTemplateProperties());
 		spriteTemplateIoHandler.exportSpriteTemplates(gameName, spriteFactory.getAllDefinedTemplateProperties());
+		try {
+			System.out.println("LOADED: " + spriteTemplateIoHandler.loadSpriteTemplates(gameName));
+		} catch (IOException e) {
+			// do nothing
+		}
 	}
 
 	/**
@@ -111,10 +117,11 @@ public abstract class AbstractGameController {
 	 *             if the save name does not refer to existing files
 	 */
 	public void loadOriginalGameState(String saveName, int level) throws IOException {
-		for (int levelToLoad = currentLevel; levelToLoad <= level; level++) {
+		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;
+		System.out.println(gameName + " " + spriteTemplateIoHandler.loadSpriteTemplates(gameName));
 		spriteFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
 	}
 
