@@ -86,8 +86,8 @@ public class DefenseLevelDisplay extends LevelDisplay {
 			fun.put("Move an object", "Object will stay at desired location");
 			fun.put("Firing Behavior", "Shoot periodically");
 			fun.put("imageUrl", DEFAULT_IMAGE_URL);
-			fun.put("imageWidth", "20");
-			fun.put("imageHeight", "20");
+			fun.put("imageWidth", "45.0");
+			fun.put("imageHeight", "45.0");
 			fun.put("Numerical \"team\" association", "0");
 			fun.put("Health points", "50");
 			fun.put("Damage dealt to colliding objects", "20");

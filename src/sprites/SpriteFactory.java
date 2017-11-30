@@ -47,21 +47,6 @@ public class SpriteFactory {
 	 *
 	 * @param spriteTemplateName
 	 *            the name of the sprite template
-	 * @return a sprite object with properties set to those specified in the
-	 *         template
-	 */
-	public Sprite generateSprite(String spriteTemplateName) {
-		Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
-		return null;
-		// TODO -- remove this method (always need coordinates and ImageView)
-		// return generateSprite(properties);
-	}
-
-	/**
-	 * Generate a sprite from an existing template which specifies its properties.
-	 *
-	 * @param spriteTemplateName
-	 *            the name of the sprite template
 	 * @param startCoordinates
 	 * @return a sprite object with properties set to those specified in the
 	 *         template
@@ -131,6 +116,7 @@ public class SpriteFactory {
 					.getConstructorParameterIdentifiers(chosenParameterSubclass);
 			Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
 					constructorParameterIdentifiers);
+			System.out.println(parameterClass.getName());
 			return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
 		} catch (IllegalArgumentException illegalArgumentException) {
 			// Case where constructor has the main objects encapsulated (i.e.,
@@ -151,6 +137,7 @@ public class SpriteFactory {
 								auxiliaryObjects);
 					}
 				}
+				System.out.println(Arrays.asList(constructorParameters));
 				return parameterClass.getConstructors()[0].newInstance(constructorParameters);
 			} else {
 				return null;

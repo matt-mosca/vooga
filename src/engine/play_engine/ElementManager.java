@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
+import engine.SpriteQueryHandler;
 import javafx.geometry.Point2D;
 import sprites.Sprite;
 import sprites.SpriteFactory;
@@ -24,6 +26,8 @@ public class ElementManager {
 	// every element pair only once
 	private List<Sprite> gameElements;
 	private List<Sprite> newElements;
+	
+	private SpriteQueryHandler spriteQueryHandler;
 
 	// TODO
 	// Reference to GridManager
@@ -35,6 +39,7 @@ public class ElementManager {
 	public ElementManager(SpriteFactory spriteFactory) {
 		this.spriteFactory = spriteFactory;
 		newElements = new ArrayList<Sprite>();
+		spriteQueryHandler = new SpriteQueryHandler();
 	}
 
 	// Guaranteed to return only active elements (i.e. not dead ones)
@@ -55,16 +60,19 @@ public class ElementManager {
 	 */
 
 	void update() {
-
 		newElements.clear();
-
 		for (int elementIndex = 0; elementIndex < gameElements.size(); elementIndex++) {
 			Sprite element = gameElements.get(elementIndex);
 			element.move();
 			if (element.shouldFire()) {
-
-				Sprite projectileSprite = spriteFactory.generateSprite(element.fire(),
-						new Point2D(element.getX(), element.getY()));
+				String elementTemplateName = element.fire();
+				List<Sprite> exclusionOfSelf = new ArrayList<>(gameElements);
+				exclusionOfSelf.remove(element);
+				
+				Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(elementTemplateName, new Point2D(element.getX(), element.getY()), 
+						exclusionOfSelf);
+				Sprite projectileSprite = spriteFactory.generateSprite(elementTemplateName,
+						new Point2D(element.getX(), element.getY()), auxiliaryObjects);
 				System.out.println(element.fire());
 				System.out.println("X: " + element.getX());
 				System.out.println("Y: " + element.getY());
