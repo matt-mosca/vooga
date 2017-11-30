@@ -33,6 +33,7 @@ public class DefenseLevelDisplay extends LevelDisplay{
 	public DefenseLevelDisplay(int n, LevelTab lv, AuthoringController myController) {
 		super(n, lv, myController);
 		defaults = myController.getElementBaseConfigurationOptions();
+		myDropDowns = new ArrayList<ComboBox>();
 		for(String s:myController.getElementBaseConfigurationOptions().keySet()) {
 			System.out.println(s);
 			System.out.println(myController.getElementBaseConfigurationOptions().get(s).toString());
@@ -66,7 +67,7 @@ public class DefenseLevelDisplay extends LevelDisplay{
 		for(String s: defaults.keySet()) {
 			ComboBox x = new ComboBox();
 			x.setPromptText(s);
-			x.getItems().addAll(defaults.get(x));
+			x.getItems().addAll(defaults.get(s));
 			myDropDowns.add(x);
 			super.getLevelPane().getChildren().add(x);
 		}
