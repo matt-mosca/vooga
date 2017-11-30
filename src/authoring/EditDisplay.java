@@ -59,8 +59,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private  ReturnButton myReturnButton;
 	private Map<String, String> basePropertyMap;
 	private BottomToolBar myBottomToolBar;
-	
-
+	private PlayController tester;
+	private VBox myLeftBar;
+	private VBox myLeftButtonsBar;
 	
 	
 	public EditDisplay(int width, int height) {
@@ -70,7 +71,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 //		super(width, height, Color.GRAY);
 		myReturnButton = new ReturnButton(this);
 		rootAdd(myReturnButton);
+		myLeftButtonsBar = new VBox();
+		myLeftBar = new VBox();
 		addItems();
+		formatLeftBar();
 		setStandardTheme();
 		createGridToggle();
 		rootAdd(gridToggle);
@@ -125,23 +129,33 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			this.getScene().setCursor(Cursor.DEFAULT);
 		}
 	}
+	
+	private void addToLeftButtonsBar() {
+		myColorChanger = new ColorChanger(this);
+		myLeftButtonsBar.getChildren().add(myColorChanger);
+		myGameChooser = new AttackDefenseToggle(this);
+		myLeftButtonsBar.getChildren().add(myGameChooser);
+	}
+	
+	private void addToLeftBar() {
+		myLeftToolBar = new LeftToolBar(this, controller);
+		myLeftBar.getChildren().add(myLeftToolBar);
+		addToLeftButtonsBar();
+		myLeftBar.getChildren().add(myLeftButtonsBar);
+	}
 
 	private void addItems() {
 		controller = new AuthoringController();
-		myLeftToolBar = new LeftToolBar(this, controller);
-		rootAdd(myLeftToolBar);
 		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
 		this.setDroppable(myGameArea);
+		addToLeftBar();
+		rootAdd(myLeftBar);
 		myRightToolBar = new RightToolBar(this, controller);
 		rootAdd(myRightToolBar);
-		myColorChanger = new ColorChanger(this);
-		rootAdd(myColorChanger);
 		myThemeChanger = new ThemeChanger(this);
 		rootAdd(myThemeChanger);
-		myGameChooser = new AttackDefenseToggle(this);
-		rootAdd(myGameChooser);
 		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
 		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
@@ -201,12 +215,20 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	public void changeTheme(String theme) {
 		rootStyleAndClear(myThemeChanger.getThemePath(theme));
-//		myRightToolBar.getStyleClass().add("borders");
-//		myLeftToolBar.getStyleClass().add("borders");
+		myRightToolBar.getStyleClass().add("borders");
+		myLeftToolBar.getStyleClass().add("borders");
+		myLeftBar.getStyleClass().add("outer-border");
+		myLeftButtonsBar.getStyleClass().add("borders");
 	}
 
 	private void setStandardTheme() {
 		changeTheme(ThemeChanger.STANDARD);
+	}
+	
+	private void formatLeftBar() {
+		myLeftBar.setLayoutY(30);
+		myLeftBar.setSpacing(30);
+		myLeftButtonsBar.setSpacing(20);
 	}
 
 	public void attack() {
