@@ -2,6 +2,7 @@ package player;
 
 import authoring.PlacementGrid;
 import authoring.rightToolBar.SpriteImage;
+import engine.play_engine.PlayController;
 import interfaces.Droppable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -11,8 +12,10 @@ import sprites.InteractiveObject;
 import sprites.StaticObject;
 
 public class PlayArea extends Pane implements Droppable{
+	private PlayController myController;
 	
-	public PlayArea(PlayerInterface player, int width, int height) {
+	public PlayArea(PlayController controller, int width, int height) {
+		myController = controller;
 		this.setLayoutX(310);
 		this.setLayoutY(10);
 //		this.setLayoutY(50);
@@ -25,6 +28,7 @@ public class PlayArea extends Pane implements Droppable{
 	
 	protected void placeInGrid(InteractiveObject currObject) {
 		this.getChildren().add(currObject);
+		myController.placeElement(currObject.getImageString(), new Point2D(currObject.getX(), currObject.getY()));
 	}
 
 	@Override
