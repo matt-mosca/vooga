@@ -36,9 +36,16 @@ public class CollisionHandler {
     }
 
     private void constructGraphicalRepresentation() {
-        graphicalRepresentation = new ImageView(new Image(imageUrl));
-        graphicalRepresentation.setFitHeight(imageHeight);
-        graphicalRepresentation.setFitWidth(imageWidth);
+        Image image;
+        try {
+            image = new Image(imageUrl);
+            graphicalRepresentation = new ImageView(image);
+            graphicalRepresentation.setFitHeight(imageHeight);
+            graphicalRepresentation.setFitWidth(imageWidth);
+        } catch (NullPointerException | IllegalArgumentException imageUrlNotValidException) {
+            graphicalRepresentation = new ImageView();
+            graphicalRepresentation.setVisible(false);
+        }
     }
 
 
