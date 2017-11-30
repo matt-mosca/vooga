@@ -1,52 +1,62 @@
 package authoring;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import sprites.BackgroundObject;
+import sprites.InteractiveObject;
 
 public class Cell extends StackPane{
 	private boolean active = false;
-	private int activeNeighbors = 0;
+	private List<InteractiveObject> myAssignments;
+	private List<InteractiveObject> myBackgrounds;
 	
 	public Cell() {
+		myAssignments = new ArrayList<>();
+		myBackgrounds = new ArrayList<>();
 		this.addEventHandler(MouseEvent.MOUSE_ENTERED, e->highlight());
 		this.addEventHandler(MouseEvent.MOUSE_EXITED, e->removeHighlight());
 	}
 
 	private void highlight() {
-		if(!active && activeNeighbors>0) {
-			this.setStyle("-fx-background-color:#51525D;");
-		}
+		this.setStyle("-fx-border-color:black;");
 	}
 
 	private void removeHighlight() {
-		if(!active && activeNeighbors>0) {
-			this.setStyle("-fx-background-color:#3E3F4B;");
-		}
+		this.setStyle("-fx-background-color:transparent;");
 	}
 	
 	protected boolean pathActive() {
 		return active;
 	}
 	
-	protected boolean activeNeighbors() {
-		return (activeNeighbors>0) ? true : false;
-	}
-	
-	protected void addActive() {
-		activeNeighbors++;
-	}
-	
-	protected void removeActive() {
-		activeNeighbors--;
-	}
-	
 	protected void activate() {
-		this.setStyle("-fx-background-color:#FF0033;");
 		active = true;
 	}
 	
 	protected void deactivate() {
-		this.setStyle("-fx-background-color:#3E3F4B;");
 		active = false;
+	}
+	
+	protected void assignToCell(InteractiveObject currObject) {
+		if (currObject instanceof BackgroundObject) {
+			myBackgrounds.add((BackgroundObject) currObject);
+		} else {
+			myAssignments.add(currObject);
+		}
+	}
+	
+	protected boolean isEmpty() {
+		return myAssignments.isEmpty();
+	}
+
+	public void removeAssignment(InteractiveObject interactive) {
+		if (!isEmpty()) myAssignments.remove(interactive);
+	}
+	
+	public List<InteractiveObject> saveAssignments() {
+		return myAssignments;
 	}
 }

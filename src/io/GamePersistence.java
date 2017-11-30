@@ -13,7 +13,7 @@ import java.util.Scanner;
  * Class responsible for writing of serialized data to files / reading
  * serialized data from files
  * 
- * @author radithya
+ * @author radithya, sgrillo
  *
  */
 public class GamePersistence {
@@ -23,8 +23,8 @@ public class GamePersistence {
 	public GamePersistence() {
 	}
 	
-	public void saveGameState(String fileName, String serializedRepresentation) {
-		File gameStateFile = new File(fileName);
+	public void saveGameState(File saveName, String serializedRepresentation) {
+		File gameStateFile = saveName;
 		Writer gameStateWriter;
 		try {
 			if (gameStateFile.exists()) {
@@ -36,13 +36,16 @@ public class GamePersistence {
 				gameStateWriter = new FileWriter(gameStateFile);
 			}
 			gameStateWriter.write(serializedRepresentation);
-		} catch (IOException e) {
+			gameStateWriter.close();
+		}
+		catch(IOException e) {
 			// TODO - throw custom exception
 		}
 	}
 
 	public String loadGameState(String fileName) throws FileNotFoundException {
 		File gameStateFile = new File(fileName);
+		System.out.println(fileName);
 		if (!gameStateFile.exists()) {
 			throw new FileNotFoundException();
 		}
@@ -55,6 +58,10 @@ public class GamePersistence {
 		String gameStateString = gameStateScanner.next();
 		gameStateScanner.close();
 		return gameStateString;
+	}
+
+	public void saveGameState(String string, String serializedRepresentation) {
+		saveGameState(new File(string), serializedRepresentation);		
 	}
 
 }

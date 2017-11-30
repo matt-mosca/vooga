@@ -1,108 +1,232 @@
 package engine.authoring_engine;
 
-import java.util.Collection;
-import java.util.Map;
-import engine.GameController;
-import engine.IOController;
-import engine.StateManager;
+import authoring.path.PathList;
+import engine.AbstractGameController;
+import engine.AuthoringModelController;
+import javafx.geometry.Point2D;
+import packaging.Packager;
 import sprites.Sprite;
-import util.SerializationUtils;
+import util.GameConditionsReader;
+import util.SpriteTemplateIoHandler;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Top-level authoring controller, gateway of front end GameAuthoringEnv to back
- * end logic and IO
+ * Controls the model for a game being authored. Allows the view to modify and
+ * retrieve information about the model.
  * 
  * @author radithya
- *
+ * @author Ben Schwennesen
  */
+public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
-public class AuthoringController extends GameController {
+	private Packager packager;
+	//Making a hard-coded map just so we can test in the front end with author and player
+	//We'll fix it soon 
+	
+	private final String WAVE = "wave_";
 
-	private AuthoringStateManager authoringStateManager;
+	private Map<String, Set<Integer>> templateToIdMap;
+	private AtomicInteger gameWaveCounter;
 
 	public AuthoringController() {
 		super();
-		authoringStateManager = new AuthoringStateManager(getIOController());
-	}
-
-	@Override
-	protected AuthoringStateManager getStateManager() {
-		return authoringStateManager;
-	}
-
-	@Override
-	public boolean isAuthoring() {
-		return AuthoringConstants.IS_AUTHORING;
-	}
-
-	/**
-	 * Define a new element type
-	 * 
-	 * @param name
-	 *            the name of new element to be created
-	 * @param properties
-	 *            map of properties for the new element, of the form {"image_url":
-	 *            <url>, "hp" : <hp>, ...}
-	 */
-	public Sprite createElement(String name, Map<String, String> properties) {
-		return getStateManager().createElement(name, properties);
-	}
-
-	/**
-	 * Add a previously defined element type to the game (level's) inventory BUT NOT
-	 * on map
-	 * 
-	 * @param name
-	 *            the identifier for this previously created type
-	 * @param level
-	 *            level of the game this element is being added for
-	 */
-	public Sprite addElement(String name, int level) {
-		return getStateManager().addElement(name, level);
-	}
-
-	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param x
-	 *            xCoordinate of previously created element
-	 * @param y
-	 *            yCoordinate of previously created element
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @param customProperties
-	 *            map of properties to override for this specific instance
-	 */
-	public Sprite updateElement(String name, double x, double y, int level, Map<String, String> customProperties) {
-		return getStateManager().updateElement(name, x, y, level, customProperties);
+		packager = new Packager();
+		templateToIdMap = new HashMap<>();
+		gameWaveCounter = new AtomicInteger(0);
 	}
 	
-	/**
-	 * 
-	 * @param name
-	 *            name of element type
-	 * @param level
-	 *            level of the game this element is being added for
-	 * @param customProperties
-	 *            map of properties to override for this specific instance
-	 */
-	public Sprite updateInventoryElement(String name, int level, Map<String, String> customProperties) {
-		//TODO
+	@Override
+	public void exportGame() {
+		getSpriteTemplateIoHandler().exportSpriteTemplates(getGameName(),
+				getSpriteFactory().getAllDefinedTemplateProperties());
+		packager.generateJar(getGameName());
+	}
+
+	public void setGameDescription(String gameDescription) {
+		getLevelDescriptions().set(getCurrentLevel(), gameDescription);
+	}
+
+	@Override
+	public void setVictoryCondition(String conditionIdentifier) {
+		getLevelConditions().get(getCurrentLevel()).put(VICTORY, conditionIdentifier);
+	}
+
+	@Override
+	public void setDefeatCondition(String conditionIdentifier) {
+		getLevelConditions().get(getCurrentLevel()).put(DEFEAT, conditionIdentifier);
+	}
+
+	@Override
+	public void defineElement(String elementName, Map<String, String> properties) {
+		getSpriteFactory().defineElement(elementName, properties);
+	}
+
+	@Override
+	public void updateElementDefinition(String elementName, Map<String, String> properties, boolean retroactive)
+			throws IllegalArgumentException {
+		getSpriteFactory().updateElementDefinition(elementName, properties);
+		if (retroactive) {
+			updateElementsRetroactively(elementName, properties);
+		}
+	}
+
+	@Override
+	public void deleteElementDefinition(String elementName) throws IllegalArgumentException {
+		getSpriteFactory().deleteElementDefinition(elementName);
+	}
+
+	@Override
+	public int placePathFollowingElement(String elementName, PathList pathList) {
+		Point2D startPoint = pathList.next();
+		return placeElement(elementName, startPoint, Arrays.asList(pathList));
+	}
+
+	@Override
+	public void moveElement(int elementId, double xCoordinate, double yCoordinate) throws IllegalArgumentException {
+		Sprite sprite = getElement(elementId);
+		sprite.setX(xCoordinate);
+		sprite.setY(yCoordinate);
+	}
+
+	@Override
+	public void updateElementProperties(int elementId, Map<String, String> propertiesToUpdate)
+			throws IllegalArgumentException {
+		updateElementPropertiesById(elementId, propertiesToUpdate);
+	}
+
+	@Override
+	public void deleteElement(int elementId) throws IllegalArgumentException {
+		Sprite removedSprite = getSpriteIdMap().remove(elementId);
+		getLevelSprites().get(getCurrentLevel()).remove(removedSprite);
+	}
+	
+	@Override
+	public void addElementToInventory(String elementName) {
+		getLevelInventories().get(getCurrentLevel()).add(elementName);
+	}
+
+	@Override
+	public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
+		Sprite sprite = getElement(elementId);
+		// TODO - implement
 		return null;
 	}
 
-
-	/**
-	 * Set a top-level game property (e.g. lives, starting resources, etc)
-	 * 
-	 * @param property
-	 *            name
-	 * @param value
-	 *            string representation of the value
-	 */
-	public void setGameParam(String property, String value) {
-		getStateManager().setGameParam(property, value);
+	@Override
+	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
+		return getSpriteFactory().getTemplateProperties(elementName);
+	}
+	
+	private Sprite getElement(int elementId) throws IllegalArgumentException {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			throw new IllegalArgumentException();
+		}
+		return getSpriteIdMap().get(elementId);
 	}
 
+	@Override
+	public void createNewLevel(int level) {
+		setLevel(level);
+	}
+
+	@Override
+	public void setStatusProperty(String property, Double value) {
+		getLevelStatuses().get(getCurrentLevel()).put(property, value);
+	}
+
+	@Override
+	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
+		getLevelBanks().get(getCurrentLevel()).setResourceEndowments(resourceEndowments);
+	}
+	
+	@Override
+	public void setResourceEndowment(String resourceName, double newResourceEndowment) {
+		getLevelBanks().get(getCurrentLevel()).setResourceEndowment(resourceName, newResourceEndowment);
+	}
+
+	@Override
+	public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
+		getLevelBanks().get(getCurrentLevel()).setUnitCost(elementName, unitCosts);
+	}
+
+	// TODO - to support multiple clients / interactive editing, need a client-id
+	// param (string or int)
+	@Override
+	public void deleteLevel(int level) throws IllegalArgumentException {
+		getLevelStatuses().remove(level);
+		getLevelSprites().remove(level);
+		getLevelConditions().remove(level);
+		getLevelDescriptions().remove(level);
+	}
+
+	@Override
+	public Map<String, List<String>> getElementBaseConfigurationOptions() {
+		return getSpriteFactory().getElementBaseConfigurationOptions();
+	}
+
+	@Override
+	public void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
+			Point2D spawningPoint) {
+		String waveName = getNameForWave();
+		defineElement(waveName, waveProperties);
+		placeElement(waveName, spawningPoint, elementNamesToSpawn);
+	}
+
+	@Override
+	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
+		return getSpriteFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
+	}
+
+	@Override
+	public Collection<String> getPossibleVictoryConditions() {
+		return getGameConditionsReader().getPossibleVictoryConditions();
+	}
+
+	@Override
+	public Collection<String> getPossibleDefeatConditions() {
+		return getGameConditionsReader().getPossibleDefeatConditions();
+	}
+
+	@Override
+	public int cacheAndCreateIdentifier(String elementTemplateName, Sprite sprite) {
+		int spriteId = super.cacheAndCreateIdentifier(elementTemplateName, sprite);
+		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementTemplateName, new HashSet<>());
+		idsForTemplate.add(spriteId);
+		templateToIdMap.put(elementTemplateName, idsForTemplate);
+		return spriteId;
+
+	}
+
+	@Override
+	protected void assertValidLevel(int level) throws IllegalArgumentException {
+		if (level <= 0 || level > getLevelSprites().size()) {
+			throw new IllegalArgumentException();
+			// TODO - customize exception ?
+		}
+	}
+	
+	private void updateElementsRetroactively(String elementName, Map<String, String> propertiesToUpdate) {
+		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
+		for (int elementId : idsForTemplate) {
+			updateElementPropertiesById(elementId, propertiesToUpdate);
+		}
+	}
+
+	private void updateElementPropertiesById(int elementId, Map<String, String> propertiesToUpdate) {
+		// TODO - can't use old method
+	}
+
+	private String getNameForWave() {
+		return WAVE + Integer.toString(gameWaveCounter.incrementAndGet());
+	}
+			
 }

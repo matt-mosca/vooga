@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 public class PackagingTest {
 
     private static void testJarCreation(Packager packager) {
-        packager.generateJar("jar-package-testing", ChatTestWindow.class);
+        packager.generateJar("jar-package-testing");
         // test the JAR manually with a launch
     }
 
@@ -32,6 +32,7 @@ public class PackagingTest {
             testPathConversion(packager);
         } catch (Exception e) {
             // ignore
+            e.printStackTrace();
         }
     }
 

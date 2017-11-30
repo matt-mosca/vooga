@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	public static final String TITLE = "Duvall In This Together";
-	public static final int HEIGHT = 450;
-	public static final int WIDTH = 600;
+	public static final int HEIGHT = 600;
+	public static final int WIDTH = 800;
 	public static final Paint BACKGROUND = Color.WHITE;
 	public static final int FRAMES_PER_SECOND = 60;
 	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
@@ -20,13 +20,12 @@ public class Main extends Application {
 	/**
 	 * Initialize what will be displayed and how it will be updated.
 	 */
-	
-	
 	@Override
 	public void start(Stage s) {
 		ScreenDisplay myScene = new SplashScreen(WIDTH, HEIGHT, BACKGROUND, s);
 		s.setScene(myScene.getScene());
 		s.setTitle(TITLE);
+		s.setResizable(false);
 		s.show();
 	}
 
