@@ -82,7 +82,10 @@ public class SpriteFactory {
 	 *         template
 	 */
 	public Sprite generateSprite(String spriteTemplateName, Point2D startCoordinates, Map<String, ?> auxiliaryObjects) {
+		System.out.println(spriteTemplateName);
 	    Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
+	    System.out.println(properties);
+	    System.out.println(spriteTemplates);
 		Sprite sprite = generateSprite(properties, auxiliaryObjects);
 		sprite.setX(startCoordinates.getX());
 		sprite.setY(startCoordinates.getY());
@@ -151,7 +154,7 @@ public class SpriteFactory {
 								auxiliaryObjects);
 					}
 				}
-				System.out.println(Arrays.asList(constructorParameters));
+				System.out.println(parameterClass.getName() + " " +Arrays.asList(constructorParameters));
 				return parameterClass.getConstructors()[0].newInstance(constructorParameters);
 			} else {
 				return null;
@@ -247,6 +250,7 @@ public class SpriteFactory {
 	 *             if the template does not already exist
 	 */
 	public void deleteElementDefinition(String spriteTemplateName) throws IllegalArgumentException {
+		System.out.println("WTF");
 		if (!spriteTemplates.containsKey(spriteTemplateName)) {
 			// TODO - custom exception?
 			throw new IllegalArgumentException();
@@ -278,6 +282,8 @@ public class SpriteFactory {
 	 *            the previously refined templates loaded in from memory
 	 */
 	public void loadSpriteTemplates(Map<String, Map<String, String>> loadedTemplates) {
+		System.out.println("\n\n\n\n\n" + loadedTemplates + "\n\n\n\n\n");
 		spriteTemplates.putAll(loadedTemplates);
+		System.out.println("\n\n\n\n\n" + spriteTemplates + "\n\n\n\n\n");
 	}
 }

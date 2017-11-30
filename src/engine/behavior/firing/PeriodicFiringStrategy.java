@@ -18,10 +18,14 @@ public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 			@ParameterName("attackPeriod") double attackPeriod) {
 		super(attackPeriod);
 		this.projectileTemplate = projectileTemplate;
+		
 	}
 
 	@Override
 	public String fire() {
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		System.out.println(projectileTemplate);
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 		return projectileTemplate;
 	}
 }
