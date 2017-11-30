@@ -147,7 +147,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			try {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
 			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL"))));
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
 			}
 			imageView.setId(s);
 			myInventoryToolBar.addToToolbar(imageView);
