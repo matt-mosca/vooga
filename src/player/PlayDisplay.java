@@ -142,13 +142,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private void initializeInventory() {
 		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
+		ImageView newImage;
 		for(String s:myController.getInventory()) {
 			ImageView imageView;
 			try {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
+				
 			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL"))));
 			}
+			imageView.setFitHeight(70);
+			imageView.setFitWidth(60);
 			imageView.setId(s);
 			myInventoryToolBar.addToToolbar(imageView);
 		}
