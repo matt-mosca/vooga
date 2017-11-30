@@ -39,20 +39,11 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("Collided-with effects", "Do nothing to colliding objects");
 		defaultValues.put("Firing Behavior", "Do not fire projectiles");
 		defaultValues.put("Numerical \"team\" association", "0");
+		defaultValues.put("imageWidth", "45.0");
+		defaultValues.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
+		defaultValues.put("imageHeight", "45.0");
 		if (this instanceof TroopImage) defaultValues.put("Numerical \"team\" association", "1");
 		if (this instanceof TowerImage) defaultValues.put("Numerical \"team\" association", "2");
-		defaultValues.put("Health points", "50");
-		defaultValues.put("Damage dealt to colliding objects", "20");
-		defaultValues.put("Speed of movement", "5");
-		defaultValues.put("initialAngle", "90");
-		defaultValues.put("radius", "10");
-		defaultValues.put("centerY", "50");
-		defaultValues.put("centerX", "50");
-		defaultValues.put("Target y-coordinate", "100");
-		defaultValues.put("Target x-coordinate", "100");
-		defaultValues.put("Projectile Type Name", "No projectile selected");
-		defaultValues.put("Attack period", "10");
-		defaultValues.put("PathList", "CurrentPath");
 	}
 	
 	public void addImage(String imageName) {
