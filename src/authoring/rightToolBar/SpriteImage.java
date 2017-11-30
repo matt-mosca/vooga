@@ -37,7 +37,8 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("imageWidth", "20");
 		defaultValues.put("imageHeight", "20");
 		defaultValues.put("Numerical \"team\" association", "0");
-		if (this instanceof TowerImage) defaultValues.put("Numerical \"team\" association", "1");
+		if (this instanceof TroopImage) defaultValues.put("Numerical \"team\" association", "1");
+		if (this instanceof TowerImage) defaultValues.put("Numerical \"team\" association", "2");
 		defaultValues.put("Health points", "50");
 		defaultValues.put("Damage dealt to colliding objects", "20");
 		defaultValues.put("Speed of movement", "5");

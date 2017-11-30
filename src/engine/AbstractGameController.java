@@ -37,6 +37,7 @@ public abstract class AbstractGameController {
 	public static final String DEFEAT = "defeat";
 
 	private SpriteTemplateIoHandler spriteTemplateIoHandler;
+	private SpriteQueryHandler spriteQueryHandler;
 
 	private String gameName;
 	private IOController ioController;
@@ -74,6 +75,7 @@ public abstract class AbstractGameController {
 		spriteIdMap = new HashMap<>();
 		spriteFactory = new SpriteFactory();
 		spriteTemplateIoHandler = new SpriteTemplateIoHandler();
+		spriteQueryHandler = new SpriteQueryHandler();
 	}
 
 	/**
@@ -139,8 +141,8 @@ public abstract class AbstractGameController {
 	}
 
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
-		Map<String, Object> auxiliarySpriteConstructionObjects = getAuxiliarySpriteConstructionObjectMap(
-				elementTemplateName, startCoordinates);
+		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
+				elementTemplateName, startCoordinates, levelSpritesCache.get(currentLevel));
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
@@ -181,8 +183,8 @@ public abstract class AbstractGameController {
 	}
 
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs) {
-		Map<String, Object> auxiliarySpriteConstructionObjects = getAuxiliarySpriteConstructionObjectMap(
-				elementTemplateName, startCoordinates);
+		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
+				elementTemplateName, startCoordinates, levelSpritesCache.get(currentLevel));
 		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}
@@ -365,7 +367,7 @@ public abstract class AbstractGameController {
 		initializeLevelConditions();
 	}
 
-	private int getNearestSpriteIdToPoint(Point2D coordinates) {
+	/*private int getNearestSpriteIdToPoint(Point2D coordinates) {
 		double nearestDistance = Double.MAX_VALUE;
 		int nearestSpriteId = -1;
 		List<Sprite> spritesForLevel = getLevelSprites().get(getCurrentLevel());
@@ -392,7 +394,7 @@ public abstract class AbstractGameController {
 		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
 		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
 		return auxiliarySpriteConstructionObjects;
-	}
+	}*/
 
 	private void initializeLevelConditions() {
 		getLevelConditions().add(new HashMap<>());

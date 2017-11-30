@@ -131,6 +131,7 @@ public class SpriteFactory {
 					.getConstructorParameterIdentifiers(chosenParameterSubclass);
 			Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
 					constructorParameterIdentifiers);
+			System.out.println(parameterClass.getName());
 			return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
 		} catch (IllegalArgumentException illegalArgumentException) {
 			// Case where constructor has the main objects encapsulated (i.e.,
@@ -151,6 +152,7 @@ public class SpriteFactory {
 								auxiliaryObjects);
 					}
 				}
+				System.out.println(Arrays.asList(constructorParameters));
 				return parameterClass.getConstructors()[0].newInstance(constructorParameters);
 			} else {
 				return null;
