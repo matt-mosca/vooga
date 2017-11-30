@@ -20,7 +20,6 @@ public abstract class InteractiveObject extends ImageView implements ClickableIn
 		myDisplay = display; 
 		droppable = myDisplay.getDroppable();
 		elementName = name;
-		
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->dragged(e));
 		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->dropped(e));
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->pressed(e));
