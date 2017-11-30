@@ -23,6 +23,8 @@ public class InventoryToolBar extends VBox{
 		tabFactory = new TabFactory();
 		this.getChildren().add(tabPane);
         createAndAddTabs();
+		this.getStylesheets().add("player/resources/playerPanes.css");
+		this.getStyleClass().add("toolbar");
 	}
 
 	private void createAndAddTabs() {

@@ -20,6 +20,9 @@ public class PathFollowingMovementStrategy extends TargetedMovementStrategy {
 	public PathFollowingMovementStrategy(@ParameterName("velocity") double velocity, PathList coordinates) {
 		super(new Point2D(0, 0), velocity);
 		setPathCoordinates(coordinates);
+		Point2D start = coordinates.next();
+		setX(start.getX());
+		setY(start.getY());
 	}
 
 	public Point2D move() {

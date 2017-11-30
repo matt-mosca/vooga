@@ -53,4 +53,6 @@ public interface MovementStrategy {
     TrackingPoint getPositionForTracking();
     
     boolean targetReached();
+    
+    boolean removeUponCompletion();
 }
