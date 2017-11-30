@@ -146,6 +146,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private void initializeInventory() {
 		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
+		System.out.println(templates);
 		ImageView newImage;
 		for(String s:myController.getInventory()) {
 			ImageView imageView;
