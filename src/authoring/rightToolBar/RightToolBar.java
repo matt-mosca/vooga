@@ -77,6 +77,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		myController = controller;
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
+		this.setSpacing(20);
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();

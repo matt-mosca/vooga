@@ -54,18 +54,18 @@ public class LeftToolBar extends VBox {
 	private void createAndAddTabs() {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
 		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
-		
-		staticTab.addItem(createStaticObject("turtle", 1, "tortoise.png"));
-		staticTab.addItem(createStaticObject("grayCircle", 2, "gray_circle.png"));		
-		staticTab.addItem(createStaticObject("greenSoldier", 2, "green_soldier.gif"));		
+		staticTab.addItem(createStaticObject(1, "tortoise.png"));
+		staticTab.addItem(createStaticObject(2, "gray_circle.png"));		
+		staticTab.addItem(createStaticObject(2, "green_soldier.gif"));
+		staticTab.addItem(createStaticObject(2, "tree1.png"));
 		
 		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
 		
-		addBackgroundObjectToTab("grass1", 2, "grass_small.png");
-		addBackgroundObjectToTab("grass2", 1, "grass2_small.png");
-		addBackgroundObjectToTab("brickPath", 1, "brick_path.png");
-		addBackgroundObjectToTab("stonePath", 1, "stone_path1.png");
-		addBackgroundObjectToTab("water", 1, "water_medium.png");
+		addBackgroundObjectToTab(2, "grass_small.png");
+		addBackgroundObjectToTab(1, "grass2_medium.png");
+		addBackgroundObjectToTab(1, "brick_path.png");
+		addBackgroundObjectToTab(1, "stone_path1.png");
+		addBackgroundObjectToTab(1, "water_medium.png");
 		
 		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));
@@ -75,23 +75,23 @@ public class LeftToolBar extends VBox {
 		makeTabsUnclosable();
 	}
 	
-	private void addBackgroundObjectToTab(String name, int size, String imageString) {
-		defineElement(name, size, imageString);
+	private void addBackgroundObjectToTab(int size, String imageString) {
+		defineElement(size, imageString);
 		backgroundTab.addBackgroundItem(size, imageString);
 
 	}
 	
-	private StaticObject createStaticObject(String name, int size, String image) {
-		StaticObject tempStatic = new StaticObject(size, myDisplay, image);
-		defineElement(name, size, image);
+	private StaticObject createStaticObject(int size, String imageString) {
+		StaticObject tempStatic = new StaticObject(size, myDisplay, imageString);
+		defineElement(size, imageString);
 		return tempStatic;
 	}
 
-	public void defineElement(String name, int size, String image) {
+	public void defineElement(int size, String imageString) {
 		propertiesMap.put("imageWidth", String.valueOf(size));
 		propertiesMap.put("imageHeight", String.valueOf(size));
-		propertiesMap.put("imageUrl", image);
-		myController.defineElement(name, propertiesMap);
+		propertiesMap.put("imageUrl", imageString);
+		myController.defineElement(imageString, propertiesMap);
 	}
 	
 	private void makeTabsUnclosable() {
