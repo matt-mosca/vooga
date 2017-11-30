@@ -79,7 +79,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
-//		initializeSprites();
+		initializeSprites();
 		initializeInventory();
 		initializeButtons();
 		createTestImages();
