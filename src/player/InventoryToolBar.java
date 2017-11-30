@@ -6,6 +6,7 @@ import authoring.tabs.SimpleTab;
 import factory.TabFactory;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import splashScreen.ScreenDisplay;
 
