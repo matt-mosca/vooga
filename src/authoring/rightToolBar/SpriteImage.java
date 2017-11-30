@@ -46,6 +46,8 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("centerX", "0");
 		defaultValues.put("Target y-coordinate", "0");
 		defaultValues.put("Target x-coordinate", "0");
+		defaultValues.put("Projectile Type Name", "No projectile selected");
+		defaultValues.put("Attack speed", "10");
 	}
 	
 	public void addImage(String imageName) {
@@ -80,6 +82,10 @@ public abstract class SpriteImage extends InteractiveObject {
 	
 	public void update(String newProperty, String newValue) {
 		myPossibleProperties.put(newProperty, newValue);
+	}
+	
+	public void assignProjectile(String imageName) {
+		myPossibleProperties.put("Projectile Type Name", imageName);
 	}
 	
 	public Map<String, String> getMyProperties() {

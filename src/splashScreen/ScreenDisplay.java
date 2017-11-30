@@ -83,7 +83,7 @@ public abstract class ScreenDisplay {
 		return droppable;
 	}
 	
-	public void SetDroppable(Droppable drop) {
+	public void setDroppable(Droppable drop) {
 		droppable = drop;
 	}
 	

@@ -9,6 +9,8 @@ import sprites.StaticObject;
 public class GameToolBar extends GenericToolBar {
 	public GameToolBar(ScreenDisplay display) {
 		super(display, StaticObject.class);
+		this.getStylesheets().add("player/resources/playerPanes.css");
+		this.getStyleClass().add("toolbar");
 	}
 	
 	protected void addImage(InteractiveObject object) {
