@@ -13,13 +13,13 @@ public abstract class InteractiveObject extends ImageView implements ClickableIn
 	private int id;
 	private Droppable droppable;
 	private ScreenDisplay myDisplay;
-	private String myImageString;
+	private String elementName;
 	
 	//TODO set ID
-	public InteractiveObject(ScreenDisplay display, String imageString) {
+	public InteractiveObject(ScreenDisplay display, String name) {
 		myDisplay = display; 
 		droppable = myDisplay.getDroppable();
-		myImageString = imageString;
+		elementName = name;
 		
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->dragged(e));
 		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->dropped(e));
@@ -68,8 +68,8 @@ public abstract class InteractiveObject extends ImageView implements ClickableIn
 		this.id = id;
 	}
 	
-	public String getImageString() {
-		return myImageString;
+	public String getElementName() {
+		return elementName;
 	}
 	
 	public abstract int getSize();
