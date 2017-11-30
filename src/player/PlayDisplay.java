@@ -63,7 +63,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private double yLocation = 0;
 	private int level = 1;
 	private Collection<Sprite> testCollection;
-	private final FiringStrategy testFiring =  new NoopFiringStrategy("test");
+	private final FiringStrategy testFiring =  new NoopFiringStrategy();
 	private final MovementStrategy testMovement = new StationaryMovementStrategy();
 	private final CollisionHandler testCollision =
 			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
@@ -79,12 +79,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
-//		initializeSprites();
+		initializeSprites();
 		initializeInventory();
 		initializeButtons();
 		createTestImages();
 //		createTestSprites();
 //		createTestGameArea();
+
 		
 		
 		
@@ -149,7 +150,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
 				
 			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageURL"))));
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
 			}
 			imageView.setFitHeight(70);
 			imageView.setFitWidth(60);
@@ -161,7 +162,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	//TODO Make sure this works once saved files are all good
 	private void initializeSprites() {
-		for(Integer id:myController.getLevelSprites(level)) {
+		for(Integer id : myController.getLevelSprites(level)) {
 			ImageView imageView = myController.getRepresentationFromSpriteId(id);
 			myPlayArea.getChildren().add(imageView);
 		}
@@ -194,6 +195,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		tower1.setLayoutX(xLocation);
 		tower1.setLayoutY(yLocation);
 		myController.update();
+//		myPlayArea.getChildren().removeAll(myPlayArea.getChildren());
+		initializeSprites();
 	}
 
 	private void createGameArea(int sideLength) {
@@ -232,7 +235,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void listItemClicked(ImageView image) {
 		StaticObject placeable = new StaticObject(1, this, (String) image.getUserData());
-		placeable.setElementName(placeable.getId());
+		placeable.setElementName(image.getId());
 		myPlayArea.getChildren().add(placeable);
 	}
 

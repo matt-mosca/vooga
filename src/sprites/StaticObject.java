@@ -42,6 +42,10 @@ public class StaticObject extends InteractiveObject{
 		return objectSize;
 	}
 	
+	public int getRealSize() {
+		return realSize;
+	}
+	
 	public void incrementSize() {
 		objectSize++;
 		setSize(objectSize);
