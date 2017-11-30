@@ -113,7 +113,7 @@ public class IOController {
 	 */
 	public Map<String, String> loadGameConditions(String savedGameName, int level) throws FileNotFoundException {
 		// First extract string from file through io module
-		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, false));
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
 		// deserialize string into map through utils module
 		return serializationUtils.deserializeGameConditions(serializedGameData, level);
 	}

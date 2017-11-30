@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import authoring.AuthorInterface;
+import authoring.EditDisplay;
 import authoring.GameArea;
 import authoring.ScrollableArea;
 import engine.authoring_engine.AuthoringController;
@@ -27,10 +28,11 @@ public class BottomToolBar extends VBox {
 	private Button newLevel;
 	private Button editLevel;
 	private int currentDisplay;
-	private AuthorInterface myCreated;
+	private EditDisplay myCreated;
 	
-	public BottomToolBar (AuthorInterface created, AuthoringController controller, ScrollableArea area) {
+	public BottomToolBar (EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
+		currentDisplay = 1;
 		myCreated = created;
 		myController = controller;
 		myGameAreas = new ArrayList<>();
@@ -42,8 +44,8 @@ public class BottomToolBar extends VBox {
 		newLevel =  new Button("New Level");
 		newLevel.setOnAction(e->addLevel());
 		myTabPane = new TabPane();
-		
 		addLevel();
+		created.setGameArea(myGameAreas.get(0));
 		editLevel = new Button("Edit Level");
 		//Need to put the button somewhere first.
 		editLevel.setOnAction(e->{
@@ -58,8 +60,10 @@ public class BottomToolBar extends VBox {
 
 	private void addLevel() {
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), null, myTabPane);
-		LevelTab newLv = new LevelTab(myLevels.size()+1);	
+		LevelTab newLv = new LevelTab(myLevels.size()+1, myController);	
 		myGameAreas.add(new GameArea(myController));
+		myController.createNewLevel(myLevels.size()+1);
+		myController.createNewLevel(currentDisplay);
 		if (myLevels.size()==0) {
 			newTab.setClosable(false);
 		}else {
@@ -75,13 +79,13 @@ public class BottomToolBar extends VBox {
 	private void changeDisplay(int i) {
 		currentDisplay = i;
 		myScrollableArea.setContent(myGameAreas.get(i-1));
+		myCreated.setDroppable(myGameAreas.get(i-1));
+		myController.createNewLevel(i);
+		myCreated.setGameArea(myGameAreas.get(i-1));
 	}
 
 	private void deleteLevel(int lvNumber) {
-		/*TODO
-		 * this deletes the level in the backend and then proceeds to decrement the levelNumbers
-		 * of all of the consecutive levels
-		 */
+		myController.deleteLevel(lvNumber);
 		myLevels.remove(lvNumber-1);
 		myGameAreas.remove(lvNumber-1);
 		for (int i = lvNumber-1; i<myLevels.size(); i++) {

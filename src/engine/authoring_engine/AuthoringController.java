@@ -10,6 +10,7 @@ import sprites.Sprite;
 import util.GameConditionsReader;
 import util.SpriteTemplateExporter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
 	private Packager packager;
-	private GameConditionsReader gameConditionsReader;
 	private SpriteTemplateExporter spriteExporter;
 	//Making a hard-coded map just so we can test in the front end with author and player
 	//We'll fix it soon 
@@ -42,7 +42,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public AuthoringController() {
 		super();
 		packager = new Packager();
-		gameConditionsReader = new GameConditionsReader();
 		templateToIdMap = new HashMap<>();
 		spriteExporter = new SpriteTemplateExporter();
 	}
@@ -185,12 +184,12 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public Collection<String> getPossibleVictoryConditions() {
-		return gameConditionsReader.getPossibleVictoryConditions();
+		return getGameConditionsReader().getPossibleVictoryConditions();
 	}
 
 	@Override
 	public Collection<String> getPossibleDefeatConditions() {
-		return gameConditionsReader.getPossibleDefeatConditions();
+		return getGameConditionsReader().getPossibleDefeatConditions();
 	}
 
 	@Override
@@ -210,7 +209,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 			// TODO - customize exception ?
 		}
 	}
-
+	
 	private void updateElementsRetroactively(String elementName, Map<String, String> propertiesToUpdate) {
 		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
 		for (int elementId : idsForTemplate) {
@@ -225,7 +224,5 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private String getNameForWave() {
 		return WAVE + Integer.toString(gameWaveCounter.incrementAndGet());
 	}
-	
-	
-
+			
 }
