@@ -30,7 +30,7 @@ public class SimpleTab extends ScrollPane{
 		items = FXCollections.observableArrayList(myList);
 		myListView = new ListView<>();
 		myListView.setOnMouseClicked(e->display.listItemClicked(
-      		myListView.getSelectionModel().getSelectedItem(), null));
+      		myListView.getSelectionModel().getSelectedItem()));
 		myListView.setItems(items);
 		this.setContent(myListView);
 	}

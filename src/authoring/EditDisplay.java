@@ -286,4 +286,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void setGameArea(GameArea game) {
 		this.myGameArea = game;
 	}
+
+	@Override
+	public void listItemClicked(ImageView object) {
+		// TODO Auto-generated method stub
+		
+	}
 }

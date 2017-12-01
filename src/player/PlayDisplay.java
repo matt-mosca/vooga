@@ -246,18 +246,18 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	//TODO clone objects so that they don't dissappear out of the list
-	@Override
-	public void listItemClicked(ImageView image, MouseEvent event) {
-		placeable = new StaticObject(1, this, (String) image.getUserData());
-		placeable.setElementName(image.getId());
-		myScene.setCursor(new ImageCursor(image.getImage()));
-		selected = true;
-	}
+//	@Override
+//	public void listItemClicked(ImageView image, MouseEvent event) {
+//		placeable = new StaticObject(1, this, (String) image.getUserData());
+//		placeable.setElementName(image.getId());
+//		myScene.setCursor(new ImageCursor(image.getImage()));
+//		selected = true;
+//	}
 	
 	private void dropElement(MouseEvent e) {
 		if(selected) {
 			selected = false;
-			myScene.setCursor(Cursor.DEFAULT);
+			getMyScene().setCursor(Cursor.DEFAULT);
 			if(e.getButton().equals(MouseButton.PRIMARY)) myController.placeElement(placeable.getElementName(), new Point2D(e.getX(),e.getY()));
 		}
 	}
@@ -272,5 +272,11 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.setLayoutY(25);
 		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
 		myLeftBar.getStyleClass().add("left-bar");
+	}
+
+	@Override
+	public void listItemClicked(ImageView object) {
+		// TODO Auto-generated method stub
+		
 	}
 }

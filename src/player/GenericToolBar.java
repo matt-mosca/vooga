@@ -52,7 +52,7 @@ public class GenericToolBar extends ScrollPane {
         items = FXCollections.observableArrayList(myList);
         myListView = new ListView<>();
         myListView.setOnMouseClicked(e->myDisplay.listItemClicked(
-        		myListView.getSelectionModel().getSelectedItem(), null));
+        		myListView.getSelectionModel().getSelectedItem()));
         myListView.setItems(items);
         this.setContent(myListView);
 	}
@@ -82,7 +82,7 @@ public class GenericToolBar extends ScrollPane {
         items = FXCollections.observableArrayList(myList);
         myListView = new ListView<>();
         myListView.setOnMouseClicked(e->myDisplay.listItemClicked(
-        		myListView.getSelectionModel().getSelectedItem(), null));
+        		myListView.getSelectionModel().getSelectedItem()));
         myListView.setItems(items);
         this.setContent(myListView);
 	}
