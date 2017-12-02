@@ -2,6 +2,11 @@ package engine.behavior.firing;
 
 import java.util.Set;
 
+/**
+ * @author Ben Schwennesen
+ * @author radithya
+ *
+ */
 public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringStrategy {
 
 	private Set<String> templatesToFire;
@@ -28,7 +33,12 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 	
 	@Override
 	public boolean shouldFire() {
-		return wavesLeft >= 0 && super.shouldFire();
+		return !isExpended() && super.shouldFire();
+	}
+	
+	@Override
+	public boolean isExpended() {
+		return wavesLeft <= 0;
 	}
 
 	protected abstract String chooseElementToSpawn();

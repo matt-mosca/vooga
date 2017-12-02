@@ -20,6 +20,11 @@ public abstract class AbstractPeriodicFiringStrategy implements FiringStrategy {
     public boolean shouldFire() {
         return updateAndCheckTimer();
     }
+    
+    @Override
+    public boolean isExpended() {
+    		return false;
+    }
 
     private boolean updateAndCheckTimer() {
         if (attackCounter-- == 0) {

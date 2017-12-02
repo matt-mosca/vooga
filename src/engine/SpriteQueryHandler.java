@@ -11,13 +11,28 @@ import javafx.geometry.Point2D;
 import sprites.Sprite;
 
 /**
- * Handlers sprite queries. 
+ * Handlers sprite queries.
  * 
  * @author Ben Schwennesen
  */
 public class SpriteQueryHandler {
-	
-	private Sprite getNearestSpriteToPoint(int toGenerateId, Point2D coordinates, List<Sprite> levelSprites) {
+
+	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(int elementPlayerId, Point2D startCoordinates,
+			List<Sprite> levelSprites) {
+		Sprite spriteToTrack = getNearestEnemySpriteToPoint(elementPlayerId, startCoordinates, levelSprites);
+		TrackingPoint targetLocation;
+		if (spriteToTrack != null)
+			targetLocation = spriteToTrack.getPositionForTracking();
+		else
+			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
+		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
+		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
+		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
+		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
+		return auxiliarySpriteConstructionObjects;
+	}
+
+	private Sprite getNearestEnemySpriteToPoint(int toGenerateId, Point2D coordinates, List<Sprite> levelSprites) {
 		double nearestDistance = Double.MAX_VALUE;
 		Sprite nearestSprite = null;
 		for (Sprite sprite : levelSprites) {
@@ -30,18 +45,4 @@ public class SpriteQueryHandler {
 		return nearestSprite;
 	}
 
-	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(int elementPlayerId, Point2D startCoordinates,
-																	   List<Sprite> levelSprites) {
-		Sprite spriteToTrack = getNearestSpriteToPoint(elementPlayerId, startCoordinates, levelSprites);
-		TrackingPoint targetLocation;
-		if (spriteToTrack != null)
-			targetLocation = spriteToTrack.getPositionForTracking();
-		else
-			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
-		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
-		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
-		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
-		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
-		return auxiliarySpriteConstructionObjects;
-	}
 }

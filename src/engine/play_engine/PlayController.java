@@ -3,7 +3,6 @@ package engine.play_engine;
 import engine.AbstractGameController;
 import engine.PlayModelController;
 import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
 import sprites.Sprite;
 import util.GameConditionsReader;
 
@@ -11,9 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +37,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	public PlayController() {
 		super();
-		elementManager = new ElementManager(getSpriteFactory());
+		elementManager = new ElementManager(getSpriteFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
 	}
@@ -91,10 +88,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			elementManager.update();
 			List<Sprite> deadElements = elementManager.getDeadElements();
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
-			deadElements.clear();
 			for(Sprite s : elementManager.getNewlyGeneratedElements()) {
 				cacheAndCreateIdentifier(s);
 			}
+			elementManager.clearDeadElements();
+			elementManager.clearNewElements();
 		}
 	}
 
