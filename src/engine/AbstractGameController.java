@@ -1,8 +1,6 @@
 package engine;
 
 import engine.authoring_engine.AuthoringController;
-import engine.behavior.movement.TrackingPoint;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import sprites.Sprite;
@@ -44,10 +42,6 @@ public abstract class AbstractGameController {
 	private String gameName;
 	private IOController ioController;
 	private GameConditionsReader gameConditionsReader;
-
-	// @Ben : Use list instead of map to facilitate 'fall-through' behavior for
-	// deletion? i.e. when level 3 is deleted, level 4 should become level 3, level
-	// 5 should become level 4, etc.
 
 	private List<Map<String, Double>> levelStatuses = new ArrayList<>();
 	private List<List<Sprite>> levelSpritesCache = new ArrayList<>();
@@ -266,6 +260,10 @@ public abstract class AbstractGameController {
 
 	protected SpriteFactory getSpriteFactory() {
 		return spriteFactory;
+	}
+	
+	protected SpriteQueryHandler getSpriteQueryHandler() {
+		return spriteQueryHandler;
 	}
 
 	protected Map<Integer, Sprite> getSpriteIdMap() {
