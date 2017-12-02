@@ -64,6 +64,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Button pause;
 	private Button play;
 	private Timeline animation;
+	private String gameState;
 
 	private TowerImage tower1;
 	private double xLocation = 0;
@@ -92,18 +93,26 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		initializeInventory();
 		initializeButtons();
 		createTestImages();
+		
 //		createTestSprites();
 //		createTestGameArea();
 
 		
 		
 		
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                e -> step());
-		animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
-		animation.play();
+//		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+//                e -> step());
+//		animation = new Timeline();
+//		animation.setCycleCount(Timeline.INDEFINITE);
+//		animation.getKeyFrames().add(frame);
+//		animation.play();
+//		tester();
+	}
+
+	public void tester() {
+		for (int i = 0; i < 100; i++) {
+			step();
+		}
 	}
 
 	private void addItems() {
@@ -130,7 +139,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myPlayArea.getChildren().add(tower1);
 	}
 	
-	private void initializeGameState() {
+	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		for(String title:myController.getAvailableGames().keySet()) {
 			games.add(title);
@@ -143,12 +152,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		Optional<String> result = loadChoices.showAndWait();
 		if(result.isPresent()) {
 			try {
-				myController.loadOriginalGameState(result.get(), 1);
+				gameState = result.get();
+				myController.loadOriginalGameState(gameState, 1);
 			} catch (IOException e) {
 				// TODO Change to alert for the user 
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	protected void reloadGame() throws IOException {
+		myController.loadOriginalGameState(gameState, 1);
 	}
 	
 	private void initializeInventory() {
@@ -193,7 +207,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
 
 		play = new Button();
-		play.setOnAction(e-> {
+		play.setOnAction(e-> { 
 			myController.resume();
 			animation.play();
 		});
@@ -202,7 +216,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		play.setLayoutY(pause.getLayoutY() + 30);
 	}
 	
-	private void step() {
+	public void step() {
 		myCoinDisplay.increment();
 		xLocation += 1;
 		yLocation += 1;
@@ -212,6 +226,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myPlayArea.getChildren().removeAll(currentElements);
 		initializeSprites();
 	}
+	
 
 	private void createGameArea(int sideLength) {
 		myPlayArea = new PlayArea(myController, sideLength, sideLength);
