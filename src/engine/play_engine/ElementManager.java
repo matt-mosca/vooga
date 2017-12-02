@@ -61,7 +61,7 @@ public class ElementManager {
 			processAllCollisionsForElement(elementIndex, element);
 		}
 		activeElements.forEach(element -> {
-			if (!element.isAlive() || (element.reachedTarget() && element.shouldRemoveUponCompletion())) {
+			if (!element.isAlive()) {
 				deadElements.add(element);
 			}
 		});
@@ -80,7 +80,7 @@ public class ElementManager {
 	List<Sprite> getNewlyGeneratedElements() {
 		return newElements;
 	}
-	
+
 	void clearNewElements() {
 		newElements.clear();
 	}
@@ -115,7 +115,7 @@ public class ElementManager {
 			}
 		}
 	}
-	
+
 	private void handleElementFiring(Sprite element) {
 		if (element.shouldFire()) {
 			String elementTemplateName = element.fire();
@@ -131,5 +131,5 @@ public class ElementManager {
 		}
 
 	}
-	
+
 }
