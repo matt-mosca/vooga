@@ -214,7 +214,7 @@ public class IOController {
 	 * @param fileName
 	 *            file name for authored game to be loaded
 	 */
-	public String loadAuthoringGameState(String fileName) throws FileNotFoundException {
+	public String loadAuthoringGameState(String fileName) throws FileNotFoundException, IllegalArgumentException {
 		return gamePersistence.loadGameState(AUTHORING_GAMES_FOLDER + fileName);
 	}
 
@@ -237,6 +237,7 @@ public class IOController {
 		Map<String, String> authoredGameSerializationMap = new HashMap<>();
 		// iterate over file names in authored_games folder, serialize each
 		File authoredGamesDirectory = new File(AUTHORING_GAMES_FOLDER);
+		// System.out.println("EXISTS: " + authoredGamesDirectory.exists());
 		File[] authoredGames = authoredGamesDirectory.listFiles();
 		if (authoredGames == null) {
 			throw new IllegalStateException();
@@ -247,7 +248,7 @@ public class IOController {
 			// files found in directory, so safe to ignore
 			try {
 				authoredGameSerializationMap.put(authoredGameName, loadAuthoringGameState(authoredGameName));
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException | IllegalArgumentException e) {
 				continue;
 			}
 		}

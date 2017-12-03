@@ -43,7 +43,7 @@ public class GamePersistence {
 		}
 	}
 
-	public String loadGameState(String fileName) throws FileNotFoundException {
+	public String loadGameState(String fileName) throws FileNotFoundException, IllegalArgumentException {
 		File gameStateFile = new File(fileName);
 		System.out.println(fileName);
 		if (!gameStateFile.exists()) {
