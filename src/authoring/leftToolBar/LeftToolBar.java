@@ -91,8 +91,6 @@ public class LeftToolBar extends VBox {
 	private Map<String, String> getDefaultProperties() {
 		Map<String, String> values = new HashMap<>();
 		for(String key:defaultProperties.keySet()) {
-			System.out.println(key);
-			System.out.println(defaultProperties.getString(key));
 			values.put(key, defaultProperties.getString(key));
 		}
 		return values;
