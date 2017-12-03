@@ -22,5 +22,10 @@ public class NoopFiringStrategy implements FiringStrategy {
 	public boolean shouldFire() {
 		return false;
 	}
+	
+	@Override
+	public boolean isExpended() {
+		return false;
+	}
 
 }

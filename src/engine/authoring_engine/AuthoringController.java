@@ -6,10 +6,6 @@ import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
 import packaging.Packager;
 import sprites.Sprite;
-import util.GameConditionsReader;
-import util.SpriteTemplateIoHandler;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,10 +25,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
 	private Packager packager;
-	//Making a hard-coded map just so we can test in the front end with author and player
-	//We'll fix it soon 
-	
+	// Making a hard-coded map just so we can test in the front end with author and
+	// player
+	// We'll fix it soon
+
 	private final String WAVE = "wave_";
+
+	// TODO - move elsewhere
+	private final String PLAYER_ID = "playerId";
 
 	private Map<String, Set<Integer>> templateToIdMap;
 	private AtomicInteger gameWaveCounter;
@@ -43,7 +43,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 		templateToIdMap = new HashMap<>();
 		gameWaveCounter = new AtomicInteger(0);
 	}
-	
+
 	@Override
 	public void exportGame() {
 		getSpriteTemplateIoHandler().exportSpriteTemplates(getGameName(),
@@ -109,7 +109,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 		Sprite removedSprite = getSpriteIdMap().remove(elementId);
 		getLevelSprites().get(getCurrentLevel()).remove(removedSprite);
 	}
-	
+
 	@Override
 	public void addElementToInventory(String elementName) {
 		getLevelInventories().get(getCurrentLevel()).add(elementName);
@@ -126,7 +126,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
 		return getSpriteFactory().getTemplateProperties(elementName);
 	}
-	
+
 	private Sprite getElement(int elementId) throws IllegalArgumentException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
@@ -148,7 +148,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
 		getLevelBanks().get(getCurrentLevel()).setResourceEndowments(resourceEndowments);
 	}
-	
+
 	@Override
 	public void setResourceEndowment(String resourceName, double newResourceEndowment) {
 		getLevelBanks().get(getCurrentLevel()).setResourceEndowment(resourceName, newResourceEndowment);
@@ -178,6 +178,9 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
 			Point2D spawningPoint) {
 		String waveName = getNameForWave();
+		// Set wave as enemy, overriding (or filling if missing) playerId
+		// TODO - remove / refactor for multi-player extension
+		waveProperties.put(PLAYER_ID, Integer.toString(Sprite.Team.COMPUTER.ordinal()));
 		defineElement(waveName, waveProperties);
 		placeElement(waveName, spawningPoint, elementNamesToSpawn);
 	}
@@ -214,7 +217,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 			// TODO - customize exception ?
 		}
 	}
-	
+
 	private void updateElementsRetroactively(String elementName, Map<String, String> propertiesToUpdate) {
 		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
 		for (int elementId : idsForTemplate) {
@@ -229,5 +232,5 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private String getNameForWave() {
 		return WAVE + Integer.toString(gameWaveCounter.incrementAndGet());
 	}
-			
+
 }
