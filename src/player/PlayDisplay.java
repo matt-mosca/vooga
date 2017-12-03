@@ -218,7 +218,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void listItemClicked(ImageView image) {
 		//double cost = myController.getElementCosts().get(image.getId()).get(COST);
-		double cost = 1000;
+		double cost = 200;
 		if(cost > myCoinDisplay.getQuantity()) {
 			launchInvalidResources();
 			return;
