@@ -159,7 +159,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myBottomToolBar);
 	}
 	
-	public void listItemClicked(ImageView clickable, MouseEvent event) {
+	@Override
+	public void listItemClicked(ImageView clickable) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
@@ -170,11 +171,24 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		incrementButton.setLayoutX(50);
 		decrementButton.setLayoutX(85);
 		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
-		incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.incrementSize());
-		decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.decrementSize());
+		incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			object.incrementSize();
+			updateObjectSize(object);
+		});
+		decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			object.decrementSize();
+			updateObjectSize(object);
+		});
 		rootAdd(addNewButton);
 		rootAdd(incrementButton);
 		rootAdd(decrementButton);
+	}
+	
+	private void updateObjectSize(StaticObject object) {
+		Map<String, String> newProperties = new HashMap<>();
+		newProperties.put("imageWidth", Integer.toString(object.getSize()*object.getRealSize()));
+		newProperties.put("imageHeight", Integer.toString(object.getSize()*object.getRealSize()));
+		controller.updateElementProperties(object.getElementId(), newProperties);
 	}
 
 	private void addObject(InteractiveObject object) {
@@ -285,11 +299,5 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	public void setGameArea(GameArea game) {
 		this.myGameArea = game;
-	}
-
-	@Override
-	public void listItemClicked(ImageView object) {
-		// TODO Auto-generated method stub
-		
 	}
 }
