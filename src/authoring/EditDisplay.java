@@ -185,10 +185,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	private void updateObjectSize(StaticObject object) {
-		Map<String, String> newProperties = new HashMap<>();
-		newProperties.put("imageWidth", Integer.toString(object.getSize()*object.getRealSize()));
-		newProperties.put("imageHeight", Integer.toString(object.getSize()*object.getRealSize()));
-		controller.updateElementProperties(object.getElementId(), newProperties);
+		Map<String, String> newProperties = controller.getTemplateProperties(object.getElementName());
+		newProperties.put("imageWidth", Integer.toString(object.getRealSize()));
+		newProperties.put("imageHeight", Integer.toString(object.getRealSize()));
+		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
 
 	private void addObject(InteractiveObject object) {
