@@ -70,7 +70,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.BLACK, stage);
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
-
+		
 		tester = new PlayController();
 		addItems();
 		formatLeftBar();

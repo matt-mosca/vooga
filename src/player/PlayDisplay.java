@@ -31,6 +31,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -46,12 +47,12 @@ import sprites.Sprite;
 import sprites.StaticObject;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
+	private final String COST = "Cost";
 	
 	private InventoryToolBar myInventoryToolBar;
 	private VBox myLeftBar;
 	private List<List<Sprite>> levelSpritesCache;
 	private PlacementGrid myMainGrid;
-	private HealthBar myHealthBar;
 	private DecreaseHealthButton myDecreaseHealthButton;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
@@ -183,12 +184,21 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	private void step() {
-		myCoinDisplay.increment();
+		updateStatusBar();
 		myController.update();
 		if(myController.isLevelCleared()) {
-			
+			level++;
+			initializeInventory();
+		}else if(myController.isLost()) {
+			//launch lost screen
+		}else if(myController.isWon()) {
+			//launch win screen
 		}
 		loadSprites();
+	}
+	
+	private void updateStatusBar() {
+		myCoinDisplay.increment();
 	}
 
 	private void createGameArea(int sideLength) {
@@ -197,19 +207,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
 	}
-
-	@Override
-	public void decreaseHealth() {
-		myHealthBar.decreaseHealth(10);
-	}
-
-	@Override
-	public void listItemClicked(ImageView image) {
-		placeable = new StaticObject(1, this, (String) image.getUserData());
-		placeable.setElementName(image.getId());
-		this.getScene().setCursor(new ImageCursor(image.getImage()));
-		selected = true;
-	}
 	
 	private void dropElement(MouseEvent e) {
 		if(selected) {
@@ -217,6 +214,39 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			this.getScene().setCursor(Cursor.DEFAULT);
 			if(e.getButton().equals(MouseButton.PRIMARY)) myController.placeElement(placeable.getElementName(), new Point2D(e.getX(),e.getY()));
 		}
+	}
+	
+	@Override
+	public void listItemClicked(ImageView image) {
+		//double cost = myController.getElementCosts().get(image.getId()).get(COST);
+		double cost = 1000;
+		if(cost > myCoinDisplay.getQuantity()) {
+			launchInvalidResources();
+			return;
+		}else {
+			Alert costDialog = new Alert(AlertType.CONFIRMATION);
+			costDialog.setTitle("Purchase Resource");
+			costDialog.setHeaderText(null);
+			costDialog.setContentText("Would you like to purchase this object?");
+			
+			Optional<ButtonType> result = costDialog.showAndWait();
+			if(result.get() == ButtonType.OK) {
+				myCoinDisplay.decreaseByAmount(cost);
+				placeable = new StaticObject(1, this, (String) image.getUserData());
+				placeable.setElementName(image.getId());
+				this.getScene().setCursor(new ImageCursor(image.getImage()));
+				selected = true;
+			}
+		}
+		
+	}
+	
+	private void launchInvalidResources() {
+		Alert error = new Alert(AlertType.ERROR);
+		error.setTitle("Resource Error!");
+		error.setHeaderText(null);
+		error.setContentText("You do not have the funds for this item.");
+		error.show();
 	}
 
 	@Override
