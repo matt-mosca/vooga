@@ -2,7 +2,6 @@ package splashScreen;
 
 import java.io.File;
 
-import interfaces.ClickableInterface;
 import interfaces.Droppable;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import sprites.InteractiveObject;
-
 
 public abstract class ScreenDisplay {
 
@@ -44,10 +41,6 @@ public abstract class ScreenDisplay {
 		init();
 		setMyScene(new Scene(root, width, height));
 
-	}
-
-	public Scene getScene() {
-		return getMyScene();
 	}
 	
 	public ObservableList<Node> getRootChildren() {
@@ -84,11 +77,6 @@ public abstract class ScreenDisplay {
 	protected Stage getStage() {
 		return stage;
 	}
-
-	
-	protected void centerScene() {
-
-	}
 	
 	public Droppable getDroppable() {
 		return droppable;
@@ -102,10 +90,10 @@ public abstract class ScreenDisplay {
 	
 	public abstract void listItemClicked(ImageView object);
 
-	public Scene getMyScene() {
+	public Scene getScene() {
 		return myScene;
 	}
-
+	
 	public void setMyScene(Scene myScene) {
 		this.myScene = myScene;
 	}

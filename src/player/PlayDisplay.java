@@ -48,7 +48,6 @@ import sprites.StaticObject;
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private InventoryToolBar myInventoryToolBar;
-
 	private VBox myLeftBar;
 	private List<List<Sprite>> levelSpritesCache;
 	private PlacementGrid myMainGrid;
@@ -57,7 +56,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
 	private PlayController myController;
-	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
 	private HealthDisplay myHealthDisplay;
 	private PointsDisplay myPointsDisplay;
@@ -65,9 +63,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Button play;
 	private Timeline animation;
 
-	private TowerImage tower1;
-	private double xLocation = 0;
-	private double yLocation = 0;
 	private int level = 1;
 	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy();
@@ -78,25 +73,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private boolean selected = false;
 	private StaticObject placeable;
 	
-	//TODO uncomment the initialization and get rid of tester
 	public PlayDisplay(int width, int height, Stage stage) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = new PlayController();
 		myLeftBar = new VBox();
-		formatLeftBar();
+		styleLeftBar();
 		createGameArea(height - 20);
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
-		initializeSprites();
 		initializeInventory();
 		initializeButtons();
-		createTestImages();
-//		createTestSprites();
-//		createTestGameArea();
-
-		
-		
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
@@ -113,21 +100,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myHealthDisplay);
 		myPointsDisplay = new PointsDisplay();
 		rootAdd(myPointsDisplay);
-//		rootAdd(new HealthBackground());
 		myInventoryToolBar = new InventoryToolBar(this);
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		rootAdd(myLeftBar);
-//		myHealthBar = new HealthBar();
-//		rootAdd(myHealthBar);
-//		myDecreaseHealthButton = new DecreaseHealthButton(this);
-//		rootAdd(myDecreaseHealthButton);
-	}
-
-	private void createTestImages() {
-		tower1 = new TowerImage(this, "Castle_Tower1");
-		tower1.setFitHeight(40);
-		tower1.setFitWidth(40);
-		myPlayArea.getChildren().add(tower1);
 	}
 	
 	private void initializeGameState() {
@@ -153,8 +128,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private void initializeInventory() {
 		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-		System.out.println(templates);
-		ImageView newImage;
 		for(String s:myController.getInventory()) {
 			ImageView imageView;
 			System.out.println(s);
@@ -172,16 +145,14 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 	}
 	
-	//TODO Make sure this works once saved files are all good
-	private void initializeSprites() {
-		currentElements.clear();
-		for(Integer id : myController.getLevelSprites(level)) {
-			//ImageView imageView = myController.getRepresentationFromSpriteId(id);
-			currentElements.add(myController.getRepresentationFromSpriteId(id));
-		}
-		myPlayArea.getChildren().addAll(currentElements);
+	
+	private void styleLeftBar() {
+		myLeftBar.setPrefHeight(650);
+		myLeftBar.setLayoutY(25);
+		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
+		myLeftBar.getStyleClass().add("left-bar");
 	}
-
+	
 	private void initializeButtons() {
 		pause = new Button();
 		pause.setOnAction(e-> {
@@ -202,15 +173,22 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		play.setLayoutY(pause.getLayoutY() + 30);
 	}
 	
+	private void loadSprites() {
+		myPlayArea.getChildren().removeAll(currentElements);
+		currentElements.clear();
+		for(Integer id : myController.getLevelSprites(level)) {
+			currentElements.add(myController.getRepresentationFromSpriteId(id));
+		}
+		myPlayArea.getChildren().addAll(currentElements);
+	}
+	
 	private void step() {
 		myCoinDisplay.increment();
-		xLocation += 1;
-		yLocation += 1;
-		tower1.setLayoutX(xLocation);
-		tower1.setLayoutY(yLocation);
 		myController.update();
-		myPlayArea.getChildren().removeAll(currentElements);
-		initializeSprites();
+		if(myController.isLevelCleared()) {
+			
+		}
+		loadSprites();
 	}
 
 	private void createGameArea(int sideLength) {
@@ -220,44 +198,23 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myPlayArea);
 	}
 
-	private Sprite createSprite() {
-		Sprite tempSprite = new Sprite(testFiring, testMovement, testCollision);
-		Image myImage = new Image(getClass().getClassLoader().getResourceAsStream("black_soldier.gif"));
-		ImageView myImageView = new ImageView();
-		myImageView.setImage(myImage);
-//		tempSprite.setGraphicalRepresentation(myImageView);
-		return tempSprite;
-	}
-	
-	private void createNewErrorWindow() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Object placement error");
-		alert.setHeaderText("Must place object in the main grid");
-		alert.show();
-	}
-
 	@Override
 	public void decreaseHealth() {
 		myHealthBar.decreaseHealth(10);
 	}
 
 	@Override
-	public void clicked(SpriteImage sprite) {
+	public void listItemClicked(ImageView image) {
+		placeable = new StaticObject(1, this, (String) image.getUserData());
+		placeable.setElementName(image.getId());
+		this.getScene().setCursor(new ImageCursor(image.getImage()));
+		selected = true;
 	}
-
-	//TODO clone objects so that they don't dissappear out of the list
-//	@Override
-//	public void listItemClicked(ImageView image, MouseEvent event) {
-//		placeable = new StaticObject(1, this, (String) image.getUserData());
-//		placeable.setElementName(image.getId());
-//		myScene.setCursor(new ImageCursor(image.getImage()));
-//		selected = true;
-//	}
 	
 	private void dropElement(MouseEvent e) {
 		if(selected) {
 			selected = false;
-			getMyScene().setCursor(Cursor.DEFAULT);
+			this.getScene().setCursor(Cursor.DEFAULT);
 			if(e.getButton().equals(MouseButton.PRIMARY)) myController.placeElement(placeable.getElementName(), new Point2D(e.getX(),e.getY()));
 		}
 	}
@@ -265,18 +222,5 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void save(File saveName) {
 		myController.saveGameState(saveName);
-	}
-	
-	private void formatLeftBar() {
-		myLeftBar.setPrefHeight(650);
-		myLeftBar.setLayoutY(25);
-		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
-		myLeftBar.getStyleClass().add("left-bar");
-	}
-
-	@Override
-	public void listItemClicked(ImageView object) {
-		// TODO Auto-generated method stub
-		
 	}
 }
