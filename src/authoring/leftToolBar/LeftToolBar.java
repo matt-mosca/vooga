@@ -3,14 +3,13 @@ package authoring.leftToolBar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import authoring.tabs.AddStaticTab;
 import authoring.tabs.AddTab;
 import authoring.tabs.SimpleTab;
 import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
-
-import javafx.geometry.Point2D;
 
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
@@ -31,25 +30,17 @@ public class LeftToolBar extends VBox {
 	private SimpleTab backgroundTab;
 	private AddTab addTab;
 	private Map<String, String> propertiesMap;
+	private ResourceBundle defaultProperties;
 	
 	public LeftToolBar(ScreenDisplay display, AuthoringController controller) {
-		createPropertiesMap();
 		this.setLayoutY(Y_POSITION);
 		myDisplay = display;
 		myController = controller;
 		tabPane = new TabPane();
 		tabFactory = new TabFactory();
+		defaultProperties = ResourceBundle.getBundle("authoring/resources/DefaultProperties");
 		this.getChildren().add(tabPane);
         createAndAddTabs();
-	}
-	
-	private void createPropertiesMap() {
-		propertiesMap = new HashMap<String, String>();
-		propertiesMap.put("Collision effects", "Invulnerable to collision damage");
-		propertiesMap.put("Collided-with effects", "Do nothing to colliding objects");
-		propertiesMap.put("Firing behavior", "Do not fire projectiles");
-		propertiesMap.put("Projectile Type Name", "Projectile");
-		propertiesMap.put("Numerical \"team\" association", "0");
 	}
 	
 	private void createAndAddTabs() {
@@ -79,27 +70,32 @@ public class LeftToolBar extends VBox {
 	
 	private StaticObject createBackgroundObject(int size, String imageString) {
 		BackgroundObject tempStatic = new BackgroundObject(size, myDisplay, imageString);
-		defineElement(tempStatic.getRealSize()*size, imageString);
+		defineElement(tempStatic.getRealSize(), imageString);
 		return tempStatic;
 	}
 	
 	private StaticObject createStaticObject(int size, String imageString) {
 		StaticObject tempStatic = new StaticObject(size, myDisplay, imageString);
-		defineElement(tempStatic.getRealSize()*size, imageString);
+		defineElement(tempStatic.getRealSize(), imageString);
 		return tempStatic;
 	}
 
 	public void defineElement(int size, String imageString) {
-		Map<String, String> defaultValues = new HashMap<>(propertiesMap);
-		defaultValues.put("Move an object", "Object will stay at desired location");
-		defaultValues.put("Collision effects", "Invulnerable to collision damage");
-		defaultValues.put("Collided-with effects", "Do nothing to colliding objects");
-		defaultValues.put("Firing Behavior", "Do not fire projectiles");
-		defaultValues.put("Numerical \"team\" association", "0");
-		defaultValues.put("imageWidth", "45.0");
+		Map<String, String> defaultValues = getDefaultProperties();
+		defaultValues.put("imageWidth", Integer.toString(size));
 		defaultValues.put("imageUrl", imageString);
-		defaultValues.put("imageHeight", "45.0");
+		defaultValues.put("imageHeight", Integer.toString(size));
 		myController.defineElement(imageString, defaultValues);
+	}
+	
+	private Map<String, String> getDefaultProperties() {
+		Map<String, String> values = new HashMap<>();
+		for(String key:defaultProperties.keySet()) {
+			System.out.println(key);
+			System.out.println(defaultProperties.getString(key));
+			values.put(key, defaultProperties.getString(key));
+		}
+		return values;
 	}
 	
 	private void makeTabsUnclosable() {

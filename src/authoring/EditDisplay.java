@@ -1,8 +1,6 @@
 package authoring;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,23 +10,19 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
-import authoring.rightToolBar.ReturnButton;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
-import interfaces.ClickableInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -38,7 +32,6 @@ import main.Main;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.InteractiveObject;
-import sprites.Sprite;
 import sprites.StaticObject;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
@@ -59,7 +52,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Label attackDefenseLabel;
 	private Map<String, String> basePropertyMap;
 	private BottomToolBar myBottomToolBar;
-	private PlayController tester;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	
@@ -70,8 +62,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.BLACK, stage);
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
-		
-		tester = new PlayController();
+
 		addItems();
 		formatLeftBar();
 		setStandardTheme();
@@ -272,8 +263,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Main restart = new Main();
 		restart.start(myStage);
 		getStage().close();
-		
-		
 	}
 
 	@Override
@@ -283,11 +272,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myRightToolBar.imageSelected(imageView);
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
 		controller.addElementToInventory(imageView.getName());
-		
-		
-		
-//		System.out.println(tester.getAllDefinedTemplateProperties());
-
 	}
 
 	@Override
