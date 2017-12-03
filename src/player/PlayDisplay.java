@@ -53,7 +53,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private VBox myLeftBar;
 	private List<List<Sprite>> levelSpritesCache;
 	private PlacementGrid myMainGrid;
-	private DecreaseHealthButton myDecreaseHealthButton;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
 	private PlayController myController;
