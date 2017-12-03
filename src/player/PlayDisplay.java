@@ -70,7 +70,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private double xLocation = 0;
 	private double yLocation = 0;
 	private int level = 1;
-	private Collection<Sprite> testCollection;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy();
 	private final MovementStrategy testMovement = new StationaryMovementStrategy();
 	private final CollisionHandler testCollision =
@@ -93,6 +92,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		initializeInventory();
 		initializeButtons();
 		createTestImages();
+
 		
 //		createTestSprites();
 //		createTestGameArea();
@@ -100,13 +100,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 		
 		
-//		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-//                e -> step());
-//		animation = new Timeline();
-//		animation.setCycleCount(Timeline.INDEFINITE);
-//		animation.getKeyFrames().add(frame);
-//		animation.play();
-//		tester();
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+                e -> step());
+		animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
+		animation.play();
+		tester();
 	}
 
 	public void tester() {
@@ -167,11 +167,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private void initializeInventory() {
 		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-		System.out.println(templates);
 		ImageView newImage;
 		for(String s:myController.getInventory()) {
 			ImageView imageView;
-			System.out.println(s);
 			try {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
 				
@@ -292,6 +290,5 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void listItemClicked(ImageView object) {
 		// TODO Auto-generated method stub
-		
 	}
 }

@@ -9,8 +9,11 @@ import util.GameConditionsReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -34,9 +37,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private Method victoryConditionMethod;
 	private Method defeatConditionMethod;
 	private int maxLevels = DEFAULT_MAX_LEVELS;
+	private List<Set<Entry<Integer, Sprite>>> savedList;
 
 	public PlayController() {
 		super();
+		savedList = new ArrayList<Set<Entry<Integer, Sprite>>>();
 		elementManager = new ElementManager(getSpriteFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
@@ -85,6 +90,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				elementManager.update();
 			}
 			*/
+			savedList.add(getSpriteIdMap().entrySet());
 			elementManager.update();
 			List<Sprite> deadElements = elementManager.getDeadElements();
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
@@ -94,6 +100,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
 		}
+	}
+	
+	public void goBack(int i) {
+		getSpriteIdMap().entrySet().removeAll(getSpriteIdMap().entrySet());
+		getSpriteIdMap().entrySet().add((Entry<Integer, Sprite>) savedList.get(i));
 	}
 
 	@Override

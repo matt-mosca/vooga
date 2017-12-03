@@ -93,4 +93,8 @@ public class ValueDisplay extends HBox {
 	protected int getQuantity() {
 		return quantity;
 	}
+	
+	public void reset() {
+		quantity = 0;
+	}
 }
