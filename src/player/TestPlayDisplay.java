@@ -46,7 +46,7 @@ import sprites.InteractiveObject;
 import sprites.Sprite;
 import sprites.StaticObject;
 
-public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
+public class TestPlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final String COST = "Cost";
 	
 	private InventoryToolBar myInventoryToolBar;
@@ -73,7 +73,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private boolean selected = false;
 	private StaticObject placeable;
 	
-	public PlayDisplay(int width, int height, Stage stage) {
+	public TestPlayDisplay(int width, int height, Stage stage) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = new PlayController();
 		myLeftBar = new VBox();
@@ -91,14 +91,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
-		tester();
 	}
 
-	public void tester() {
-		for (int i = 0; i < 100; i++) {
-			step();
-		}
-	}
 
 	private void addItems() {
 		myCoinDisplay = new CoinDisplay();

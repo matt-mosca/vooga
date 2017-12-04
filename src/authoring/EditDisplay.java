@@ -1,7 +1,10 @@
 package authoring;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -12,9 +15,11 @@ import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
+import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -27,8 +32,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
+import player.PlayDisplay;
+import player.TestPlayDisplay;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.InteractiveObject;
@@ -54,6 +62,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private BottomToolBar myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
+	private SpriteTesterButton myTesterButton;
 	
 	
 	public EditDisplay(int width, int height, Stage stage) {
@@ -62,7 +71,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.BLACK, stage);
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
-
 		addItems();
 		formatLeftBar();
 		setStandardTheme();
@@ -75,6 +83,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Button saveButton = new Button("Save");
 		saveButton.setLayoutY(600);
 		rootAdd(saveButton);
+		myTesterButton = new SpriteTesterButton(this);
+		rootAdd(myTesterButton);
 	}
 	
 	private void createLabel() {
@@ -284,4 +294,19 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void setGameArea(GameArea game) {
 		this.myGameArea = game;
 	}
+
+	@Override
+	public void createTesterLevel(Map<String, String> fun, List<String> sprites) {
+		TestPlayDisplay testingScene = new TestPlayDisplay(1000, 1000, getStage());
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		getStage().setX(primaryScreenBounds.getWidth() / 2 - 1000 / 2);
+		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
+		getStage().setScene(testingScene.getScene());
+		controller.setGameName("testingGame");
+		controller.setWaveProperties(fun, sprites, new Point2D(100,100));
+		controller.loadAndSaveWave();
+		System.out.println(controller.getAllDefinedTemplateProperties());
+		
+	}
+
 }

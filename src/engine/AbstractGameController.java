@@ -114,6 +114,10 @@ public abstract class AbstractGameController {
 		gameName = saveName;
 		spriteFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
 	}
+	
+	public void loadAndSaveWave() {
+		spriteFactory.loadSpriteTemplates(spriteFactory.getAllDefinedTemplateProperties());
+	}
 
 	public String getGameName() {
 		return gameName;
