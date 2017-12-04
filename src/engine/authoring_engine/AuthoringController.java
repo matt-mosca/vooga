@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -198,6 +199,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 	@Override
 	public Collection<String> getPossibleDefeatConditions() {
 		return getGameConditionsReader().getPossibleDefeatConditions();
+	}
+
+	@Override
+	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
+		return getIdsCollectionFromSpriteCollection(getLevelSprites().get(getCurrentLevel()));
 	}
 
 	@Override

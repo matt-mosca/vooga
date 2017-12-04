@@ -183,6 +183,19 @@ public interface AuthoringModelController {
 	 * @return a map of relevant details to display or modify about the game
 	 */
 	Map<String, Double> getStatus();
+	
+	/**
+	 * Get the elements of a game (represented as sprites) for a particular level.
+	 *
+	 * TODO - custom exception?
+	 *
+	 * @param level
+	 *            the level of the game which should be loaded
+	 * @return all the game elements (sprites) represented in the level
+	 * @throws IllegalArgumentException
+	 *             if there is no corresponding level in the current game
+	 */
+	Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException;
 
 	/**
 	 * Retrieve information on the cost of each element in terms of the various
