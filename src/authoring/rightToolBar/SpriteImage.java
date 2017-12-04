@@ -42,8 +42,15 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("imageWidth", "45.0");
 		defaultValues.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
 		defaultValues.put("imageHeight", "45.0");
-		if (this instanceof TroopImage) defaultValues.put("Numerical \"team\" association", "2");
-		if (this instanceof TowerImage) defaultValues.put("Numerical \"team\" association", "1");
+		if (this instanceof TroopImage) {
+			defaultValues.put("Numerical \"team\" association", "2");
+			defaultValues.put("tabName", "Troops");
+		}else if(this instanceof TowerImage) {
+			defaultValues.put("Numerical \"team\" association", "1");
+			defaultValues.put("tabName", "Towers");
+		}else if(this instanceof ProjectileImage) {
+			defaultValues.put("tabName", "Projectiles");
+		}
 	}
 	
 	public void addImage(String imageName) {
@@ -115,6 +122,13 @@ public abstract class SpriteImage extends InteractiveObject {
 	public Map<String, String> getAllProperties() {
 		allProperties.putAll(myPossibleProperties);		
 		allProperties.putAll(myBaseProperties);
+		if (this instanceof TroopImage) {
+			allProperties.put("tabName", "Troops");
+		}else if(this instanceof TowerImage) {
+			allProperties.put("tabName", "Towers");
+		}else if(this instanceof ProjectileImage) {
+			allProperties.put("tabName", "Projectiles");
+		}
 		return allProperties;
 	}
 	

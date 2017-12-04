@@ -83,7 +83,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
-		initializeInventory();
 		initializeButtons();
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
@@ -101,7 +100,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myHealthDisplay);
 		myPointsDisplay = new PointsDisplay();
 		rootAdd(myPointsDisplay);
-		myInventoryToolBar = new InventoryToolBar(this);
+		myInventoryToolBar = new InventoryToolBar(this, myController);
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		rootAdd(myLeftBar);
 	}
@@ -126,25 +125,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			}
 		}
 	}
-	
-	private void initializeInventory() {
-		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-		for(String s:myController.getInventory()) {
-			ImageView imageView;
-			try {
-				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
-				
-			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
-			}
-			imageView.setFitHeight(70);
-			imageView.setFitWidth(60);
-			imageView.setId(s);
-			imageView.setUserData(templates.get(s).get("imageUrl"));
-			myInventoryToolBar.addToToolbar(imageView);
-		}
-	}
-	
 	
 	private void styleLeftBar() {
 		myLeftBar.setPrefHeight(650);
@@ -187,7 +167,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController.update();
 		if(myController.isLevelCleared()) {
 			level++;
-			initializeInventory();
+			myInventoryToolBar.initializeInventory();
 		}else if(myController.isLost()) {
 			//launch lost screen
 		}else if(myController.isWon()) {

@@ -44,8 +44,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import toolbars.ToolBar;
  
-public class RightToolBar extends VBox implements PropertiesInterface {
+public class RightToolBar extends ToolBar implements PropertiesInterface {
 	
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
@@ -102,19 +103,22 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         inventoryTroop.attach(bottomTabPane.getTabs().get(1));
         inventoryProjectile.attach(bottomTabPane.getTabs().get(2));
         basePropertyMap = new HashMap<String, String>();
+        initializeInventory(myController, bottomTabPane);
     }
-		
-	private void createAndAddTabs() {
+	
+	@Override
+	protected void createAndAddTabs() {
 		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", "TowerImage", topTabPane));
 		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Troop", "TroopImage", topTabPane));
 		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Projectile", "ProjectileImage", topTabPane));
 		addTab = new AddSpriteImageTab(null , topTabPane);
 		topTabPane.getTabs().add(tabMaker.buildTab("Add Image", null, addTab, topTabPane));
 		
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Towers", "TowerImage", bottomTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Troops", "TroopImage", bottomTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Projectile", "ProjectileImage", bottomTabPane));
-		makeTabsUnclosable();
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Towers", "TowerImage", bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Troops", "TroopImage", bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Projectiles", "ProjectileImage", bottomTabPane));
+		makeTabsUnclosable(topTabPane);
+		makeTabsUnclosable(bottomTabPane);
 	}
 	
 	@Override
@@ -123,15 +127,6 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		if (myImageView instanceof TowerImage) inventoryTower.addNewImage(myImageView);
 		if (myImageView instanceof TroopImage) inventoryTroop.addNewImage(myImageView);
 		if (myImageView instanceof ProjectileImage) inventoryProjectile.addNewImage(myImageView);
-	}
-	
-	private void makeTabsUnclosable() {
-		for(int i = 0; i < topTabPane.getTabs().size(); i++) {
-			topTabPane.getTabs().get(i).setClosable(false);
-		}
-		for(int i = 0; i < bottomTabPane.getTabs().size(); i++) {
-			bottomTabPane.getTabs().get(i).setClosable(false);
-		}
 	}
 
 	@Override
