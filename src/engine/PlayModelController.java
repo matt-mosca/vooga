@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
@@ -23,7 +24,7 @@ public interface PlayModelController {
 	 * @param saveName
 	 *            the name to assign to the save file
 	 */
-	void saveGameState(String saveName);
+	void saveGameState(File fileToSaveTo);
 
 	/**
 	 * Load the detailed state of original (authored) game for a particular level,
