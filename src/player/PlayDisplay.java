@@ -45,6 +45,7 @@ import splashScreen.ScreenDisplay;
 import sprites.InteractiveObject;
 import sprites.Sprite;
 import sprites.StaticObject;
+import toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final String COST = "Cost";
@@ -130,7 +131,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
 		for(String s:myController.getInventory()) {
 			ImageView imageView;
-			System.out.println(s);
 			try {
 				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
 				

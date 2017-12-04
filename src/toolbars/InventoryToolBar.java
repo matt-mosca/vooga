@@ -1,4 +1,4 @@
-package player;
+package toolbars;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import splashScreen.ScreenDisplay;
 
-public class InventoryToolBar extends VBox{
+public class InventoryToolBar extends ToolBar{
 	private static final int Y_POSITION = 50;
 	private ScreenDisplay myDisplay;
 	private TabPane tabPane;
@@ -28,19 +28,14 @@ public class InventoryToolBar extends VBox{
 		this.getStyleClass().add("toolbar");
 	}
 
-	private void createAndAddTabs() {
+	@Override
+	protected void createAndAddTabs() {
 		towerTab = new SimpleTab(myDisplay, new ArrayList<>());
 		tabPane.getTabs().add(tabFactory.buildTab("Towers", "TowerImage", towerTab, tabPane));
-		makeTabsUnclosable();
+		makeTabsUnclosable(tabPane);
 	}
 	
-	protected void addToToolbar(ImageView imageView) {
+	public void addToToolbar(ImageView imageView) {
 		towerTab.addItem(imageView);
-	}
-	
-	private void makeTabsUnclosable() {
-		for(int i = 0; i < tabPane.getTabs().size(); i++) {
-			tabPane.getTabs().get(i).setClosable(false);
-		}
 	}
 }

@@ -14,9 +14,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import sprites.InteractiveObject;
+import sprites.StaticObject;
 
 public class BottomToolBar extends VBox {
+	private final int CELL_SIZE = 40;
+	
 	private AuthoringController myController;
 	private TabPane myTabPane;
 	private List<LevelTab> myLevels;
@@ -46,8 +51,6 @@ public class BottomToolBar extends VBox {
 		tabMaker = new TabFactory();
 		myTabPane.setMaxSize(400, 200);
 		myTabPane.setPrefSize(400, 200);
-		addLevel();
-		created.setGameArea(myGameAreas.get(0));
 		editLevel = new Button("Edit Level");
 		//Need to put the button somewhere first.
 		editLevel.setOnAction(e->{
@@ -58,6 +61,20 @@ public class BottomToolBar extends VBox {
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
+		loadLevels();
+		created.setGameArea(myGameAreas.get(0));
+	}
+	
+	private void loadLevels() {
+		if(myController.getNumLevelsForGame(myController.getGameName(), true) == 0) {
+			addLevel();
+			initializeSprites(1);
+			return;
+		}
+		for(int i = 1; i<=myController.getNumLevelsForGame(myController.getGameName(), true); i++) {
+			addLevel();
+			initializeSprites(i);
+		}
 	}
 
 	private void addLevel() {
@@ -76,6 +93,15 @@ public class BottomToolBar extends VBox {
 		myLevels.add(newLv);
 		myTabPane.getTabs().add(newTab);
 		
+	}
+	
+	//TODO need to get initialization working for game areas
+	private void initializeSprites(int level) {
+//		for(Integer id : myController.getLevelSprites(level)) {
+//			ImageView imageView = myController.getRepresentationFromSpriteId(id);
+//			StaticObject savedSprite = new StaticObject((int) imageView.getBoundsInLocal().getHeight()/CELL_SIZE, myCreated, imageView.getImage().toString());
+//			myGameAreas.get(level-1).addBackObject(savedSprite);
+//		}
 	}
 
 	private void changeDisplay(int i) {

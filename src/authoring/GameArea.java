@@ -88,13 +88,13 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	}
 	
 	//For potential future extension for objects that cover paths
-	protected void addFrontObject(StaticObject object) {
+	public void addFrontObject(StaticObject object) {
 		frontObjects.getChildren().add(object);
 		objectList.add(object);
 		object.setLocked(!moveableEnabled);
 	}
 	
-	protected void addBackObject(InteractiveObject newObject) {
+	public void addBackObject(InteractiveObject newObject) {
 		backObjects.getChildren().add(newObject);
 		objectList.add(newObject);
 		newObject.setLocked(!moveableEnabled);
