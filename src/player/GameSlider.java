@@ -17,7 +17,7 @@ public class GameSlider extends Slider {
 		this.setMajorTickUnit(200);
 		this.setMinorTickCount(20);
 		this.setBlockIncrement(10);
-		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->player.loadSliderState((int) this.getValue()));
+		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->System.out.println(this.getValue()));
 	}
 	
 	public void incrementWidth() {

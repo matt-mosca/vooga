@@ -48,7 +48,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void exportGame() {
 		getSpriteTemplateIoHandler().exportSpriteTemplates(getGameName(),
 				getSpriteFactory().getAllDefinedTemplateProperties());
-		packager.generateJar(getGameName());
+		// packager.generateJar(getGameName());
+		// need to supply more args ^ once testing is done
 	}
 
 	public void setGameDescription(String gameDescription) {

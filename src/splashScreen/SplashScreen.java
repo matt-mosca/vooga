@@ -180,12 +180,6 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		
 	}
 
-//	@Override
-//	public void listItemClicked(ImageView clickable, MouseEvent event) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
 	@Override
 	public void save(File saveName) {
 		// TODO Auto-generated method stub
