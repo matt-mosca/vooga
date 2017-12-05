@@ -20,7 +20,7 @@ import java.net.Socket;
  *
  * @author Ben Schwennesen
  */
-public class ChatThread implements Runnable {
+public class ChatThread extends Thread {
 
     private final String ERROR = "Chat encountered an error. Try again later.";
 
@@ -33,7 +33,6 @@ public class ChatThread implements Runnable {
         this.chatItems = chatItems;
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
         } catch (IOException e) {
 
         }
@@ -46,7 +45,9 @@ public class ChatThread implements Runnable {
             String message;
             try {
                 if ((message = in.readLine()) != null) {
-                    Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(message)));
+                    Platform.runLater(() -> {
+                        chatItems.add(chatItems.size(), new Text(message));
+                    });
                 }
             } catch (Exception e) {
                 e.printStackTrace();
