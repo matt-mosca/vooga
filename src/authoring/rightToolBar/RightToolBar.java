@@ -10,10 +10,12 @@ import authoring.EditDisplay;
 import authoring.ObjectProperties;
 import authoring.tabs.AddSpriteImageTab;
 import authoring.tabs.AddTab;
+import authoring.tabs.InventoryTab;
 import authoring.tabs.NewProjectileTab;
 import authoring.tabs.NewSpriteTab;
 import authoring.tabs.NewTowerTab;
 import authoring.tabs.NewTroopTab;
+import authoring.tabs.SimpleTab;
 import engine.authoring_engine.AuthoringController;
 import factory.ButtonFactory;
 import factory.TabFactory;
@@ -44,8 +46,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import splashScreen.ScreenDisplay;
+import toolbars.ToolBar;
  
-public class RightToolBar extends VBox implements PropertiesInterface {
+public class RightToolBar extends ToolBar implements PropertiesInterface {
 	
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
@@ -54,9 +58,10 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private NewSpriteTab newTower;
 	private NewSpriteTab newTroop;
 	private NewSpriteTab newProjectile;
-	private NewInventoryTab inventoryTower;
-	private NewInventoryTab inventoryTroop;
-	private NewInventoryTab inventoryProjectile;
+	private SimpleTab inventoryTower;
+	private SimpleTab inventoryTroop;
+	private SimpleTab inventoryProjectile;
+	private ScreenDisplay myDisplay;
 	private AddNewButton myNewButton;
 	private PropertiesBox myPropertiesBox;
 	private Pane propertiesPane;
@@ -67,14 +72,16 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private CreationInterface created;
 	private AuthoringController myController;
 	private Map<String, String> basePropertyMap;
+	private List<SpriteImage> availableProjectiles;
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 30;
 
 	
 	public RightToolBar(EditDisplay display, AuthoringController controller) {
-		this.created = created;
+		myDisplay = display;
 		retB = new ReturnButton(display);
 		myController = controller;
+		availableProjectiles = new ArrayList<>();
         this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 		this.setSpacing(20);
@@ -87,9 +94,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	    newTower = new NewTowerTab(display);   
 	    newTroop = new NewTroopTab(display); 
 	    newProjectile = new NewProjectileTab(display); 
-	    inventoryTower = new NewInventoryTower(this);
-	    inventoryTroop = new NewInventoryTroop(this);
-	    inventoryProjectile = new NewInventoryProjectile(this);
+	    
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
@@ -98,39 +103,37 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         newTower.attach(topTabPane.getTabs().get(0));
         newTroop.attach(topTabPane.getTabs().get(1));
         newProjectile.attach(topTabPane.getTabs().get(2));
-        inventoryTower.attach(bottomTabPane.getTabs().get(0));
-        inventoryTroop.attach(bottomTabPane.getTabs().get(1));
-        inventoryProjectile.attach(bottomTabPane.getTabs().get(2));
+        
         basePropertyMap = new HashMap<String, String>();
+        initializeInventory(myController, bottomTabPane);
     }
-		
-	private void createAndAddTabs() {
+	
+	@Override
+	protected void createAndAddTabs() {
 		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", "TowerImage", topTabPane));
 		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Troop", "TroopImage", topTabPane));
 		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Projectile", "ProjectileImage", topTabPane));
 		addTab = new AddSpriteImageTab(null , topTabPane);
 		topTabPane.getTabs().add(tabMaker.buildTab("Add Image", null, addTab, topTabPane));
 		
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Towers", "TowerImage", bottomTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Troops", "TroopImage", bottomTabPane));
-		bottomTabPane.getTabs().add(tabMaker.buildTabWithoutContent("Inventory Projectile", "ProjectileImage", bottomTabPane));
-		makeTabsUnclosable();
+		inventoryTower = new InventoryTab(myDisplay, new ArrayList<>(), this);
+		inventoryTroop = new InventoryTab(myDisplay, new ArrayList<>(), this);
+		inventoryProjectile = new InventoryTab(myDisplay, new ArrayList<>(), this);
+		bottomTabPane.getTabs().add(tabMaker.buildTab("Towers", "TowerImage", inventoryTower, bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTab("Troops", "TroopImage", inventoryTroop, bottomTabPane));
+		bottomTabPane.getTabs().add(tabMaker.buildTab("Projectiles", "ProjectileImage", inventoryProjectile, bottomTabPane));
+		makeTabsUnclosable(topTabPane);
+		makeTabsUnclosable(bottomTabPane);
 	}
 	
 	@Override
 	public void imageSelected(SpriteImage myImageView) {
 		myPropertiesBox = new PropertiesBox(created, myImageView, myController);
-		if (myImageView instanceof TowerImage) inventoryTower.addNewImage(myImageView);
-		if (myImageView instanceof TroopImage) inventoryTroop.addNewImage(myImageView);
-		if (myImageView instanceof ProjectileImage) inventoryProjectile.addNewImage(myImageView);
-	}
-	
-	private void makeTabsUnclosable() {
-		for(int i = 0; i < topTabPane.getTabs().size(); i++) {
-			topTabPane.getTabs().get(i).setClosable(false);
-		}
-		for(int i = 0; i < bottomTabPane.getTabs().size(); i++) {
-			bottomTabPane.getTabs().get(i).setClosable(false);
+		if (myImageView instanceof TowerImage) inventoryTower.addItem(myImageView.clone());
+		if (myImageView instanceof TroopImage) inventoryTroop.addItem(myImageView.clone());
+		if (myImageView instanceof ProjectileImage) {
+			inventoryProjectile.addItem(myImageView.clone());
+			availableProjectiles.add(myImageView);
 		}
 	}
 
@@ -178,14 +181,14 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private void newProjectilesWindow(TowerImage myTowerImage) {
 		ScrollPane projectilesWindow = new ScrollPane();
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
-		if (inventoryProjectile.getImages().isEmpty()) {
+		if (availableProjectiles.isEmpty()) {
 			Label emptyLabel = new Label("You have no projectiles\nin your inventory");
 			propertiesPane.getChildren().remove(myPropertiesBox);
 			emptyLabel.setLayoutX(100);
 			propertiesPane.getChildren().add(emptyLabel);
 		} else {
 			List<SpriteImage> cloneList = new ArrayList<>();
-			for (SpriteImage s : inventoryProjectile.getImages()) {
+			for (SpriteImage s : availableProjectiles) {
 				cloneList.add(s.clone());
 			}
 			ObservableList<SpriteImage> items =FXCollections.observableArrayList(cloneList);

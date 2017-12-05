@@ -1,4 +1,4 @@
-package authoring.leftToolBar;
+package toolbars;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +12,6 @@ import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
 
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.VBox;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.StaticObject;
@@ -20,7 +19,7 @@ import sprites.StaticObject;
 /**
  * @author Matt
  */
-public class LeftToolBar extends VBox {
+public class LeftToolBar extends ToolBar {
 	private static final int Y_POSITION = 50;
 	private ScreenDisplay myDisplay;
 	private AuthoringController myController;
@@ -29,7 +28,6 @@ public class LeftToolBar extends VBox {
 	private SimpleTab staticTab;
 	private SimpleTab backgroundTab;
 	private AddTab addTab;
-	private Map<String, String> propertiesMap;
 	private ResourceBundle defaultProperties;
 	
 	public LeftToolBar(ScreenDisplay display, AuthoringController controller) {
@@ -43,7 +41,8 @@ public class LeftToolBar extends VBox {
         createAndAddTabs();
 	}
 	
-	private void createAndAddTabs() {
+	@Override
+	protected void createAndAddTabs() {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
 		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
 		staticTab.addItem(createStaticObject(1, "tortoise.png"));
@@ -52,7 +51,6 @@ public class LeftToolBar extends VBox {
 		staticTab.addItem(createStaticObject(2, "tree1.png"));
 		
 		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
-		
 		backgroundTab.addItem(createBackgroundObject(2, "grass_small.png"));
 		backgroundTab.addItem(createBackgroundObject(1, "grass2_medium.png"));		
 		backgroundTab.addItem(createBackgroundObject(1, "brick_path.png"));
@@ -65,22 +63,23 @@ public class LeftToolBar extends VBox {
 		
 		addTab = new AddStaticTab(myDisplay, tabPane);
 		tabPane.getTabs().add(tabFactory.buildTab("Add Image", null, addTab, tabPane));
-		makeTabsUnclosable();
+		makeTabsUnclosable(tabPane);
 	}
 	
 	private StaticObject createBackgroundObject(int size, String imageString) {
 		BackgroundObject tempStatic = new BackgroundObject(size, myDisplay, imageString);
-		defineElement(tempStatic.getRealSize(), imageString);
+		defineElement(tempStatic.getSize(), imageString);
 		return tempStatic;
 	}
 	
 	private StaticObject createStaticObject(int size, String imageString) {
 		StaticObject tempStatic = new StaticObject(size, myDisplay, imageString);
-		defineElement(tempStatic.getRealSize(), imageString);
+		defineElement(tempStatic.getSize(), imageString);
 		return tempStatic;
 	}
 
 	public void defineElement(int size, String imageString) {
+		if(myController.getAllDefinedTemplateProperties().containsKey(imageString)) return;
 		Map<String, String> defaultValues = getDefaultProperties();
 		defaultValues.put("imageWidth", Integer.toString(size));
 		defaultValues.put("imageUrl", imageString);
@@ -94,11 +93,5 @@ public class LeftToolBar extends VBox {
 			values.put(key, defaultProperties.getString(key));
 		}
 		return values;
-	}
-	
-	private void makeTabsUnclosable() {
-		for(int i = 0; i < tabPane.getTabs().size(); i++) {
-			tabPane.getTabs().get(i).setClosable(false);
-		}
 	}
 }
