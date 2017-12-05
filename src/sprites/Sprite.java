@@ -18,21 +18,13 @@ import javafx.geometry.Point2D;
  */
 public class Sprite {
 
-	public static enum Team {
+	public enum Team {
 		NEUTRAL, COMPUTER, HUMAN
 	}
 
-	// These fields should be set through setProperties
 	private FiringStrategy firingStrategy;
-	// private MovementStrategy movementStrategy;
-	// private BlockingStrategy blockingStrategy;
 	private MovementStrategy movementStrategy;
-	// private CollisionVisitor collisionVisitor;
-	// private CollisionVisitable collisionVisitable;
 	private CollisionHandler collisionHandler;
-	// Might need custom code in setProperties for handling loading of image and
-	// subsequent construction of ImageView?
-	// private ImageView spriteImageView;
 
 	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionHandler collisionHandler) {
 		this.firingStrategy = firingStrategy;

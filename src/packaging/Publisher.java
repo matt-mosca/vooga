@@ -17,6 +17,7 @@ import com.google.api.services.drive.model.File;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +63,7 @@ public class Publisher {
         // load client secrets
         InputStream in = getClass().getClassLoader().getResourceAsStream(CLIENT_SECRETS_JSON);
         GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(JSON_FACTORY, in);
+                GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow =
                 new GoogleAuthorizationCodeFlow.Builder(
