@@ -5,7 +5,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +25,7 @@ public interface AuthoringModelController {
 	 * @param saveName
 	 *            the name to assign to the save file
 	 */
-	void saveGameState(File saveName);
+	void saveGameState(File fileToSaveTo);
 
 	/**
 	 * Load the detailed state of a game for a particular level, including
@@ -183,7 +182,7 @@ public interface AuthoringModelController {
 	 * @return a map of relevant details to display or modify about the game
 	 */
 	Map<String, Double> getStatus();
-	
+
 	/**
 	 * Get the elements of a game (represented as sprites) for a particular level.
 	 *
@@ -331,11 +330,12 @@ public interface AuthoringModelController {
 
 	/**
 	 * Set the resource endowment of a specific resource name
+	 * 
 	 * @param resourceName
 	 * @param newResourceEndowment
 	 */
 	void setResourceEndowment(String resourceName, double newResourceEndowment);
-	
+
 	/**
 	 * Set the cost of an element in terms of various resources
 	 * 

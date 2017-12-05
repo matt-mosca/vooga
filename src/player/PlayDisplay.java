@@ -45,6 +45,7 @@ import splashScreen.ScreenDisplay;
 import sprites.InteractiveObject;
 import sprites.Sprite;
 import sprites.StaticObject;
+import toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final String COST = "Cost";
@@ -82,8 +83,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
-		initializeInventory();
 		initializeButtons();
+		myInventoryToolBar.initializeInventory();
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
@@ -107,7 +108,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myHealthDisplay);
 		myPointsDisplay = new PointsDisplay();
 		rootAdd(myPointsDisplay);
-		myInventoryToolBar = new InventoryToolBar(this);
+		myInventoryToolBar = new InventoryToolBar(this, myController);
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		rootAdd(myLeftBar);
 	}
@@ -153,7 +154,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			imageView.setFitWidth(60);
 			imageView.setId(s);
 			imageView.setUserData(templates.get(s).get("imageUrl"));
-			myInventoryToolBar.addToToolbar(imageView);
+//			myInventoryToolBar.addToToolbar(imageView);
 		}
 	}
 	
@@ -201,6 +202,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			level++;
 			initializeInventory();
 			//Pause game
+			myInventoryToolBar.initializeInventory();
 		}else if(myController.isLost()) {
 			//launch lost screen
 		}else if(myController.isWon()) {

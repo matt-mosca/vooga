@@ -234,12 +234,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return elementManager.enemyReachedTarget();
 	}
 
-	@Override
-	public void saveGameState(String saveName) {
-		// TODO Auto-generated method stub
-
-	}
-
 	/*
 	 * For testing of reflection and streams public static void main(String[] args)
 	 * { PlayController tester = new PlayController();

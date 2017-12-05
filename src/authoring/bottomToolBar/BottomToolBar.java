@@ -1,5 +1,6 @@
 package authoring.bottomToolBar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +17,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import sprites.InteractiveObject;
+import sprites.StaticObject;
 
 public class BottomToolBar extends VBox {
+	private final int CELL_SIZE = 40;
+	
 	private AuthoringController myController;
 	private TabPane myTabPane;
 	private List<LevelTab> myLevels;
@@ -50,8 +56,6 @@ public class BottomToolBar extends VBox {
 		tabMaker = new TabFactory();
 		myTabPane.setMaxSize(400, 200);
 		myTabPane.setPrefSize(400, 200);
-		addLevel();
-		created.setGameArea(myGameAreas.get(0));
 		editLevel = new Button("Edit Level");
 		//Need to put the button somewhere first.
 		editLevel.setOnAction(e->{
@@ -62,6 +66,19 @@ public class BottomToolBar extends VBox {
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
+		loadLevels();
+		created.setGameArea(myGameAreas.get(0));
+	}
+	
+	private void loadLevels() {
+		if(myController.getNumLevelsForGame(myController.getGameName(), true) == 0) {
+			addLevel();
+			return;
+		}
+		for(int i = 1; i<=myController.getNumLevelsForGame(myController.getGameName(), true); i++) {
+			addLevel();
+			initializeSprites(i);
+		}
 	}
 
 	private void addLevel() {
@@ -69,7 +86,6 @@ public class BottomToolBar extends VBox {
 		LevelTab newLv = new LevelTab(myLevels.size()+1, myController);	
 		myGameAreas.add(new GameArea(myController));
 		myController.createNewLevel(myLevels.size()+1);
-		myController.createNewLevel(currentDisplay);
 		if (myLevels.size()==0) {
 			newTab.setClosable(false);
 		}else {
@@ -80,6 +96,21 @@ public class BottomToolBar extends VBox {
 		myLevels.add(newLv);
 		myTabPane.getTabs().add(newTab);
 		
+	}
+	
+	//TODO need load in static object rather than just imageview
+	private void initializeSprites(int level) {
+		try {
+			myController.loadOriginalGameState(myController.getGameName(), level);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(Integer id : myController.getLevelSprites(level)) {
+			ImageView imageView = myController.getRepresentationFromSpriteId(id);
+			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
+			savedObject.setImageView(imageView);
+			myGameAreas.get(level-1).addBackObject(savedObject);
+		}
 	}
 
 	private void changeDisplay(int i) {
