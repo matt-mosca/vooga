@@ -7,10 +7,10 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
- *
- * http://cs.lmu.edu/~ray/notes/javanetexamples/
+ * From: http://cs.lmu.edu/~ray/notes/javanetexamples/
  *
  *
  * A multithreaded chat room server.  When a client connects the
@@ -43,13 +43,13 @@ public class TestChatServer {
      * so that we can check that new clients are not registering name
      * already in use.
      */
-    private static HashSet<String> names = new HashSet<String>();
+    private static Set<String> names = new HashSet<>();
 
     /**
      * The set of all the print writers for all the clients.  This
      * set is kept so we can easily broadcast messages.
      */
-    private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
+    private static Set<PrintWriter> writers = new HashSet<>();
 
     /**
      * The appplication main method, which just listens on a port and
