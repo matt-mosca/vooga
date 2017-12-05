@@ -84,6 +84,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		this.setDroppable(myPlayArea);
 		initializeGameState();
 		initializeButtons();
+		myInventoryToolBar.initializeInventory();
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
