@@ -309,7 +309,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void addToBottomToolBar(SpriteImage currSprite) {
-		myBottomToolBar.getChildren().add(currSprite.clone());
+		myBottomToolBar.addToCurrLevel(currSprite);
 	}
 
 	
