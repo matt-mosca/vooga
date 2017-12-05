@@ -1,5 +1,10 @@
 package networking;
 
+import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Node;
+import javafx.scene.control.TextArea;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -34,11 +39,14 @@ import javax.swing.JTextField;
  */
 public class TestChatClient {
 
-    BufferedReader in;
-    PrintWriter out;
-    JFrame frame = new JFrame("Chatter");
-    JTextField textField = new JTextField(40);
-    JTextArea messageArea = new JTextArea(8, 40);
+    private BufferedReader in;
+    private PrintWriter out;
+    private JFrame frame = new JFrame("Chatter");
+    private JTextField textField = new JTextField(40);
+    private JTextArea messageArea = new JTextArea(8, 40);
+
+    private ObservableList<Node> chatItems;
+    private TextArea inputArea;
 
     /**
      * Constructs the client by laying out the GUI and registering a
@@ -49,6 +57,10 @@ public class TestChatClient {
      * message from the server.
      */
     public TestChatClient() {
+
+        // implicitly start JFX thread
+        JFXPanel jfxPanel = new JFXPanel();
+
 
         // Layout GUI
         textField.setEditable(false);

@@ -5,9 +5,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.Socket;
 
 /**
  * Used to poll for other participants' messages.
@@ -18,33 +22,34 @@ import java.net.MulticastSocket;
  */
 public class ChatThread implements Runnable {
 
-    private final int MAX_LENGTH = 1000;
-    private final String CHARACTER_SET = "UTF-8";
     private final String ERROR = "Chat encountered an error. Try again later.";
 
-    private final int PORT;
-    private MulticastSocket socket;
-    private InetAddress group;
+    private Socket socket;
     private ObservableList<Node> chatItems;
+    private BufferedReader in;
 
-    public ChatThread(MulticastSocket socket, InetAddress group, int port, ObservableList<Node> chatItems) {
+    public ChatThread(Socket socket, ObservableList<Node> chatItems) {
         this.socket = socket;
-        this.group = group;
-        this.PORT = port;
         this.chatItems = chatItems;
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        } catch (IOException e) {
+
+        }
+
     }
 
     @Override
     public void run() {
         while(!socket.isClosed()) {
-            byte[] buffer = new byte[MAX_LENGTH];
-            DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, group, PORT);
             String message;
             try {
-                socket.receive(datagram);
-                message = new String(buffer, 0, datagram.getLength(), CHARACTER_SET);
-                Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(message)));
+                if ((message = in.readLine()) != null) {
+                    Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(message)));
+                }
             } catch (Exception e) {
+                e.printStackTrace();
                 Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(ERROR)));
             }
         }
