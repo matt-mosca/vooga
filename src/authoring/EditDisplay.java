@@ -13,6 +13,7 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.leftToolBar.LeftToolBar;
+import authoring.rightToolBar.AddToWaveButton;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import authoring.spriteTester.SpriteTesterButton;
@@ -63,7 +64,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	private SpriteTesterButton myTesterButton;
-	
 	
 	public EditDisplay(int width, int height, Stage stage) {
 //		super(width, height, Color.GREEN);
@@ -221,6 +221,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void save(File saveName) {
 		controller.setGameName(saveName.getName().replace(".voog", ""));
+		//TODO change the save game so it saves a string instead
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}
@@ -304,9 +305,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setScene(testingScene.getScene());
 		controller.setGameName("testingGame");
 		controller.setWaveProperties(fun, sprites, new Point2D(100,100));
-		controller.loadAndSaveWave();
-		System.out.println(controller.getAllDefinedTemplateProperties());
 		
 	}
+
+	public void addToBottomToolBar(SpriteImage currSprite) {
+		myBottomToolBar.getChildren().add(currSprite.clone());
+	}
+
+	
 
 }

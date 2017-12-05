@@ -67,12 +67,16 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	private CreationInterface created;
 	private AuthoringController myController;
 	private Map<String, String> basePropertyMap;
+	private EditDisplay display;
+    private AddToWaveButton myWaveAdder;
+
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 30;
 
 	
 	public RightToolBar(EditDisplay display, AuthoringController controller) {
 		this.created = created;
+		this.display = display;
 		retB = new ReturnButton(display);
 		myController = controller;
         this.setLayoutX(X_LAYOUT);
@@ -94,6 +98,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
         this.getChildren().add(retB);
+        
         
         newTower.attach(topTabPane.getTabs().get(0));
         newTroop.attach(topTabPane.getTabs().get(1));
@@ -154,6 +159,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		projectileSlot.setStyle("-fx-background-color: white");
 		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow((TowerImage) imageView));
 		propertiesPane = new Pane();
+	    myWaveAdder = new AddToWaveButton(this);
 		deleteButton = new Button("Back");
 		deleteButton.setLayoutX(370);
 		Label info = new Label("Properties here");
@@ -170,6 +176,7 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 		propertiesPane.getChildren().add(myPropertiesBox);
 		propertiesPane.getChildren().add(projectileLabel);
 		propertiesPane.getChildren().add(projectileSlot);
+		propertiesPane.getChildren().add(myWaveAdder);
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
@@ -235,5 +242,12 @@ public class RightToolBar extends VBox implements PropertiesInterface {
 	
 	public void addToMap(String property, String value) {
 		basePropertyMap.put(property, value);
+	}
+	
+	@Override
+	public void addToWave() {
+		display.addToBottomToolBar(myPropertiesBox.getCurrSprite());
+		
+		
 	}
 } 
