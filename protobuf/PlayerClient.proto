@@ -1,0 +1,53 @@
+syntax = "proto2";
+
+/*
+	Pre-Game messages
+*/
+
+message GetAvailableGames {
+}
+
+message CreateGameRoom {
+	required string roomName = 1;
+}
+
+message JoinRoom {
+	required string roomName = 1;
+	required string userName = 2;
+}
+
+message LaunchGameRoom {
+	required string roomName = 1;
+}
+
+message GetGameRooms {
+}
+
+message GetPlayerNames {
+	required string roomName = 1;
+}
+
+/*
+	In-Game messages
+	(Should these requests be stateful instead, to make the server relatively stateless? Need to balance against security / client privileges)
+*/
+
+message PauseGame {
+}
+
+message ResumeGame {
+}
+
+message getInventory {
+}
+
+message getTemplateProperties {
+	required string elementName = 1;
+}
+
+message placeElement {
+	required string elementName = 1;
+	required double xCoord = 2;
+	required double yCoord = 3;
+}
+
