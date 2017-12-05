@@ -1,0 +1,101 @@
+syntax="proto2";
+
+/*
+	Pre-Game messages
+*/
+
+message GameRoomCreationStatus {
+	optional string roomId = 1;
+	optional string error = 2;
+}
+
+message GameRoomJoinStatus {
+	required bool success = 1;
+	optional string error = 2;
+}
+
+/*
+	TODO : Send over static files (images) with custom message type to ensure all images are available to client with specified URL?
+	OR : Client can use Server URL to fetch images remotely? Separate (HTTP?) endpoint for that?
+*/
+message GameRoomLaunchStatus {
+	optional Update initialState = 1;
+	optional string error = 2;
+}
+
+message GameRooms {
+	repeated string roomNames = 1;
+}
+
+message PlayerNames {
+	repeated string userNames = 1;
+}
+
+
+/*
+	In-Game messages
+*/
+
+message LevelInitialized {
+	required Inventory inventory = 1;
+	required Update spritesAndStatus = 2;
+}
+
+message Update {
+	repeated NewSprite newSprites = 1;
+	repeated SpriteUpdate spriteUpdates = 2;
+	repeated SpriteDeletion spriteDeletions = 3;
+	optional StatusUpdate statusUpdates = 4;
+	optional ResourceUpdate resourceUpdates = 5;
+}
+
+message NewSprite {
+	required int32 spriteId = 1;
+	required string imageURL = 2;
+	required double imageHeight = 3;
+	required double imageWidth = 4;
+	required double spawnX = 5;
+	required double spawnY = 6;
+}
+
+message SpriteUpdate {
+	required int32 spriteId = 1;
+	required double newX = 2;
+	required double newY = 3;
+}
+
+message SpriteDeletion {
+	required int32 spriteId = 1;
+}
+
+message StatusUpdate {
+	required bool levelCleared = 1;
+	required bool isWon = 2;
+	required bool isLost = 3;
+	required bool inPlay = 4;
+	required bool isPaused = 5;
+}
+
+message ResourceUpdate {
+	repeated Resource resources = 1;
+}
+
+message Inventory {
+	repeated string templates = 1;
+}
+
+message Resource {
+	required string name = 1;
+	required double amount = 2;
+}
+
+message TemplateProperties {
+	required string elementName = 1;
+	repeated TemplateProperty property = 2;
+}
+
+message TemplateProperty {
+	required string name = 1;
+	required string value = 2;
+}
+
