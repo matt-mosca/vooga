@@ -35,7 +35,7 @@ public interface PlayModelController {
 	 * @param level
 	 *            the level of the game which should be loaded
 	 * @throws IOException
-	 * 			  if the save name does not refer to a previously saved game state
+	 *             if the save name does not refer to a previously saved game state
 	 */
 	void loadOriginalGameState(String saveName, int level) throws IOException;
 
@@ -71,9 +71,8 @@ public interface PlayModelController {
 	 */
 	boolean isLost();
 
-	
 	boolean isLevelCleared();
-	
+
 	/**
 	 * Determine whether the game in-progress has been won.
 	 *
@@ -92,7 +91,7 @@ public interface PlayModelController {
 	 *         element
 	 */
 	int placeElement(String elementName, Point2D startCoordinates);
-	
+
 	/**
 	 * Fetch all available game names and their corresponding descriptions
 	 * 
@@ -101,19 +100,31 @@ public interface PlayModelController {
 	Map<String, String> getAvailableGames();
 
 	/**
+	 * Get a map of properties for an element template / model, so as to allow for
+	 * their displaying in a modification area of the display
+	 * 
+	 * @param elementName
+	 *            the template name for the element
+	 * @return a map of properties for the template with this identifier
+	 * @throws IllegalArgumentException
+	 *             if the element name does not refer to a defined template
+	 */
+	Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException;
+
+	/**
 	 * Get map of all defined template names to their properties
 	 * 
 	 * @return map of template names to properties of each template
 	 */
 	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
-	
+
 	/**
 	 * Retrieve the inventory for the current level
 	 * 
 	 * @return set of element names that can be placed in the current level
 	 */
 	Set<String> getInventory();
-	
+
 	/**
 	 * Get the ImageView corresponding to a particular spriteId
 	 * 
