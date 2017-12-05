@@ -1,5 +1,6 @@
 package authoring.bottomToolBar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +69,6 @@ public class BottomToolBar extends VBox {
 	private void loadLevels() {
 		if(myController.getNumLevelsForGame(myController.getGameName(), true) == 0) {
 			addLevel();
-			initializeSprites(1);
 			return;
 		}
 		for(int i = 1; i<=myController.getNumLevelsForGame(myController.getGameName(), true); i++) {
@@ -82,7 +82,6 @@ public class BottomToolBar extends VBox {
 		LevelTab newLv = new LevelTab(myLevels.size()+1, myController);	
 		myGameAreas.add(new GameArea(myController));
 		myController.createNewLevel(myLevels.size()+1);
-		myController.createNewLevel(currentDisplay);
 		if (myLevels.size()==0) {
 			newTab.setClosable(false);
 		}else {
@@ -95,13 +94,19 @@ public class BottomToolBar extends VBox {
 		
 	}
 	
-	//TODO need to get initialization working for game areas
+	//TODO need load in static object rather than just imageview
 	private void initializeSprites(int level) {
-//		for(Integer id : myController.getLevelSprites(level)) {
-//			ImageView imageView = myController.getRepresentationFromSpriteId(id);
+		try {
+			myController.loadOriginalGameState(myController.getGameName(), level);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(Integer id : myController.getLevelSprites(level)) {
+			System.out.println("HIT");
+			ImageView imageView = myController.getRepresentationFromSpriteId(id);
 //			StaticObject savedSprite = new StaticObject((int) imageView.getBoundsInLocal().getHeight()/CELL_SIZE, myCreated, imageView.getImage().toString());
-//			myGameAreas.get(level-1).addBackObject(savedSprite);
-//		}
+			myGameAreas.get(level-1).getChildren().add(imageView);
+		}
 	}
 
 	private void changeDisplay(int i) {
