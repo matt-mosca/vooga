@@ -37,6 +37,15 @@ public interface MultiPlayerModelController extends PlayModelController {
 	boolean joinGameRoom(String gameRoomName, String userName);
 
 	/**
+	 * Launch the game for the given game room name, with the currently joined
+	 * players. Closes the game for joining
+	 * 
+	 * @param gameRoomName
+	 *            name of a currently active game room
+	 */
+	void launchGameRoom(String gameRoomName);
+
+	/**
 	 * Retrieve set of names of currently active game rooms that can be joined
 	 * 
 	 * @return set of string identifiers for currently active game rooms

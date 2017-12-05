@@ -29,6 +29,12 @@ public class MultiPlayerController extends PlayController implements MultiPlayer
 	}
 
 	@Override
+	public void launchGameRoom(String gameRoomName) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public Set<String> getGameRooms() {
 		// TODO Auto-generated method stub
 		return null;
@@ -39,5 +45,6 @@ public class MultiPlayerController extends PlayController implements MultiPlayer
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
