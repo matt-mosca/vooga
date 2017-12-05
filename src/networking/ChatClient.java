@@ -9,10 +9,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -35,19 +39,21 @@ import java.util.Enumeration;
  */
 public class ChatClient {
 
+    private final String MESSAGE_DELIMITER = ": ";
     // get from some prop file
     private final String SERVER_ADDRESS = "152.3.53.39";
 
-    // the name will be replaced with user's chosen name
-    private final String PLAYER_NAME = "Player" + String.valueOf(Math.random());
     // port is arbitrary
     private final int PORT = 1234;
 
+    private final String USER_NAME_PROMPT = "Set user name above";
+    private final String USER_NAME_ACCEPTED = "Username %s accepted!";
+    private String userName;
+
     private ObservableList<Node> chatItems;
     private Socket socket;
-    private InetAddress group;
     private TextArea inputArea;
-    private OutputStream outputStream;
+    private PrintWriter outputWriter;
 
     public ChatClient(Stage primaryStage) {
         chatItems = FXCollections.observableArrayList();
@@ -59,6 +65,9 @@ public class ChatClient {
         inputArea = new TextArea();
         inputArea.setOnKeyPressed(e -> processText(e));
         chatItems.add(chatItems.size(), inputArea);
+        Text prompt = new Text(USER_NAME_PROMPT);
+        prompt.setFill(Color.RED);
+        chatItems.add(prompt);
     }
 
     public void closeSocket() {
@@ -83,17 +92,25 @@ public class ChatClient {
         }
     }
 
-    private void sendMessage(String message) throws IOException {
-        message = PLAYER_NAME + ": " + message;
-        outputStream.write(message.getBytes());
+    private void sendMessage(String input) throws IOException {
+        if (userName == null) {
+            userName = input;
+            Text acceptanceMessage = new Text(String.format(USER_NAME_ACCEPTED, input));
+            acceptanceMessage.setFill(Color.RED);
+            chatItems.add(acceptanceMessage);
+        } else {
+            System.out.println(input);
+            String message = userName + MESSAGE_DELIMITER + input;
+            outputWriter.println(message);
+        }
     }
 
     private void setupChatSocket() {
         try {
             // Make connection and initialize streams
-            socket = new Socket(SERVER_ADDRESS, 9001);
-            outputStream = socket.getOutputStream();
-            Thread t = new Thread(new ChatThread(socket, chatItems));
+            socket = new Socket(SERVER_ADDRESS, 9042);
+            outputWriter = new PrintWriter(socket.getOutputStream(), true);
+            Thread t = new ChatThread(socket, chatItems);
             t.start();
         } catch (SocketException se) {
             System.out.println("Error creating socket");
@@ -101,20 +118,4 @@ public class ChatClient {
             System.out.println("Error reading/writing from/to socket");
         }
     }
-
-    // necessary on Mac OS to make sure Multicast sockets work
-    /*private void configureNetworkInterface() throws SocketException {
-        Enumeration e = NetworkInterface.getNetworkInterfaces();
-        while (e.hasMoreElements()) {
-            NetworkInterface n = (NetworkInterface) e.nextElement();
-            Enumeration ee = n.getInetAddresses();
-            while (ee.hasMoreElements()) {
-                InetAddress i = (InetAddress) ee.nextElement();
-                if (i.isSiteLocalAddress() && !i.isAnyLocalAddress() && !i.isLinkLocalAddress()
-                        && !i.isLoopbackAddress() && !i.isMulticastAddress()) {
-                    socket.setNetworkInterface(NetworkInterface.getByName(n.getName()));
-                }
-            }
-        }
-    }*/
 }
