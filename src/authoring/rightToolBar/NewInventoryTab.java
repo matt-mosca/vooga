@@ -18,6 +18,10 @@ public abstract class NewInventoryTab extends ScrollPane {
 	private ObservableList<SpriteImage> inventoryView;
 	private ListView<SpriteImage> list;
 	
+	/**
+	 * @deprecated
+	 * @param properties
+	 */
 	public NewInventoryTab(PropertiesInterface properties) {
 		newInventoryImages = new ArrayList<SpriteImage>();
 		list = new ListView<SpriteImage>();

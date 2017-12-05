@@ -1,7 +1,9 @@
 package packaging;
 
+import main.Main;
 import networking.ChatTestWindow;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
@@ -12,8 +14,14 @@ import java.lang.reflect.Method;
 public class PackagingTest {
 
     private static void testJarCreation(Packager packager) {
-        packager.generateJar("jar-package-testing");
-        // test the JAR manually with a launch
+        try {
+            packager.generateJar("data/games/jar-package-testing.jar", "src",
+                    "out/production/voogasalad_duvallinthistogether/", Main.class,
+                    "resources/", "authoring/", "data/", "lib/");
+            // test the JAR manually with a launch
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void testPathConversion(Packager packager) throws Exception {

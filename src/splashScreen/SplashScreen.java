@@ -49,8 +49,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		basicSetup();
 		myNewGameButton = new NewGameButton(this);
 		rootAdd(myNewGameButton);
-//		myEditGameButton = new EditGameButton(this);
-//		rootAdd(myEditGameButton);
+		myEditGameButton = new EditGameButton(this);
+		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
 	}
@@ -151,7 +151,11 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	@Override
 	public void editButtonPressed() {
-		// TODO Auto-generated method stub
+		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage(), true);
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
+		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
+		getStage().setScene(myScene.getScene());
 	}
 
 	@Override
@@ -161,7 +165,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	
 	@Override
 	public void switchScreen() {
-		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage());
+		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage(), false);
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
@@ -179,16 +183,16 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	@Override
-	public void listItemClicked(ImageView clickable, MouseEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void save(File saveName) {
 		// TODO Auto-generated method stub
 		
 	}
+
+@Override
+public void listItemClicked(ImageView object) {
+	// TODO Auto-generated method stub
+	
+}
 
 
 

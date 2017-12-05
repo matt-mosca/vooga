@@ -3,7 +3,6 @@ package engine.play_engine;
 import engine.AbstractGameController;
 import engine.PlayModelController;
 import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
 import sprites.Sprite;
 import util.GameConditionsReader;
 
@@ -11,9 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +37,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	public PlayController() {
 		super();
-		elementManager = new ElementManager(getSpriteFactory());
+		elementManager = new ElementManager(getSpriteFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
 	}
@@ -75,26 +72,19 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public void update() {
 		if (inPlay) {
 			/*
-			if (checkLevelClearanceCondition()) {
-				if (checkVictoryCondition()) {
-					registerVictory();
-				} else {
-					registerLevelCleared();
-				}
-			} else if (checkDefeatCondition()) {
-				registerDefeat();
-			} else {
-				// Move elements, check and handle collisions
-				elementManager.update();
-			}
-			*/
+			 * if (checkLevelClearanceCondition()) { if (checkVictoryCondition()) {
+			 * registerVictory(); } else { registerLevelCleared(); } } else if
+			 * (checkDefeatCondition()) { registerDefeat(); } else { // Move elements, check
+			 * and handle collisions elementManager.update(); }
+			 */
 			elementManager.update();
 			List<Sprite> deadElements = elementManager.getDeadElements();
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
-			deadElements.clear();
-			for(Sprite s : elementManager.getNewlyGeneratedElements()) {
+			for (Sprite s : elementManager.getNewlyGeneratedElements()) {
 				cacheAndCreateIdentifier(s);
 			}
+			elementManager.clearDeadElements();
+			elementManager.clearNewElements();
 		}
 	}
 
@@ -112,7 +102,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public boolean isLost() {
 		return isLost;
 	}
-	
+
 	@Override
 	public boolean isWon() {
 		return isWon;
@@ -122,7 +112,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
 		assertValidLevel(level);
 		Collection<Sprite> levelSprites = elementManager.getCurrentElements();
-		return levelSprites.stream().mapToInt(this::getIdFromSprite).boxed().collect(Collectors.toSet());
+		return getIdsCollectionFromSpriteCollection(levelSprites);
 	}
 
 	@Override
@@ -229,28 +219,19 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return elementManager.enemyReachedTarget();
 	}
 
-	@Override
-	public void saveGameState(String saveName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* For testing of reflection and streams
-	public static void main(String[] args) {
-		PlayController tester = new PlayController();
-		tester.setVictoryCondition("kill all enemies");
-		tester.setDefeatCondition("lose all allies");
-		boolean goodResult = tester.checkLevelClearanceCondition();
-		boolean badResult = tester.checkDefeatCondition();
-		System.out.println("Level cleared? " + Boolean.toString(goodResult));
-		System.out.println("Defeated? " + Boolean.toString(badResult));
-		for (String s : tester.conditionsReader.getPossibleVictoryConditions()) {
-			System.out.println("Victory Condition : " + s);
-		}
-		for (String s : tester.conditionsReader.getPossibleDefeatConditions()) {
-			System.out.println("Defeat Condition: " + s);
-		}
-	}
-	*/
+	/*
+	 * For testing of reflection and streams public static void main(String[] args)
+	 * { PlayController tester = new PlayController();
+	 * tester.setVictoryCondition("kill all enemies");
+	 * tester.setDefeatCondition("lose all allies"); boolean goodResult =
+	 * tester.checkLevelClearanceCondition(); boolean badResult =
+	 * tester.checkDefeatCondition(); System.out.println("Level cleared? " +
+	 * Boolean.toString(goodResult)); System.out.println("Defeated? " +
+	 * Boolean.toString(badResult)); for (String s :
+	 * tester.conditionsReader.getPossibleVictoryConditions()) {
+	 * System.out.println("Victory Condition : " + s); } for (String s :
+	 * tester.conditionsReader.getPossibleDefeatConditions()) {
+	 * System.out.println("Defeat Condition: " + s); } }
+	 */
 
 }

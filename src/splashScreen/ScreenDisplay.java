@@ -2,7 +2,6 @@ package splashScreen;
 
 import java.io.File;
 
-import interfaces.ClickableInterface;
 import interfaces.Droppable;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,11 +10,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import sprites.InteractiveObject;
-
 
 public abstract class ScreenDisplay {
 
@@ -25,7 +21,7 @@ public abstract class ScreenDisplay {
 	private Droppable droppable;
 	private KeyFrame frame;
 	private Timeline animation = new Timeline();
-	protected Scene myScene;
+	private Scene myScene;
 	private Stage stage;
 	private Group root = new Group();
 
@@ -37,18 +33,14 @@ public abstract class ScreenDisplay {
 	public ScreenDisplay(int width, int height, Paint background, Stage currentStage) {
 		init();
 		stage = currentStage;
-		myScene = new Scene(root, width, height, background);
+		setMyScene(new Scene(root, width, height, background));
 
 	}
 	
 	public ScreenDisplay(int width, int height) {
 		init();
-		myScene = new Scene(root, width, height);
+		setMyScene(new Scene(root, width, height));
 
-	}
-
-	public Scene getScene() {
-		return myScene;
 	}
 	
 	public ObservableList<Node> getRootChildren() {
@@ -85,11 +77,6 @@ public abstract class ScreenDisplay {
 	protected Stage getStage() {
 		return stage;
 	}
-
-	
-	protected void centerScene() {
-
-	}
 	
 	public Droppable getDroppable() {
 		return droppable;
@@ -101,5 +88,13 @@ public abstract class ScreenDisplay {
 	
 	public abstract void save(File saveFile);
 	
-	public abstract void listItemClicked(ImageView object, MouseEvent event);
+	public abstract void listItemClicked(ImageView object);
+
+	public Scene getScene() {
+		return myScene;
+	}
+	
+	public void setMyScene(Scene myScene) {
+		this.myScene = myScene;
+	}
 }

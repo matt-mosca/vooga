@@ -9,7 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.geometry.Point2D;
 
 /**
- * Represents game objects in the backend. Responsible for controlling the object's update behavior.
+ * Represents game objects in the backend. Responsible for controlling the
+ * object's update behavior.
  *
  * TODO - documentation
  *
@@ -17,23 +18,13 @@ import javafx.geometry.Point2D;
  */
 public class Sprite {
 
-	private enum Team {
-		NEUTRAL,
-		COMPUTER,
-		HUMAN
+	public enum Team {
+		NEUTRAL, COMPUTER, HUMAN
 	}
-		
-	// These fields should be set through setProperties
+
 	private FiringStrategy firingStrategy;
-	//private MovementStrategy movementStrategy;
-	//private BlockingStrategy blockingStrategy;
 	private MovementStrategy movementStrategy;
-	//private CollisionVisitor collisionVisitor;
-	//private CollisionVisitable collisionVisitable;
 	private CollisionHandler collisionHandler;
-	// Might need custom code in setProperties for handling loading of image and
-	// subsequent construction of ImageView?
-	//private ImageView spriteImageView;
 
 	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionHandler collisionHandler) {
 		this.firingStrategy = firingStrategy;
@@ -46,7 +37,7 @@ public class Sprite {
 	 */
 	public void move() {
 		if (collisionHandler.isBlocked()) {
-			//movementStrategy.handleBlock();
+			// movementStrategy.handleBlock();
 			// TODO - handle block
 			collisionHandler.unBlock();
 		}
@@ -58,16 +49,16 @@ public class Sprite {
 	public boolean shouldFire() {
 		return firingStrategy.shouldFire();
 	}
-	
+
 	public String fire() {
 		return firingStrategy.fire();
 	}
-	
-	
+
 	/**
 	 * Check for a collision with another sprite.
 	 *
-	 * @param other the other sprite with which this sprite might be colliding
+	 * @param other
+	 *            the other sprite with which this sprite might be colliding
 	 * @return true if the sprites collide, false otherwise
 	 */
 	public boolean collidesWith(Sprite other) {
@@ -77,7 +68,8 @@ public class Sprite {
 	/**
 	 * Apply the effects of a collision with another sprite to this sprite.
 	 * 
-	 * @param other the other sprite with which this sprite collided
+	 * @param other
+	 *            the other sprite with which this sprite collided
 	 */
 	public void processCollision(Sprite other) {
 		this.collisionHandler.processCollision(other.collisionHandler);
@@ -89,15 +81,17 @@ public class Sprite {
 	 * @return true if the sprite has not been destroyed, false otherwise
 	 */
 	public boolean isAlive() {
-		return collisionHandler.isAlive();
+		return collisionHandler.isAlive() && !firingStrategy.isExpended()
+				&& !(reachedTarget() && shouldRemoveUponCompletion());
 	}
-	
+
 	public boolean reachedTarget() {
 		return movementStrategy.targetReached();
 	}
 
 	/**
-	 * Auto-updating (NOT snapshot) position of this AbstractMovementStrategy for tracking
+	 * Auto-updating (NOT snapshot) position of this AbstractMovementStrategy for
+	 * tracking
 	 *
 	 * @return auto-updating position that changes with movement
 	 */
@@ -112,7 +106,7 @@ public class Sprite {
 	public double getY() {
 		return movementStrategy.getCurrentY();
 	}
-	
+
 	public boolean shouldRemoveUponCompletion() {
 		return movementStrategy.removeUponCompletion();
 	}
@@ -120,7 +114,7 @@ public class Sprite {
 	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
 		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
 	}
-	
+
 	public ImageView getGraphicalRepresentation() {
 		return collisionHandler.getGraphicalRepresentation();
 	}
@@ -134,21 +128,24 @@ public class Sprite {
 		collisionHandler.getGraphicalRepresentation().setY(newY);
 		movementStrategy.setY(newY);
 	}
-	
+
 	/**
 	 * Player id corresponding to player owning this sprite
+	 * 
 	 * @return id of player controlling this sprite
 	 */
 	public int getPlayerId() {
 		return collisionHandler.getPlayerId();
 	}
-	
-	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter 
+
+	// TODO (extension) - for multi-player extension, modify to take in a playerId
+	// parameter
 	public boolean isEnemy() {
 		return getPlayerId() == Team.COMPUTER.ordinal();
 	}
-	
-	// TODO (extension) - for multi-player extension, modify to take in a playerId parameter
+
+	// TODO (extension) - for multi-player extension, modify to take in a playerId
+	// parameter
 	public boolean isAlly() {
 		return getPlayerId() == Team.HUMAN.ordinal();
 	}

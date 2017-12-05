@@ -1,8 +1,6 @@
 package engine;
 
 import engine.authoring_engine.AuthoringController;
-import engine.behavior.movement.TrackingPoint;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import sprites.Sprite;
@@ -22,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Encapsulates the shared fields and behavior between authoring and playing
@@ -44,10 +43,6 @@ public abstract class AbstractGameController {
 	private String gameName;
 	private IOController ioController;
 	private GameConditionsReader gameConditionsReader;
-
-	// @Ben : Use list instead of map to facilitate 'fall-through' behavior for
-	// deletion? i.e. when level 3 is deleted, level 4 should become level 3, level
-	// 5 should become level 4, etc.
 
 	private List<Map<String, Double>> levelStatuses = new ArrayList<>();
 	private List<List<Sprite>> levelSpritesCache = new ArrayList<>();
@@ -99,7 +94,8 @@ public abstract class AbstractGameController {
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
-		spriteTemplateIoHandler.exportSpriteTemplates(saveName.getName(), spriteFactory.getAllDefinedTemplateProperties());
+		spriteTemplateIoHandler.exportSpriteTemplates(saveName.getName(),
+				spriteFactory.getAllDefinedTemplateProperties());
 	}
 
 	/**
@@ -143,8 +139,9 @@ public abstract class AbstractGameController {
 	}
 
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
-		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-				ASSUMED_PLAYER_ID, startCoordinates, levelSpritesCache.get(currentLevel));
+		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
+				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
+						levelSpritesCache.get(currentLevel));
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
@@ -185,8 +182,9 @@ public abstract class AbstractGameController {
 	}
 
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs) {
-		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-				ASSUMED_PLAYER_ID, startCoordinates, levelSpritesCache.get(currentLevel));
+		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
+				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
+						levelSpritesCache.get(currentLevel));
 		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}
@@ -268,6 +266,10 @@ public abstract class AbstractGameController {
 		return spriteFactory;
 	}
 
+	protected SpriteQueryHandler getSpriteQueryHandler() {
+		return spriteQueryHandler;
+	}
+
 	protected Map<Integer, Sprite> getSpriteIdMap() {
 		return spriteIdMap;
 	}
@@ -277,7 +279,7 @@ public abstract class AbstractGameController {
 		cacheGeneratedSprite(sprite);
 		return spriteIdCounter.get();
 	}
-	
+
 	protected int cacheAndCreateIdentifier(Sprite sprite) {
 		spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
 		cacheGeneratedSprite(sprite);
@@ -292,6 +294,10 @@ public abstract class AbstractGameController {
 			}
 		}
 		throw new IllegalArgumentException();
+	}
+
+	protected Collection<Integer> getIdsCollectionFromSpriteCollection(Collection<Sprite> sprites) {
+		return sprites.stream().mapToInt(this::getIdFromSprite).boxed().collect(Collectors.toSet());
 	}
 
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
@@ -369,34 +375,29 @@ public abstract class AbstractGameController {
 		initializeLevelConditions();
 	}
 
-	/*private int getNearestSpriteIdToPoint(Point2D coordinates) {
-		double nearestDistance = Double.MAX_VALUE;
-		int nearestSpriteId = -1;
-		List<Sprite> spritesForLevel = getLevelSprites().get(getCurrentLevel());
-		for (Sprite sprite : spritesForLevel) {
-			double distanceToSprite = new Point2D(sprite.getX(), sprite.getY()).distance(coordinates);
-			if (distanceToSprite < nearestDistance) {
-				nearestDistance = distanceToSprite;
-				nearestSpriteId = getIdFromSprite(sprite);
-			}
-		}
-		return nearestSpriteId;
-	}
-
-	private Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String elementTemplateName,
-			Point2D startCoordinates) {
-		int idOfSpriteToTrack = getNearestSpriteIdToPoint(startCoordinates);
-		TrackingPoint targetLocation;
-		if (idOfSpriteToTrack != -1)
-			targetLocation = spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking();
-		else
-			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
-		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
-		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
-		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
-		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
-		return auxiliarySpriteConstructionObjects;
-	}*/
+	/*
+	 * private int getNearestSpriteIdToPoint(Point2D coordinates) { double
+	 * nearestDistance = Double.MAX_VALUE; int nearestSpriteId = -1; List<Sprite>
+	 * spritesForLevel = getLevelSprites().get(getCurrentLevel()); for (Sprite
+	 * sprite : spritesForLevel) { double distanceToSprite = new
+	 * Point2D(sprite.getX(), sprite.getY()).distance(coordinates); if
+	 * (distanceToSprite < nearestDistance) { nearestDistance = distanceToSprite;
+	 * nearestSpriteId = getIdFromSprite(sprite); } } return nearestSpriteId; }
+	 * 
+	 * private Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String
+	 * elementTemplateName, Point2D startCoordinates) { int idOfSpriteToTrack =
+	 * getNearestSpriteIdToPoint(startCoordinates); TrackingPoint targetLocation; if
+	 * (idOfSpriteToTrack != -1) targetLocation =
+	 * spriteIdMap.get(idOfSpriteToTrack).getPositionForTracking(); else
+	 * targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new
+	 * SimpleDoubleProperty(0)); Point2D targetPoint = new
+	 * Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
+	 * Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
+	 * auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(),
+	 * targetLocation);
+	 * auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(),
+	 * targetPoint); return auxiliarySpriteConstructionObjects; }
+	 */
 
 	private void initializeLevelConditions() {
 		getLevelConditions().add(new HashMap<>());

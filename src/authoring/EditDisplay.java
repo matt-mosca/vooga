@@ -1,34 +1,32 @@
 package authoring;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Collection;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
 
 import authoring.bottomToolBar.BottomToolBar;
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
-import authoring.leftToolBar.LeftToolBar;
-import authoring.rightToolBar.ReturnButton;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
-import interfaces.ClickableInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -38,8 +36,8 @@ import main.Main;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.InteractiveObject;
-import sprites.Sprite;
 import sprites.StaticObject;
+import toolbars.LeftToolBar;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
@@ -59,43 +57,26 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Label attackDefenseLabel;
 	private Map<String, String> basePropertyMap;
 	private BottomToolBar myBottomToolBar;
-	private PlayController tester;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	
 	
-	public EditDisplay(int width, int height, Stage stage) {
-//		super(width, height, Color.GREEN);
-//		super(width, height);
+	public EditDisplay(int width, int height, Stage stage, boolean loaded) {
 		super(width, height, Color.BLACK, stage);
+		controller = new AuthoringController();
+		if(loaded) {
+			loadGame();
+		}
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
+		basePropertyMap = new HashMap<>();
 
-		tester = new PlayController();
 		addItems();
 		formatLeftBar();
 		setStandardTheme();
 		createGridToggle();
-		rootAdd(gridToggle);
 		createMovementToggle();
-		rootAdd(movementToggle);
 		createLabel();
-		basePropertyMap = new HashMap<String, String>();
-		Button saveButton = new Button("Save");
-		saveButton.setLayoutY(600);
-		rootAdd(saveButton);
-	}
-	
-	private void createLabel() {
-		attackDefenseLabel = new Label("Defense");
-//		styleLabel(attackDefenseLabel);
-		attackDefenseLabel.setFont(new Font("Times New Roman", 35));
-//		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
-//		attackDefenseLabel.setFont(new Font("Cambria", 40));
-		attackDefenseLabel.setLayoutX(260);
-		attackDefenseLabel.setLayoutY(25);
-		rootAdd(attackDefenseLabel);
-
 	}
 
 	private void createGridToggle() {
@@ -107,6 +88,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		gridToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			myGameArea.toggleGridVisibility(gridToggle.isSelected());
 		});
+		rootAdd(gridToggle);
 	}
 	
 	private void createMovementToggle() {
@@ -116,6 +98,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		movementToggle.setSelected(false);
 		movementToggle.setGraphic(new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
 		movementToggle.addEventHandler(MouseEvent.MOUSE_CLICKED, e->toggleMovement(movementToggle));
+		rootAdd(movementToggle);
 	}
 	
 	private void toggleMovement(ToggleButton movement) {
@@ -127,22 +110,24 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		}
 	}
 	
-	private void addToLeftButtonsBar() {
-		myColorChanger = new ColorChanger(this);
-		myLeftButtonsBar.getChildren().add(myColorChanger);
-		myGameChooser = new AttackDefenseToggle(this);
-		myLeftButtonsBar.getChildren().add(myGameChooser);
+	private void createLabel() {
+		attackDefenseLabel = new Label("Defense");
+//		styleLabel(attackDefenseLabel);
+		attackDefenseLabel.setFont(new Font("Times New Roman", 35));
+//		attackDefenseLabel.setFont(new Font("American Typewriter", 40));
+//		attackDefenseLabel.setFont(new Font("Cambria", 40));
+		attackDefenseLabel.setLayoutX(260);
+		attackDefenseLabel.setLayoutY(25);
+		rootAdd(attackDefenseLabel);
 	}
 	
-	private void addToLeftBar() {
-		myLeftToolBar = new LeftToolBar(this, controller);
-		myLeftBar.getChildren().add(myLeftToolBar);
-		addToLeftButtonsBar();
-		myLeftBar.getChildren().add(myLeftButtonsBar);
+	private void formatLeftBar() {
+		myLeftBar.setLayoutY(30);
+		myLeftBar.setSpacing(30);
+		myLeftButtonsBar.setSpacing(20);
 	}
 
 	private void addItems() {
-		controller = new AuthoringController();
 		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
@@ -159,7 +144,22 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myBottomToolBar);
 	}
 	
-	public void listItemClicked(ImageView clickable, MouseEvent event) {
+	private void addToLeftBar() {
+		myLeftToolBar = new LeftToolBar(this, controller);
+		myLeftBar.getChildren().add(myLeftToolBar);
+		addToLeftButtonsBar();
+		myLeftBar.getChildren().add(myLeftButtonsBar);
+	}
+	
+	private void addToLeftButtonsBar() {
+		myColorChanger = new ColorChanger(this);
+		myLeftButtonsBar.getChildren().add(myColorChanger);
+		myGameChooser = new AttackDefenseToggle(this);
+		myLeftButtonsBar.getChildren().add(myGameChooser);
+	}
+	
+	@Override
+	public void listItemClicked(ImageView clickable) {
 		StaticObject object = (StaticObject) clickable;
 		Button addNewButton = new Button("New");
 		Button incrementButton = new Button("+");
@@ -170,19 +170,32 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		incrementButton.setLayoutX(50);
 		decrementButton.setLayoutX(85);
 		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->addObject(object));
-		incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.incrementSize());
-		decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->object.decrementSize());
+		incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			object.incrementSize();
+			updateObjectSize(object);
+		});
+		decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			object.decrementSize();
+			updateObjectSize(object);
+		});
 		rootAdd(addNewButton);
 		rootAdd(incrementButton);
 		rootAdd(decrementButton);
+	}
+	
+	private void updateObjectSize(StaticObject object) {
+		Map<String, String> newProperties = controller.getTemplateProperties(object.getElementName());
+		newProperties.put("imageWidth", Integer.toString(object.getSize()));
+		newProperties.put("imageHeight", Integer.toString(object.getSize()));
+		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
 
 	private void addObject(InteractiveObject object) {
 		InteractiveObject newObject;
 		if (object instanceof BackgroundObject) {
-			newObject = new BackgroundObject(object.getSize(), this, object.getElementName());
+			newObject = new BackgroundObject(object.getCellSize(), this, object.getElementName());
 		} else {
-			newObject = new StaticObject(object.getSize(), this, object.getElementName());
+			newObject = new StaticObject(object.getCellSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
 		newObject.setElementId(controller.placeElement(newObject.getElementName(), new Point2D(0,0)));
@@ -209,6 +222,27 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}
+	
+	private void loadGame() {
+		List<String> games = new ArrayList<>();
+		for(String title:controller.getAvailableGames().keySet()) {
+			games.add(title);
+		}
+		Collections.sort(games);
+		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
+		loadChoices.setTitle("Load Game");
+		loadChoices.setContentText(null);
+		
+		Optional<String> result = loadChoices.showAndWait();
+		if(result.isPresent()) {
+			try {
+				controller.loadOriginalGameState(result.get(), 1);
+			} catch (IOException e) {
+				// TODO Change to alert for the user 
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public void changeTheme(String theme) {
 		rootStyleAndClear(myThemeChanger.getThemePath(theme));
@@ -220,12 +254,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	private void setStandardTheme() {
 		changeTheme(ThemeChanger.STANDARD);
-	}
-	
-	private void formatLeftBar() {
-		myLeftBar.setLayoutY(30);
-		myLeftBar.setSpacing(30);
-		myLeftButtonsBar.setSpacing(20);
 	}
 
 	public void attack() {
@@ -258,8 +286,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Main restart = new Main();
 		restart.start(myStage);
 		getStage().close();
-		
-		
 	}
 
 	@Override
@@ -269,11 +295,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myRightToolBar.imageSelected(imageView);
 		controller.defineElement(imageView.getName(), imageView.getAllProperties());
 		controller.addElementToInventory(imageView.getName());
-		
-		
-		
-//		System.out.println(tester.getAllDefinedTemplateProperties());
-
 	}
 
 	@Override

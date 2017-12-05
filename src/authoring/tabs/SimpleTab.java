@@ -1,5 +1,6 @@
 package authoring.tabs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.ClickableInterface;
@@ -17,7 +18,7 @@ import sprites.StaticObject;
 public class SimpleTab extends ScrollPane{
 	private ScreenDisplay display;
 	private List<ImageView> myList;
-	private ListView<ImageView> myListView;
+	protected ListView<ImageView> myListView;
 	private ObservableList<ImageView> items;
 	
 	public SimpleTab(ScreenDisplay display, List<ImageView> defaults) {
@@ -29,22 +30,21 @@ public class SimpleTab extends ScrollPane{
 		myList = defaults;
 		items = FXCollections.observableArrayList(myList);
 		myListView = new ListView<>();
-		myListView.setOnMouseClicked(e->display.listItemClicked(
-      		myListView.getSelectionModel().getSelectedItem(), null));
+		addHandler();
 		myListView.setItems(items);
 		this.setContent(myListView);
 	}
 	
-	//TODO eliminate addstatic and anddbackground if possible in favor of more general additem
-	public void addStaticItem(int size, String imageString) {
-		items.add(new StaticObject(size, display, imageString));
-	}
-	
-	public void addBackgroundItem(int size, String imageString) {
-		items.add(new BackgroundObject(size, display, imageString));
+	protected void addHandler() {
+		myListView.setOnMouseClicked(e->display.listItemClicked(
+	      		myListView.getSelectionModel().getSelectedItem()));
 	}
 	
 	public void addItem(ImageView object) {
 		items.add(object);
+	}
+	
+	public List<ImageView> getImages(){
+		return new ArrayList<>(myList);
 	}
 }

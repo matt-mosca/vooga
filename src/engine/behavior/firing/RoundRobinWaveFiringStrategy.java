@@ -3,6 +3,11 @@ package engine.behavior.firing;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * 
+ * @author radithya
+ *
+ */
 public class RoundRobinWaveFiringStrategy extends AbstractWaveFiringStrategy {
 
 	Iterator<String> elementChooser;

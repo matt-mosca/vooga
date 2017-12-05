@@ -14,10 +14,18 @@ public interface FiringStrategy {
 	 * Return the template name of projectile to fire
 	 */
 	String fire();
-	
+
 	/**
 	 * Whether the projectile should fire in this cycle
+	 * 
 	 * @return
 	 */
 	boolean shouldFire();
+
+	/**
+	 * Whether the firing element has fired its quota and should be removed
+	 * 
+	 * @return
+	 */
+	boolean isExpended();
 }

@@ -12,11 +12,11 @@ public class ValueDisplay extends HBox {
 	private Label myValue;
 	private Label myLabel;
 	private ImageView myValueImage;
-	private int quantity;
+	private double quantity;
 	
 	public ValueDisplay() {
 		quantity = 0;
-		myValue = new Label(Integer.toString(quantity));
+		myValue = new Label(Double.toString(quantity));
 		setStandardDisplayValue();
 		setStandardBoxStyle();
 //		this.getStyleClass().add("coin-display");
@@ -70,27 +70,27 @@ public class ValueDisplay extends HBox {
 	
 	public void increment() {
 		quantity++;
-		myValue.setText(Integer.toString(quantity));
+		myValue.setText(Double.toString(quantity));
 	}
 	
 	public void decrease() {
 		if (quantity >= 5) {
 			quantity -= 5;
 		}
-		myValue.setText(Integer.toString(quantity));
+		myValue.setText(Double.toString(quantity));
 	}
 
-	public boolean decreaseByAmount(int amount) {
+	public boolean decreaseByAmount(double amount) {
 		if(quantity >= amount)
 			quantity -= amount;
 		return quantity >= amount;
 	}
 	
-	public void increaseByAmount(int amount) {
+	public void increaseByAmount(double amount) {
 		quantity += amount;
 	}
 	
-	protected int getQuantity() {
+	protected double getQuantity() {
 		return quantity;
 	}
 }

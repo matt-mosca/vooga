@@ -31,6 +31,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -44,20 +45,18 @@ import splashScreen.ScreenDisplay;
 import sprites.InteractiveObject;
 import sprites.Sprite;
 import sprites.StaticObject;
+import toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
+	private final String COST = "Cost";
 	
 	private InventoryToolBar myInventoryToolBar;
-
 	private VBox myLeftBar;
 	private List<List<Sprite>> levelSpritesCache;
 	private PlacementGrid myMainGrid;
-	private HealthBar myHealthBar;
-	private DecreaseHealthButton myDecreaseHealthButton;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
 	private PlayController myController;
-	private AuthorInterface testAuthor;
 	private CoinDisplay myCoinDisplay;
 	private HealthDisplay myHealthDisplay;
 	private PointsDisplay myPointsDisplay;
@@ -65,38 +64,21 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Button play;
 	private Timeline animation;
 
-	private TowerImage tower1;
-	private double xLocation = 0;
-	private double yLocation = 0;
 	private int level = 1;
-	private Collection<Sprite> testCollection;
-	private final FiringStrategy testFiring =  new NoopFiringStrategy();
-	private final MovementStrategy testMovement = new StationaryMovementStrategy();
-	private final CollisionHandler testCollision =
-			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
-					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;
 	private StaticObject placeable;
 	
-	//TODO uncomment the initialization and get rid of tester
 	public PlayDisplay(int width, int height, Stage stage) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = new PlayController();
 		myLeftBar = new VBox();
-		formatLeftBar();
+		styleLeftBar();
 		createGameArea(height - 20);
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
-		initializeSprites();
-		initializeInventory();
 		initializeButtons();
-		createTestImages();
-//		createTestSprites();
-//		createTestGameArea();
-
-		
-		
+		myInventoryToolBar.initializeInventory();
 		
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
                 e -> step());
@@ -113,21 +95,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myHealthDisplay);
 		myPointsDisplay = new PointsDisplay();
 		rootAdd(myPointsDisplay);
-//		rootAdd(new HealthBackground());
-		myInventoryToolBar = new InventoryToolBar(this);
+		myInventoryToolBar = new InventoryToolBar(this, myController);
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		rootAdd(myLeftBar);
-//		myHealthBar = new HealthBar();
-//		rootAdd(myHealthBar);
-//		myDecreaseHealthButton = new DecreaseHealthButton(this);
-//		rootAdd(myDecreaseHealthButton);
-	}
-
-	private void createTestImages() {
-		tower1 = new TowerImage(this, "Castle_Tower1");
-		tower1.setFitHeight(40);
-		tower1.setFitWidth(40);
-		myPlayArea.getChildren().add(tower1);
 	}
 	
 	private void initializeGameState() {
@@ -151,37 +121,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 	}
 	
-	private void initializeInventory() {
-		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-		System.out.println(templates);
-		ImageView newImage;
-		for(String s:myController.getInventory()) {
-			ImageView imageView;
-			System.out.println(s);
-			try {
-				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
-				
-			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
-			}
-			imageView.setFitHeight(70);
-			imageView.setFitWidth(60);
-			imageView.setId(s);
-			imageView.setUserData(templates.get(s).get("imageUrl"));
-			myInventoryToolBar.addToToolbar(imageView);
-		}
+	private void styleLeftBar() {
+		myLeftBar.setPrefHeight(650);
+		myLeftBar.setLayoutY(25);
+		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
+		myLeftBar.getStyleClass().add("left-bar");
 	}
 	
-	//TODO Make sure this works once saved files are all good
-	private void initializeSprites() {
-		currentElements.clear();
-		for(Integer id : myController.getLevelSprites(level)) {
-			//ImageView imageView = myController.getRepresentationFromSpriteId(id);
-			currentElements.add(myController.getRepresentationFromSpriteId(id));
-		}
-		myPlayArea.getChildren().addAll(currentElements);
-	}
-
 	private void initializeButtons() {
 		pause = new Button();
 		pause.setOnAction(e-> {
@@ -202,15 +148,31 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		play.setLayoutY(pause.getLayoutY() + 30);
 	}
 	
-	private void step() {
-		myCoinDisplay.increment();
-		xLocation += 1;
-		yLocation += 1;
-		tower1.setLayoutX(xLocation);
-		tower1.setLayoutY(yLocation);
-		myController.update();
+	private void loadSprites() {
 		myPlayArea.getChildren().removeAll(currentElements);
-		initializeSprites();
+		currentElements.clear();
+		for(Integer id : myController.getLevelSprites(level)) {
+			currentElements.add(myController.getRepresentationFromSpriteId(id));
+		}
+		myPlayArea.getChildren().addAll(currentElements);
+	}
+	
+	private void step() {
+		updateStatusBar();
+		myController.update();
+		if(myController.isLevelCleared()) {
+			level++;
+			myInventoryToolBar.initializeInventory();
+		}else if(myController.isLost()) {
+			//launch lost screen
+		}else if(myController.isWon()) {
+			//launch win screen
+		}
+		loadSprites();
+	}
+	
+	private void updateStatusBar() {
+		myCoinDisplay.increment();
 	}
 
 	private void createGameArea(int sideLength) {
@@ -219,58 +181,50 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
 	}
-
-	private Sprite createSprite() {
-		Sprite tempSprite = new Sprite(testFiring, testMovement, testCollision);
-		Image myImage = new Image(getClass().getClassLoader().getResourceAsStream("black_soldier.gif"));
-		ImageView myImageView = new ImageView();
-		myImageView.setImage(myImage);
-//		tempSprite.setGraphicalRepresentation(myImageView);
-		return tempSprite;
-	}
-	
-	private void createNewErrorWindow() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Object placement error");
-		alert.setHeaderText("Must place object in the main grid");
-		alert.show();
-	}
-
-	@Override
-	public void decreaseHealth() {
-		myHealthBar.decreaseHealth(10);
-	}
-
-	@Override
-	public void clicked(SpriteImage sprite) {
-	}
-
-	//TODO clone objects so that they don't dissappear out of the list
-	@Override
-	public void listItemClicked(ImageView image, MouseEvent event) {
-		placeable = new StaticObject(1, this, (String) image.getUserData());
-		placeable.setElementName(image.getId());
-		myScene.setCursor(new ImageCursor(image.getImage()));
-		selected = true;
-	}
 	
 	private void dropElement(MouseEvent e) {
 		if(selected) {
 			selected = false;
-			myScene.setCursor(Cursor.DEFAULT);
+			this.getScene().setCursor(Cursor.DEFAULT);
 			if(e.getButton().equals(MouseButton.PRIMARY)) myController.placeElement(placeable.getElementName(), new Point2D(e.getX(),e.getY()));
 		}
+	}
+	
+	@Override
+	public void listItemClicked(ImageView image) {
+		//double cost = myController.getElementCosts().get(image.getId()).get(COST);
+		double cost = 200;
+		if(cost > myCoinDisplay.getQuantity()) {
+			launchInvalidResources();
+			return;
+		}else {
+			Alert costDialog = new Alert(AlertType.CONFIRMATION);
+			costDialog.setTitle("Purchase Resource");
+			costDialog.setHeaderText(null);
+			costDialog.setContentText("Would you like to purchase this object?");
+			
+			Optional<ButtonType> result = costDialog.showAndWait();
+			if(result.get() == ButtonType.OK) {
+				myCoinDisplay.decreaseByAmount(cost);
+				placeable = new StaticObject(1, this, (String) image.getUserData());
+				placeable.setElementName(image.getId());
+				this.getScene().setCursor(new ImageCursor(image.getImage()));
+				selected = true;
+			}
+		}
+		
+	}
+	
+	private void launchInvalidResources() {
+		Alert error = new Alert(AlertType.ERROR);
+		error.setTitle("Resource Error!");
+		error.setHeaderText(null);
+		error.setContentText("You do not have the funds for this item.");
+		error.show();
 	}
 
 	@Override
 	public void save(File saveName) {
 		myController.saveGameState(saveName);
-	}
-	
-	private void formatLeftBar() {
-		myLeftBar.setPrefHeight(650);
-		myLeftBar.setLayoutY(25);
-		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
-		myLeftBar.getStyleClass().add("left-bar");
 	}
 }
