@@ -185,17 +185,17 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
 	private void updateObjectSize(StaticObject object) {
 		Map<String, String> newProperties = controller.getTemplateProperties(object.getElementName());
-		newProperties.put("imageWidth", Integer.toString(object.getRealSize()));
-		newProperties.put("imageHeight", Integer.toString(object.getRealSize()));
+		newProperties.put("imageWidth", Integer.toString(object.getSize()));
+		newProperties.put("imageHeight", Integer.toString(object.getSize()));
 		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
 
 	private void addObject(InteractiveObject object) {
 		InteractiveObject newObject;
 		if (object instanceof BackgroundObject) {
-			newObject = new BackgroundObject(object.getSize(), this, object.getElementName());
+			newObject = new BackgroundObject(object.getCellSize(), this, object.getElementName());
 		} else {
-			newObject = new StaticObject(object.getSize(), this, object.getElementName());
+			newObject = new StaticObject(object.getCellSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
 		newObject.setElementId(controller.placeElement(newObject.getElementName(), new Point2D(0,0)));

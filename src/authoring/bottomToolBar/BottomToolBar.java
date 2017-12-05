@@ -102,10 +102,10 @@ public class BottomToolBar extends VBox {
 			e.printStackTrace();
 		}
 		for(Integer id : myController.getLevelSprites(level)) {
-			System.out.println("HIT");
 			ImageView imageView = myController.getRepresentationFromSpriteId(id);
-//			StaticObject savedSprite = new StaticObject((int) imageView.getBoundsInLocal().getHeight()/CELL_SIZE, myCreated, imageView.getImage().toString());
-			myGameAreas.get(level-1).getChildren().add(imageView);
+			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
+			savedObject.setImageView(imageView);
+			myGameAreas.get(level-1).addBackObject(savedObject);
 		}
 	}
 

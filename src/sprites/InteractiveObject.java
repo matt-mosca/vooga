@@ -8,7 +8,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import splashScreen.ScreenDisplay;
 
-public abstract class InteractiveObject extends ImageView implements ClickableInterface{
+public class InteractiveObject extends ImageView implements ClickableInterface{
 	private boolean locked;
 	private int id;
 	private Droppable droppable;
@@ -75,5 +75,19 @@ public abstract class InteractiveObject extends ImageView implements ClickableIn
 		elementName = name;
 	}
 	
-	public abstract int getSize();
+	public void setImageView(ImageView imageView) {
+		this.setImage(imageView.getImage());
+		this.setX(imageView.getX());
+		this.setY(imageView.getY());
+		this.setFitHeight(imageView.getFitHeight());
+		this.setFitWidth(imageView.getFitWidth());
+	}
+	
+	public int getSize() {
+		return (int) this.getBoundsInParent().getHeight();
+	};
+	
+	public int getCellSize() {
+		return 0;
+	}
 }

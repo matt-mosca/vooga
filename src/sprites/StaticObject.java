@@ -9,9 +9,9 @@ public class StaticObject extends InteractiveObject{
 	private int objectSize;
 	private int realSize;
 	
-	public StaticObject(int size, ScreenDisplay display, String name) {
+	public StaticObject(int cellSize, ScreenDisplay display, String name) {
 		super(display, name);
-		setSize(size);
+		setSize(cellSize);
 		Image image;
 		try {
 			image = new Image(getClass().getClassLoader().getResourceAsStream(name));
@@ -19,7 +19,7 @@ public class StaticObject extends InteractiveObject{
 			image = new Image(name);
 		}
 		this.setImage(image);
-		objectSize = size;
+		objectSize = cellSize;
 		
 	}
 
@@ -39,13 +39,14 @@ public class StaticObject extends InteractiveObject{
 	
 	@Override
 	public int getSize() {
-		return objectSize;
-	}
-	
-	public int getRealSize() {
 		return realSize;
 	}
 	
+	@Override
+	public int getCellSize() {
+		return objectSize;
+	}
+
 	public void incrementSize() {
 		objectSize++;
 		setSize(objectSize);

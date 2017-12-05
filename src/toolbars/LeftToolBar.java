@@ -68,13 +68,13 @@ public class LeftToolBar extends ToolBar {
 	
 	private StaticObject createBackgroundObject(int size, String imageString) {
 		BackgroundObject tempStatic = new BackgroundObject(size, myDisplay, imageString);
-		defineElement(tempStatic.getRealSize(), imageString);
+		defineElement(tempStatic.getSize(), imageString);
 		return tempStatic;
 	}
 	
 	private StaticObject createStaticObject(int size, String imageString) {
 		StaticObject tempStatic = new StaticObject(size, myDisplay, imageString);
-		defineElement(tempStatic.getRealSize(), imageString);
+		defineElement(tempStatic.getSize(), imageString);
 		return tempStatic;
 	}
 

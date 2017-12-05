@@ -65,12 +65,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Timeline animation;
 
 	private int level = 1;
-	private Collection<Sprite> testCollection;
-	private final FiringStrategy testFiring =  new NoopFiringStrategy();
-	private final MovementStrategy testMovement = new StationaryMovementStrategy();
-	private final CollisionHandler testCollision =
-			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
-					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;
 	private StaticObject placeable;
 	

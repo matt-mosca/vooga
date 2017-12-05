@@ -132,12 +132,6 @@ public abstract class SpriteImage extends InteractiveObject {
 		return allProperties;
 	}
 	
-	@Override
-	public int getSize() {
-		//TODO modify to let spriteimages occupy cells as well
-		return 0;
-	}
-	
 	private String getDefault(String property) {
 		return defaultValues.get(property);
 		
