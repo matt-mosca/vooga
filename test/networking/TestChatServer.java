@@ -62,6 +62,8 @@ public class TestChatServer {
             while (true) {
                 new Handler(listener.accept()).start();
             }
+        } catch(Exception e) {
+            //do nothing
         } finally {
             listener.close();
         }

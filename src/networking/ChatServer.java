@@ -32,8 +32,7 @@ public class ChatServer {
 
     public static void main(String[] args) {
         ChatServer chatServer = new ChatServer();
-        Scanner scanner = new Scanner(System.in);
-        String input;
+        System.out.println("Server is running...");
         try {
             while (true) {
                 ChatServerHandler chatServerHandler = chatServer.new ChatServerHandler(chatServer.listener.accept());
@@ -52,7 +51,6 @@ public class ChatServer {
 
     private class ChatServerHandler extends Thread {
 
-        private String userName;
         private Socket socket;
         private BufferedReader input;
         private PrintWriter printWriter;
@@ -66,34 +64,23 @@ public class ChatServer {
             try {
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 printWriter = new PrintWriter(socket.getOutputStream(), true);
-                while(userName == null) {
-                    printWriter.println("Submit a user name");
-                    userName = input.readLine();
-                    synchronized (clientUserNames) {
-                        if (userName != null && !clientUserNames.contains(userName)) {
-                            clientUserNames.add(userName);
-                            break;
-                        }
-                    }
-                }
                 clientPrintWriters.add(printWriter);
                 while (true) {
                     String message = input.readLine();
                     if (message == null) {
                         return;
                     }
+                    System.out.println(message);
                     for (PrintWriter writer : clientPrintWriters) {
-                        writer.println("MESSAGE " + userName + ": " + input);
+                        writer.println(message);
                     }
                 }
             } catch(IOException e) {
                 // todo - handle
+                e.printStackTrace();
             } finally {
                 // This client is going down!  Remove its name and its print
                 // writer from the sets, and close its socket.
-                if (userName != null) {
-                    clientUserNames.remove(userName);
-                }
                 if (printWriter != null) {
                     clientPrintWriters.remove(printWriter);
                 }
