@@ -139,6 +139,17 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		throw new IllegalArgumentException();
 	}
 
+	@Override
+	public void upgradeElement(int elementId) throws IllegalArgumentException {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			throw new IllegalArgumentException();
+		}
+		Sprite sprite = getSpriteIdMap().get(elementId);
+		sprite = getSpriteUpgrader().upgradeSprite(sprite);
+		getSpriteIdMap().put(elementId, sprite);
+		// I think this will update the reference in the element manager but might need to manually
+	}
+
 	public boolean isLevelCleared() {
 		return levelCleared;
 	}
