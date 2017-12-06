@@ -1,6 +1,7 @@
 package networking;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,13 +9,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.google.protobuf.Field;
-import com.google.protobuf.Message;
-import com.google.protobuf.Message.Builder;
-
 import engine.play_engine.PlayController;
 import javafx.geometry.Point2D;
-import networking.protocol.PlayerServer;
+import networking.protocol.PlayerClient.ClientMessage;
+import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerServer.GameRoomCreationStatus;
+import networking.protocol.PlayerServer.ServerMessage;
 
 /**
  * Gateway of multi-player player clients to server back end. Can handle
@@ -31,12 +31,12 @@ import networking.protocol.PlayerServer;
  * @author radithya
  *
  */
-class MultiPlayerController implements MultiPlayerModelController {
+class MultiPlayerController {
 
 	// TODO - Move to resources file
 	public static final String GAME_ROOM_CREATION_ERROR_CLIENT_ENGAGED = "You are already in another game room";
 	public static final String GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME = "This game does not exist";
-	
+
 	// Should support multiple concurrent game rooms, i.e. need multiple
 	// concurrent engines
 	private Map<Integer, PlayController> clientIdsToPlayEngines = new HashMap<>();
@@ -47,177 +47,163 @@ class MultiPlayerController implements MultiPlayerModelController {
 	public MultiPlayerController() {
 	}
 
-	@Override
-	public String createGameRoom(int clientId, String gameName) {
+	GameRoomCreationStatus createGameRoom(int clientId, CreateGameRoom gameRoomCreationRequest) {
+		GameRoomCreationStatus.Builder builder = GameRoomCreationStatus.newBuilder();
+		String gameName = gameRoomCreationRequest.getRoomName();
 		// Only allow a given client process to play one game at a time
 		if (clientIdsToPlayEngines.containsKey(clientId)) {
-			return GAME_ROOM_CREATION_ERROR_CLIENT_ENGAGED;
+			return builder.setError(GAME_ROOM_CREATION_ERROR_CLIENT_ENGAGED).build();
 		}
 		String gameId = gameName + Integer.toString(gameCounter.incrementAndGet());
 		// Verify that gameName is valid
 		PlayController controllerForGame = new PlayController();
 		if (!controllerForGame.getAvailableGames().containsKey(gameName)) {
-			return GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME;
+			return builder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build();
 		}
 		clientIdsToPlayEngines.put(clientId, controllerForGame);
 		roomMembers.put(gameId, new HashSet<>());
-		return gameId;
+		return builder.setRoomId(gameId).build();
 	}
 
-	@Override
-	public boolean joinGameRoom(int clientId, String gameRoomName, String userName) {
+	boolean joinGameRoom(int clientId, String gameRoomName, String userName) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public void launchGameRoom(int clientId, String gameRoomName) {
+	void launchGameRoom(int clientId, String gameRoomName) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public Set<String> getGameRooms() {
+	Set<String> getGameRooms() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Set<String> getPlayerNames(int clientId, String gameRoomName) {
+	Set<String> getPlayerNames(int clientId, String gameRoomName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String handleRequestAndSerializeResponse(int clientId, String requestBuffer) {
-		// Dispatch appropriate method - TODO : Reflection instead of switch case
-
-		// Serialize the return value of the method
-		
-		return "";// TEMP
-
-	}
-
-	// TODO - Serialization for other message types OR figure out a way to write
-	// generic method that works for all message types
-	private String serializeGameRoomCreationStatus(boolean success, String description) {
-		PlayerServer.GameRoomCreationStatus.Builder builder = PlayerServer.GameRoomCreationStatus.newBuilder();
-		if (success) {
-			builder.setRoomId(description);
-		} else {
-			builder.setError(description);
-		}
-		return builder.toString();
-	}
-
-	/*
-	 * private String serializeMessage(Class<? extends Message> messageClass,
-	 * Map<String, ?> messageData) { java.lang.reflect.Field[] messageFields =
-	 * messageClass.getDeclaredFields(); Builder message = Builder messageBuilder =
-	 * ((Message) messageClass).newBuilderForType(); for (java.lang.reflect.Field
-	 * field : messageFields) { if (messageData.containsKey(field)) {
-	 * 
-	 * } }
-	 * 
-	 * Message message = return message.toString(); }
-	 */
-
-	public static void main(String[] args) {
-
-	}
-
-	@Override
-	public void update(String gameRoomName) {
+	void update(String gameRoomName) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public void pause(int clientId) {
+	void pause(int clientId) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public void resume(int clientId) {
+	void resume(int clientId) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public boolean isLost(int clientId) {
+	boolean isLost(int clientId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public boolean isLevelCleared(int clientId) {
+	boolean isLevelCleared(int clientId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public boolean isWon(int clientId) {
+	boolean isWon(int clientId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public int placeElement(int clientId, String elementName, Point2D startCoordinates) {
+	int placeElement(int clientId, String elementName, Point2D startCoordinates) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
-	public Map<String, String> getAvailableGames() {
+	Map<String, String> getAvailableGames() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Map<String, String> getTemplateProperties(int clientId, String elementName) throws IllegalArgumentException {
+	Map<String, String> getTemplateProperties(int clientId, String elementName) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties(int clientId) {
+	Map<String, Map<String, String>> getAllDefinedTemplateProperties(int clientId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Set<String> getInventory(int clientId) {
+	Set<String> getInventory(int clientId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Map<String, Double> getStatus(int clientId) {
+	Map<String, Double> getStatus(int clientId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Map<String, Double> getResourceEndowments(int clientId) {
+	Map<String, Double> getResourceEndowments(int clientId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Map<String, Map<String, Double>> getElementCosts(int clientId) {
+	Map<String, Map<String, Double>> getElementCosts(int clientId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
+	Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public void saveGameState(File fileToSaveTo) throws UnsupportedOperationException {
+	void saveGameState(File fileToSaveTo) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
+
+	}
+
+	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) {
+		// Dispatch appropriate method - TODO : Reflection instead of switch case
+		try {
+			ServerMessage.Builder serverMessageBuilder = ServerMessage.newBuilder();
+			ClientMessage clientMessage = ClientMessage.parseFrom(inputBytes);
+			if (clientMessage.hasCreateGameRoom()) {
+				serverMessageBuilder
+						.setGameRoomCreationStatus(createGameRoom(clientId, clientMessage.getCreateGameRoom()));
+			} 
+			// TODO - Process other message types
+			return serverMessageBuilder.build().toByteArray();
+		} catch (IOException e) {
+			e.printStackTrace(); // TEMP 
+			return new byte[] {}; // TEMP - Should create a generic error message
+		}
+	}
+
+	public static void main(String[] args) {
+		MultiPlayerController testController = new MultiPlayerController();
+		// Mock client
+		ClientMessage.Builder testRequestBuilder = ClientMessage.newBuilder();
+		testRequestBuilder.setCreateGameRoom(CreateGameRoom.newBuilder().setRoomName("abc.voog").build());
+		try {
+			byte[] serverResponse = testController.handleRequestAndSerializeResponse(1, testRequestBuilder.build().toByteArray());			
+			ServerMessage serverMessage = ServerMessage.parseFrom(serverResponse);
+			if (serverMessage.hasGameRoomCreationStatus()) {
+				GameRoomCreationStatus gameRoomCreationStatus = serverMessage.getGameRoomCreationStatus();
+				if (!gameRoomCreationStatus.hasError()) {
+					String gameRoomId = serverMessage.getGameRoomCreationStatus().getRoomId();
+					System.out.println("Successfully retrieved gameRoomId: " + gameRoomId);
+				} else {
+					System.out.println("Error creating game room: " + gameRoomCreationStatus.getError());
+				}
+			} else {
+				System.out.println("No game room creation response");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
