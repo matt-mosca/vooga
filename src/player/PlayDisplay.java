@@ -63,8 +63,14 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Button pause;
 	private Button play;
 	private Timeline animation;
+	private String gameState;
 
 	private int level = 1;
+	private final FiringStrategy testFiring =  new NoopFiringStrategy();
+	private final MovementStrategy testMovement = new StationaryMovementStrategy();
+	private final CollisionHandler testCollision =
+			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
+					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;
 	private StaticObject placeable;
 	
@@ -86,6 +92,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
+		tester();
+	}
+
+	public void tester() {
+		for (int i = 0; i < 100; i++) {
+			step();
+		}
 	}
 
 	private void addItems() {
@@ -100,7 +113,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myLeftBar);
 	}
 	
-	private void initializeGameState() {
+	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		for(String title:myController.getAvailableGames().keySet()) {
 			games.add(title);
@@ -113,13 +126,38 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		Optional<String> result = loadChoices.showAndWait();
 		if(result.isPresent()) {
 			try {
-				myController.loadOriginalGameState(result.get(), 1);
+				gameState = result.get();
+				myController.loadOriginalGameState(gameState, 1);
+				System.out.println(gameState);
 			} catch (IOException e) {
 				// TODO Change to alert for the user 
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	protected void reloadGame() throws IOException {
+		myController.loadOriginalGameState(gameState, 1);
+	}
+	
+	private void initializeInventory() {
+		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
+		for(String s:myController.getInventory()) {
+			ImageView imageView;
+			try {
+				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
+				
+			}catch(NullPointerException e) {
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
+			}
+			imageView.setFitHeight(70);
+			imageView.setFitWidth(60);
+			imageView.setId(s);
+			imageView.setUserData(templates.get(s).get("imageUrl"));
+//			myInventoryToolBar.addToToolbar(imageView);
+		}
+	}
+	
 	
 	private void styleLeftBar() {
 		myLeftBar.setPrefHeight(650);
@@ -139,7 +177,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
 
 		play = new Button();
-		play.setOnAction(e-> {
+		play.setOnAction(e-> { 
 			myController.resume();
 			animation.play();
 		});
@@ -162,6 +200,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController.update();
 		if(myController.isLevelCleared()) {
 			level++;
+			initializeInventory();
+			//Pause game
 			myInventoryToolBar.initializeInventory();
 		}else if(myController.isLost()) {
 			//launch lost screen
@@ -174,6 +214,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void updateStatusBar() {
 		myCoinDisplay.increment();
 	}
+	
 
 	private void createGameArea(int sideLength) {
 		myPlayArea = new PlayArea(myController, sideLength, sideLength);
@@ -222,9 +263,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.setContentText("You do not have the funds for this item.");
 		error.show();
 	}
-
-	@Override
 	public void save(File saveName) {
 		myController.saveGameState(saveName);
 	}
+	
 }
