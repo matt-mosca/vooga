@@ -140,6 +140,10 @@ public abstract class AbstractGameController {
 		}
 	}
 
+	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
+		return getSpriteFactory().getTemplateProperties(elementName);
+	}
+	
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
 		return getSpriteFactory().getAllDefinedTemplateProperties();
 	}

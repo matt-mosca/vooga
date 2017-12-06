@@ -31,6 +31,7 @@ public class InventoryToolBar extends ToolBar{
         createAndAddTabs();
 		this.getStylesheets().add("player/resources/playerPanes.css");
 		this.getStyleClass().add("toolbar");
+		
 	}
 
 	@Override
