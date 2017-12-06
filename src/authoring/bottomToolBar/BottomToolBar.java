@@ -12,8 +12,11 @@ import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
 import interfaces.CreationInterface;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -88,6 +91,7 @@ public class BottomToolBar extends VBox {
 	private void addLevel() {
 		mySprites.add(new ArrayList<SpriteImage>());
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), null, myTabPane);
+		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(myLevels.size()+1, myController);	
 		myGameAreas.add(new GameArea(myController));
 		myController.createNewLevel(myLevels.size()+1);
