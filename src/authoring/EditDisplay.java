@@ -14,7 +14,6 @@ import authoring.bottomToolBar.BottomToolBar;
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
-import authoring.rightToolBar.AddToWaveButton;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import authoring.spriteTester.SpriteTesterButton;
@@ -39,7 +38,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
 import player.PlayDisplay;
-import player.TestPlayDisplay;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.InteractiveObject;
@@ -323,7 +321,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void createTesterLevel(Map<String, String> fun, List<String> sprites) {
-		TestPlayDisplay testingScene = new TestPlayDisplay(1000, 1000, getStage());
+		PlayDisplay testingScene = new PlayDisplay(1000, 1000, getStage());
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - 1000 / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
@@ -333,8 +331,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 
-	public void addToBottomToolBar(SpriteImage currSprite) {
-		myBottomToolBar.addToCurrLevel(currSprite);
+	public void addToBottomToolBar(int level, SpriteImage currSprite) {
+		myBottomToolBar.addToLevel(currSprite, level);
+	}
+	
+	public int getMaxLevel() {
+		return myBottomToolBar.getMaxLevel();
 	}
 
 	

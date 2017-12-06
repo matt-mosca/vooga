@@ -25,7 +25,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -46,6 +49,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
 import toolbars.ToolBar;
  
@@ -251,8 +255,30 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	
 	@Override
 	public void addToWave() {
-		display.addToBottomToolBar(myPropertiesBox.getCurrSprite());
-		
-		
+		int maxLevel = display.getMaxLevel();
+		Stage waveStage = new Stage();
+		waveStage.setTitle("CheckBox Experiment 1");
+        VBox myVBox = new VBox();
+
+        for (int i = 1; i <= maxLevel; i++) {
+        	CheckBox myCheckBox = new CheckBox(Integer.toString(i));
+        	myVBox.getChildren().add(myCheckBox);
+        }
+        Button submitButton = new Button("Submit");
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage));
+        myVBox.getChildren().add(submitButton);
+        Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
+        waveStage.setScene(scene);
+        waveStage.show();
+	}
+	
+	private void submitToWaves(VBox myVBox, Stage waveStage) {
+		for (Node n : myVBox.getChildren()) {
+			if (n instanceof CheckBox) {
+				CheckBox c = (CheckBox) n;
+				if (c.isSelected()) display.addToBottomToolBar(Integer.valueOf(c.getText()), myPropertiesBox.getCurrSprite().clone());
+			}
+		}
+		waveStage.hide();
 	}
 } 

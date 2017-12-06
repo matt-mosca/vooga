@@ -50,6 +50,7 @@ public class BottomToolBar extends VBox {
 		this.setWidth(400);
 		myLevels = new ArrayList<>();
 		mySprites = new ArrayList<List<SpriteImage>>();
+		mySprites.add(new ArrayList<>());
 		newLevel =  new Button("New Level");
 		newLevel.setOnAction(e->addLevel());
 		myTabPane = new TabPane();
@@ -95,7 +96,9 @@ public class BottomToolBar extends VBox {
 		newLv.attach(newTab);
 		myLevels.add(newLv);
 		myTabPane.getTabs().add(newTab);
-		
+		if (mySprites.get(mySprites.size()-1).isEmpty()) {
+			mySprites.add(mySprites.size()-1, new ArrayList<>());
+		}		
 	}
 	
 	//TODO need load in static object rather than just imageview
@@ -115,13 +118,14 @@ public class BottomToolBar extends VBox {
 
 	private void changeDisplay(int i) {
 		currentDisplay = i;
-		if (mySprites.get(i-1).isEmpty()) {
-			mySprites.add(i-1, new ArrayList<>());
-		}
 		myScrollableArea.changeLevel(myGameAreas.get(i-1));
 		myCreated.setDroppable(myGameAreas.get(i-1));
 		myController.createNewLevel(i);
 		myCreated.setGameArea(myGameAreas.get(i-1));
+		for (SpriteImage s : mySprites.get(i-1)) {
+			if (!myCreated.getRootChildren().contains(s)) myCreated.getRootChildren().add(s);
+		}
+		System.out.println(mySprites.toString());
 	}
 
 	private void deleteLevel(int lvNumber) {
@@ -135,7 +139,12 @@ public class BottomToolBar extends VBox {
 		
 	}
 	
-	public void addToCurrLevel(SpriteImage newSprite) {
-		mySprites.get(currentDisplay-1).add(newSprite);
+	public void addToLevel(SpriteImage newSprite, int level) {
+		mySprites.get(level-1).add(newSprite);
+		if (!this.getChildren().contains(newSprite)) this.getChildren().add(newSprite);
+	}
+	
+	public int getMaxLevel() {
+		return myLevels.size();
 	}
 }
