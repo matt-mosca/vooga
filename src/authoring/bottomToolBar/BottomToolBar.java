@@ -58,8 +58,8 @@ public class BottomToolBar extends VBox {
 		tabMaker = new TabFactory();
 		mySpriteDisplay = new SpriteDisplayer();
 		this.getChildren().add(mySpriteDisplay);
-		myTabPane.setMaxSize(400, 200);
-		myTabPane.setPrefSize(400, 200);
+		myTabPane.setMaxSize(400, 100);
+		myTabPane.setPrefSize(400, 100);
 		editLevel = new Button("Edit Level");
 		//Need to put the button somewhere first.
 		editLevel.setOnAction(e->{
@@ -86,6 +86,7 @@ public class BottomToolBar extends VBox {
 	}
 
 	private void addLevel() {
+		mySprites.add(new ArrayList<SpriteImage>());
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), null, myTabPane);
 		LevelTab newLv = new LevelTab(myLevels.size()+1, myController);	
 		myGameAreas.add(new GameArea(myController));
@@ -99,9 +100,7 @@ public class BottomToolBar extends VBox {
 		newLv.attach(newTab);
 		myLevels.add(newLv);
 		myTabPane.getTabs().add(newTab);
-		if (mySprites.get(mySprites.size()-1).isEmpty()) {
-			mySprites.add(mySprites.size()-1, new ArrayList<>());
-		}		
+		
 	}
 	
 	//TODO need load in static object rather than just imageview
@@ -125,10 +124,7 @@ public class BottomToolBar extends VBox {
 		myCreated.setDroppable(myGameAreas.get(i-1));
 		myController.createNewLevel(i);
 		myCreated.setGameArea(myGameAreas.get(i-1));
-		for (SpriteImage s : mySprites.get(i-1)) {
-			if (!myCreated.getRootChildren().contains(s)) myCreated.getRootChildren().add(s);
-		}
-		System.out.println(mySprites.toString());
+		updateSpriteDisplay(i);
 	}
 
 	private void deleteLevel(int lvNumber) {
@@ -144,7 +140,12 @@ public class BottomToolBar extends VBox {
 	
 	public void addToLevel(SpriteImage newSprite, int level) {
 		mySprites.get(level-1).add(newSprite);
-		mySpriteDisplay.getChildren().add(newSprite);
+		updateSpriteDisplay(currentDisplay);
+	}
+
+	private void updateSpriteDisplay(int level) {
+		mySpriteDisplay.getChildren().removeAll(mySpriteDisplay.getChildren());
+		mySpriteDisplay.getChildren().addAll(mySprites.get(level-1));
 	}
 	
 	public int getMaxLevel() {

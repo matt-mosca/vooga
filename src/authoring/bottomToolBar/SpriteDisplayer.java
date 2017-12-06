@@ -10,7 +10,7 @@ public class SpriteDisplayer extends HBox {
 	
 	public SpriteDisplayer() {
 		this.setPrefWidth(200);
-		this.setPrefHeight(200);
+		this.setPrefHeight(50);
 		this.setStyle("-fx-background-color: #336699;");
 	}
 
