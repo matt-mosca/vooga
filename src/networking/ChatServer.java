@@ -11,14 +11,15 @@ import java.util.Scanner;
 import java.util.Set;
 
 /**
- * TODO finish
+ * Manages chat connections and distributes messages.
  *
  * Reference: http://cs.lmu.edu/~ray/notes/javanetexamples/
+ *
+ * @author Ben Schwennesen
  */
 public class ChatServer {
 
     private final int PORT = 9042;
-    private Set<String> clientUserNames = new HashSet<>();
     private Set<PrintWriter> clientPrintWriters = new HashSet<>();
     private ServerSocket listener;
 
@@ -32,8 +33,7 @@ public class ChatServer {
 
     public static void main(String[] args) {
         ChatServer chatServer = new ChatServer();
-        Scanner scanner = new Scanner(System.in);
-        String input;
+        System.out.println("Server is running...");
         try {
             while (true) {
                 ChatServerHandler chatServerHandler = chatServer.new ChatServerHandler(chatServer.listener.accept());
@@ -52,7 +52,6 @@ public class ChatServer {
 
     private class ChatServerHandler extends Thread {
 
-        private String userName;
         private Socket socket;
         private BufferedReader input;
         private PrintWriter printWriter;
@@ -66,42 +65,39 @@ public class ChatServer {
             try {
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 printWriter = new PrintWriter(socket.getOutputStream(), true);
-                while(userName == null) {
-                    printWriter.println("Submit a user name");
-                    userName = input.readLine();
-                    synchronized (clientUserNames) {
-                        if (userName != null && !clientUserNames.contains(userName)) {
-                            clientUserNames.add(userName);
-                            break;
-                        }
-                    }
-                }
                 clientPrintWriters.add(printWriter);
-                while (true) {
-                    String message = input.readLine();
-                    if (message == null) {
-                        return;
-                    }
-                    for (PrintWriter writer : clientPrintWriters) {
-                        writer.println("MESSAGE " + userName + ": " + input);
-                    }
-                }
+                processMessages();
+                return;
             } catch(IOException e) {
                 // todo - handle
             } finally {
-                // This client is going down!  Remove its name and its print
-                // writer from the sets, and close its socket.
-                if (userName != null) {
-                    clientUserNames.remove(userName);
+                closeClient();
+            }
+        }
+
+        private void processMessages() throws IOException {
+            while (true) {
+                String message = input.readLine();
+                if (message == null) {
+                    return;
                 }
-                if (printWriter != null) {
-                    clientPrintWriters.remove(printWriter);
+                for (PrintWriter writer : clientPrintWriters) {
+                    writer.println(message);
                 }
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    // do nothing
-                }
+            }
+        }
+
+        /**
+         * Close out a client's connection.
+         */
+        private void closeClient() {
+            if (printWriter != null) {
+                clientPrintWriters.remove(printWriter);
+            }
+            try {
+                socket.close();
+            } catch (IOException e) {
+                // do nothing
             }
         }
     }
