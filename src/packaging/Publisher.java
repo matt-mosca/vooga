@@ -63,7 +63,7 @@ public class Publisher {
         // load client secrets
         InputStream in = getClass().getClassLoader().getResourceAsStream(CLIENT_SECRETS_JSON);
         GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+                GoogleClientSecrets.load(JSON_FACTORY, in);
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow =
                 new GoogleAuthorizationCodeFlow.Builder(
