@@ -38,6 +38,7 @@ public class BottomToolBar extends VBox {
 	private Button editLevel;
 	private int currentDisplay;
 	private EditDisplay myCreated;
+	private SpriteDisplayer mySpriteDisplay;
 	
 	public BottomToolBar (EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
@@ -55,6 +56,8 @@ public class BottomToolBar extends VBox {
 		newLevel.setOnAction(e->addLevel());
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
+		mySpriteDisplay = new SpriteDisplayer();
+		this.getChildren().add(mySpriteDisplay);
 		myTabPane.setMaxSize(400, 200);
 		myTabPane.setPrefSize(400, 200);
 		editLevel = new Button("Edit Level");
@@ -141,7 +144,7 @@ public class BottomToolBar extends VBox {
 	
 	public void addToLevel(SpriteImage newSprite, int level) {
 		mySprites.get(level-1).add(newSprite);
-		if (!this.getChildren().contains(newSprite)) this.getChildren().add(newSprite);
+		mySpriteDisplay.getChildren().add(newSprite);
 	}
 	
 	public int getMaxLevel() {
