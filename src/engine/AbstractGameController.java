@@ -5,6 +5,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import sprites.Sprite;
 import sprites.SpriteFactory;
+import sprites.SpriteUpgrader;
 import util.GameConditionsReader;
 import util.SerializationUtils;
 import util.SpriteTemplateIoHandler;
@@ -56,6 +57,7 @@ public abstract class AbstractGameController {
 	private Map<Integer, Sprite> spriteIdMap;
 
 	private SpriteFactory spriteFactory;
+	private SpriteUpgrader spriteUpgrader;
 
 	// this should be from a properties file? or handled in some better way?
 	private final String DEFAULT_GAME_NAME = "untitled";
@@ -71,6 +73,7 @@ public abstract class AbstractGameController {
 		spriteIdCounter = new AtomicInteger();
 		spriteIdMap = new HashMap<>();
 		spriteFactory = new SpriteFactory();
+		spriteUpgrader = new SpriteUpgrader(spriteFactory);
 		spriteTemplateIoHandler = new SpriteTemplateIoHandler();
 		spriteQueryHandler = new SpriteQueryHandler();
 	}
@@ -96,6 +99,8 @@ public abstract class AbstractGameController {
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
 		spriteTemplateIoHandler.exportSpriteTemplates(saveName.getName(),
 				spriteFactory.getAllDefinedTemplateProperties());
+		spriteTemplateIoHandler.exportSpriteUpgrades(saveName.getName(),
+				spriteUpgrader.getSpriteUpgradesForEachTemplate());
 	}
 
 	/**
@@ -115,6 +120,7 @@ public abstract class AbstractGameController {
 		}
 		gameName = saveName;
 		spriteFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
+		spriteUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadSpriteUpgrades(gameName));
 	}
 
 	public String getGameName() {
@@ -134,6 +140,10 @@ public abstract class AbstractGameController {
 		}
 	}
 
+	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
+		return getSpriteFactory().getTemplateProperties(elementName);
+	}
+	
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
 		return getSpriteFactory().getAllDefinedTemplateProperties();
 	}
@@ -144,6 +154,7 @@ public abstract class AbstractGameController {
 						levelSpritesCache.get(currentLevel));
 		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
+		spriteUpgrader.registerNewSprite(elementTemplateName, sprite);
 		return cacheAndCreateIdentifier(elementTemplateName, sprite);
 	}
 
@@ -264,6 +275,10 @@ public abstract class AbstractGameController {
 
 	protected SpriteFactory getSpriteFactory() {
 		return spriteFactory;
+	}
+
+	protected SpriteUpgrader getSpriteUpgrader() {
+		return spriteUpgrader;
 	}
 
 	protected SpriteQueryHandler getSpriteQueryHandler() {
