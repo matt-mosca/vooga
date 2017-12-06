@@ -11,14 +11,15 @@ import java.util.Scanner;
 import java.util.Set;
 
 /**
- * TODO finish
+ * Manages chat connections and distributes messages.
  *
  * Reference: http://cs.lmu.edu/~ray/notes/javanetexamples/
+ *
+ * @author Ben Schwennesen
  */
 public class ChatServer {
 
     private final int PORT = 9042;
-    private Set<String> clientUserNames = new HashSet<>();
     private Set<PrintWriter> clientPrintWriters = new HashSet<>();
     private ServerSocket listener;
 
@@ -65,30 +66,38 @@ public class ChatServer {
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 printWriter = new PrintWriter(socket.getOutputStream(), true);
                 clientPrintWriters.add(printWriter);
-                while (true) {
-                    String message = input.readLine();
-                    if (message == null) {
-                        return;
-                    }
-                    System.out.println(message);
-                    for (PrintWriter writer : clientPrintWriters) {
-                        writer.println(message);
-                    }
-                }
+                processMessages();
+                return;
             } catch(IOException e) {
                 // todo - handle
-                e.printStackTrace();
             } finally {
-                // This client is going down!  Remove its name and its print
-                // writer from the sets, and close its socket.
-                if (printWriter != null) {
-                    clientPrintWriters.remove(printWriter);
+                closeClient();
+            }
+        }
+
+        private void processMessages() throws IOException {
+            while (true) {
+                String message = input.readLine();
+                if (message == null) {
+                    return;
                 }
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    // do nothing
+                for (PrintWriter writer : clientPrintWriters) {
+                    writer.println(message);
                 }
+            }
+        }
+
+        /**
+         * Close out a client's connection.
+         */
+        private void closeClient() {
+            if (printWriter != null) {
+                clientPrintWriters.remove(printWriter);
+            }
+            try {
+                socket.close();
+            } catch (IOException e) {
+                // do nothing
             }
         }
     }
