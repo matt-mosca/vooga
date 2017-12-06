@@ -3,14 +3,12 @@ package networking;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.net.Socket;
 
 /**
@@ -22,7 +20,8 @@ import java.net.Socket;
  */
 public class ChatThread extends Thread {
 
-    private final String ERROR = "Chat encountered an error. Try again later.";
+    private final String SOCKET_ERROR = "There was an error accessing the server connection. Ensure setup is correct.";
+    private final String SIGN_OFF = "Goodbye!";
 
     private Socket socket;
     private ObservableList<Node> chatItems;
@@ -33,8 +32,10 @@ public class ChatThread extends Thread {
         this.chatItems = chatItems;
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
-
+        } catch (IOException socketInputException) {
+            Text errorText = new Text(SOCKET_ERROR);
+            errorText.setFill(Color.RED);
+            chatItems.add(chatItems.size(), errorText);
         }
 
     }
@@ -45,13 +46,10 @@ public class ChatThread extends Thread {
             String message;
             try {
                 if ((message = in.readLine()) != null) {
-                    Platform.runLater(() -> {
-                        chatItems.add(chatItems.size(), new Text(message));
-                    });
+                    Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(message)));
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(ERROR)));
+            } catch (IOException socketClosed) {
+                Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(SIGN_OFF)));
             }
         }
     }

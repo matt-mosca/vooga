@@ -11,7 +11,7 @@ import java.io.IOException;
  *
  * @author Ben Schwennesen
  */
-public class ChatTestWindow extends Application {
+public class ChatWindow extends Application {
 
     ChatClient testClient;
 
