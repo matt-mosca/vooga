@@ -165,8 +165,18 @@ class MultiPlayerController {
 
 	}
 
+	void disconnectClient(int clientId) {
+		clientIdsToPlayEngines.remove(clientId);
+		clientIdsToUserNames.remove(clientId);
+		for (String gameRoomName : roomMembers.keySet()) {
+			if (roomMembers.get(gameRoomName).contains(clientId)) {
+				roomMembers.get(gameRoomName).remove(clientId);
+			}
+		}
+	}
+	
 	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) {
-		// Dispatch appropriate method - TODO : Reflection instead of switch case
+		// Dispatch appropriate method - TODO : Reflection ?
 		try {
 			ServerMessage.Builder serverMessageBuilder = ServerMessage.newBuilder();
 			ClientMessage clientMessage = ClientMessage.parseFrom(inputBytes);
@@ -182,6 +192,7 @@ class MultiPlayerController {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		MultiPlayerController testController = new MultiPlayerController();
 		// Mock client
@@ -206,5 +217,6 @@ class MultiPlayerController {
 		}
 
 	}
+	*/
 
 }
