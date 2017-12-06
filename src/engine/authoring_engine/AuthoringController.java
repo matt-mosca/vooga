@@ -38,6 +38,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private Map<String, Set<Integer>> templateToIdMap;
 	private AtomicInteger gameWaveCounter;
 
+
+
 	public AuthoringController() {
 		super();
 		packager = new Packager();
@@ -70,6 +72,15 @@ public class AuthoringController extends AbstractGameController implements Autho
 	@Override
 	public void defineElement(String elementName, Map<String, String> properties) {
 		getSpriteFactory().defineElement(elementName, properties);
+	}
+
+	@Override
+	public void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, String> upgradeProperties)
+			throws IllegalArgumentException {
+		if (!getSpriteFactory().getAllDefinedTemplateProperties().containsKey(elementName)) {
+			throw new IllegalArgumentException();
+		}
+		getSpriteUpgrader().defineUpgrade(elementName, upgradeLevel, upgradeProperties);
 	}
 
 	@Override
@@ -119,7 +130,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	@Override
 	public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
 		Sprite sprite = getElement(elementId);
-		// TODO - implement
+		// TODO - implement (or, more likely, eliminate)
 		return null;
 	}
 

@@ -92,6 +92,15 @@ public interface PlayModelController {
 	 *         element
 	 */
 	int placeElement(String elementName, Point2D startCoordinates);
+
+	/**
+	 * Upgrade an element that is placed in the game.
+	 *
+	 * @param elementId
+	 * 			the unique identifier for the game element
+	 * @throws IllegalArgumentException if the element can't be upgraded
+	 */
+	void upgradeElement(int elementId) throws IllegalArgumentException;
 	
 	/**
 	 * Fetch all available game names and their corresponding descriptions
