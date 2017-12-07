@@ -5,10 +5,10 @@ syntax="proto2";
 */
 
 message ServerMessage {
-	optional GameRoomCreationStatus gameRoomCreationStatus = 1;
-	optional GameRoomJoinStatus gameRoomJoinStatus = 2;
-	optional GameRoomLaunchStatus gameRoomLaunchStatus = 3;
-	optional GameRooms gameRooms = 4;
+	optional GameRooms gameRooms = 1;
+	optional GameRoomCreationStatus gameRoomCreationStatus = 2;
+	optional GameRoomJoinStatus gameRoomJoinStatus = 3;
+	optional GameRoomLaunchStatus gameRoomLaunchStatus = 4;
 	optional PlayerNames playerNames = 5;
 	optional LevelInitialized levelInitialized = 6;
 	optional Update update = 7;
@@ -19,6 +19,10 @@ message ServerMessage {
 /*
 	Pre-Game messages
 */
+
+message GameRooms {
+	repeated string roomNames = 1;
+}
 
 message GameRoomCreationStatus {
 	optional string roomId = 1;
@@ -37,10 +41,6 @@ message GameRoomJoinStatus {
 message GameRoomLaunchStatus {
 	optional Update initialState = 1;
 	optional string error = 2;
-}
-
-message GameRooms {
-	repeated string roomNames = 1;
 }
 
 message PlayerNames {
