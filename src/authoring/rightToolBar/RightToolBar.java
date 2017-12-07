@@ -140,7 +140,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	
 	@Override
 	public void imageSelected(SpriteImage myImageView) {
-		myPropertiesBox = new PropertiesBox(myImageView, myController);
+		myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), myImageView, myController);
 		if (myImageView instanceof TowerImage) inventoryTower.addItem(myImageView.clone());
 		if (myImageView instanceof TroopImage) inventoryTroop.addItem(myImageView.clone());
 		if (myImageView instanceof ProjectileImage) {
@@ -151,7 +151,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 
 	@Override
 	public void clicked(ImageView imageView) {	
-		myPropertiesBox = new PropertiesBox(imageView, myController);
+		myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
 		String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
 		if (tabType.equals("Towers")) {
 			newPaneWithProjectileSlot(imageView);
