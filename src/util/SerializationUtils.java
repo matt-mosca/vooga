@@ -15,7 +15,10 @@ import sprites.SpriteFactory;
 
 import java.io.StringReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -281,25 +284,25 @@ public class SerializationUtils {
 	private String deserializeDescription(String serializedDescription) {
 		Type mapType = new TypeToken<Map<String, String>>(){}.getType();
 		Map<String, String> descriptionMap = gsonBuilder.create().fromJson(serializedDescription, mapType);
-		return descriptionMap.get(DESCRIPTION);
+		return descriptionMap != null ? descriptionMap.get(DESCRIPTION) : new String();
 	}
 
 	private Map<String, String> deserializeConditions(String serializedConditions) {
 		Type mapType = new TypeToken<Map<String, Map<String, String>>>(){}.getType();
 		Map<String, Map<String, String>> conditionsMap = gsonBuilder.create().fromJson(serializedConditions, mapType);
-		return conditionsMap.get(CONDITIONS);
+		return conditionsMap != null ? conditionsMap.get(CONDITIONS) : new HashMap<>();
 	}
 
 	private Bank deserializeBank(String serializedBank) {
 		Type mapType = new TypeToken<Map<String, Bank>>(){}.getType();
 		Map<String, Bank> bankMap = gsonBuilder.create().fromJson(serializedBank, mapType);
-		return bankMap.get(BANK);
+		return bankMap != null ? bankMap.get(BANK) : new Bank();
 	}
 
 	private Map<String, Double> deserializeStatus(String serializedStatus) {
 		Type mapType = new TypeToken<Map<String, Map<String, Double>>>(){}.getType();
 		Map<String, Map<String, Double>> statusMap = gsonBuilder.create().fromJson(serializedStatus, mapType);
-		return statusMap.get(STATUS);
+		return statusMap != null ? statusMap.get(STATUS) : new HashMap<>();
 	}
 
 	// Return a map of sprite name to list of elements, which can be used by
@@ -307,13 +310,13 @@ public class SerializationUtils {
 	private List<Sprite> deserializeSprites(String serializedSprites) {
 		Type mapType = new TypeToken<Map<String, List<Sprite>>>(){}.getType();
 		Map<String, List<Sprite>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, mapType);
-		return spritesMap.get(SPRITES);
+		return spritesMap != null ? spritesMap.get(SPRITES) : new ArrayList<>();
 	}
 	
 	private Set<String> deserializeInventories(String serializedInventories) {
 		Type mapType = new TypeToken<Map<String, Set<String>>>(){}.getType();
 		Map<String, Set<String>> inventoriesMap = gsonBuilder.create().fromJson(serializedInventories, mapType);
-		return inventoriesMap.get(INVENTORY);
+		return inventoriesMap != null ? inventoriesMap.get(INVENTORY) : new HashSet<>();
 	}
 
 	private String[] retrieveSerializedSectionsForLevel(String serializedGameData, int level)
@@ -324,10 +327,12 @@ public class SerializationUtils {
 		if (!serializedLevelData.containsKey(levelString)) {
 			throw new IllegalArgumentException();
 		}
+		System.out.println(serializedGameData);
 		String[] serializedSections = serializedLevelData.get(levelString).split(DELIMITER);
 		if (serializedSections.length < NUM_SERIALIZATION_SECTIONS) {
 			throw new IllegalArgumentException();
 		}
+		System.out.println(Arrays.asList(serializedSections));
 		return serializedSections;
 	}
 
