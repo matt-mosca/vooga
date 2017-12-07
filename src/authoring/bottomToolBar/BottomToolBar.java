@@ -4,26 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import authoring.AuthorInterface;
 import authoring.EditDisplay;
 import authoring.GameArea;
 import authoring.ScrollableArea;
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
-import factory.TabFactory;
-import interfaces.CreationInterface;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
+import display.factory.TabFactory;
+import display.interfaces.CreationInterface;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import sprites.InteractiveObject;
-import sprites.StaticObject;
+import display.sprites.InteractiveObject;
 
 public class BottomToolBar extends VBox {
 	private final int CELL_SIZE = 40;

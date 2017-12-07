@@ -25,9 +25,9 @@ public class Path extends Group{
 		activePoint = null;
 	}
 	
-	public void addWaypoint(MouseEvent e, double x, double y) {
+	public boolean addWaypoint(MouseEvent e, double x, double y) {
 		e.consume();
-		if(activePoint == null && points.size() != 0) return;
+		if(activePoint == null && points.size() != 0) return false;
 		PathPoint point = new PathPoint(x, y, pathColor);
 		point.addEventHandler(MouseEvent.MOUSE_PRESSED, event->handlePointClick(event, point));
 		
@@ -41,6 +41,7 @@ public class Path extends Group{
 		activePoint = point;
 		points.add(point);
 		this.getChildren().add(point);
+		return true;
 	}
 	
 	private void handlePointClick(MouseEvent e, PathPoint point) {

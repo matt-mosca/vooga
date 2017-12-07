@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import authoring.path.Path;
+import display.interfaces.Droppable;
 import engine.authoring_engine.AuthoringController;
-import interfaces.Droppable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -27,7 +27,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import splashScreen.ScreenDisplay;
 
 public class PropertiesBox extends VBox {
 	private Map<String, String> propertiesMap;

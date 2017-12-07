@@ -5,26 +5,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import authoring.AuthorInterface;
+
 import authoring.EditDisplay;
-import authoring.ObjectProperties;
-import authoring.tabs.AddSpriteImageTab;
-import authoring.tabs.AddTab;
-import authoring.tabs.InventoryTab;
-import authoring.tabs.NewProjectileTab;
-import authoring.tabs.NewSpriteTab;
-import authoring.tabs.NewTowerTab;
-import authoring.tabs.NewTroopTab;
-import authoring.tabs.SimpleTab;
+import display.tabs.AddSpriteImageTab;
+import display.tabs.AddTab;
+import display.tabs.InventoryTab;
+import display.tabs.NewProjectileTab;
+import display.tabs.NewSpriteTab;
+import display.tabs.NewTowerTab;
+import display.tabs.NewTroopTab;
+import display.tabs.SimpleTab;
 import engine.authoring_engine.AuthoringController;
-import factory.ButtonFactory;
-import factory.TabFactory;
-import interfaces.CreationInterface;
-import interfaces.PropertiesInterface;
+import display.factory.TabFactory;
+import display.interfaces.CreationInterface;
+import display.interfaces.PropertiesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,26 +28,17 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import splashScreen.ScreenDisplay;
-import toolbars.ToolBar;
+import display.splashScreen.ScreenDisplay;
+import display.toolbars.ToolBar;
  
 public class RightToolBar extends ToolBar implements PropertiesInterface {
 	
@@ -159,7 +146,11 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 			newPane(imageView);
 		}
 	}
-	
+	private void newPropertiesPane() {
+		propertiesPane = new Pane();
+		myWaveAdder = new AddToWaveButton(this);
+		deleteButton = new Button("Back");
+	}
 	private void newPaneWithProjectileSlot(ImageView imageView) {
 		/**
 		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
@@ -238,8 +229,9 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	private void newPane(ImageView imageView) {
 //		myPropertiesBox = new PropertiesBox(created, imageView);
 		propertiesPane = new Pane();
+		myWaveAdder = new AddToWaveButton(this);
 		Button deleteButton = new Button("Back");
-		deleteButton.setLayoutX(300);
+		deleteButton.setLayoutX(350);
 		Label info = new Label("Properties here");
 		info.setLayoutY(100);
 		info.setFont(new Font("Arial", 30));
@@ -250,6 +242,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
+		propertiesPane.getChildren().add(myWaveAdder);
 	}
 	
 	private void removeButtonPressed() {
@@ -274,19 +267,26 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
         	CheckBox myCheckBox = new CheckBox(Integer.toString(i));
         	myVBox.getChildren().add(myCheckBox);
         }
+        TextField amountField = new TextField();
+        amountField.setPromptText("How many of this Sprite?");
+        myVBox.getChildren().add(amountField);
         Button submitButton = new Button("Submit");
-        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage));
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage, Integer.valueOf(amountField.getText())));
         myVBox.getChildren().add(submitButton);
         Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
         waveStage.setScene(scene);
         waveStage.show();
 	}
 	
-	private void submitToWaves(VBox myVBox, Stage waveStage) {
+	private void submitToWaves(VBox myVBox, Stage waveStage, Integer integer) {
 		for (Node n : myVBox.getChildren()) {
 			if (n instanceof CheckBox) {
 				CheckBox c = (CheckBox) n;
-				if (c.isSelected()) display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()));
+				if (c.isSelected()) {
+					for (int i = 0; i < integer; i++) {
+						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()));
+					}
+				}
 			}
 		}
 		waveStage.hide();

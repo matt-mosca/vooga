@@ -4,8 +4,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import sprites.BackgroundObject;
-import sprites.InteractiveObject;
+import display.sprites.BackgroundObject;
+import display.sprites.InteractiveObject;
 import authoring.path.Path;
 import javafx.geometry.Point2D;
 

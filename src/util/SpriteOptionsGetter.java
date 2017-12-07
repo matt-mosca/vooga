@@ -1,7 +1,7 @@
 package util;
 
 import engine.behavior.ParameterName;
-import sprites.Sprite;
+import engine.game_elements.GameElement;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ public class SpriteOptionsGetter {
 
     private final String PROPERTIES_EXTENSION = ".properties";
     private final String PARAMETER_TRANSLATIONS_FILE_NAME = "ParameterTranslations" + PROPERTIES_EXTENSION;
-    private final String SPRITE_BASE_PARAMETER_NAME = Sprite.class.getName();
+    private final String SPRITE_BASE_PARAMETER_NAME = GameElement.class.getName();
     private Properties parameterTranslationProperties;
 
     private Map<String, List<String>> spriteParameterSubclassOptions = new HashMap<>();
@@ -42,7 +42,7 @@ public class SpriteOptionsGetter {
 
     private void loadTranslations() {
         initializeParameterTranslations();
-        for (Parameter spriteParameter : Sprite.class.getConstructors()[0].getParameters()) {
+        for (Parameter spriteParameter : GameElement.class.getConstructors()[0].getParameters()) {
             try {
                 loadTranslationsForSpriteParameter(spriteParameter);
             } catch (IOException | ReflectiveOperationException failedToLoadTranslationsException) {

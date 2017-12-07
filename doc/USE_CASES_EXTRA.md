@@ -1,6 +1,6 @@
 *Allow the jar file to start the game at the Player Display.
 
-*Allow sprites to bounce off of objects and enter new movement strategy.
+*Allow gameElements to bounce off of objects and enter new movement strategy.
 
 *Allow customizable visual effects.
 
@@ -60,7 +60,7 @@
 
 *Allow new goal for game
 
-*Allow sprites to move around obstacles
+*Allow gameElements to move around obstacles
 
 *Allow movement strategy to change dynamically during the game
 
@@ -70,7 +70,7 @@
 
 *Allow towers to be removable
 
-*Allow sprites to be frozen/paused
+*Allow gameElements to be frozen/paused
 
 *Allow leaderboards
 
