@@ -176,7 +176,9 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		imageBackground.setStyle("-fx-background-color: white");
 		imageBackground.getChildren().add(clone(imageView));
 		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null) {
-			projectileSlot.getChildren().add(new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name")));
+			ProjectileImage projectile = new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name"));
+			projectile.resize(projectileSlot.getPrefHeight());
+			projectileSlot.getChildren().add(projectile);
 		}
 		propertiesPane.getChildren().add(imageBackground);
 		propertiesPane.getChildren().add(deleteButton);
