@@ -1,17 +1,16 @@
 package splashScreen;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 
 import authoring.EditDisplay;
-import interfaces.ClickableInterface;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -21,9 +20,12 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
 import player.PlayDisplay;
-import player.SmartPlayDisplay;
 
 public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
+
+	public static final String EXPORTED_GAME_PROPERTIES_FILE = "ExportedGameName.properties";
+	private final String DEFAULT_GAME_NAME = "Game";
+	private final String PLAY = "Play ";
 
 	private static final int PREFSIZE = 80;
 	private static final int MAINWIDTH = 1100;
@@ -45,7 +47,7 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 
 	public SplashPlayScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background, currentStage);
-		
+		String gameName = getGameName();
 		getStage().setResizable(false);
 		basicSetup();
 		//myNewGameButton = new NewGameButton(this);
@@ -53,8 +55,23 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 		//myEditGameButton = new EditGameButton(this);
 		//rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
+		myLoadGameButton.setText(PLAY + gameName);
 		rootAdd(myLoadGameButton);
-		
+	}
+
+	private String getGameName() {
+		String gameName = DEFAULT_GAME_NAME;
+		try {
+			Properties gameProperties = new Properties();
+			gameProperties.load(getClass().getClassLoader().getResourceAsStream(EXPORTED_GAME_PROPERTIES_FILE));
+			for (String propertyName : gameProperties.stringPropertyNames()) {
+				gameName = gameProperties.getProperty(propertyName);
+				// only one entry (yes there should be a better way to do this I know)
+			}
+		} catch (IOException e) {
+			// won't happen so ignore (let's hope)
+		}
+		return gameName.substring(0, gameName.indexOf('.'));
 	}
 
 	private void basicSetup() {
