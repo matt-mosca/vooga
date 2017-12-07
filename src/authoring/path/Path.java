@@ -3,18 +3,23 @@ package authoring.path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class Path extends Group{
 	private Set<PathPoint> points;
 	private List<PathPoint> headPoints;
 	private PathPoint activePoint;
+	private Color pathColor;
 	
 	public Path() {
+		Random rand = new Random();
+		pathColor = Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 		points = new HashSet<>();
 		headPoints = new ArrayList<>();
 		activePoint = null;
@@ -23,7 +28,7 @@ public class Path extends Group{
 	public void addWaypoint(MouseEvent e, double x, double y) {
 		e.consume();
 		if(activePoint == null && points.size() != 0) return;
-		PathPoint point = new PathPoint(x, y);
+		PathPoint point = new PathPoint(x, y, pathColor);
 		point.addEventHandler(MouseEvent.MOUSE_PRESSED, event->handlePointClick(event, point));
 		
 		if(activePoint != null) {
@@ -128,6 +133,10 @@ public class Path extends Group{
 	
 	public List<PathPoint> getStartPoints(){
 		return new ArrayList<>(headPoints);
+	}
+	
+	public Color getColor() {
+		return pathColor;
 	}
 	
 }

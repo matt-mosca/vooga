@@ -252,6 +252,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 				// TODO Change to alert for the user 
 				e.printStackTrace();
 			}
+		}else {
+			returnButtonPressed();
 		}
 	}
 
@@ -303,9 +305,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void imageSelected(SpriteImage imageView) {
 		imageView.addBasePropertyMap(basePropertyMap);
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
+		controller.defineElement(imageView.getId(), imageView.getAllProperties());
+		controller.addElementToInventory(imageView.getId());
 		myRightToolBar.imageSelected(imageView);
-		controller.defineElement(imageView.getName(), imageView.getAllProperties());
-		controller.addElementToInventory(imageView.getName());
 	}
 
 	@Override
@@ -331,7 +333,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 
-	public void addToBottomToolBar(int level, SpriteImage currSprite) {
+	public void addToBottomToolBar(int level, ImageView currSprite) {
 		myBottomToolBar.addToLevel(currSprite, level);
 	}
 	

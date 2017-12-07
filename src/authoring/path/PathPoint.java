@@ -22,7 +22,7 @@ public class PathPoint extends Circle{
 	private Color inactiveColor;
 	private int radius;
 	
-	protected PathPoint(double x, double y) {
+	protected PathPoint(double x, double y, Color color) {
 		linesToPrev = new HashMap<>();
 		linesToNext = new HashMap<>();
 		initializeProperties();
@@ -32,6 +32,7 @@ public class PathPoint extends Circle{
 		this.setCenterY(y);
 		this.setRadius(radius);
 		this.setFill(activeColor);
+		inactiveColor = color;
 	}
 	
 	private void initializeHandlers() {
@@ -42,11 +43,11 @@ public class PathPoint extends Circle{
 		pathProperties = ResourceBundle.getBundle("authoring/resources/Path");
 		radius = Integer.parseInt(pathProperties.getString(RADIUS));
 		activeColor = Color.web(pathProperties.getString(ACTIVE));
-		inactiveColor = Color.web(pathProperties.getString(INACTIVE));
+//		inactiveColor = Color.web(pathProperties.getString(INACTIVE));
 	}
 
 	protected PathLine setConnectingLine(PathPoint next) {
-		PathLine line = new PathLine(this, next);
+		PathLine line = new PathLine(this, next, inactiveColor);
 		linesToNext.put(next, line);
 		next.addToPrevious(this, line);
 		return line;
