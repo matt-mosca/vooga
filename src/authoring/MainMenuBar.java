@@ -3,13 +3,13 @@ package authoring;
 import java.io.File;
 import java.util.Optional;
 
-import authoring.tabs.SaveDialog;
+import display.tabs.SaveDialog;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
-import splashScreen.ScreenDisplay;
+import display.splashScreen.ScreenDisplay;
 
 public class MainMenuBar extends MenuBar{
 	private final String RENAME = "Rename Game:";

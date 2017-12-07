@@ -1,23 +1,26 @@
 package authoring;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import authoring.path.Path;
 import authoring.path.PathParser;
 import engine.authoring_engine.AuthoringController;
-import interfaces.ClickableInterface;
-import interfaces.CustomizeInterface;
-import interfaces.Droppable;
+import display.interfaces.ClickableInterface;
+import display.interfaces.CustomizeInterface;
+import display.interfaces.Droppable;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import sprites.BackgroundObject;
-import sprites.InteractiveObject;
-import sprites.StaticObject;
+import javafx.scene.paint.Color;
+import display.sprites.BackgroundObject;
+import display.sprites.InteractiveObject;
+import display.sprites.StaticObject;
 
 public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private final String WIDTH = "Game_Area_Width";
@@ -36,6 +39,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private ResourceBundle gameProperties;
 	private PlacementGrid grid;
 	private Path path;
+	private Map<Path, Color> paths;
 	private PathParser parser;
 	private boolean gridEnabled;
 	private boolean moveableEnabled;
@@ -52,6 +56,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		objectList = new ArrayList<>();
 		frontObjects = new Group();
 		backObjects = new Group();
+		paths = new HashMap<>();
 		path = new Path();
 		parser = new PathParser();
 		grid = new PlacementGrid(width, height, rowPercentage, colPercentage, path);
@@ -60,6 +65,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		this.getChildren().add(backObjects);
 		this.getChildren().add(path);
 		this.getChildren().add(frontObjects);
+		paths.put(path, path.getColor());
 		
 		toggleGridVisibility(true);
 		toggleMovement(false);
@@ -88,13 +94,13 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	}
 	
 	//For potential future extension for objects that cover paths
-	protected void addFrontObject(StaticObject object) {
+	public void addFrontObject(StaticObject object) {
 		frontObjects.getChildren().add(object);
 		objectList.add(object);
 		object.setLocked(!moveableEnabled);
 	}
 	
-	protected void addBackObject(InteractiveObject newObject) {
+	public void addBackObject(InteractiveObject newObject) {
 		backObjects.getChildren().add(newObject);
 		objectList.add(newObject);
 		newObject.setLocked(!moveableEnabled);
@@ -160,6 +166,11 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	@Override
 	public void freeFromDroppable(InteractiveObject interactive) {
 		grid.removeFromGrid(interactive);
+	}
+	
+	@Override
+	public Map<Path, Color> getPaths() {
+		return paths;
 	}
 		
 	public void returnButtonPressed() {

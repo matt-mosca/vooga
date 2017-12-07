@@ -3,7 +3,7 @@ package authoring.rightToolBar;
 import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.PropertiesInterface;
+import display.interfaces.PropertiesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
@@ -18,6 +18,10 @@ public abstract class NewInventoryTab extends ScrollPane {
 	private ObservableList<SpriteImage> inventoryView;
 	private ListView<SpriteImage> list;
 	
+	/**
+	 * @deprecated
+	 * @param properties
+	 */
 	public NewInventoryTab(PropertiesInterface properties) {
 		newInventoryImages = new ArrayList<SpriteImage>();
 		list = new ListView<SpriteImage>();

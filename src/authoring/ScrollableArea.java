@@ -60,4 +60,11 @@ public class ScrollableArea extends ScrollPane{
 		}
 		return false;
 	}
+	
+	public void changeLevel(GameArea newArea) {
+		this.area = newArea;
+		this.setContent(newArea);
+		this.setHvalue(0);
+		this.setVvalue(0);
+	}
 }

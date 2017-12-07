@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import io.GamePersistence;
-import sprites.Sprite;
-import util.SerializationUtils;
+import engine.game_elements.GameElement;
+import util.io.GamePersistence;
+import util.io.SerializationUtils;
 
 /**
  * Gateway of authoring and play modules to I/O through engine. Encapsulates
@@ -49,11 +49,11 @@ public class IOController {
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-			Map<String, String> levelConditions, Bank levelBank, List<Sprite> levelSprites, Set<String> levelInventories, Map<String, Double> status,
-			boolean forAuthoring) {
+							  Map<String, String> levelConditions, Bank levelBank, List<GameElement> levelGameElements, Set<String> levelInventories, Map<String, Double> status,
+							  boolean forAuthoring) {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
-				currentLevel, status, levelSprites, levelInventories);
+				currentLevel, status, levelGameElements, levelInventories);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -70,13 +70,13 @@ public class IOController {
 	 *         to the front end
 	 * @throws FileNotFoundException
 	 */
-	public List<Sprite> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
+	public List<GameElement> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
 			throws FileNotFoundException {
 		// First extract string from file through io module
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		// deserialize string into map through utils module
-		List<Sprite> levelSprites = serializationUtils.deserializeGameSprites(serializedGameData, level);
-		return levelSprites;
+		List<GameElement> levelGameElements = serializationUtils.deserializeGameSprites(serializedGameData, level);
+		return levelGameElements;
 	}
 
 	// TODO - throw custom exception
@@ -169,8 +169,9 @@ public class IOController {
 	 * Fetch all available game names and their corresponding descriptions
 	 * 
 	 * @return map where keys are game names and values are game descriptions
+	 * @throws IllegalStateException if no games are found
 	 */
-	public Map<String, String> getAvailableGames() {
+	public Map<String, String> getAvailableGames() throws IllegalStateException {
 		// retrieve set of files from authoring folder through io module
 		Map<String, String> authoredGameSerializations = getAuthoredGameSerializations();
 		Map<String, String> availableGames = new HashMap<>();
@@ -214,7 +215,7 @@ public class IOController {
 	 * @param fileName
 	 *            file name for authored game to be loaded
 	 */
-	public String loadAuthoringGameState(String fileName) throws FileNotFoundException {
+	public String loadAuthoringGameState(String fileName) throws FileNotFoundException, IllegalArgumentException {
 		return gamePersistence.loadGameState(AUTHORING_GAMES_FOLDER + fileName);
 	}
 
@@ -233,10 +234,14 @@ public class IOController {
 	 * 
 	 * @return map of {game_name : game_description}
 	 */
-	public Map<String, String> getAuthoredGameSerializations() {
+	public Map<String, String> getAuthoredGameSerializations() throws IllegalStateException {
 		Map<String, String> authoredGameSerializationMap = new HashMap<>();
 		// iterate over file names in authored_games folder, serialize each
 		File authoredGamesDirectory = new File(AUTHORING_GAMES_FOLDER);
+		// System.out.println("EXISTS: " + authoredGamesDirectory.exists());
+
+		System.out.println(authoredGamesDirectory.getPath() + " " + authoredGamesDirectory.exists());
+		// String decodedPath = URLDecoder.decode(path, "UTF-8");
 		File[] authoredGames = authoredGamesDirectory.listFiles();
 		if (authoredGames == null) {
 			throw new IllegalStateException();
@@ -247,7 +252,7 @@ public class IOController {
 			// files found in directory, so safe to ignore
 			try {
 				authoredGameSerializationMap.put(authoredGameName, loadAuthoringGameState(authoredGameName));
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException | IllegalArgumentException e) {
 				continue;
 			}
 		}
@@ -263,14 +268,14 @@ public class IOController {
 	 *            description of level as set by authoring engine
 	 * @param levelStatus
 	 *            top-level status metrics of game
-	 * @param levelSprites
+	 * @param levelGameElements
 	 *            the template-mapped game elements present in the level
 	 * @return string representing serialization of level's data
 	 */
 	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
-			Bank levelBank, Map<String, Double> levelStatus, List<Sprite> levelSprites, Set<String> levelInventories) {
+										Bank levelBank, Map<String, Double> levelStatus, List<GameElement> levelGameElements, Set<String> levelInventories) {
 		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelBank, levelStatus,
-				levelSprites, levelInventories, level);
+				levelGameElements, levelInventories, level);
 	}
 
 	/**

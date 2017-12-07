@@ -1,12 +1,13 @@
 package authoring;
 
 import authoring.rightToolBar.SpriteImage;
-import interfaces.ClickableInterface;
-import interfaces.CreationInterface;
-import interfaces.CustomizeInterface;
+import display.interfaces.ClickableInterface;
+import display.interfaces.CreationInterface;
+import display.interfaces.CustomizeInterface;
+import display.interfaces.TestingInterface;
 import javafx.scene.image.ImageView;
 
-public interface AuthorInterface extends CreationInterface, CustomizeInterface {
+public interface AuthorInterface extends CreationInterface, CustomizeInterface, TestingInterface {
 	
 	public void newTowerSelected(ImageView myImageView);
 
