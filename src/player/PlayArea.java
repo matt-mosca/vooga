@@ -1,15 +1,10 @@
 package player;
 
-import authoring.PlacementGrid;
-import authoring.rightToolBar.SpriteImage;
 import engine.play_engine.PlayController;
-import interfaces.Droppable;
+import display.interfaces.Droppable;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import sprites.BackgroundObject;
-import sprites.InteractiveObject;
-import sprites.StaticObject;
+import display.sprites.InteractiveObject;
 
 public class PlayArea extends Pane implements Droppable{
 	private PlayController myController;

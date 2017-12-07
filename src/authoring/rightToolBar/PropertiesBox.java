@@ -4,12 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
 import java.util.Optional;
 import java.util.Set;
+=======
+>>>>>>> bas65
 
 import authoring.path.Path;
 import engine.authoring_engine.AuthoringController;
+<<<<<<< HEAD
 import interfaces.Droppable;
+=======
+import display.interfaces.CreationInterface;
+>>>>>>> bas65
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

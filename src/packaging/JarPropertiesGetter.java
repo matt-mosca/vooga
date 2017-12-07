@@ -1,10 +1,12 @@
 package packaging;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for retrieving game export file's properties, such as the location of the source directory.
@@ -81,8 +83,10 @@ public final class JarPropertiesGetter {
      * @return the specified directories within the source that should be included in the exported JAR file
      */
     public Collection<String> getSourceDirectoriesToInclude() {
-        return Arrays.asList(properties.getProperty(INCLUDED_DIRECTORIES_KEY, getSourceDirectoryPath())
-                .split(MULTIPLE_VALUES_DELIMITER));
+        return Arrays.stream(properties.getProperty(INCLUDED_DIRECTORIES_KEY, getSourceDirectoryPath())
+                .split(MULTIPLE_VALUES_DELIMITER))
+                .map(directory -> getSourceDirectoryPath() + File.separator + directory)
+                .collect(Collectors.toList());
     }
 
     /**

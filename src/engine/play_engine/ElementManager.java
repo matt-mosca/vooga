@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import engine.SpriteQueryHandler;
+import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
-import sprites.Sprite;
-import sprites.SpriteFactory;
+import engine.game_elements.GameElementFactory;
 
 /**
  * Single-source of truth for elements and their behavior when in-play
@@ -19,12 +19,12 @@ import sprites.SpriteFactory;
  */
 public class ElementManager {
 
-	private SpriteFactory spriteFactory;
+	private GameElementFactory gameElementFactory;
 	// Use list to enforce an ordering of elements to facilitate consideration of
 	// every element pair only once
-	private List<Sprite> activeElements;
-	private List<Sprite> newElements;
-	private List<Sprite> deadElements;
+	private List<GameElement> activeElements;
+	private List<GameElement> newElements;
+	private List<GameElement> deadElements;
 
 	private SpriteQueryHandler spriteQueryHandler;
 
@@ -32,11 +32,11 @@ public class ElementManager {
 	// Reference to GridManager
 
 	/**
-	 * Handles the collision-checking and Sprite-specific collision-handling logic
+	 * Handles the collision-checking and GameElement-specific collision-handling logic
 	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md
 	 */
-	public ElementManager(SpriteFactory spriteFactory, SpriteQueryHandler spriteQueryHandler) {
-		this.spriteFactory = spriteFactory;
+	public ElementManager(GameElementFactory gameElementFactory, SpriteQueryHandler spriteQueryHandler) {
+		this.gameElementFactory = gameElementFactory;
 		this.spriteQueryHandler = spriteQueryHandler;
 		newElements = new ArrayList<>();
 		deadElements = new ArrayList<>();
@@ -44,19 +44,19 @@ public class ElementManager {
 	}
 
 	// Guaranteed to return only active elements (i.e. not dead ones)
-	Collection<Sprite> getCurrentElements() {
+	Collection<GameElement> getCurrentElements() {
 		// Filter to return only active elements?
 		activeElements.removeIf(gameElement -> !gameElement.isAlive());
 		return activeElements;
 	}
 
-	void setCurrentElements(List<Sprite> newElements) {
+	void setCurrentElements(List<GameElement> newElements) {
 		activeElements = newElements;
 	}
 
 	void update() {
 		for (int elementIndex = 0; elementIndex < activeElements.size(); elementIndex++) {
-			Sprite element = activeElements.get(elementIndex);
+			GameElement element = activeElements.get(elementIndex);
 			element.move();
 			handleElementFiring(element);
 			processAllCollisionsForElement(elementIndex, element);
@@ -70,7 +70,7 @@ public class ElementManager {
 		activeElements.addAll(newElements);
 	}
 
-	List<Sprite> getDeadElements() {
+	List<GameElement> getDeadElements() {
 		return deadElements;
 	}
 
@@ -78,7 +78,7 @@ public class ElementManager {
 		deadElements.clear();
 	}
 
-	List<Sprite> getNewlyGeneratedElements() {
+	List<GameElement> getNewlyGeneratedElements() {
 		return newElements;
 	}
 
@@ -98,8 +98,8 @@ public class ElementManager {
 		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
 	}
 
-	boolean allElementsFulfillCondition(Predicate<Sprite> condition) {
-		for (Sprite element : activeElements) {
+	boolean allElementsFulfillCondition(Predicate<GameElement> condition) {
+		for (GameElement element : activeElements) {
 			if (!condition.test(element)) {
 				return false;
 			}
@@ -107,9 +107,9 @@ public class ElementManager {
 		return true;
 	}
 
-	private void processAllCollisionsForElement(int elementIndex, Sprite element) {
+	private void processAllCollisionsForElement(int elementIndex, GameElement element) {
 		for (int otherIndex = elementIndex + 1; otherIndex < activeElements.size(); otherIndex++) {
-			Sprite otherElement = activeElements.get(otherIndex);
+			GameElement otherElement = activeElements.get(otherIndex);
 			if (element.collidesWith(otherElement)) {
 				element.processCollision(otherElement);
 				otherElement.processCollision(element);
@@ -117,18 +117,18 @@ public class ElementManager {
 		}
 	}
 
-	private void handleElementFiring(Sprite element) {
+	private void handleElementFiring(GameElement element) {
 		if (element.shouldFire()) {
 			String elementTemplateName = element.fire();
-			List<Sprite> exclusionOfSelf = new ArrayList<>(activeElements);
+			List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
 			exclusionOfSelf.remove(element);
 			// Use player id of firing element rather than projectile? This allows greater
 			// flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
 					element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
-			Sprite projectileSprite = spriteFactory.generateSprite(elementTemplateName,
+			GameElement projectileGameElement = gameElementFactory.generateSprite(elementTemplateName,
 					new Point2D(element.getX(), element.getY()), auxiliaryObjects);
-			newElements.add(projectileSprite);
+			newElements.add(projectileGameElement);
 		}
 
 	}

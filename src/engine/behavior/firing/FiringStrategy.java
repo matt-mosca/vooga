@@ -2,7 +2,7 @@ package engine.behavior.firing;
 
 /**
  * Support different ways of firing, one of which is chosen by authoring and
- * then passed to Sprite at initialization
+ * then passed to GameElement at initialization
  * 
  * @author tyler
  * @author radithya

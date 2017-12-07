@@ -3,9 +3,10 @@ package engine.authoring_engine;
 import authoring.path.PathList;
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
+import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
 import packaging.Packager;
-import sprites.Sprite;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -50,7 +50,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	@Override
 	public void exportGame() {
 		getSpriteTemplateIoHandler().exportSpriteTemplates(getGameName(),
-				getSpriteFactory().getAllDefinedTemplateProperties());
+				getGameElementFactory().getAllDefinedTemplateProperties());
 		// packager.generateJar(getGameName());
 		// need to supply more args ^ once testing is done
 	}
@@ -71,22 +71,22 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public void defineElement(String elementName, Map<String, String> properties) {
-		getSpriteFactory().defineElement(elementName, properties);
+		getGameElementFactory().defineElement(elementName, properties);
 	}
 
 	@Override
 	public void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, String> upgradeProperties)
 			throws IllegalArgumentException {
-		if (!getSpriteFactory().getAllDefinedTemplateProperties().containsKey(elementName)) {
+		if (!getGameElementFactory().getAllDefinedTemplateProperties().containsKey(elementName)) {
 			throw new IllegalArgumentException();
 		}
-		getSpriteUpgrader().defineUpgrade(elementName, upgradeLevel, upgradeProperties);
+		getGameElementUpgrader().defineUpgrade(elementName, upgradeLevel, upgradeProperties);
 	}
 
 	@Override
 	public void updateElementDefinition(String elementName, Map<String, String> properties, boolean retroactive)
 			throws IllegalArgumentException {
-		getSpriteFactory().updateElementDefinition(elementName, properties);
+		getGameElementFactory().updateElementDefinition(elementName, properties);
 		if (retroactive) {
 			updateElementsRetroactively(elementName, properties);
 		}
@@ -94,7 +94,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public void deleteElementDefinition(String elementName) throws IllegalArgumentException {
-		getSpriteFactory().deleteElementDefinition(elementName);
+		getGameElementFactory().deleteElementDefinition(elementName);
 	}
 
 	@Override
@@ -105,9 +105,9 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public void moveElement(int elementId, double xCoordinate, double yCoordinate) throws IllegalArgumentException {
-		Sprite sprite = getElement(elementId);
-		sprite.setX(xCoordinate);
-		sprite.setY(yCoordinate);
+		GameElement gameElement = getElement(elementId);
+		gameElement.setX(xCoordinate);
+		gameElement.setY(yCoordinate);
 	}
 
 	@Override
@@ -118,8 +118,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public void deleteElement(int elementId) throws IllegalArgumentException {
-		Sprite removedSprite = getSpriteIdMap().remove(elementId);
-		getLevelSprites().get(getCurrentLevel()).remove(removedSprite);
+		GameElement removedGameElement = getSpriteIdMap().remove(elementId);
+		getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
 	}
 
 	@Override
@@ -129,12 +129,12 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
-		Sprite sprite = getElement(elementId);
+		GameElement gameElement = getElement(elementId);
 		// TODO - implement (or, more likely, eliminate)
 		return null;
 	}
 
-	private Sprite getElement(int elementId) throws IllegalArgumentException {
+	private GameElement getElement(int elementId) throws IllegalArgumentException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
 		}
@@ -178,7 +178,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public Map<String, List<String>> getElementBaseConfigurationOptions() {
-		return getSpriteFactory().getElementBaseConfigurationOptions();
+		return getGameElementFactory().getElementBaseConfigurationOptions();
 	}
 
 	@Override
@@ -187,14 +187,14 @@ public class AuthoringController extends AbstractGameController implements Autho
 		String waveName = getNameForWave();
 		// Set wave as enemy, overriding (or filling if missing) playerId
 		// TODO - remove / refactor for multi-player extension
-		waveProperties.put(PLAYER_ID, Integer.toString(Sprite.Team.COMPUTER.ordinal()));
+		waveProperties.put(PLAYER_ID, Integer.toString(GameElement.Team.COMPUTER.ordinal()));
 		defineElement(waveName, waveProperties);
 		placeElement(waveName, spawningPoint, elementNamesToSpawn);
 	}
 
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
-		return getSpriteFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
+		return getGameElementFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
 	}
 
 	@Override
@@ -213,8 +213,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public int cacheAndCreateIdentifier(String elementTemplateName, Sprite sprite) {
-		int spriteId = super.cacheAndCreateIdentifier(elementTemplateName, sprite);
+	public int cacheAndCreateIdentifier(String elementTemplateName, GameElement gameElement) {
+		int spriteId = super.cacheAndCreateIdentifier(elementTemplateName, gameElement);
 		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementTemplateName, new HashSet<>());
 		idsForTemplate.add(spriteId);
 		templateToIdMap.put(elementTemplateName, idsForTemplate);
