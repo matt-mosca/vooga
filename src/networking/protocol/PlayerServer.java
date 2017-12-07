@@ -13,6 +13,2231 @@ public final class PlayerServer {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  public interface ServerMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ServerMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+     */
+    boolean hasGameRoomCreationStatus();
+    /**
+     * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+     */
+    PlayerServer.GameRoomCreationStatus getGameRoomCreationStatus();
+    /**
+     * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+     */
+    PlayerServer.GameRoomCreationStatusOrBuilder getGameRoomCreationStatusOrBuilder();
+
+    /**
+     * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+     */
+    boolean hasGameRoomJoinStatus();
+    /**
+     * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+     */
+    PlayerServer.GameRoomJoinStatus getGameRoomJoinStatus();
+    /**
+     * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+     */
+    PlayerServer.GameRoomJoinStatusOrBuilder getGameRoomJoinStatusOrBuilder();
+
+    /**
+     * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+     */
+    boolean hasGameRoomLaunchStatus();
+    /**
+     * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+     */
+    PlayerServer.GameRoomLaunchStatus getGameRoomLaunchStatus();
+    /**
+     * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+     */
+    PlayerServer.GameRoomLaunchStatusOrBuilder getGameRoomLaunchStatusOrBuilder();
+
+    /**
+     * <code>optional .GameRooms gameRooms = 4;</code>
+     */
+    boolean hasGameRooms();
+    /**
+     * <code>optional .GameRooms gameRooms = 4;</code>
+     */
+    PlayerServer.GameRooms getGameRooms();
+    /**
+     * <code>optional .GameRooms gameRooms = 4;</code>
+     */
+    PlayerServer.GameRoomsOrBuilder getGameRoomsOrBuilder();
+
+    /**
+     * <code>optional .PlayerNames playerNames = 5;</code>
+     */
+    boolean hasPlayerNames();
+    /**
+     * <code>optional .PlayerNames playerNames = 5;</code>
+     */
+    PlayerServer.PlayerNames getPlayerNames();
+    /**
+     * <code>optional .PlayerNames playerNames = 5;</code>
+     */
+    PlayerServer.PlayerNamesOrBuilder getPlayerNamesOrBuilder();
+
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 6;</code>
+     */
+    boolean hasLevelInitialized();
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 6;</code>
+     */
+    PlayerServer.LevelInitialized getLevelInitialized();
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 6;</code>
+     */
+    PlayerServer.LevelInitializedOrBuilder getLevelInitializedOrBuilder();
+
+    /**
+     * <code>optional .Update update = 7;</code>
+     */
+    boolean hasUpdate();
+    /**
+     * <code>optional .Update update = 7;</code>
+     */
+    PlayerServer.Update getUpdate();
+    /**
+     * <code>optional .Update update = 7;</code>
+     */
+    PlayerServer.UpdateOrBuilder getUpdateOrBuilder();
+
+    /**
+     * <code>optional .Inventory inventory = 8;</code>
+     */
+    boolean hasInventory();
+    /**
+     * <code>optional .Inventory inventory = 8;</code>
+     */
+    PlayerServer.Inventory getInventory();
+    /**
+     * <code>optional .Inventory inventory = 8;</code>
+     */
+    PlayerServer.InventoryOrBuilder getInventoryOrBuilder();
+
+    /**
+     * <code>optional .TemplateProperties templateProperties = 9;</code>
+     */
+    boolean hasTemplateProperties();
+    /**
+     * <code>optional .TemplateProperties templateProperties = 9;</code>
+     */
+    PlayerServer.TemplateProperties getTemplateProperties();
+    /**
+     * <code>optional .TemplateProperties templateProperties = 9;</code>
+     */
+    PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder();
+  }
+  /**
+   * Protobuf type {@code ServerMessage}
+   */
+  public  static final class ServerMessage extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:ServerMessage)
+      ServerMessageOrBuilder {
+    // Use ServerMessage.newBuilder() to construct.
+    private ServerMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ServerMessage() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ServerMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              PlayerServer.GameRoomCreationStatus.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = gameRoomCreationStatus_.toBuilder();
+              }
+              gameRoomCreationStatus_ = input.readMessage(PlayerServer.GameRoomCreationStatus.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(gameRoomCreationStatus_);
+                gameRoomCreationStatus_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              PlayerServer.GameRoomJoinStatus.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = gameRoomJoinStatus_.toBuilder();
+              }
+              gameRoomJoinStatus_ = input.readMessage(PlayerServer.GameRoomJoinStatus.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(gameRoomJoinStatus_);
+                gameRoomJoinStatus_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+            case 26: {
+              PlayerServer.GameRoomLaunchStatus.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = gameRoomLaunchStatus_.toBuilder();
+              }
+              gameRoomLaunchStatus_ = input.readMessage(PlayerServer.GameRoomLaunchStatus.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(gameRoomLaunchStatus_);
+                gameRoomLaunchStatus_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
+            case 34: {
+              PlayerServer.GameRooms.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                subBuilder = gameRooms_.toBuilder();
+              }
+              gameRooms_ = input.readMessage(PlayerServer.GameRooms.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(gameRooms_);
+                gameRooms_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000008;
+              break;
+            }
+            case 42: {
+              PlayerServer.PlayerNames.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                subBuilder = playerNames_.toBuilder();
+              }
+              playerNames_ = input.readMessage(PlayerServer.PlayerNames.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(playerNames_);
+                playerNames_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000010;
+              break;
+            }
+            case 50: {
+              PlayerServer.LevelInitialized.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                subBuilder = levelInitialized_.toBuilder();
+              }
+              levelInitialized_ = input.readMessage(PlayerServer.LevelInitialized.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(levelInitialized_);
+                levelInitialized_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000020;
+              break;
+            }
+            case 58: {
+              PlayerServer.Update.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                subBuilder = update_.toBuilder();
+              }
+              update_ = input.readMessage(PlayerServer.Update.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(update_);
+                update_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000040;
+              break;
+            }
+            case 66: {
+              PlayerServer.Inventory.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                subBuilder = inventory_.toBuilder();
+              }
+              inventory_ = input.readMessage(PlayerServer.Inventory.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(inventory_);
+                inventory_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000080;
+              break;
+            }
+            case 74: {
+              PlayerServer.TemplateProperties.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                subBuilder = templateProperties_.toBuilder();
+              }
+              templateProperties_ = input.readMessage(PlayerServer.TemplateProperties.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(templateProperties_);
+                templateProperties_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000100;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return PlayerServer.internal_static_ServerMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return PlayerServer.internal_static_ServerMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              PlayerServer.ServerMessage.class, PlayerServer.ServerMessage.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int GAMEROOMCREATIONSTATUS_FIELD_NUMBER = 1;
+    private PlayerServer.GameRoomCreationStatus gameRoomCreationStatus_;
+    /**
+     * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+     */
+    public boolean hasGameRoomCreationStatus() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+     */
+    public PlayerServer.GameRoomCreationStatus getGameRoomCreationStatus() {
+      return gameRoomCreationStatus_ == null ? PlayerServer.GameRoomCreationStatus.getDefaultInstance() : gameRoomCreationStatus_;
+    }
+    /**
+     * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+     */
+    public PlayerServer.GameRoomCreationStatusOrBuilder getGameRoomCreationStatusOrBuilder() {
+      return gameRoomCreationStatus_ == null ? PlayerServer.GameRoomCreationStatus.getDefaultInstance() : gameRoomCreationStatus_;
+    }
+
+    public static final int GAMEROOMJOINSTATUS_FIELD_NUMBER = 2;
+    private PlayerServer.GameRoomJoinStatus gameRoomJoinStatus_;
+    /**
+     * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+     */
+    public boolean hasGameRoomJoinStatus() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+     */
+    public PlayerServer.GameRoomJoinStatus getGameRoomJoinStatus() {
+      return gameRoomJoinStatus_ == null ? PlayerServer.GameRoomJoinStatus.getDefaultInstance() : gameRoomJoinStatus_;
+    }
+    /**
+     * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+     */
+    public PlayerServer.GameRoomJoinStatusOrBuilder getGameRoomJoinStatusOrBuilder() {
+      return gameRoomJoinStatus_ == null ? PlayerServer.GameRoomJoinStatus.getDefaultInstance() : gameRoomJoinStatus_;
+    }
+
+    public static final int GAMEROOMLAUNCHSTATUS_FIELD_NUMBER = 3;
+    private PlayerServer.GameRoomLaunchStatus gameRoomLaunchStatus_;
+    /**
+     * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+     */
+    public boolean hasGameRoomLaunchStatus() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+     */
+    public PlayerServer.GameRoomLaunchStatus getGameRoomLaunchStatus() {
+      return gameRoomLaunchStatus_ == null ? PlayerServer.GameRoomLaunchStatus.getDefaultInstance() : gameRoomLaunchStatus_;
+    }
+    /**
+     * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+     */
+    public PlayerServer.GameRoomLaunchStatusOrBuilder getGameRoomLaunchStatusOrBuilder() {
+      return gameRoomLaunchStatus_ == null ? PlayerServer.GameRoomLaunchStatus.getDefaultInstance() : gameRoomLaunchStatus_;
+    }
+
+    public static final int GAMEROOMS_FIELD_NUMBER = 4;
+    private PlayerServer.GameRooms gameRooms_;
+    /**
+     * <code>optional .GameRooms gameRooms = 4;</code>
+     */
+    public boolean hasGameRooms() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .GameRooms gameRooms = 4;</code>
+     */
+    public PlayerServer.GameRooms getGameRooms() {
+      return gameRooms_ == null ? PlayerServer.GameRooms.getDefaultInstance() : gameRooms_;
+    }
+    /**
+     * <code>optional .GameRooms gameRooms = 4;</code>
+     */
+    public PlayerServer.GameRoomsOrBuilder getGameRoomsOrBuilder() {
+      return gameRooms_ == null ? PlayerServer.GameRooms.getDefaultInstance() : gameRooms_;
+    }
+
+    public static final int PLAYERNAMES_FIELD_NUMBER = 5;
+    private PlayerServer.PlayerNames playerNames_;
+    /**
+     * <code>optional .PlayerNames playerNames = 5;</code>
+     */
+    public boolean hasPlayerNames() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional .PlayerNames playerNames = 5;</code>
+     */
+    public PlayerServer.PlayerNames getPlayerNames() {
+      return playerNames_ == null ? PlayerServer.PlayerNames.getDefaultInstance() : playerNames_;
+    }
+    /**
+     * <code>optional .PlayerNames playerNames = 5;</code>
+     */
+    public PlayerServer.PlayerNamesOrBuilder getPlayerNamesOrBuilder() {
+      return playerNames_ == null ? PlayerServer.PlayerNames.getDefaultInstance() : playerNames_;
+    }
+
+    public static final int LEVELINITIALIZED_FIELD_NUMBER = 6;
+    private PlayerServer.LevelInitialized levelInitialized_;
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 6;</code>
+     */
+    public boolean hasLevelInitialized() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 6;</code>
+     */
+    public PlayerServer.LevelInitialized getLevelInitialized() {
+      return levelInitialized_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : levelInitialized_;
+    }
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 6;</code>
+     */
+    public PlayerServer.LevelInitializedOrBuilder getLevelInitializedOrBuilder() {
+      return levelInitialized_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : levelInitialized_;
+    }
+
+    public static final int UPDATE_FIELD_NUMBER = 7;
+    private PlayerServer.Update update_;
+    /**
+     * <code>optional .Update update = 7;</code>
+     */
+    public boolean hasUpdate() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional .Update update = 7;</code>
+     */
+    public PlayerServer.Update getUpdate() {
+      return update_ == null ? PlayerServer.Update.getDefaultInstance() : update_;
+    }
+    /**
+     * <code>optional .Update update = 7;</code>
+     */
+    public PlayerServer.UpdateOrBuilder getUpdateOrBuilder() {
+      return update_ == null ? PlayerServer.Update.getDefaultInstance() : update_;
+    }
+
+    public static final int INVENTORY_FIELD_NUMBER = 8;
+    private PlayerServer.Inventory inventory_;
+    /**
+     * <code>optional .Inventory inventory = 8;</code>
+     */
+    public boolean hasInventory() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional .Inventory inventory = 8;</code>
+     */
+    public PlayerServer.Inventory getInventory() {
+      return inventory_ == null ? PlayerServer.Inventory.getDefaultInstance() : inventory_;
+    }
+    /**
+     * <code>optional .Inventory inventory = 8;</code>
+     */
+    public PlayerServer.InventoryOrBuilder getInventoryOrBuilder() {
+      return inventory_ == null ? PlayerServer.Inventory.getDefaultInstance() : inventory_;
+    }
+
+    public static final int TEMPLATEPROPERTIES_FIELD_NUMBER = 9;
+    private PlayerServer.TemplateProperties templateProperties_;
+    /**
+     * <code>optional .TemplateProperties templateProperties = 9;</code>
+     */
+    public boolean hasTemplateProperties() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional .TemplateProperties templateProperties = 9;</code>
+     */
+    public PlayerServer.TemplateProperties getTemplateProperties() {
+      return templateProperties_ == null ? PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
+    }
+    /**
+     * <code>optional .TemplateProperties templateProperties = 9;</code>
+     */
+    public PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder() {
+      return templateProperties_ == null ? PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (hasGameRoomJoinStatus()) {
+        if (!getGameRoomJoinStatus().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasGameRoomLaunchStatus()) {
+        if (!getGameRoomLaunchStatus().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasLevelInitialized()) {
+        if (!getLevelInitialized().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasUpdate()) {
+        if (!getUpdate().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasTemplateProperties()) {
+        if (!getTemplateProperties().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, getGameRoomCreationStatus());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, getGameRoomJoinStatus());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, getGameRoomLaunchStatus());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(4, getGameRooms());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeMessage(5, getPlayerNames());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(6, getLevelInitialized());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeMessage(7, getUpdate());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeMessage(8, getInventory());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeMessage(9, getTemplateProperties());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getGameRoomCreationStatus());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getGameRoomJoinStatus());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getGameRoomLaunchStatus());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getGameRooms());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, getPlayerNames());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, getLevelInitialized());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, getUpdate());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, getInventory());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, getTemplateProperties());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof PlayerServer.ServerMessage)) {
+        return super.equals(obj);
+      }
+      PlayerServer.ServerMessage other = (PlayerServer.ServerMessage) obj;
+
+      boolean result = true;
+      result = result && (hasGameRoomCreationStatus() == other.hasGameRoomCreationStatus());
+      if (hasGameRoomCreationStatus()) {
+        result = result && getGameRoomCreationStatus()
+            .equals(other.getGameRoomCreationStatus());
+      }
+      result = result && (hasGameRoomJoinStatus() == other.hasGameRoomJoinStatus());
+      if (hasGameRoomJoinStatus()) {
+        result = result && getGameRoomJoinStatus()
+            .equals(other.getGameRoomJoinStatus());
+      }
+      result = result && (hasGameRoomLaunchStatus() == other.hasGameRoomLaunchStatus());
+      if (hasGameRoomLaunchStatus()) {
+        result = result && getGameRoomLaunchStatus()
+            .equals(other.getGameRoomLaunchStatus());
+      }
+      result = result && (hasGameRooms() == other.hasGameRooms());
+      if (hasGameRooms()) {
+        result = result && getGameRooms()
+            .equals(other.getGameRooms());
+      }
+      result = result && (hasPlayerNames() == other.hasPlayerNames());
+      if (hasPlayerNames()) {
+        result = result && getPlayerNames()
+            .equals(other.getPlayerNames());
+      }
+      result = result && (hasLevelInitialized() == other.hasLevelInitialized());
+      if (hasLevelInitialized()) {
+        result = result && getLevelInitialized()
+            .equals(other.getLevelInitialized());
+      }
+      result = result && (hasUpdate() == other.hasUpdate());
+      if (hasUpdate()) {
+        result = result && getUpdate()
+            .equals(other.getUpdate());
+      }
+      result = result && (hasInventory() == other.hasInventory());
+      if (hasInventory()) {
+        result = result && getInventory()
+            .equals(other.getInventory());
+      }
+      result = result && (hasTemplateProperties() == other.hasTemplateProperties());
+      if (hasTemplateProperties()) {
+        result = result && getTemplateProperties()
+            .equals(other.getTemplateProperties());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasGameRoomCreationStatus()) {
+        hash = (37 * hash) + GAMEROOMCREATIONSTATUS_FIELD_NUMBER;
+        hash = (53 * hash) + getGameRoomCreationStatus().hashCode();
+      }
+      if (hasGameRoomJoinStatus()) {
+        hash = (37 * hash) + GAMEROOMJOINSTATUS_FIELD_NUMBER;
+        hash = (53 * hash) + getGameRoomJoinStatus().hashCode();
+      }
+      if (hasGameRoomLaunchStatus()) {
+        hash = (37 * hash) + GAMEROOMLAUNCHSTATUS_FIELD_NUMBER;
+        hash = (53 * hash) + getGameRoomLaunchStatus().hashCode();
+      }
+      if (hasGameRooms()) {
+        hash = (37 * hash) + GAMEROOMS_FIELD_NUMBER;
+        hash = (53 * hash) + getGameRooms().hashCode();
+      }
+      if (hasPlayerNames()) {
+        hash = (37 * hash) + PLAYERNAMES_FIELD_NUMBER;
+        hash = (53 * hash) + getPlayerNames().hashCode();
+      }
+      if (hasLevelInitialized()) {
+        hash = (37 * hash) + LEVELINITIALIZED_FIELD_NUMBER;
+        hash = (53 * hash) + getLevelInitialized().hashCode();
+      }
+      if (hasUpdate()) {
+        hash = (37 * hash) + UPDATE_FIELD_NUMBER;
+        hash = (53 * hash) + getUpdate().hashCode();
+      }
+      if (hasInventory()) {
+        hash = (37 * hash) + INVENTORY_FIELD_NUMBER;
+        hash = (53 * hash) + getInventory().hashCode();
+      }
+      if (hasTemplateProperties()) {
+        hash = (37 * hash) + TEMPLATEPROPERTIES_FIELD_NUMBER;
+        hash = (53 * hash) + getTemplateProperties().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static PlayerServer.ServerMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static PlayerServer.ServerMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static PlayerServer.ServerMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static PlayerServer.ServerMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static PlayerServer.ServerMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static PlayerServer.ServerMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static PlayerServer.ServerMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static PlayerServer.ServerMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static PlayerServer.ServerMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static PlayerServer.ServerMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(PlayerServer.ServerMessage prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ServerMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ServerMessage)
+        PlayerServer.ServerMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return PlayerServer.internal_static_ServerMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return PlayerServer.internal_static_ServerMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                PlayerServer.ServerMessage.class, PlayerServer.ServerMessage.Builder.class);
+      }
+
+      // Construct using PlayerServer.ServerMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getGameRoomCreationStatusFieldBuilder();
+          getGameRoomJoinStatusFieldBuilder();
+          getGameRoomLaunchStatusFieldBuilder();
+          getGameRoomsFieldBuilder();
+          getPlayerNamesFieldBuilder();
+          getLevelInitializedFieldBuilder();
+          getUpdateFieldBuilder();
+          getInventoryFieldBuilder();
+          getTemplatePropertiesFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (gameRoomCreationStatusBuilder_ == null) {
+          gameRoomCreationStatus_ = null;
+        } else {
+          gameRoomCreationStatusBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (gameRoomJoinStatusBuilder_ == null) {
+          gameRoomJoinStatus_ = null;
+        } else {
+          gameRoomJoinStatusBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (gameRoomLaunchStatusBuilder_ == null) {
+          gameRoomLaunchStatus_ = null;
+        } else {
+          gameRoomLaunchStatusBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        if (gameRoomsBuilder_ == null) {
+          gameRooms_ = null;
+        } else {
+          gameRoomsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        if (playerNamesBuilder_ == null) {
+          playerNames_ = null;
+        } else {
+          playerNamesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
+        if (levelInitializedBuilder_ == null) {
+          levelInitialized_ = null;
+        } else {
+          levelInitializedBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        if (updateBuilder_ == null) {
+          update_ = null;
+        } else {
+          updateBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        if (inventoryBuilder_ == null) {
+          inventory_ = null;
+        } else {
+          inventoryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000080);
+        if (templatePropertiesBuilder_ == null) {
+          templateProperties_ = null;
+        } else {
+          templatePropertiesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000100);
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return PlayerServer.internal_static_ServerMessage_descriptor;
+      }
+
+      public PlayerServer.ServerMessage getDefaultInstanceForType() {
+        return PlayerServer.ServerMessage.getDefaultInstance();
+      }
+
+      public PlayerServer.ServerMessage build() {
+        PlayerServer.ServerMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public PlayerServer.ServerMessage buildPartial() {
+        PlayerServer.ServerMessage result = new PlayerServer.ServerMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (gameRoomCreationStatusBuilder_ == null) {
+          result.gameRoomCreationStatus_ = gameRoomCreationStatus_;
+        } else {
+          result.gameRoomCreationStatus_ = gameRoomCreationStatusBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (gameRoomJoinStatusBuilder_ == null) {
+          result.gameRoomJoinStatus_ = gameRoomJoinStatus_;
+        } else {
+          result.gameRoomJoinStatus_ = gameRoomJoinStatusBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (gameRoomLaunchStatusBuilder_ == null) {
+          result.gameRoomLaunchStatus_ = gameRoomLaunchStatus_;
+        } else {
+          result.gameRoomLaunchStatus_ = gameRoomLaunchStatusBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        if (gameRoomsBuilder_ == null) {
+          result.gameRooms_ = gameRooms_;
+        } else {
+          result.gameRooms_ = gameRoomsBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        if (playerNamesBuilder_ == null) {
+          result.playerNames_ = playerNames_;
+        } else {
+          result.playerNames_ = playerNamesBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        if (levelInitializedBuilder_ == null) {
+          result.levelInitialized_ = levelInitialized_;
+        } else {
+          result.levelInitialized_ = levelInitializedBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        if (updateBuilder_ == null) {
+          result.update_ = update_;
+        } else {
+          result.update_ = updateBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        if (inventoryBuilder_ == null) {
+          result.inventory_ = inventory_;
+        } else {
+          result.inventory_ = inventoryBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        if (templatePropertiesBuilder_ == null) {
+          result.templateProperties_ = templateProperties_;
+        } else {
+          result.templateProperties_ = templatePropertiesBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof PlayerServer.ServerMessage) {
+          return mergeFrom((PlayerServer.ServerMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(PlayerServer.ServerMessage other) {
+        if (other == PlayerServer.ServerMessage.getDefaultInstance()) return this;
+        if (other.hasGameRoomCreationStatus()) {
+          mergeGameRoomCreationStatus(other.getGameRoomCreationStatus());
+        }
+        if (other.hasGameRoomJoinStatus()) {
+          mergeGameRoomJoinStatus(other.getGameRoomJoinStatus());
+        }
+        if (other.hasGameRoomLaunchStatus()) {
+          mergeGameRoomLaunchStatus(other.getGameRoomLaunchStatus());
+        }
+        if (other.hasGameRooms()) {
+          mergeGameRooms(other.getGameRooms());
+        }
+        if (other.hasPlayerNames()) {
+          mergePlayerNames(other.getPlayerNames());
+        }
+        if (other.hasLevelInitialized()) {
+          mergeLevelInitialized(other.getLevelInitialized());
+        }
+        if (other.hasUpdate()) {
+          mergeUpdate(other.getUpdate());
+        }
+        if (other.hasInventory()) {
+          mergeInventory(other.getInventory());
+        }
+        if (other.hasTemplateProperties()) {
+          mergeTemplateProperties(other.getTemplateProperties());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (hasGameRoomJoinStatus()) {
+          if (!getGameRoomJoinStatus().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasGameRoomLaunchStatus()) {
+          if (!getGameRoomLaunchStatus().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasLevelInitialized()) {
+          if (!getLevelInitialized().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasUpdate()) {
+          if (!getUpdate().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasTemplateProperties()) {
+          if (!getTemplateProperties().isInitialized()) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        PlayerServer.ServerMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (PlayerServer.ServerMessage) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private PlayerServer.GameRoomCreationStatus gameRoomCreationStatus_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.GameRoomCreationStatus, PlayerServer.GameRoomCreationStatus.Builder, PlayerServer.GameRoomCreationStatusOrBuilder> gameRoomCreationStatusBuilder_;
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      public boolean hasGameRoomCreationStatus() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      public PlayerServer.GameRoomCreationStatus getGameRoomCreationStatus() {
+        if (gameRoomCreationStatusBuilder_ == null) {
+          return gameRoomCreationStatus_ == null ? PlayerServer.GameRoomCreationStatus.getDefaultInstance() : gameRoomCreationStatus_;
+        } else {
+          return gameRoomCreationStatusBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      public Builder setGameRoomCreationStatus(PlayerServer.GameRoomCreationStatus value) {
+        if (gameRoomCreationStatusBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          gameRoomCreationStatus_ = value;
+          onChanged();
+        } else {
+          gameRoomCreationStatusBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      public Builder setGameRoomCreationStatus(
+          PlayerServer.GameRoomCreationStatus.Builder builderForValue) {
+        if (gameRoomCreationStatusBuilder_ == null) {
+          gameRoomCreationStatus_ = builderForValue.build();
+          onChanged();
+        } else {
+          gameRoomCreationStatusBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      public Builder mergeGameRoomCreationStatus(PlayerServer.GameRoomCreationStatus value) {
+        if (gameRoomCreationStatusBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              gameRoomCreationStatus_ != null &&
+              gameRoomCreationStatus_ != PlayerServer.GameRoomCreationStatus.getDefaultInstance()) {
+            gameRoomCreationStatus_ =
+              PlayerServer.GameRoomCreationStatus.newBuilder(gameRoomCreationStatus_).mergeFrom(value).buildPartial();
+          } else {
+            gameRoomCreationStatus_ = value;
+          }
+          onChanged();
+        } else {
+          gameRoomCreationStatusBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      public Builder clearGameRoomCreationStatus() {
+        if (gameRoomCreationStatusBuilder_ == null) {
+          gameRoomCreationStatus_ = null;
+          onChanged();
+        } else {
+          gameRoomCreationStatusBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      public PlayerServer.GameRoomCreationStatus.Builder getGameRoomCreationStatusBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getGameRoomCreationStatusFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      public PlayerServer.GameRoomCreationStatusOrBuilder getGameRoomCreationStatusOrBuilder() {
+        if (gameRoomCreationStatusBuilder_ != null) {
+          return gameRoomCreationStatusBuilder_.getMessageOrBuilder();
+        } else {
+          return gameRoomCreationStatus_ == null ?
+              PlayerServer.GameRoomCreationStatus.getDefaultInstance() : gameRoomCreationStatus_;
+        }
+      }
+      /**
+       * <code>optional .GameRoomCreationStatus gameRoomCreationStatus = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.GameRoomCreationStatus, PlayerServer.GameRoomCreationStatus.Builder, PlayerServer.GameRoomCreationStatusOrBuilder> 
+          getGameRoomCreationStatusFieldBuilder() {
+        if (gameRoomCreationStatusBuilder_ == null) {
+          gameRoomCreationStatusBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.GameRoomCreationStatus, PlayerServer.GameRoomCreationStatus.Builder, PlayerServer.GameRoomCreationStatusOrBuilder>(
+                  getGameRoomCreationStatus(),
+                  getParentForChildren(),
+                  isClean());
+          gameRoomCreationStatus_ = null;
+        }
+        return gameRoomCreationStatusBuilder_;
+      }
+
+      private PlayerServer.GameRoomJoinStatus gameRoomJoinStatus_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.GameRoomJoinStatus, PlayerServer.GameRoomJoinStatus.Builder, PlayerServer.GameRoomJoinStatusOrBuilder> gameRoomJoinStatusBuilder_;
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      public boolean hasGameRoomJoinStatus() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      public PlayerServer.GameRoomJoinStatus getGameRoomJoinStatus() {
+        if (gameRoomJoinStatusBuilder_ == null) {
+          return gameRoomJoinStatus_ == null ? PlayerServer.GameRoomJoinStatus.getDefaultInstance() : gameRoomJoinStatus_;
+        } else {
+          return gameRoomJoinStatusBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      public Builder setGameRoomJoinStatus(PlayerServer.GameRoomJoinStatus value) {
+        if (gameRoomJoinStatusBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          gameRoomJoinStatus_ = value;
+          onChanged();
+        } else {
+          gameRoomJoinStatusBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      public Builder setGameRoomJoinStatus(
+          PlayerServer.GameRoomJoinStatus.Builder builderForValue) {
+        if (gameRoomJoinStatusBuilder_ == null) {
+          gameRoomJoinStatus_ = builderForValue.build();
+          onChanged();
+        } else {
+          gameRoomJoinStatusBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      public Builder mergeGameRoomJoinStatus(PlayerServer.GameRoomJoinStatus value) {
+        if (gameRoomJoinStatusBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              gameRoomJoinStatus_ != null &&
+              gameRoomJoinStatus_ != PlayerServer.GameRoomJoinStatus.getDefaultInstance()) {
+            gameRoomJoinStatus_ =
+              PlayerServer.GameRoomJoinStatus.newBuilder(gameRoomJoinStatus_).mergeFrom(value).buildPartial();
+          } else {
+            gameRoomJoinStatus_ = value;
+          }
+          onChanged();
+        } else {
+          gameRoomJoinStatusBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      public Builder clearGameRoomJoinStatus() {
+        if (gameRoomJoinStatusBuilder_ == null) {
+          gameRoomJoinStatus_ = null;
+          onChanged();
+        } else {
+          gameRoomJoinStatusBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      public PlayerServer.GameRoomJoinStatus.Builder getGameRoomJoinStatusBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getGameRoomJoinStatusFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      public PlayerServer.GameRoomJoinStatusOrBuilder getGameRoomJoinStatusOrBuilder() {
+        if (gameRoomJoinStatusBuilder_ != null) {
+          return gameRoomJoinStatusBuilder_.getMessageOrBuilder();
+        } else {
+          return gameRoomJoinStatus_ == null ?
+              PlayerServer.GameRoomJoinStatus.getDefaultInstance() : gameRoomJoinStatus_;
+        }
+      }
+      /**
+       * <code>optional .GameRoomJoinStatus gameRoomJoinStatus = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.GameRoomJoinStatus, PlayerServer.GameRoomJoinStatus.Builder, PlayerServer.GameRoomJoinStatusOrBuilder> 
+          getGameRoomJoinStatusFieldBuilder() {
+        if (gameRoomJoinStatusBuilder_ == null) {
+          gameRoomJoinStatusBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.GameRoomJoinStatus, PlayerServer.GameRoomJoinStatus.Builder, PlayerServer.GameRoomJoinStatusOrBuilder>(
+                  getGameRoomJoinStatus(),
+                  getParentForChildren(),
+                  isClean());
+          gameRoomJoinStatus_ = null;
+        }
+        return gameRoomJoinStatusBuilder_;
+      }
+
+      private PlayerServer.GameRoomLaunchStatus gameRoomLaunchStatus_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.GameRoomLaunchStatus, PlayerServer.GameRoomLaunchStatus.Builder, PlayerServer.GameRoomLaunchStatusOrBuilder> gameRoomLaunchStatusBuilder_;
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      public boolean hasGameRoomLaunchStatus() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      public PlayerServer.GameRoomLaunchStatus getGameRoomLaunchStatus() {
+        if (gameRoomLaunchStatusBuilder_ == null) {
+          return gameRoomLaunchStatus_ == null ? PlayerServer.GameRoomLaunchStatus.getDefaultInstance() : gameRoomLaunchStatus_;
+        } else {
+          return gameRoomLaunchStatusBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      public Builder setGameRoomLaunchStatus(PlayerServer.GameRoomLaunchStatus value) {
+        if (gameRoomLaunchStatusBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          gameRoomLaunchStatus_ = value;
+          onChanged();
+        } else {
+          gameRoomLaunchStatusBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      public Builder setGameRoomLaunchStatus(
+          PlayerServer.GameRoomLaunchStatus.Builder builderForValue) {
+        if (gameRoomLaunchStatusBuilder_ == null) {
+          gameRoomLaunchStatus_ = builderForValue.build();
+          onChanged();
+        } else {
+          gameRoomLaunchStatusBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      public Builder mergeGameRoomLaunchStatus(PlayerServer.GameRoomLaunchStatus value) {
+        if (gameRoomLaunchStatusBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              gameRoomLaunchStatus_ != null &&
+              gameRoomLaunchStatus_ != PlayerServer.GameRoomLaunchStatus.getDefaultInstance()) {
+            gameRoomLaunchStatus_ =
+              PlayerServer.GameRoomLaunchStatus.newBuilder(gameRoomLaunchStatus_).mergeFrom(value).buildPartial();
+          } else {
+            gameRoomLaunchStatus_ = value;
+          }
+          onChanged();
+        } else {
+          gameRoomLaunchStatusBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      public Builder clearGameRoomLaunchStatus() {
+        if (gameRoomLaunchStatusBuilder_ == null) {
+          gameRoomLaunchStatus_ = null;
+          onChanged();
+        } else {
+          gameRoomLaunchStatusBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      public PlayerServer.GameRoomLaunchStatus.Builder getGameRoomLaunchStatusBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getGameRoomLaunchStatusFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      public PlayerServer.GameRoomLaunchStatusOrBuilder getGameRoomLaunchStatusOrBuilder() {
+        if (gameRoomLaunchStatusBuilder_ != null) {
+          return gameRoomLaunchStatusBuilder_.getMessageOrBuilder();
+        } else {
+          return gameRoomLaunchStatus_ == null ?
+              PlayerServer.GameRoomLaunchStatus.getDefaultInstance() : gameRoomLaunchStatus_;
+        }
+      }
+      /**
+       * <code>optional .GameRoomLaunchStatus gameRoomLaunchStatus = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.GameRoomLaunchStatus, PlayerServer.GameRoomLaunchStatus.Builder, PlayerServer.GameRoomLaunchStatusOrBuilder> 
+          getGameRoomLaunchStatusFieldBuilder() {
+        if (gameRoomLaunchStatusBuilder_ == null) {
+          gameRoomLaunchStatusBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.GameRoomLaunchStatus, PlayerServer.GameRoomLaunchStatus.Builder, PlayerServer.GameRoomLaunchStatusOrBuilder>(
+                  getGameRoomLaunchStatus(),
+                  getParentForChildren(),
+                  isClean());
+          gameRoomLaunchStatus_ = null;
+        }
+        return gameRoomLaunchStatusBuilder_;
+      }
+
+      private PlayerServer.GameRooms gameRooms_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.GameRooms, PlayerServer.GameRooms.Builder, PlayerServer.GameRoomsOrBuilder> gameRoomsBuilder_;
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      public boolean hasGameRooms() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      public PlayerServer.GameRooms getGameRooms() {
+        if (gameRoomsBuilder_ == null) {
+          return gameRooms_ == null ? PlayerServer.GameRooms.getDefaultInstance() : gameRooms_;
+        } else {
+          return gameRoomsBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      public Builder setGameRooms(PlayerServer.GameRooms value) {
+        if (gameRoomsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          gameRooms_ = value;
+          onChanged();
+        } else {
+          gameRoomsBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      public Builder setGameRooms(
+          PlayerServer.GameRooms.Builder builderForValue) {
+        if (gameRoomsBuilder_ == null) {
+          gameRooms_ = builderForValue.build();
+          onChanged();
+        } else {
+          gameRoomsBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      public Builder mergeGameRooms(PlayerServer.GameRooms value) {
+        if (gameRoomsBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              gameRooms_ != null &&
+              gameRooms_ != PlayerServer.GameRooms.getDefaultInstance()) {
+            gameRooms_ =
+              PlayerServer.GameRooms.newBuilder(gameRooms_).mergeFrom(value).buildPartial();
+          } else {
+            gameRooms_ = value;
+          }
+          onChanged();
+        } else {
+          gameRoomsBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      public Builder clearGameRooms() {
+        if (gameRoomsBuilder_ == null) {
+          gameRooms_ = null;
+          onChanged();
+        } else {
+          gameRoomsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      public PlayerServer.GameRooms.Builder getGameRoomsBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getGameRoomsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      public PlayerServer.GameRoomsOrBuilder getGameRoomsOrBuilder() {
+        if (gameRoomsBuilder_ != null) {
+          return gameRoomsBuilder_.getMessageOrBuilder();
+        } else {
+          return gameRooms_ == null ?
+              PlayerServer.GameRooms.getDefaultInstance() : gameRooms_;
+        }
+      }
+      /**
+       * <code>optional .GameRooms gameRooms = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.GameRooms, PlayerServer.GameRooms.Builder, PlayerServer.GameRoomsOrBuilder> 
+          getGameRoomsFieldBuilder() {
+        if (gameRoomsBuilder_ == null) {
+          gameRoomsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.GameRooms, PlayerServer.GameRooms.Builder, PlayerServer.GameRoomsOrBuilder>(
+                  getGameRooms(),
+                  getParentForChildren(),
+                  isClean());
+          gameRooms_ = null;
+        }
+        return gameRoomsBuilder_;
+      }
+
+      private PlayerServer.PlayerNames playerNames_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.PlayerNames, PlayerServer.PlayerNames.Builder, PlayerServer.PlayerNamesOrBuilder> playerNamesBuilder_;
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      public boolean hasPlayerNames() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      public PlayerServer.PlayerNames getPlayerNames() {
+        if (playerNamesBuilder_ == null) {
+          return playerNames_ == null ? PlayerServer.PlayerNames.getDefaultInstance() : playerNames_;
+        } else {
+          return playerNamesBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      public Builder setPlayerNames(PlayerServer.PlayerNames value) {
+        if (playerNamesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          playerNames_ = value;
+          onChanged();
+        } else {
+          playerNamesBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      public Builder setPlayerNames(
+          PlayerServer.PlayerNames.Builder builderForValue) {
+        if (playerNamesBuilder_ == null) {
+          playerNames_ = builderForValue.build();
+          onChanged();
+        } else {
+          playerNamesBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      public Builder mergePlayerNames(PlayerServer.PlayerNames value) {
+        if (playerNamesBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              playerNames_ != null &&
+              playerNames_ != PlayerServer.PlayerNames.getDefaultInstance()) {
+            playerNames_ =
+              PlayerServer.PlayerNames.newBuilder(playerNames_).mergeFrom(value).buildPartial();
+          } else {
+            playerNames_ = value;
+          }
+          onChanged();
+        } else {
+          playerNamesBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      public Builder clearPlayerNames() {
+        if (playerNamesBuilder_ == null) {
+          playerNames_ = null;
+          onChanged();
+        } else {
+          playerNamesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      public PlayerServer.PlayerNames.Builder getPlayerNamesBuilder() {
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return getPlayerNamesFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      public PlayerServer.PlayerNamesOrBuilder getPlayerNamesOrBuilder() {
+        if (playerNamesBuilder_ != null) {
+          return playerNamesBuilder_.getMessageOrBuilder();
+        } else {
+          return playerNames_ == null ?
+              PlayerServer.PlayerNames.getDefaultInstance() : playerNames_;
+        }
+      }
+      /**
+       * <code>optional .PlayerNames playerNames = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.PlayerNames, PlayerServer.PlayerNames.Builder, PlayerServer.PlayerNamesOrBuilder> 
+          getPlayerNamesFieldBuilder() {
+        if (playerNamesBuilder_ == null) {
+          playerNamesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.PlayerNames, PlayerServer.PlayerNames.Builder, PlayerServer.PlayerNamesOrBuilder>(
+                  getPlayerNames(),
+                  getParentForChildren(),
+                  isClean());
+          playerNames_ = null;
+        }
+        return playerNamesBuilder_;
+      }
+
+      private PlayerServer.LevelInitialized levelInitialized_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.LevelInitialized, PlayerServer.LevelInitialized.Builder, PlayerServer.LevelInitializedOrBuilder> levelInitializedBuilder_;
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      public boolean hasLevelInitialized() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      public PlayerServer.LevelInitialized getLevelInitialized() {
+        if (levelInitializedBuilder_ == null) {
+          return levelInitialized_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : levelInitialized_;
+        } else {
+          return levelInitializedBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      public Builder setLevelInitialized(PlayerServer.LevelInitialized value) {
+        if (levelInitializedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          levelInitialized_ = value;
+          onChanged();
+        } else {
+          levelInitializedBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      public Builder setLevelInitialized(
+          PlayerServer.LevelInitialized.Builder builderForValue) {
+        if (levelInitializedBuilder_ == null) {
+          levelInitialized_ = builderForValue.build();
+          onChanged();
+        } else {
+          levelInitializedBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      public Builder mergeLevelInitialized(PlayerServer.LevelInitialized value) {
+        if (levelInitializedBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              levelInitialized_ != null &&
+              levelInitialized_ != PlayerServer.LevelInitialized.getDefaultInstance()) {
+            levelInitialized_ =
+              PlayerServer.LevelInitialized.newBuilder(levelInitialized_).mergeFrom(value).buildPartial();
+          } else {
+            levelInitialized_ = value;
+          }
+          onChanged();
+        } else {
+          levelInitializedBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      public Builder clearLevelInitialized() {
+        if (levelInitializedBuilder_ == null) {
+          levelInitialized_ = null;
+          onChanged();
+        } else {
+          levelInitializedBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      public PlayerServer.LevelInitialized.Builder getLevelInitializedBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getLevelInitializedFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      public PlayerServer.LevelInitializedOrBuilder getLevelInitializedOrBuilder() {
+        if (levelInitializedBuilder_ != null) {
+          return levelInitializedBuilder_.getMessageOrBuilder();
+        } else {
+          return levelInitialized_ == null ?
+              PlayerServer.LevelInitialized.getDefaultInstance() : levelInitialized_;
+        }
+      }
+      /**
+       * <code>optional .LevelInitialized levelInitialized = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.LevelInitialized, PlayerServer.LevelInitialized.Builder, PlayerServer.LevelInitializedOrBuilder> 
+          getLevelInitializedFieldBuilder() {
+        if (levelInitializedBuilder_ == null) {
+          levelInitializedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.LevelInitialized, PlayerServer.LevelInitialized.Builder, PlayerServer.LevelInitializedOrBuilder>(
+                  getLevelInitialized(),
+                  getParentForChildren(),
+                  isClean());
+          levelInitialized_ = null;
+        }
+        return levelInitializedBuilder_;
+      }
+
+      private PlayerServer.Update update_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder> updateBuilder_;
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      public boolean hasUpdate() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      public PlayerServer.Update getUpdate() {
+        if (updateBuilder_ == null) {
+          return update_ == null ? PlayerServer.Update.getDefaultInstance() : update_;
+        } else {
+          return updateBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      public Builder setUpdate(PlayerServer.Update value) {
+        if (updateBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          update_ = value;
+          onChanged();
+        } else {
+          updateBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      public Builder setUpdate(
+          PlayerServer.Update.Builder builderForValue) {
+        if (updateBuilder_ == null) {
+          update_ = builderForValue.build();
+          onChanged();
+        } else {
+          updateBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      public Builder mergeUpdate(PlayerServer.Update value) {
+        if (updateBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) == 0x00000040) &&
+              update_ != null &&
+              update_ != PlayerServer.Update.getDefaultInstance()) {
+            update_ =
+              PlayerServer.Update.newBuilder(update_).mergeFrom(value).buildPartial();
+          } else {
+            update_ = value;
+          }
+          onChanged();
+        } else {
+          updateBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      public Builder clearUpdate() {
+        if (updateBuilder_ == null) {
+          update_ = null;
+          onChanged();
+        } else {
+          updateBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      public PlayerServer.Update.Builder getUpdateBuilder() {
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return getUpdateFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      public PlayerServer.UpdateOrBuilder getUpdateOrBuilder() {
+        if (updateBuilder_ != null) {
+          return updateBuilder_.getMessageOrBuilder();
+        } else {
+          return update_ == null ?
+              PlayerServer.Update.getDefaultInstance() : update_;
+        }
+      }
+      /**
+       * <code>optional .Update update = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder> 
+          getUpdateFieldBuilder() {
+        if (updateBuilder_ == null) {
+          updateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder>(
+                  getUpdate(),
+                  getParentForChildren(),
+                  isClean());
+          update_ = null;
+        }
+        return updateBuilder_;
+      }
+
+      private PlayerServer.Inventory inventory_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.Inventory, PlayerServer.Inventory.Builder, PlayerServer.InventoryOrBuilder> inventoryBuilder_;
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      public boolean hasInventory() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      public PlayerServer.Inventory getInventory() {
+        if (inventoryBuilder_ == null) {
+          return inventory_ == null ? PlayerServer.Inventory.getDefaultInstance() : inventory_;
+        } else {
+          return inventoryBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      public Builder setInventory(PlayerServer.Inventory value) {
+        if (inventoryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          inventory_ = value;
+          onChanged();
+        } else {
+          inventoryBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      public Builder setInventory(
+          PlayerServer.Inventory.Builder builderForValue) {
+        if (inventoryBuilder_ == null) {
+          inventory_ = builderForValue.build();
+          onChanged();
+        } else {
+          inventoryBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      public Builder mergeInventory(PlayerServer.Inventory value) {
+        if (inventoryBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) == 0x00000080) &&
+              inventory_ != null &&
+              inventory_ != PlayerServer.Inventory.getDefaultInstance()) {
+            inventory_ =
+              PlayerServer.Inventory.newBuilder(inventory_).mergeFrom(value).buildPartial();
+          } else {
+            inventory_ = value;
+          }
+          onChanged();
+        } else {
+          inventoryBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000080;
+        return this;
+      }
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      public Builder clearInventory() {
+        if (inventoryBuilder_ == null) {
+          inventory_ = null;
+          onChanged();
+        } else {
+          inventoryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000080);
+        return this;
+      }
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      public PlayerServer.Inventory.Builder getInventoryBuilder() {
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return getInventoryFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      public PlayerServer.InventoryOrBuilder getInventoryOrBuilder() {
+        if (inventoryBuilder_ != null) {
+          return inventoryBuilder_.getMessageOrBuilder();
+        } else {
+          return inventory_ == null ?
+              PlayerServer.Inventory.getDefaultInstance() : inventory_;
+        }
+      }
+      /**
+       * <code>optional .Inventory inventory = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.Inventory, PlayerServer.Inventory.Builder, PlayerServer.InventoryOrBuilder> 
+          getInventoryFieldBuilder() {
+        if (inventoryBuilder_ == null) {
+          inventoryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.Inventory, PlayerServer.Inventory.Builder, PlayerServer.InventoryOrBuilder>(
+                  getInventory(),
+                  getParentForChildren(),
+                  isClean());
+          inventory_ = null;
+        }
+        return inventoryBuilder_;
+      }
+
+      private PlayerServer.TemplateProperties templateProperties_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder> templatePropertiesBuilder_;
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      public boolean hasTemplateProperties() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      public PlayerServer.TemplateProperties getTemplateProperties() {
+        if (templatePropertiesBuilder_ == null) {
+          return templateProperties_ == null ? PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
+        } else {
+          return templatePropertiesBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      public Builder setTemplateProperties(PlayerServer.TemplateProperties value) {
+        if (templatePropertiesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          templateProperties_ = value;
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      public Builder setTemplateProperties(
+          PlayerServer.TemplateProperties.Builder builderForValue) {
+        if (templatePropertiesBuilder_ == null) {
+          templateProperties_ = builderForValue.build();
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      public Builder mergeTemplateProperties(PlayerServer.TemplateProperties value) {
+        if (templatePropertiesBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
+              templateProperties_ != null &&
+              templateProperties_ != PlayerServer.TemplateProperties.getDefaultInstance()) {
+            templateProperties_ =
+              PlayerServer.TemplateProperties.newBuilder(templateProperties_).mergeFrom(value).buildPartial();
+          } else {
+            templateProperties_ = value;
+          }
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      public Builder clearTemplateProperties() {
+        if (templatePropertiesBuilder_ == null) {
+          templateProperties_ = null;
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000100);
+        return this;
+      }
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      public PlayerServer.TemplateProperties.Builder getTemplatePropertiesBuilder() {
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return getTemplatePropertiesFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      public PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder() {
+        if (templatePropertiesBuilder_ != null) {
+          return templatePropertiesBuilder_.getMessageOrBuilder();
+        } else {
+          return templateProperties_ == null ?
+              PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
+        }
+      }
+      /**
+       * <code>optional .TemplateProperties templateProperties = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder> 
+          getTemplatePropertiesFieldBuilder() {
+        if (templatePropertiesBuilder_ == null) {
+          templatePropertiesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder>(
+                  getTemplateProperties(),
+                  getParentForChildren(),
+                  isClean());
+          templateProperties_ = null;
+        }
+        return templatePropertiesBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:ServerMessage)
+    }
+
+    // @@protoc_insertion_point(class_scope:ServerMessage)
+    private static final PlayerServer.ServerMessage DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new PlayerServer.ServerMessage();
+    }
+
+    public static PlayerServer.ServerMessage getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<ServerMessage>
+        PARSER = new com.google.protobuf.AbstractParser<ServerMessage>() {
+      public ServerMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ServerMessage(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ServerMessage> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerMessage> getParserForType() {
+      return PARSER;
+    }
+
+    public PlayerServer.ServerMessage getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface GameRoomCreationStatusOrBuilder extends
       // @@protoc_insertion_point(interface_extends:GameRoomCreationStatus)
       com.google.protobuf.MessageOrBuilder {
@@ -12630,6 +14855,11 @@ public final class PlayerServer {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ServerMessage_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_ServerMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GameRoomCreationStatus_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -12718,35 +14948,45 @@ public final class PlayerServer {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022PlayerServer.proto\"7\n\026GameRoomCreation" +
-      "Status\022\016\n\006roomId\030\001 \001(\t\022\r\n\005error\030\002 \001(\t\"4\n" +
-      "\022GameRoomJoinStatus\022\017\n\007success\030\001 \002(\010\022\r\n\005" +
-      "error\030\002 \001(\t\"D\n\024GameRoomLaunchStatus\022\035\n\014i" +
-      "nitialState\030\001 \001(\0132\007.Update\022\r\n\005error\030\002 \001(" +
-      "\t\"\036\n\tGameRooms\022\021\n\troomNames\030\001 \003(\t\" \n\013Pla" +
-      "yerNames\022\021\n\tuserNames\030\001 \003(\t\"T\n\020LevelInit" +
-      "ialized\022\035\n\tinventory\030\001 \002(\0132\n.Inventory\022!" +
-      "\n\020spritesAndStatus\030\002 \002(\0132\007.Update\"\310\001\n\006Up" +
-      "date\022\036\n\nnewSprites\030\001 \003(\0132\n.NewSprite\022$\n\r",
-      "spriteUpdates\030\002 \003(\0132\r.SpriteUpdate\022(\n\017sp" +
-      "riteDeletions\030\003 \003(\0132\017.SpriteDeletion\022$\n\r" +
-      "statusUpdates\030\004 \001(\0132\r.StatusUpdate\022(\n\017re" +
-      "sourceUpdates\030\005 \001(\0132\017.ResourceUpdate\"x\n\t" +
-      "NewSprite\022\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030" +
-      "\002 \002(\t\022\023\n\013imageHeight\030\003 \002(\001\022\022\n\nimageWidth" +
-      "\030\004 \002(\001\022\016\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\"<" +
-      "\n\014SpriteUpdate\022\020\n\010spriteId\030\001 \002(\005\022\014\n\004newX" +
-      "\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016SpriteDeletion\022\020" +
-      "\n\010spriteId\030\001 \002(\005\"e\n\014StatusUpdate\022\024\n\014leve",
-      "lCleared\030\001 \002(\010\022\r\n\005isWon\030\002 \002(\010\022\016\n\006isLost\030" +
-      "\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010\022\020\n\010isPaused\030\005 \002(\010\"" +
-      ".\n\016ResourceUpdate\022\034\n\tresources\030\001 \003(\0132\t.R" +
-      "esource\"\036\n\tInventory\022\021\n\ttemplates\030\001 \003(\t\"" +
-      "(\n\010Resource\022\014\n\004name\030\001 \002(\t\022\016\n\006amount\030\002 \002(" +
-      "\001\"N\n\022TemplateProperties\022\023\n\013elementName\030\001" +
-      " \002(\t\022#\n\010property\030\002 \003(\0132\021.TemplatePropert" +
-      "y\"/\n\020TemplateProperty\022\014\n\004name\030\001 \002(\t\022\r\n\005v" +
-      "alue\030\002 \002(\t"
+      "\n\022PlayerServer.proto\"\206\003\n\rServerMessage\0227" +
+      "\n\026gameRoomCreationStatus\030\001 \001(\0132\027.GameRoo" +
+      "mCreationStatus\022/\n\022gameRoomJoinStatus\030\002 " +
+      "\001(\0132\023.GameRoomJoinStatus\0223\n\024gameRoomLaun" +
+      "chStatus\030\003 \001(\0132\025.GameRoomLaunchStatus\022\035\n" +
+      "\tgameRooms\030\004 \001(\0132\n.GameRooms\022!\n\013playerNa" +
+      "mes\030\005 \001(\0132\014.PlayerNames\022+\n\020levelInitiali" +
+      "zed\030\006 \001(\0132\021.LevelInitialized\022\027\n\006update\030\007" +
+      " \001(\0132\007.Update\022\035\n\tinventory\030\010 \001(\0132\n.Inven" +
+      "tory\022/\n\022templateProperties\030\t \001(\0132\023.Templ",
+      "ateProperties\"7\n\026GameRoomCreationStatus\022" +
+      "\016\n\006roomId\030\001 \001(\t\022\r\n\005error\030\002 \001(\t\"4\n\022GameRo" +
+      "omJoinStatus\022\017\n\007success\030\001 \002(\010\022\r\n\005error\030\002" +
+      " \001(\t\"D\n\024GameRoomLaunchStatus\022\035\n\014initialS" +
+      "tate\030\001 \001(\0132\007.Update\022\r\n\005error\030\002 \001(\t\"\036\n\tGa" +
+      "meRooms\022\021\n\troomNames\030\001 \003(\t\" \n\013PlayerName" +
+      "s\022\021\n\tuserNames\030\001 \003(\t\"T\n\020LevelInitialized" +
+      "\022\035\n\tinventory\030\001 \002(\0132\n.Inventory\022!\n\020sprit" +
+      "esAndStatus\030\002 \002(\0132\007.Update\"\310\001\n\006Update\022\036\n" +
+      "\nnewSprites\030\001 \003(\0132\n.NewSprite\022$\n\rspriteU",
+      "pdates\030\002 \003(\0132\r.SpriteUpdate\022(\n\017spriteDel" +
+      "etions\030\003 \003(\0132\017.SpriteDeletion\022$\n\rstatusU" +
+      "pdates\030\004 \001(\0132\r.StatusUpdate\022(\n\017resourceU" +
+      "pdates\030\005 \001(\0132\017.ResourceUpdate\"x\n\tNewSpri" +
+      "te\022\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030\002 \002(\t\022\023" +
+      "\n\013imageHeight\030\003 \002(\001\022\022\n\nimageWidth\030\004 \002(\001\022" +
+      "\016\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\"<\n\014Sprit" +
+      "eUpdate\022\020\n\010spriteId\030\001 \002(\005\022\014\n\004newX\030\002 \002(\001\022" +
+      "\014\n\004newY\030\003 \002(\001\"\"\n\016SpriteDeletion\022\020\n\010sprit" +
+      "eId\030\001 \002(\005\"e\n\014StatusUpdate\022\024\n\014levelCleare",
+      "d\030\001 \002(\010\022\r\n\005isWon\030\002 \002(\010\022\016\n\006isLost\030\003 \002(\010\022\016" +
+      "\n\006inPlay\030\004 \002(\010\022\020\n\010isPaused\030\005 \002(\010\".\n\016Reso" +
+      "urceUpdate\022\034\n\tresources\030\001 \003(\0132\t.Resource" +
+      "\"\036\n\tInventory\022\021\n\ttemplates\030\001 \003(\t\"(\n\010Reso" +
+      "urce\022\014\n\004name\030\001 \002(\t\022\016\n\006amount\030\002 \002(\001\"N\n\022Te" +
+      "mplateProperties\022\023\n\013elementName\030\001 \002(\t\022#\n" +
+      "\010property\030\002 \003(\0132\021.TemplateProperty\"/\n\020Te" +
+      "mplateProperty\022\014\n\004name\030\001 \002(\t\022\r\n\005value\030\002 " +
+      "\002(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12760,98 +15000,104 @@ public final class PlayerServer {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_GameRoomCreationStatus_descriptor =
+    internal_static_ServerMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_ServerMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_ServerMessage_descriptor,
+        new java.lang.String[] { "GameRoomCreationStatus", "GameRoomJoinStatus", "GameRoomLaunchStatus", "GameRooms", "PlayerNames", "LevelInitialized", "Update", "Inventory", "TemplateProperties", });
+    internal_static_GameRoomCreationStatus_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_GameRoomCreationStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GameRoomCreationStatus_descriptor,
         new java.lang.String[] { "RoomId", "Error", });
     internal_static_GameRoomJoinStatus_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_GameRoomJoinStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GameRoomJoinStatus_descriptor,
         new java.lang.String[] { "Success", "Error", });
     internal_static_GameRoomLaunchStatus_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_GameRoomLaunchStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GameRoomLaunchStatus_descriptor,
         new java.lang.String[] { "InitialState", "Error", });
     internal_static_GameRooms_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_GameRooms_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GameRooms_descriptor,
         new java.lang.String[] { "RoomNames", });
     internal_static_PlayerNames_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_PlayerNames_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PlayerNames_descriptor,
         new java.lang.String[] { "UserNames", });
     internal_static_LevelInitialized_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_LevelInitialized_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LevelInitialized_descriptor,
         new java.lang.String[] { "Inventory", "SpritesAndStatus", });
     internal_static_Update_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_Update_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Update_descriptor,
         new java.lang.String[] { "NewSprites", "SpriteUpdates", "SpriteDeletions", "StatusUpdates", "ResourceUpdates", });
     internal_static_NewSprite_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_NewSprite_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_NewSprite_descriptor,
         new java.lang.String[] { "SpriteId", "ImageURL", "ImageHeight", "ImageWidth", "SpawnX", "SpawnY", });
     internal_static_SpriteUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_SpriteUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SpriteUpdate_descriptor,
         new java.lang.String[] { "SpriteId", "NewX", "NewY", });
     internal_static_SpriteDeletion_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_SpriteDeletion_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SpriteDeletion_descriptor,
         new java.lang.String[] { "SpriteId", });
     internal_static_StatusUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_StatusUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StatusUpdate_descriptor,
         new java.lang.String[] { "LevelCleared", "IsWon", "IsLost", "InPlay", "IsPaused", });
     internal_static_ResourceUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_ResourceUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ResourceUpdate_descriptor,
         new java.lang.String[] { "Resources", });
     internal_static_Inventory_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_Inventory_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Inventory_descriptor,
         new java.lang.String[] { "Templates", });
     internal_static_Resource_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_Resource_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Resource_descriptor,
         new java.lang.String[] { "Name", "Amount", });
     internal_static_TemplateProperties_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_TemplateProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TemplateProperties_descriptor,
         new java.lang.String[] { "ElementName", "Property", });
     internal_static_TemplateProperty_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_TemplateProperty_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TemplateProperty_descriptor,

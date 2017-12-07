@@ -6,6 +6,10 @@
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/gson-2.6.2.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="protobuf/protobuf-java-3.5.0.jar"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/tyler/Downloads/protobuf-java-3.5.0.jar"/>
+>>>>>>> master
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -2,6 +2,8 @@ package engine;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -169,8 +171,9 @@ public class IOController {
 	 * Fetch all available game names and their corresponding descriptions
 	 * 
 	 * @return map where keys are game names and values are game descriptions
+	 * @throws IllegalStateException if no games are found
 	 */
-	public Map<String, String> getAvailableGames() {
+	public Map<String, String> getAvailableGames() throws IllegalStateException {
 		// retrieve set of files from authoring folder through io module
 		Map<String, String> authoredGameSerializations = getAuthoredGameSerializations();
 		Map<String, String> availableGames = new HashMap<>();
@@ -233,11 +236,14 @@ public class IOController {
 	 * 
 	 * @return map of {game_name : game_description}
 	 */
-	public Map<String, String> getAuthoredGameSerializations() {
+	public Map<String, String> getAuthoredGameSerializations() throws IllegalStateException {
 		Map<String, String> authoredGameSerializationMap = new HashMap<>();
 		// iterate over file names in authored_games folder, serialize each
 		File authoredGamesDirectory = new File(AUTHORING_GAMES_FOLDER);
 		// System.out.println("EXISTS: " + authoredGamesDirectory.exists());
+
+		System.out.println(authoredGamesDirectory.getPath() + " " + authoredGamesDirectory.exists());
+		// String decodedPath = URLDecoder.decode(path, "UTF-8");
 		File[] authoredGames = authoredGamesDirectory.listFiles();
 		if (authoredGames == null) {
 			throw new IllegalStateException();
