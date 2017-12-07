@@ -141,7 +141,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
 		String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
 		if (tabType.equals("Towers")) {
-			newPaneWithProjectileSlot(imageView);
+			newPaneWithProjectileSlot(clone(imageView));
 		}else {
 			newPane(imageView);
 		}
@@ -162,7 +162,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		projectileSlot.setPrefHeight(50);
 		projectileSlot.setLayoutY(170);
 		projectileSlot.setStyle("-fx-background-color: white");
-		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow((TowerImage) imageView));
+		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow(clone(imageView)));
 		propertiesPane = new Pane();
 	    myWaveAdder = new AddToWaveButton(this);
 		deleteButton = new Button("Back");
@@ -223,7 +223,6 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		Map<String, String> newProperties = new HashMap<>();
 		newProperties.put("Projectile Type Name", projectile.getId());
 		myController.updateElementDefinition(imageView.getId(), newProperties, true);
-		
 	}
 
 	private void newPane(ImageView imageView) {
@@ -296,6 +295,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		ImageView cloneImage = new ImageView(imageView.getImage());
 		cloneImage.setFitHeight(imageView.getFitHeight());
 		cloneImage.setFitWidth(imageView.getFitWidth());
+		cloneImage.setId(imageView.getId());
 		return cloneImage;
 	}
 } 
