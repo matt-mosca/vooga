@@ -1,6 +1,6 @@
 package authoring.rightToolBar;
 
-import interfaces.CreationInterface;
+import display.interfaces.CreationInterface;
 import javafx.scene.control.Button;
 
 public class AddNewButton extends Button {

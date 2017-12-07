@@ -5,26 +5,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import authoring.AuthorInterface;
+
 import authoring.EditDisplay;
-import authoring.ObjectProperties;
-import authoring.tabs.AddSpriteImageTab;
-import authoring.tabs.AddTab;
-import authoring.tabs.InventoryTab;
-import authoring.tabs.NewProjectileTab;
-import authoring.tabs.NewSpriteTab;
-import authoring.tabs.NewTowerTab;
-import authoring.tabs.NewTroopTab;
-import authoring.tabs.SimpleTab;
+import display.tabs.AddSpriteImageTab;
+import display.tabs.AddTab;
+import display.tabs.InventoryTab;
+import display.tabs.NewProjectileTab;
+import display.tabs.NewSpriteTab;
+import display.tabs.NewTowerTab;
+import display.tabs.NewTroopTab;
+import display.tabs.SimpleTab;
 import engine.authoring_engine.AuthoringController;
-import factory.ButtonFactory;
-import factory.TabFactory;
-import interfaces.CreationInterface;
-import interfaces.PropertiesInterface;
+import display.factory.TabFactory;
+import display.interfaces.CreationInterface;
+import display.interfaces.PropertiesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,26 +28,17 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import splashScreen.ScreenDisplay;
-import toolbars.ToolBar;
+import display.splashScreen.ScreenDisplay;
+import display.toolbars.ToolBar;
  
 public class RightToolBar extends ToolBar implements PropertiesInterface {
 	
@@ -86,24 +73,25 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 
 	
 	public RightToolBar(EditDisplay display, AuthoringController controller) {
-		this.created = created;
 		this.display = display;
 		myDisplay = display;
 		retB = new ReturnButton(display);
 		myController = controller;
 		availableProjectiles = new ArrayList<>();
-        this.setLayoutX(X_LAYOUT);
-		this.setLayoutY(Y_LAYOUT);
-		this.setSpacing(20);
+		newTower = new NewTowerTab(display);   
+	    newTroop = new NewTroopTab(display); 
+	    newProjectile = new NewProjectileTab(display); 
 	    tabMaker = new TabFactory();
 	    topTabPane = new TabPane();
 	    bottomTabPane = new TabPane();
 	    topTabPane.setPrefHeight(250);
 	    bottomTabPane.setPrefHeight(250);
+	    
+        this.setLayoutX(X_LAYOUT);
+		this.setLayoutY(Y_LAYOUT);
+		this.setSpacing(20);
 	    createAndAddTabs();
-	    newTower = new NewTowerTab(display);   
-	    newTroop = new NewTroopTab(display); 
-	    newProjectile = new NewProjectileTab(display); 
+	    
 	    
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
@@ -139,7 +127,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	
 	@Override
 	public void imageSelected(SpriteImage myImageView) {
-		myPropertiesBox = new PropertiesBox(created, myImageView, myController);
+		myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), myImageView, myController);
 		if (myImageView instanceof TowerImage) inventoryTower.addItem(myImageView.clone());
 		if (myImageView instanceof TroopImage) inventoryTroop.addItem(myImageView.clone());
 		if (myImageView instanceof ProjectileImage) {
@@ -149,19 +137,21 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	}
 
 	@Override
-	public void clicked(SpriteImage imageView) {	
-		myPropertiesBox = new PropertiesBox(created, imageView, myController);
-		if (imageView instanceof TowerImage) newPaneWithProjectileSlot((TowerImage) imageView);
-		if (imageView instanceof TroopImage || imageView instanceof ProjectileImage) newPane(imageView);
+	public void clicked(ImageView imageView) {	
+		myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
+		String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
+		if (tabType.equals("Towers")) {
+			newPaneWithProjectileSlot(imageView);
+		}else {
+			newPane(imageView);
+		}
 	}
-	
 	private void newPropertiesPane() {
 		propertiesPane = new Pane();
 		myWaveAdder = new AddToWaveButton(this);
 		deleteButton = new Button("Back");
 	}
-	
-	private void newPaneWithProjectileSlot(TowerImage imageView) {
+	private void newPaneWithProjectileSlot(ImageView imageView) {
 		/**
 		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
 		 */
@@ -184,8 +174,10 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
 		HBox imageBackground = new HBox();
 		imageBackground.setStyle("-fx-background-color: white");
-		imageBackground.getChildren().add(imageView.clone());
-		if (imageView.hasProjectile()) projectileSlot.getChildren().add(imageView.getProjectileImage());
+		imageBackground.getChildren().add(clone(imageView));
+		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null) {
+			projectileSlot.getChildren().add(new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name")));
+		}
 		propertiesPane.getChildren().add(imageBackground);
 		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(myPropertiesBox);
@@ -197,7 +189,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		this.getChildren().add(bottomTabPane);
 	}
 	
-	private void newProjectilesWindow(TowerImage myTowerImage) {
+	private void newProjectilesWindow(ImageView myTowerImage) {
 		ScrollPane projectilesWindow = new ScrollPane();
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
 		if (availableProjectiles.isEmpty()) {
@@ -223,15 +215,16 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		}
 	}
 	
-	private void projectileSelected(TowerImage myTowerImage, SpriteImage imageClone) {
+	private void projectileSelected(ImageView imageView, ImageView projectile) {
 		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
-		projectileSlot.getChildren().add(imageClone);
-		myTowerImage.addProjectileImage(imageClone);
-		myTowerImage.assignProjectile(imageClone.getName());
+		projectileSlot.getChildren().add(projectile);
+		Map<String, String> newProperties = new HashMap<>();
+		newProperties.put("Projectile Type Name", projectile.getId());
+		myController.updateElementDefinition(imageView.getId(), newProperties, true);
 		
 	}
 
-	private void newPane(SpriteImage imageView) {
+	private void newPane(ImageView imageView) {
 //		myPropertiesBox = new PropertiesBox(created, imageView);
 		propertiesPane = new Pane();
 		myWaveAdder = new AddToWaveButton(this);
@@ -241,7 +234,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		info.setLayoutY(100);
 		info.setFont(new Font("Arial", 30));
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
-		propertiesPane.getChildren().add(imageView.clone());
+		propertiesPane.getChildren().add(clone(imageView));
 		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(myPropertiesBox);
 		this.getChildren().removeAll(this.getChildren());
@@ -272,21 +265,35 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
         	CheckBox myCheckBox = new CheckBox(Integer.toString(i));
         	myVBox.getChildren().add(myCheckBox);
         }
+        TextField amountField = new TextField();
+        amountField.setPromptText("How many of this Sprite?");
+        myVBox.getChildren().add(amountField);
         Button submitButton = new Button("Submit");
-        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage));
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage, Integer.valueOf(amountField.getText())));
         myVBox.getChildren().add(submitButton);
         Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
         waveStage.setScene(scene);
         waveStage.show();
 	}
 	
-	private void submitToWaves(VBox myVBox, Stage waveStage) {
+	private void submitToWaves(VBox myVBox, Stage waveStage, Integer integer) {
 		for (Node n : myVBox.getChildren()) {
 			if (n instanceof CheckBox) {
 				CheckBox c = (CheckBox) n;
-				if (c.isSelected()) display.addToBottomToolBar(Integer.valueOf(c.getText()), myPropertiesBox.getCurrSprite().clone());
+				if (c.isSelected()) {
+					for (int i = 0; i < integer; i++) {
+						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()));
+					}
+				}
 			}
 		}
 		waveStage.hide();
+	}
+	
+	private ImageView clone(ImageView imageView) {
+		ImageView cloneImage = new ImageView(imageView.getImage());
+		cloneImage.setFitHeight(imageView.getFitHeight());
+		cloneImage.setFitWidth(imageView.getFitWidth());
+		return cloneImage;
 	}
 } 

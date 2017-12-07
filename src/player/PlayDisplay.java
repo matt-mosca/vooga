@@ -1,18 +1,16 @@
 package player;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import authoring.AuthorInterface;
+import java.util.Properties;
+
 import authoring.PlacementGrid;
-import authoring.rightToolBar.SpriteImage;
-import authoring.rightToolBar.TowerImage;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.NoopCollisionVisitable;
@@ -26,7 +24,6 @@ import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Alert.AlertType;
@@ -38,21 +35,22 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import splashScreen.ScreenDisplay;
-import sprites.InteractiveObject;
-import sprites.Sprite;
-import sprites.StaticObject;
-import toolbars.InventoryToolBar;
+import display.splashScreen.ScreenDisplay;
+import display.splashScreen.SplashPlayScreen;
+import engine.game_elements.GameElement;
+import display.sprites.StaticObject;
+import display.toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
+
 	private final String COST = "Cost";
+	private final String GAME_FILE_KEY = "gameFile";
 	
 	private InventoryToolBar myInventoryToolBar;
 	private VBox myLeftBar;
-	private List<List<Sprite>> levelSpritesCache;
+	private List<List<GameElement>> levelSpritesCache;
 	private PlacementGrid myMainGrid;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
@@ -115,23 +113,38 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
-		for(String title:myController.getAvailableGames().keySet()) {
-			games.add(title);
-		}
-		Collections.sort(games);
-		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
-		loadChoices.setTitle("Load Game");
-		loadChoices.setContentText(null);
-		
-		Optional<String> result = loadChoices.showAndWait();
-		if(result.isPresent()) {
+		try {
+			for(String title:myController.getAvailableGames().keySet()) {
+				games.add(title);
+			}
+			Collections.sort(games);
+			ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
+			loadChoices.setTitle("Load Game");
+			loadChoices.setContentText(null);
+
+			Optional<String> result = loadChoices.showAndWait();
+			if(result.isPresent()) {
+				try {
+					gameState = result.get();
+					myController.loadOriginalGameState(gameState, 1);
+					System.out.println(gameState);
+				} catch (IOException e) {
+					// TODO Change to alert for the user
+					e.printStackTrace();
+				}
+			}
+		} catch (IllegalStateException e) {
+			InputStream in = getClass().getClassLoader()
+					.getResourceAsStream(SplashPlayScreen.EXPORTED_GAME_PROPERTIES_FILE);
+			// sorry, this was lazy
 			try {
-				gameState = result.get();
-				myController.loadOriginalGameState(gameState, 1);
-				System.out.println(gameState);
-			} catch (IOException e) {
-				// TODO Change to alert for the user 
-				e.printStackTrace();
+				Properties exportedGameProperties = new Properties();
+				exportedGameProperties.load(in);
+				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY);
+				System.out.println("GN: " + gameName);
+				myController.loadOriginalGameState(gameName, 1);
+			} catch (IOException ioException) {
+				// todo
 			}
 		}
 	}

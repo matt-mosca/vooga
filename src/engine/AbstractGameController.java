@@ -1,14 +1,14 @@
 package engine;
 
 import engine.authoring_engine.AuthoringController;
+import engine.game_elements.GameElement;
+import engine.game_elements.GameElementFactory;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
-import sprites.Sprite;
-import sprites.SpriteFactory;
-import sprites.SpriteUpgrader;
+import engine.game_elements.GameElementUpgrader;
 import util.GameConditionsReader;
-import util.SerializationUtils;
-import util.SpriteTemplateIoHandler;
+import util.io.SerializationUtils;
+import util.io.SpriteTemplateIoHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,7 +46,7 @@ public abstract class AbstractGameController {
 	private GameConditionsReader gameConditionsReader;
 
 	private List<Map<String, Double>> levelStatuses = new ArrayList<>();
-	private List<List<Sprite>> levelSpritesCache = new ArrayList<>();
+	private List<List<GameElement>> levelSpritesCache = new ArrayList<>();
 	private List<Map<String, String>> levelConditions = new ArrayList<>();
 	private List<String> levelDescriptions = new ArrayList<>();
 	private List<Bank> levelBanks = new ArrayList<>();
@@ -54,10 +54,10 @@ public abstract class AbstractGameController {
 
 	// TODO - move these into own object? Or have them in the sprite factory?
 	private AtomicInteger spriteIdCounter;
-	private Map<Integer, Sprite> spriteIdMap;
+	private Map<Integer, GameElement> spriteIdMap;
 
-	private SpriteFactory spriteFactory;
-	private SpriteUpgrader spriteUpgrader;
+	private GameElementFactory gameElementFactory;
+	private GameElementUpgrader gameElementUpgrader;
 
 	// this should be from a properties file? or handled in some better way?
 	private final String DEFAULT_GAME_NAME = "untitled";
@@ -72,8 +72,8 @@ public abstract class AbstractGameController {
 		gameName = DEFAULT_GAME_NAME;
 		spriteIdCounter = new AtomicInteger();
 		spriteIdMap = new HashMap<>();
-		spriteFactory = new SpriteFactory();
-		spriteUpgrader = new SpriteUpgrader(spriteFactory);
+		gameElementFactory = new GameElementFactory();
+		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
 		spriteTemplateIoHandler = new SpriteTemplateIoHandler();
 		spriteQueryHandler = new SpriteQueryHandler();
 	}
@@ -98,9 +98,9 @@ public abstract class AbstractGameController {
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
 		spriteTemplateIoHandler.exportSpriteTemplates(saveName.getName(),
-				spriteFactory.getAllDefinedTemplateProperties());
+				gameElementFactory.getAllDefinedTemplateProperties());
 		spriteTemplateIoHandler.exportSpriteUpgrades(saveName.getName(),
-				spriteUpgrader.getSpriteUpgradesForEachTemplate());
+				gameElementUpgrader.getSpriteUpgradesForEachTemplate());
 	}
 
 	/**
@@ -119,8 +119,8 @@ public abstract class AbstractGameController {
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;
-		spriteFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
-		spriteUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadSpriteUpgrades(gameName));
+		gameElementFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
+		gameElementUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadSpriteUpgrades(gameName));
 	}
 
 	public String getGameName() {
@@ -141,21 +141,21 @@ public abstract class AbstractGameController {
 	}
 
 	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
-		return getSpriteFactory().getTemplateProperties(elementName);
+		return getGameElementFactory().getTemplateProperties(elementName);
 	}
 	
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
-		return getSpriteFactory().getAllDefinedTemplateProperties();
+		return getGameElementFactory().getAllDefinedTemplateProperties();
 	}
 
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
-		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
+		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
-		spriteUpgrader.registerNewSprite(elementTemplateName, sprite);
-		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+		gameElementUpgrader.registerNewSprite(elementTemplateName, gameElement);
+		return cacheAndCreateIdentifier(elementTemplateName, gameElement);
 	}
 
 	public Set<String> getInventory() {
@@ -188,7 +188,7 @@ public abstract class AbstractGameController {
 	 * 
 	 * @return map where keys are game names and values are game descriptions
 	 */
-	public Map<String, String> getAvailableGames() {
+	public Map<String, String> getAvailableGames() throws IllegalStateException {
 		return ioController.getAvailableGames();
 	}
 
@@ -199,14 +199,14 @@ public abstract class AbstractGameController {
 		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}
-		Sprite sprite = spriteFactory.generateSprite(elementTemplateName, startCoordinates,
+		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
-		return cacheAndCreateIdentifier(elementTemplateName, sprite);
+		return cacheAndCreateIdentifier(elementTemplateName, gameElement);
 	}
 
-	protected void cacheGeneratedSprite(Sprite sprite) {
-		List<Sprite> levelSprites = levelSpritesCache.get(currentLevel);
-		levelSprites.add(sprite);
+	protected void cacheGeneratedSprite(GameElement gameElement) {
+		List<GameElement> levelGameElements = levelSpritesCache.get(currentLevel);
+		levelGameElements.add(gameElement);
 	}
 
 	/**
@@ -248,7 +248,7 @@ public abstract class AbstractGameController {
 		return levelDescriptions;
 	}
 
-	protected List<List<Sprite>> getLevelSprites() {
+	protected List<List<GameElement>> getLevelSprites() {
 		return levelSpritesCache;
 	}
 
@@ -273,61 +273,61 @@ public abstract class AbstractGameController {
 		loadGameInventoryElementsForLevel(saveName, level, originalGame);
 	}
 
-	protected SpriteFactory getSpriteFactory() {
-		return spriteFactory;
+	protected GameElementFactory getGameElementFactory() {
+		return gameElementFactory;
 	}
 
-	protected SpriteUpgrader getSpriteUpgrader() {
-		return spriteUpgrader;
+	protected GameElementUpgrader getGameElementUpgrader() {
+		return gameElementUpgrader;
 	}
 
 	protected SpriteQueryHandler getSpriteQueryHandler() {
 		return spriteQueryHandler;
 	}
 
-	protected Map<Integer, Sprite> getSpriteIdMap() {
+	protected Map<Integer, GameElement> getSpriteIdMap() {
 		return spriteIdMap;
 	}
 
-	protected int cacheAndCreateIdentifier(String elementTemplateName, Sprite sprite) {
-		spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
-		cacheGeneratedSprite(sprite);
+	protected int cacheAndCreateIdentifier(String elementTemplateName, GameElement gameElement) {
+		spriteIdMap.put(spriteIdCounter.incrementAndGet(), gameElement);
+		cacheGeneratedSprite(gameElement);
 		return spriteIdCounter.get();
 	}
 
-	protected int cacheAndCreateIdentifier(Sprite sprite) {
-		spriteIdMap.put(spriteIdCounter.incrementAndGet(), sprite);
-		cacheGeneratedSprite(sprite);
+	protected int cacheAndCreateIdentifier(GameElement gameElement) {
+		spriteIdMap.put(spriteIdCounter.incrementAndGet(), gameElement);
+		cacheGeneratedSprite(gameElement);
 		return spriteIdCounter.get();
 	}
 
-	protected int getIdFromSprite(Sprite sprite) throws IllegalArgumentException {
-		Map<Integer, Sprite> spriteIdMap = getSpriteIdMap();
+	protected int getIdFromSprite(GameElement gameElement) throws IllegalArgumentException {
+		Map<Integer, GameElement> spriteIdMap = getSpriteIdMap();
 		for (Integer id : spriteIdMap.keySet()) {
-			if (spriteIdMap.get(id) == sprite) {
+			if (spriteIdMap.get(id) == gameElement) {
 				return id;
 			}
 		}
 		throw new IllegalArgumentException();
 	}
 
-	protected Collection<Integer> getIdsCollectionFromSpriteCollection(Collection<Sprite> sprites) {
-		return sprites.stream().mapToInt(this::getIdFromSprite).boxed().collect(Collectors.toSet());
+	protected Collection<Integer> getIdsCollectionFromSpriteCollection(Collection<GameElement> gameElements) {
+		return gameElements.stream().mapToInt(this::getIdFromSprite).boxed().collect(Collectors.toSet());
 	}
 
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
 
-	private Collection<Sprite> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
+	private Collection<GameElement> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);
-		List<Sprite> loadedSprites = ioController.loadGameStateElements(savedGameName, level, originalGame);
-		for (Sprite loadedSprite : loadedSprites) {
-			spriteIdMap.put(spriteIdCounter.getAndIncrement(), loadedSprite);
-			loadedSprite.setX(loadedSprite.getX());
-			loadedSprite.setY(loadedSprite.getY());
+		List<GameElement> loadedGameElements = ioController.loadGameStateElements(savedGameName, level, originalGame);
+		for (GameElement loadedGameElement : loadedGameElements) {
+			spriteIdMap.put(spriteIdCounter.getAndIncrement(), loadedGameElement);
+			loadedGameElement.setX(loadedGameElement.getX());
+			loadedGameElement.setY(loadedGameElement.getY());
 		}
-		addOrSetLevelData(levelSpritesCache, loadedSprites, level);
-		return loadedSprites;
+		addOrSetLevelData(levelSpritesCache, loadedGameElements, level);
+		return loadedGameElements;
 	}
 
 	private void loadGameStateSettingsForLevel(String savedGameName, int level, boolean originalGame)
@@ -392,8 +392,8 @@ public abstract class AbstractGameController {
 
 	/*
 	 * private int getNearestSpriteIdToPoint(Point2D coordinates) { double
-	 * nearestDistance = Double.MAX_VALUE; int nearestSpriteId = -1; List<Sprite>
-	 * spritesForLevel = getLevelSprites().get(getCurrentLevel()); for (Sprite
+	 * nearestDistance = Double.MAX_VALUE; int nearestSpriteId = -1; List<GameElement>
+	 * spritesForLevel = getLevelSprites().get(getCurrentLevel()); for (GameElement
 	 * sprite : spritesForLevel) { double distanceToSprite = new
 	 * Point2D(sprite.getX(), sprite.getY()).distance(coordinates); if
 	 * (distanceToSprite < nearestDistance) { nearestDistance = distanceToSprite;

@@ -3,7 +3,7 @@ package authoring.rightToolBar;
 import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.PropertiesInterface;
+import display.interfaces.PropertiesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;

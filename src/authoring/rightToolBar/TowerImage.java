@@ -2,7 +2,7 @@ package authoring.rightToolBar;
 
 import java.util.ResourceBundle;
 
-import splashScreen.ScreenDisplay;
+import display.splashScreen.ScreenDisplay;
 
 
 public class TowerImage extends SpriteImage {
