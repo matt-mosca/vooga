@@ -32,7 +32,7 @@ public class BottomToolBar extends VBox {
 	private TabPane myTabPane;
 	private List<LevelTab> myLevels;
 	private List<GameArea> myGameAreas;
-	private List<List<SpriteImage>> mySprites;
+	private List<List<ImageView>> mySprites;
 	private ScrollableArea myScrollableArea;
 	private TabFactory tabMaker;
 	private final int X_LAYOUT = 260;
@@ -53,7 +53,7 @@ public class BottomToolBar extends VBox {
 		this.setLayoutY(Y_LAYOUT);
 		this.setWidth(400);
 		myLevels = new ArrayList<>();
-		mySprites = new ArrayList<List<SpriteImage>>();
+		mySprites = new ArrayList<>();
 		mySprites.add(new ArrayList<>());
 		newLevel =  new Button("New Level");
 		newLevel.setOnAction(e->addLevel());
@@ -89,7 +89,7 @@ public class BottomToolBar extends VBox {
 	}
 
 	private void addLevel() {
-		mySprites.add(new ArrayList<SpriteImage>());
+		mySprites.add(new ArrayList<>());
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(myLevels.size()+1, myController);	
@@ -142,7 +142,7 @@ public class BottomToolBar extends VBox {
 		
 	}
 	
-	public void addToLevel(SpriteImage newSprite, int level) {
+	public void addToLevel(ImageView newSprite, int level) {
 		mySprites.get(level-1).add(newSprite);
 		updateSpriteDisplay(currentDisplay);
 	}

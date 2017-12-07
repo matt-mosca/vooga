@@ -6,10 +6,10 @@ import javafx.scene.shape.Polygon;
 public class LineDirection extends Polygon{
 	private PathLine line;
 	
-	public LineDirection(PathPoint start, PathPoint end, PathLine line) {
+	public LineDirection(PathPoint start, PathPoint end, PathLine line, Color color) {
 		this.line = line;
 		drawShape();
-		this.setFill(Color.RED);
+		this.setFill(color);
 		line.startXProperty().addListener((observable, oldValue, newValue) -> drawShape());
 		line.startYProperty().addListener((observable, oldValue, newValue) -> drawShape());
 		line.endXProperty().addListener((observable, oldValue, newValue) -> drawShape());
