@@ -1,6 +1,24 @@
 syntax = "proto2";
 
 /*
+	Top-Level message
+*/
+
+message ClientMessage {
+	optional GetAvailableGames getAvailableGames = 1;
+	optional CreateGameRoom createGameRoom = 2;
+	optional JoinRoom joinRoom = 3;
+	optional LaunchGameRoom launchGameRoom = 4;
+	optional GetGameRooms getGameRooms = 5;
+	optional GetPlayerNames getPlayerNames = 6;
+	optional PauseGame pauseGame = 7;
+	optional ResumeGame resumeGame = 8;
+	optional GetInventory getInventory = 9;
+	optional GetTemplateProperties getTemplateProperties = 10;
+	optional PlaceElement placeElement = 11;
+}
+
+/*
 	Pre-Game messages
 */
 
@@ -38,14 +56,14 @@ message PauseGame {
 message ResumeGame {
 }
 
-message getInventory {
+message GetInventory {
 }
 
-message getTemplateProperties {
+message GetTemplateProperties {
 	required string elementName = 1;
 }
 
-message placeElement {
+message PlaceElement {
 	required string elementName = 1;
 	required double xCoord = 2;
 	required double yCoord = 3;

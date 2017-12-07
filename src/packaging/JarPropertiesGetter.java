@@ -30,8 +30,6 @@ public class JarPropertiesGetter {
         }
     }
 
-
-
     public String getExportTargetPath(String gameName) {
         return null;
     }
