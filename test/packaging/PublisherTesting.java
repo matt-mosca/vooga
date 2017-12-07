@@ -10,7 +10,7 @@ public class PublisherTesting {
             System.out.println("Share your game with this link: " + fileLink);
         } catch (Exception e) {
             // No good
-            System.out.println("Failed to publish to your Google Drive account!");
+            e.printStackTrace();
         }
     }
 }

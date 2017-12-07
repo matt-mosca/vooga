@@ -1,22 +1,6 @@
 syntax="proto2";
 
 /*
-	Top-Level message
-*/
-
-message ServerMessage {
-	optional GameRoomCreationStatus gameRoomCreationStatus = 1;
-	optional GameRoomJoinStatus gameRoomJoinStatus = 2;
-	optional GameRoomLaunchStatus gameRoomLaunchStatus = 3;
-	optional GameRooms gameRooms = 4;
-	optional PlayerNames playerNames = 5;
-	optional LevelInitialized levelInitialized = 6;
-	optional Update update = 7;
-	optional Inventory inventory = 8;
-	optional TemplateProperties templateProperties = 9;
-}
-
-/*
 	Pre-Game messages
 */
 
