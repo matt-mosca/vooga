@@ -11,7 +11,6 @@ import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.StatusUpdate;
 import networking.protocol.PlayerServer.Update;
-import sprites.Sprite;
 import util.GameConditionsReader;
 
 import java.io.FileNotFoundException;
@@ -163,10 +162,10 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	// TODO - move to some utils class?
-	public Update packageUpdates(Collection<Sprite> newSprites, Collection<Sprite> updatedSprites,
-			Collection<Sprite> deadSprites) {
+	public Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
+			Collection<GameElement> deadSprites) {
 		Update.Builder updateBuilder = Update.newBuilder();
-		for (Sprite newSprite : newSprites) {
+		for (GameElement newSprite : newSprites) {
 			NewSprite.Builder newSpriteBuilder = NewSprite.newBuilder();
 			updateBuilder.addNewSprites(
 					newSpriteBuilder.setSpriteId(getIdFromSprite(newSprite)).setImageURL(newSprite.getImageUrl())
@@ -175,12 +174,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 							.setSpawnX(newSprite.getX()).setSpawnY(newSprite.getY()).build());
 
 		}
-		for (Sprite updatedSprite : updatedSprites) {
+		for (GameElement updatedSprite : updatedSprites) {
 			SpriteUpdate.Builder spriteUpdateBuilder = SpriteUpdate.newBuilder();
 			updateBuilder.addSpriteUpdates(spriteUpdateBuilder.setSpriteId(getIdFromSprite(updatedSprite))
 					.setNewX(updatedSprite.getX()).setNewY(updatedSprite.getY()).build());
 		}
-		for (Sprite deadSprite : deadSprites) {
+		for (GameElement deadSprite : deadSprites) {
 			SpriteDeletion.Builder spriteDeletionBuilder = SpriteDeletion.newBuilder();
 			updateBuilder.addSpriteDeletions(spriteDeletionBuilder.setSpriteId(getIdFromSprite(deadSprite)).build());
 		}
