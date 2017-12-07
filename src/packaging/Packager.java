@@ -20,11 +20,14 @@ import java.util.zip.ZipException;
  */
 public class Packager {
 
+    private final String EMPTY_STRING = "";
     private final String WINDOWS_PATH_DELIMITER_PATTERN = Pattern.quote("\\");
     private final String MANIFEST_VERSION = "1.0";
     private final String JAR_EXTENSION = ".jar";
     private final String JAVA_EXTENSION = ".java";
     private final String CLASS_EXTENSION = ".class";
+    private final String LOG_EXTENSION = ".log";
+    private final char DOT = '.';
 
     private final int MAX_ENTRY_LENGTH = 2048;
 
@@ -33,54 +36,58 @@ public class Packager {
     private Set<File> filesToDelete = new HashSet<>();
 
     /**
-     * Generate an executable JAR file for an authored game.
+     * Generate an executable JAR file for an authored game, obtaining the necessary information about parts of the
+     * project being included from a properties file.
      *
-     * @param outputPath           output path for the exported game JAR file
-     * @param sourceDirectoryPath  path to the source code directory
-     * @param outDirectoryPath     path to the compiled code directory, needed for calls to getResourceAsStream()
-     * @param launchClass          class used to launch the JAR
-     * @param directoriesToInclude data or resource directories outside the source directory needed to run the game;
-     *                             note that resources obtained through getResourceAsStream() are already handled
-     * @throws IOException if one of the directories given does not exist or input is malformed
+     * @param gameExportName the name to give the exported JAR file, not including path or extension
      */
-    public void generateJar(String outputPath, String sourceDirectoryPath, String outDirectoryPath, Class launchClass,
-                            String... directoriesToInclude) throws IOException {
-        File sourceDirectory = new File(sourceDirectoryPath);
-        compile(sourceDirectory);
-        JarOutputStream target = initializeJarOutputStream(outputPath, launchClass);
-        String pathToExcludeFromSourceEntries = addTrailingFileSeparatorToPath(sourceDirectoryPath);
-        addToJar(sourceDirectory, target, pathToExcludeFromSourceEntries, JAVA_EXTENSION);
-        String pathToExcludeFromOutEntries = addTrailingFileSeparatorToPath(outDirectoryPath);
-        addToJar(new File(outDirectoryPath), target, pathToExcludeFromOutEntries, CLASS_EXTENSION);
-        for (String directory : directoriesToInclude) {
-            addToJar(new File(directory), target, "", CLASS_EXTENSION);
-        }
+    public void generateJar(String gameExportName) throws IOException {
+        JarPropertiesGetter propertiesGetter = new JarPropertiesGetter();
+        String outputPath = propertiesGetter.getExportTargetPath(gameExportName);
+        JarOutputStream target = initializeJarOutputStream(outputPath, propertiesGetter.getMainClassFullName());
+        compileAndAddSourceFiles(propertiesGetter, outputPath, target);
+        addResources(propertiesGetter, target);
         target.close();
+    }
+
+    private void addResources(JarPropertiesGetter propertiesGetter, JarOutputStream target) throws IOException {
+        for (String resourceRootPath : propertiesGetter.getResourceRoots()) {
+            addResourcesRoot(resourceRootPath, target);
+        }
+        for (String dataDirectoryPath : propertiesGetter.getDataAndLibraryDirectories()) {
+            addToJar(new File(dataDirectoryPath), target, EMPTY_STRING, CLASS_EXTENSION);
+        }
+    }
+
+    private void compileAndAddSourceFiles(JarPropertiesGetter propertiesGetter, String outputPath,
+                                          JarOutputStream target) throws IOException {
+        String sourceDirectoryPath = propertiesGetter.getSourceDirectoryPath();
+        String pathToExcludeFromSourceEntries = addTrailingFileSeparatorToPath(sourceDirectoryPath);
+        OutputStream compilationLogger = createLogFileOutput(outputPath);
+        for (String directoryToIncludePath : propertiesGetter.getSourceDirectoriesToInclude()) {
+            File directoryToInclude = new File(directoryToIncludePath);
+            compile(directoryToInclude, compilationLogger);
+            addToJar(directoryToInclude, target, pathToExcludeFromSourceEntries, JAVA_EXTENSION);
+        }
         cleanUp();
     }
 
-    private JarOutputStream initializeJarOutputStream(String outputPath, Class launchClass) throws IOException {
-        Manifest manifest = new Manifest();
-        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, MANIFEST_VERSION);
-        manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, launchClass.getName());
-        FileOutputStream outputStream = new FileOutputStream(outputPath);
-        return new JarOutputStream(outputStream, manifest);
+    private OutputStream createLogFileOutput(String outputPath) throws FileNotFoundException {
+        String logPath = outputPath.substring(0, outputPath.lastIndexOf(DOT)) + LOG_EXTENSION;
+        File logFile = new File(logPath);
+        return new FileOutputStream(logFile);
     }
 
-    private String addTrailingFileSeparatorToPath(String path) {
-        return path.endsWith(File.separator) ? path : path + File.separator;
-    }
-
-    private void compile(File source) {
+    private void compile(File source, OutputStream compilationLogger) {
         if (source.isDirectory()) {
             File[] sourceFiles = source.listFiles();
             if (sourceFiles != null) {
                 for (File subdirectoryOrFile : sourceFiles) {
-                    compile(subdirectoryOrFile);
+                    compile(subdirectoryOrFile, compilationLogger);
                 }
             }
         } else if (source.getName().endsWith(JAVA_EXTENSION)) {
-            javaCompiler.run(null, null, null, source.getAbsolutePath());
+            javaCompiler.run(null, compilationLogger, compilationLogger, source.getAbsolutePath());
             filesToDelete.add(new File(source.getAbsolutePath().replace(JAVA_EXTENSION, CLASS_EXTENSION)));
         }
     }
@@ -90,14 +97,37 @@ public class Packager {
         filesToDelete.forEach(File::delete);
     }
 
-    private void addToJar(File source, JarOutputStream target, String excludeFromPath, String extensionToIgnore)
+    private JarOutputStream initializeJarOutputStream(String outputPath, String launchClassName) throws IOException {
+        Manifest manifest = new Manifest();
+        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, MANIFEST_VERSION);
+        manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, launchClassName);
+        FileOutputStream outputStream = new FileOutputStream(outputPath);
+        return new JarOutputStream(outputStream, manifest);
+    }
+
+    private String addTrailingFileSeparatorToPath(String path) {
+        return path.endsWith(File.separator) ? path : path + File.separator;
+    }
+
+    private void addResourcesRoot(String resourceDirectoryPath, JarOutputStream target) throws IOException {
+        File resourceDirectory = new File(resourceDirectoryPath);
+        File[] resourceSources = resourceDirectory.listFiles();
+        if (resourceSources != null) {
+            for (File resourceSource : resourceSources) {
+                System.out.println(resourceSource.getPath());
+                addToJar(resourceSource, target, resourceDirectoryPath, EMPTY_STRING);
+            }
+        }
+    }
+
+    private void addToJar(File additionSource, JarOutputStream target, String excludeFromPath, String extensionToIgnore)
             throws IOException {
-        if (source.getPath().endsWith(JAR_EXTENSION)) {
-            addExternalLibrary(source, target);
-        } else if (source.isDirectory()) {
-            addDirectoryToJar(source, target, excludeFromPath, extensionToIgnore);
-        } else if (!source.getPath().endsWith(extensionToIgnore)) {
-            addFileToJar(target, source, excludeFromPath);
+        if (additionSource.getPath().endsWith(JAR_EXTENSION)) {
+            addExternalLibrary(additionSource, target);
+        } else if (additionSource.isDirectory()) {
+            addDirectoryToJar(additionSource, target, excludeFromPath, extensionToIgnore);
+        } else if (extensionToIgnore.isEmpty() || !additionSource.getPath().endsWith(extensionToIgnore)) {
+            addFileToJar(target, additionSource, excludeFromPath);
         }
     }
 
@@ -168,12 +198,11 @@ public class Packager {
         in.close();
     }
 
-
     private String convertPathToJarFormat(String path, String partOfPathToExclude, boolean isDirectory) {
         String convertedPath = path.replaceAll(WINDOWS_PATH_DELIMITER_PATTERN, File.separator);
         if (isDirectory && !convertedPath.endsWith(File.separator)) {
             convertedPath += File.separator;
         }
-        return convertedPath.replace(partOfPathToExclude, "");
+        return convertedPath.replace(partOfPathToExclude, EMPTY_STRING);
     }
 }
