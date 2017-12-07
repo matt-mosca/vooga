@@ -4,6 +4,13 @@ import engine.AbstractGameController;
 import engine.PlayModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.Resource;
+import networking.protocol.PlayerServer.ResourceUpdate;
+import networking.protocol.PlayerServer.SpriteDeletion;
+import networking.protocol.PlayerServer.SpriteUpdate;
+import networking.protocol.PlayerServer.StatusUpdate;
+import networking.protocol.PlayerServer.Update;
 import util.GameConditionsReader;
 
 import java.io.FileNotFoundException;
@@ -11,7 +18,9 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -72,24 +81,16 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
 	}
 
+	// TODO - Deprecate in favor of public Update update() variant
 	@Override
 	public void update() {
 		if (inPlay) {
 			/*
-<<<<<<< HEAD
-			if (checkLevelClearanceCondition()) {
-				if (checkVictoryCondition()) {
-					registerVictory();
-				} else {
-					registerLevelCleared();
-				}
-			} else if (checkDefeatCondition()) {
-				registerDefeat();
-			} else {
-				// Move elements, check and handle collisions
-				elementManager.update();
-			}
-			*/
+			 * if (checkLevelClearanceCondition()) { if (checkVictoryCondition()) {
+			 * registerVictory(); } else { registerLevelCleared(); } } else if
+			 * (checkDefeatCondition()) { registerDefeat(); } else { // Move elements, check
+			 * and handle collisions elementManager.update(); }
+			 */
 			savedList.add(getSpriteIdMap().entrySet());
 			elementManager.update();
 			List<GameElement> deadElements = elementManager.getDeadElements();
@@ -97,8 +98,13 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			for (GameElement s : elementManager.getNewlyGeneratedElements()) {
 				cacheAndCreateIdentifier(s);
 			}
+			// Package these changes into an Update message
+			// Update packagedUpdate = packageUpdates(newlyGeneratedElements,
+			// updatedElements, deadElements, statusUpdates, resourceUpdates);
+			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
+			// return packagedUpdate;
 		}
 	}
 
@@ -132,6 +138,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
+			// TODO - keep track of the resources that were changed in this cycle, and only
+			// send them to client?
 			return super.placeElement(elementTemplateName, startCoordinates);
 		}
 		// TODO - Custom Exception ?
@@ -151,6 +159,48 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	public boolean isLevelCleared() {
 		return levelCleared;
+	}
+
+	// TODO - move to some utils class?
+	public Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
+			Collection<GameElement> deadSprites) {
+		Update.Builder updateBuilder = Update.newBuilder();
+		for (GameElement newSprite : newSprites) {
+			NewSprite.Builder newSpriteBuilder = NewSprite.newBuilder();
+			updateBuilder.addNewSprites(
+					newSpriteBuilder.setSpriteId(getIdFromSprite(newSprite)).setImageURL(newSprite.getImageUrl())
+							.setImageHeight(newSprite.getGraphicalRepresentation().getFitHeight())
+							.setImageWidth(newSprite.getGraphicalRepresentation().getFitWidth())
+							.setSpawnX(newSprite.getX()).setSpawnY(newSprite.getY()).build());
+
+		}
+		for (GameElement updatedSprite : updatedSprites) {
+			SpriteUpdate.Builder spriteUpdateBuilder = SpriteUpdate.newBuilder();
+			updateBuilder.addSpriteUpdates(spriteUpdateBuilder.setSpriteId(getIdFromSprite(updatedSprite))
+					.setNewX(updatedSprite.getX()).setNewY(updatedSprite.getY()).build());
+		}
+		for (GameElement deadSprite : deadSprites) {
+			SpriteDeletion.Builder spriteDeletionBuilder = SpriteDeletion.newBuilder();
+			updateBuilder.addSpriteDeletions(spriteDeletionBuilder.setSpriteId(getIdFromSprite(deadSprite)).build());
+		}
+		// Just always send status update for now
+		StatusUpdate.Builder statusUpdateBuilder = StatusUpdate.newBuilder();
+		updateBuilder.setStatusUpdates(statusUpdateBuilder.setLevelCleared(levelCleared).setIsWon(isWon)
+				.setIsLost(isLost).setInPlay(inPlay).build());
+		// Just send all resources in update for now
+		ResourceUpdate.Builder resourceUpdateBuilder = ResourceUpdate.newBuilder();
+		Map<String, Double> resourceEndowments = getResourceEndowments();
+		for (String resourceName : resourceEndowments.keySet()) {
+			resourceUpdateBuilder.addResources(Resource.newBuilder().setName(resourceName)
+					.setAmount(resourceEndowments.get(resourceName)).build());
+		}
+		updateBuilder.setResourceUpdates(resourceUpdateBuilder.build());
+		return updateBuilder.build();
+	}
+
+	public Update packageInitialState() {
+		return packageUpdates(getLevelSprites().get(getCurrentLevel()), Collections.emptyList(),
+				Collections.emptyList());
 	}
 
 	@Override

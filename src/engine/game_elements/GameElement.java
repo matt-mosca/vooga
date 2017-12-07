@@ -120,6 +120,10 @@ public final class GameElement {
 	public ImageView getGraphicalRepresentation() {
 		return collisionHandler.getGraphicalRepresentation();
 	}
+	
+	public String getImageUrl() {
+		return collisionHandler.getImageUrl();
+	}
 
 	public void setX(double newX) {
 		collisionHandler.getGraphicalRepresentation().setX(newX);

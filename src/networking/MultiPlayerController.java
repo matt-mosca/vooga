@@ -128,8 +128,8 @@ class MultiPlayerController {
 						.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder.setError(ERROR_NONEXISTENT_ROOM).build());
 				return;
 			}
-			// TODO - Load game state and set Update field accordingly
-			serverMessageBuilder.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder.buildPartial());// TEMP
+			serverMessageBuilder.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder
+					.setInitialState(clientIdsToPlayEngines.get(clientId).packageInitialState()).build());// TEMP
 		}
 	}
 
