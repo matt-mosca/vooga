@@ -133,7 +133,8 @@ public class Packager {
     }
 
     private void writeDirectoryJarEntry(File directory, JarOutputStream target, String excludeFromPath) throws IOException {
-        String directoryPathInJarFormat = convertPathToJarFormat(directory.getPath(), excludeFromPath);
+        String directoryPathInJarFormat = convertPathToJarFormat(directory.getPath(), excludeFromPath,
+                directory.isDirectory());
         JarEntry entry = new JarEntry(directoryPathInJarFormat);
         entry.setTime(directory.lastModified());
         try {
@@ -145,7 +146,7 @@ public class Packager {
     }
 
     private void addFileToJar(JarOutputStream target, File file, String excludeFromPath) throws IOException {
-        String filePathInJarFormat = convertPathToJarFormat(file.getPath(), excludeFromPath);
+        String filePathInJarFormat = convertPathToJarFormat(file.getPath(), excludeFromPath, file.isDirectory());
         JarEntry entry = new JarEntry(filePathInJarFormat);
         entry.setTime(file.lastModified());
         try {
@@ -168,9 +169,9 @@ public class Packager {
     }
 
 
-    private String convertPathToJarFormat(String path, String partOfPathToExclude) {
+    private String convertPathToJarFormat(String path, String partOfPathToExclude, boolean isDirectory) {
         String convertedPath = path.replaceAll(WINDOWS_PATH_DELIMITER_PATTERN, File.separator);
-        if (!convertedPath.endsWith(File.separator)) {
+        if (isDirectory && !convertedPath.endsWith(File.separator)) {
             convertedPath += File.separator;
         }
         return convertedPath.replace(partOfPathToExclude, "");
