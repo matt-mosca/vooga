@@ -2,10 +2,9 @@ package authoring.rightToolBar;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import engine.authoring_engine.AuthoringController;
-import interfaces.CreationInterface;
+import display.interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

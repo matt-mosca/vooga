@@ -1,6 +1,6 @@
 package authoring.customize;
 
-import interfaces.CustomizeInterface;
+import display.interfaces.CustomizeInterface;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;

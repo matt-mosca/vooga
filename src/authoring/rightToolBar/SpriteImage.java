@@ -3,14 +3,11 @@ package authoring.rightToolBar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
 
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import splashScreen.ScreenDisplay;
-import sprites.InteractiveObject;
+import display.splashScreen.ScreenDisplay;
+import display.sprites.InteractiveObject;
 
 public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;

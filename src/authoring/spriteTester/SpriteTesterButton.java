@@ -1,15 +1,12 @@
 package authoring.spriteTester;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import interfaces.TestingInterface;
-import javafx.geometry.Point2D;
+import display.interfaces.TestingInterface;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 
 public class SpriteTesterButton extends Button {
 	
