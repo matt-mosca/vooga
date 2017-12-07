@@ -155,6 +155,12 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		if (imageView instanceof TroopImage || imageView instanceof ProjectileImage) newPane(imageView);
 	}
 	
+	private void newPropertiesPane() {
+		propertiesPane = new Pane();
+		myWaveAdder = new AddToWaveButton(this);
+		deleteButton = new Button("Back");
+	}
+	
 	private void newPaneWithProjectileSlot(TowerImage imageView) {
 		/**
 		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
@@ -228,8 +234,9 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	private void newPane(SpriteImage imageView) {
 //		myPropertiesBox = new PropertiesBox(created, imageView);
 		propertiesPane = new Pane();
+		myWaveAdder = new AddToWaveButton(this);
 		Button deleteButton = new Button("Back");
-		deleteButton.setLayoutX(300);
+		deleteButton.setLayoutX(350);
 		Label info = new Label("Properties here");
 		info.setLayoutY(100);
 		info.setFont(new Font("Arial", 30));
@@ -240,6 +247,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
+		propertiesPane.getChildren().add(myWaveAdder);
 	}
 	
 	private void removeButtonPressed() {
