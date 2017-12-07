@@ -16,6 +16,8 @@ public class NewInventoryProjectile extends NewInventoryTab {
 
 	@Override
 	protected void addNewImage(SpriteImage spriteImage) {
+		spriteImage.setFitWidth(10);
+		spriteImage.setFitHeight(10);
 		addImage(spriteImage.clone());
 		updateImages();
 	}

@@ -141,8 +141,7 @@ public class BottomToolBar extends VBox {
 	}
 
 	private void updateSpriteDisplay(int level) {
-		mySpriteDisplay.getChildren().removeAll(mySpriteDisplay.getChildren());
-		mySpriteDisplay.getChildren().addAll(mySprites.get(level-1));
+		mySpriteDisplay.addToScroll(mySprites.get(level-1));
 	}
 	
 	public int getMaxLevel() {
