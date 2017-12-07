@@ -21,6 +21,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
 import player.PlayDisplay;
+import player.SmartPlayDisplay;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
@@ -53,6 +54,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
+		
 	}
 
 	private void basicSetup() {

@@ -11,13 +11,14 @@ import java.util.*;
 /**
  * Generates spite objects for displaying during authoring and gameplay.
  *
+ * TODO - change the way the aux map is handled (use the param annotation) ?
+ *
  * @author Ben Schwennesen
  */
-public class SpriteFactory {
+public final class SpriteFactory {
 
 	private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
-
-	private Map<Sprite, String> spriteToTemplate = new HashMap<>();
+	private Map<String, List<Map<String, String>>> spriteTemplatesU = new HashMap<>();
 
 	private SpriteOptionsGetter spriteOptionsGetter = new SpriteOptionsGetter();
 
@@ -40,7 +41,11 @@ public class SpriteFactory {
 			throw new IllegalArgumentException();
 		}
 		spriteTemplates.put(spriteTemplateName, properties);
+		List<Map<String, String>> templateUpgrades = new ArrayList<>();
+		templateUpgrades.add(properties);
+		spriteTemplatesU.put(spriteTemplateName, templateUpgrades);
 	}
+
 
 	/**
 	 * Generate a sprite from an existing template which specifies its properties.
@@ -74,13 +79,7 @@ public class SpriteFactory {
 		return sprite;
 	}
 
-	/**
-	 * TODO
-	 * 
-	 * @param spriteProperties
-	 * @return
-	 */
-	public Sprite generateSprite(Map<String, String> spriteProperties, Map<String, ?> auxiliaryObjects) {
+	Sprite generateSprite(Map<String, String> spriteProperties, Map<String, ?> auxiliaryObjects) {
 		Parameter[] spriteConstructionParameters = getSpriteParameters();
 		// TODO - check that params are returned in the right order
 		Object[] spriteConstructionArguments = new Object[spriteConstructionParameters.length];
