@@ -122,6 +122,10 @@ public final class Sprite {
 	public ImageView getGraphicalRepresentation() {
 		return collisionHandler.getGraphicalRepresentation();
 	}
+	
+	public String getImageUrl() {
+		return collisionHandler.getImageUrl();
+	}
 
 	public void setX(double newX) {
 		collisionHandler.getGraphicalRepresentation().setX(newX);
