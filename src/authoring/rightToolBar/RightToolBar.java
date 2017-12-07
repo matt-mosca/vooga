@@ -296,6 +296,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		ImageView cloneImage = new ImageView(imageView.getImage());
 		cloneImage.setFitHeight(imageView.getFitHeight());
 		cloneImage.setFitWidth(imageView.getFitWidth());
+		cloneImage.setId(imageView.getId());
 		return cloneImage;
 	}
 } 
