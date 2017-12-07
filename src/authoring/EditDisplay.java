@@ -2,7 +2,6 @@ package authoring;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,11 +15,9 @@ import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
-import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -34,10 +31,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
-import player.PlayDisplay;
 import splashScreen.ScreenDisplay;
 import sprites.BackgroundObject;
 import sprites.InteractiveObject;
@@ -64,7 +59,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private BottomToolBar myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
-	private SpriteTesterButton myTesterButton;
+	
 	
 	public EditDisplay(int width, int height, Stage stage, boolean loaded) {
 		super(width, height, Color.BLACK, stage);
@@ -75,18 +70,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
 		basePropertyMap = new HashMap<>();
+
 		addItems();
 		formatLeftBar();
 		setStandardTheme();
 		createGridToggle();
 		createMovementToggle();
 		createLabel();
-		basePropertyMap = new HashMap<String, String>();
-		Button saveButton = new Button("Save");
-		saveButton.setLayoutY(600);
-		rootAdd(saveButton);
-		myTesterButton = new SpriteTesterButton(this);
-		rootAdd(myTesterButton);
 	}
 
 	private void createGridToggle() {
@@ -229,7 +219,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void save(File saveName) {
 		controller.setGameName(saveName.getName().replace(".voog", ""));
-		//TODO change the save game so it saves a string instead
 		controller.saveGameState(saveName);
 		myGameArea.savePath();
 	}
@@ -318,27 +307,4 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void setGameArea(GameArea game) {
 		this.myGameArea = game;
 	}
-
-	@Override
-	public void createTesterLevel(Map<String, String> fun, List<String> sprites) {
-		PlayDisplay testingScene = new PlayDisplay(1000, 1000, getStage());
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		getStage().setX(primaryScreenBounds.getWidth() / 2 - 1000 / 2);
-		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
-		getStage().setScene(testingScene.getScene());
-		controller.setGameName("testingGame");
-		controller.setWaveProperties(fun, sprites, new Point2D(100,100));
-		
-	}
-
-	public void addToBottomToolBar(int level, SpriteImage currSprite) {
-		myBottomToolBar.addToLevel(currSprite, level);
-	}
-	
-	public int getMaxLevel() {
-		return myBottomToolBar.getMaxLevel();
-	}
-
-	
-
 }

@@ -8,16 +8,11 @@ import authoring.AuthorInterface;
 import authoring.EditDisplay;
 import authoring.GameArea;
 import authoring.ScrollableArea;
-import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import factory.TabFactory;
 import interfaces.CreationInterface;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
@@ -32,7 +27,6 @@ public class BottomToolBar extends VBox {
 	private TabPane myTabPane;
 	private List<LevelTab> myLevels;
 	private List<GameArea> myGameAreas;
-	private List<List<SpriteImage>> mySprites;
 	private ScrollableArea myScrollableArea;
 	private TabFactory tabMaker;
 	private final int X_LAYOUT = 260;
@@ -41,7 +35,6 @@ public class BottomToolBar extends VBox {
 	private Button editLevel;
 	private int currentDisplay;
 	private EditDisplay myCreated;
-	private SpriteDisplayer mySpriteDisplay;
 	
 	public BottomToolBar (EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
@@ -53,16 +46,12 @@ public class BottomToolBar extends VBox {
 		this.setLayoutY(Y_LAYOUT);
 		this.setWidth(400);
 		myLevels = new ArrayList<>();
-		mySprites = new ArrayList<List<SpriteImage>>();
-		mySprites.add(new ArrayList<>());
 		newLevel =  new Button("New Level");
 		newLevel.setOnAction(e->addLevel());
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
-		mySpriteDisplay = new SpriteDisplayer();
-		this.getChildren().add(mySpriteDisplay);
-		myTabPane.setMaxSize(400, 100);
-		myTabPane.setPrefSize(400, 100);
+		myTabPane.setMaxSize(400, 200);
+		myTabPane.setPrefSize(400, 200);
 		editLevel = new Button("Edit Level");
 		//Need to put the button somewhere first.
 		editLevel.setOnAction(e->{
@@ -78,7 +67,7 @@ public class BottomToolBar extends VBox {
 	}
 	
 	private void loadLevels() {
-		if(myController.getGameName().equals("untitled") || myController.getNumLevelsForGame(myController.getGameName(), true) == 0) {
+		if(myController.getNumLevelsForGame(myController.getGameName(), true) == 0) {
 			addLevel();
 			return;
 		}
@@ -89,9 +78,7 @@ public class BottomToolBar extends VBox {
 	}
 
 	private void addLevel() {
-		mySprites.add(new ArrayList<SpriteImage>());
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size()+1), null, myTabPane);
-		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(myLevels.size()+1, myController);	
 		myGameAreas.add(new GameArea(myController));
 		myController.createNewLevel(myLevels.size()+1);
@@ -128,7 +115,6 @@ public class BottomToolBar extends VBox {
 		myCreated.setDroppable(myGameAreas.get(i-1));
 		myController.createNewLevel(i);
 		myCreated.setGameArea(myGameAreas.get(i-1));
-		updateSpriteDisplay(i);
 	}
 
 	private void deleteLevel(int lvNumber) {
@@ -140,19 +126,5 @@ public class BottomToolBar extends VBox {
 			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i+1));
 		}
 		
-	}
-	
-	public void addToLevel(SpriteImage newSprite, int level) {
-		mySprites.get(level-1).add(newSprite);
-		updateSpriteDisplay(currentDisplay);
-	}
-
-	private void updateSpriteDisplay(int level) {
-		mySpriteDisplay.getChildren().removeAll(mySpriteDisplay.getChildren());
-		mySpriteDisplay.getChildren().addAll(mySprites.get(level-1));
-	}
-	
-	public int getMaxLevel() {
-		return myLevels.size();
 	}
 }

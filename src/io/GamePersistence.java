@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,14 +46,10 @@ public class GamePersistence {
 	public String loadGameState(String fileName) throws FileNotFoundException, IllegalArgumentException {
 		File gameStateFile = new File(fileName);
 		System.out.println(fileName);
-		Scanner gameStateScanner;
 		if (!gameStateFile.exists()) {
-			// throw new FileNotFoundException();
-			InputStream in = getClass().getClassLoader().getResourceAsStream(fileName);
-			gameStateScanner = new Scanner(in);
-		} else {
-			gameStateScanner = new Scanner(gameStateFile);
+			throw new FileNotFoundException();
 		}
+		Scanner gameStateScanner = new Scanner(gameStateFile);
 		gameStateScanner.useDelimiter(EOF_DELIMITER);
 		if (!gameStateScanner.hasNext()) {
 			gameStateScanner.close();

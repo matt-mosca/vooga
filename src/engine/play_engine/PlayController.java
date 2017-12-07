@@ -9,11 +9,8 @@ import util.GameConditionsReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -37,11 +34,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private Method victoryConditionMethod;
 	private Method defeatConditionMethod;
 	private int maxLevels = DEFAULT_MAX_LEVELS;
-	private List<Set<Entry<Integer, Sprite>>> savedList;
 
 	public PlayController() {
 		super();
-		savedList = new ArrayList<Set<Entry<Integer, Sprite>>>();
 		elementManager = new ElementManager(getSpriteFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
@@ -77,21 +72,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public void update() {
 		if (inPlay) {
 			/*
-<<<<<<< HEAD
-			if (checkLevelClearanceCondition()) {
-				if (checkVictoryCondition()) {
-					registerVictory();
-				} else {
-					registerLevelCleared();
-				}
-			} else if (checkDefeatCondition()) {
-				registerDefeat();
-			} else {
-				// Move elements, check and handle collisions
-				elementManager.update();
-			}
-			*/
-			savedList.add(getSpriteIdMap().entrySet());
+			 * if (checkLevelClearanceCondition()) { if (checkVictoryCondition()) {
+			 * registerVictory(); } else { registerLevelCleared(); } } else if
+			 * (checkDefeatCondition()) { registerDefeat(); } else { // Move elements, check
+			 * and handle collisions elementManager.update(); }
+			 */
 			elementManager.update();
 			List<Sprite> deadElements = elementManager.getDeadElements();
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
@@ -137,17 +122,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		}
 		// TODO - Custom Exception ?
 		throw new IllegalArgumentException();
-	}
-
-	@Override
-	public void upgradeElement(int elementId) throws IllegalArgumentException {
-		if (!getSpriteIdMap().containsKey(elementId)) {
-			throw new IllegalArgumentException();
-		}
-		Sprite sprite = getSpriteIdMap().get(elementId);
-		sprite = getSpriteUpgrader().upgradeSprite(sprite);
-		getSpriteIdMap().put(elementId, sprite);
-		// I think this will update the reference in the element manager but might need to manually
 	}
 
 	public boolean isLevelCleared() {

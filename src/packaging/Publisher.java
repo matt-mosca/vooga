@@ -6,6 +6,7 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -26,16 +27,10 @@ import java.util.List;
  *
  * @see <a href="https://developers.google.com/drive/v3/web/quickstart/java"></a> reference source code
  *
- * Add the following Maven dependencies to run:
- *     com.google.api-client:google-api-client:1.23.0
- *     com.google.oauth-client:google-oauth-client-jetty:1.23.0
- *     com.google.apis:google-api-services-drive:v3-rev90-1.23.0
- *
  * @author Ben Schwennesen
  */
 public class Publisher {
 
-    public static final String WEB_CONTENT_LINK_FIELD = "webContentLink";
     private final String CLIENT_SECRETS_JSON = "client_secrets.json";
     private final String USER_ID = "user";
 
@@ -92,10 +87,12 @@ public class Publisher {
     public String uploadFile(String mimeType, String uploadFilePath) throws IOException {
         File fileMetadata = new File();
         java.io.File uploadFile = new java.io.File(uploadFilePath);
-        fileMetadata.setName(uploadFile.getName());
+        fileMetadata.setTitle(uploadFile.getName());
         FileContent mediaContent = new FileContent(mimeType, uploadFile);
-        File uploadedFile = drive.files().create(fileMetadata, mediaContent)
-                .setFields(WEB_CONTENT_LINK_FIELD).execute();
-        return uploadedFile.getWebContentLink();
+        Drive.Files.Insert insert = drive.files().insert(fileMetadata, mediaContent);
+        MediaHttpUploader uploader = insert.getMediaHttpUploader();
+        uploader.setDirectUploadEnabled(false);
+        File uploadedFile = insert.execute();
+        return uploadedFile.getAlternateLink();
     }
 }

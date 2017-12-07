@@ -1,16 +1,18 @@
 package player;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Properties;
-
+import authoring.AuthorInterface;
 import authoring.PlacementGrid;
+import authoring.rightToolBar.SpriteImage;
+import authoring.rightToolBar.TowerImage;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.NoopCollisionVisitable;
@@ -24,6 +26,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Alert.AlertType;
@@ -35,18 +38,17 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import splashScreen.ScreenDisplay;
-import splashScreen.SplashPlayScreen;
+import sprites.InteractiveObject;
 import sprites.Sprite;
 import sprites.StaticObject;
 import toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
-
 	private final String COST = "Cost";
-	private final String GAME_FILE_KEY = "gameFile";
 	
 	private InventoryToolBar myInventoryToolBar;
 	private VBox myLeftBar;
@@ -61,14 +63,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Button pause;
 	private Button play;
 	private Timeline animation;
-	private String gameState;
 
 	private int level = 1;
-	private final FiringStrategy testFiring =  new NoopFiringStrategy();
-	private final MovementStrategy testMovement = new StationaryMovementStrategy();
-	private final CollisionHandler testCollision =
-			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
-					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;
 	private StaticObject placeable;
 	
@@ -90,13 +86,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
-		tester();
-	}
-
-	public void tester() {
-		for (int i = 0; i < 100; i++) {
-			step();
-		}
 	}
 
 	private void addItems() {
@@ -111,66 +100,26 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myLeftBar);
 	}
 	
-	public void initializeGameState() {
+	private void initializeGameState() {
 		List<String> games = new ArrayList<>();
-		try {
-			for(String title:myController.getAvailableGames().keySet()) {
-				games.add(title);
-			}
-			Collections.sort(games);
-			ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
-			loadChoices.setTitle("Load Game");
-			loadChoices.setContentText(null);
-
-			Optional<String> result = loadChoices.showAndWait();
-			if(result.isPresent()) {
-				try {
-					gameState = result.get();
-					myController.loadOriginalGameState(gameState, 1);
-					System.out.println(gameState);
-				} catch (IOException e) {
-					// TODO Change to alert for the user
-					e.printStackTrace();
-				}
-			}
-		} catch (IllegalStateException e) {
-			InputStream in = getClass().getClassLoader()
-					.getResourceAsStream(SplashPlayScreen.EXPORTED_GAME_PROPERTIES_FILE);
-			// sorry, this was lazy
+		for(String title:myController.getAvailableGames().keySet()) {
+			games.add(title);
+		}
+		Collections.sort(games);
+		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
+		loadChoices.setTitle("Load Game");
+		loadChoices.setContentText(null);
+		
+		Optional<String> result = loadChoices.showAndWait();
+		if(result.isPresent()) {
 			try {
-				Properties exportedGameProperties = new Properties();
-				exportedGameProperties.load(in);
-				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY);
-				System.out.println("GN: " + gameName);
-				myController.loadOriginalGameState(gameName, 1);
-			} catch (IOException ioException) {
-				// todo
+				myController.loadOriginalGameState(result.get(), 1);
+			} catch (IOException e) {
+				// TODO Change to alert for the user 
+				e.printStackTrace();
 			}
 		}
 	}
-	
-	protected void reloadGame() throws IOException {
-		myController.loadOriginalGameState(gameState, 1);
-	}
-	
-	private void initializeInventory() {
-		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-		for(String s:myController.getInventory()) {
-			ImageView imageView;
-			try {
-				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
-				
-			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
-			}
-			imageView.setFitHeight(70);
-			imageView.setFitWidth(60);
-			imageView.setId(s);
-			imageView.setUserData(templates.get(s).get("imageUrl"));
-//			myInventoryToolBar.addToToolbar(imageView);
-		}
-	}
-	
 	
 	private void styleLeftBar() {
 		myLeftBar.setPrefHeight(650);
@@ -190,7 +139,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
 
 		play = new Button();
-		play.setOnAction(e-> { 
+		play.setOnAction(e-> {
 			myController.resume();
 			animation.play();
 		});
@@ -213,8 +162,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController.update();
 		if(myController.isLevelCleared()) {
 			level++;
-			initializeInventory();
-			//Pause game
 			myInventoryToolBar.initializeInventory();
 		}else if(myController.isLost()) {
 			//launch lost screen
@@ -227,7 +174,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void updateStatusBar() {
 		myCoinDisplay.increment();
 	}
-	
 
 	private void createGameArea(int sideLength) {
 		myPlayArea = new PlayArea(myController, sideLength, sideLength);
@@ -276,8 +222,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.setContentText("You do not have the funds for this item.");
 		error.show();
 	}
+
+	@Override
 	public void save(File saveName) {
 		myController.saveGameState(saveName);
 	}
-	
 }
