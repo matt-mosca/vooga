@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="authoring"/>
-	<classpathentry kind="src" path="images"/>
-	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="lib/gson-2.6.2.jar"/>
-<<<<<<< HEAD
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="protobuf/protobuf-java-3.5.0.jar"/>
-=======
-	<classpathentry kind="lib" path="C:/Users/tyler/Downloads/protobuf-java-3.5.0.jar"/>
->>>>>>> master
-=======
-	<classpathentry kind="lib" path="protobuf/protobuf-java-3.5.0.jar"/>
->>>>>>> 53bfc9649ae8c3cd8ee8898a019e1a26af86259e
-=======
-	<classpathentry exported="true" kind="lib" path="lib/gson-2.6.2.jar"/>
-	<classpathentry kind="lib" path="lib/protobuf-java-3.5.0.jar"/>
->>>>>>> master
 	<classpathentry kind="output" path="bin"/>
 </classpath>
