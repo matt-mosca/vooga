@@ -4,8 +4,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import sprites.BackgroundObject;
-import sprites.InteractiveObject;
+import display.sprites.BackgroundObject;
+import display.sprites.InteractiveObject;
 import authoring.path.Path;
 import javafx.geometry.Point2D;
 
@@ -97,13 +97,13 @@ public class PlacementGrid extends GridPane {
 		Point2D finalLocation = null;
 		int finalRow = 0;
 		int finalColumn = 0;
-		for (int r = 0; r < cells.length - interactive.getSize() + 1; r++) {
-			for (int c = 0; c < cells[r].length - interactive.getSize() + 1; c++) {
+		for (int r = 0; r < cells.length - interactive.getSize()/cellSize + 1; r++) {
+			for (int c = 0; c < cells[r].length - interactive.getSize()/cellSize + 1; c++) {
 				Cell currCell = cells[r][c];
 				Point2D cellLocation = new Point2D(currCell.getLayoutX(), currCell.getLayoutY());
 				double totalDistance = Math.abs(cellLocation.distance(interactive.center()));
 				if ((totalDistance <= minDistance) && (currCell.isEmpty() &&
-						(!neighborsFull(r, c, interactive.getSize()))) | 
+						(!neighborsFull(r, c, interactive.getSize()/cellSize))) | 
 						(interactive instanceof BackgroundObject)) {
 					minDistance = totalDistance;
 					finalLocation = cellLocation;
@@ -127,16 +127,16 @@ public class PlacementGrid extends GridPane {
 	}
 	
 	private void assignToCells(int finalRow, int finalCol, InteractiveObject currObject) {
-		for (int i = 0; i < currObject.getSize(); i++) {
-			for (int j = 0; j < currObject.getSize(); j++) {
+		for (int i = 0; i < currObject.getSize()/cellSize; i++) {
+			for (int j = 0; j < currObject.getSize()/cellSize; j++) {
 				cells[i+finalRow][j+finalCol].assignToCell(currObject);
 			}
 		}
 	}
 	
 	private void removeAssignments(int finalRow, int finalCol, InteractiveObject interactive) {
-		for (int i = 0; i < interactive.getSize(); i++) {
-			for (int j = 0; j < interactive.getSize(); j++) {
+		for (int i = 0; i < interactive.getSize()/cellSize; i++) {
+			for (int j = 0; j < interactive.getSize()/cellSize; j++) {
 				cells[i + finalRow][j + finalCol].removeAssignment(interactive);
 			}
 		}

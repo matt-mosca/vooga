@@ -1,41 +1,27 @@
 package engine;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import engine.behavior.movement.TrackingPoint;
+import engine.game_elements.GameElement;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
-import sprites.Sprite;
 
 /**
- * Handlers sprite queries. 
+ * Handlers sprite queries.
  * 
  * @author Ben Schwennesen
  */
 public class SpriteQueryHandler {
-	
-	private Sprite getNearestSpriteToPoint(Point2D coordinates, List<Sprite> levelSprites) {
-		double nearestDistance = Double.MAX_VALUE;
-		Sprite nearestSprite = null;
-		for (Sprite sprite : levelSprites) {
-			double distanceToSprite = new Point2D(sprite.getX(), sprite.getY()).distance(coordinates);
-			if (distanceToSprite < nearestDistance) {
-				nearestDistance = distanceToSprite;
-				nearestSprite = sprite;
-			}
-		}
-		return nearestSprite;
-	}
 
-	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(String elementTemplateName,
-			Point2D startCoordinates, List<Sprite> levelSprites) {
-		Sprite spriteToTrack = getNearestSpriteToPoint(startCoordinates, levelSprites);
+	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(int elementPlayerId, Point2D startCoordinates,
+			List<GameElement> levelGameElements) {
+		GameElement gameElementToTrack = getNearestEnemySpriteToPoint(elementPlayerId, startCoordinates, levelGameElements);
 		TrackingPoint targetLocation;
-		if (spriteToTrack != null)
-			targetLocation = spriteToTrack.getPositionForTracking();
+		if (gameElementToTrack != null)
+			targetLocation = gameElementToTrack.getPositionForTracking();
 		else
 			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
 		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
@@ -44,4 +30,18 @@ public class SpriteQueryHandler {
 		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
 		return auxiliarySpriteConstructionObjects;
 	}
+
+	private GameElement getNearestEnemySpriteToPoint(int toGenerateId, Point2D coordinates, List<GameElement> levelGameElements) {
+		double nearestDistance = Double.MAX_VALUE;
+		GameElement nearestGameElement = null;
+		for (GameElement gameElement : levelGameElements) {
+			double distanceToSprite = new Point2D(gameElement.getX(), gameElement.getY()).distance(coordinates);
+			if (distanceToSprite < nearestDistance && gameElement.getPlayerId() != toGenerateId) {
+				nearestDistance = distanceToSprite;
+				nearestGameElement = gameElement;
+			}
+		}
+		return nearestGameElement;
+	}
+
 }

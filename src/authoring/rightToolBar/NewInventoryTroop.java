@@ -1,7 +1,12 @@
 package authoring.rightToolBar;
 
-import interfaces.PropertiesInterface;
+import display.interfaces.PropertiesInterface;
 
+/**
+ * @deprecated
+ * @author 
+ *
+ */
 public class NewInventoryTroop extends NewInventoryTab {
 	
 	public NewInventoryTroop(PropertiesInterface properties) {

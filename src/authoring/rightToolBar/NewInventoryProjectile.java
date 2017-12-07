@@ -1,7 +1,12 @@
 package authoring.rightToolBar;
 
-import interfaces.PropertiesInterface;
+import display.interfaces.PropertiesInterface;
 
+/**
+ * @deprecated
+ * @author 
+ *
+ */
 public class NewInventoryProjectile extends NewInventoryTab {
 	
 	public NewInventoryProjectile(PropertiesInterface properties) {

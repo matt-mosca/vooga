@@ -1,12 +1,12 @@
 package authoring.customize;
 
 import authoring.EditDisplay;
-import interfaces.CustomizeInterface;
+import display.interfaces.CustomizeInterface;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
-import splashScreen.ScreenDisplay;
+import display.splashScreen.ScreenDisplay;
 
 /**
  * Creates a button to change the background

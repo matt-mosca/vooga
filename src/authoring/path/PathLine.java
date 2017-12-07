@@ -21,11 +21,12 @@ public class PathLine extends Line{
 	private Color inactiveColor;
 	private int width;
 	
-	public PathLine(PathPoint start, PathPoint end) {
+	public PathLine(PathPoint start, PathPoint end, Color color) {
 		initializeProperties();
 		
 		this.start = start;
 		this.end = end;
+		this.inactiveColor = color;
 		this.startXProperty().bind(start.centerXProperty());
 		this.startYProperty().bind(start.centerYProperty());
 		this.endXProperty().bind(end.centerXProperty());
@@ -33,7 +34,7 @@ public class PathLine extends Line{
 		this.setStroke(inactiveColor);
 		this.setStrokeWidth(width);
 		
-		direction = new LineDirection(start, end, this);
+		direction = new LineDirection(start, end, this, inactiveColor);
 		node = new Group();
 		node.getChildren().add(direction);
 		node.getChildren().add(this);
@@ -43,7 +44,7 @@ public class PathLine extends Line{
 		pathProperties = ResourceBundle.getBundle("authoring/resources/Path");
 		width = Integer.parseInt(pathProperties.getString(WIDTH));
 		activeColor = Color.web(pathProperties.getString(ACTIVE));
-		inactiveColor = Color.web(pathProperties.getString(INACTIVE));
+//		inactiveColor = Color.web(pathProperties.getString(INACTIVE));
 	}
 
 	protected void toggleActive() {

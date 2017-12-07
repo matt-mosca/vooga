@@ -170,4 +170,14 @@ The alternative to the above design would allow the user to define goals using s
 
 Another design consideration we discussed was how to export a finished game. This will be the primary way a user will be able to play and share their finished product. One possibility is to create an application that will allow the user to choose from all of their finished games and launch they one they want to play. The benefit of this implementation is not passing the jar files necessary to play the game, specifically the engine files, in the executable game file. This will cause the created game files to be smaller than their stand-alone executable counterparts. The files necessary to run the engine will be present within the startup application, and the game itself can be represented as a group of files that the startup application will interpret to create the objects. The downside of this implementation is anyone who wants to play the game must first have an instance of this application starter. It severely limits the ability for the user to share their creations with others.
 
-The design we are most likely going to go with is having a finished game represented as a stand alone executable file. By having this stand alone executable file, a game can be shared between multiple people without the need of any additional applications. While these files will be much larger than those in the previously discussed implementation, as the game engine will also need to put into the executable, it will allow for every created game to be completely independent and allow for the best user experience.
+The design we are most likely going to go with is having a finished game represented as a stand alone executable file. By having this stand alone executable file, a game can be shared between multiple people without the need of any additional applications. While these files will be much larger than those in the previously discussed implementation, as the game engine will also need to put into the executable, it will allow for every created game to be completely independent and allow for the best user experience.  
+
+
+## MidPoint Notes:
+
+ * A lot of the design points that we made above were pretty much adhered to. For example, we used the back end as the single source of truth. 
+ 
+ * All of the major headings that we made above were adhered to, although we did break them down and branch out a little bit, what with our various strategy/behavior packages, and our packaging separation of the various toolbars. 
+ 
+ 
+  

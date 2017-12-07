@@ -5,8 +5,8 @@ import java.util.List;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import sprites.BackgroundObject;
-import sprites.InteractiveObject;
+import display.sprites.BackgroundObject;
+import display.sprites.InteractiveObject;
 
 public class Cell extends StackPane{
 	private boolean active = false;

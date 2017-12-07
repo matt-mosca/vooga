@@ -3,14 +3,11 @@ package authoring.rightToolBar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
 
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import splashScreen.ScreenDisplay;
-import sprites.InteractiveObject;
+import display.splashScreen.ScreenDisplay;
+import display.sprites.InteractiveObject;
 
 public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
@@ -38,12 +35,19 @@ public abstract class SpriteImage extends InteractiveObject {
 		defaultValues.put("Collision effects", "Invulnerable to collision damage");
 		defaultValues.put("Collided-with effects", "Do nothing to colliding objects");
 		defaultValues.put("Firing Behavior", "Do not fire projectiles");
-		defaultValues.put("Numerical \"team\" association", "0");
+		defaultValues.put("Numerical \"team\" association", "1");
 		defaultValues.put("imageWidth", "45.0");
 		defaultValues.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
 		defaultValues.put("imageHeight", "45.0");
-		if (this instanceof TroopImage) defaultValues.put("Numerical \"team\" association", "1");
-		if (this instanceof TowerImage) defaultValues.put("Numerical \"team\" association", "2");
+		if (this instanceof TroopImage) {
+			defaultValues.put("Numerical \"team\" association", "2");
+			defaultValues.put("tabName", "Troops");
+		}else if(this instanceof TowerImage) {
+			defaultValues.put("Numerical \"team\" association", "1");
+			defaultValues.put("tabName", "Towers");
+		}else if(this instanceof ProjectileImage) {
+			defaultValues.put("tabName", "Projectiles");
+		}
 	}
 	
 	public void addImage(String imageName) {
@@ -56,6 +60,7 @@ public abstract class SpriteImage extends InteractiveObject {
 		}
 		defaultValues.put("imageUrl", imageName);
 		this.setImage(image);
+		this.setId(imageName);
 	}
 	
 	public void setName(String name) {
@@ -115,13 +120,14 @@ public abstract class SpriteImage extends InteractiveObject {
 	public Map<String, String> getAllProperties() {
 		allProperties.putAll(myPossibleProperties);		
 		allProperties.putAll(myBaseProperties);
+		if (this instanceof TroopImage) {
+			allProperties.put("tabName", "Troops");
+		}else if(this instanceof TowerImage) {
+			allProperties.put("tabName", "Towers");
+		}else if(this instanceof ProjectileImage) {
+			allProperties.put("tabName", "Projectiles");
+		}
 		return allProperties;
-	}
-	
-	@Override
-	public int getSize() {
-		//TODO modify to let spriteimages occupy cells as well
-		return 0;
 	}
 	
 	private String getDefault(String property) {

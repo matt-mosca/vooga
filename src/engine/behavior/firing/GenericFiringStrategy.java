@@ -21,4 +21,9 @@ public abstract class GenericFiringStrategy implements FiringStrategy {
 	public String fire() {
 		return projectileTemplate;
 	}
+	
+	@Override
+	public boolean isExpended() {
+		return false;
+	}
 }
