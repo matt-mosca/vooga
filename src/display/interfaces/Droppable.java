@@ -1,15 +1,11 @@
 package display.interfaces;
 
-<<<<<<< HEAD:src/interfaces/Droppable.java
 import java.util.List;
 import java.util.Map;
 
 import authoring.path.Path;
 import javafx.scene.paint.Color;
-import sprites.InteractiveObject;
-=======
 import display.sprites.InteractiveObject;
->>>>>>> bas65:src/display/interfaces/Droppable.java
 
 public interface Droppable {
 

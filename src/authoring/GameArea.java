@@ -17,16 +17,10 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-<<<<<<< HEAD
 import javafx.scene.paint.Color;
-import sprites.BackgroundObject;
-import sprites.InteractiveObject;
-import sprites.StaticObject;
-=======
 import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
 import display.sprites.StaticObject;
->>>>>>> bas65
 
 public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private final String WIDTH = "Game_Area_Width";

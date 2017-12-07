@@ -4,19 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-<<<<<<< HEAD
 import java.util.Optional;
 import java.util.Set;
-=======
->>>>>>> bas65
 
 import authoring.path.Path;
+import display.interfaces.Droppable;
 import engine.authoring_engine.AuthoringController;
-<<<<<<< HEAD
-import interfaces.Droppable;
-=======
-import display.interfaces.CreationInterface;
->>>>>>> bas65
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -34,7 +27,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import splashScreen.ScreenDisplay;
 
 public class PropertiesBox extends VBox {
 	private Map<String, String> propertiesMap;
