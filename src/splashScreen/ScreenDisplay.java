@@ -35,7 +35,6 @@ public abstract class ScreenDisplay {
 		stage = currentStage;
 		setMyScene(new Scene(root, width, height, background));
 
-
 	}
 	
 	public ScreenDisplay(int width, int height) {

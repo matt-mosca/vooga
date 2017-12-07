@@ -24,13 +24,9 @@ public class PropertiesBox extends VBox {
 	private ObservableList<Properties> data;
 	private TableColumn<Properties, String> propertiesColumn;
 	private TableColumn<Properties, String> valuesColumn;
-	private SpriteImage currSprite;
-	private AddToWaveButton myWaveAdder;
-
 	
 	public PropertiesBox(CreationInterface creation, SpriteImage mySprite, AuthoringController author) {
 		this.creation = creation;
-		currSprite = mySprite;
 		propertiesMap = mySprite.getMyProperties();
 		table = new TableView<Properties>();
 		table.setEditable(true);
@@ -67,10 +63,6 @@ public class PropertiesBox extends VBox {
 			        }
 			    }
 			);
-	}
-	
-	public SpriteImage getCurrSprite() {
-		return currSprite;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package packaging;
 
 import main.Main;
+import networking.ChatTestWindow;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
