@@ -89,4 +89,8 @@ public class CollisionHandler {
     	}
         return graphicalRepresentation;
     }
+    
+    public String getImageUrl() {
+    		return imageUrl;
+    }
 }

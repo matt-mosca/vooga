@@ -10589,15 +10589,6 @@ public final class PlayerServer {
      * <code>required bool inPlay = 4;</code>
      */
     boolean getInPlay();
-
-    /**
-     * <code>required bool isPaused = 5;</code>
-     */
-    boolean hasIsPaused();
-    /**
-     * <code>required bool isPaused = 5;</code>
-     */
-    boolean getIsPaused();
   }
   /**
    * Protobuf type {@code StatusUpdate}
@@ -10615,7 +10606,6 @@ public final class PlayerServer {
       isWon_ = false;
       isLost_ = false;
       inPlay_ = false;
-      isPaused_ = false;
     }
 
     @java.lang.Override
@@ -10664,11 +10654,6 @@ public final class PlayerServer {
             case 32: {
               bitField0_ |= 0x00000008;
               inPlay_ = input.readBool();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              isPaused_ = input.readBool();
               break;
             }
           }
@@ -10756,21 +10741,6 @@ public final class PlayerServer {
       return inPlay_;
     }
 
-    public static final int ISPAUSED_FIELD_NUMBER = 5;
-    private boolean isPaused_;
-    /**
-     * <code>required bool isPaused = 5;</code>
-     */
-    public boolean hasIsPaused() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>required bool isPaused = 5;</code>
-     */
-    public boolean getIsPaused() {
-      return isPaused_;
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -10793,10 +10763,6 @@ public final class PlayerServer {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasIsPaused()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -10814,9 +10780,6 @@ public final class PlayerServer {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBool(4, inPlay_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBool(5, isPaused_);
       }
       unknownFields.writeTo(output);
     }
@@ -10841,10 +10804,6 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, inPlay_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(5, isPaused_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -10883,11 +10842,6 @@ public final class PlayerServer {
         result = result && (getInPlay()
             == other.getInPlay());
       }
-      result = result && (hasIsPaused() == other.hasIsPaused());
-      if (hasIsPaused()) {
-        result = result && (getIsPaused()
-            == other.getIsPaused());
-      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -10918,11 +10872,6 @@ public final class PlayerServer {
         hash = (37 * hash) + INPLAY_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getInPlay());
-      }
-      if (hasIsPaused()) {
-        hash = (37 * hash) + ISPAUSED_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-            getIsPaused());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -11050,8 +10999,6 @@ public final class PlayerServer {
         bitField0_ = (bitField0_ & ~0x00000004);
         inPlay_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
-        isPaused_ = false;
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -11092,10 +11039,6 @@ public final class PlayerServer {
           to_bitField0_ |= 0x00000008;
         }
         result.inPlay_ = inPlay_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.isPaused_ = isPaused_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -11150,9 +11093,6 @@ public final class PlayerServer {
         if (other.hasInPlay()) {
           setInPlay(other.getInPlay());
         }
-        if (other.hasIsPaused()) {
-          setIsPaused(other.getIsPaused());
-        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -11169,9 +11109,6 @@ public final class PlayerServer {
           return false;
         }
         if (!hasInPlay()) {
-          return false;
-        }
-        if (!hasIsPaused()) {
           return false;
         }
         return true;
@@ -11320,38 +11257,6 @@ public final class PlayerServer {
       public Builder clearInPlay() {
         bitField0_ = (bitField0_ & ~0x00000008);
         inPlay_ = false;
-        onChanged();
-        return this;
-      }
-
-      private boolean isPaused_ ;
-      /**
-       * <code>required bool isPaused = 5;</code>
-       */
-      public boolean hasIsPaused() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>required bool isPaused = 5;</code>
-       */
-      public boolean getIsPaused() {
-        return isPaused_;
-      }
-      /**
-       * <code>required bool isPaused = 5;</code>
-       */
-      public Builder setIsPaused(boolean value) {
-        bitField0_ |= 0x00000010;
-        isPaused_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool isPaused = 5;</code>
-       */
-      public Builder clearIsPaused() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        isPaused_ = false;
         onChanged();
         return this;
       }
@@ -15145,16 +15050,15 @@ public final class PlayerServer {
       "ageWidth\030\004 \002(\001\022\016\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY" +
       "\030\006 \002(\001\"<\n\014SpriteUpdate\022\020\n\010spriteId\030\001 \002(\005" +
       "\022\014\n\004newX\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016SpriteDe" +
-      "letion\022\020\n\010spriteId\030\001 \002(\005\"e\n\014StatusUpdate",
+      "letion\022\020\n\010spriteId\030\001 \002(\005\"S\n\014StatusUpdate",
       "\022\024\n\014levelCleared\030\001 \002(\010\022\r\n\005isWon\030\002 \002(\010\022\016\n" +
-      "\006isLost\030\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010\022\020\n\010isPause" +
-      "d\030\005 \002(\010\".\n\016ResourceUpdate\022\034\n\tresources\030\001" +
-      " \003(\0132\t.Resource\"\036\n\tInventory\022\021\n\ttemplate" +
-      "s\030\001 \003(\t\"(\n\010Resource\022\014\n\004name\030\001 \002(\t\022\016\n\006amo" +
-      "unt\030\002 \002(\001\"N\n\022TemplateProperties\022\023\n\013eleme" +
-      "ntName\030\001 \002(\t\022#\n\010property\030\002 \003(\0132\021.Templat" +
-      "eProperty\"/\n\020TemplateProperty\022\014\n\004name\030\001 " +
-      "\002(\t\022\r\n\005value\030\002 \002(\t"
+      "\006isLost\030\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010\".\n\016Resourc" +
+      "eUpdate\022\034\n\tresources\030\001 \003(\0132\t.Resource\"\036\n" +
+      "\tInventory\022\021\n\ttemplates\030\001 \003(\t\"(\n\010Resourc" +
+      "e\022\014\n\004name\030\001 \002(\t\022\016\n\006amount\030\002 \002(\001\"N\n\022Templ" +
+      "ateProperties\022\023\n\013elementName\030\001 \002(\t\022#\n\010pr" +
+      "operty\030\002 \003(\0132\021.TemplateProperty\"/\n\020Templ" +
+      "ateProperty\022\014\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -15239,7 +15143,7 @@ public final class PlayerServer {
     internal_static_StatusUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StatusUpdate_descriptor,
-        new java.lang.String[] { "LevelCleared", "IsWon", "IsLost", "InPlay", "IsPaused", });
+        new java.lang.String[] { "LevelCleared", "IsWon", "IsLost", "InPlay", });
     internal_static_ResourceUpdate_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_ResourceUpdate_fieldAccessorTable = new

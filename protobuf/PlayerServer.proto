@@ -90,7 +90,6 @@ message StatusUpdate {
 	required bool isWon = 2;
 	required bool isLost = 3;
 	required bool inPlay = 4;
-	required bool isPaused = 5;
 }
 
 message ResourceUpdate {
