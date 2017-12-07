@@ -18,7 +18,7 @@ public class PackagingTest {
         try {
             Properties properties = new Properties();
             properties.load(PackagingTest.class.getClassLoader().getResourceAsStream("ExportedGameName.properties"));
-            properties.setProperty("gameFile", "");
+            // properties.setProperty("gameFile", "test18.voog");
             packager.generateJar("data/games/jar-package-testing.jar", "src",
                     "out/production/voogasalad_duvallinthistogether/", MainJarRunner.class,
                     "resources/", "authoring/", "data/", "lib/");
