@@ -45,6 +45,7 @@ message GameRoomLaunchStatus {
 
 message PlayerNames {
 	repeated string userNames = 1;
+	optional string error = 2;
 }
 
 
