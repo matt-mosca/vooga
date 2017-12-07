@@ -3,13 +3,11 @@ package networking;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 
 /**
  * Used to poll for other participants' messages.
@@ -18,38 +16,36 @@ import java.net.Socket;
  *
  * @author Ben Schwennesen
  */
-public class ChatThread extends Thread {
+public class ChatThread implements Runnable {
 
-    private final String SOCKET_ERROR = "There was an error accessing the server connection. Ensure setup is correct.";
-    private final String SIGN_OFF = "Goodbye!";
+    private final int MAX_LENGTH = 1000;
+    private final String CHARACTER_SET = "UTF-8";
+    private final String ERROR = "Chat encountered an error. Try again later.";
 
-    private Socket socket;
+    private final int PORT;
+    private MulticastSocket socket;
+    private InetAddress group;
     private ObservableList<Node> chatItems;
-    private BufferedReader in;
 
-    public ChatThread(Socket socket, ObservableList<Node> chatItems) {
+    public ChatThread(MulticastSocket socket, InetAddress group, int port, ObservableList<Node> chatItems) {
         this.socket = socket;
+        this.group = group;
+        this.PORT = port;
         this.chatItems = chatItems;
-        try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException socketInputException) {
-            Text errorText = new Text(SOCKET_ERROR);
-            errorText.setFill(Color.RED);
-            chatItems.add(chatItems.size(), errorText);
-        }
-
     }
 
     @Override
     public void run() {
         while(!socket.isClosed()) {
+            byte[] buffer = new byte[MAX_LENGTH];
+            DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, group, PORT);
             String message;
             try {
-                if ((message = in.readLine()) != null) {
-                    Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(message)));
-                }
-            } catch (IOException socketClosed) {
-                Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(SIGN_OFF)));
+                socket.receive(datagram);
+                message = new String(buffer, 0, datagram.getLength(), CHARACTER_SET);
+                Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(message)));
+            } catch (Exception e) {
+                Platform.runLater(() -> chatItems.add(chatItems.size(), new Text(ERROR)));
             }
         }
     }

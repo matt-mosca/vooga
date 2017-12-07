@@ -8,8 +8,6 @@ import javafx.scene.image.ImageView;
 
 import javafx.geometry.Point2D;
 
-import java.util.List;
-
 /**
  * Represents game objects in the backend. Responsible for controlling the
  * object's update behavior.
@@ -18,7 +16,7 @@ import java.util.List;
  *
  * @author Ben Schwennesen
  */
-public final class Sprite {
+public class Sprite {
 
 	public enum Team {
 		NEUTRAL, COMPUTER, HUMAN
@@ -28,12 +26,10 @@ public final class Sprite {
 	private MovementStrategy movementStrategy;
 	private CollisionHandler collisionHandler;
 
-	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy,
-				  CollisionHandler collisionHandler) {
+	public Sprite(FiringStrategy firingStrategy, MovementStrategy movementStrategy, CollisionHandler collisionHandler) {
 		this.firingStrategy = firingStrategy;
 		this.movementStrategy = movementStrategy;
 		this.collisionHandler = collisionHandler;
-
 	}
 
 	/**

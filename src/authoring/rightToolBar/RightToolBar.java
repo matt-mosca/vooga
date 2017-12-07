@@ -25,10 +25,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -49,7 +46,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import splashScreen.ScreenDisplay;
 import toolbars.ToolBar;
  
@@ -76,18 +72,12 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	private CreationInterface created;
 	private AuthoringController myController;
 	private Map<String, String> basePropertyMap;
-	private EditDisplay display;
-    private AddToWaveButton myWaveAdder;
-
 	private List<SpriteImage> availableProjectiles;
-
 	private final int X_LAYOUT = 680;
 	private final int Y_LAYOUT = 30;
 
 	
 	public RightToolBar(EditDisplay display, AuthoringController controller) {
-		this.created = created;
-		this.display = display;
 		myDisplay = display;
 		retB = new ReturnButton(display);
 		myController = controller;
@@ -109,7 +99,6 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
         this.getChildren().add(retB);
-        
         
         newTower.attach(topTabPane.getTabs().get(0));
         newTroop.attach(topTabPane.getTabs().get(1));
@@ -168,7 +157,6 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		projectileSlot.setStyle("-fx-background-color: white");
 		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow((TowerImage) imageView));
 		propertiesPane = new Pane();
-	    myWaveAdder = new AddToWaveButton(this);
 		deleteButton = new Button("Back");
 		deleteButton.setLayoutX(370);
 		Label info = new Label("Properties here");
@@ -185,7 +173,6 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		propertiesPane.getChildren().add(myPropertiesBox);
 		propertiesPane.getChildren().add(projectileLabel);
 		propertiesPane.getChildren().add(projectileSlot);
-		propertiesPane.getChildren().add(myWaveAdder);
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
@@ -251,34 +238,5 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	
 	public void addToMap(String property, String value) {
 		basePropertyMap.put(property, value);
-	}
-	
-	@Override
-	public void addToWave() {
-		int maxLevel = display.getMaxLevel();
-		Stage waveStage = new Stage();
-		waveStage.setTitle("CheckBox Experiment 1");
-        VBox myVBox = new VBox();
-
-        for (int i = 1; i <= maxLevel; i++) {
-        	CheckBox myCheckBox = new CheckBox(Integer.toString(i));
-        	myVBox.getChildren().add(myCheckBox);
-        }
-        Button submitButton = new Button("Submit");
-        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage));
-        myVBox.getChildren().add(submitButton);
-        Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
-        waveStage.setScene(scene);
-        waveStage.show();
-	}
-	
-	private void submitToWaves(VBox myVBox, Stage waveStage) {
-		for (Node n : myVBox.getChildren()) {
-			if (n instanceof CheckBox) {
-				CheckBox c = (CheckBox) n;
-				if (c.isSelected()) display.addToBottomToolBar(Integer.valueOf(c.getText()), myPropertiesBox.getCurrSprite().clone());
-			}
-		}
-		waveStage.hide();
 	}
 } 

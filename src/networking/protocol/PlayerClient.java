@@ -13,2640 +13,6 @@ public final class PlayerClient {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  public interface ClientMessageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ClientMessage)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-     */
-    boolean hasGetAvailableGames();
-    /**
-     * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-     */
-    PlayerClient.GetAvailableGames getGetAvailableGames();
-    /**
-     * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-     */
-    PlayerClient.GetAvailableGamesOrBuilder getGetAvailableGamesOrBuilder();
-
-    /**
-     * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-     */
-    boolean hasCreateGameRoom();
-    /**
-     * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-     */
-    PlayerClient.CreateGameRoom getCreateGameRoom();
-    /**
-     * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-     */
-    PlayerClient.CreateGameRoomOrBuilder getCreateGameRoomOrBuilder();
-
-    /**
-     * <code>optional .JoinRoom joinRoom = 3;</code>
-     */
-    boolean hasJoinRoom();
-    /**
-     * <code>optional .JoinRoom joinRoom = 3;</code>
-     */
-    PlayerClient.JoinRoom getJoinRoom();
-    /**
-     * <code>optional .JoinRoom joinRoom = 3;</code>
-     */
-    PlayerClient.JoinRoomOrBuilder getJoinRoomOrBuilder();
-
-    /**
-     * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-     */
-    boolean hasLaunchGameRoom();
-    /**
-     * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-     */
-    PlayerClient.LaunchGameRoom getLaunchGameRoom();
-    /**
-     * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-     */
-    PlayerClient.LaunchGameRoomOrBuilder getLaunchGameRoomOrBuilder();
-
-    /**
-     * <code>optional .GetGameRooms getGameRooms = 5;</code>
-     */
-    boolean hasGetGameRooms();
-    /**
-     * <code>optional .GetGameRooms getGameRooms = 5;</code>
-     */
-    PlayerClient.GetGameRooms getGetGameRooms();
-    /**
-     * <code>optional .GetGameRooms getGameRooms = 5;</code>
-     */
-    PlayerClient.GetGameRoomsOrBuilder getGetGameRoomsOrBuilder();
-
-    /**
-     * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-     */
-    boolean hasGetPlayerNames();
-    /**
-     * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-     */
-    PlayerClient.GetPlayerNames getGetPlayerNames();
-    /**
-     * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-     */
-    PlayerClient.GetPlayerNamesOrBuilder getGetPlayerNamesOrBuilder();
-
-    /**
-     * <code>optional .PauseGame pauseGame = 7;</code>
-     */
-    boolean hasPauseGame();
-    /**
-     * <code>optional .PauseGame pauseGame = 7;</code>
-     */
-    PlayerClient.PauseGame getPauseGame();
-    /**
-     * <code>optional .PauseGame pauseGame = 7;</code>
-     */
-    PlayerClient.PauseGameOrBuilder getPauseGameOrBuilder();
-
-    /**
-     * <code>optional .ResumeGame resumeGame = 8;</code>
-     */
-    boolean hasResumeGame();
-    /**
-     * <code>optional .ResumeGame resumeGame = 8;</code>
-     */
-    PlayerClient.ResumeGame getResumeGame();
-    /**
-     * <code>optional .ResumeGame resumeGame = 8;</code>
-     */
-    PlayerClient.ResumeGameOrBuilder getResumeGameOrBuilder();
-
-    /**
-     * <code>optional .GetInventory getInventory = 9;</code>
-     */
-    boolean hasGetInventory();
-    /**
-     * <code>optional .GetInventory getInventory = 9;</code>
-     */
-    PlayerClient.GetInventory getGetInventory();
-    /**
-     * <code>optional .GetInventory getInventory = 9;</code>
-     */
-    PlayerClient.GetInventoryOrBuilder getGetInventoryOrBuilder();
-
-    /**
-     * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-     */
-    boolean hasGetTemplateProperties();
-    /**
-     * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-     */
-    PlayerClient.GetTemplateProperties getGetTemplateProperties();
-    /**
-     * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-     */
-    PlayerClient.GetTemplatePropertiesOrBuilder getGetTemplatePropertiesOrBuilder();
-
-    /**
-     * <code>optional .PlaceElement placeElement = 11;</code>
-     */
-    boolean hasPlaceElement();
-    /**
-     * <code>optional .PlaceElement placeElement = 11;</code>
-     */
-    PlayerClient.PlaceElement getPlaceElement();
-    /**
-     * <code>optional .PlaceElement placeElement = 11;</code>
-     */
-    PlayerClient.PlaceElementOrBuilder getPlaceElementOrBuilder();
-  }
-  /**
-   * Protobuf type {@code ClientMessage}
-   */
-  public  static final class ClientMessage extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ClientMessage)
-      ClientMessageOrBuilder {
-    // Use ClientMessage.newBuilder() to construct.
-    private ClientMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private ClientMessage() {
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ClientMessage(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              PlayerClient.GetAvailableGames.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                subBuilder = getAvailableGames_.toBuilder();
-              }
-              getAvailableGames_ = input.readMessage(PlayerClient.GetAvailableGames.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(getAvailableGames_);
-                getAvailableGames_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 18: {
-              PlayerClient.CreateGameRoom.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                subBuilder = createGameRoom_.toBuilder();
-              }
-              createGameRoom_ = input.readMessage(PlayerClient.CreateGameRoom.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(createGameRoom_);
-                createGameRoom_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000002;
-              break;
-            }
-            case 26: {
-              PlayerClient.JoinRoom.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                subBuilder = joinRoom_.toBuilder();
-              }
-              joinRoom_ = input.readMessage(PlayerClient.JoinRoom.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(joinRoom_);
-                joinRoom_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000004;
-              break;
-            }
-            case 34: {
-              PlayerClient.LaunchGameRoom.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                subBuilder = launchGameRoom_.toBuilder();
-              }
-              launchGameRoom_ = input.readMessage(PlayerClient.LaunchGameRoom.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(launchGameRoom_);
-                launchGameRoom_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000008;
-              break;
-            }
-            case 42: {
-              PlayerClient.GetGameRooms.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                subBuilder = getGameRooms_.toBuilder();
-              }
-              getGameRooms_ = input.readMessage(PlayerClient.GetGameRooms.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(getGameRooms_);
-                getGameRooms_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000010;
-              break;
-            }
-            case 50: {
-              PlayerClient.GetPlayerNames.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                subBuilder = getPlayerNames_.toBuilder();
-              }
-              getPlayerNames_ = input.readMessage(PlayerClient.GetPlayerNames.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(getPlayerNames_);
-                getPlayerNames_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000020;
-              break;
-            }
-            case 58: {
-              PlayerClient.PauseGame.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000040) == 0x00000040)) {
-                subBuilder = pauseGame_.toBuilder();
-              }
-              pauseGame_ = input.readMessage(PlayerClient.PauseGame.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(pauseGame_);
-                pauseGame_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000040;
-              break;
-            }
-            case 66: {
-              PlayerClient.ResumeGame.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                subBuilder = resumeGame_.toBuilder();
-              }
-              resumeGame_ = input.readMessage(PlayerClient.ResumeGame.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(resumeGame_);
-                resumeGame_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000080;
-              break;
-            }
-            case 74: {
-              PlayerClient.GetInventory.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                subBuilder = getInventory_.toBuilder();
-              }
-              getInventory_ = input.readMessage(PlayerClient.GetInventory.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(getInventory_);
-                getInventory_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000100;
-              break;
-            }
-            case 82: {
-              PlayerClient.GetTemplateProperties.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000200) == 0x00000200)) {
-                subBuilder = getTemplateProperties_.toBuilder();
-              }
-              getTemplateProperties_ = input.readMessage(PlayerClient.GetTemplateProperties.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(getTemplateProperties_);
-                getTemplateProperties_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000200;
-              break;
-            }
-            case 90: {
-              PlayerClient.PlaceElement.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                subBuilder = placeElement_.toBuilder();
-              }
-              placeElement_ = input.readMessage(PlayerClient.PlaceElement.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(placeElement_);
-                placeElement_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000400;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return PlayerClient.internal_static_ClientMessage_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return PlayerClient.internal_static_ClientMessage_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              PlayerClient.ClientMessage.class, PlayerClient.ClientMessage.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int GETAVAILABLEGAMES_FIELD_NUMBER = 1;
-    private PlayerClient.GetAvailableGames getAvailableGames_;
-    /**
-     * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-     */
-    public boolean hasGetAvailableGames() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-     */
-    public PlayerClient.GetAvailableGames getGetAvailableGames() {
-      return getAvailableGames_ == null ? PlayerClient.GetAvailableGames.getDefaultInstance() : getAvailableGames_;
-    }
-    /**
-     * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-     */
-    public PlayerClient.GetAvailableGamesOrBuilder getGetAvailableGamesOrBuilder() {
-      return getAvailableGames_ == null ? PlayerClient.GetAvailableGames.getDefaultInstance() : getAvailableGames_;
-    }
-
-    public static final int CREATEGAMEROOM_FIELD_NUMBER = 2;
-    private PlayerClient.CreateGameRoom createGameRoom_;
-    /**
-     * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-     */
-    public boolean hasCreateGameRoom() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-     */
-    public PlayerClient.CreateGameRoom getCreateGameRoom() {
-      return createGameRoom_ == null ? PlayerClient.CreateGameRoom.getDefaultInstance() : createGameRoom_;
-    }
-    /**
-     * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-     */
-    public PlayerClient.CreateGameRoomOrBuilder getCreateGameRoomOrBuilder() {
-      return createGameRoom_ == null ? PlayerClient.CreateGameRoom.getDefaultInstance() : createGameRoom_;
-    }
-
-    public static final int JOINROOM_FIELD_NUMBER = 3;
-    private PlayerClient.JoinRoom joinRoom_;
-    /**
-     * <code>optional .JoinRoom joinRoom = 3;</code>
-     */
-    public boolean hasJoinRoom() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional .JoinRoom joinRoom = 3;</code>
-     */
-    public PlayerClient.JoinRoom getJoinRoom() {
-      return joinRoom_ == null ? PlayerClient.JoinRoom.getDefaultInstance() : joinRoom_;
-    }
-    /**
-     * <code>optional .JoinRoom joinRoom = 3;</code>
-     */
-    public PlayerClient.JoinRoomOrBuilder getJoinRoomOrBuilder() {
-      return joinRoom_ == null ? PlayerClient.JoinRoom.getDefaultInstance() : joinRoom_;
-    }
-
-    public static final int LAUNCHGAMEROOM_FIELD_NUMBER = 4;
-    private PlayerClient.LaunchGameRoom launchGameRoom_;
-    /**
-     * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-     */
-    public boolean hasLaunchGameRoom() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-     */
-    public PlayerClient.LaunchGameRoom getLaunchGameRoom() {
-      return launchGameRoom_ == null ? PlayerClient.LaunchGameRoom.getDefaultInstance() : launchGameRoom_;
-    }
-    /**
-     * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-     */
-    public PlayerClient.LaunchGameRoomOrBuilder getLaunchGameRoomOrBuilder() {
-      return launchGameRoom_ == null ? PlayerClient.LaunchGameRoom.getDefaultInstance() : launchGameRoom_;
-    }
-
-    public static final int GETGAMEROOMS_FIELD_NUMBER = 5;
-    private PlayerClient.GetGameRooms getGameRooms_;
-    /**
-     * <code>optional .GetGameRooms getGameRooms = 5;</code>
-     */
-    public boolean hasGetGameRooms() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional .GetGameRooms getGameRooms = 5;</code>
-     */
-    public PlayerClient.GetGameRooms getGetGameRooms() {
-      return getGameRooms_ == null ? PlayerClient.GetGameRooms.getDefaultInstance() : getGameRooms_;
-    }
-    /**
-     * <code>optional .GetGameRooms getGameRooms = 5;</code>
-     */
-    public PlayerClient.GetGameRoomsOrBuilder getGetGameRoomsOrBuilder() {
-      return getGameRooms_ == null ? PlayerClient.GetGameRooms.getDefaultInstance() : getGameRooms_;
-    }
-
-    public static final int GETPLAYERNAMES_FIELD_NUMBER = 6;
-    private PlayerClient.GetPlayerNames getPlayerNames_;
-    /**
-     * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-     */
-    public boolean hasGetPlayerNames() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-     */
-    public PlayerClient.GetPlayerNames getGetPlayerNames() {
-      return getPlayerNames_ == null ? PlayerClient.GetPlayerNames.getDefaultInstance() : getPlayerNames_;
-    }
-    /**
-     * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-     */
-    public PlayerClient.GetPlayerNamesOrBuilder getGetPlayerNamesOrBuilder() {
-      return getPlayerNames_ == null ? PlayerClient.GetPlayerNames.getDefaultInstance() : getPlayerNames_;
-    }
-
-    public static final int PAUSEGAME_FIELD_NUMBER = 7;
-    private PlayerClient.PauseGame pauseGame_;
-    /**
-     * <code>optional .PauseGame pauseGame = 7;</code>
-     */
-    public boolean hasPauseGame() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional .PauseGame pauseGame = 7;</code>
-     */
-    public PlayerClient.PauseGame getPauseGame() {
-      return pauseGame_ == null ? PlayerClient.PauseGame.getDefaultInstance() : pauseGame_;
-    }
-    /**
-     * <code>optional .PauseGame pauseGame = 7;</code>
-     */
-    public PlayerClient.PauseGameOrBuilder getPauseGameOrBuilder() {
-      return pauseGame_ == null ? PlayerClient.PauseGame.getDefaultInstance() : pauseGame_;
-    }
-
-    public static final int RESUMEGAME_FIELD_NUMBER = 8;
-    private PlayerClient.ResumeGame resumeGame_;
-    /**
-     * <code>optional .ResumeGame resumeGame = 8;</code>
-     */
-    public boolean hasResumeGame() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>optional .ResumeGame resumeGame = 8;</code>
-     */
-    public PlayerClient.ResumeGame getResumeGame() {
-      return resumeGame_ == null ? PlayerClient.ResumeGame.getDefaultInstance() : resumeGame_;
-    }
-    /**
-     * <code>optional .ResumeGame resumeGame = 8;</code>
-     */
-    public PlayerClient.ResumeGameOrBuilder getResumeGameOrBuilder() {
-      return resumeGame_ == null ? PlayerClient.ResumeGame.getDefaultInstance() : resumeGame_;
-    }
-
-    public static final int GETINVENTORY_FIELD_NUMBER = 9;
-    private PlayerClient.GetInventory getInventory_;
-    /**
-     * <code>optional .GetInventory getInventory = 9;</code>
-     */
-    public boolean hasGetInventory() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
-    /**
-     * <code>optional .GetInventory getInventory = 9;</code>
-     */
-    public PlayerClient.GetInventory getGetInventory() {
-      return getInventory_ == null ? PlayerClient.GetInventory.getDefaultInstance() : getInventory_;
-    }
-    /**
-     * <code>optional .GetInventory getInventory = 9;</code>
-     */
-    public PlayerClient.GetInventoryOrBuilder getGetInventoryOrBuilder() {
-      return getInventory_ == null ? PlayerClient.GetInventory.getDefaultInstance() : getInventory_;
-    }
-
-    public static final int GETTEMPLATEPROPERTIES_FIELD_NUMBER = 10;
-    private PlayerClient.GetTemplateProperties getTemplateProperties_;
-    /**
-     * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-     */
-    public boolean hasGetTemplateProperties() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
-    }
-    /**
-     * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-     */
-    public PlayerClient.GetTemplateProperties getGetTemplateProperties() {
-      return getTemplateProperties_ == null ? PlayerClient.GetTemplateProperties.getDefaultInstance() : getTemplateProperties_;
-    }
-    /**
-     * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-     */
-    public PlayerClient.GetTemplatePropertiesOrBuilder getGetTemplatePropertiesOrBuilder() {
-      return getTemplateProperties_ == null ? PlayerClient.GetTemplateProperties.getDefaultInstance() : getTemplateProperties_;
-    }
-
-    public static final int PLACEELEMENT_FIELD_NUMBER = 11;
-    private PlayerClient.PlaceElement placeElement_;
-    /**
-     * <code>optional .PlaceElement placeElement = 11;</code>
-     */
-    public boolean hasPlaceElement() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
-    }
-    /**
-     * <code>optional .PlaceElement placeElement = 11;</code>
-     */
-    public PlayerClient.PlaceElement getPlaceElement() {
-      return placeElement_ == null ? PlayerClient.PlaceElement.getDefaultInstance() : placeElement_;
-    }
-    /**
-     * <code>optional .PlaceElement placeElement = 11;</code>
-     */
-    public PlayerClient.PlaceElementOrBuilder getPlaceElementOrBuilder() {
-      return placeElement_ == null ? PlayerClient.PlaceElement.getDefaultInstance() : placeElement_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (hasCreateGameRoom()) {
-        if (!getCreateGameRoom().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasJoinRoom()) {
-        if (!getJoinRoom().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasLaunchGameRoom()) {
-        if (!getLaunchGameRoom().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasGetPlayerNames()) {
-        if (!getGetPlayerNames().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasGetTemplateProperties()) {
-        if (!getGetTemplateProperties().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasPlaceElement()) {
-        if (!getPlaceElement().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, getGetAvailableGames());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, getCreateGameRoom());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeMessage(3, getJoinRoom());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeMessage(4, getLaunchGameRoom());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeMessage(5, getGetGameRooms());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeMessage(6, getGetPlayerNames());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeMessage(7, getPauseGame());
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeMessage(8, getResumeGame());
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeMessage(9, getGetInventory());
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeMessage(10, getGetTemplateProperties());
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeMessage(11, getPlaceElement());
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getGetAvailableGames());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getCreateGameRoom());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getJoinRoom());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getLaunchGameRoom());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getGetGameRooms());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, getGetPlayerNames());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getPauseGame());
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, getResumeGame());
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, getGetInventory());
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, getGetTemplateProperties());
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, getPlaceElement());
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof PlayerClient.ClientMessage)) {
-        return super.equals(obj);
-      }
-      PlayerClient.ClientMessage other = (PlayerClient.ClientMessage) obj;
-
-      boolean result = true;
-      result = result && (hasGetAvailableGames() == other.hasGetAvailableGames());
-      if (hasGetAvailableGames()) {
-        result = result && getGetAvailableGames()
-            .equals(other.getGetAvailableGames());
-      }
-      result = result && (hasCreateGameRoom() == other.hasCreateGameRoom());
-      if (hasCreateGameRoom()) {
-        result = result && getCreateGameRoom()
-            .equals(other.getCreateGameRoom());
-      }
-      result = result && (hasJoinRoom() == other.hasJoinRoom());
-      if (hasJoinRoom()) {
-        result = result && getJoinRoom()
-            .equals(other.getJoinRoom());
-      }
-      result = result && (hasLaunchGameRoom() == other.hasLaunchGameRoom());
-      if (hasLaunchGameRoom()) {
-        result = result && getLaunchGameRoom()
-            .equals(other.getLaunchGameRoom());
-      }
-      result = result && (hasGetGameRooms() == other.hasGetGameRooms());
-      if (hasGetGameRooms()) {
-        result = result && getGetGameRooms()
-            .equals(other.getGetGameRooms());
-      }
-      result = result && (hasGetPlayerNames() == other.hasGetPlayerNames());
-      if (hasGetPlayerNames()) {
-        result = result && getGetPlayerNames()
-            .equals(other.getGetPlayerNames());
-      }
-      result = result && (hasPauseGame() == other.hasPauseGame());
-      if (hasPauseGame()) {
-        result = result && getPauseGame()
-            .equals(other.getPauseGame());
-      }
-      result = result && (hasResumeGame() == other.hasResumeGame());
-      if (hasResumeGame()) {
-        result = result && getResumeGame()
-            .equals(other.getResumeGame());
-      }
-      result = result && (hasGetInventory() == other.hasGetInventory());
-      if (hasGetInventory()) {
-        result = result && getGetInventory()
-            .equals(other.getGetInventory());
-      }
-      result = result && (hasGetTemplateProperties() == other.hasGetTemplateProperties());
-      if (hasGetTemplateProperties()) {
-        result = result && getGetTemplateProperties()
-            .equals(other.getGetTemplateProperties());
-      }
-      result = result && (hasPlaceElement() == other.hasPlaceElement());
-      if (hasPlaceElement()) {
-        result = result && getPlaceElement()
-            .equals(other.getPlaceElement());
-      }
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasGetAvailableGames()) {
-        hash = (37 * hash) + GETAVAILABLEGAMES_FIELD_NUMBER;
-        hash = (53 * hash) + getGetAvailableGames().hashCode();
-      }
-      if (hasCreateGameRoom()) {
-        hash = (37 * hash) + CREATEGAMEROOM_FIELD_NUMBER;
-        hash = (53 * hash) + getCreateGameRoom().hashCode();
-      }
-      if (hasJoinRoom()) {
-        hash = (37 * hash) + JOINROOM_FIELD_NUMBER;
-        hash = (53 * hash) + getJoinRoom().hashCode();
-      }
-      if (hasLaunchGameRoom()) {
-        hash = (37 * hash) + LAUNCHGAMEROOM_FIELD_NUMBER;
-        hash = (53 * hash) + getLaunchGameRoom().hashCode();
-      }
-      if (hasGetGameRooms()) {
-        hash = (37 * hash) + GETGAMEROOMS_FIELD_NUMBER;
-        hash = (53 * hash) + getGetGameRooms().hashCode();
-      }
-      if (hasGetPlayerNames()) {
-        hash = (37 * hash) + GETPLAYERNAMES_FIELD_NUMBER;
-        hash = (53 * hash) + getGetPlayerNames().hashCode();
-      }
-      if (hasPauseGame()) {
-        hash = (37 * hash) + PAUSEGAME_FIELD_NUMBER;
-        hash = (53 * hash) + getPauseGame().hashCode();
-      }
-      if (hasResumeGame()) {
-        hash = (37 * hash) + RESUMEGAME_FIELD_NUMBER;
-        hash = (53 * hash) + getResumeGame().hashCode();
-      }
-      if (hasGetInventory()) {
-        hash = (37 * hash) + GETINVENTORY_FIELD_NUMBER;
-        hash = (53 * hash) + getGetInventory().hashCode();
-      }
-      if (hasGetTemplateProperties()) {
-        hash = (37 * hash) + GETTEMPLATEPROPERTIES_FIELD_NUMBER;
-        hash = (53 * hash) + getGetTemplateProperties().hashCode();
-      }
-      if (hasPlaceElement()) {
-        hash = (37 * hash) + PLACEELEMENT_FIELD_NUMBER;
-        hash = (53 * hash) + getPlaceElement().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static PlayerClient.ClientMessage parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static PlayerClient.ClientMessage parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static PlayerClient.ClientMessage parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static PlayerClient.ClientMessage parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static PlayerClient.ClientMessage parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static PlayerClient.ClientMessage parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static PlayerClient.ClientMessage parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static PlayerClient.ClientMessage parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static PlayerClient.ClientMessage parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static PlayerClient.ClientMessage parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(PlayerClient.ClientMessage prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code ClientMessage}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ClientMessage)
-        PlayerClient.ClientMessageOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return PlayerClient.internal_static_ClientMessage_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return PlayerClient.internal_static_ClientMessage_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                PlayerClient.ClientMessage.class, PlayerClient.ClientMessage.Builder.class);
-      }
-
-      // Construct using PlayerClient.ClientMessage.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-          getGetAvailableGamesFieldBuilder();
-          getCreateGameRoomFieldBuilder();
-          getJoinRoomFieldBuilder();
-          getLaunchGameRoomFieldBuilder();
-          getGetGameRoomsFieldBuilder();
-          getGetPlayerNamesFieldBuilder();
-          getPauseGameFieldBuilder();
-          getResumeGameFieldBuilder();
-          getGetInventoryFieldBuilder();
-          getGetTemplatePropertiesFieldBuilder();
-          getPlaceElementFieldBuilder();
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        if (getAvailableGamesBuilder_ == null) {
-          getAvailableGames_ = null;
-        } else {
-          getAvailableGamesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (createGameRoomBuilder_ == null) {
-          createGameRoom_ = null;
-        } else {
-          createGameRoomBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (joinRoomBuilder_ == null) {
-          joinRoom_ = null;
-        } else {
-          joinRoomBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        if (launchGameRoomBuilder_ == null) {
-          launchGameRoom_ = null;
-        } else {
-          launchGameRoomBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000008);
-        if (getGameRoomsBuilder_ == null) {
-          getGameRooms_ = null;
-        } else {
-          getGameRoomsBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000010);
-        if (getPlayerNamesBuilder_ == null) {
-          getPlayerNames_ = null;
-        } else {
-          getPlayerNamesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000020);
-        if (pauseGameBuilder_ == null) {
-          pauseGame_ = null;
-        } else {
-          pauseGameBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000040);
-        if (resumeGameBuilder_ == null) {
-          resumeGame_ = null;
-        } else {
-          resumeGameBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000080);
-        if (getInventoryBuilder_ == null) {
-          getInventory_ = null;
-        } else {
-          getInventoryBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000100);
-        if (getTemplatePropertiesBuilder_ == null) {
-          getTemplateProperties_ = null;
-        } else {
-          getTemplatePropertiesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000200);
-        if (placeElementBuilder_ == null) {
-          placeElement_ = null;
-        } else {
-          placeElementBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000400);
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return PlayerClient.internal_static_ClientMessage_descriptor;
-      }
-
-      public PlayerClient.ClientMessage getDefaultInstanceForType() {
-        return PlayerClient.ClientMessage.getDefaultInstance();
-      }
-
-      public PlayerClient.ClientMessage build() {
-        PlayerClient.ClientMessage result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public PlayerClient.ClientMessage buildPartial() {
-        PlayerClient.ClientMessage result = new PlayerClient.ClientMessage(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        if (getAvailableGamesBuilder_ == null) {
-          result.getAvailableGames_ = getAvailableGames_;
-        } else {
-          result.getAvailableGames_ = getAvailableGamesBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        if (createGameRoomBuilder_ == null) {
-          result.createGameRoom_ = createGameRoom_;
-        } else {
-          result.createGameRoom_ = createGameRoomBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        if (joinRoomBuilder_ == null) {
-          result.joinRoom_ = joinRoom_;
-        } else {
-          result.joinRoom_ = joinRoomBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        if (launchGameRoomBuilder_ == null) {
-          result.launchGameRoom_ = launchGameRoom_;
-        } else {
-          result.launchGameRoom_ = launchGameRoomBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        if (getGameRoomsBuilder_ == null) {
-          result.getGameRooms_ = getGameRooms_;
-        } else {
-          result.getGameRooms_ = getGameRoomsBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        if (getPlayerNamesBuilder_ == null) {
-          result.getPlayerNames_ = getPlayerNames_;
-        } else {
-          result.getPlayerNames_ = getPlayerNamesBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        if (pauseGameBuilder_ == null) {
-          result.pauseGame_ = pauseGame_;
-        } else {
-          result.pauseGame_ = pauseGameBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        if (resumeGameBuilder_ == null) {
-          result.resumeGame_ = resumeGame_;
-        } else {
-          result.resumeGame_ = resumeGameBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        if (getInventoryBuilder_ == null) {
-          result.getInventory_ = getInventory_;
-        } else {
-          result.getInventory_ = getInventoryBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        if (getTemplatePropertiesBuilder_ == null) {
-          result.getTemplateProperties_ = getTemplateProperties_;
-        } else {
-          result.getTemplateProperties_ = getTemplatePropertiesBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        if (placeElementBuilder_ == null) {
-          result.placeElement_ = placeElement_;
-        } else {
-          result.placeElement_ = placeElementBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof PlayerClient.ClientMessage) {
-          return mergeFrom((PlayerClient.ClientMessage)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(PlayerClient.ClientMessage other) {
-        if (other == PlayerClient.ClientMessage.getDefaultInstance()) return this;
-        if (other.hasGetAvailableGames()) {
-          mergeGetAvailableGames(other.getGetAvailableGames());
-        }
-        if (other.hasCreateGameRoom()) {
-          mergeCreateGameRoom(other.getCreateGameRoom());
-        }
-        if (other.hasJoinRoom()) {
-          mergeJoinRoom(other.getJoinRoom());
-        }
-        if (other.hasLaunchGameRoom()) {
-          mergeLaunchGameRoom(other.getLaunchGameRoom());
-        }
-        if (other.hasGetGameRooms()) {
-          mergeGetGameRooms(other.getGetGameRooms());
-        }
-        if (other.hasGetPlayerNames()) {
-          mergeGetPlayerNames(other.getGetPlayerNames());
-        }
-        if (other.hasPauseGame()) {
-          mergePauseGame(other.getPauseGame());
-        }
-        if (other.hasResumeGame()) {
-          mergeResumeGame(other.getResumeGame());
-        }
-        if (other.hasGetInventory()) {
-          mergeGetInventory(other.getGetInventory());
-        }
-        if (other.hasGetTemplateProperties()) {
-          mergeGetTemplateProperties(other.getGetTemplateProperties());
-        }
-        if (other.hasPlaceElement()) {
-          mergePlaceElement(other.getPlaceElement());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (hasCreateGameRoom()) {
-          if (!getCreateGameRoom().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasJoinRoom()) {
-          if (!getJoinRoom().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasLaunchGameRoom()) {
-          if (!getLaunchGameRoom().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasGetPlayerNames()) {
-          if (!getGetPlayerNames().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasGetTemplateProperties()) {
-          if (!getGetTemplateProperties().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasPlaceElement()) {
-          if (!getPlaceElement().isInitialized()) {
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        PlayerClient.ClientMessage parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (PlayerClient.ClientMessage) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private PlayerClient.GetAvailableGames getAvailableGames_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetAvailableGames, PlayerClient.GetAvailableGames.Builder, PlayerClient.GetAvailableGamesOrBuilder> getAvailableGamesBuilder_;
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      public boolean hasGetAvailableGames() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      public PlayerClient.GetAvailableGames getGetAvailableGames() {
-        if (getAvailableGamesBuilder_ == null) {
-          return getAvailableGames_ == null ? PlayerClient.GetAvailableGames.getDefaultInstance() : getAvailableGames_;
-        } else {
-          return getAvailableGamesBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      public Builder setGetAvailableGames(PlayerClient.GetAvailableGames value) {
-        if (getAvailableGamesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          getAvailableGames_ = value;
-          onChanged();
-        } else {
-          getAvailableGamesBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      public Builder setGetAvailableGames(
-          PlayerClient.GetAvailableGames.Builder builderForValue) {
-        if (getAvailableGamesBuilder_ == null) {
-          getAvailableGames_ = builderForValue.build();
-          onChanged();
-        } else {
-          getAvailableGamesBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      public Builder mergeGetAvailableGames(PlayerClient.GetAvailableGames value) {
-        if (getAvailableGamesBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              getAvailableGames_ != null &&
-              getAvailableGames_ != PlayerClient.GetAvailableGames.getDefaultInstance()) {
-            getAvailableGames_ =
-              PlayerClient.GetAvailableGames.newBuilder(getAvailableGames_).mergeFrom(value).buildPartial();
-          } else {
-            getAvailableGames_ = value;
-          }
-          onChanged();
-        } else {
-          getAvailableGamesBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      public Builder clearGetAvailableGames() {
-        if (getAvailableGamesBuilder_ == null) {
-          getAvailableGames_ = null;
-          onChanged();
-        } else {
-          getAvailableGamesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      public PlayerClient.GetAvailableGames.Builder getGetAvailableGamesBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getGetAvailableGamesFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      public PlayerClient.GetAvailableGamesOrBuilder getGetAvailableGamesOrBuilder() {
-        if (getAvailableGamesBuilder_ != null) {
-          return getAvailableGamesBuilder_.getMessageOrBuilder();
-        } else {
-          return getAvailableGames_ == null ?
-              PlayerClient.GetAvailableGames.getDefaultInstance() : getAvailableGames_;
-        }
-      }
-      /**
-       * <code>optional .GetAvailableGames getAvailableGames = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetAvailableGames, PlayerClient.GetAvailableGames.Builder, PlayerClient.GetAvailableGamesOrBuilder> 
-          getGetAvailableGamesFieldBuilder() {
-        if (getAvailableGamesBuilder_ == null) {
-          getAvailableGamesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.GetAvailableGames, PlayerClient.GetAvailableGames.Builder, PlayerClient.GetAvailableGamesOrBuilder>(
-                  getGetAvailableGames(),
-                  getParentForChildren(),
-                  isClean());
-          getAvailableGames_ = null;
-        }
-        return getAvailableGamesBuilder_;
-      }
-
-      private PlayerClient.CreateGameRoom createGameRoom_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.CreateGameRoom, PlayerClient.CreateGameRoom.Builder, PlayerClient.CreateGameRoomOrBuilder> createGameRoomBuilder_;
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      public boolean hasCreateGameRoom() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      public PlayerClient.CreateGameRoom getCreateGameRoom() {
-        if (createGameRoomBuilder_ == null) {
-          return createGameRoom_ == null ? PlayerClient.CreateGameRoom.getDefaultInstance() : createGameRoom_;
-        } else {
-          return createGameRoomBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      public Builder setCreateGameRoom(PlayerClient.CreateGameRoom value) {
-        if (createGameRoomBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          createGameRoom_ = value;
-          onChanged();
-        } else {
-          createGameRoomBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      public Builder setCreateGameRoom(
-          PlayerClient.CreateGameRoom.Builder builderForValue) {
-        if (createGameRoomBuilder_ == null) {
-          createGameRoom_ = builderForValue.build();
-          onChanged();
-        } else {
-          createGameRoomBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      public Builder mergeCreateGameRoom(PlayerClient.CreateGameRoom value) {
-        if (createGameRoomBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              createGameRoom_ != null &&
-              createGameRoom_ != PlayerClient.CreateGameRoom.getDefaultInstance()) {
-            createGameRoom_ =
-              PlayerClient.CreateGameRoom.newBuilder(createGameRoom_).mergeFrom(value).buildPartial();
-          } else {
-            createGameRoom_ = value;
-          }
-          onChanged();
-        } else {
-          createGameRoomBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      public Builder clearCreateGameRoom() {
-        if (createGameRoomBuilder_ == null) {
-          createGameRoom_ = null;
-          onChanged();
-        } else {
-          createGameRoomBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      public PlayerClient.CreateGameRoom.Builder getCreateGameRoomBuilder() {
-        bitField0_ |= 0x00000002;
-        onChanged();
-        return getCreateGameRoomFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      public PlayerClient.CreateGameRoomOrBuilder getCreateGameRoomOrBuilder() {
-        if (createGameRoomBuilder_ != null) {
-          return createGameRoomBuilder_.getMessageOrBuilder();
-        } else {
-          return createGameRoom_ == null ?
-              PlayerClient.CreateGameRoom.getDefaultInstance() : createGameRoom_;
-        }
-      }
-      /**
-       * <code>optional .CreateGameRoom createGameRoom = 2;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.CreateGameRoom, PlayerClient.CreateGameRoom.Builder, PlayerClient.CreateGameRoomOrBuilder> 
-          getCreateGameRoomFieldBuilder() {
-        if (createGameRoomBuilder_ == null) {
-          createGameRoomBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.CreateGameRoom, PlayerClient.CreateGameRoom.Builder, PlayerClient.CreateGameRoomOrBuilder>(
-                  getCreateGameRoom(),
-                  getParentForChildren(),
-                  isClean());
-          createGameRoom_ = null;
-        }
-        return createGameRoomBuilder_;
-      }
-
-      private PlayerClient.JoinRoom joinRoom_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.JoinRoom, PlayerClient.JoinRoom.Builder, PlayerClient.JoinRoomOrBuilder> joinRoomBuilder_;
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      public boolean hasJoinRoom() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      public PlayerClient.JoinRoom getJoinRoom() {
-        if (joinRoomBuilder_ == null) {
-          return joinRoom_ == null ? PlayerClient.JoinRoom.getDefaultInstance() : joinRoom_;
-        } else {
-          return joinRoomBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      public Builder setJoinRoom(PlayerClient.JoinRoom value) {
-        if (joinRoomBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          joinRoom_ = value;
-          onChanged();
-        } else {
-          joinRoomBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      public Builder setJoinRoom(
-          PlayerClient.JoinRoom.Builder builderForValue) {
-        if (joinRoomBuilder_ == null) {
-          joinRoom_ = builderForValue.build();
-          onChanged();
-        } else {
-          joinRoomBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      public Builder mergeJoinRoom(PlayerClient.JoinRoom value) {
-        if (joinRoomBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              joinRoom_ != null &&
-              joinRoom_ != PlayerClient.JoinRoom.getDefaultInstance()) {
-            joinRoom_ =
-              PlayerClient.JoinRoom.newBuilder(joinRoom_).mergeFrom(value).buildPartial();
-          } else {
-            joinRoom_ = value;
-          }
-          onChanged();
-        } else {
-          joinRoomBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      public Builder clearJoinRoom() {
-        if (joinRoomBuilder_ == null) {
-          joinRoom_ = null;
-          onChanged();
-        } else {
-          joinRoomBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      public PlayerClient.JoinRoom.Builder getJoinRoomBuilder() {
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return getJoinRoomFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      public PlayerClient.JoinRoomOrBuilder getJoinRoomOrBuilder() {
-        if (joinRoomBuilder_ != null) {
-          return joinRoomBuilder_.getMessageOrBuilder();
-        } else {
-          return joinRoom_ == null ?
-              PlayerClient.JoinRoom.getDefaultInstance() : joinRoom_;
-        }
-      }
-      /**
-       * <code>optional .JoinRoom joinRoom = 3;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.JoinRoom, PlayerClient.JoinRoom.Builder, PlayerClient.JoinRoomOrBuilder> 
-          getJoinRoomFieldBuilder() {
-        if (joinRoomBuilder_ == null) {
-          joinRoomBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.JoinRoom, PlayerClient.JoinRoom.Builder, PlayerClient.JoinRoomOrBuilder>(
-                  getJoinRoom(),
-                  getParentForChildren(),
-                  isClean());
-          joinRoom_ = null;
-        }
-        return joinRoomBuilder_;
-      }
-
-      private PlayerClient.LaunchGameRoom launchGameRoom_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.LaunchGameRoom, PlayerClient.LaunchGameRoom.Builder, PlayerClient.LaunchGameRoomOrBuilder> launchGameRoomBuilder_;
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      public boolean hasLaunchGameRoom() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      public PlayerClient.LaunchGameRoom getLaunchGameRoom() {
-        if (launchGameRoomBuilder_ == null) {
-          return launchGameRoom_ == null ? PlayerClient.LaunchGameRoom.getDefaultInstance() : launchGameRoom_;
-        } else {
-          return launchGameRoomBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      public Builder setLaunchGameRoom(PlayerClient.LaunchGameRoom value) {
-        if (launchGameRoomBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          launchGameRoom_ = value;
-          onChanged();
-        } else {
-          launchGameRoomBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000008;
-        return this;
-      }
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      public Builder setLaunchGameRoom(
-          PlayerClient.LaunchGameRoom.Builder builderForValue) {
-        if (launchGameRoomBuilder_ == null) {
-          launchGameRoom_ = builderForValue.build();
-          onChanged();
-        } else {
-          launchGameRoomBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000008;
-        return this;
-      }
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      public Builder mergeLaunchGameRoom(PlayerClient.LaunchGameRoom value) {
-        if (launchGameRoomBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008) &&
-              launchGameRoom_ != null &&
-              launchGameRoom_ != PlayerClient.LaunchGameRoom.getDefaultInstance()) {
-            launchGameRoom_ =
-              PlayerClient.LaunchGameRoom.newBuilder(launchGameRoom_).mergeFrom(value).buildPartial();
-          } else {
-            launchGameRoom_ = value;
-          }
-          onChanged();
-        } else {
-          launchGameRoomBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000008;
-        return this;
-      }
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      public Builder clearLaunchGameRoom() {
-        if (launchGameRoomBuilder_ == null) {
-          launchGameRoom_ = null;
-          onChanged();
-        } else {
-          launchGameRoomBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000008);
-        return this;
-      }
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      public PlayerClient.LaunchGameRoom.Builder getLaunchGameRoomBuilder() {
-        bitField0_ |= 0x00000008;
-        onChanged();
-        return getLaunchGameRoomFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      public PlayerClient.LaunchGameRoomOrBuilder getLaunchGameRoomOrBuilder() {
-        if (launchGameRoomBuilder_ != null) {
-          return launchGameRoomBuilder_.getMessageOrBuilder();
-        } else {
-          return launchGameRoom_ == null ?
-              PlayerClient.LaunchGameRoom.getDefaultInstance() : launchGameRoom_;
-        }
-      }
-      /**
-       * <code>optional .LaunchGameRoom launchGameRoom = 4;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.LaunchGameRoom, PlayerClient.LaunchGameRoom.Builder, PlayerClient.LaunchGameRoomOrBuilder> 
-          getLaunchGameRoomFieldBuilder() {
-        if (launchGameRoomBuilder_ == null) {
-          launchGameRoomBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.LaunchGameRoom, PlayerClient.LaunchGameRoom.Builder, PlayerClient.LaunchGameRoomOrBuilder>(
-                  getLaunchGameRoom(),
-                  getParentForChildren(),
-                  isClean());
-          launchGameRoom_ = null;
-        }
-        return launchGameRoomBuilder_;
-      }
-
-      private PlayerClient.GetGameRooms getGameRooms_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetGameRooms, PlayerClient.GetGameRooms.Builder, PlayerClient.GetGameRoomsOrBuilder> getGameRoomsBuilder_;
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      public boolean hasGetGameRooms() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      public PlayerClient.GetGameRooms getGetGameRooms() {
-        if (getGameRoomsBuilder_ == null) {
-          return getGameRooms_ == null ? PlayerClient.GetGameRooms.getDefaultInstance() : getGameRooms_;
-        } else {
-          return getGameRoomsBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      public Builder setGetGameRooms(PlayerClient.GetGameRooms value) {
-        if (getGameRoomsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          getGameRooms_ = value;
-          onChanged();
-        } else {
-          getGameRoomsBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      public Builder setGetGameRooms(
-          PlayerClient.GetGameRooms.Builder builderForValue) {
-        if (getGameRoomsBuilder_ == null) {
-          getGameRooms_ = builderForValue.build();
-          onChanged();
-        } else {
-          getGameRoomsBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      public Builder mergeGetGameRooms(PlayerClient.GetGameRooms value) {
-        if (getGameRoomsBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010) &&
-              getGameRooms_ != null &&
-              getGameRooms_ != PlayerClient.GetGameRooms.getDefaultInstance()) {
-            getGameRooms_ =
-              PlayerClient.GetGameRooms.newBuilder(getGameRooms_).mergeFrom(value).buildPartial();
-          } else {
-            getGameRooms_ = value;
-          }
-          onChanged();
-        } else {
-          getGameRoomsBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      public Builder clearGetGameRooms() {
-        if (getGameRoomsBuilder_ == null) {
-          getGameRooms_ = null;
-          onChanged();
-        } else {
-          getGameRoomsBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000010);
-        return this;
-      }
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      public PlayerClient.GetGameRooms.Builder getGetGameRoomsBuilder() {
-        bitField0_ |= 0x00000010;
-        onChanged();
-        return getGetGameRoomsFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      public PlayerClient.GetGameRoomsOrBuilder getGetGameRoomsOrBuilder() {
-        if (getGameRoomsBuilder_ != null) {
-          return getGameRoomsBuilder_.getMessageOrBuilder();
-        } else {
-          return getGameRooms_ == null ?
-              PlayerClient.GetGameRooms.getDefaultInstance() : getGameRooms_;
-        }
-      }
-      /**
-       * <code>optional .GetGameRooms getGameRooms = 5;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetGameRooms, PlayerClient.GetGameRooms.Builder, PlayerClient.GetGameRoomsOrBuilder> 
-          getGetGameRoomsFieldBuilder() {
-        if (getGameRoomsBuilder_ == null) {
-          getGameRoomsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.GetGameRooms, PlayerClient.GetGameRooms.Builder, PlayerClient.GetGameRoomsOrBuilder>(
-                  getGetGameRooms(),
-                  getParentForChildren(),
-                  isClean());
-          getGameRooms_ = null;
-        }
-        return getGameRoomsBuilder_;
-      }
-
-      private PlayerClient.GetPlayerNames getPlayerNames_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetPlayerNames, PlayerClient.GetPlayerNames.Builder, PlayerClient.GetPlayerNamesOrBuilder> getPlayerNamesBuilder_;
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      public boolean hasGetPlayerNames() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      public PlayerClient.GetPlayerNames getGetPlayerNames() {
-        if (getPlayerNamesBuilder_ == null) {
-          return getPlayerNames_ == null ? PlayerClient.GetPlayerNames.getDefaultInstance() : getPlayerNames_;
-        } else {
-          return getPlayerNamesBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      public Builder setGetPlayerNames(PlayerClient.GetPlayerNames value) {
-        if (getPlayerNamesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          getPlayerNames_ = value;
-          onChanged();
-        } else {
-          getPlayerNamesBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000020;
-        return this;
-      }
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      public Builder setGetPlayerNames(
-          PlayerClient.GetPlayerNames.Builder builderForValue) {
-        if (getPlayerNamesBuilder_ == null) {
-          getPlayerNames_ = builderForValue.build();
-          onChanged();
-        } else {
-          getPlayerNamesBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000020;
-        return this;
-      }
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      public Builder mergeGetPlayerNames(PlayerClient.GetPlayerNames value) {
-        if (getPlayerNamesBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020) &&
-              getPlayerNames_ != null &&
-              getPlayerNames_ != PlayerClient.GetPlayerNames.getDefaultInstance()) {
-            getPlayerNames_ =
-              PlayerClient.GetPlayerNames.newBuilder(getPlayerNames_).mergeFrom(value).buildPartial();
-          } else {
-            getPlayerNames_ = value;
-          }
-          onChanged();
-        } else {
-          getPlayerNamesBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000020;
-        return this;
-      }
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      public Builder clearGetPlayerNames() {
-        if (getPlayerNamesBuilder_ == null) {
-          getPlayerNames_ = null;
-          onChanged();
-        } else {
-          getPlayerNamesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000020);
-        return this;
-      }
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      public PlayerClient.GetPlayerNames.Builder getGetPlayerNamesBuilder() {
-        bitField0_ |= 0x00000020;
-        onChanged();
-        return getGetPlayerNamesFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      public PlayerClient.GetPlayerNamesOrBuilder getGetPlayerNamesOrBuilder() {
-        if (getPlayerNamesBuilder_ != null) {
-          return getPlayerNamesBuilder_.getMessageOrBuilder();
-        } else {
-          return getPlayerNames_ == null ?
-              PlayerClient.GetPlayerNames.getDefaultInstance() : getPlayerNames_;
-        }
-      }
-      /**
-       * <code>optional .GetPlayerNames getPlayerNames = 6;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetPlayerNames, PlayerClient.GetPlayerNames.Builder, PlayerClient.GetPlayerNamesOrBuilder> 
-          getGetPlayerNamesFieldBuilder() {
-        if (getPlayerNamesBuilder_ == null) {
-          getPlayerNamesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.GetPlayerNames, PlayerClient.GetPlayerNames.Builder, PlayerClient.GetPlayerNamesOrBuilder>(
-                  getGetPlayerNames(),
-                  getParentForChildren(),
-                  isClean());
-          getPlayerNames_ = null;
-        }
-        return getPlayerNamesBuilder_;
-      }
-
-      private PlayerClient.PauseGame pauseGame_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.PauseGame, PlayerClient.PauseGame.Builder, PlayerClient.PauseGameOrBuilder> pauseGameBuilder_;
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      public boolean hasPauseGame() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      public PlayerClient.PauseGame getPauseGame() {
-        if (pauseGameBuilder_ == null) {
-          return pauseGame_ == null ? PlayerClient.PauseGame.getDefaultInstance() : pauseGame_;
-        } else {
-          return pauseGameBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      public Builder setPauseGame(PlayerClient.PauseGame value) {
-        if (pauseGameBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          pauseGame_ = value;
-          onChanged();
-        } else {
-          pauseGameBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000040;
-        return this;
-      }
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      public Builder setPauseGame(
-          PlayerClient.PauseGame.Builder builderForValue) {
-        if (pauseGameBuilder_ == null) {
-          pauseGame_ = builderForValue.build();
-          onChanged();
-        } else {
-          pauseGameBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000040;
-        return this;
-      }
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      public Builder mergePauseGame(PlayerClient.PauseGame value) {
-        if (pauseGameBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) == 0x00000040) &&
-              pauseGame_ != null &&
-              pauseGame_ != PlayerClient.PauseGame.getDefaultInstance()) {
-            pauseGame_ =
-              PlayerClient.PauseGame.newBuilder(pauseGame_).mergeFrom(value).buildPartial();
-          } else {
-            pauseGame_ = value;
-          }
-          onChanged();
-        } else {
-          pauseGameBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000040;
-        return this;
-      }
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      public Builder clearPauseGame() {
-        if (pauseGameBuilder_ == null) {
-          pauseGame_ = null;
-          onChanged();
-        } else {
-          pauseGameBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000040);
-        return this;
-      }
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      public PlayerClient.PauseGame.Builder getPauseGameBuilder() {
-        bitField0_ |= 0x00000040;
-        onChanged();
-        return getPauseGameFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      public PlayerClient.PauseGameOrBuilder getPauseGameOrBuilder() {
-        if (pauseGameBuilder_ != null) {
-          return pauseGameBuilder_.getMessageOrBuilder();
-        } else {
-          return pauseGame_ == null ?
-              PlayerClient.PauseGame.getDefaultInstance() : pauseGame_;
-        }
-      }
-      /**
-       * <code>optional .PauseGame pauseGame = 7;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.PauseGame, PlayerClient.PauseGame.Builder, PlayerClient.PauseGameOrBuilder> 
-          getPauseGameFieldBuilder() {
-        if (pauseGameBuilder_ == null) {
-          pauseGameBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.PauseGame, PlayerClient.PauseGame.Builder, PlayerClient.PauseGameOrBuilder>(
-                  getPauseGame(),
-                  getParentForChildren(),
-                  isClean());
-          pauseGame_ = null;
-        }
-        return pauseGameBuilder_;
-      }
-
-      private PlayerClient.ResumeGame resumeGame_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.ResumeGame, PlayerClient.ResumeGame.Builder, PlayerClient.ResumeGameOrBuilder> resumeGameBuilder_;
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      public boolean hasResumeGame() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      public PlayerClient.ResumeGame getResumeGame() {
-        if (resumeGameBuilder_ == null) {
-          return resumeGame_ == null ? PlayerClient.ResumeGame.getDefaultInstance() : resumeGame_;
-        } else {
-          return resumeGameBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      public Builder setResumeGame(PlayerClient.ResumeGame value) {
-        if (resumeGameBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          resumeGame_ = value;
-          onChanged();
-        } else {
-          resumeGameBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000080;
-        return this;
-      }
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      public Builder setResumeGame(
-          PlayerClient.ResumeGame.Builder builderForValue) {
-        if (resumeGameBuilder_ == null) {
-          resumeGame_ = builderForValue.build();
-          onChanged();
-        } else {
-          resumeGameBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000080;
-        return this;
-      }
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      public Builder mergeResumeGame(PlayerClient.ResumeGame value) {
-        if (resumeGameBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) == 0x00000080) &&
-              resumeGame_ != null &&
-              resumeGame_ != PlayerClient.ResumeGame.getDefaultInstance()) {
-            resumeGame_ =
-              PlayerClient.ResumeGame.newBuilder(resumeGame_).mergeFrom(value).buildPartial();
-          } else {
-            resumeGame_ = value;
-          }
-          onChanged();
-        } else {
-          resumeGameBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000080;
-        return this;
-      }
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      public Builder clearResumeGame() {
-        if (resumeGameBuilder_ == null) {
-          resumeGame_ = null;
-          onChanged();
-        } else {
-          resumeGameBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000080);
-        return this;
-      }
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      public PlayerClient.ResumeGame.Builder getResumeGameBuilder() {
-        bitField0_ |= 0x00000080;
-        onChanged();
-        return getResumeGameFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      public PlayerClient.ResumeGameOrBuilder getResumeGameOrBuilder() {
-        if (resumeGameBuilder_ != null) {
-          return resumeGameBuilder_.getMessageOrBuilder();
-        } else {
-          return resumeGame_ == null ?
-              PlayerClient.ResumeGame.getDefaultInstance() : resumeGame_;
-        }
-      }
-      /**
-       * <code>optional .ResumeGame resumeGame = 8;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.ResumeGame, PlayerClient.ResumeGame.Builder, PlayerClient.ResumeGameOrBuilder> 
-          getResumeGameFieldBuilder() {
-        if (resumeGameBuilder_ == null) {
-          resumeGameBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.ResumeGame, PlayerClient.ResumeGame.Builder, PlayerClient.ResumeGameOrBuilder>(
-                  getResumeGame(),
-                  getParentForChildren(),
-                  isClean());
-          resumeGame_ = null;
-        }
-        return resumeGameBuilder_;
-      }
-
-      private PlayerClient.GetInventory getInventory_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetInventory, PlayerClient.GetInventory.Builder, PlayerClient.GetInventoryOrBuilder> getInventoryBuilder_;
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      public boolean hasGetInventory() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      public PlayerClient.GetInventory getGetInventory() {
-        if (getInventoryBuilder_ == null) {
-          return getInventory_ == null ? PlayerClient.GetInventory.getDefaultInstance() : getInventory_;
-        } else {
-          return getInventoryBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      public Builder setGetInventory(PlayerClient.GetInventory value) {
-        if (getInventoryBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          getInventory_ = value;
-          onChanged();
-        } else {
-          getInventoryBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000100;
-        return this;
-      }
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      public Builder setGetInventory(
-          PlayerClient.GetInventory.Builder builderForValue) {
-        if (getInventoryBuilder_ == null) {
-          getInventory_ = builderForValue.build();
-          onChanged();
-        } else {
-          getInventoryBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000100;
-        return this;
-      }
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      public Builder mergeGetInventory(PlayerClient.GetInventory value) {
-        if (getInventoryBuilder_ == null) {
-          if (((bitField0_ & 0x00000100) == 0x00000100) &&
-              getInventory_ != null &&
-              getInventory_ != PlayerClient.GetInventory.getDefaultInstance()) {
-            getInventory_ =
-              PlayerClient.GetInventory.newBuilder(getInventory_).mergeFrom(value).buildPartial();
-          } else {
-            getInventory_ = value;
-          }
-          onChanged();
-        } else {
-          getInventoryBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000100;
-        return this;
-      }
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      public Builder clearGetInventory() {
-        if (getInventoryBuilder_ == null) {
-          getInventory_ = null;
-          onChanged();
-        } else {
-          getInventoryBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000100);
-        return this;
-      }
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      public PlayerClient.GetInventory.Builder getGetInventoryBuilder() {
-        bitField0_ |= 0x00000100;
-        onChanged();
-        return getGetInventoryFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      public PlayerClient.GetInventoryOrBuilder getGetInventoryOrBuilder() {
-        if (getInventoryBuilder_ != null) {
-          return getInventoryBuilder_.getMessageOrBuilder();
-        } else {
-          return getInventory_ == null ?
-              PlayerClient.GetInventory.getDefaultInstance() : getInventory_;
-        }
-      }
-      /**
-       * <code>optional .GetInventory getInventory = 9;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetInventory, PlayerClient.GetInventory.Builder, PlayerClient.GetInventoryOrBuilder> 
-          getGetInventoryFieldBuilder() {
-        if (getInventoryBuilder_ == null) {
-          getInventoryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.GetInventory, PlayerClient.GetInventory.Builder, PlayerClient.GetInventoryOrBuilder>(
-                  getGetInventory(),
-                  getParentForChildren(),
-                  isClean());
-          getInventory_ = null;
-        }
-        return getInventoryBuilder_;
-      }
-
-      private PlayerClient.GetTemplateProperties getTemplateProperties_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetTemplateProperties, PlayerClient.GetTemplateProperties.Builder, PlayerClient.GetTemplatePropertiesOrBuilder> getTemplatePropertiesBuilder_;
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      public boolean hasGetTemplateProperties() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      public PlayerClient.GetTemplateProperties getGetTemplateProperties() {
-        if (getTemplatePropertiesBuilder_ == null) {
-          return getTemplateProperties_ == null ? PlayerClient.GetTemplateProperties.getDefaultInstance() : getTemplateProperties_;
-        } else {
-          return getTemplatePropertiesBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      public Builder setGetTemplateProperties(PlayerClient.GetTemplateProperties value) {
-        if (getTemplatePropertiesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          getTemplateProperties_ = value;
-          onChanged();
-        } else {
-          getTemplatePropertiesBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000200;
-        return this;
-      }
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      public Builder setGetTemplateProperties(
-          PlayerClient.GetTemplateProperties.Builder builderForValue) {
-        if (getTemplatePropertiesBuilder_ == null) {
-          getTemplateProperties_ = builderForValue.build();
-          onChanged();
-        } else {
-          getTemplatePropertiesBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000200;
-        return this;
-      }
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      public Builder mergeGetTemplateProperties(PlayerClient.GetTemplateProperties value) {
-        if (getTemplatePropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00000200) == 0x00000200) &&
-              getTemplateProperties_ != null &&
-              getTemplateProperties_ != PlayerClient.GetTemplateProperties.getDefaultInstance()) {
-            getTemplateProperties_ =
-              PlayerClient.GetTemplateProperties.newBuilder(getTemplateProperties_).mergeFrom(value).buildPartial();
-          } else {
-            getTemplateProperties_ = value;
-          }
-          onChanged();
-        } else {
-          getTemplatePropertiesBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000200;
-        return this;
-      }
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      public Builder clearGetTemplateProperties() {
-        if (getTemplatePropertiesBuilder_ == null) {
-          getTemplateProperties_ = null;
-          onChanged();
-        } else {
-          getTemplatePropertiesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000200);
-        return this;
-      }
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      public PlayerClient.GetTemplateProperties.Builder getGetTemplatePropertiesBuilder() {
-        bitField0_ |= 0x00000200;
-        onChanged();
-        return getGetTemplatePropertiesFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      public PlayerClient.GetTemplatePropertiesOrBuilder getGetTemplatePropertiesOrBuilder() {
-        if (getTemplatePropertiesBuilder_ != null) {
-          return getTemplatePropertiesBuilder_.getMessageOrBuilder();
-        } else {
-          return getTemplateProperties_ == null ?
-              PlayerClient.GetTemplateProperties.getDefaultInstance() : getTemplateProperties_;
-        }
-      }
-      /**
-       * <code>optional .GetTemplateProperties getTemplateProperties = 10;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.GetTemplateProperties, PlayerClient.GetTemplateProperties.Builder, PlayerClient.GetTemplatePropertiesOrBuilder> 
-          getGetTemplatePropertiesFieldBuilder() {
-        if (getTemplatePropertiesBuilder_ == null) {
-          getTemplatePropertiesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.GetTemplateProperties, PlayerClient.GetTemplateProperties.Builder, PlayerClient.GetTemplatePropertiesOrBuilder>(
-                  getGetTemplateProperties(),
-                  getParentForChildren(),
-                  isClean());
-          getTemplateProperties_ = null;
-        }
-        return getTemplatePropertiesBuilder_;
-      }
-
-      private PlayerClient.PlaceElement placeElement_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.PlaceElement, PlayerClient.PlaceElement.Builder, PlayerClient.PlaceElementOrBuilder> placeElementBuilder_;
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      public boolean hasPlaceElement() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
-      }
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      public PlayerClient.PlaceElement getPlaceElement() {
-        if (placeElementBuilder_ == null) {
-          return placeElement_ == null ? PlayerClient.PlaceElement.getDefaultInstance() : placeElement_;
-        } else {
-          return placeElementBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      public Builder setPlaceElement(PlayerClient.PlaceElement value) {
-        if (placeElementBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          placeElement_ = value;
-          onChanged();
-        } else {
-          placeElementBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000400;
-        return this;
-      }
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      public Builder setPlaceElement(
-          PlayerClient.PlaceElement.Builder builderForValue) {
-        if (placeElementBuilder_ == null) {
-          placeElement_ = builderForValue.build();
-          onChanged();
-        } else {
-          placeElementBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000400;
-        return this;
-      }
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      public Builder mergePlaceElement(PlayerClient.PlaceElement value) {
-        if (placeElementBuilder_ == null) {
-          if (((bitField0_ & 0x00000400) == 0x00000400) &&
-              placeElement_ != null &&
-              placeElement_ != PlayerClient.PlaceElement.getDefaultInstance()) {
-            placeElement_ =
-              PlayerClient.PlaceElement.newBuilder(placeElement_).mergeFrom(value).buildPartial();
-          } else {
-            placeElement_ = value;
-          }
-          onChanged();
-        } else {
-          placeElementBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000400;
-        return this;
-      }
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      public Builder clearPlaceElement() {
-        if (placeElementBuilder_ == null) {
-          placeElement_ = null;
-          onChanged();
-        } else {
-          placeElementBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000400);
-        return this;
-      }
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      public PlayerClient.PlaceElement.Builder getPlaceElementBuilder() {
-        bitField0_ |= 0x00000400;
-        onChanged();
-        return getPlaceElementFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      public PlayerClient.PlaceElementOrBuilder getPlaceElementOrBuilder() {
-        if (placeElementBuilder_ != null) {
-          return placeElementBuilder_.getMessageOrBuilder();
-        } else {
-          return placeElement_ == null ?
-              PlayerClient.PlaceElement.getDefaultInstance() : placeElement_;
-        }
-      }
-      /**
-       * <code>optional .PlaceElement placeElement = 11;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerClient.PlaceElement, PlayerClient.PlaceElement.Builder, PlayerClient.PlaceElementOrBuilder> 
-          getPlaceElementFieldBuilder() {
-        if (placeElementBuilder_ == null) {
-          placeElementBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerClient.PlaceElement, PlayerClient.PlaceElement.Builder, PlayerClient.PlaceElementOrBuilder>(
-                  getPlaceElement(),
-                  getParentForChildren(),
-                  isClean());
-          placeElement_ = null;
-        }
-        return placeElementBuilder_;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:ClientMessage)
-    }
-
-    // @@protoc_insertion_point(class_scope:ClientMessage)
-    private static final PlayerClient.ClientMessage DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new PlayerClient.ClientMessage();
-    }
-
-    public static PlayerClient.ClientMessage getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<ClientMessage>
-        PARSER = new com.google.protobuf.AbstractParser<ClientMessage>() {
-      public ClientMessage parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ClientMessage(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<ClientMessage> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ClientMessage> getParserForType() {
-      return PARSER;
-    }
-
-    public PlayerClient.ClientMessage getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface GetAvailableGamesOrBuilder extends
       // @@protoc_insertion_point(interface_extends:GetAvailableGames)
       com.google.protobuf.MessageOrBuilder {
@@ -6515,22 +3881,22 @@ public final class PlayerClient {
 
   }
 
-  public interface GetInventoryOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:GetInventory)
+  public interface getInventoryOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:getInventory)
       com.google.protobuf.MessageOrBuilder {
   }
   /**
-   * Protobuf type {@code GetInventory}
+   * Protobuf type {@code getInventory}
    */
-  public  static final class GetInventory extends
+  public  static final class getInventory extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:GetInventory)
-      GetInventoryOrBuilder {
-    // Use GetInventory.newBuilder() to construct.
-    private GetInventory(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:getInventory)
+      getInventoryOrBuilder {
+    // Use getInventory.newBuilder() to construct.
+    private getInventory(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private GetInventory() {
+    private getInventory() {
     }
 
     @java.lang.Override
@@ -6538,7 +3904,7 @@ public final class PlayerClient {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private GetInventory(
+    private getInventory(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -6574,14 +3940,14 @@ public final class PlayerClient {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return PlayerClient.internal_static_GetInventory_descriptor;
+      return PlayerClient.internal_static_getInventory_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return PlayerClient.internal_static_GetInventory_fieldAccessorTable
+      return PlayerClient.internal_static_getInventory_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              PlayerClient.GetInventory.class, PlayerClient.GetInventory.Builder.class);
+              PlayerClient.getInventory.class, PlayerClient.getInventory.Builder.class);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -6615,10 +3981,10 @@ public final class PlayerClient {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof PlayerClient.GetInventory)) {
+      if (!(obj instanceof PlayerClient.getInventory)) {
         return super.equals(obj);
       }
-      PlayerClient.GetInventory other = (PlayerClient.GetInventory) obj;
+      PlayerClient.getInventory other = (PlayerClient.getInventory) obj;
 
       boolean result = true;
       result = result && unknownFields.equals(other.unknownFields);
@@ -6637,58 +4003,58 @@ public final class PlayerClient {
       return hash;
     }
 
-    public static PlayerClient.GetInventory parseFrom(
+    public static PlayerClient.getInventory parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static PlayerClient.GetInventory parseFrom(
+    public static PlayerClient.getInventory parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static PlayerClient.GetInventory parseFrom(byte[] data)
+    public static PlayerClient.getInventory parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static PlayerClient.GetInventory parseFrom(
+    public static PlayerClient.getInventory parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static PlayerClient.GetInventory parseFrom(java.io.InputStream input)
+    public static PlayerClient.getInventory parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static PlayerClient.GetInventory parseFrom(
+    public static PlayerClient.getInventory parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static PlayerClient.GetInventory parseDelimitedFrom(java.io.InputStream input)
+    public static PlayerClient.getInventory parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static PlayerClient.GetInventory parseDelimitedFrom(
+    public static PlayerClient.getInventory parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static PlayerClient.GetInventory parseFrom(
+    public static PlayerClient.getInventory parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static PlayerClient.GetInventory parseFrom(
+    public static PlayerClient.getInventory parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -6700,7 +4066,7 @@ public final class PlayerClient {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(PlayerClient.GetInventory prototype) {
+    public static Builder newBuilder(PlayerClient.getInventory prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -6715,25 +4081,25 @@ public final class PlayerClient {
       return builder;
     }
     /**
-     * Protobuf type {@code GetInventory}
+     * Protobuf type {@code getInventory}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:GetInventory)
-        PlayerClient.GetInventoryOrBuilder {
+        // @@protoc_insertion_point(builder_implements:getInventory)
+        PlayerClient.getInventoryOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return PlayerClient.internal_static_GetInventory_descriptor;
+        return PlayerClient.internal_static_getInventory_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return PlayerClient.internal_static_GetInventory_fieldAccessorTable
+        return PlayerClient.internal_static_getInventory_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                PlayerClient.GetInventory.class, PlayerClient.GetInventory.Builder.class);
+                PlayerClient.getInventory.class, PlayerClient.getInventory.Builder.class);
       }
 
-      // Construct using PlayerClient.GetInventory.newBuilder()
+      // Construct using PlayerClient.getInventory.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -6755,23 +4121,23 @@ public final class PlayerClient {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return PlayerClient.internal_static_GetInventory_descriptor;
+        return PlayerClient.internal_static_getInventory_descriptor;
       }
 
-      public PlayerClient.GetInventory getDefaultInstanceForType() {
-        return PlayerClient.GetInventory.getDefaultInstance();
+      public PlayerClient.getInventory getDefaultInstanceForType() {
+        return PlayerClient.getInventory.getDefaultInstance();
       }
 
-      public PlayerClient.GetInventory build() {
-        PlayerClient.GetInventory result = buildPartial();
+      public PlayerClient.getInventory build() {
+        PlayerClient.getInventory result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public PlayerClient.GetInventory buildPartial() {
-        PlayerClient.GetInventory result = new PlayerClient.GetInventory(this);
+      public PlayerClient.getInventory buildPartial() {
+        PlayerClient.getInventory result = new PlayerClient.getInventory(this);
         onBuilt();
         return result;
       }
@@ -6803,16 +4169,16 @@ public final class PlayerClient {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof PlayerClient.GetInventory) {
-          return mergeFrom((PlayerClient.GetInventory)other);
+        if (other instanceof PlayerClient.getInventory) {
+          return mergeFrom((PlayerClient.getInventory)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(PlayerClient.GetInventory other) {
-        if (other == PlayerClient.GetInventory.getDefaultInstance()) return this;
+      public Builder mergeFrom(PlayerClient.getInventory other) {
+        if (other == PlayerClient.getInventory.getDefaultInstance()) return this;
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -6826,11 +4192,11 @@ public final class PlayerClient {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        PlayerClient.GetInventory parsedMessage = null;
+        PlayerClient.getInventory parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (PlayerClient.GetInventory) e.getUnfinishedMessage();
+          parsedMessage = (PlayerClient.getInventory) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -6850,46 +4216,46 @@ public final class PlayerClient {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:GetInventory)
+      // @@protoc_insertion_point(builder_scope:getInventory)
     }
 
-    // @@protoc_insertion_point(class_scope:GetInventory)
-    private static final PlayerClient.GetInventory DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:getInventory)
+    private static final PlayerClient.getInventory DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new PlayerClient.GetInventory();
+      DEFAULT_INSTANCE = new PlayerClient.getInventory();
     }
 
-    public static PlayerClient.GetInventory getDefaultInstance() {
+    public static PlayerClient.getInventory getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<GetInventory>
-        PARSER = new com.google.protobuf.AbstractParser<GetInventory>() {
-      public GetInventory parsePartialFrom(
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<getInventory>
+        PARSER = new com.google.protobuf.AbstractParser<getInventory>() {
+      public getInventory parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new GetInventory(input, extensionRegistry);
+          return new getInventory(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<GetInventory> parser() {
+    public static com.google.protobuf.Parser<getInventory> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<GetInventory> getParserForType() {
+    public com.google.protobuf.Parser<getInventory> getParserForType() {
       return PARSER;
     }
 
-    public PlayerClient.GetInventory getDefaultInstanceForType() {
+    public PlayerClient.getInventory getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface GetTemplatePropertiesOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:GetTemplateProperties)
+  public interface getTemplatePropertiesOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:getTemplateProperties)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -6907,17 +4273,17 @@ public final class PlayerClient {
         getElementNameBytes();
   }
   /**
-   * Protobuf type {@code GetTemplateProperties}
+   * Protobuf type {@code getTemplateProperties}
    */
-  public  static final class GetTemplateProperties extends
+  public  static final class getTemplateProperties extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:GetTemplateProperties)
-      GetTemplatePropertiesOrBuilder {
-    // Use GetTemplateProperties.newBuilder() to construct.
-    private GetTemplateProperties(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:getTemplateProperties)
+      getTemplatePropertiesOrBuilder {
+    // Use getTemplateProperties.newBuilder() to construct.
+    private getTemplateProperties(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private GetTemplateProperties() {
+    private getTemplateProperties() {
       elementName_ = "";
     }
 
@@ -6926,7 +4292,7 @@ public final class PlayerClient {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private GetTemplateProperties(
+    private getTemplateProperties(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -6969,14 +4335,14 @@ public final class PlayerClient {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return PlayerClient.internal_static_GetTemplateProperties_descriptor;
+      return PlayerClient.internal_static_getTemplateProperties_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return PlayerClient.internal_static_GetTemplateProperties_fieldAccessorTable
+      return PlayerClient.internal_static_getTemplateProperties_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              PlayerClient.GetTemplateProperties.class, PlayerClient.GetTemplateProperties.Builder.class);
+              PlayerClient.getTemplateProperties.class, PlayerClient.getTemplateProperties.Builder.class);
     }
 
     private int bitField0_;
@@ -7063,10 +4429,10 @@ public final class PlayerClient {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof PlayerClient.GetTemplateProperties)) {
+      if (!(obj instanceof PlayerClient.getTemplateProperties)) {
         return super.equals(obj);
       }
-      PlayerClient.GetTemplateProperties other = (PlayerClient.GetTemplateProperties) obj;
+      PlayerClient.getTemplateProperties other = (PlayerClient.getTemplateProperties) obj;
 
       boolean result = true;
       result = result && (hasElementName() == other.hasElementName());
@@ -7094,58 +4460,58 @@ public final class PlayerClient {
       return hash;
     }
 
-    public static PlayerClient.GetTemplateProperties parseFrom(
+    public static PlayerClient.getTemplateProperties parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static PlayerClient.GetTemplateProperties parseFrom(
+    public static PlayerClient.getTemplateProperties parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static PlayerClient.GetTemplateProperties parseFrom(byte[] data)
+    public static PlayerClient.getTemplateProperties parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static PlayerClient.GetTemplateProperties parseFrom(
+    public static PlayerClient.getTemplateProperties parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static PlayerClient.GetTemplateProperties parseFrom(java.io.InputStream input)
+    public static PlayerClient.getTemplateProperties parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static PlayerClient.GetTemplateProperties parseFrom(
+    public static PlayerClient.getTemplateProperties parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static PlayerClient.GetTemplateProperties parseDelimitedFrom(java.io.InputStream input)
+    public static PlayerClient.getTemplateProperties parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static PlayerClient.GetTemplateProperties parseDelimitedFrom(
+    public static PlayerClient.getTemplateProperties parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static PlayerClient.GetTemplateProperties parseFrom(
+    public static PlayerClient.getTemplateProperties parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static PlayerClient.GetTemplateProperties parseFrom(
+    public static PlayerClient.getTemplateProperties parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -7157,7 +4523,7 @@ public final class PlayerClient {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(PlayerClient.GetTemplateProperties prototype) {
+    public static Builder newBuilder(PlayerClient.getTemplateProperties prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -7172,25 +4538,25 @@ public final class PlayerClient {
       return builder;
     }
     /**
-     * Protobuf type {@code GetTemplateProperties}
+     * Protobuf type {@code getTemplateProperties}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:GetTemplateProperties)
-        PlayerClient.GetTemplatePropertiesOrBuilder {
+        // @@protoc_insertion_point(builder_implements:getTemplateProperties)
+        PlayerClient.getTemplatePropertiesOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return PlayerClient.internal_static_GetTemplateProperties_descriptor;
+        return PlayerClient.internal_static_getTemplateProperties_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return PlayerClient.internal_static_GetTemplateProperties_fieldAccessorTable
+        return PlayerClient.internal_static_getTemplateProperties_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                PlayerClient.GetTemplateProperties.class, PlayerClient.GetTemplateProperties.Builder.class);
+                PlayerClient.getTemplateProperties.class, PlayerClient.getTemplateProperties.Builder.class);
       }
 
-      // Construct using PlayerClient.GetTemplateProperties.newBuilder()
+      // Construct using PlayerClient.getTemplateProperties.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -7214,23 +4580,23 @@ public final class PlayerClient {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return PlayerClient.internal_static_GetTemplateProperties_descriptor;
+        return PlayerClient.internal_static_getTemplateProperties_descriptor;
       }
 
-      public PlayerClient.GetTemplateProperties getDefaultInstanceForType() {
-        return PlayerClient.GetTemplateProperties.getDefaultInstance();
+      public PlayerClient.getTemplateProperties getDefaultInstanceForType() {
+        return PlayerClient.getTemplateProperties.getDefaultInstance();
       }
 
-      public PlayerClient.GetTemplateProperties build() {
-        PlayerClient.GetTemplateProperties result = buildPartial();
+      public PlayerClient.getTemplateProperties build() {
+        PlayerClient.getTemplateProperties result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public PlayerClient.GetTemplateProperties buildPartial() {
-        PlayerClient.GetTemplateProperties result = new PlayerClient.GetTemplateProperties(this);
+      public PlayerClient.getTemplateProperties buildPartial() {
+        PlayerClient.getTemplateProperties result = new PlayerClient.getTemplateProperties(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -7269,16 +4635,16 @@ public final class PlayerClient {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof PlayerClient.GetTemplateProperties) {
-          return mergeFrom((PlayerClient.GetTemplateProperties)other);
+        if (other instanceof PlayerClient.getTemplateProperties) {
+          return mergeFrom((PlayerClient.getTemplateProperties)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(PlayerClient.GetTemplateProperties other) {
-        if (other == PlayerClient.GetTemplateProperties.getDefaultInstance()) return this;
+      public Builder mergeFrom(PlayerClient.getTemplateProperties other) {
+        if (other == PlayerClient.getTemplateProperties.getDefaultInstance()) return this;
         if (other.hasElementName()) {
           bitField0_ |= 0x00000001;
           elementName_ = other.elementName_;
@@ -7300,11 +4666,11 @@ public final class PlayerClient {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        PlayerClient.GetTemplateProperties parsedMessage = null;
+        PlayerClient.getTemplateProperties parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (PlayerClient.GetTemplateProperties) e.getUnfinishedMessage();
+          parsedMessage = (PlayerClient.getTemplateProperties) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -7401,46 +4767,46 @@ public final class PlayerClient {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:GetTemplateProperties)
+      // @@protoc_insertion_point(builder_scope:getTemplateProperties)
     }
 
-    // @@protoc_insertion_point(class_scope:GetTemplateProperties)
-    private static final PlayerClient.GetTemplateProperties DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:getTemplateProperties)
+    private static final PlayerClient.getTemplateProperties DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new PlayerClient.GetTemplateProperties();
+      DEFAULT_INSTANCE = new PlayerClient.getTemplateProperties();
     }
 
-    public static PlayerClient.GetTemplateProperties getDefaultInstance() {
+    public static PlayerClient.getTemplateProperties getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<GetTemplateProperties>
-        PARSER = new com.google.protobuf.AbstractParser<GetTemplateProperties>() {
-      public GetTemplateProperties parsePartialFrom(
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<getTemplateProperties>
+        PARSER = new com.google.protobuf.AbstractParser<getTemplateProperties>() {
+      public getTemplateProperties parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new GetTemplateProperties(input, extensionRegistry);
+          return new getTemplateProperties(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<GetTemplateProperties> parser() {
+    public static com.google.protobuf.Parser<getTemplateProperties> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<GetTemplateProperties> getParserForType() {
+    public com.google.protobuf.Parser<getTemplateProperties> getParserForType() {
       return PARSER;
     }
 
-    public PlayerClient.GetTemplateProperties getDefaultInstanceForType() {
+    public PlayerClient.getTemplateProperties getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface PlaceElementOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:PlaceElement)
+  public interface placeElementOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:placeElement)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -7476,17 +4842,17 @@ public final class PlayerClient {
     double getYCoord();
   }
   /**
-   * Protobuf type {@code PlaceElement}
+   * Protobuf type {@code placeElement}
    */
-  public  static final class PlaceElement extends
+  public  static final class placeElement extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:PlaceElement)
-      PlaceElementOrBuilder {
-    // Use PlaceElement.newBuilder() to construct.
-    private PlaceElement(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:placeElement)
+      placeElementOrBuilder {
+    // Use placeElement.newBuilder() to construct.
+    private placeElement(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private PlaceElement() {
+    private placeElement() {
       elementName_ = "";
       xCoord_ = 0D;
       yCoord_ = 0D;
@@ -7497,7 +4863,7 @@ public final class PlayerClient {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private PlaceElement(
+    private placeElement(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -7550,14 +4916,14 @@ public final class PlayerClient {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return PlayerClient.internal_static_PlaceElement_descriptor;
+      return PlayerClient.internal_static_placeElement_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return PlayerClient.internal_static_PlaceElement_fieldAccessorTable
+      return PlayerClient.internal_static_placeElement_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              PlayerClient.PlaceElement.class, PlayerClient.PlaceElement.Builder.class);
+              PlayerClient.placeElement.class, PlayerClient.placeElement.Builder.class);
     }
 
     private int bitField0_;
@@ -7696,10 +5062,10 @@ public final class PlayerClient {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof PlayerClient.PlaceElement)) {
+      if (!(obj instanceof PlayerClient.placeElement)) {
         return super.equals(obj);
       }
-      PlayerClient.PlaceElement other = (PlayerClient.PlaceElement) obj;
+      PlayerClient.placeElement other = (PlayerClient.placeElement) obj;
 
       boolean result = true;
       result = result && (hasElementName() == other.hasElementName());
@@ -7751,58 +5117,58 @@ public final class PlayerClient {
       return hash;
     }
 
-    public static PlayerClient.PlaceElement parseFrom(
+    public static PlayerClient.placeElement parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static PlayerClient.PlaceElement parseFrom(
+    public static PlayerClient.placeElement parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static PlayerClient.PlaceElement parseFrom(byte[] data)
+    public static PlayerClient.placeElement parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static PlayerClient.PlaceElement parseFrom(
+    public static PlayerClient.placeElement parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static PlayerClient.PlaceElement parseFrom(java.io.InputStream input)
+    public static PlayerClient.placeElement parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static PlayerClient.PlaceElement parseFrom(
+    public static PlayerClient.placeElement parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static PlayerClient.PlaceElement parseDelimitedFrom(java.io.InputStream input)
+    public static PlayerClient.placeElement parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static PlayerClient.PlaceElement parseDelimitedFrom(
+    public static PlayerClient.placeElement parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static PlayerClient.PlaceElement parseFrom(
+    public static PlayerClient.placeElement parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static PlayerClient.PlaceElement parseFrom(
+    public static PlayerClient.placeElement parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -7814,7 +5180,7 @@ public final class PlayerClient {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(PlayerClient.PlaceElement prototype) {
+    public static Builder newBuilder(PlayerClient.placeElement prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -7829,25 +5195,25 @@ public final class PlayerClient {
       return builder;
     }
     /**
-     * Protobuf type {@code PlaceElement}
+     * Protobuf type {@code placeElement}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:PlaceElement)
-        PlayerClient.PlaceElementOrBuilder {
+        // @@protoc_insertion_point(builder_implements:placeElement)
+        PlayerClient.placeElementOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return PlayerClient.internal_static_PlaceElement_descriptor;
+        return PlayerClient.internal_static_placeElement_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return PlayerClient.internal_static_PlaceElement_fieldAccessorTable
+        return PlayerClient.internal_static_placeElement_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                PlayerClient.PlaceElement.class, PlayerClient.PlaceElement.Builder.class);
+                PlayerClient.placeElement.class, PlayerClient.placeElement.Builder.class);
       }
 
-      // Construct using PlayerClient.PlaceElement.newBuilder()
+      // Construct using PlayerClient.placeElement.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -7875,23 +5241,23 @@ public final class PlayerClient {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return PlayerClient.internal_static_PlaceElement_descriptor;
+        return PlayerClient.internal_static_placeElement_descriptor;
       }
 
-      public PlayerClient.PlaceElement getDefaultInstanceForType() {
-        return PlayerClient.PlaceElement.getDefaultInstance();
+      public PlayerClient.placeElement getDefaultInstanceForType() {
+        return PlayerClient.placeElement.getDefaultInstance();
       }
 
-      public PlayerClient.PlaceElement build() {
-        PlayerClient.PlaceElement result = buildPartial();
+      public PlayerClient.placeElement build() {
+        PlayerClient.placeElement result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public PlayerClient.PlaceElement buildPartial() {
-        PlayerClient.PlaceElement result = new PlayerClient.PlaceElement(this);
+      public PlayerClient.placeElement buildPartial() {
+        PlayerClient.placeElement result = new PlayerClient.placeElement(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -7938,16 +5304,16 @@ public final class PlayerClient {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof PlayerClient.PlaceElement) {
-          return mergeFrom((PlayerClient.PlaceElement)other);
+        if (other instanceof PlayerClient.placeElement) {
+          return mergeFrom((PlayerClient.placeElement)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(PlayerClient.PlaceElement other) {
-        if (other == PlayerClient.PlaceElement.getDefaultInstance()) return this;
+      public Builder mergeFrom(PlayerClient.placeElement other) {
+        if (other == PlayerClient.placeElement.getDefaultInstance()) return this;
         if (other.hasElementName()) {
           bitField0_ |= 0x00000001;
           elementName_ = other.elementName_;
@@ -7981,11 +5347,11 @@ public final class PlayerClient {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        PlayerClient.PlaceElement parsedMessage = null;
+        PlayerClient.placeElement parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (PlayerClient.PlaceElement) e.getUnfinishedMessage();
+          parsedMessage = (PlayerClient.placeElement) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -8146,49 +5512,44 @@ public final class PlayerClient {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:PlaceElement)
+      // @@protoc_insertion_point(builder_scope:placeElement)
     }
 
-    // @@protoc_insertion_point(class_scope:PlaceElement)
-    private static final PlayerClient.PlaceElement DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:placeElement)
+    private static final PlayerClient.placeElement DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new PlayerClient.PlaceElement();
+      DEFAULT_INSTANCE = new PlayerClient.placeElement();
     }
 
-    public static PlayerClient.PlaceElement getDefaultInstance() {
+    public static PlayerClient.placeElement getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<PlaceElement>
-        PARSER = new com.google.protobuf.AbstractParser<PlaceElement>() {
-      public PlaceElement parsePartialFrom(
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<placeElement>
+        PARSER = new com.google.protobuf.AbstractParser<placeElement>() {
+      public placeElement parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new PlaceElement(input, extensionRegistry);
+          return new placeElement(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<PlaceElement> parser() {
+    public static com.google.protobuf.Parser<placeElement> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<PlaceElement> getParserForType() {
+    public com.google.protobuf.Parser<placeElement> getParserForType() {
       return PARSER;
     }
 
-    public PlayerClient.PlaceElement getDefaultInstanceForType() {
+    public PlayerClient.placeElement getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ClientMessage_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ClientMessage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetAvailableGames_descriptor;
   private static final 
@@ -8230,20 +5591,20 @@ public final class PlayerClient {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ResumeGame_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_GetInventory_descriptor;
+    internal_static_getInventory_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_GetInventory_fieldAccessorTable;
+      internal_static_getInventory_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_GetTemplateProperties_descriptor;
+    internal_static_getTemplateProperties_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_GetTemplateProperties_fieldAccessorTable;
+      internal_static_getTemplateProperties_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_PlaceElement_descriptor;
+    internal_static_placeElement_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_PlaceElement_fieldAccessorTable;
+      internal_static_placeElement_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -8253,27 +5614,16 @@ public final class PlayerClient {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022PlayerClient.proto\"\274\003\n\rClientMessage\022-" +
-      "\n\021getAvailableGames\030\001 \001(\0132\022.GetAvailable" +
-      "Games\022\'\n\016createGameRoom\030\002 \001(\0132\017.CreateGa" +
-      "meRoom\022\033\n\010joinRoom\030\003 \001(\0132\t.JoinRoom\022\'\n\016l" +
-      "aunchGameRoom\030\004 \001(\0132\017.LaunchGameRoom\022#\n\014" +
-      "getGameRooms\030\005 \001(\0132\r.GetGameRooms\022\'\n\016get" +
-      "PlayerNames\030\006 \001(\0132\017.GetPlayerNames\022\035\n\tpa" +
-      "useGame\030\007 \001(\0132\n.PauseGame\022\037\n\nresumeGame\030" +
-      "\010 \001(\0132\013.ResumeGame\022#\n\014getInventory\030\t \001(\013" +
-      "2\r.GetInventory\0225\n\025getTemplateProperties",
-      "\030\n \001(\0132\026.GetTemplateProperties\022#\n\014placeE" +
-      "lement\030\013 \001(\0132\r.PlaceElement\"\023\n\021GetAvaila" +
-      "bleGames\"\"\n\016CreateGameRoom\022\020\n\010roomName\030\001" +
-      " \002(\t\".\n\010JoinRoom\022\020\n\010roomName\030\001 \002(\t\022\020\n\010us" +
-      "erName\030\002 \002(\t\"\"\n\016LaunchGameRoom\022\020\n\010roomNa" +
-      "me\030\001 \002(\t\"\016\n\014GetGameRooms\"\"\n\016GetPlayerNam" +
-      "es\022\020\n\010roomName\030\001 \002(\t\"\013\n\tPauseGame\"\014\n\nRes" +
-      "umeGame\"\016\n\014GetInventory\",\n\025GetTemplatePr" +
-      "operties\022\023\n\013elementName\030\001 \002(\t\"C\n\014PlaceEl" +
-      "ement\022\023\n\013elementName\030\001 \002(\t\022\016\n\006xCoord\030\002 \002",
-      "(\001\022\016\n\006yCoord\030\003 \002(\001"
+      "\n\022PlayerClient.proto\"\023\n\021GetAvailableGame" +
+      "s\"\"\n\016CreateGameRoom\022\020\n\010roomName\030\001 \002(\t\".\n" +
+      "\010JoinRoom\022\020\n\010roomName\030\001 \002(\t\022\020\n\010userName\030" +
+      "\002 \002(\t\"\"\n\016LaunchGameRoom\022\020\n\010roomName\030\001 \002(" +
+      "\t\"\016\n\014GetGameRooms\"\"\n\016GetPlayerNames\022\020\n\010r" +
+      "oomName\030\001 \002(\t\"\013\n\tPauseGame\"\014\n\nResumeGame" +
+      "\"\016\n\014getInventory\",\n\025getTemplatePropertie" +
+      "s\022\023\n\013elementName\030\001 \002(\t\"C\n\014placeElement\022\023" +
+      "\n\013elementName\030\001 \002(\t\022\016\n\006xCoord\030\002 \002(\001\022\016\n\006y" +
+      "Coord\030\003 \002(\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8287,77 +5637,71 @@ public final class PlayerClient {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_ClientMessage_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_ClientMessage_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ClientMessage_descriptor,
-        new java.lang.String[] { "GetAvailableGames", "CreateGameRoom", "JoinRoom", "LaunchGameRoom", "GetGameRooms", "GetPlayerNames", "PauseGame", "ResumeGame", "GetInventory", "GetTemplateProperties", "PlaceElement", });
     internal_static_GetAvailableGames_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(0);
     internal_static_GetAvailableGames_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetAvailableGames_descriptor,
         new java.lang.String[] { });
     internal_static_CreateGameRoom_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(1);
     internal_static_CreateGameRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CreateGameRoom_descriptor,
         new java.lang.String[] { "RoomName", });
     internal_static_JoinRoom_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_JoinRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_JoinRoom_descriptor,
         new java.lang.String[] { "RoomName", "UserName", });
     internal_static_LaunchGameRoom_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_LaunchGameRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LaunchGameRoom_descriptor,
         new java.lang.String[] { "RoomName", });
     internal_static_GetGameRooms_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_GetGameRooms_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetGameRooms_descriptor,
         new java.lang.String[] { });
     internal_static_GetPlayerNames_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_GetPlayerNames_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetPlayerNames_descriptor,
         new java.lang.String[] { "RoomName", });
     internal_static_PauseGame_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_PauseGame_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PauseGame_descriptor,
         new java.lang.String[] { });
     internal_static_ResumeGame_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_ResumeGame_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ResumeGame_descriptor,
         new java.lang.String[] { });
-    internal_static_GetInventory_descriptor =
-      getDescriptor().getMessageTypes().get(9);
-    internal_static_GetInventory_fieldAccessorTable = new
+    internal_static_getInventory_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_getInventory_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_GetInventory_descriptor,
+        internal_static_getInventory_descriptor,
         new java.lang.String[] { });
-    internal_static_GetTemplateProperties_descriptor =
-      getDescriptor().getMessageTypes().get(10);
-    internal_static_GetTemplateProperties_fieldAccessorTable = new
+    internal_static_getTemplateProperties_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_getTemplateProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_GetTemplateProperties_descriptor,
+        internal_static_getTemplateProperties_descriptor,
         new java.lang.String[] { "ElementName", });
-    internal_static_PlaceElement_descriptor =
-      getDescriptor().getMessageTypes().get(11);
-    internal_static_PlaceElement_fieldAccessorTable = new
+    internal_static_placeElement_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_placeElement_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_PlaceElement_descriptor,
+        internal_static_placeElement_descriptor,
         new java.lang.String[] { "ElementName", "XCoord", "YCoord", });
   }
 

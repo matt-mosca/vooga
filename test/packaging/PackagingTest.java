@@ -1,11 +1,10 @@
 package packaging;
 
 import main.Main;
-import main.MainJarRunner;
+import networking.ChatTestWindow;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Properties;
 
 /**
  * Tests the packager.
@@ -16,11 +15,8 @@ public class PackagingTest {
 
     private static void testJarCreation(Packager packager) {
         try {
-            Properties properties = new Properties();
-            properties.load(PackagingTest.class.getClassLoader().getResourceAsStream("ExportedGameName.properties"));
-            // properties.setProperty("gameFile", "test18.voog");
             packager.generateJar("data/games/jar-package-testing.jar", "src",
-                    "out/production/voogasalad_duvallinthistogether/", MainJarRunner.class,
+                    "out/production/voogasalad_duvallinthistogether/", Main.class,
                     "resources/", "authoring/", "data/", "lib/");
             // test the JAR manually with a launch
         } catch (IOException e) {
@@ -41,7 +37,7 @@ public class PackagingTest {
         Packager packager = new Packager();
         try{
             testJarCreation(packager);
-            // testPathConversion(packager);
+            testPathConversion(packager);
         } catch (Exception e) {
             // ignore
             e.printStackTrace();
