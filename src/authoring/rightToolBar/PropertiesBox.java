@@ -2,10 +2,8 @@ package authoring.rightToolBar;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import engine.authoring_engine.AuthoringController;
-import interfaces.CreationInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -14,24 +12,23 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class PropertiesBox extends VBox {
-	private CreationInterface creation;
 	private Map<String, String> propertiesMap;
 	private String[] propertyArr;
 	private TableView<Properties> table;
 	private ObservableList<Properties> data;
 	private TableColumn<Properties, String> propertiesColumn;
 	private TableColumn<Properties, String> valuesColumn;
-	private SpriteImage currSprite;
+	private ImageView currSprite;
 	private AddToWaveButton myWaveAdder;
 
 	
-	public PropertiesBox(CreationInterface creation, SpriteImage mySprite, AuthoringController author) {
-		this.creation = creation;
+	public PropertiesBox(ImageView mySprite, AuthoringController author) {
 		currSprite = mySprite;
-		propertiesMap = author.getElementProperties(mySprite.getElementId());
+		propertiesMap = author.getTemplateProperties(mySprite.getId());
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
@@ -60,16 +57,15 @@ public class PropertiesBox extends VBox {
 			            ((Properties) t.getTableView().getItems().get(
 			                t.getTablePosition().getRow())
 			                ).setMyValue(t.getNewValue());
-			            mySprite.update(t.getRowValue().getMyProperty(), t.getNewValue());
 			            Map<String, String> newPropertiesMap = new HashMap<String, String>();
 			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getNewValue());
-			            author.updateElementDefinition(mySprite.getName(), mySprite.getAllProperties(), true);
+			            author.updateElementDefinition(mySprite.getId(), newPropertiesMap, true);
 			        }
 			    }
 			);
 	}
 	
-	public SpriteImage getCurrSprite() {
+	public ImageView getCurrSprite() {
 		return currSprite;
 	}
 	
