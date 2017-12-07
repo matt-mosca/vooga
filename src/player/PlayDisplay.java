@@ -127,6 +127,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		tower1 = new TowerImage(this, "Castle_Tower1");
 		tower1.setFitHeight(40);
 		tower1.setFitWidth(40);
+		tower1.setVisible(false);
 		myPlayArea.getChildren().add(tower1);
 	}
 	
@@ -258,7 +259,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		if(selected) {
 			selected = false;
 			myScene.setCursor(Cursor.DEFAULT);
-			if(e.getButton().equals(MouseButton.PRIMARY)) myController.placeElement(placeable.getElementName(), new Point2D(e.getX(),e.getY()));
+			if(e.getButton().equals(MouseButton.PRIMARY)) {
+				myController.placeElement(placeable.getElementName(), new Point2D(e.getX(),e.getY()));
+				myCoinDisplay.decreaseByAmount(500);
+			}
 		}
 	}
 
