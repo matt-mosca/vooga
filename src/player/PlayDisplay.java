@@ -37,11 +37,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import splashScreen.ScreenDisplay;
-import splashScreen.SplashPlayScreen;
-import sprites.Sprite;
-import sprites.StaticObject;
-import toolbars.InventoryToolBar;
+import display.splashScreen.ScreenDisplay;
+import display.splashScreen.SplashPlayScreen;
+import engine.game_elements.GameElement;
+import display.sprites.StaticObject;
+import display.toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
@@ -50,7 +50,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	
 	private InventoryToolBar myInventoryToolBar;
 	private VBox myLeftBar;
-	private List<List<Sprite>> levelSpritesCache;
+	private List<List<GameElement>> levelSpritesCache;
 	private PlacementGrid myMainGrid;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;

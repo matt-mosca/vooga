@@ -1,7 +1,7 @@
 package authoring.rightToolBar;
 
-import interfaces.CreationInterface;
-import interfaces.PropertiesInterface;
+import display.interfaces.CreationInterface;
+import display.interfaces.PropertiesInterface;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 

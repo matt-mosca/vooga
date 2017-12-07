@@ -1,7 +1,7 @@
 package authoring.customize;
 
 import authoring.EditDisplay;
-import interfaces.CustomizeInterface;
+import display.interfaces.CustomizeInterface;
 
 public class AttackDefenseToggle extends ToggleSwitch {
 	private EditDisplay myDisplay;

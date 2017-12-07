@@ -1,8 +1,8 @@
 package main;
 
-import splashScreen.ScreenDisplay;
-import splashScreen.SplashPlayScreen;
-import splashScreen.SplashScreen;
+import display.splashScreen.ScreenDisplay;
+import display.splashScreen.SplashPlayScreen;
+import display.splashScreen.SplashScreen;
 import javafx.application.Application;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;

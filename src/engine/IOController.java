@@ -2,16 +2,14 @@ package engine;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URLDecoder;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import io.GamePersistence;
-import sprites.Sprite;
-import util.SerializationUtils;
+import engine.game_elements.GameElement;
+import util.io.GamePersistence;
+import util.io.SerializationUtils;
 
 /**
  * Gateway of authoring and play modules to I/O through engine. Encapsulates
@@ -51,11 +49,11 @@ public class IOController {
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-			Map<String, String> levelConditions, Bank levelBank, List<Sprite> levelSprites, Set<String> levelInventories, Map<String, Double> status,
-			boolean forAuthoring) {
+							  Map<String, String> levelConditions, Bank levelBank, List<GameElement> levelGameElements, Set<String> levelInventories, Map<String, Double> status,
+							  boolean forAuthoring) {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
-				currentLevel, status, levelSprites, levelInventories);
+				currentLevel, status, levelGameElements, levelInventories);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -72,13 +70,13 @@ public class IOController {
 	 *         to the front end
 	 * @throws FileNotFoundException
 	 */
-	public List<Sprite> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
+	public List<GameElement> loadGameStateElements(String savedGameName, int level, boolean forAuthoring)
 			throws FileNotFoundException {
 		// First extract string from file through io module
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		// deserialize string into map through utils module
-		List<Sprite> levelSprites = serializationUtils.deserializeGameSprites(serializedGameData, level);
-		return levelSprites;
+		List<GameElement> levelGameElements = serializationUtils.deserializeGameSprites(serializedGameData, level);
+		return levelGameElements;
 	}
 
 	// TODO - throw custom exception
@@ -270,14 +268,14 @@ public class IOController {
 	 *            description of level as set by authoring engine
 	 * @param levelStatus
 	 *            top-level status metrics of game
-	 * @param levelSprites
+	 * @param levelGameElements
 	 *            the template-mapped game elements present in the level
 	 * @return string representing serialization of level's data
 	 */
 	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
-			Bank levelBank, Map<String, Double> levelStatus, List<Sprite> levelSprites, Set<String> levelInventories) {
+										Bank levelBank, Map<String, Double> levelStatus, List<GameElement> levelGameElements, Set<String> levelInventories) {
 		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelBank, levelStatus,
-				levelSprites, levelInventories, level);
+				levelGameElements, levelInventories, level);
 	}
 
 	/**

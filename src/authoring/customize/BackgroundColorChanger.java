@@ -1,6 +1,6 @@
 package authoring.customize;
 
-import interfaces.CustomizeInterface;
+import display.interfaces.CustomizeInterface;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

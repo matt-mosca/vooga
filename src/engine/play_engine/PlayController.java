@@ -2,6 +2,7 @@ package engine.play_engine;
 
 import engine.AbstractGameController;
 import engine.PlayModelController;
+import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Resource;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Controls the model for a game being played. Allows the view to modify and
@@ -46,12 +46,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private Method victoryConditionMethod;
 	private Method defeatConditionMethod;
 	private int maxLevels = DEFAULT_MAX_LEVELS;
-	private List<Set<Entry<Integer, Sprite>>> savedList;
+	private List<Set<Entry<Integer, GameElement>>> savedList;
 
 	public PlayController() {
 		super();
-		savedList = new ArrayList<Set<Entry<Integer, Sprite>>>();
-		elementManager = new ElementManager(getSpriteFactory(), getSpriteQueryHandler());
+		savedList = new ArrayList<Set<Entry<Integer, GameElement>>>();
+		elementManager = new ElementManager(getGameElementFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
 	}
@@ -94,8 +94,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			 */
 			savedList.add(getSpriteIdMap().entrySet());
 			elementManager.update();
-			List<Sprite> deadElements = elementManager.getDeadElements();
-			for (Sprite s : elementManager.getNewlyGeneratedElements()) {
+			List<GameElement> deadElements = elementManager.getDeadElements();
+			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
+			for (GameElement s : elementManager.getNewlyGeneratedElements()) {
 				cacheAndCreateIdentifier(s);
 			}
 			// Package these changes into an Update message
@@ -131,8 +132,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
 		assertValidLevel(level);
-		Collection<Sprite> levelSprites = elementManager.getCurrentElements();
-		return getIdsCollectionFromSpriteCollection(levelSprites);
+		Collection<GameElement> levelGameElements = elementManager.getCurrentElements();
+		return getIdsCollectionFromSpriteCollection(levelGameElements);
 	}
 
 	@Override
@@ -151,11 +152,10 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
 		}
-		Sprite sprite = getSpriteIdMap().get(elementId);
-		sprite = getSpriteUpgrader().upgradeSprite(sprite);
-		getSpriteIdMap().put(elementId, sprite);
-		// I think this will update the reference in the element manager but might need
-		// to manually
+		GameElement gameElement = getSpriteIdMap().get(elementId);
+		gameElement = getGameElementUpgrader().upgradeSprite(gameElement);
+		getSpriteIdMap().put(elementId, gameElement);
+		// I think this will update the reference in the element manager but might need to manually
 	}
 
 	public boolean isLevelCleared() {

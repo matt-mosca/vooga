@@ -52,7 +52,17 @@ public interface MovementStrategy {
      */
     TrackingPoint getPositionForTracking();
     
+    /**
+     * Get if the Sprite has reached its destination
+     * 
+     * @return Whether or not the target has reached its destination
+     * */
     boolean targetReached();
     
+    /**
+     * Get if the Sprite should be removed upon completion of the its movement
+     * 
+     * @return Whether or not the Sprite should be removed
+     * */
     boolean removeUponCompletion();
 }
