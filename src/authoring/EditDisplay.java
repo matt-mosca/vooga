@@ -252,6 +252,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 				// TODO Change to alert for the user 
 				e.printStackTrace();
 			}
+		}else {
+			returnButtonPressed();
 		}
 	}
 

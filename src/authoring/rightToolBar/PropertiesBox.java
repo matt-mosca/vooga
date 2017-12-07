@@ -31,7 +31,7 @@ public class PropertiesBox extends VBox {
 	public PropertiesBox(CreationInterface creation, SpriteImage mySprite, AuthoringController author) {
 		this.creation = creation;
 		currSprite = mySprite;
-		propertiesMap = mySprite.getMyProperties();
+		propertiesMap = author.getElementProperties(mySprite.getElementId());
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
