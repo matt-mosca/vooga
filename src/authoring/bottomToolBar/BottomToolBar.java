@@ -78,7 +78,7 @@ public class BottomToolBar extends VBox {
 	}
 	
 	private void loadLevels() {
-		if(myController.getNumLevelsForGame(myController.getGameName(), true) == 0) {
+		if(myController.getGameName().equals("untitled") || myController.getNumLevelsForGame(myController.getGameName(), true) == 0) {
 			addLevel();
 			return;
 		}
