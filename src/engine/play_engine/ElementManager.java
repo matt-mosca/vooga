@@ -40,6 +40,7 @@ public class ElementManager {
 		this.spriteQueryHandler = spriteQueryHandler;
 		newElements = new ArrayList<>();
 		deadElements = new ArrayList<>();
+		activeElements = new ArrayList<>();
 	}
 
 	// Guaranteed to return only active elements (i.e. not dead ones)

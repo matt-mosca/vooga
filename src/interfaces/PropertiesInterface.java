@@ -8,4 +8,6 @@ public interface PropertiesInterface {
 
 	public void imageSelected(SpriteImage imageView);
 
+	public void addToWave();
+
 }

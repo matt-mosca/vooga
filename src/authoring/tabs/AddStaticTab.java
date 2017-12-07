@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import interfaces.ClickableInterface;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.MouseEvent;
 import splashScreen.ScreenDisplay;
 import sprites.StaticObject;
 
