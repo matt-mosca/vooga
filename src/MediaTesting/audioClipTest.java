@@ -1,7 +1,5 @@
 package MediaTesting;
 
-import splashScreen.ScreenDisplay;
-import splashScreen.SplashScreen;
 import factory.AudioClipFactory;
 import javafx.application.Application;
 import javafx.scene.Group;
