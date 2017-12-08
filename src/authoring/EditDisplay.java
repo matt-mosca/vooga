@@ -301,7 +301,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void imageSelected(SpriteImage imageView) {
-		imageView.addBasePropertyMap(basePropertyMap);
+//		imageView.addBasePropertyMap(basePropertyMap);
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		controller.defineElement(imageView.getId(), imageView.getAllProperties());
 		controller.addElementToInventory(imageView.getId());

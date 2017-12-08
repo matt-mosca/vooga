@@ -31,14 +31,6 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	private void addDefaultValues() {
-		defaultValues.put("Move an object", "Object will stay at desired location");
-		defaultValues.put("Collision effects", "Invulnerable to collision damage");
-		defaultValues.put("Collided-with effects", "Do nothing to colliding objects");
-		defaultValues.put("Firing Behavior", "Do not fire projectiles");
-		defaultValues.put("Numerical \"team\" association", "1");
-		defaultValues.put("imageWidth", "45.0");
-		defaultValues.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
-		defaultValues.put("imageHeight", "45.0");
 		if (this instanceof TroopImage) {
 			defaultValues.put("Numerical \"team\" association", "2");
 			defaultValues.put("tabName", "Troops");
@@ -72,11 +64,11 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	public void createInitialProperties(Map<String, Class> newMap) {
-		
 		if (myPossibleProperties.isEmpty()) {
 			myPossibleProperties.put("Name", myName);
 			for (String s : newMap.keySet()) {
-				myPossibleProperties.put(s, getDefault(s));
+				String def = getDefault(s);
+				if(def != null) myPossibleProperties.put(s, def);
 			}
 		} 
 	}
@@ -109,17 +101,9 @@ public abstract class SpriteImage extends InteractiveObject {
 	public void createElement() {
 	}
 	
-	public void addBasePropertyMap(Map<String, String> newMap) {
-		myBaseProperties = newMap;
-	}
-	
-	public Map<String, String> getPropertiesMap() {
-		return myBaseProperties;
-	}
-	
 	public Map<String, String> getAllProperties() {
-		allProperties.putAll(myPossibleProperties);		
-		allProperties.putAll(myBaseProperties);
+		allProperties.putAll(myPossibleProperties);
+		allProperties.putAll(defaultValues);
 		if (this instanceof TroopImage) {
 			allProperties.put("tabName", "Troops");
 		}else if(this instanceof TowerImage) {
@@ -131,8 +115,8 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	private String getDefault(String property) {
-		return defaultValues.get(property);
-		
+		if(myResourceBundle.containsKey(property)) return myResourceBundle.getString(property);
+		return null;
 	}
 	
 	public abstract SpriteImage clone();
