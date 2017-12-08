@@ -166,6 +166,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return levelCleared;
 	}
 
+	@Override
+	public boolean isReadyForNextLevel() {
+		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not last level
+	}
+
 	// TODO - move to some utils class?
 	public Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
 			Collection<GameElement> deadSprites) {
@@ -189,11 +194,20 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
 	}
 
-	public LevelInitialized packageInitialState() {
+	public LevelInitialized packageCurrentState() {
 		return LevelInitialized.newBuilder()
 				.setSpritesAndStatus(packageUpdates(getLevelSprites().get(getCurrentLevel()), Collections.emptyList(),
 						Collections.emptyList()))
 				.setInventory(packageInventory()).build();
+	}
+
+	public LevelInitialized packageInitialState(String saveName, int level) {
+		try {
+			loadOriginalGameState(saveName, level);
+			return packageCurrentState();
+		} catch (IOException e) {
+			return LevelInitialized.getDefaultInstance(); // shouldn't happen
+		}
 	}
 
 	public Update packageStatusUpdate() {

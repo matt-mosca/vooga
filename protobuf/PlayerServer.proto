@@ -11,11 +11,12 @@ message ServerMessage {
 	optional GameRoomLaunchStatus gameRoomLaunchStatus = 4;
 	optional GameRooms gameRooms = 5;
 	optional PlayerNames playerNames = 6;
-	optional LevelInitialized levelInitialized = 7;
-	optional Update update = 8;
-	optional Inventory inventory = 9;
-	optional TemplateProperties templateProperties = 10;
-	optional NewSprite elementPlaced = 11;
+	optional ReadyForNextLevel readyForNextLevel = 7;
+	optional LevelInitialized levelInitialized = 8;
+	optional Update update = 9;
+	optional Inventory inventory = 10;
+	optional TemplateProperties templateProperties = 11;
+	optional NewSprite elementPlaced = 12;
 }
 
 /*
@@ -48,7 +49,7 @@ message GameRoomJoinStatus {
 
 message GameRoomLaunchStatus {
 	optional LevelInitialized initialState = 1;
-	optional string error = 2;
+	optional string error = 2; // remove?
 }
 
 message GameRooms {
@@ -60,14 +61,19 @@ message PlayerNames {
 	optional string error = 2;
 }
 
+message ReadyForNextLevel {
+	required bool isReady = 1;
+}
+
 
 /*
 	In-Game messages
 */
 
 message LevelInitialized {
-	required Inventory inventory = 1;
-	required Update spritesAndStatus = 2;
+	optional Inventory inventory = 1;
+	optional Update spritesAndStatus = 2;
+	optional string error = 3;
 }
 
 message Update {

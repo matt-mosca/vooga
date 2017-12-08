@@ -9,9 +9,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import engine.play_engine.PlayController;
+import networking.protocol.PlayerClient.CheckReadyForNextLevel;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.JoinRoom;
+import networking.protocol.PlayerClient.LoadLevel;
 import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.Game;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
@@ -19,7 +21,9 @@ import networking.protocol.PlayerServer.GameRoomJoinStatus;
 import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.GameRooms;
 import networking.protocol.PlayerServer.Games;
+import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.PlayerNames;
+import networking.protocol.PlayerServer.ReadyForNextLevel;
 import networking.protocol.PlayerServer.ServerMessage;
 
 /**
@@ -42,22 +46,27 @@ class MultiPlayerController {
 	// TODO - Move to resources file
 	public static final String ERROR_CLIENT_ENGAGED = "You are already in another game room";
 	public static final String ERROR_NONEXISTENT_ROOM = "This game room does not exist";
+	public static final String ERROR_WRONG_ROOM = "You do not belong to this room";
 	public static final String GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME = "This game does not exist";
 	public static final String GAME_ROOM_JOIN_ERROR_USERNAME_TAKEN = "This username has already been taken for this game room";
-	public static final String PLAYER_NAMES_ERROR_WRONG_ROOM = "You do not belong to this room";
+	public static final String LOAD_LEVEL_ERROR_NOT_READY = "Your peers are not yet ready to load this level";
+
+	private static final String GAME_ROOM_ID_DELIMITER = "_";
 
 	// Should support multiple concurrent game rooms, i.e. need multiple
 	// concurrent engines
 	private Map<Integer, PlayController> clientIdsToPlayEngines = new HashMap<>();
 	private Map<String, Set<Integer>> roomMembers = new HashMap<>();
 	private Map<Integer, String> clientIdsToUserNames = new HashMap<>();
+	private Map<String, Integer> waitingInRoom = new HashMap<>();
 	private AtomicInteger gameCounter = new AtomicInteger();
 
 	void getAvailableGames(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetAvailableGames()) {
 			Games.Builder gamesBuilder = Games.newBuilder();
 			Map<String, String> availableGames = new PlayController().getAvailableGames();
-			availableGames.keySet().forEach(gameName -> gamesBuilder.addGames(Game.newBuilder().setName(gameName).setDescription(availableGames.get(gameName)).build()));
+			availableGames.keySet().forEach(gameName -> gamesBuilder.addGames(
+					Game.newBuilder().setName(gameName).setDescription(availableGames.get(gameName)).build()));
 			serverMessageBuilder.setAvailableGames(gamesBuilder.build());
 		}
 	}
@@ -73,7 +82,7 @@ class MultiPlayerController {
 						gameRoomCreationStatusBuilder.setError(ERROR_CLIENT_ENGAGED).build());
 				return;
 			}
-			String gameId = gameName + Integer.toString(gameCounter.incrementAndGet());
+			String gameId = generateGameRoomNameFromGameName(gameName);
 			// Verify that gameName is valid
 			PlayController controllerForGame = new PlayController();
 			if (!controllerForGame.getAvailableGames().containsKey(gameName)) {
@@ -83,6 +92,7 @@ class MultiPlayerController {
 			}
 			clientIdsToPlayEngines.put(clientId, controllerForGame);
 			roomMembers.put(gameId, new HashSet<>());
+			clearWaitingRoom(gameId);
 			serverMessageBuilder.setGameRoomCreationStatus(gameRoomCreationStatusBuilder.setRoomId(gameId).build());
 		}
 	}
@@ -126,8 +136,9 @@ class MultiPlayerController {
 						.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder.setError(ERROR_NONEXISTENT_ROOM).build());
 				return;
 			}
+			String gameName = getGameNameFromGameRoomName(gameRoomToLaunch);
 			serverMessageBuilder.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder
-					.setInitialState(clientIdsToPlayEngines.get(clientId).packageInitialState()).build());// TEMP
+					.setInitialState(clientIdsToPlayEngines.get(clientId).packageInitialState(gameName, 1)).build());// TEMP
 		}
 	}
 
@@ -146,7 +157,7 @@ class MultiPlayerController {
 				return;
 			}
 			if (!roomMembers.get(gameRoomName).contains(clientId)) {
-				serverMessageBuilder.setPlayerNames(playerNamesBuilder.setError(PLAYER_NAMES_ERROR_WRONG_ROOM).build());
+				serverMessageBuilder.setPlayerNames(playerNamesBuilder.setError(ERROR_WRONG_ROOM).build());
 				return;
 			}
 			serverMessageBuilder
@@ -207,6 +218,45 @@ class MultiPlayerController {
 		}
 	}
 
+	void checkReadyForNextLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasCheckReadyForNextLevel()) {
+			// TODO - Handle case where client tries to place element without belonging to a
+			// game room?
+			String roomName = clientMessage.getCheckReadyForNextLevel().getRoomName();
+			serverMessageBuilder.setReadyForNextLevel(
+					ReadyForNextLevel.newBuilder().setIsReady(joinAndCheckIfWaitingRoomIsFull(roomName)).build());
+		}
+	}
+
+	void loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasLoadLevel()) {
+			LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to load level without belonging to a
+			// game room?
+			LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
+			String roomName = loadLevelRequest.getRoomName();
+			if (!roomMembers.containsKey(roomName)) {
+				serverMessageBuilder
+						.setLevelInitialized(levelInitializationBuilder.setError(ERROR_NONEXISTENT_ROOM).build());
+				return;
+			}
+			if (!roomMembers.get(roomName).contains(clientId)) {
+				serverMessageBuilder.setLevelInitialized(levelInitializationBuilder.setError(ERROR_WRONG_ROOM).build());
+				return;
+			}
+			int levelToLoad = loadLevelRequest.getLevel();
+			if (!checkIfWaitingRoomIsFull(roomName)) {
+				// not ready to load
+				serverMessageBuilder
+						.setLevelInitialized(levelInitializationBuilder.setError(LOAD_LEVEL_ERROR_NOT_READY).build());
+				return;
+			}
+			String gameName = getGameNameFromGameRoomName(roomName);
+			serverMessageBuilder.setLevelInitialized(playController.packageInitialState(gameName, levelToLoad));
+		}
+	}
+
 	void disconnectClient(int clientId) {
 		clientIdsToPlayEngines.remove(clientId);
 		clientIdsToUserNames.remove(clientId);
@@ -245,6 +295,10 @@ class MultiPlayerController {
 			getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
 			// Handle place element request
 			placeElement(clientId, clientMessage, serverMessageBuilder);
+			// Handle check ready for next level request
+			checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);
+			// Handle load request
+			loadLevel(clientId, clientMessage, serverMessageBuilder);
 			return serverMessageBuilder.build().toByteArray();
 		} catch (IOException e) {
 			e.printStackTrace(); // TEMP
@@ -268,6 +322,27 @@ class MultiPlayerController {
 
 	private PlayController getPlayControllerForGameRoom(String gameRoomName) {
 		return clientIdsToPlayEngines.get(roomMembers.get(gameRoomName).iterator().next());
+	}
+
+	private String generateGameRoomNameFromGameName(String gameName) {
+		return gameName + GAME_ROOM_ID_DELIMITER + Integer.toString(gameCounter.incrementAndGet());
+	}
+
+	private String getGameNameFromGameRoomName(String roomName) {
+		return roomName.substring(0, roomName.lastIndexOf(GAME_ROOM_ID_DELIMITER));
+	}
+
+	private void clearWaitingRoom(String roomName) {
+		waitingInRoom.put(roomName, 0);
+	}
+
+	private boolean joinAndCheckIfWaitingRoomIsFull(String roomName) {
+		waitingInRoom.put(roomName, waitingInRoom.getOrDefault(roomName, 0) + 1);
+		return checkIfWaitingRoomIsFull(roomName);
+	}
+
+	private boolean checkIfWaitingRoomIsFull(String roomName) {
+		return waitingInRoom.get(roomName) < roomMembers.get(roomName).size();
 	}
 
 }

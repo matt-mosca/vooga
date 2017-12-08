@@ -96,67 +96,80 @@ public final class PlayerServer {
     PlayerServer.PlayerNamesOrBuilder getPlayerNamesOrBuilder();
 
     /**
-     * <code>optional .LevelInitialized levelInitialized = 7;</code>
+     * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+     */
+    boolean hasReadyForNextLevel();
+    /**
+     * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+     */
+    PlayerServer.ReadyForNextLevel getReadyForNextLevel();
+    /**
+     * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+     */
+    PlayerServer.ReadyForNextLevelOrBuilder getReadyForNextLevelOrBuilder();
+
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 8;</code>
      */
     boolean hasLevelInitialized();
     /**
-     * <code>optional .LevelInitialized levelInitialized = 7;</code>
+     * <code>optional .LevelInitialized levelInitialized = 8;</code>
      */
     PlayerServer.LevelInitialized getLevelInitialized();
     /**
-     * <code>optional .LevelInitialized levelInitialized = 7;</code>
+     * <code>optional .LevelInitialized levelInitialized = 8;</code>
      */
     PlayerServer.LevelInitializedOrBuilder getLevelInitializedOrBuilder();
 
     /**
-     * <code>optional .Update update = 8;</code>
+     * <code>optional .Update update = 9;</code>
      */
     boolean hasUpdate();
     /**
-     * <code>optional .Update update = 8;</code>
+     * <code>optional .Update update = 9;</code>
      */
     PlayerServer.Update getUpdate();
     /**
-     * <code>optional .Update update = 8;</code>
+     * <code>optional .Update update = 9;</code>
      */
     PlayerServer.UpdateOrBuilder getUpdateOrBuilder();
 
     /**
-     * <code>optional .Inventory inventory = 9;</code>
+     * <code>optional .Inventory inventory = 10;</code>
      */
     boolean hasInventory();
     /**
-     * <code>optional .Inventory inventory = 9;</code>
+     * <code>optional .Inventory inventory = 10;</code>
      */
     PlayerServer.Inventory getInventory();
     /**
-     * <code>optional .Inventory inventory = 9;</code>
+     * <code>optional .Inventory inventory = 10;</code>
      */
     PlayerServer.InventoryOrBuilder getInventoryOrBuilder();
 
     /**
-     * <code>optional .TemplateProperties templateProperties = 10;</code>
+     * <code>optional .TemplateProperties templateProperties = 11;</code>
      */
     boolean hasTemplateProperties();
     /**
-     * <code>optional .TemplateProperties templateProperties = 10;</code>
+     * <code>optional .TemplateProperties templateProperties = 11;</code>
      */
     PlayerServer.TemplateProperties getTemplateProperties();
     /**
-     * <code>optional .TemplateProperties templateProperties = 10;</code>
+     * <code>optional .TemplateProperties templateProperties = 11;</code>
      */
     PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder();
 
     /**
-     * <code>optional .NewSprite elementPlaced = 11;</code>
+     * <code>optional .NewSprite elementPlaced = 12;</code>
      */
     boolean hasElementPlaced();
     /**
-     * <code>optional .NewSprite elementPlaced = 11;</code>
+     * <code>optional .NewSprite elementPlaced = 12;</code>
      */
     PlayerServer.NewSprite getElementPlaced();
     /**
-     * <code>optional .NewSprite elementPlaced = 11;</code>
+     * <code>optional .NewSprite elementPlaced = 12;</code>
      */
     PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder();
   }
@@ -281,8 +294,21 @@ public final class PlayerServer {
               break;
             }
             case 58: {
-              PlayerServer.LevelInitialized.Builder subBuilder = null;
+              PlayerServer.ReadyForNextLevel.Builder subBuilder = null;
               if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                subBuilder = readyForNextLevel_.toBuilder();
+              }
+              readyForNextLevel_ = input.readMessage(PlayerServer.ReadyForNextLevel.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(readyForNextLevel_);
+                readyForNextLevel_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000040;
+              break;
+            }
+            case 66: {
+              PlayerServer.LevelInitialized.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000080) == 0x00000080)) {
                 subBuilder = levelInitialized_.toBuilder();
               }
               levelInitialized_ = input.readMessage(PlayerServer.LevelInitialized.PARSER, extensionRegistry);
@@ -290,12 +316,12 @@ public final class PlayerServer {
                 subBuilder.mergeFrom(levelInitialized_);
                 levelInitialized_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000040;
+              bitField0_ |= 0x00000080;
               break;
             }
-            case 66: {
+            case 74: {
               PlayerServer.Update.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000080) == 0x00000080)) {
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
                 subBuilder = update_.toBuilder();
               }
               update_ = input.readMessage(PlayerServer.Update.PARSER, extensionRegistry);
@@ -303,12 +329,12 @@ public final class PlayerServer {
                 subBuilder.mergeFrom(update_);
                 update_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000080;
+              bitField0_ |= 0x00000100;
               break;
             }
-            case 74: {
+            case 82: {
               PlayerServer.Inventory.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000100) == 0x00000100)) {
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
                 subBuilder = inventory_.toBuilder();
               }
               inventory_ = input.readMessage(PlayerServer.Inventory.PARSER, extensionRegistry);
@@ -316,12 +342,12 @@ public final class PlayerServer {
                 subBuilder.mergeFrom(inventory_);
                 inventory_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000100;
+              bitField0_ |= 0x00000200;
               break;
             }
-            case 82: {
+            case 90: {
               PlayerServer.TemplateProperties.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000200) == 0x00000200)) {
+              if (((bitField0_ & 0x00000400) == 0x00000400)) {
                 subBuilder = templateProperties_.toBuilder();
               }
               templateProperties_ = input.readMessage(PlayerServer.TemplateProperties.PARSER, extensionRegistry);
@@ -329,12 +355,12 @@ public final class PlayerServer {
                 subBuilder.mergeFrom(templateProperties_);
                 templateProperties_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000200;
+              bitField0_ |= 0x00000400;
               break;
             }
-            case 90: {
+            case 98: {
               PlayerServer.NewSprite.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000400) == 0x00000400)) {
+              if (((bitField0_ & 0x00000800) == 0x00000800)) {
                 subBuilder = elementPlaced_.toBuilder();
               }
               elementPlaced_ = input.readMessage(PlayerServer.NewSprite.PARSER, extensionRegistry);
@@ -342,7 +368,7 @@ public final class PlayerServer {
                 subBuilder.mergeFrom(elementPlaced_);
                 elementPlaced_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000400;
+              bitField0_ |= 0x00000800;
               break;
             }
           }
@@ -496,106 +522,127 @@ public final class PlayerServer {
       return playerNames_ == null ? PlayerServer.PlayerNames.getDefaultInstance() : playerNames_;
     }
 
-    public static final int LEVELINITIALIZED_FIELD_NUMBER = 7;
-    private PlayerServer.LevelInitialized levelInitialized_;
+    public static final int READYFORNEXTLEVEL_FIELD_NUMBER = 7;
+    private PlayerServer.ReadyForNextLevel readyForNextLevel_;
     /**
-     * <code>optional .LevelInitialized levelInitialized = 7;</code>
+     * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
      */
-    public boolean hasLevelInitialized() {
+    public boolean hasReadyForNextLevel() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional .LevelInitialized levelInitialized = 7;</code>
+     * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+     */
+    public PlayerServer.ReadyForNextLevel getReadyForNextLevel() {
+      return readyForNextLevel_ == null ? PlayerServer.ReadyForNextLevel.getDefaultInstance() : readyForNextLevel_;
+    }
+    /**
+     * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+     */
+    public PlayerServer.ReadyForNextLevelOrBuilder getReadyForNextLevelOrBuilder() {
+      return readyForNextLevel_ == null ? PlayerServer.ReadyForNextLevel.getDefaultInstance() : readyForNextLevel_;
+    }
+
+    public static final int LEVELINITIALIZED_FIELD_NUMBER = 8;
+    private PlayerServer.LevelInitialized levelInitialized_;
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 8;</code>
+     */
+    public boolean hasLevelInitialized() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional .LevelInitialized levelInitialized = 8;</code>
      */
     public PlayerServer.LevelInitialized getLevelInitialized() {
       return levelInitialized_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : levelInitialized_;
     }
     /**
-     * <code>optional .LevelInitialized levelInitialized = 7;</code>
+     * <code>optional .LevelInitialized levelInitialized = 8;</code>
      */
     public PlayerServer.LevelInitializedOrBuilder getLevelInitializedOrBuilder() {
       return levelInitialized_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : levelInitialized_;
     }
 
-    public static final int UPDATE_FIELD_NUMBER = 8;
+    public static final int UPDATE_FIELD_NUMBER = 9;
     private PlayerServer.Update update_;
     /**
-     * <code>optional .Update update = 8;</code>
+     * <code>optional .Update update = 9;</code>
      */
     public boolean hasUpdate() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
+      return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>optional .Update update = 8;</code>
+     * <code>optional .Update update = 9;</code>
      */
     public PlayerServer.Update getUpdate() {
       return update_ == null ? PlayerServer.Update.getDefaultInstance() : update_;
     }
     /**
-     * <code>optional .Update update = 8;</code>
+     * <code>optional .Update update = 9;</code>
      */
     public PlayerServer.UpdateOrBuilder getUpdateOrBuilder() {
       return update_ == null ? PlayerServer.Update.getDefaultInstance() : update_;
     }
 
-    public static final int INVENTORY_FIELD_NUMBER = 9;
+    public static final int INVENTORY_FIELD_NUMBER = 10;
     private PlayerServer.Inventory inventory_;
     /**
-     * <code>optional .Inventory inventory = 9;</code>
+     * <code>optional .Inventory inventory = 10;</code>
      */
     public boolean hasInventory() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
+      return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
-     * <code>optional .Inventory inventory = 9;</code>
+     * <code>optional .Inventory inventory = 10;</code>
      */
     public PlayerServer.Inventory getInventory() {
       return inventory_ == null ? PlayerServer.Inventory.getDefaultInstance() : inventory_;
     }
     /**
-     * <code>optional .Inventory inventory = 9;</code>
+     * <code>optional .Inventory inventory = 10;</code>
      */
     public PlayerServer.InventoryOrBuilder getInventoryOrBuilder() {
       return inventory_ == null ? PlayerServer.Inventory.getDefaultInstance() : inventory_;
     }
 
-    public static final int TEMPLATEPROPERTIES_FIELD_NUMBER = 10;
+    public static final int TEMPLATEPROPERTIES_FIELD_NUMBER = 11;
     private PlayerServer.TemplateProperties templateProperties_;
     /**
-     * <code>optional .TemplateProperties templateProperties = 10;</code>
+     * <code>optional .TemplateProperties templateProperties = 11;</code>
      */
     public boolean hasTemplateProperties() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
+      return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>optional .TemplateProperties templateProperties = 10;</code>
+     * <code>optional .TemplateProperties templateProperties = 11;</code>
      */
     public PlayerServer.TemplateProperties getTemplateProperties() {
       return templateProperties_ == null ? PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
     }
     /**
-     * <code>optional .TemplateProperties templateProperties = 10;</code>
+     * <code>optional .TemplateProperties templateProperties = 11;</code>
      */
     public PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder() {
       return templateProperties_ == null ? PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
     }
 
-    public static final int ELEMENTPLACED_FIELD_NUMBER = 11;
+    public static final int ELEMENTPLACED_FIELD_NUMBER = 12;
     private PlayerServer.NewSprite elementPlaced_;
     /**
-     * <code>optional .NewSprite elementPlaced = 11;</code>
+     * <code>optional .NewSprite elementPlaced = 12;</code>
      */
     public boolean hasElementPlaced() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
+      return ((bitField0_ & 0x00000800) == 0x00000800);
     }
     /**
-     * <code>optional .NewSprite elementPlaced = 11;</code>
+     * <code>optional .NewSprite elementPlaced = 12;</code>
      */
     public PlayerServer.NewSprite getElementPlaced() {
       return elementPlaced_ == null ? PlayerServer.NewSprite.getDefaultInstance() : elementPlaced_;
     }
     /**
-     * <code>optional .NewSprite elementPlaced = 11;</code>
+     * <code>optional .NewSprite elementPlaced = 12;</code>
      */
     public PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder() {
       return elementPlaced_ == null ? PlayerServer.NewSprite.getDefaultInstance() : elementPlaced_;
@@ -621,6 +668,12 @@ public final class PlayerServer {
       }
       if (hasGameRoomLaunchStatus()) {
         if (!getGameRoomLaunchStatus().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasReadyForNextLevel()) {
+        if (!getReadyForNextLevel().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -674,19 +727,22 @@ public final class PlayerServer {
         output.writeMessage(6, getPlayerNames());
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeMessage(7, getLevelInitialized());
+        output.writeMessage(7, getReadyForNextLevel());
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeMessage(8, getUpdate());
+        output.writeMessage(8, getLevelInitialized());
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeMessage(9, getInventory());
+        output.writeMessage(9, getUpdate());
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeMessage(10, getTemplateProperties());
+        output.writeMessage(10, getInventory());
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeMessage(11, getElementPlaced());
+        output.writeMessage(11, getTemplateProperties());
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeMessage(12, getElementPlaced());
       }
       unknownFields.writeTo(output);
     }
@@ -722,23 +778,27 @@ public final class PlayerServer {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getLevelInitialized());
+          .computeMessageSize(7, getReadyForNextLevel());
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, getUpdate());
+          .computeMessageSize(8, getLevelInitialized());
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, getInventory());
+          .computeMessageSize(9, getUpdate());
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, getTemplateProperties());
+          .computeMessageSize(10, getInventory());
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, getElementPlaced());
+          .computeMessageSize(11, getTemplateProperties());
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(12, getElementPlaced());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -786,6 +846,11 @@ public final class PlayerServer {
       if (hasPlayerNames()) {
         result = result && getPlayerNames()
             .equals(other.getPlayerNames());
+      }
+      result = result && (hasReadyForNextLevel() == other.hasReadyForNextLevel());
+      if (hasReadyForNextLevel()) {
+        result = result && getReadyForNextLevel()
+            .equals(other.getReadyForNextLevel());
       }
       result = result && (hasLevelInitialized() == other.hasLevelInitialized());
       if (hasLevelInitialized()) {
@@ -846,6 +911,10 @@ public final class PlayerServer {
       if (hasPlayerNames()) {
         hash = (37 * hash) + PLAYERNAMES_FIELD_NUMBER;
         hash = (53 * hash) + getPlayerNames().hashCode();
+      }
+      if (hasReadyForNextLevel()) {
+        hash = (37 * hash) + READYFORNEXTLEVEL_FIELD_NUMBER;
+        hash = (53 * hash) + getReadyForNextLevel().hashCode();
       }
       if (hasLevelInitialized()) {
         hash = (37 * hash) + LEVELINITIALIZED_FIELD_NUMBER;
@@ -987,6 +1056,7 @@ public final class PlayerServer {
           getGameRoomLaunchStatusFieldBuilder();
           getGameRoomsFieldBuilder();
           getPlayerNamesFieldBuilder();
+          getReadyForNextLevelFieldBuilder();
           getLevelInitializedFieldBuilder();
           getUpdateFieldBuilder();
           getInventoryFieldBuilder();
@@ -1032,36 +1102,42 @@ public final class PlayerServer {
           playerNamesBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000020);
+        if (readyForNextLevelBuilder_ == null) {
+          readyForNextLevel_ = null;
+        } else {
+          readyForNextLevelBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
         if (levelInitializedBuilder_ == null) {
           levelInitialized_ = null;
         } else {
           levelInitializedBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         if (updateBuilder_ == null) {
           update_ = null;
         } else {
           updateBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         if (inventoryBuilder_ == null) {
           inventory_ = null;
         } else {
           inventoryBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         if (templatePropertiesBuilder_ == null) {
           templateProperties_ = null;
         } else {
           templatePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         if (elementPlacedBuilder_ == null) {
           elementPlaced_ = null;
         } else {
           elementPlacedBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -1137,37 +1213,45 @@ public final class PlayerServer {
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
+        if (readyForNextLevelBuilder_ == null) {
+          result.readyForNextLevel_ = readyForNextLevel_;
+        } else {
+          result.readyForNextLevel_ = readyForNextLevelBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
         if (levelInitializedBuilder_ == null) {
           result.levelInitialized_ = levelInitialized_;
         } else {
           result.levelInitialized_ = levelInitializedBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
         }
         if (updateBuilder_ == null) {
           result.update_ = update_;
         } else {
           result.update_ = updateBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
         }
         if (inventoryBuilder_ == null) {
           result.inventory_ = inventory_;
         } else {
           result.inventory_ = inventoryBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
         }
         if (templatePropertiesBuilder_ == null) {
           result.templateProperties_ = templateProperties_;
         } else {
           result.templateProperties_ = templatePropertiesBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
         }
         if (elementPlacedBuilder_ == null) {
           result.elementPlaced_ = elementPlaced_;
@@ -1234,6 +1318,9 @@ public final class PlayerServer {
         if (other.hasPlayerNames()) {
           mergePlayerNames(other.getPlayerNames());
         }
+        if (other.hasReadyForNextLevel()) {
+          mergeReadyForNextLevel(other.getReadyForNextLevel());
+        }
         if (other.hasLevelInitialized()) {
           mergeLevelInitialized(other.getLevelInitialized());
         }
@@ -1267,6 +1354,11 @@ public final class PlayerServer {
         }
         if (hasGameRoomLaunchStatus()) {
           if (!getGameRoomLaunchStatus().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasReadyForNextLevel()) {
+          if (!getReadyForNextLevel().isInitialized()) {
             return false;
           }
         }
@@ -2020,17 +2112,135 @@ public final class PlayerServer {
         return playerNamesBuilder_;
       }
 
+      private PlayerServer.ReadyForNextLevel readyForNextLevel_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.ReadyForNextLevel, PlayerServer.ReadyForNextLevel.Builder, PlayerServer.ReadyForNextLevelOrBuilder> readyForNextLevelBuilder_;
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      public boolean hasReadyForNextLevel() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      public PlayerServer.ReadyForNextLevel getReadyForNextLevel() {
+        if (readyForNextLevelBuilder_ == null) {
+          return readyForNextLevel_ == null ? PlayerServer.ReadyForNextLevel.getDefaultInstance() : readyForNextLevel_;
+        } else {
+          return readyForNextLevelBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      public Builder setReadyForNextLevel(PlayerServer.ReadyForNextLevel value) {
+        if (readyForNextLevelBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          readyForNextLevel_ = value;
+          onChanged();
+        } else {
+          readyForNextLevelBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      public Builder setReadyForNextLevel(
+          PlayerServer.ReadyForNextLevel.Builder builderForValue) {
+        if (readyForNextLevelBuilder_ == null) {
+          readyForNextLevel_ = builderForValue.build();
+          onChanged();
+        } else {
+          readyForNextLevelBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      public Builder mergeReadyForNextLevel(PlayerServer.ReadyForNextLevel value) {
+        if (readyForNextLevelBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) == 0x00000040) &&
+              readyForNextLevel_ != null &&
+              readyForNextLevel_ != PlayerServer.ReadyForNextLevel.getDefaultInstance()) {
+            readyForNextLevel_ =
+              PlayerServer.ReadyForNextLevel.newBuilder(readyForNextLevel_).mergeFrom(value).buildPartial();
+          } else {
+            readyForNextLevel_ = value;
+          }
+          onChanged();
+        } else {
+          readyForNextLevelBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      public Builder clearReadyForNextLevel() {
+        if (readyForNextLevelBuilder_ == null) {
+          readyForNextLevel_ = null;
+          onChanged();
+        } else {
+          readyForNextLevelBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      public PlayerServer.ReadyForNextLevel.Builder getReadyForNextLevelBuilder() {
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return getReadyForNextLevelFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      public PlayerServer.ReadyForNextLevelOrBuilder getReadyForNextLevelOrBuilder() {
+        if (readyForNextLevelBuilder_ != null) {
+          return readyForNextLevelBuilder_.getMessageOrBuilder();
+        } else {
+          return readyForNextLevel_ == null ?
+              PlayerServer.ReadyForNextLevel.getDefaultInstance() : readyForNextLevel_;
+        }
+      }
+      /**
+       * <code>optional .ReadyForNextLevel readyForNextLevel = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.ReadyForNextLevel, PlayerServer.ReadyForNextLevel.Builder, PlayerServer.ReadyForNextLevelOrBuilder> 
+          getReadyForNextLevelFieldBuilder() {
+        if (readyForNextLevelBuilder_ == null) {
+          readyForNextLevelBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.ReadyForNextLevel, PlayerServer.ReadyForNextLevel.Builder, PlayerServer.ReadyForNextLevelOrBuilder>(
+                  getReadyForNextLevel(),
+                  getParentForChildren(),
+                  isClean());
+          readyForNextLevel_ = null;
+        }
+        return readyForNextLevelBuilder_;
+      }
+
       private PlayerServer.LevelInitialized levelInitialized_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.LevelInitialized, PlayerServer.LevelInitialized.Builder, PlayerServer.LevelInitializedOrBuilder> levelInitializedBuilder_;
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       public boolean hasLevelInitialized() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       public PlayerServer.LevelInitialized getLevelInitialized() {
         if (levelInitializedBuilder_ == null) {
@@ -2040,7 +2250,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       public Builder setLevelInitialized(PlayerServer.LevelInitialized value) {
         if (levelInitializedBuilder_ == null) {
@@ -2052,11 +2262,11 @@ public final class PlayerServer {
         } else {
           levelInitializedBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       public Builder setLevelInitialized(
           PlayerServer.LevelInitialized.Builder builderForValue) {
@@ -2066,15 +2276,15 @@ public final class PlayerServer {
         } else {
           levelInitializedBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       public Builder mergeLevelInitialized(PlayerServer.LevelInitialized value) {
         if (levelInitializedBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) == 0x00000040) &&
+          if (((bitField0_ & 0x00000080) == 0x00000080) &&
               levelInitialized_ != null &&
               levelInitialized_ != PlayerServer.LevelInitialized.getDefaultInstance()) {
             levelInitialized_ =
@@ -2086,11 +2296,11 @@ public final class PlayerServer {
         } else {
           levelInitializedBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       public Builder clearLevelInitialized() {
         if (levelInitializedBuilder_ == null) {
@@ -2099,19 +2309,19 @@ public final class PlayerServer {
         } else {
           levelInitializedBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       public PlayerServer.LevelInitialized.Builder getLevelInitializedBuilder() {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         onChanged();
         return getLevelInitializedFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       public PlayerServer.LevelInitializedOrBuilder getLevelInitializedOrBuilder() {
         if (levelInitializedBuilder_ != null) {
@@ -2122,7 +2332,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .LevelInitialized levelInitialized = 7;</code>
+       * <code>optional .LevelInitialized levelInitialized = 8;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.LevelInitialized, PlayerServer.LevelInitialized.Builder, PlayerServer.LevelInitializedOrBuilder> 
@@ -2142,13 +2352,13 @@ public final class PlayerServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder> updateBuilder_;
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       public boolean hasUpdate() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       public PlayerServer.Update getUpdate() {
         if (updateBuilder_ == null) {
@@ -2158,7 +2368,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       public Builder setUpdate(PlayerServer.Update value) {
         if (updateBuilder_ == null) {
@@ -2170,11 +2380,11 @@ public final class PlayerServer {
         } else {
           updateBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       public Builder setUpdate(
           PlayerServer.Update.Builder builderForValue) {
@@ -2184,15 +2394,15 @@ public final class PlayerServer {
         } else {
           updateBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       public Builder mergeUpdate(PlayerServer.Update value) {
         if (updateBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) == 0x00000080) &&
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
               update_ != null &&
               update_ != PlayerServer.Update.getDefaultInstance()) {
             update_ =
@@ -2204,11 +2414,11 @@ public final class PlayerServer {
         } else {
           updateBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       public Builder clearUpdate() {
         if (updateBuilder_ == null) {
@@ -2217,19 +2427,19 @@ public final class PlayerServer {
         } else {
           updateBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       public PlayerServer.Update.Builder getUpdateBuilder() {
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000100;
         onChanged();
         return getUpdateFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       public PlayerServer.UpdateOrBuilder getUpdateOrBuilder() {
         if (updateBuilder_ != null) {
@@ -2240,7 +2450,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .Update update = 8;</code>
+       * <code>optional .Update update = 9;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder> 
@@ -2260,13 +2470,13 @@ public final class PlayerServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.Inventory, PlayerServer.Inventory.Builder, PlayerServer.InventoryOrBuilder> inventoryBuilder_;
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       public boolean hasInventory() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       public PlayerServer.Inventory getInventory() {
         if (inventoryBuilder_ == null) {
@@ -2276,7 +2486,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       public Builder setInventory(PlayerServer.Inventory value) {
         if (inventoryBuilder_ == null) {
@@ -2288,11 +2498,11 @@ public final class PlayerServer {
         } else {
           inventoryBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       public Builder setInventory(
           PlayerServer.Inventory.Builder builderForValue) {
@@ -2302,15 +2512,15 @@ public final class PlayerServer {
         } else {
           inventoryBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       public Builder mergeInventory(PlayerServer.Inventory value) {
         if (inventoryBuilder_ == null) {
-          if (((bitField0_ & 0x00000100) == 0x00000100) &&
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
               inventory_ != null &&
               inventory_ != PlayerServer.Inventory.getDefaultInstance()) {
             inventory_ =
@@ -2322,11 +2532,11 @@ public final class PlayerServer {
         } else {
           inventoryBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       public Builder clearInventory() {
         if (inventoryBuilder_ == null) {
@@ -2335,19 +2545,19 @@ public final class PlayerServer {
         } else {
           inventoryBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       public PlayerServer.Inventory.Builder getInventoryBuilder() {
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         onChanged();
         return getInventoryFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       public PlayerServer.InventoryOrBuilder getInventoryOrBuilder() {
         if (inventoryBuilder_ != null) {
@@ -2358,7 +2568,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .Inventory inventory = 9;</code>
+       * <code>optional .Inventory inventory = 10;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.Inventory, PlayerServer.Inventory.Builder, PlayerServer.InventoryOrBuilder> 
@@ -2378,13 +2588,13 @@ public final class PlayerServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder> templatePropertiesBuilder_;
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       public boolean hasTemplateProperties() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
+        return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       public PlayerServer.TemplateProperties getTemplateProperties() {
         if (templatePropertiesBuilder_ == null) {
@@ -2394,7 +2604,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       public Builder setTemplateProperties(PlayerServer.TemplateProperties value) {
         if (templatePropertiesBuilder_ == null) {
@@ -2406,11 +2616,11 @@ public final class PlayerServer {
         } else {
           templatePropertiesBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       public Builder setTemplateProperties(
           PlayerServer.TemplateProperties.Builder builderForValue) {
@@ -2420,15 +2630,15 @@ public final class PlayerServer {
         } else {
           templatePropertiesBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       public Builder mergeTemplateProperties(PlayerServer.TemplateProperties value) {
         if (templatePropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00000200) == 0x00000200) &&
+          if (((bitField0_ & 0x00000400) == 0x00000400) &&
               templateProperties_ != null &&
               templateProperties_ != PlayerServer.TemplateProperties.getDefaultInstance()) {
             templateProperties_ =
@@ -2440,11 +2650,11 @@ public final class PlayerServer {
         } else {
           templatePropertiesBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       public Builder clearTemplateProperties() {
         if (templatePropertiesBuilder_ == null) {
@@ -2453,19 +2663,19 @@ public final class PlayerServer {
         } else {
           templatePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       public PlayerServer.TemplateProperties.Builder getTemplatePropertiesBuilder() {
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         onChanged();
         return getTemplatePropertiesFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       public PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder() {
         if (templatePropertiesBuilder_ != null) {
@@ -2476,7 +2686,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 10;</code>
+       * <code>optional .TemplateProperties templateProperties = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder> 
@@ -2496,13 +2706,13 @@ public final class PlayerServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.NewSprite, PlayerServer.NewSprite.Builder, PlayerServer.NewSpriteOrBuilder> elementPlacedBuilder_;
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       public boolean hasElementPlaced() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
+        return ((bitField0_ & 0x00000800) == 0x00000800);
       }
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       public PlayerServer.NewSprite getElementPlaced() {
         if (elementPlacedBuilder_ == null) {
@@ -2512,7 +2722,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       public Builder setElementPlaced(PlayerServer.NewSprite value) {
         if (elementPlacedBuilder_ == null) {
@@ -2524,11 +2734,11 @@ public final class PlayerServer {
         } else {
           elementPlacedBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         return this;
       }
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       public Builder setElementPlaced(
           PlayerServer.NewSprite.Builder builderForValue) {
@@ -2538,15 +2748,15 @@ public final class PlayerServer {
         } else {
           elementPlacedBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         return this;
       }
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       public Builder mergeElementPlaced(PlayerServer.NewSprite value) {
         if (elementPlacedBuilder_ == null) {
-          if (((bitField0_ & 0x00000400) == 0x00000400) &&
+          if (((bitField0_ & 0x00000800) == 0x00000800) &&
               elementPlaced_ != null &&
               elementPlaced_ != PlayerServer.NewSprite.getDefaultInstance()) {
             elementPlaced_ =
@@ -2558,11 +2768,11 @@ public final class PlayerServer {
         } else {
           elementPlacedBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         return this;
       }
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       public Builder clearElementPlaced() {
         if (elementPlacedBuilder_ == null) {
@@ -2571,19 +2781,19 @@ public final class PlayerServer {
         } else {
           elementPlacedBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       public PlayerServer.NewSprite.Builder getElementPlacedBuilder() {
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         onChanged();
         return getElementPlacedFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       public PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder() {
         if (elementPlacedBuilder_ != null) {
@@ -2594,7 +2804,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .NewSprite elementPlaced = 11;</code>
+       * <code>optional .NewSprite elementPlaced = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.NewSprite, PlayerServer.NewSprite.Builder, PlayerServer.NewSpriteOrBuilder> 
@@ -5501,14 +5711,26 @@ public final class PlayerServer {
     PlayerServer.LevelInitializedOrBuilder getInitialStateOrBuilder();
 
     /**
+     * <pre>
+     * remove?
+     * </pre>
+     *
      * <code>optional string error = 2;</code>
      */
     boolean hasError();
     /**
+     * <pre>
+     * remove?
+     * </pre>
+     *
      * <code>optional string error = 2;</code>
      */
     java.lang.String getError();
     /**
+     * <pre>
+     * remove?
+     * </pre>
+     *
      * <code>optional string error = 2;</code>
      */
     com.google.protobuf.ByteString
@@ -5625,12 +5847,20 @@ public final class PlayerServer {
     public static final int ERROR_FIELD_NUMBER = 2;
     private volatile java.lang.Object error_;
     /**
+     * <pre>
+     * remove?
+     * </pre>
+     *
      * <code>optional string error = 2;</code>
      */
     public boolean hasError() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
+     * <pre>
+     * remove?
+     * </pre>
+     *
      * <code>optional string error = 2;</code>
      */
     public java.lang.String getError() {
@@ -5648,6 +5878,10 @@ public final class PlayerServer {
       }
     }
     /**
+     * <pre>
+     * remove?
+     * </pre>
+     *
      * <code>optional string error = 2;</code>
      */
     public com.google.protobuf.ByteString
@@ -6115,12 +6349,20 @@ public final class PlayerServer {
 
       private java.lang.Object error_ = "";
       /**
+       * <pre>
+       * remove?
+       * </pre>
+       *
        * <code>optional string error = 2;</code>
        */
       public boolean hasError() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
+       * <pre>
+       * remove?
+       * </pre>
+       *
        * <code>optional string error = 2;</code>
        */
       public java.lang.String getError() {
@@ -6138,6 +6380,10 @@ public final class PlayerServer {
         }
       }
       /**
+       * <pre>
+       * remove?
+       * </pre>
+       *
        * <code>optional string error = 2;</code>
        */
       public com.google.protobuf.ByteString
@@ -6154,6 +6400,10 @@ public final class PlayerServer {
         }
       }
       /**
+       * <pre>
+       * remove?
+       * </pre>
+       *
        * <code>optional string error = 2;</code>
        */
       public Builder setError(
@@ -6167,6 +6417,10 @@ public final class PlayerServer {
         return this;
       }
       /**
+       * <pre>
+       * remove?
+       * </pre>
+       *
        * <code>optional string error = 2;</code>
        */
       public Builder clearError() {
@@ -6176,6 +6430,10 @@ public final class PlayerServer {
         return this;
       }
       /**
+       * <pre>
+       * remove?
+       * </pre>
+       *
        * <code>optional string error = 2;</code>
        */
       public Builder setErrorBytes(
@@ -7533,35 +7791,523 @@ public final class PlayerServer {
 
   }
 
+  public interface ReadyForNextLevelOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ReadyForNextLevel)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required bool isReady = 1;</code>
+     */
+    boolean hasIsReady();
+    /**
+     * <code>required bool isReady = 1;</code>
+     */
+    boolean getIsReady();
+  }
+  /**
+   * Protobuf type {@code ReadyForNextLevel}
+   */
+  public  static final class ReadyForNextLevel extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:ReadyForNextLevel)
+      ReadyForNextLevelOrBuilder {
+    // Use ReadyForNextLevel.newBuilder() to construct.
+    private ReadyForNextLevel(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ReadyForNextLevel() {
+      isReady_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ReadyForNextLevel(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              isReady_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return PlayerServer.internal_static_ReadyForNextLevel_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return PlayerServer.internal_static_ReadyForNextLevel_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              PlayerServer.ReadyForNextLevel.class, PlayerServer.ReadyForNextLevel.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int ISREADY_FIELD_NUMBER = 1;
+    private boolean isReady_;
+    /**
+     * <code>required bool isReady = 1;</code>
+     */
+    public boolean hasIsReady() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool isReady = 1;</code>
+     */
+    public boolean getIsReady() {
+      return isReady_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasIsReady()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, isReady_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, isReady_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof PlayerServer.ReadyForNextLevel)) {
+        return super.equals(obj);
+      }
+      PlayerServer.ReadyForNextLevel other = (PlayerServer.ReadyForNextLevel) obj;
+
+      boolean result = true;
+      result = result && (hasIsReady() == other.hasIsReady());
+      if (hasIsReady()) {
+        result = result && (getIsReady()
+            == other.getIsReady());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasIsReady()) {
+        hash = (37 * hash) + ISREADY_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getIsReady());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static PlayerServer.ReadyForNextLevel parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static PlayerServer.ReadyForNextLevel parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static PlayerServer.ReadyForNextLevel parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static PlayerServer.ReadyForNextLevel parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static PlayerServer.ReadyForNextLevel parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static PlayerServer.ReadyForNextLevel parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static PlayerServer.ReadyForNextLevel parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static PlayerServer.ReadyForNextLevel parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static PlayerServer.ReadyForNextLevel parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static PlayerServer.ReadyForNextLevel parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(PlayerServer.ReadyForNextLevel prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ReadyForNextLevel}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ReadyForNextLevel)
+        PlayerServer.ReadyForNextLevelOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return PlayerServer.internal_static_ReadyForNextLevel_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return PlayerServer.internal_static_ReadyForNextLevel_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                PlayerServer.ReadyForNextLevel.class, PlayerServer.ReadyForNextLevel.Builder.class);
+      }
+
+      // Construct using PlayerServer.ReadyForNextLevel.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        isReady_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return PlayerServer.internal_static_ReadyForNextLevel_descriptor;
+      }
+
+      public PlayerServer.ReadyForNextLevel getDefaultInstanceForType() {
+        return PlayerServer.ReadyForNextLevel.getDefaultInstance();
+      }
+
+      public PlayerServer.ReadyForNextLevel build() {
+        PlayerServer.ReadyForNextLevel result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public PlayerServer.ReadyForNextLevel buildPartial() {
+        PlayerServer.ReadyForNextLevel result = new PlayerServer.ReadyForNextLevel(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.isReady_ = isReady_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof PlayerServer.ReadyForNextLevel) {
+          return mergeFrom((PlayerServer.ReadyForNextLevel)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(PlayerServer.ReadyForNextLevel other) {
+        if (other == PlayerServer.ReadyForNextLevel.getDefaultInstance()) return this;
+        if (other.hasIsReady()) {
+          setIsReady(other.getIsReady());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasIsReady()) {
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        PlayerServer.ReadyForNextLevel parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (PlayerServer.ReadyForNextLevel) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private boolean isReady_ ;
+      /**
+       * <code>required bool isReady = 1;</code>
+       */
+      public boolean hasIsReady() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool isReady = 1;</code>
+       */
+      public boolean getIsReady() {
+        return isReady_;
+      }
+      /**
+       * <code>required bool isReady = 1;</code>
+       */
+      public Builder setIsReady(boolean value) {
+        bitField0_ |= 0x00000001;
+        isReady_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool isReady = 1;</code>
+       */
+      public Builder clearIsReady() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        isReady_ = false;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:ReadyForNextLevel)
+    }
+
+    // @@protoc_insertion_point(class_scope:ReadyForNextLevel)
+    private static final PlayerServer.ReadyForNextLevel DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new PlayerServer.ReadyForNextLevel();
+    }
+
+    public static PlayerServer.ReadyForNextLevel getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<ReadyForNextLevel>
+        PARSER = new com.google.protobuf.AbstractParser<ReadyForNextLevel>() {
+      public ReadyForNextLevel parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ReadyForNextLevel(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ReadyForNextLevel> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ReadyForNextLevel> getParserForType() {
+      return PARSER;
+    }
+
+    public PlayerServer.ReadyForNextLevel getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface LevelInitializedOrBuilder extends
       // @@protoc_insertion_point(interface_extends:LevelInitialized)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required .Inventory inventory = 1;</code>
+     * <code>optional .Inventory inventory = 1;</code>
      */
     boolean hasInventory();
     /**
-     * <code>required .Inventory inventory = 1;</code>
+     * <code>optional .Inventory inventory = 1;</code>
      */
     PlayerServer.Inventory getInventory();
     /**
-     * <code>required .Inventory inventory = 1;</code>
+     * <code>optional .Inventory inventory = 1;</code>
      */
     PlayerServer.InventoryOrBuilder getInventoryOrBuilder();
 
     /**
-     * <code>required .Update spritesAndStatus = 2;</code>
+     * <code>optional .Update spritesAndStatus = 2;</code>
      */
     boolean hasSpritesAndStatus();
     /**
-     * <code>required .Update spritesAndStatus = 2;</code>
+     * <code>optional .Update spritesAndStatus = 2;</code>
      */
     PlayerServer.Update getSpritesAndStatus();
     /**
-     * <code>required .Update spritesAndStatus = 2;</code>
+     * <code>optional .Update spritesAndStatus = 2;</code>
      */
     PlayerServer.UpdateOrBuilder getSpritesAndStatusOrBuilder();
+
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    boolean hasError();
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * Protobuf type {@code LevelInitialized}
@@ -7575,6 +8321,7 @@ public final class PlayerServer {
       super(builder);
     }
     private LevelInitialized() {
+      error_ = "";
     }
 
     @java.lang.Override
@@ -7631,6 +8378,12 @@ public final class PlayerServer {
               bitField0_ |= 0x00000002;
               break;
             }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              error_ = bs;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -7659,19 +8412,19 @@ public final class PlayerServer {
     public static final int INVENTORY_FIELD_NUMBER = 1;
     private PlayerServer.Inventory inventory_;
     /**
-     * <code>required .Inventory inventory = 1;</code>
+     * <code>optional .Inventory inventory = 1;</code>
      */
     public boolean hasInventory() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .Inventory inventory = 1;</code>
+     * <code>optional .Inventory inventory = 1;</code>
      */
     public PlayerServer.Inventory getInventory() {
       return inventory_ == null ? PlayerServer.Inventory.getDefaultInstance() : inventory_;
     }
     /**
-     * <code>required .Inventory inventory = 1;</code>
+     * <code>optional .Inventory inventory = 1;</code>
      */
     public PlayerServer.InventoryOrBuilder getInventoryOrBuilder() {
       return inventory_ == null ? PlayerServer.Inventory.getDefaultInstance() : inventory_;
@@ -7680,22 +8433,64 @@ public final class PlayerServer {
     public static final int SPRITESANDSTATUS_FIELD_NUMBER = 2;
     private PlayerServer.Update spritesAndStatus_;
     /**
-     * <code>required .Update spritesAndStatus = 2;</code>
+     * <code>optional .Update spritesAndStatus = 2;</code>
      */
     public boolean hasSpritesAndStatus() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required .Update spritesAndStatus = 2;</code>
+     * <code>optional .Update spritesAndStatus = 2;</code>
      */
     public PlayerServer.Update getSpritesAndStatus() {
       return spritesAndStatus_ == null ? PlayerServer.Update.getDefaultInstance() : spritesAndStatus_;
     }
     /**
-     * <code>required .Update spritesAndStatus = 2;</code>
+     * <code>optional .Update spritesAndStatus = 2;</code>
      */
     public PlayerServer.UpdateOrBuilder getSpritesAndStatusOrBuilder() {
       return spritesAndStatus_ == null ? PlayerServer.Update.getDefaultInstance() : spritesAndStatus_;
+    }
+
+    public static final int ERROR_FIELD_NUMBER = 3;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          error_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -7704,17 +8499,11 @@ public final class PlayerServer {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasInventory()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSpritesAndStatus()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getSpritesAndStatus().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
+      if (hasSpritesAndStatus()) {
+        if (!getSpritesAndStatus().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -7727,6 +8516,9 @@ public final class PlayerServer {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeMessage(2, getSpritesAndStatus());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -7743,6 +8535,9 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getSpritesAndStatus());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -7771,6 +8566,11 @@ public final class PlayerServer {
         result = result && getSpritesAndStatus()
             .equals(other.getSpritesAndStatus());
       }
+      result = result && (hasError() == other.hasError());
+      if (hasError()) {
+        result = result && getError()
+            .equals(other.getError());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -7789,6 +8589,10 @@ public final class PlayerServer {
       if (hasSpritesAndStatus()) {
         hash = (37 * hash) + SPRITESANDSTATUS_FIELD_NUMBER;
         hash = (53 * hash) + getSpritesAndStatus().hashCode();
+      }
+      if (hasError()) {
+        hash = (37 * hash) + ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getError().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -7922,6 +8726,8 @@ public final class PlayerServer {
           spritesAndStatusBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -7962,6 +8768,10 @@ public final class PlayerServer {
         } else {
           result.spritesAndStatus_ = spritesAndStatusBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.error_ = error_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -8010,20 +8820,21 @@ public final class PlayerServer {
         if (other.hasSpritesAndStatus()) {
           mergeSpritesAndStatus(other.getSpritesAndStatus());
         }
+        if (other.hasError()) {
+          bitField0_ |= 0x00000004;
+          error_ = other.error_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasInventory()) {
-          return false;
-        }
-        if (!hasSpritesAndStatus()) {
-          return false;
-        }
-        if (!getSpritesAndStatus().isInitialized()) {
-          return false;
+        if (hasSpritesAndStatus()) {
+          if (!getSpritesAndStatus().isInitialized()) {
+            return false;
+          }
         }
         return true;
       }
@@ -8051,13 +8862,13 @@ public final class PlayerServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.Inventory, PlayerServer.Inventory.Builder, PlayerServer.InventoryOrBuilder> inventoryBuilder_;
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       public boolean hasInventory() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       public PlayerServer.Inventory getInventory() {
         if (inventoryBuilder_ == null) {
@@ -8067,7 +8878,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       public Builder setInventory(PlayerServer.Inventory value) {
         if (inventoryBuilder_ == null) {
@@ -8083,7 +8894,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       public Builder setInventory(
           PlayerServer.Inventory.Builder builderForValue) {
@@ -8097,7 +8908,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       public Builder mergeInventory(PlayerServer.Inventory value) {
         if (inventoryBuilder_ == null) {
@@ -8117,7 +8928,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       public Builder clearInventory() {
         if (inventoryBuilder_ == null) {
@@ -8130,7 +8941,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       public PlayerServer.Inventory.Builder getInventoryBuilder() {
         bitField0_ |= 0x00000001;
@@ -8138,7 +8949,7 @@ public final class PlayerServer {
         return getInventoryFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       public PlayerServer.InventoryOrBuilder getInventoryOrBuilder() {
         if (inventoryBuilder_ != null) {
@@ -8149,7 +8960,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>required .Inventory inventory = 1;</code>
+       * <code>optional .Inventory inventory = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.Inventory, PlayerServer.Inventory.Builder, PlayerServer.InventoryOrBuilder> 
@@ -8169,13 +8980,13 @@ public final class PlayerServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder> spritesAndStatusBuilder_;
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       public boolean hasSpritesAndStatus() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       public PlayerServer.Update getSpritesAndStatus() {
         if (spritesAndStatusBuilder_ == null) {
@@ -8185,7 +8996,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       public Builder setSpritesAndStatus(PlayerServer.Update value) {
         if (spritesAndStatusBuilder_ == null) {
@@ -8201,7 +9012,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       public Builder setSpritesAndStatus(
           PlayerServer.Update.Builder builderForValue) {
@@ -8215,7 +9026,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       public Builder mergeSpritesAndStatus(PlayerServer.Update value) {
         if (spritesAndStatusBuilder_ == null) {
@@ -8235,7 +9046,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       public Builder clearSpritesAndStatus() {
         if (spritesAndStatusBuilder_ == null) {
@@ -8248,7 +9059,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       public PlayerServer.Update.Builder getSpritesAndStatusBuilder() {
         bitField0_ |= 0x00000002;
@@ -8256,7 +9067,7 @@ public final class PlayerServer {
         return getSpritesAndStatusFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       public PlayerServer.UpdateOrBuilder getSpritesAndStatusOrBuilder() {
         if (spritesAndStatusBuilder_ != null) {
@@ -8267,7 +9078,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>required .Update spritesAndStatus = 2;</code>
+       * <code>optional .Update spritesAndStatus = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder> 
@@ -8281,6 +9092,82 @@ public final class PlayerServer {
           spritesAndStatus_ = null;
         }
         return spritesAndStatusBuilder_;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            error_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder clearError() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        error_ = value;
+        onChanged();
+        return this;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -16855,6 +17742,11 @@ public final class PlayerServer {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_PlayerNames_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ReadyForNextLevel_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_ReadyForNextLevel_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LevelInitialized_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -16918,48 +17810,51 @@ public final class PlayerServer {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022PlayerServer.proto\"\311\003\n\rServerMessage\022\036" +
+      "\n\022PlayerServer.proto\"\370\003\n\rServerMessage\022\036" +
       "\n\016availableGames\030\001 \001(\0132\006.Games\0227\n\026gameRo" +
       "omCreationStatus\030\002 \001(\0132\027.GameRoomCreatio" +
       "nStatus\022/\n\022gameRoomJoinStatus\030\003 \001(\0132\023.Ga" +
       "meRoomJoinStatus\0223\n\024gameRoomLaunchStatus" +
       "\030\004 \001(\0132\025.GameRoomLaunchStatus\022\035\n\tgameRoo" +
       "ms\030\005 \001(\0132\n.GameRooms\022!\n\013playerNames\030\006 \001(" +
-      "\0132\014.PlayerNames\022+\n\020levelInitialized\030\007 \001(" +
-      "\0132\021.LevelInitialized\022\027\n\006update\030\010 \001(\0132\007.U" +
-      "pdate\022\035\n\tinventory\030\t \001(\0132\n.Inventory\022/\n\022",
-      "templateProperties\030\n \001(\0132\023.TemplatePrope" +
-      "rties\022!\n\relementPlaced\030\013 \001(\0132\n.NewSprite" +
-      "\"\035\n\005Games\022\024\n\005games\030\001 \003(\0132\005.Game\")\n\004Game\022" +
-      "\014\n\004name\030\001 \002(\t\022\023\n\013description\030\002 \002(\t\"7\n\026Ga" +
-      "meRoomCreationStatus\022\016\n\006roomId\030\001 \001(\t\022\r\n\005" +
-      "error\030\002 \001(\t\"4\n\022GameRoomJoinStatus\022\017\n\007suc" +
-      "cess\030\001 \002(\010\022\r\n\005error\030\002 \001(\t\"N\n\024GameRoomLau" +
-      "nchStatus\022\'\n\014initialState\030\001 \001(\0132\021.LevelI" +
-      "nitialized\022\r\n\005error\030\002 \001(\t\"\036\n\tGameRooms\022\021" +
-      "\n\troomNames\030\001 \003(\t\"/\n\013PlayerNames\022\021\n\tuser",
-      "Names\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"T\n\020LevelIniti" +
-      "alized\022\035\n\tinventory\030\001 \002(\0132\n.Inventory\022!\n" +
-      "\020spritesAndStatus\030\002 \002(\0132\007.Update\"\310\001\n\006Upd" +
-      "ate\022\036\n\nnewSprites\030\001 \003(\0132\n.NewSprite\022$\n\rs" +
-      "priteUpdates\030\002 \003(\0132\r.SpriteUpdate\022(\n\017spr" +
-      "iteDeletions\030\003 \003(\0132\017.SpriteDeletion\022$\n\rs" +
-      "tatusUpdates\030\004 \001(\0132\r.StatusUpdate\022(\n\017res" +
-      "ourceUpdates\030\005 \001(\0132\017.ResourceUpdate\"x\n\tN" +
-      "ewSprite\022\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030\002" +
-      " \002(\t\022\023\n\013imageHeight\030\003 \002(\001\022\022\n\nimageWidth\030",
-      "\004 \002(\001\022\016\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\"<\n" +
-      "\014SpriteUpdate\022\020\n\010spriteId\030\001 \002(\005\022\014\n\004newX\030" +
-      "\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016SpriteDeletion\022\020\n" +
-      "\010spriteId\030\001 \002(\005\"S\n\014StatusUpdate\022\024\n\014level" +
-      "Cleared\030\001 \002(\010\022\r\n\005isWon\030\002 \002(\010\022\016\n\006isLost\030\003" +
-      " \002(\010\022\016\n\006inPlay\030\004 \002(\010\".\n\016ResourceUpdate\022\034" +
-      "\n\tresources\030\001 \003(\0132\t.Resource\"\036\n\tInventor" +
-      "y\022\021\n\ttemplates\030\001 \003(\t\"(\n\010Resource\022\014\n\004name" +
-      "\030\001 \002(\t\022\016\n\006amount\030\002 \002(\001\"N\n\022TemplateProper" +
-      "ties\022\023\n\013elementName\030\001 \002(\t\022#\n\010property\030\002 ",
-      "\003(\0132\021.TemplateProperty\"/\n\020TemplateProper" +
-      "ty\022\014\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t"
+      "\0132\014.PlayerNames\022-\n\021readyForNextLevel\030\007 \001" +
+      "(\0132\022.ReadyForNextLevel\022+\n\020levelInitializ" +
+      "ed\030\010 \001(\0132\021.LevelInitialized\022\027\n\006update\030\t ",
+      "\001(\0132\007.Update\022\035\n\tinventory\030\n \001(\0132\n.Invent" +
+      "ory\022/\n\022templateProperties\030\013 \001(\0132\023.Templa" +
+      "teProperties\022!\n\relementPlaced\030\014 \001(\0132\n.Ne" +
+      "wSprite\"\035\n\005Games\022\024\n\005games\030\001 \003(\0132\005.Game\")" +
+      "\n\004Game\022\014\n\004name\030\001 \002(\t\022\023\n\013description\030\002 \002(" +
+      "\t\"7\n\026GameRoomCreationStatus\022\016\n\006roomId\030\001 " +
+      "\001(\t\022\r\n\005error\030\002 \001(\t\"4\n\022GameRoomJoinStatus" +
+      "\022\017\n\007success\030\001 \002(\010\022\r\n\005error\030\002 \001(\t\"N\n\024Game" +
+      "RoomLaunchStatus\022\'\n\014initialState\030\001 \001(\0132\021" +
+      ".LevelInitialized\022\r\n\005error\030\002 \001(\t\"\036\n\tGame",
+      "Rooms\022\021\n\troomNames\030\001 \003(\t\"/\n\013PlayerNames\022" +
+      "\021\n\tuserNames\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"$\n\021Rea" +
+      "dyForNextLevel\022\017\n\007isReady\030\001 \002(\010\"c\n\020Level" +
+      "Initialized\022\035\n\tinventory\030\001 \001(\0132\n.Invento" +
+      "ry\022!\n\020spritesAndStatus\030\002 \001(\0132\007.Update\022\r\n" +
+      "\005error\030\003 \001(\t\"\310\001\n\006Update\022\036\n\nnewSprites\030\001 " +
+      "\003(\0132\n.NewSprite\022$\n\rspriteUpdates\030\002 \003(\0132\r" +
+      ".SpriteUpdate\022(\n\017spriteDeletions\030\003 \003(\0132\017" +
+      ".SpriteDeletion\022$\n\rstatusUpdates\030\004 \001(\0132\r" +
+      ".StatusUpdate\022(\n\017resourceUpdates\030\005 \001(\0132\017",
+      ".ResourceUpdate\"x\n\tNewSprite\022\020\n\010spriteId" +
+      "\030\001 \002(\005\022\020\n\010imageURL\030\002 \002(\t\022\023\n\013imageHeight\030" +
+      "\003 \002(\001\022\022\n\nimageWidth\030\004 \002(\001\022\016\n\006spawnX\030\005 \002(" +
+      "\001\022\016\n\006spawnY\030\006 \002(\001\"<\n\014SpriteUpdate\022\020\n\010spr" +
+      "iteId\030\001 \002(\005\022\014\n\004newX\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"" +
+      "\"\n\016SpriteDeletion\022\020\n\010spriteId\030\001 \002(\005\"S\n\014S" +
+      "tatusUpdate\022\024\n\014levelCleared\030\001 \002(\010\022\r\n\005isW" +
+      "on\030\002 \002(\010\022\016\n\006isLost\030\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010" +
+      "\".\n\016ResourceUpdate\022\034\n\tresources\030\001 \003(\0132\t." +
+      "Resource\"\036\n\tInventory\022\021\n\ttemplates\030\001 \003(\t",
+      "\"(\n\010Resource\022\014\n\004name\030\001 \002(\t\022\016\n\006amount\030\002 \002" +
+      "(\001\"N\n\022TemplateProperties\022\023\n\013elementName\030" +
+      "\001 \002(\t\022#\n\010property\030\002 \003(\0132\021.TemplateProper" +
+      "ty\"/\n\020TemplateProperty\022\014\n\004name\030\001 \002(\t\022\r\n\005" +
+      "value\030\002 \002(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -16978,7 +17873,7 @@ public final class PlayerServer {
     internal_static_ServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ServerMessage_descriptor,
-        new java.lang.String[] { "AvailableGames", "GameRoomCreationStatus", "GameRoomJoinStatus", "GameRoomLaunchStatus", "GameRooms", "PlayerNames", "LevelInitialized", "Update", "Inventory", "TemplateProperties", "ElementPlaced", });
+        new java.lang.String[] { "AvailableGames", "GameRoomCreationStatus", "GameRoomJoinStatus", "GameRoomLaunchStatus", "GameRooms", "PlayerNames", "ReadyForNextLevel", "LevelInitialized", "Update", "Inventory", "TemplateProperties", "ElementPlaced", });
     internal_static_Games_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_Games_fieldAccessorTable = new
@@ -17021,68 +17916,74 @@ public final class PlayerServer {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PlayerNames_descriptor,
         new java.lang.String[] { "UserNames", "Error", });
-    internal_static_LevelInitialized_descriptor =
+    internal_static_ReadyForNextLevel_descriptor =
       getDescriptor().getMessageTypes().get(8);
+    internal_static_ReadyForNextLevel_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_ReadyForNextLevel_descriptor,
+        new java.lang.String[] { "IsReady", });
+    internal_static_LevelInitialized_descriptor =
+      getDescriptor().getMessageTypes().get(9);
     internal_static_LevelInitialized_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LevelInitialized_descriptor,
-        new java.lang.String[] { "Inventory", "SpritesAndStatus", });
+        new java.lang.String[] { "Inventory", "SpritesAndStatus", "Error", });
     internal_static_Update_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_Update_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Update_descriptor,
         new java.lang.String[] { "NewSprites", "SpriteUpdates", "SpriteDeletions", "StatusUpdates", "ResourceUpdates", });
     internal_static_NewSprite_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_NewSprite_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_NewSprite_descriptor,
         new java.lang.String[] { "SpriteId", "ImageURL", "ImageHeight", "ImageWidth", "SpawnX", "SpawnY", });
     internal_static_SpriteUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_SpriteUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SpriteUpdate_descriptor,
         new java.lang.String[] { "SpriteId", "NewX", "NewY", });
     internal_static_SpriteDeletion_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_SpriteDeletion_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SpriteDeletion_descriptor,
         new java.lang.String[] { "SpriteId", });
     internal_static_StatusUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_StatusUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StatusUpdate_descriptor,
         new java.lang.String[] { "LevelCleared", "IsWon", "IsLost", "InPlay", });
     internal_static_ResourceUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_ResourceUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ResourceUpdate_descriptor,
         new java.lang.String[] { "Resources", });
     internal_static_Inventory_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_Inventory_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Inventory_descriptor,
         new java.lang.String[] { "Templates", });
     internal_static_Resource_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_Resource_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Resource_descriptor,
         new java.lang.String[] { "Name", "Amount", });
     internal_static_TemplateProperties_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_TemplateProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TemplateProperties_descriptor,
         new java.lang.String[] { "ElementName", "Property", });
     internal_static_TemplateProperty_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_TemplateProperty_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TemplateProperty_descriptor,
