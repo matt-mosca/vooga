@@ -2,7 +2,6 @@ package authoring;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import authoring.rightToolBar.RightToolBar;
 import authoring.rightToolBar.SpriteImage;
 import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
-import engine.play_engine.PlayController;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
@@ -38,11 +36,11 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
 import player.PlayDisplay;
-import splashScreen.ScreenDisplay;
-import sprites.BackgroundObject;
-import sprites.InteractiveObject;
-import sprites.StaticObject;
-import toolbars.LeftToolBar;
+import display.splashScreen.ScreenDisplay;
+import display.sprites.BackgroundObject;
+import display.sprites.InteractiveObject;
+import display.sprites.StaticObject;
+import display.toolbars.LeftToolBar;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	
@@ -252,6 +250,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 				// TODO Change to alert for the user 
 				e.printStackTrace();
 			}
+		}else {
+			returnButtonPressed();
 		}
 	}
 
@@ -303,9 +303,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void imageSelected(SpriteImage imageView) {
 		imageView.addBasePropertyMap(basePropertyMap);
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
+		controller.defineElement(imageView.getId(), imageView.getAllProperties());
+		controller.addElementToInventory(imageView.getId());
 		myRightToolBar.imageSelected(imageView);
-		controller.defineElement(imageView.getName(), imageView.getAllProperties());
-		controller.addElementToInventory(imageView.getName());
 	}
 
 	@Override
@@ -331,7 +331,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 
-	public void addToBottomToolBar(int level, SpriteImage currSprite) {
+	public void addToBottomToolBar(int level, ImageView currSprite) {
 		myBottomToolBar.addToLevel(currSprite, level);
 	}
 	

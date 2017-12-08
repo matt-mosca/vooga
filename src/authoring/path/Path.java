@@ -3,27 +3,35 @@ package authoring.path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
+import authoring.GameArea;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class Path extends Group{
 	private Set<PathPoint> points;
 	private List<PathPoint> headPoints;
 	private PathPoint activePoint;
+	private Color pathColor;
+	private GameArea definedArea;
 	
-	public Path() {
+	public Path(GameArea area) {
+		Random rand = new Random();
+		pathColor = Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 		points = new HashSet<>();
 		headPoints = new ArrayList<>();
 		activePoint = null;
+		definedArea = area;
 	}
 	
-	public void addWaypoint(MouseEvent e, double x, double y) {
+	public boolean addWaypoint(MouseEvent e, double x, double y) {
 		e.consume();
-		if(activePoint == null && points.size() != 0) return;
-		PathPoint point = new PathPoint(x, y);
+		if(activePoint == null && points.size() != 0) return false;
+		PathPoint point = new PathPoint(x, y, pathColor);
 		point.addEventHandler(MouseEvent.MOUSE_PRESSED, event->handlePointClick(event, point));
 		
 		if(activePoint != null) {
@@ -32,10 +40,11 @@ public class Path extends Group{
 			headPoints.add(point);
 		}
 		
-		setActiveWaypoint(e, point);
+		setActiveWaypoint(point);
 		activePoint = point;
 		points.add(point);
 		this.getChildren().add(point);
+		return true;
 	}
 	
 	private void handlePointClick(MouseEvent e, PathPoint point) {
@@ -45,7 +54,7 @@ public class Path extends Group{
 		}else if(e.getButton() == MouseButton.PRIMARY && e.isControlDown()) {
 			connectPath(e, point);
 		}else if(e.getButton() == MouseButton.PRIMARY) {
-			setActiveWaypoint(e, point);
+			setActiveWaypoint(point);
 		}else if(e.getButton() == MouseButton.SECONDARY) {
 			removeWaypoint(e, point);
 		}
@@ -60,20 +69,21 @@ public class Path extends Group{
 		this.getChildren().remove(point);
 	}
 	
-	private void setActiveWaypoint(MouseEvent e, PathPoint point) {
+	private void setActiveWaypoint(PathPoint point) {
 		point.toggleActive();
 		if(point.equals(activePoint)) {
 			activePoint = null;
 		}else {
 			if(activePoint != null) activePoint.toggleActive();
 			activePoint = point;
+			definedArea.updateActivePath(this);
 		}
 	}
 	
 	private void connectPath(MouseEvent e, PathPoint point) {
 		if(!point.equals(activePoint) && activePoint != null) {
 			drawLineBetween(activePoint, point);
-			setActiveWaypoint(e, point);
+			setActiveWaypoint(point);
 		}
 	}
 	
@@ -128,6 +138,14 @@ public class Path extends Group{
 	
 	public List<PathPoint> getStartPoints(){
 		return new ArrayList<>(headPoints);
+	}
+	
+	public Color getColor() {
+		return pathColor;
+	}
+	
+	public void deactivate() {
+		if(activePoint != null) setActiveWaypoint(activePoint);
 	}
 	
 }

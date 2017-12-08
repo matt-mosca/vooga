@@ -2,12 +2,11 @@ package authoring;
 
 import java.util.List;
 
-import interfaces.CustomizeInterface;
+import display.interfaces.CustomizeInterface;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 
 public class BaseComboBox extends ComboBox<String>{
 

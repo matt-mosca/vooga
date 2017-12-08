@@ -1,20 +1,17 @@
 package authoring;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import authoring.rightToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
-import interfaces.PropertiesInterface;
+import display.interfaces.PropertiesInterface;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.Main;
 
 public class SelectionWindow extends Stage {
 	

@@ -5,6 +5,7 @@ import main.MainJarRunner;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -16,12 +17,9 @@ public class PackagingTest {
 
     private static void testJarCreation(Packager packager) {
         try {
-            Properties properties = new Properties();
-            properties.load(PackagingTest.class.getClassLoader().getResourceAsStream("ExportedGameName.properties"));
-            // properties.setProperty("gameFile", "test18.voog");
-            packager.generateJar("data/games/jar-package-testing.jar", "src",
-                    "out/production/voogasalad_duvallinthistogether/", MainJarRunner.class,
-                    "resources/", "authoring/", "data/", "lib/");
+            /*packager.generateJar("data/games/jar-package-testing.jar", "src", MainJarRunner.class.getName(),
+                    Arrays.asList("resources/", "images/"), Arrays.asList("authoring/", "data/", "lib/"));*/
+            packager.generateJar("new-test");
             // test the JAR manually with a launch
         } catch (IOException e) {
             e.printStackTrace();
