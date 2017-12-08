@@ -153,4 +153,9 @@ public class BottomToolBar extends VBox {
 	public int getMaxLevel() {
 		return myLevels.size();
 	}
+
+	public void addLevelProperties(ImageView currSprite, int level) {
+		myLevels.get(level-1).update(currSprite);
+		
+	}
 }
