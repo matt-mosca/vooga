@@ -11,13 +11,14 @@ message ClientMessage {
 	optional LaunchGameRoom launchGameRoom = 4;
 	optional GetGameRooms getGameRooms = 5;
 	optional GetPlayerNames getPlayerNames = 6;
-	optional PauseGame pauseGame = 7;
-	optional ResumeGame resumeGame = 8;
-	optional GetInventory getInventory = 9;
-	optional GetTemplateProperties getTemplateProperties = 10;
-	optional PlaceElement placeElement = 11;
-	optional CheckReadyForNextLevel checkReadyForNextLevel = 12;
-	optional LoadLevel loadLevel = 13;
+	optional PerformUpdate performUpdate = 7;
+	optional PauseGame pauseGame = 8;
+	optional ResumeGame resumeGame = 9;
+	optional GetInventory getInventory = 10;
+	optional GetTemplateProperties getTemplateProperties = 11;
+	optional PlaceElement placeElement = 12;
+	optional CheckReadyForNextLevel checkReadyForNextLevel = 13;
+	optional LoadLevel loadLevel = 14;
 }
 
 /*
@@ -51,6 +52,9 @@ message GetPlayerNames {
 	In-Game messages
 	(Should these requests be stateful instead, to make the server relatively stateless? Need to balance against security / client privileges)
 */
+
+message PerformUpdate {
+}
 
 message PauseGame {
 }

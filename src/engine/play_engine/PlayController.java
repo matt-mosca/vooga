@@ -50,6 +50,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private Method defeatConditionMethod;
 	private int maxLevels = DEFAULT_MAX_LEVELS;
 	private List<Set<Entry<Integer, GameElement>>> savedList;
+	private Update latestUpdate;
 
 	public PlayController() {
 		super();
@@ -57,6 +58,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		elementManager = new ElementManager(getGameElementFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
+		latestUpdate = Update.getDefaultInstance();
 	}
 
 	@Override
@@ -97,18 +99,21 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			 */
 			savedList.add(getSpriteIdMap().entrySet());
 			elementManager.update();
+			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
+			List<GameElement> updatedElements = elementManager.getUpdatedElements();
 			List<GameElement> deadElements = elementManager.getDeadElements();
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
-			for (GameElement s : elementManager.getNewlyGeneratedElements()) {
-				cacheAndCreateIdentifier(s);
+			for (GameElement element : newlyGeneratedElements) {
+				cacheAndCreateIdentifier(element);
 			}
 			// Package these changes into an Update message
-			// Update packagedUpdate = packageUpdates(newlyGeneratedElements,
-			// updatedElements, deadElements, statusUpdates, resourceUpdates);
+			latestUpdate = packageUpdates(newlyGeneratedElements,
+			updatedElements, deadElements);
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
-			// return packagedUpdate;
+			elementManager.clearUpdatedElements();
+			// return latestUpdate;
 		}
 	}
 
@@ -170,28 +175,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public boolean isReadyForNextLevel() {
 		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not last level
 	}
-
-	// TODO - move to some utils class?
-	public Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
-			Collection<GameElement> deadSprites) {
-		Update.Builder updateBuilder = Update.newBuilder();
-		// Sprite Creations
-		newSprites.forEach(newSprite -> updateBuilder.addNewSprites(packageNewSprite(newSprite)));
-		// Sprite Updates
-		updatedSprites.forEach(updatedSprite -> updateBuilder
-				.addSpriteUpdates(SpriteUpdate.newBuilder().setSpriteId(getIdFromSprite(updatedSprite))
-						.setNewX(updatedSprite.getX()).setNewY(updatedSprite.getY()).build()));
-		// Sprite Deletions
-		deadSprites.forEach(deadSprite -> updateBuilder
-				.addSpriteDeletions(SpriteDeletion.newBuilder().setSpriteId(getIdFromSprite(deadSprite)).build()));
-		// Status Updates
-		updateBuilder.setStatusUpdates(getStatusUpdate());
-		// Resources - Just send all resources in update for now
-		ResourceUpdate.Builder resourceUpdateBuilder = ResourceUpdate.newBuilder();
-		Map<String, Double> resourceEndowments = getResourceEndowments();
-		resourceEndowments.keySet().forEach(resourceName -> resourceUpdateBuilder.addResources(
-				Resource.newBuilder().setName(resourceName).setAmount(resourceEndowments.get(resourceName)).build()));
-		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
+	
+	public Update getLatestUpdate() {
+		return latestUpdate;
 	}
 
 	public LevelInitialized packageCurrentState() {
@@ -325,6 +311,29 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return elementManager.enemyReachedTarget();
 	}
 
+	// TODO - move to some utils class?
+	private Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
+			Collection<GameElement> deadSprites) {
+		Update.Builder updateBuilder = Update.newBuilder();
+		// Sprite Creations
+		newSprites.forEach(newSprite -> updateBuilder.addNewSprites(packageNewSprite(newSprite)));
+		// Sprite Updates
+		updatedSprites.forEach(updatedSprite -> updateBuilder
+				.addSpriteUpdates(SpriteUpdate.newBuilder().setSpriteId(getIdFromSprite(updatedSprite))
+						.setNewX(updatedSprite.getX()).setNewY(updatedSprite.getY()).build()));
+		// Sprite Deletions
+		deadSprites.forEach(deadSprite -> updateBuilder
+				.addSpriteDeletions(SpriteDeletion.newBuilder().setSpriteId(getIdFromSprite(deadSprite)).build()));
+		// Status Updates
+		updateBuilder.setStatusUpdates(getStatusUpdate());
+		// Resources - Just send all resources in update for now
+		ResourceUpdate.Builder resourceUpdateBuilder = ResourceUpdate.newBuilder();
+		Map<String, Double> resourceEndowments = getResourceEndowments();
+		resourceEndowments.keySet().forEach(resourceName -> resourceUpdateBuilder.addResources(
+				Resource.newBuilder().setName(resourceName).setAmount(resourceEndowments.get(resourceName)).build()));
+		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
+	}
+	
 	private StatusUpdate getStatusUpdate() {
 		// Just always send status update for now
 		return StatusUpdate.newBuilder().setLevelCleared(levelCleared).setIsWon(isWon).setIsLost(isLost)

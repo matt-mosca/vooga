@@ -1,8 +1,10 @@
 package networking;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,7 +57,7 @@ class MultiPlayerController {
 	// Should support multiple concurrent game rooms, i.e. need multiple
 	// concurrent engines
 	private Map<Integer, PlayController> clientIdsToPlayEngines = new HashMap<>();
-	private Map<String, Set<Integer>> roomMembers = new HashMap<>();
+	private Map<String, List<Integer>> roomMembers = new HashMap<>();
 	private Map<Integer, String> clientIdsToUserNames = new HashMap<>();
 	private Map<String, Integer> waitingInRoom = new HashMap<>();
 	private AtomicInteger gameCounter = new AtomicInteger();
@@ -90,7 +92,7 @@ class MultiPlayerController {
 				return;
 			}
 			clientIdsToPlayEngines.put(clientId, controllerForGame);
-			roomMembers.put(gameId, new HashSet<>());
+			roomMembers.put(gameId, new ArrayList<>());
 			clearWaitingRoom(gameId);
 			serverMessageBuilder.setGameRoomCreationStatus(gameRoomCreationStatusBuilder.setRoomId(gameId).build());
 		}
@@ -161,6 +163,21 @@ class MultiPlayerController {
 			}
 			serverMessageBuilder
 					.setPlayerNames(playerNamesBuilder.addAllUserNames(getUserNamesInGameRoom(gameRoomName)).build());
+		}
+	}
+
+	// TODO - Consider server push instead of client pull? Would be more complicated
+	// but more accurate / realistic, and fewer packets exchanged
+	void handleUpdate(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasPerformUpdate()) {
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to perform update without belonging to
+			// a game room?
+			if (clientIsFirstMemberOfGameRoom(clientId)) {
+				// only do actual update if primary client, simply send state for the rest
+				playController.update();
+			}
+			serverMessageBuilder.setUpdate(playController.getLatestUpdate());
 		}
 	}
 
@@ -274,6 +291,8 @@ class MultiPlayerController {
 			getGameRooms(clientMessage, serverMessageBuilder);
 			// Handle player names request
 			getPlayerNames(clientId, clientMessage, serverMessageBuilder);
+			// Handle update request
+			handleUpdate(clientId, clientMessage, serverMessageBuilder);
 			// Handle pause request
 			handlePauseGame(clientId, clientMessage, serverMessageBuilder);
 			// Handle resume request
@@ -312,6 +331,10 @@ class MultiPlayerController {
 	private Set<String> getUserNamesInGameRoom(String gameRoomName) {
 		return roomMembers.get(gameRoomName).stream().map(roomMemberId -> clientIdsToUserNames.get(roomMemberId))
 				.collect(Collectors.toSet());
+	}
+
+	private boolean clientIsFirstMemberOfGameRoom(int clientId) {
+		return getUserNamesInGameRoom(getGameRoomNameOfClient(clientId)).iterator().next().equals(clientId);
 	}
 
 	private PlayController getPlayControllerForGameRoom(String gameRoomName) {
