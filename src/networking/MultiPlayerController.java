@@ -1,8 +1,6 @@
 package networking;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,11 +9,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import engine.play_engine.PlayController;
-import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.PlaceElement;
+import networking.protocol.PlayerServer.Game;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
 import networking.protocol.PlayerServer.GameRoomJoinStatus;
 import networking.protocol.PlayerServer.GameRoomLaunchStatus;
@@ -57,8 +55,10 @@ class MultiPlayerController {
 
 	void getAvailableGames(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetAvailableGames()) {
-			serverMessageBuilder.setAvailableGames(
-					Games.newBuilder().addAllGames(new PlayController().getAvailableGames().keySet()).build());
+			Games.Builder gamesBuilder = Games.newBuilder();
+			Map<String, String> availableGames = new PlayController().getAvailableGames();
+			availableGames.keySet().forEach(gameName -> gamesBuilder.addGames(Game.newBuilder().setName(gameName).setDescription(availableGames.get(gameName)).build()));
+			serverMessageBuilder.setAvailableGames(gamesBuilder.build());
 		}
 	}
 
@@ -259,11 +259,6 @@ class MultiPlayerController {
 	private boolean userNameExistsInGameRoom(String userName, String gameRoomName) {
 		return roomMembers.get(gameRoomName).stream().map(clientId -> clientIdsToUserNames.get(clientId))
 				.collect(Collectors.toSet()).contains(userName);
-	}
-
-	private String getGameRoomOfClient(int clientId) {
-		return roomMembers.keySet().stream().filter(roomName -> roomMembers.get(roomName).contains(clientId))
-				.findFirst().get();
 	}
 
 	private Set<String> getUserNamesInGameRoom(String gameRoomName) {
