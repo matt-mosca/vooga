@@ -26,4 +26,8 @@ public class SpriteDisplayer extends ScrollPane {
 		myBox.getChildren().addAll(newSprites);
 //		this.setContent(myBox);
 	}
+
+	public void clear() {
+		myBox.getChildren().removeAll(myBox.getChildren());
+	}
 }

@@ -74,6 +74,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	private EditDisplay display;
     private AddToWaveButton myWaveAdder;
     private CostButton myCost;
+    private AddToLevelButton myLevelAdder;
 
 	private List<SpriteImage> availableProjectiles;
 
@@ -163,6 +164,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	private void newPropertiesPane() {
 		propertiesPane = new Pane();
 		myWaveAdder = new AddToWaveButton(this);
+//		myLevelAdder = new AddToLevelButton(this);
 		deleteButton = new Button("Back");
 	}
 	private void newPaneWithProjectileSlot(ImageView imageView) {
@@ -180,6 +182,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		propertiesPane = new Pane();
 	    myWaveAdder = new AddToWaveButton(this);
 	    myCost = new CostButton(this, imageView);
+	    myLevelAdder = new AddToLevelButton(this);
 		deleteButton = new Button("Back");
 		deleteButton.setLayoutX(370);
 		Label info = new Label("Properties here");
@@ -202,6 +205,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		propertiesPane.getChildren().add(projectileSlot);
 		propertiesPane.getChildren().add(myWaveAdder);
 		propertiesPane.getChildren().add(myCost);
+		propertiesPane.getChildren().add(myLevelAdder);
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
@@ -288,20 +292,20 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
         amountField.setPromptText("How many of this Sprite?");
         myVBox.getChildren().add(amountField);
         Button submitButton = new Button("Submit");
-        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage, Integer.valueOf(amountField.getText())));
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage));
         myVBox.getChildren().add(submitButton);
         Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
         waveStage.setScene(scene);
         waveStage.show();
 	}
 	
-	private void submitToWaves(VBox myVBox, Stage waveStage, Integer integer) {
+	private void submitToWaves(VBox myVBox, Stage waveStage) {
 		for (Node n : myVBox.getChildren()) {
 			if (n instanceof CheckBox) {
 				CheckBox c = (CheckBox) n;
 				if (c.isSelected()) {
 //					for (int i = 0; i < integer; i++) {
-						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()));
+						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()), 1);
 //					}
 				}
 			}
@@ -364,5 +368,37 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		cloneImage.setFitWidth(imageView.getFitWidth());
 		cloneImage.setId(imageView.getId());
 		return cloneImage;
+	}
+
+	@Override
+	public void addToLevel() {
+		int maxLevel = display.getMaxLevel();
+		Stage levelStage = new Stage();
+		levelStage.setTitle("CheckBox Experiment 1");
+        VBox myVBox = new VBox();
+
+        for (int i = 1; i <= maxLevel; i++) {
+        	CheckBox myCheckBox = new CheckBox(Integer.toString(i));
+        	myVBox.getChildren().add(myCheckBox);
+        }
+        Button submitButton = new Button("Submit");	
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToLevel(myVBox, levelStage));
+        myVBox.getChildren().add(submitButton);
+        Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
+        levelStage.setScene(scene);
+        levelStage.show();
+	}
+
+	private void submitToLevel(VBox myVBox, Stage levelStage) {
+		for (Node n : myVBox.getChildren()) {
+			if (n instanceof CheckBox) {
+				CheckBox c = (CheckBox) n;
+				if (c.isSelected()) {				
+						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()), 2);
+
+				}
+			}
+		}
+		levelStage.close();
 	}
 } 

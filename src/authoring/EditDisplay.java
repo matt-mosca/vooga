@@ -331,13 +331,19 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 
-	public void addToBottomToolBar(int level, ImageView currSprite) {
-		myBottomToolBar.addToLevel(currSprite, level);
+	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {
+		if (kind==1) {
+			myBottomToolBar.addToLevel(currSprite, level);
+		}
+		if (kind==2) {
+			myBottomToolBar.addLevelProperties(currSprite, level);
+		}
 	}
 	
 	public int getMaxLevel() {
 		return myBottomToolBar.getMaxLevel();
 	}
+
 
 	
 
