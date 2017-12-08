@@ -59,7 +59,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		pathObjects = new Group();
 		backObjects = new Group();
 		paths = new HashMap<>();
-		currentPath = new Path();
+		currentPath = new Path(this);
 		parser = new PathParser();
 		grid = new PlacementGrid(this, width, height, rowPercentage, colPercentage, currentPath);
 
@@ -94,9 +94,9 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	
 	protected void gameAreaClicked(MouseEvent e, double x, double y) {
 		if(!currentPath.addWaypoint(e, x, y)) {
-			Path newPath = new Path();
+			Path newPath = new Path(this);
 			grid.setActivePath(newPath);
-			this.setActivePath(newPath);
+			this.addAndSetActivePath(newPath);
 			currentPath.addWaypoint(e, x, y);
 		}
 	}
@@ -181,10 +181,15 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		return paths;
 	}
 	
-	protected void setActivePath(Path newPath) {
+	protected void addAndSetActivePath(Path newPath) {
 		pathObjects.getChildren().add(newPath);
 		paths.put(newPath, newPath.getColor());
 		currentPath = newPath;
+	}
+	
+	public void updateActivePath(Path newActive) {
+		if(newActive != currentPath) currentPath.deactivate();
+		currentPath = newActive;
 	}
 		
 	public void returnButtonPressed() {
