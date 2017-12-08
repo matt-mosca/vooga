@@ -89,6 +89,10 @@ public abstract class SpriteImage extends InteractiveObject {
 		myPossibleProperties = newMap;
 	}
 	
+	public void setBaseProperties(Map<String, String> baseProperties) {
+		myBaseProperties = baseProperties;
+	}
+	
 	public void resize(double displaySize) {
 		double spriteWidth = this.getBoundsInLocal().getWidth();
 		double spriteHeight = this.getBoundsInLocal().getHeight();
@@ -103,6 +107,7 @@ public abstract class SpriteImage extends InteractiveObject {
 	
 	public Map<String, String> getAllProperties() {
 		allProperties.putAll(myPossibleProperties);
+		allProperties.putAll(myBaseProperties);
 		allProperties.putAll(defaultValues);
 		if (this instanceof TroopImage) {
 			allProperties.put("tabName", "Troops");
