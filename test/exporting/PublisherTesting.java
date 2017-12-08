@@ -1,10 +1,10 @@
-package packaging;
+package exporting;
 
 public class PublisherTesting {
 
     public static void main(String[] args) {
         try {
-            Publisher publisher = new Publisher("VOOGA");
+            Publisher publisher = new Publisher();
             String fileLink = publisher.uploadFile("application/zip",
                     "data/games/jar-package-testing.jar");
             System.out.println("Share your game with this link: " + fileLink);

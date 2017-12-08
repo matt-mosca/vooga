@@ -1,12 +1,10 @@
-package packaging;
+package exporting;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 /**
  * Utility class for retrieving game export file's properties, such as the location of the source directory.
@@ -15,10 +13,9 @@ import java.util.stream.Collectors;
  */
 public final class JarPropertiesGetter {
 
-    // Relocate the file as fits your needs
-    private static final String PROPERTIES_FILE = "Export.properties";
-    private static Properties properties;
-
+    // Relocate the properties file as fits your needs
+    private final String PROPERTIES_FILE = "Export.properties";
+    private Properties properties;
     // Property keys
     private final String EXPORT_PATH_KEY = "export-path";
     private final String SOURCE_DIRECTORY_KEY = "source";
@@ -26,25 +23,21 @@ public final class JarPropertiesGetter {
     private final String INCLUDED_DIRECTORIES_KEY = "included-directories";
     private final String RESOURCE_ROOTS_KEY = "resource-roots";
     private final String DATA_DIRECTORIES_KEY = "data-directories";
-
+    private final String MULTIPLE_VALUES_DELIMITER = ",";
     // Set to your heart's desire
     private final String DEFAULT = "";
-
-    private final String MULTIPLE_VALUES_DELIMITER = ",";
-
-    private final String JAR_EXTENSION = ".jar";
+    private final String ERROR_MESSAGE = "Failed to load the export properties file";
 
     /**
      * Load in the properties file.
      */
-    public JarPropertiesGetter() {
+    public JarPropertiesGetter() throws IOException {
         properties = new Properties();
-        InputStream propertiesStream = this.getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE);
+        InputStream propertiesStream = JarPropertiesGetter.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
         try {
             properties.load(propertiesStream);
         } catch (NullPointerException | IOException failure) {
-            /* do nothing: if file fails to load, all methods are prepared to return
-             * default/fallback value when getProperty() returns null */
+            throw new IOException(ERROR_MESSAGE);
         }
     }
 
@@ -55,6 +48,7 @@ public final class JarPropertiesGetter {
      * @return the path of the export JAR (relative to the project root)
      */
     public String getExportTargetPath(String gameName) {
+        final String JAR_EXTENSION = ".jar";
         return properties.getProperty(EXPORT_PATH_KEY, DEFAULT) + gameName + JAR_EXTENSION;
     }
 
@@ -83,10 +77,8 @@ public final class JarPropertiesGetter {
      * @return the specified directories within the source that should be included in the exported JAR file
      */
     public Collection<String> getSourceDirectoriesToInclude() {
-        return Arrays.stream(properties.getProperty(INCLUDED_DIRECTORIES_KEY, getSourceDirectoryPath())
-                .split(MULTIPLE_VALUES_DELIMITER))
-                .map(directory -> getSourceDirectoryPath() + File.separator + directory)
-                .collect(Collectors.toList());
+        return Arrays.asList(properties.getProperty(INCLUDED_DIRECTORIES_KEY, getSourceDirectoryPath())
+                .split(MULTIPLE_VALUES_DELIMITER));
     }
 
     /**

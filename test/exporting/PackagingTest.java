@@ -1,11 +1,10 @@
-package packaging;
+package exporting;
 
-import main.Main;
-import main.MainJarRunner;
-
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -17,9 +16,12 @@ public class PackagingTest {
 
     private static void testJarCreation(Packager packager) {
         try {
-            /*packager.generateJar("data/games/jar-package-testing.jar", "src", MainJarRunner.class.getName(),
-                    Arrays.asList("resources/", "images/"), Arrays.asList("authoring/", "data/", "lib/"));*/
-            packager.generateJar("new-test");
+            Properties properties = new Properties();
+            InputStream in = new FileInputStream("resources/Export.properties");
+            properties.load(in);
+            properties.setProperty("gameFile", "AAAA.voog");
+            properties.store(new FileOutputStream("resources/Export.properties"), "");
+            packager.generateJar("AAAA");
             // test the JAR manually with a launch
         } catch (IOException e) {
             e.printStackTrace();

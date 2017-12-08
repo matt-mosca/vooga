@@ -1,4 +1,4 @@
-package packaging;
+package exporting;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -24,68 +24,63 @@ import java.util.List;
 /**
  * Publishes an exported game to Google Drive.
  *
- * @see <a href="https://developers.google.com/drive/v3/web/quickstart/java"></a> reference source code
- *
- * Add the following Maven dependencies to run:
- *     com.google.api-client:google-api-client:1.23.0
- *     com.google.oauth-client:google-oauth-client-jetty:1.23.0
- *     com.google.apis:google-api-services-drive:v3-rev90-1.23.0
- *
  * @author Ben Schwennesen
+ * @see <a href="https://developers.google.com/drive/v3/web/quickstart/java"></a> reference code
  */
 public class Publisher {
 
-    public static final String WEB_CONTENT_LINK_FIELD = "webContentLink";
-    private final String CLIENT_SECRETS_JSON = "client_secrets.json";
+    private final String ERROR_MESSAGE = "Failed to publish the game to Google Drive";
+    private final String APPLICATION_NAME = "VOOGASalad Game Exporter";
+    private final String CLIENT_SECRETS_JSON = "client_secret.json";
+    private final String WEB_CONTENT_LINK_FIELD = "webContentLink";
     private final String USER_ID = "user";
 
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private HttpTransport httpTransport;
     private Drive drive;
 
-    private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE);
+    private final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE);
 
     /**
      * Load the Google Drive instance, which entails logging into a Google account through a browser.
      *
-     * @param applicationName the name of your application
      * @throws GeneralSecurityException if a safe http transport connection cannot be established
-     * @throws IOException if the user's client secrets JSON cannot be accessed
+     * @throws IOException              if the user's client secrets JSON cannot be accessed
      */
-    public Publisher(String applicationName) throws GeneralSecurityException, IOException   {
-        initialize(applicationName);
+    public Publisher() throws IOException {
+        try {
+            initialize();
+        } catch (IOException | GeneralSecurityException failedToPublishException) {
+            throw new IOException(ERROR_MESSAGE);
+        }
     }
 
-    private void initialize(String applicationName) throws GeneralSecurityException, IOException {
+    // initialize connection to Google Drive
+    private void initialize() throws GeneralSecurityException, IOException {
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         Credential credential = authorize();
         drive = new Drive.Builder(httpTransport, JSON_FACTORY, credential)
-                .setApplicationName(applicationName).build();
+                .setApplicationName(APPLICATION_NAME).build();
     }
 
-    /** Authorizes the installed application to access user's protected data. */
+    // authorize the installed application to access user's protected data.
     private Credential authorize() throws IOException {
         // load client secrets
-        InputStream in = getClass().getClassLoader().getResourceAsStream(CLIENT_SECRETS_JSON);
-        GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+        InputStream in = getClass().getResourceAsStream(CLIENT_SECRETS_JSON);
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow =
-                new GoogleAuthorizationCodeFlow.Builder(
-                        httpTransport, JSON_FACTORY, clientSecrets, SCOPES)
-                        .build();
-        return new AuthorizationCodeInstalledApp(
-                flow, new LocalServerReceiver()).authorize(USER_ID);
+                new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets, SCOPES).build();
+        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize(USER_ID);
     }
 
     /**
      * Uploads a file to the Google Drive account logged into when the exporter is created.
-
-     * @param mimeType the MIME type of the file to upload
+     *
+     * @param mimeType       the MIME type of the file to upload
      * @param uploadFilePath the path to the file to be uploaded
      * @return a shareable URL link to the file
      * @throws IOException if the file cannot be found
-     *
      * @see <a href="https://tinyurl.com/ybmqlv6z"></a> reference source code
      * @see <a href="https://tinyurl.com/ycwww59d"></a> MIME types list
      */
