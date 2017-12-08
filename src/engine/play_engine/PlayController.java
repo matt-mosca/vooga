@@ -166,6 +166,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return levelCleared;
 	}
 
+	@Override
+	public boolean isReadyForNextLevel() {
+		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not last level
+	}
+
 	// TODO - move to some utils class?
 	public Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
 			Collection<GameElement> deadSprites) {
