@@ -5,23 +5,25 @@ syntax="proto2";
 */
 
 message ServerMessage {
-	optional GameRooms gameRooms = 1;
+	optional Games availableGames = 1;
 	optional GameRoomCreationStatus gameRoomCreationStatus = 2;
 	optional GameRoomJoinStatus gameRoomJoinStatus = 3;
 	optional GameRoomLaunchStatus gameRoomLaunchStatus = 4;
-	optional PlayerNames playerNames = 5;
-	optional LevelInitialized levelInitialized = 6;
-	optional Update update = 7;
-	optional Inventory inventory = 8;
-	optional TemplateProperties templateProperties = 9;
+	optional GameRooms gameRooms = 5;
+	optional PlayerNames playerNames = 6;
+	optional LevelInitialized levelInitialized = 7;
+	optional Update update = 8;
+	optional Inventory inventory = 9;
+	optional TemplateProperties templateProperties = 10;
+	optional NewSprite elementPlaced = 11;
 }
 
 /*
 	Pre-Game messages
 */
 
-message GameRooms {
-	repeated string roomNames = 1;
+message Games {
+	repeated string games = 1;
 }
 
 message GameRoomCreationStatus {
@@ -41,6 +43,10 @@ message GameRoomJoinStatus {
 message GameRoomLaunchStatus {
 	optional Update initialState = 1;
 	optional string error = 2;
+}
+
+message GameRooms {
+	repeated string roomNames = 1;
 }
 
 message PlayerNames {
@@ -90,7 +96,6 @@ message StatusUpdate {
 	required bool isWon = 2;
 	required bool isLost = 3;
 	required bool inPlay = 4;
-	required bool isPaused = 5;
 }
 
 message ResourceUpdate {
