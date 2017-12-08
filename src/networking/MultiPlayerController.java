@@ -16,6 +16,7 @@ import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.LoadLevel;
 import networking.protocol.PlayerClient.PlaceElement;
+import networking.protocol.PlayerClient.UpgradeElement;
 import networking.protocol.PlayerServer.Game;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
 import networking.protocol.PlayerServer.GameRoomJoinStatus;
@@ -234,6 +235,15 @@ class MultiPlayerController {
 		}
 	}
 
+	void upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasUpgradeElement()) {
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to upgrade element without belonging to
+			// a game room?
+			playController.upgradeElement(clientMessage.getUpgradeElement().getSpriteId());
+		}
+	}
+
 	void checkReadyForNextLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasCheckReadyForNextLevel()) {
 			// TODO - Handle case where client tries to place element without belonging to a
@@ -303,6 +313,8 @@ class MultiPlayerController {
 			getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
 			// Handle place element request
 			placeElement(clientId, clientMessage, serverMessageBuilder);
+			// Handle upgrade element request
+			upgradeElement(clientId, clientMessage, serverMessageBuilder);
 			// Handle check ready for next level request
 			checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);
 			// Handle load request
