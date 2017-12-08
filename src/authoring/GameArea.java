@@ -38,13 +38,14 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private AuthoringController myController;
 	private ResourceBundle gameProperties;
 	private PlacementGrid grid;
-	private Path path;
+	private Path currentPath;
 	private Map<Path, Color> paths;
 	private PathParser parser;
 	private boolean gridEnabled;
 	private boolean moveableEnabled;
 	
 	private Group frontObjects;
+	private Group pathObjects;
 	private Group backObjects;
 	private List<InteractiveObject> objectList;
 	
@@ -55,17 +56,19 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 		myController = controller;
 		objectList = new ArrayList<>();
 		frontObjects = new Group();
+		pathObjects = new Group();
 		backObjects = new Group();
 		paths = new HashMap<>();
-		path = new Path();
+		currentPath = new Path(this);
 		parser = new PathParser();
-		grid = new PlacementGrid(width, height, rowPercentage, colPercentage, path);
+		grid = new PlacementGrid(this, width, height, rowPercentage, colPercentage, currentPath);
 
 		this.getChildren().add(grid);
 		this.getChildren().add(backObjects);
-		this.getChildren().add(path);
+		this.getChildren().add(pathObjects);
 		this.getChildren().add(frontObjects);
-		paths.put(path, path.getColor());
+		paths.put(currentPath, currentPath.getColor());
+		pathObjects.getChildren().add(currentPath);
 		
 		toggleGridVisibility(true);
 		toggleMovement(false);
@@ -86,11 +89,16 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	}
 	
 	private void initializeHandlers() {
-		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->gameAreaClicked(e));
+		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->gameAreaClicked(e, e.getX(), e.getY()));
 	}
 	
-	private void gameAreaClicked(MouseEvent e) {
-		path.addWaypoint(e, e.getX(), e.getY());
+	protected void gameAreaClicked(MouseEvent e, double x, double y) {
+		if(!currentPath.addWaypoint(e, x, y)) {
+			Path newPath = new Path(this);
+			grid.setActivePath(newPath);
+			this.addAndSetActivePath(newPath);
+			currentPath.addWaypoint(e, x, y);
+		}
 	}
 	
 	//For potential future extension for objects that cover paths
@@ -171,6 +179,17 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	@Override
 	public Map<Path, Color> getPaths() {
 		return paths;
+	}
+	
+	protected void addAndSetActivePath(Path newPath) {
+		pathObjects.getChildren().add(newPath);
+		paths.put(newPath, newPath.getColor());
+		currentPath = newPath;
+	}
+	
+	public void updateActivePath(Path newActive) {
+		if(newActive != currentPath) currentPath.deactivate();
+		currentPath = newActive;
 	}
 		
 	public void returnButtonPressed() {
