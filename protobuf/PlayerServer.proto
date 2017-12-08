@@ -23,7 +23,12 @@ message ServerMessage {
 */
 
 message Games {
-	repeated string games = 1;
+	repeated Game games = 1;
+}
+
+message Game {
+	required string name = 1;
+	required string description = 2;
 }
 
 message GameRoomCreationStatus {
