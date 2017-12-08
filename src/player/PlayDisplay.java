@@ -217,8 +217,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController.update();
 		if(myController.isLevelCleared()) {
 			level++;
+			animation.pause();
+			myController.pause();
 			initializeInventory();
-			//Pause game
 			myInventoryToolBar.initializeInventory();
 		}else if(myController.isLost()) {
 			//launch lost screen

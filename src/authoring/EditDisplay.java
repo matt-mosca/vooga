@@ -301,9 +301,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void imageSelected(SpriteImage imageView) {
-		imageView.addBasePropertyMap(basePropertyMap);
+		imageView.setBaseProperties(basePropertyMap);
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		controller.defineElement(imageView.getId(), imageView.getAllProperties());
+		controller.setUnitCost(imageView.getId(), new HashMap<>());
 		controller.addElementToInventory(imageView.getId());
 		myRightToolBar.imageSelected(imageView);
 	}
@@ -312,7 +313,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void addToMap(String baseProperty, String value) {
 		basePropertyMap.put(baseProperty, value);
 //		myRightToolBar.addToMap(baseProperty, value);
-		
 	}
 	
 	public void setGameArea(GameArea game) {
@@ -331,13 +331,19 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		
 	}
 
-	public void addToBottomToolBar(int level, ImageView currSprite) {
-		myBottomToolBar.addToLevel(currSprite, level);
+	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {
+		if (kind==1) {
+			myBottomToolBar.addToLevel(currSprite, level);
+		}
+		if (kind==2) {
+			myBottomToolBar.addLevelProperties(currSprite, level);
+		}
 	}
 	
 	public int getMaxLevel() {
 		return myBottomToolBar.getMaxLevel();
 	}
+
 
 	
 

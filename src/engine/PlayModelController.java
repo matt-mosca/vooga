@@ -72,6 +72,12 @@ public interface PlayModelController {
 	boolean isLost();
 
 	boolean isLevelCleared();
+	
+	/**
+	 * Ready to transition to next level
+	 * @return
+	 */
+	boolean isReadyForNextLevel();
 
 	/**
 	 * Determine whether the game in-progress has been won.

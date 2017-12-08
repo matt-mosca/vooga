@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import authoring.path.Path;
-import authoring.path.PathParser;
+import util.path.Path;
+import util.path.PathParser;
 import engine.authoring_engine.AuthoringController;
-import display.interfaces.ClickableInterface;
 import display.interfaces.CustomizeInterface;
 import display.interfaces.Droppable;
 import javafx.geometry.Point2D;

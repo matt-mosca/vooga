@@ -137,14 +137,25 @@ public class BottomToolBar extends VBox {
 	
 	public void addToLevel(ImageView newSprite, int level) {
 		mySprites.get(level-1).add(newSprite);
+		System.out.println(mySprites.toString());
 		updateSpriteDisplay(currentDisplay);
 	}
 
 	private void updateSpriteDisplay(int level) {
+		if(!mySprites.get(level-1).isEmpty()) {
 		mySpriteDisplay.addToScroll(mySprites.get(level-1));
+		}
+		else {
+			mySpriteDisplay.clear();
+		}
 	}
 	
 	public int getMaxLevel() {
 		return myLevels.size();
+	}
+
+	public void addLevelProperties(ImageView currSprite, int level) {
+		myLevels.get(level-1).update(currSprite);
+		
 	}
 }

@@ -3,7 +3,7 @@ package display.interfaces;
 import java.util.List;
 import java.util.Map;
 
-import authoring.path.Path;
+import util.path.Path;
 import javafx.scene.paint.Color;
 import display.sprites.InteractiveObject;
 

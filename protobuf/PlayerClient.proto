@@ -16,6 +16,8 @@ message ClientMessage {
 	optional GetInventory getInventory = 9;
 	optional GetTemplateProperties getTemplateProperties = 10;
 	optional PlaceElement placeElement = 11;
+	optional CheckReadyForNextLevel checkReadyForNextLevel = 12;
+	optional LoadLevel loadLevel = 13;
 }
 
 /*
@@ -67,5 +69,14 @@ message PlaceElement {
 	required string elementName = 1;
 	required double xCoord = 2;
 	required double yCoord = 3;
+}
+
+message CheckReadyForNextLevel {
+	required string roomName = 1;
+}
+
+message LoadLevel {
+	required string roomName = 1;
+	required int32 level = 2;
 }
 

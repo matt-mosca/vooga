@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import authoring.EditDisplay;
 import display.tabs.AddSpriteImageTab;
@@ -19,19 +20,26 @@ import engine.authoring_engine.AuthoringController;
 import display.factory.TabFactory;
 import display.interfaces.CreationInterface;
 import display.interfaces.PropertiesInterface;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -65,6 +73,8 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	private Map<String, String> basePropertyMap;
 	private EditDisplay display;
     private AddToWaveButton myWaveAdder;
+    private CostButton myCost;
+    private AddToLevelButton myLevelAdder;
 
 	private List<SpriteImage> availableProjectiles;
 
@@ -137,18 +147,24 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	}
 
 	@Override
-	public void clicked(ImageView imageView) {	
-		myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
-		String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
-		if (tabType.equals("Towers")) {
-			newPaneWithProjectileSlot(clone(imageView));
+	public void clicked(MouseEvent e, ImageView imageView, SimpleTab tab) {	
+		if(e.getButton() == MouseButton.SECONDARY) {
+			myController.deleteElementDefinition(imageView.getId());
+			tab.removeItem(imageView);
 		}else {
-			newPane(imageView);
+			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
+			String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
+			if (tabType.equals("Towers")) {
+				newPaneWithProjectileSlot(clone(imageView));
+			}else {
+				newPane(imageView);
+			}
 		}
 	}
 	private void newPropertiesPane() {
 		propertiesPane = new Pane();
 		myWaveAdder = new AddToWaveButton(this);
+//		myLevelAdder = new AddToLevelButton(this);
 		deleteButton = new Button("Back");
 	}
 	private void newPaneWithProjectileSlot(ImageView imageView) {
@@ -165,6 +181,8 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow(clone(imageView)));
 		propertiesPane = new Pane();
 	    myWaveAdder = new AddToWaveButton(this);
+	    myCost = new CostButton(this, imageView);
+	    myLevelAdder = new AddToLevelButton(this);
 		deleteButton = new Button("Back");
 		deleteButton.setLayoutX(370);
 		Label info = new Label("Properties here");
@@ -186,6 +204,8 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		propertiesPane.getChildren().add(projectileLabel);
 		propertiesPane.getChildren().add(projectileSlot);
 		propertiesPane.getChildren().add(myWaveAdder);
+		propertiesPane.getChildren().add(myCost);
+		propertiesPane.getChildren().add(myLevelAdder);
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
@@ -229,6 +249,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 //		myPropertiesBox = new PropertiesBox(created, imageView);
 		propertiesPane = new Pane();
 		myWaveAdder = new AddToWaveButton(this);
+		myCost = new CostButton(this, imageView);
 		Button deleteButton = new Button("Back");
 		deleteButton.setLayoutX(350);
 		Label info = new Label("Properties here");
@@ -242,6 +263,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
 		propertiesPane.getChildren().add(myWaveAdder);
+		propertiesPane.getChildren().add(myCost);
 	}
 	
 	private void removeButtonPressed() {
@@ -270,25 +292,74 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
         amountField.setPromptText("How many of this Sprite?");
         myVBox.getChildren().add(amountField);
         Button submitButton = new Button("Submit");
-        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage, Integer.valueOf(amountField.getText())));
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage));
         myVBox.getChildren().add(submitButton);
         Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
         waveStage.setScene(scene);
         waveStage.show();
 	}
 	
-	private void submitToWaves(VBox myVBox, Stage waveStage, Integer integer) {
+	private void submitToWaves(VBox myVBox, Stage waveStage) {
 		for (Node n : myVBox.getChildren()) {
 			if (n instanceof CheckBox) {
 				CheckBox c = (CheckBox) n;
 				if (c.isSelected()) {
-					for (int i = 0; i < integer; i++) {
-						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()));
-					}
+//					for (int i = 0; i < integer; i++) {
+						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()), 1);
+//					}
 				}
 			}
 		}
 		waveStage.hide();
+	}
+	
+	//TODO refactor and remove from right toolbar
+	protected void setObjectCost(String elementName) {
+		Map<String, Double> unitCosts = myController.getElementCosts().get(elementName);
+		Map<String, Double> currentEndowments = myController.getResourceEndowments();
+		Dialog<String> costDialog = new Dialog<>();
+		costDialog.setTitle("Unit Cost");
+		costDialog.setHeaderText("Assign resource costs to your unit");
+		
+		BorderPane pane = new BorderPane();
+		HBox resources = new HBox();
+		
+		TextField amount = new TextField();
+		ComboBox<String> resourceNames = new ComboBox<>();
+		for(String resource : currentEndowments.keySet()) {
+			resourceNames.getItems().add(resource);
+		}
+		resourceNames.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if(unitCosts.get(resourceNames.getSelectionModel().getSelectedItem()) != null) {
+					amount.setText(Double.toString(unitCosts.get(resourceNames.getSelectionModel().getSelectedItem())));
+				}else {
+					amount.setText("No cost yet");
+				}
+				
+			}
+		});
+		
+		Button update = new Button();
+		update.setText("Update");
+		update.addEventHandler(MouseEvent.MOUSE_CLICKED, event->{
+			unitCosts.put(resourceNames.getSelectionModel().getSelectedItem(), Double.parseDouble(amount.getText()));
+		});
+		
+		resources.getChildren().add(resourceNames);
+		resources.getChildren().add(amount);
+		resources.getChildren().add(update);
+		pane.setPrefSize(300, 75);
+		pane.setCenter(resources);
+		costDialog.getDialogPane().setContent(pane);
+		costDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		
+		Optional<String> result = costDialog.showAndWait();
+		
+		if(result.isPresent()) {
+			myController.setUnitCost(elementName, unitCosts);
+		}
 	}
 	
 	private ImageView clone(ImageView imageView) {
@@ -297,5 +368,37 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		cloneImage.setFitWidth(imageView.getFitWidth());
 		cloneImage.setId(imageView.getId());
 		return cloneImage;
+	}
+
+	@Override
+	public void addToLevel() {
+		int maxLevel = display.getMaxLevel();
+		Stage levelStage = new Stage();
+		levelStage.setTitle("CheckBox Experiment 1");
+        VBox myVBox = new VBox();
+
+        for (int i = 1; i <= maxLevel; i++) {
+        	CheckBox myCheckBox = new CheckBox(Integer.toString(i));
+        	myVBox.getChildren().add(myCheckBox);
+        }
+        Button submitButton = new Button("Submit");	
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToLevel(myVBox, levelStage));
+        myVBox.getChildren().add(submitButton);
+        Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
+        levelStage.setScene(scene);
+        levelStage.show();
+	}
+
+	private void submitToLevel(VBox myVBox, Stage levelStage) {
+		for (Node n : myVBox.getChildren()) {
+			if (n instanceof CheckBox) {
+				CheckBox c = (CheckBox) n;
+				if (c.isSelected()) {				
+						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()), 2);
+
+				}
+			}
+		}
+		levelStage.close();
 	}
 } 
