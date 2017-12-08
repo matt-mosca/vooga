@@ -148,17 +148,28 @@ public final class PlayerServer {
     PlayerServer.InventoryOrBuilder getInventoryOrBuilder();
 
     /**
-     * <code>optional .TemplateProperties templateProperties = 11;</code>
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
      */
-    boolean hasTemplateProperties();
+    java.util.List<PlayerServer.TemplateProperties> 
+        getTemplatePropertiesList();
     /**
-     * <code>optional .TemplateProperties templateProperties = 11;</code>
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
      */
-    PlayerServer.TemplateProperties getTemplateProperties();
+    PlayerServer.TemplateProperties getTemplateProperties(int index);
     /**
-     * <code>optional .TemplateProperties templateProperties = 11;</code>
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
      */
-    PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder();
+    int getTemplatePropertiesCount();
+    /**
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
+     */
+    java.util.List<? extends PlayerServer.TemplatePropertiesOrBuilder> 
+        getTemplatePropertiesOrBuilderList();
+    /**
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
+     */
+    PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder(
+        int index);
 
     /**
      * <code>optional .NewSprite elementPlaced = 12;</code>
@@ -185,6 +196,7 @@ public final class PlayerServer {
       super(builder);
     }
     private ServerMessage() {
+      templateProperties_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -346,21 +358,17 @@ public final class PlayerServer {
               break;
             }
             case 90: {
-              PlayerServer.TemplateProperties.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                subBuilder = templateProperties_.toBuilder();
+              if (!((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+                templateProperties_ = new java.util.ArrayList<PlayerServer.TemplateProperties>();
+                mutable_bitField0_ |= 0x00000400;
               }
-              templateProperties_ = input.readMessage(PlayerServer.TemplateProperties.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(templateProperties_);
-                templateProperties_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000400;
+              templateProperties_.add(
+                  input.readMessage(PlayerServer.TemplateProperties.PARSER, extensionRegistry));
               break;
             }
             case 98: {
               PlayerServer.NewSprite.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000800) == 0x00000800)) {
+              if (((bitField0_ & 0x00000400) == 0x00000400)) {
                 subBuilder = elementPlaced_.toBuilder();
               }
               elementPlaced_ = input.readMessage(PlayerServer.NewSprite.PARSER, extensionRegistry);
@@ -368,7 +376,7 @@ public final class PlayerServer {
                 subBuilder.mergeFrom(elementPlaced_);
                 elementPlaced_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000800;
+              bitField0_ |= 0x00000400;
               break;
             }
           }
@@ -379,6 +387,9 @@ public final class PlayerServer {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+          templateProperties_ = java.util.Collections.unmodifiableList(templateProperties_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -607,24 +618,38 @@ public final class PlayerServer {
     }
 
     public static final int TEMPLATEPROPERTIES_FIELD_NUMBER = 11;
-    private PlayerServer.TemplateProperties templateProperties_;
+    private java.util.List<PlayerServer.TemplateProperties> templateProperties_;
     /**
-     * <code>optional .TemplateProperties templateProperties = 11;</code>
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
      */
-    public boolean hasTemplateProperties() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
+    public java.util.List<PlayerServer.TemplateProperties> getTemplatePropertiesList() {
+      return templateProperties_;
     }
     /**
-     * <code>optional .TemplateProperties templateProperties = 11;</code>
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
      */
-    public PlayerServer.TemplateProperties getTemplateProperties() {
-      return templateProperties_ == null ? PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
+    public java.util.List<? extends PlayerServer.TemplatePropertiesOrBuilder> 
+        getTemplatePropertiesOrBuilderList() {
+      return templateProperties_;
     }
     /**
-     * <code>optional .TemplateProperties templateProperties = 11;</code>
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
      */
-    public PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder() {
-      return templateProperties_ == null ? PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
+    public int getTemplatePropertiesCount() {
+      return templateProperties_.size();
+    }
+    /**
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
+     */
+    public PlayerServer.TemplateProperties getTemplateProperties(int index) {
+      return templateProperties_.get(index);
+    }
+    /**
+     * <code>repeated .TemplateProperties templateProperties = 11;</code>
+     */
+    public PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder(
+        int index) {
+      return templateProperties_.get(index);
     }
 
     public static final int ELEMENTPLACED_FIELD_NUMBER = 12;
@@ -633,7 +658,7 @@ public final class PlayerServer {
      * <code>optional .NewSprite elementPlaced = 12;</code>
      */
     public boolean hasElementPlaced() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
+      return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
      * <code>optional .NewSprite elementPlaced = 12;</code>
@@ -690,8 +715,8 @@ public final class PlayerServer {
           return false;
         }
       }
-      if (hasTemplateProperties()) {
-        if (!getTemplateProperties().isInitialized()) {
+      for (int i = 0; i < getTemplatePropertiesCount(); i++) {
+        if (!getTemplateProperties(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -738,10 +763,10 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeMessage(10, getInventory());
       }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeMessage(11, getTemplateProperties());
+      for (int i = 0; i < templateProperties_.size(); i++) {
+        output.writeMessage(11, templateProperties_.get(i));
       }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
         output.writeMessage(12, getElementPlaced());
       }
       unknownFields.writeTo(output);
@@ -792,11 +817,11 @@ public final class PlayerServer {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(10, getInventory());
       }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+      for (int i = 0; i < templateProperties_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, getTemplateProperties());
+          .computeMessageSize(11, templateProperties_.get(i));
       }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(12, getElementPlaced());
       }
@@ -867,11 +892,8 @@ public final class PlayerServer {
         result = result && getInventory()
             .equals(other.getInventory());
       }
-      result = result && (hasTemplateProperties() == other.hasTemplateProperties());
-      if (hasTemplateProperties()) {
-        result = result && getTemplateProperties()
-            .equals(other.getTemplateProperties());
-      }
+      result = result && getTemplatePropertiesList()
+          .equals(other.getTemplatePropertiesList());
       result = result && (hasElementPlaced() == other.hasElementPlaced());
       if (hasElementPlaced()) {
         result = result && getElementPlaced()
@@ -928,9 +950,9 @@ public final class PlayerServer {
         hash = (37 * hash) + INVENTORY_FIELD_NUMBER;
         hash = (53 * hash) + getInventory().hashCode();
       }
-      if (hasTemplateProperties()) {
+      if (getTemplatePropertiesCount() > 0) {
         hash = (37 * hash) + TEMPLATEPROPERTIES_FIELD_NUMBER;
-        hash = (53 * hash) + getTemplateProperties().hashCode();
+        hash = (53 * hash) + getTemplatePropertiesList().hashCode();
       }
       if (hasElementPlaced()) {
         hash = (37 * hash) + ELEMENTPLACED_FIELD_NUMBER;
@@ -1127,11 +1149,11 @@ public final class PlayerServer {
         }
         bitField0_ = (bitField0_ & ~0x00000200);
         if (templatePropertiesBuilder_ == null) {
-          templateProperties_ = null;
+          templateProperties_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000400);
         } else {
           templatePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000400);
         if (elementPlacedBuilder_ == null) {
           elementPlaced_ = null;
         } else {
@@ -1242,16 +1264,17 @@ public final class PlayerServer {
         } else {
           result.inventory_ = inventoryBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
         if (templatePropertiesBuilder_ == null) {
+          if (((bitField0_ & 0x00000400) == 0x00000400)) {
+            templateProperties_ = java.util.Collections.unmodifiableList(templateProperties_);
+            bitField0_ = (bitField0_ & ~0x00000400);
+          }
           result.templateProperties_ = templateProperties_;
         } else {
           result.templateProperties_ = templatePropertiesBuilder_.build();
         }
         if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-          to_bitField0_ |= 0x00000800;
+          to_bitField0_ |= 0x00000400;
         }
         if (elementPlacedBuilder_ == null) {
           result.elementPlaced_ = elementPlaced_;
@@ -1330,8 +1353,31 @@ public final class PlayerServer {
         if (other.hasInventory()) {
           mergeInventory(other.getInventory());
         }
-        if (other.hasTemplateProperties()) {
-          mergeTemplateProperties(other.getTemplateProperties());
+        if (templatePropertiesBuilder_ == null) {
+          if (!other.templateProperties_.isEmpty()) {
+            if (templateProperties_.isEmpty()) {
+              templateProperties_ = other.templateProperties_;
+              bitField0_ = (bitField0_ & ~0x00000400);
+            } else {
+              ensureTemplatePropertiesIsMutable();
+              templateProperties_.addAll(other.templateProperties_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.templateProperties_.isEmpty()) {
+            if (templatePropertiesBuilder_.isEmpty()) {
+              templatePropertiesBuilder_.dispose();
+              templatePropertiesBuilder_ = null;
+              templateProperties_ = other.templateProperties_;
+              bitField0_ = (bitField0_ & ~0x00000400);
+              templatePropertiesBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getTemplatePropertiesFieldBuilder() : null;
+            } else {
+              templatePropertiesBuilder_.addAllMessages(other.templateProperties_);
+            }
+          }
         }
         if (other.hasElementPlaced()) {
           mergeElementPlaced(other.getElementPlaced());
@@ -1372,8 +1418,8 @@ public final class PlayerServer {
             return false;
           }
         }
-        if (hasTemplateProperties()) {
-          if (!getTemplateProperties().isInitialized()) {
+        for (int i = 0; i < getTemplatePropertiesCount(); i++) {
+          if (!getTemplateProperties(i).isInitialized()) {
             return false;
           }
         }
@@ -2584,117 +2630,239 @@ public final class PlayerServer {
         return inventoryBuilder_;
       }
 
-      private PlayerServer.TemplateProperties templateProperties_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder> templatePropertiesBuilder_;
-      /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
-       */
-      public boolean hasTemplateProperties() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
+      private java.util.List<PlayerServer.TemplateProperties> templateProperties_ =
+        java.util.Collections.emptyList();
+      private void ensureTemplatePropertiesIsMutable() {
+        if (!((bitField0_ & 0x00000400) == 0x00000400)) {
+          templateProperties_ = new java.util.ArrayList<PlayerServer.TemplateProperties>(templateProperties_);
+          bitField0_ |= 0x00000400;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder> templatePropertiesBuilder_;
+
       /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
        */
-      public PlayerServer.TemplateProperties getTemplateProperties() {
+      public java.util.List<PlayerServer.TemplateProperties> getTemplatePropertiesList() {
         if (templatePropertiesBuilder_ == null) {
-          return templateProperties_ == null ? PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
+          return java.util.Collections.unmodifiableList(templateProperties_);
         } else {
-          return templatePropertiesBuilder_.getMessage();
+          return templatePropertiesBuilder_.getMessageList();
         }
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
        */
-      public Builder setTemplateProperties(PlayerServer.TemplateProperties value) {
+      public int getTemplatePropertiesCount() {
+        if (templatePropertiesBuilder_ == null) {
+          return templateProperties_.size();
+        } else {
+          return templatePropertiesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public PlayerServer.TemplateProperties getTemplateProperties(int index) {
+        if (templatePropertiesBuilder_ == null) {
+          return templateProperties_.get(index);
+        } else {
+          return templatePropertiesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public Builder setTemplateProperties(
+          int index, PlayerServer.TemplateProperties value) {
         if (templatePropertiesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          templateProperties_ = value;
+          ensureTemplatePropertiesIsMutable();
+          templateProperties_.set(index, value);
           onChanged();
         } else {
-          templatePropertiesBuilder_.setMessage(value);
+          templatePropertiesBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
        */
       public Builder setTemplateProperties(
+          int index, PlayerServer.TemplateProperties.Builder builderForValue) {
+        if (templatePropertiesBuilder_ == null) {
+          ensureTemplatePropertiesIsMutable();
+          templateProperties_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public Builder addTemplateProperties(PlayerServer.TemplateProperties value) {
+        if (templatePropertiesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureTemplatePropertiesIsMutable();
+          templateProperties_.add(value);
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public Builder addTemplateProperties(
+          int index, PlayerServer.TemplateProperties value) {
+        if (templatePropertiesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureTemplatePropertiesIsMutable();
+          templateProperties_.add(index, value);
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public Builder addTemplateProperties(
           PlayerServer.TemplateProperties.Builder builderForValue) {
         if (templatePropertiesBuilder_ == null) {
-          templateProperties_ = builderForValue.build();
+          ensureTemplatePropertiesIsMutable();
+          templateProperties_.add(builderForValue.build());
           onChanged();
         } else {
-          templatePropertiesBuilder_.setMessage(builderForValue.build());
+          templatePropertiesBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
        */
-      public Builder mergeTemplateProperties(PlayerServer.TemplateProperties value) {
+      public Builder addTemplateProperties(
+          int index, PlayerServer.TemplateProperties.Builder builderForValue) {
         if (templatePropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00000400) == 0x00000400) &&
-              templateProperties_ != null &&
-              templateProperties_ != PlayerServer.TemplateProperties.getDefaultInstance()) {
-            templateProperties_ =
-              PlayerServer.TemplateProperties.newBuilder(templateProperties_).mergeFrom(value).buildPartial();
-          } else {
-            templateProperties_ = value;
-          }
+          ensureTemplatePropertiesIsMutable();
+          templateProperties_.add(index, builderForValue.build());
           onChanged();
         } else {
-          templatePropertiesBuilder_.mergeFrom(value);
+          templatePropertiesBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public Builder addAllTemplateProperties(
+          java.lang.Iterable<? extends PlayerServer.TemplateProperties> values) {
+        if (templatePropertiesBuilder_ == null) {
+          ensureTemplatePropertiesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, templateProperties_);
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
        */
       public Builder clearTemplateProperties() {
         if (templatePropertiesBuilder_ == null) {
-          templateProperties_ = null;
+          templateProperties_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000400);
           onChanged();
         } else {
           templatePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
        */
-      public PlayerServer.TemplateProperties.Builder getTemplatePropertiesBuilder() {
-        bitField0_ |= 0x00000400;
-        onChanged();
-        return getTemplatePropertiesFieldBuilder().getBuilder();
+      public Builder removeTemplateProperties(int index) {
+        if (templatePropertiesBuilder_ == null) {
+          ensureTemplatePropertiesIsMutable();
+          templateProperties_.remove(index);
+          onChanged();
+        } else {
+          templatePropertiesBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
        */
-      public PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder() {
-        if (templatePropertiesBuilder_ != null) {
-          return templatePropertiesBuilder_.getMessageOrBuilder();
-        } else {
-          return templateProperties_ == null ?
-              PlayerServer.TemplateProperties.getDefaultInstance() : templateProperties_;
+      public PlayerServer.TemplateProperties.Builder getTemplatePropertiesBuilder(
+          int index) {
+        return getTemplatePropertiesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public PlayerServer.TemplatePropertiesOrBuilder getTemplatePropertiesOrBuilder(
+          int index) {
+        if (templatePropertiesBuilder_ == null) {
+          return templateProperties_.get(index);  } else {
+          return templatePropertiesBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>optional .TemplateProperties templateProperties = 11;</code>
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
+      public java.util.List<? extends PlayerServer.TemplatePropertiesOrBuilder> 
+           getTemplatePropertiesOrBuilderList() {
+        if (templatePropertiesBuilder_ != null) {
+          return templatePropertiesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(templateProperties_);
+        }
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public PlayerServer.TemplateProperties.Builder addTemplatePropertiesBuilder() {
+        return getTemplatePropertiesFieldBuilder().addBuilder(
+            PlayerServer.TemplateProperties.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public PlayerServer.TemplateProperties.Builder addTemplatePropertiesBuilder(
+          int index) {
+        return getTemplatePropertiesFieldBuilder().addBuilder(
+            index, PlayerServer.TemplateProperties.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .TemplateProperties templateProperties = 11;</code>
+       */
+      public java.util.List<PlayerServer.TemplateProperties.Builder> 
+           getTemplatePropertiesBuilderList() {
+        return getTemplatePropertiesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder> 
           getTemplatePropertiesFieldBuilder() {
         if (templatePropertiesBuilder_ == null) {
-          templatePropertiesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          templatePropertiesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               PlayerServer.TemplateProperties, PlayerServer.TemplateProperties.Builder, PlayerServer.TemplatePropertiesOrBuilder>(
-                  getTemplateProperties(),
+                  templateProperties_,
+                  ((bitField0_ & 0x00000400) == 0x00000400),
                   getParentForChildren(),
                   isClean());
           templateProperties_ = null;
@@ -17821,7 +17989,7 @@ public final class PlayerServer {
       "(\0132\022.ReadyForNextLevel\022+\n\020levelInitializ" +
       "ed\030\010 \001(\0132\021.LevelInitialized\022\027\n\006update\030\t ",
       "\001(\0132\007.Update\022\035\n\tinventory\030\n \001(\0132\n.Invent" +
-      "ory\022/\n\022templateProperties\030\013 \001(\0132\023.Templa" +
+      "ory\022/\n\022templateProperties\030\013 \003(\0132\023.Templa" +
       "teProperties\022!\n\relementPlaced\030\014 \001(\0132\n.Ne" +
       "wSprite\"\035\n\005Games\022\024\n\005games\030\001 \003(\0132\005.Game\")" +
       "\n\004Game\022\014\n\004name\030\001 \002(\t\022\023\n\013description\030\002 \002(" +

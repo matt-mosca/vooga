@@ -16,10 +16,11 @@ message ClientMessage {
 	optional ResumeGame resumeGame = 9;
 	optional GetInventory getInventory = 10;
 	optional GetTemplateProperties getTemplateProperties = 11;
-	optional PlaceElement placeElement = 12;
-	optional UpgradeElement upgradeElement = 13; // Has no corresponding response? Client doesn't check if upgrade succeeded
-	optional CheckReadyForNextLevel checkReadyForNextLevel = 14;
-	optional LoadLevel loadLevel = 15;
+	optional GetAllTemplateProperties getAllTemplateProperties = 12; // Should deprecate from PlayModelController interface?
+	optional PlaceElement placeElement = 13;
+	optional UpgradeElement upgradeElement = 14; // Has no corresponding response? Client doesn't check if upgrade succeeded
+	optional CheckReadyForNextLevel checkReadyForNextLevel = 15;
+	optional LoadLevel loadLevel = 16;
 }
 
 /*
@@ -68,6 +69,9 @@ message GetInventory {
 
 message GetTemplateProperties {
 	required string elementName = 1;
+}
+
+message GetAllTemplateProperties {
 }
 
 message PlaceElement {

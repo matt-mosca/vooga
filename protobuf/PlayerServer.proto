@@ -15,7 +15,7 @@ message ServerMessage {
 	optional LevelInitialized levelInitialized = 8;
 	optional Update update = 9;
 	optional Inventory inventory = 10;
-	optional TemplateProperties templateProperties = 11;
+	repeated TemplateProperties templateProperties = 11;
 	optional NewSprite elementPlaced = 12;
 }
 

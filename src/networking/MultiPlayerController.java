@@ -218,8 +218,19 @@ class MultiPlayerController {
 			// TODO - Handle case where client tries to get template properties without
 			// belonging to a
 			// game room?
-			serverMessageBuilder.setTemplateProperties(playController
+			serverMessageBuilder.addTemplateProperties(playController
 					.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()));
+		}
+	}
+
+	void getAllTemplateProperties(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetAllTemplateProperties()) {
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to get template properties without
+			// belonging to a
+			// game room?
+			serverMessageBuilder.addAllTemplateProperties(playController.packageAllTemplateProperties());
 		}
 	}
 
@@ -311,6 +322,8 @@ class MultiPlayerController {
 			getInventory(clientId, clientMessage, serverMessageBuilder);
 			// Get template properties
 			getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+			// Get all template properties
+			getAllTemplateProperties(clientId, clientMessage, serverMessageBuilder);
 			// Handle place element request
 			placeElement(clientId, clientMessage, serverMessageBuilder);
 			// Handle upgrade element request

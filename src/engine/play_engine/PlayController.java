@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Set;
 
 /**
@@ -107,8 +108,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				cacheAndCreateIdentifier(element);
 			}
 			// Package these changes into an Update message
-			latestUpdate = packageUpdates(newlyGeneratedElements,
-			updatedElements, deadElements);
+			latestUpdate = packageUpdates(newlyGeneratedElements, updatedElements, deadElements);
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
@@ -175,7 +175,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public boolean isReadyForNextLevel() {
 		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not last level
 	}
-	
+
 	public Update getLatestUpdate() {
 		return latestUpdate;
 	}
@@ -213,6 +213,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				.forEach(templateProperty -> templatePropertiesBuilder.addProperty(TemplateProperty.newBuilder()
 						.setName(templateProperty).setValue(templatePropertiesMap.get(templateProperty)).build()));
 		return templatePropertiesBuilder.build();
+	}
+
+	public Collection<TemplateProperties> packageAllTemplateProperties() {
+		Map<String, Map<String, String>> allTemplateProperties = getAllDefinedTemplateProperties();
+		return allTemplateProperties.keySet().stream().map(templateName -> packageTemplateProperties(templateName))
+				.collect(Collectors.toList());
 	}
 
 	public NewSprite placeAndPackageElement(String templateName, double x, double y) {
@@ -333,7 +339,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				Resource.newBuilder().setName(resourceName).setAmount(resourceEndowments.get(resourceName)).build()));
 		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
 	}
-	
+
 	private StatusUpdate getStatusUpdate() {
 		// Just always send status update for now
 		return StatusUpdate.newBuilder().setLevelCleared(levelCleared).setIsWon(isWon).setIsLost(isLost)
