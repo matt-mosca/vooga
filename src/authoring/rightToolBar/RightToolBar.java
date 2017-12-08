@@ -282,9 +282,9 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 			if (n instanceof CheckBox) {
 				CheckBox c = (CheckBox) n;
 				if (c.isSelected()) {
-					for (int i = 0; i < integer; i++) {
+//					for (int i = 0; i < integer; i++) {
 						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()));
-					}
+//					}
 				}
 			}
 		}
