@@ -45,8 +45,9 @@ message GameRoomJoinStatus {
 	TODO : Send over static files (images) with custom message type to ensure all images are available to client with specified URL?
 	OR : Client can use Server URL to fetch images remotely? Separate (HTTP?) endpoint for that?
 */
+
 message GameRoomLaunchStatus {
-	optional Update initialState = 1;
+	optional LevelInitialized initialState = 1;
 	optional string error = 2;
 }
 

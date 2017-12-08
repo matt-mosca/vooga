@@ -5488,17 +5488,17 @@ public final class PlayerServer {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .Update initialState = 1;</code>
+     * <code>optional .LevelInitialized initialState = 1;</code>
      */
     boolean hasInitialState();
     /**
-     * <code>optional .Update initialState = 1;</code>
+     * <code>optional .LevelInitialized initialState = 1;</code>
      */
-    PlayerServer.Update getInitialState();
+    PlayerServer.LevelInitialized getInitialState();
     /**
-     * <code>optional .Update initialState = 1;</code>
+     * <code>optional .LevelInitialized initialState = 1;</code>
      */
-    PlayerServer.UpdateOrBuilder getInitialStateOrBuilder();
+    PlayerServer.LevelInitializedOrBuilder getInitialStateOrBuilder();
 
     /**
      * <code>optional string error = 2;</code>
@@ -5515,11 +5515,6 @@ public final class PlayerServer {
         getErrorBytes();
   }
   /**
-   * <pre>
-   *TODO : Send over static files (images) with custom message type to ensure all images are available to client with specified URL?
-   *OR : Client can use Server URL to fetch images remotely? Separate (HTTP?) endpoint for that?
-   * </pre>
-   *
    * Protobuf type {@code GameRoomLaunchStatus}
    */
   public  static final class GameRoomLaunchStatus extends
@@ -5563,11 +5558,11 @@ public final class PlayerServer {
               break;
             }
             case 10: {
-              PlayerServer.Update.Builder subBuilder = null;
+              PlayerServer.LevelInitialized.Builder subBuilder = null;
               if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 subBuilder = initialState_.toBuilder();
               }
-              initialState_ = input.readMessage(PlayerServer.Update.PARSER, extensionRegistry);
+              initialState_ = input.readMessage(PlayerServer.LevelInitialized.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(initialState_);
                 initialState_ = subBuilder.buildPartial();
@@ -5607,24 +5602,24 @@ public final class PlayerServer {
 
     private int bitField0_;
     public static final int INITIALSTATE_FIELD_NUMBER = 1;
-    private PlayerServer.Update initialState_;
+    private PlayerServer.LevelInitialized initialState_;
     /**
-     * <code>optional .Update initialState = 1;</code>
+     * <code>optional .LevelInitialized initialState = 1;</code>
      */
     public boolean hasInitialState() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional .Update initialState = 1;</code>
+     * <code>optional .LevelInitialized initialState = 1;</code>
      */
-    public PlayerServer.Update getInitialState() {
-      return initialState_ == null ? PlayerServer.Update.getDefaultInstance() : initialState_;
+    public PlayerServer.LevelInitialized getInitialState() {
+      return initialState_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : initialState_;
     }
     /**
-     * <code>optional .Update initialState = 1;</code>
+     * <code>optional .LevelInitialized initialState = 1;</code>
      */
-    public PlayerServer.UpdateOrBuilder getInitialStateOrBuilder() {
-      return initialState_ == null ? PlayerServer.Update.getDefaultInstance() : initialState_;
+    public PlayerServer.LevelInitializedOrBuilder getInitialStateOrBuilder() {
+      return initialState_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : initialState_;
     }
 
     public static final int ERROR_FIELD_NUMBER = 2;
@@ -5837,11 +5832,6 @@ public final class PlayerServer {
       return builder;
     }
     /**
-     * <pre>
-     *TODO : Send over static files (images) with custom message type to ensure all images are available to client with specified URL?
-     *OR : Client can use Server URL to fetch images remotely? Separate (HTTP?) endpoint for that?
-     * </pre>
-     *
      * Protobuf type {@code GameRoomLaunchStatus}
      */
     public static final class Builder extends
@@ -6005,29 +5995,29 @@ public final class PlayerServer {
       }
       private int bitField0_;
 
-      private PlayerServer.Update initialState_ = null;
+      private PlayerServer.LevelInitialized initialState_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder> initialStateBuilder_;
+          PlayerServer.LevelInitialized, PlayerServer.LevelInitialized.Builder, PlayerServer.LevelInitializedOrBuilder> initialStateBuilder_;
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
       public boolean hasInitialState() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
-      public PlayerServer.Update getInitialState() {
+      public PlayerServer.LevelInitialized getInitialState() {
         if (initialStateBuilder_ == null) {
-          return initialState_ == null ? PlayerServer.Update.getDefaultInstance() : initialState_;
+          return initialState_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : initialState_;
         } else {
           return initialStateBuilder_.getMessage();
         }
       }
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
-      public Builder setInitialState(PlayerServer.Update value) {
+      public Builder setInitialState(PlayerServer.LevelInitialized value) {
         if (initialStateBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6041,10 +6031,10 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
       public Builder setInitialState(
-          PlayerServer.Update.Builder builderForValue) {
+          PlayerServer.LevelInitialized.Builder builderForValue) {
         if (initialStateBuilder_ == null) {
           initialState_ = builderForValue.build();
           onChanged();
@@ -6055,15 +6045,15 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
-      public Builder mergeInitialState(PlayerServer.Update value) {
+      public Builder mergeInitialState(PlayerServer.LevelInitialized value) {
         if (initialStateBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
               initialState_ != null &&
-              initialState_ != PlayerServer.Update.getDefaultInstance()) {
+              initialState_ != PlayerServer.LevelInitialized.getDefaultInstance()) {
             initialState_ =
-              PlayerServer.Update.newBuilder(initialState_).mergeFrom(value).buildPartial();
+              PlayerServer.LevelInitialized.newBuilder(initialState_).mergeFrom(value).buildPartial();
           } else {
             initialState_ = value;
           }
@@ -6075,7 +6065,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
       public Builder clearInitialState() {
         if (initialStateBuilder_ == null) {
@@ -6088,33 +6078,33 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
-      public PlayerServer.Update.Builder getInitialStateBuilder() {
+      public PlayerServer.LevelInitialized.Builder getInitialStateBuilder() {
         bitField0_ |= 0x00000001;
         onChanged();
         return getInitialStateFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
-      public PlayerServer.UpdateOrBuilder getInitialStateOrBuilder() {
+      public PlayerServer.LevelInitializedOrBuilder getInitialStateOrBuilder() {
         if (initialStateBuilder_ != null) {
           return initialStateBuilder_.getMessageOrBuilder();
         } else {
           return initialState_ == null ?
-              PlayerServer.Update.getDefaultInstance() : initialState_;
+              PlayerServer.LevelInitialized.getDefaultInstance() : initialState_;
         }
       }
       /**
-       * <code>optional .Update initialState = 1;</code>
+       * <code>optional .LevelInitialized initialState = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder> 
+          PlayerServer.LevelInitialized, PlayerServer.LevelInitialized.Builder, PlayerServer.LevelInitializedOrBuilder> 
           getInitialStateFieldBuilder() {
         if (initialStateBuilder_ == null) {
           initialStateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              PlayerServer.Update, PlayerServer.Update.Builder, PlayerServer.UpdateOrBuilder>(
+              PlayerServer.LevelInitialized, PlayerServer.LevelInitialized.Builder, PlayerServer.LevelInitializedOrBuilder>(
                   getInitialState(),
                   getParentForChildren(),
                   isClean());
@@ -16944,32 +16934,32 @@ public final class PlayerServer {
       "\014\n\004name\030\001 \002(\t\022\023\n\013description\030\002 \002(\t\"7\n\026Ga" +
       "meRoomCreationStatus\022\016\n\006roomId\030\001 \001(\t\022\r\n\005" +
       "error\030\002 \001(\t\"4\n\022GameRoomJoinStatus\022\017\n\007suc" +
-      "cess\030\001 \002(\010\022\r\n\005error\030\002 \001(\t\"D\n\024GameRoomLau" +
-      "nchStatus\022\035\n\014initialState\030\001 \001(\0132\007.Update" +
-      "\022\r\n\005error\030\002 \001(\t\"\036\n\tGameRooms\022\021\n\troomName" +
-      "s\030\001 \003(\t\"/\n\013PlayerNames\022\021\n\tuserNames\030\001 \003(",
-      "\t\022\r\n\005error\030\002 \001(\t\"T\n\020LevelInitialized\022\035\n\t" +
-      "inventory\030\001 \002(\0132\n.Inventory\022!\n\020spritesAn" +
-      "dStatus\030\002 \002(\0132\007.Update\"\310\001\n\006Update\022\036\n\nnew" +
-      "Sprites\030\001 \003(\0132\n.NewSprite\022$\n\rspriteUpdat" +
-      "es\030\002 \003(\0132\r.SpriteUpdate\022(\n\017spriteDeletio" +
-      "ns\030\003 \003(\0132\017.SpriteDeletion\022$\n\rstatusUpdat" +
-      "es\030\004 \001(\0132\r.StatusUpdate\022(\n\017resourceUpdat" +
-      "es\030\005 \001(\0132\017.ResourceUpdate\"x\n\tNewSprite\022\020" +
-      "\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030\002 \002(\t\022\023\n\013im" +
-      "ageHeight\030\003 \002(\001\022\022\n\nimageWidth\030\004 \002(\001\022\016\n\006s",
-      "pawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\"<\n\014SpriteUpd" +
-      "ate\022\020\n\010spriteId\030\001 \002(\005\022\014\n\004newX\030\002 \002(\001\022\014\n\004n" +
-      "ewY\030\003 \002(\001\"\"\n\016SpriteDeletion\022\020\n\010spriteId\030" +
-      "\001 \002(\005\"S\n\014StatusUpdate\022\024\n\014levelCleared\030\001 " +
-      "\002(\010\022\r\n\005isWon\030\002 \002(\010\022\016\n\006isLost\030\003 \002(\010\022\016\n\006in" +
-      "Play\030\004 \002(\010\".\n\016ResourceUpdate\022\034\n\tresource" +
-      "s\030\001 \003(\0132\t.Resource\"\036\n\tInventory\022\021\n\ttempl" +
-      "ates\030\001 \003(\t\"(\n\010Resource\022\014\n\004name\030\001 \002(\t\022\016\n\006" +
-      "amount\030\002 \002(\001\"N\n\022TemplateProperties\022\023\n\013el" +
-      "ementName\030\001 \002(\t\022#\n\010property\030\002 \003(\0132\021.Temp",
-      "lateProperty\"/\n\020TemplateProperty\022\014\n\004name" +
-      "\030\001 \002(\t\022\r\n\005value\030\002 \002(\t"
+      "cess\030\001 \002(\010\022\r\n\005error\030\002 \001(\t\"N\n\024GameRoomLau" +
+      "nchStatus\022\'\n\014initialState\030\001 \001(\0132\021.LevelI" +
+      "nitialized\022\r\n\005error\030\002 \001(\t\"\036\n\tGameRooms\022\021" +
+      "\n\troomNames\030\001 \003(\t\"/\n\013PlayerNames\022\021\n\tuser",
+      "Names\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"T\n\020LevelIniti" +
+      "alized\022\035\n\tinventory\030\001 \002(\0132\n.Inventory\022!\n" +
+      "\020spritesAndStatus\030\002 \002(\0132\007.Update\"\310\001\n\006Upd" +
+      "ate\022\036\n\nnewSprites\030\001 \003(\0132\n.NewSprite\022$\n\rs" +
+      "priteUpdates\030\002 \003(\0132\r.SpriteUpdate\022(\n\017spr" +
+      "iteDeletions\030\003 \003(\0132\017.SpriteDeletion\022$\n\rs" +
+      "tatusUpdates\030\004 \001(\0132\r.StatusUpdate\022(\n\017res" +
+      "ourceUpdates\030\005 \001(\0132\017.ResourceUpdate\"x\n\tN" +
+      "ewSprite\022\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030\002" +
+      " \002(\t\022\023\n\013imageHeight\030\003 \002(\001\022\022\n\nimageWidth\030",
+      "\004 \002(\001\022\016\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\"<\n" +
+      "\014SpriteUpdate\022\020\n\010spriteId\030\001 \002(\005\022\014\n\004newX\030" +
+      "\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016SpriteDeletion\022\020\n" +
+      "\010spriteId\030\001 \002(\005\"S\n\014StatusUpdate\022\024\n\014level" +
+      "Cleared\030\001 \002(\010\022\r\n\005isWon\030\002 \002(\010\022\016\n\006isLost\030\003" +
+      " \002(\010\022\016\n\006inPlay\030\004 \002(\010\".\n\016ResourceUpdate\022\034" +
+      "\n\tresources\030\001 \003(\0132\t.Resource\"\036\n\tInventor" +
+      "y\022\021\n\ttemplates\030\001 \003(\t\"(\n\010Resource\022\014\n\004name" +
+      "\030\001 \002(\t\022\016\n\006amount\030\002 \002(\001\"N\n\022TemplateProper" +
+      "ties\022\023\n\013elementName\030\001 \002(\t\022#\n\010property\030\002 ",
+      "\003(\0132\021.TemplateProperty\"/\n\020TemplateProper" +
+      "ty\022\014\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
