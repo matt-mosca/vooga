@@ -1,10 +1,11 @@
 package display.interfaces;
 
-import display.sprites.InteractiveObject;
+import java.util.List;
 import java.util.Map;
 
 import util.path.Path;
 import javafx.scene.paint.Color;
+import display.sprites.InteractiveObject;
 
 public interface Droppable {
 

@@ -39,6 +39,10 @@ public class SimpleTab extends ScrollPane{
 		items.add(object);
 	}
 	
+	public boolean removeItem(ImageView object) {
+		return items.remove(object);
+	}
+	
 	public List<ImageView> getImages(){
 		return new ArrayList<>(myList);
 	}

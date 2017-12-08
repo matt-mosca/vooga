@@ -15,6 +15,7 @@ import javafx.geometry.Point2D;
  *
  */
 public class PlacementGrid extends GridPane {
+	private GameArea area;
 	private Path path;
 	private Cell[][] cells;
 	private int width;
@@ -23,10 +24,11 @@ public class PlacementGrid extends GridPane {
 	private int colPercentage;
 	private int cellSize;
 	
-	public PlacementGrid(int width, int height, int rowPercent, int colPercent, Path path) {
+	public PlacementGrid(GameArea area, int width, int height, int rowPercent, int colPercent, Path path) {
 		this.width = width;
 		this.height = height;
 		this.path = path;
+		this.area = area;
 		this.rowPercentage = rowPercent;
 		this.colPercentage = colPercent;
 		this.cellSize = width/(100/rowPercentage);
@@ -73,7 +75,7 @@ public class PlacementGrid extends GridPane {
 		if(cell.pathActive()) {
 			cell.deactivate();
 		}else {
-			path.addWaypoint(e,x,y);
+			area.gameAreaClicked(e, x, y);
 			cell.activate();
 		}
 	}
@@ -162,5 +164,9 @@ public class PlacementGrid extends GridPane {
 		this.height = height;
 		this.setPrefWidth(width);
 		this.setPrefHeight(height);
+	}
+	
+	protected void setActivePath(Path path) {
+		this.path = path;
 	}
 }

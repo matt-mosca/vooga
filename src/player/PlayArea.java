@@ -2,9 +2,15 @@ package player;
 
 import util.path.Path;
 import engine.play_engine.PlayController;
+
+import java.util.Map;
+
+import authoring.path.Path;
 import display.interfaces.Droppable;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+
 import display.sprites.InteractiveObject;
 import javafx.scene.paint.Color;
 

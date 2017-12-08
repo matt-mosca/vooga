@@ -15,6 +15,11 @@ public class Bank {
 	private Map<String, Double> resourceEndowments;
 	private Map<String, Map<String, Double>> unitCosts;
 
+	public Bank() {
+		resourceEndowments = new HashMap<>();
+		unitCosts = new HashMap<>();
+	}
+	
 	public Bank fromBank() {
 		Bank bankCopy = new Bank();
 		bankCopy.setResourceEndowments(getResourceEndowments());
@@ -60,6 +65,10 @@ public class Bank {
 	public Map<String, Map<String, Double>> getUnitCosts() {
 		return unitCosts;
 	}
+	
+	public Map<String, Double> getCostsForUnit(String unitName) {
+		return unitCosts.get(unitName);
+	}
 
 	/**
 	 * Purchase the given quantity of the unit if it can be afforded, update bank
@@ -74,9 +83,10 @@ public class Bank {
 	 */
 	public boolean purchase(String unitName, int quantity) {
 		Map<String, Double> resourcesAfterPurchase = new HashMap<>(resourceEndowments);
-		for (String resourceName : resourcesAfterPurchase.keySet()) {
+		Map<String, Double> costsForUnit = getCostsForUnit(unitName);
+		for (String resourceName : costsForUnit.keySet()) {
 			double newQuantity = resourcesAfterPurchase.get(resourceName)
-					- unitCosts.get(unitName).get(resourceName) * quantity;
+					- costsForUnit.getOrDefault(resourceName, 0.0) * quantity;
 			if (newQuantity <= 0) {
 				return false;
 			}
