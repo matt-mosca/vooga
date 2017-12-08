@@ -35,10 +35,10 @@ public class InventoryToolBar extends ToolBar{
 	protected void createAndAddTabs() {
 		towerTab = new SimpleTab(myDisplay, new ArrayList<>());
 		troopTab = new SimpleTab(myDisplay, new ArrayList<>());
-		projectileTab = new SimpleTab(myDisplay, new ArrayList<>());
+//		projectileTab = new SimpleTab(myDisplay, new ArrayList<>());
 		tabPane.getTabs().add(tabFactory.buildTab("Towers", "TowerImage", towerTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Troops", "TroopImage", troopTab, tabPane));
-		tabPane.getTabs().add(tabFactory.buildTab("Projectiles", "ProjectileImage", projectileTab, tabPane));
+//		tabPane.getTabs().add(tabFactory.buildTab("Projectiles", "ProjectileImage", projectileTab, tabPane));
 		makeTabsUnclosable(tabPane);
 	}
 	
