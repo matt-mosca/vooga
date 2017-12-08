@@ -1,11 +1,11 @@
 package engine.authoring_engine;
 
-import authoring.path.PathList;
+import util.path.PathList;
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
-import packaging.Packager;
+import exporting.Packager;
 
 import java.util.Arrays;
 import java.util.Collection;
