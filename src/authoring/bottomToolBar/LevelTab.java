@@ -1,11 +1,16 @@
 package authoring.bottomToolBar;
 
+import java.util.Set;
+
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 public class LevelTab extends ScrollPane{
 	
@@ -16,29 +21,27 @@ public class LevelTab extends ScrollPane{
 	private LevelDisplay myLevelDisplay;
 	private boolean edited;
 	private AuthoringController myController;
+	private HBox myDisplay;
 	
 	public LevelTab(int n, AuthoringController controller) {
 		myNumber = n;
+		myDisplay = new HBox();
+		this.setContent(myDisplay);
 		myController = controller;
 		//needs to be a check for what kind of level it is, so that we either create an attackleveldisplay or a 
 		//defenseleveldisplay
 		
 		myLevelDisplay = new DefenseLevelDisplay(n, this, controller); //for now assuming it has to be a defense one.
-		Label initialLabel = new Label("You have to add content to this first! Click the edit button!");
-		editLevel = new Button("Edit Level");
-		editLevel.setAlignment(Pos.CENTER);
-		//Need to put the button somewhere first.
-		editLevel.setOnAction(e->{
-			if (!edited) {
-				this.getChildren().remove(initialLabel);
-			}
-			openLevelDisplay(); 
-			edited = true;
-			this.update();
-			});
-		this.getChildren().add(initialLabel);
-		this.getChildren().add(editLevel);
+//		Label initialLabel = new Label("You have to add content to this first! Click the edit button!");
+//		updateLevelContents();
 	}
+
+
+//	public void updateLevelContents() {
+//		Set<String> myContents = myController.getInventory();
+//		
+//		
+//	}
 
 
 	public void openLevelDisplay() {
@@ -53,11 +56,12 @@ public class LevelTab extends ScrollPane{
 		return myNumber;
 	}
 
-	public void update() {
+	public void update(ImageView currSprite) {
 		//TODO
 		//this method will update the different components in this tab, for the display. 	
 		//probably will involve using a lot of get methods to get stuff from the back end in order to display them.
 		//waiting on a get method in back end.
+		myDisplay.getChildren().add(currSprite);
 		
 	}
 

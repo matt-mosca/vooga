@@ -26,6 +26,7 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -62,6 +63,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Button play;
 	private Timeline animation;
 	private String gameState;
+	private Slider volumeSlider;
 
 	private int level = 1;
 	private final FiringStrategy testFiring =  new NoopFiringStrategy();
@@ -109,6 +111,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myInventoryToolBar = new InventoryToolBar(this, myController);
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		rootAdd(myLeftBar);
+		volumeSlider = new Slider(0,100,5);
+		rootAdd(volumeSlider);
 	}
 	
 	public void initializeGameState() {
@@ -213,8 +217,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myController.update();
 		if(myController.isLevelCleared()) {
 			level++;
+			animation.pause();
+			myController.pause();
 			initializeInventory();
-			//Pause game
 			myInventoryToolBar.initializeInventory();
 		}else if(myController.isLost()) {
 			//launch lost screen
