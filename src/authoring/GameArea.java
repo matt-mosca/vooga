@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import authoring.path.Path;
-import authoring.path.PathParser;
+import util.path.Path;
+import util.path.PathParser;
 import engine.authoring_engine.AuthoringController;
-import display.interfaces.ClickableInterface;
 import display.interfaces.CustomizeInterface;
 import display.interfaces.Droppable;
 import javafx.geometry.Point2D;
@@ -17,16 +16,10 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-<<<<<<< HEAD
 import javafx.scene.paint.Color;
-import sprites.BackgroundObject;
-import sprites.InteractiveObject;
-import sprites.StaticObject;
-=======
 import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
 import display.sprites.StaticObject;
->>>>>>> bas65
 
 public class GameArea extends Pane implements CustomizeInterface, Droppable{
 	private final String WIDTH = "Game_Area_Width";

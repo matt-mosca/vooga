@@ -1,4 +1,4 @@
-package authoring.path;
+package util.path;
 
 import java.util.ResourceBundle;
 

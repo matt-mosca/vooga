@@ -6,7 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
-import authoring.path.Path;
+import util.path.Path;
 import javafx.geometry.Point2D;
 
 /**

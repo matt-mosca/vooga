@@ -1,12 +1,16 @@
 package player;
 
+import util.path.Path;
 import engine.play_engine.PlayController;
 import display.interfaces.Droppable;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import display.sprites.InteractiveObject;
+import javafx.scene.paint.Color;
 
-public class PlayArea extends Pane implements Droppable{
+import java.util.Map;
+
+public class PlayArea extends Pane implements Droppable {
 	private PlayController myController;
 	private double lastX;
 	private double lastY;
@@ -48,6 +52,11 @@ public class PlayArea extends Pane implements Droppable{
 	public void freeFromDroppable(InteractiveObject interactive) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Map<Path, Color> getPaths() {
+		return null;
 	}
 
 }
