@@ -5,6 +5,7 @@ import engine.PlayModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.Inventory;
+import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Resource;
 import networking.protocol.PlayerServer.ResourceUpdate;
@@ -188,9 +189,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
 	}
 
-	public Update packageInitialState() {
-		return packageUpdates(getLevelSprites().get(getCurrentLevel()), Collections.emptyList(),
-				Collections.emptyList());
+	public LevelInitialized packageInitialState() {
+		return LevelInitialized.newBuilder()
+				.setSpritesAndStatus(packageUpdates(getLevelSprites().get(getCurrentLevel()), Collections.emptyList(),
+						Collections.emptyList()))
+				.setInventory(packageInventory()).build();
 	}
 
 	public Update packageStatusUpdate() {
