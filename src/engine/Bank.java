@@ -15,6 +15,11 @@ public class Bank {
 	private Map<String, Double> resourceEndowments;
 	private Map<String, Map<String, Double>> unitCosts;
 
+	public Bank() {
+		resourceEndowments = new HashMap<>();
+		unitCosts = new HashMap<>();
+	}
+	
 	public Bank fromBank() {
 		Bank bankCopy = new Bank();
 		bankCopy.setResourceEndowments(getResourceEndowments());
