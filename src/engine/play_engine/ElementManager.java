@@ -24,6 +24,7 @@ public class ElementManager {
 	// every element pair only once
 	private List<GameElement> activeElements;
 	private List<GameElement> newElements;
+	private List<GameElement> updatedElements;
 	private List<GameElement> deadElements;
 
 	private SpriteQueryHandler spriteQueryHandler;
@@ -32,13 +33,15 @@ public class ElementManager {
 	// Reference to GridManager
 
 	/**
-	 * Handles the collision-checking and GameElement-specific collision-handling logic
-	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md
+	 * Handles the collision-checking and GameElement-specific collision-handling
+	 * logic Implements the 'Behavior' interface from the api/doc in the
+	 * DESIGN_PLAN.md
 	 */
 	public ElementManager(GameElementFactory gameElementFactory, SpriteQueryHandler spriteQueryHandler) {
 		this.gameElementFactory = gameElementFactory;
 		this.spriteQueryHandler = spriteQueryHandler;
 		newElements = new ArrayList<>();
+		updatedElements = new ArrayList<>();
 		deadElements = new ArrayList<>();
 		activeElements = new ArrayList<>();
 	}
@@ -64,26 +67,36 @@ public class ElementManager {
 		activeElements.forEach(element -> {
 			if (!element.isAlive()) {
 				deadElements.add(element);
+			} else {
+				updatedElements.add(element);
 			}
 		});
 		activeElements.removeAll(deadElements);
 		activeElements.addAll(newElements);
 	}
 
-	List<GameElement> getDeadElements() {
-		return deadElements;
-	}
-
-	void clearDeadElements() {
-		deadElements.clear();
-	}
-
 	List<GameElement> getNewlyGeneratedElements() {
 		return newElements;
 	}
 
+	List<GameElement> getUpdatedElements() {
+		return updatedElements;
+	}
+	
+	List<GameElement> getDeadElements() {
+		return deadElements;
+	}
+
 	void clearNewElements() {
 		newElements.clear();
+	}
+
+	void clearUpdatedElements() {
+		updatedElements.clear();
+	}
+	
+	void clearDeadElements() {
+		deadElements.clear();
 	}
 
 	boolean allEnemiesDead() {
