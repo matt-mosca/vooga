@@ -301,9 +301,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void imageSelected(SpriteImage imageView) {
-		imageView.addBasePropertyMap(basePropertyMap);
+		imageView.setBaseProperties(basePropertyMap);
 		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		controller.defineElement(imageView.getId(), imageView.getAllProperties());
+		controller.setUnitCost(imageView.getId(), new HashMap<>());
 		controller.addElementToInventory(imageView.getId());
 		myRightToolBar.imageSelected(imageView);
 	}
@@ -312,7 +313,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void addToMap(String baseProperty, String value) {
 		basePropertyMap.put(baseProperty, value);
 //		myRightToolBar.addToMap(baseProperty, value);
-		
 	}
 	
 	public void setGameArea(GameArea game) {
