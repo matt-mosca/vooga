@@ -31,6 +31,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -137,13 +138,18 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	}
 
 	@Override
-	public void clicked(ImageView imageView) {	
-		myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
-		String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
-		if (tabType.equals("Towers")) {
-			newPaneWithProjectileSlot(clone(imageView));
+	public void clicked(MouseEvent e, ImageView imageView, SimpleTab tab) {	
+		if(e.getButton() == MouseButton.SECONDARY) {
+			myController.deleteElementDefinition(imageView.getId());
+			tab.removeItem(imageView);
 		}else {
-			newPane(imageView);
+			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
+			String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
+			if (tabType.equals("Towers")) {
+				newPaneWithProjectileSlot(clone(imageView));
+			}else {
+				newPane(imageView);
+			}
 		}
 	}
 	private void newPropertiesPane() {
