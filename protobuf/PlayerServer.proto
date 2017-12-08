@@ -14,6 +14,7 @@ message ServerMessage {
 	optional Update update = 7;
 	optional Inventory inventory = 8;
 	optional TemplateProperties templateProperties = 9;
+	optional NewSprite elementPlaced = 10;
 }
 
 /*
