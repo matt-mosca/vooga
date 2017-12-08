@@ -72,11 +72,11 @@ message PlaceElement {
 }
 
 message CheckReadyForNextLevel {
-	required string roomName = 1;
 }
 
+// Keep gameName parameter to support extensibility to collaborative editing (authoring) where arbitrary levels can be loaded, not just next level
 message LoadLevel {
-	required string roomName = 1;
+	required string gameName = 1;
 	required int32 level = 2;
 }
 

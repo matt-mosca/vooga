@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import engine.play_engine.PlayController;
-import networking.protocol.PlayerClient.CheckReadyForNextLevel;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.JoinRoom;
@@ -222,9 +221,8 @@ class MultiPlayerController {
 		if (clientMessage.hasCheckReadyForNextLevel()) {
 			// TODO - Handle case where client tries to place element without belonging to a
 			// game room?
-			String roomName = clientMessage.getCheckReadyForNextLevel().getRoomName();
-			serverMessageBuilder.setReadyForNextLevel(
-					ReadyForNextLevel.newBuilder().setIsReady(joinAndCheckIfWaitingRoomIsFull(roomName)).build());
+			serverMessageBuilder.setReadyForNextLevel(ReadyForNextLevel.newBuilder()
+					.setIsReady(joinAndCheckIfWaitingRoomIsFull(getGameRoomNameOfClient(clientId))).build());
 		}
 	}
 
@@ -235,16 +233,7 @@ class MultiPlayerController {
 			// TODO - Handle case where client tries to load level without belonging to a
 			// game room?
 			LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
-			String roomName = loadLevelRequest.getRoomName();
-			if (!roomMembers.containsKey(roomName)) {
-				serverMessageBuilder
-						.setLevelInitialized(levelInitializationBuilder.setError(ERROR_NONEXISTENT_ROOM).build());
-				return;
-			}
-			if (!roomMembers.get(roomName).contains(clientId)) {
-				serverMessageBuilder.setLevelInitialized(levelInitializationBuilder.setError(ERROR_WRONG_ROOM).build());
-				return;
-			}
+			String roomName = getGameRoomNameOfClient(clientId);
 			int levelToLoad = loadLevelRequest.getLevel();
 			if (!checkIfWaitingRoomIsFull(roomName)) {
 				// not ready to load
@@ -308,6 +297,11 @@ class MultiPlayerController {
 
 	private boolean clientIsInAGameRoom(int clientId) {
 		return roomMembers.values().stream().filter(clientIds -> clientIds.contains(clientId)).count() > 0;
+	}
+
+	private String getGameRoomNameOfClient(int clientId) {
+		return roomMembers.keySet().stream().filter(roomName -> roomMembers.get(roomName).contains(clientId)).iterator()
+				.next();
 	}
 
 	private boolean userNameExistsInGameRoom(String userName, String gameRoomName) {
