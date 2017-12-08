@@ -15,10 +15,12 @@ import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.JoinRoom;
+import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
 import networking.protocol.PlayerServer.GameRoomJoinStatus;
 import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.GameRooms;
+import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ServerMessage;
 
@@ -53,14 +55,10 @@ class MultiPlayerController {
 	private Map<Integer, String> clientIdsToUserNames = new HashMap<>();
 	private AtomicInteger gameCounter = new AtomicInteger();
 
-	public MultiPlayerController() {
-	}
-
-	void getGameRooms(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+	void getAvailableGames(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetAvailableGames()) {
-			GameRooms.Builder gameRoomsBuilder = GameRooms.newBuilder();
-			serverMessageBuilder.setGameRooms(
-					gameRoomsBuilder.addAllRoomNames(new PlayController().getAvailableGames().keySet()).build());
+			serverMessageBuilder.setAvailableGames(
+					Games.newBuilder().addAllGames(new PlayController().getAvailableGames().keySet()).build());
 		}
 	}
 
@@ -133,6 +131,12 @@ class MultiPlayerController {
 		}
 	}
 
+	void getGameRooms(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetGameRooms()) {
+			serverMessageBuilder.setGameRooms(GameRooms.newBuilder().addAllRoomNames(roomMembers.keySet()).build());
+		}
+	}
+
 	void getPlayerNames(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetPlayerNames()) {
 			PlayerNames.Builder playerNamesBuilder = PlayerNames.newBuilder();
@@ -150,84 +154,57 @@ class MultiPlayerController {
 		}
 	}
 
-	void update(String gameRoomName) {
-		// TODO Auto-generated method stub
-
+	void handlePauseGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasPauseGame()) {
+			// Verify clientId, retrieve appropriate game room / controller
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to pause game without belonging to a
+			// game room?
+			playController.pause();
+			serverMessageBuilder.setUpdate(playController.packageStatusUpdate());
+		}
 	}
 
-	void pause(int clientId) {
-		// TODO Auto-generated method stub
-
+	void handleResumeGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasResumeGame()) {
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to resume game without belonging to a
+			// game room?
+			playController.resume();
+			serverMessageBuilder.setUpdate(playController.packageStatusUpdate());
+		}
 	}
 
-	void resume(int clientId) {
-		// TODO Auto-generated method stub
-
+	void getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetInventory()) {
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to get inventory without belonging to a
+			// game room?
+			serverMessageBuilder.setInventory(playController.packageInventory());
+		}
 	}
 
-	boolean isLost(int clientId) {
-		// TODO Auto-generated method stub
-		return false;
+	void getTemplateProperties(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetTemplateProperties()) {
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to get template properties without
+			// belonging to a
+			// game room?
+			serverMessageBuilder.setTemplateProperties(playController
+					.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()));
+		}
 	}
 
-	boolean isLevelCleared(int clientId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	boolean isWon(int clientId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	int placeElement(int clientId, String elementName, Point2D startCoordinates) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	Map<String, String> getAvailableGames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	Map<String, String> getTemplateProperties(int clientId, String elementName) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	Map<String, Map<String, String>> getAllDefinedTemplateProperties(int clientId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	Set<String> getInventory(int clientId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	Map<String, Double> getStatus(int clientId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	Map<String, Double> getResourceEndowments(int clientId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	Map<String, Map<String, Double>> getElementCosts(int clientId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	void saveGameState(File fileToSaveTo) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-
+	void placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasPlaceElement()) {
+			PlayController playController = clientIdsToPlayEngines.get(clientId);
+			// TODO - Handle case where client tries to place element without belonging to a
+			// game room?
+			PlaceElement placeElementRequest = clientMessage.getPlaceElement();
+			serverMessageBuilder
+					.setElementPlaced(playController.placeAndPackageElement(placeElementRequest.getElementName(),
+							placeElementRequest.getXCoord(), placeElementRequest.getYCoord()));
+		}
 	}
 
 	void disconnectClient(int clientId) {
@@ -247,14 +224,27 @@ class MultiPlayerController {
 			ServerMessage.Builder serverMessageBuilder = ServerMessage.newBuilder();
 			ClientMessage clientMessage = ClientMessage.parseFrom(inputBytes);
 			// Get available games
-			getGameRooms(clientMessage, serverMessageBuilder);
+			getAvailableGames(clientMessage, serverMessageBuilder);
 			// Handle game room creation request
 			createGameRoom(clientId, clientMessage, serverMessageBuilder);
 			// Handle game room join request
 			joinGameRoom(clientId, clientMessage, serverMessageBuilder);
-			// Handler player names request
+			// Launch game room
+			launchGameRoom(clientId, clientMessage, serverMessageBuilder);
+			// Handle game rooms request
+			getGameRooms(clientMessage, serverMessageBuilder);
+			// Handle player names request
 			getPlayerNames(clientId, clientMessage, serverMessageBuilder);
-			// TODO - Process other message types
+			// Handle pause request
+			handlePauseGame(clientId, clientMessage, serverMessageBuilder);
+			// Handle resume request
+			handleResumeGame(clientId, clientMessage, serverMessageBuilder);
+			// Get inventory
+			getInventory(clientId, clientMessage, serverMessageBuilder);
+			// Get template properties
+			getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+			// Handle place element request
+			placeElement(clientId, clientMessage, serverMessageBuilder);
 			return serverMessageBuilder.build().toByteArray();
 		} catch (IOException e) {
 			e.printStackTrace(); // TEMP
