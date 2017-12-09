@@ -196,7 +196,9 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 
 	@Override
 	public void playExisting() {
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage());
+		// TODO - Update this method accordingly to determine the isMultiPlayer param
+		// for PlayDisplay constructor
+		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), false); // TEMP
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);

@@ -1,10 +1,15 @@
 package authoring.rightToolBar;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import util.path.Path;
+import util.path.PathList;
+import util.path.PathParser;
 import display.interfaces.Droppable;
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
@@ -67,10 +72,21 @@ public class PropertiesBox extends VBox {
 					@Override
 					public void handle(CellEditEvent<Properties, String> t) {
 						if(t.getRowValue().getMyProperty().equals("PathList")) {
+							String filePath = new String();
+							Random rand = new Random();
+							PathParser parser = new PathParser();
+							Path path = launchPathSelection();
+							List<PathList> possiblePaths = parser.parse(path);
+							try {
+								filePath = possiblePaths.get(rand.nextInt(possiblePaths.size())).writeToSerializationFile();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						
 							((Properties) t.getTableView().getItems().get(
 					                t.getTablePosition().getRow())
-					                ).setMyValue(launchPathSelection());
-							//backend integration for updating path RIGHT HERE
+					                ).setMyValue(filePath);
 						}
 					}  
 				 }       
@@ -95,7 +111,7 @@ public class PropertiesBox extends VBox {
 		return currSprite;
 	}
 	
-	private String launchPathSelection() {
+	private Path launchPathSelection() {
 		Dialog<String> pathChooser = new Dialog<>();
 		pathChooser.setTitle("Path Selection");
 		pathChooser.setContentText("Choose a path for the object to follow");
@@ -116,12 +132,16 @@ public class PropertiesBox extends VBox {
 		
 		Optional<String> result = pathChooser.showAndWait();
 		
-		if(result.isPresent()) {
-			return colorChooser.getSelectionModel().getSelectedItem().getFill().toString();
-		}else {
-			return "NO PATH SELECTED";
+		while(!result.isPresent()) {
+			result = pathChooser.showAndWait();
 		}
-		
+
+		for(Path path:paths.keySet()) {
+			if(paths.get(path).equals(colorChooser.getSelectionModel().getSelectedItem().getFill())) {
+				return path;
+			}
+		}
+		return null;
 	}
 	
 }

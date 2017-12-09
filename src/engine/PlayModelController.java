@@ -16,7 +16,10 @@ import javafx.scene.image.ImageView;
  *
  * @author Ben Schwennesen
  */
-public interface PlayModelController {
+public interface PlayModelController extends AbstractGameModelController {
+
+	// TODO - Remove the inherited methods? Or keep to facilitate quick survey of
+	// all authoring methods?
 
 	/**
 	 * Save the current state of a game being played.
@@ -72,9 +75,10 @@ public interface PlayModelController {
 	boolean isLost();
 
 	boolean isLevelCleared();
-	
+
 	/**
 	 * Ready to transition to next level
+	 * 
 	 * @return
 	 */
 	boolean isReadyForNextLevel();
@@ -102,8 +106,9 @@ public interface PlayModelController {
 	 * Upgrade an element that is placed in the game.
 	 *
 	 * @param elementId
-	 * 			the unique identifier for the game element
-	 * @throws IllegalArgumentException if the element can't be upgraded
+	 *            the unique identifier for the game element
+	 * @throws IllegalArgumentException
+	 *             if the element can't be upgraded
 	 */
 	void upgradeElement(int elementId) throws IllegalArgumentException;
 
@@ -153,7 +158,7 @@ public interface PlayModelController {
 	/**
 	 * Get the high-level status of a game in-progress, notably points, lives, etc
 	 * 
-	 *
+	 * @deprecated
 	 * @return a map of relevant details to display or modify about the game
 	 */
 	Map<String, Double> getStatus();
@@ -166,8 +171,8 @@ public interface PlayModelController {
 	Map<String, Double> getResourceEndowments();
 
 	/**
-	 * Retrieve information on the cost of each element in terms of the various
-	 * resources
+	 * Retrieve information on the cost of each element for the current level in
+	 * terms of the various resources
 	 * 
 	 * @return map of element name to its cost in terms of each resource
 	 */
