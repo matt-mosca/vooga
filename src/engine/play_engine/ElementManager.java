@@ -118,15 +118,24 @@ public class ElementManager {
 	}
 
 	private void handleElementFiring(GameElement element) {
+		Point2D nearestTargetLocation;
+		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
+		GameElement nearestEnemyElement = spriteQueryHandler.getNearestEnemy(
+				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+		if(nearestEnemyElement == null) {
+			nearestTargetLocation = new Point2D(0,0);
+		} else {
+			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
+		}
+		//@ TODO Fix should fire to take in nearest point
 		if (element.shouldFire()) {
 			String elementTemplateName = element.fire();
 			System.out.println(elementTemplateName);
-			List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
 			exclusionOfSelf.remove(element);
 			// Use player id of firing element rather than projectile? This allows greater
 			// flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-					element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+					nearestEnemyElement);
 			GameElement projectileGameElement = gameElementFactory.generateSprite(elementTemplateName,
 					new Point2D(element.getX(), element.getY()), auxiliaryObjects);
 			newElements.add(projectileGameElement);
