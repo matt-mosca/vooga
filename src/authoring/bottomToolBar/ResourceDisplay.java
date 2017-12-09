@@ -7,6 +7,8 @@ import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -36,6 +38,7 @@ public class ResourceDisplay extends VBox{
 		value.setPromptText("Value");
 		Button enter = new Button("add!");
 		enter.setOnAction(e->{
+			try {
 			if (myController.getResourceEndowments().containsKey(name.getText())) {
 				Double d = myController.getResourceEndowments().get(name.getText());
 				d = Double.parseDouble(value.getText());
@@ -45,15 +48,28 @@ public class ResourceDisplay extends VBox{
 			}
 			this.getChildren().clear();
 			this.getChildren().add(editResources);
+			try {
+				System.out.println("hi");
+				myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
+			} catch(Exception nfe) {
+				System.out.println("you have to type in a number");
+			
+//				throw new NumberFormatException();
+			}
+			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			update();
-		});
+		}catch(Exception nfe) {
+			Alert a = new Alert(AlertType.ERROR);
+			a.setHeaderText("Input Not Valid");
+			a.setContentText("You need to input a number!");
+			a.showAndWait();
+		}});
+		
 		this.getChildren().addAll(name, value, enter);
 		
 	}
 
 	private void update() {
-		myController.setResourceEndowments(resourceEndowments); //hopefully you're doing some modifications 
-		//and passing me a differnent map for the next step.
 		Map<String, Double> resources = myController.getResourceEndowments();
 		Label l = new Label("These are your current resources.");
 		this.getChildren().add(l);

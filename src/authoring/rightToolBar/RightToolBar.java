@@ -336,7 +336,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 				if(unitCosts.get(resourceNames.getSelectionModel().getSelectedItem()) != null) {
 					amount.setText(Double.toString(unitCosts.get(resourceNames.getSelectionModel().getSelectedItem())));
 				}else {
-					amount.setText("No cost yet");
+					amount.setText("0.0");
 				}
 				
 			}
@@ -345,7 +345,11 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		Button update = new Button();
 		update.setText("Update");
 		update.addEventHandler(MouseEvent.MOUSE_CLICKED, event->{
-			unitCosts.put(resourceNames.getSelectionModel().getSelectedItem(), Double.parseDouble(amount.getText()));
+			try{
+				unitCosts.put(resourceNames.getSelectionModel().getSelectedItem(), Double.parseDouble(amount.getText()));
+			}catch(NumberFormatException e) {
+				unitCosts.put(resourceNames.getSelectionModel().getSelectedItem(), 0.0);
+			}
 		});
 		
 		resources.getChildren().add(resourceNames);
