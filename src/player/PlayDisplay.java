@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,6 +42,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import networking.MultiPlayerClient;
+import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteDeletion;
+import networking.protocol.PlayerServer.SpriteUpdate;
+import networking.protocol.PlayerServer.Update;
 import display.splashScreen.ScreenDisplay;
 import display.splashScreen.SplashPlayScreen;
 import display.sprites.StaticObject;
@@ -69,6 +75,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			new NoopCollisionVisitable(), "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;
 	private StaticObject placeable;
+
+	private Map<Integer, ImageView> idsToImageViews = new HashMap<>();
 
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
@@ -149,31 +157,42 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	protected void reloadGame() throws IOException {
 		myController.loadOriginalGameState(gameState, 1);
 	}
-//
-//	private void initializeInventory() {
-//		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-//		for (String s : myController.getInventory()) {
-//			ImageView imageView;
-//			try {
-//				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
-//
-//			} catch (NullPointerException e) {
-//				imageView = new ImageView(
-//						new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
-//			}
-//			imageView.setFitHeight(70);
-//			imageView.setFitWidth(60);
-//			imageView.setId(s);
-//			imageView.setUserData(templates.get(s).get("imageUrl"));
-//			// myInventoryToolBar.addToToolbar(imageView);
-//		}
-//	}
+	//
+	// private void initializeInventory() {
+	// Map<String, Map<String, String>> templates =
+	// myController.getAllDefinedTemplateProperties();
+	// for (String s : myController.getInventory()) {
+	// ImageView imageView;
+	// try {
+	// imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
+	//
+	// } catch (NullPointerException e) {
+	// imageView = new ImageView(
+	// new
+	// Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
+	// }
+	// imageView.setFitHeight(70);
+	// imageView.setFitWidth(60);
+	// imageView.setId(s);
+	// imageView.setUserData(templates.get(s).get("imageUrl"));
+	// // myInventoryToolBar.addToToolbar(imageView);
+	// }
+	// }
 
 	private void styleLeftBar() {
 		myLeftBar.setPrefHeight(650);
 		myLeftBar.setLayoutY(25);
 		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
 		myLeftBar.getStyleClass().add("left-bar");
+	}
+
+	private void loadSprites() {
+		myPlayArea.getChildren().removeAll(currentElements);
+		currentElements.clear();
+		for (Integer id : myController.getLevelSprites(level)) {
+			currentElements.add(myController.getRepresentationFromSpriteId(id));
+		}
+		myPlayArea.getChildren().addAll(currentElements);
 	}
 
 	private void initializeButtons() {
@@ -196,16 +215,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		play.setLayoutY(pause.getLayoutY() + 30);
 	}
 
-	private void loadSprites() {
-		myPlayArea.getChildren().removeAll(currentElements);
-		currentElements.clear();
-		for (Integer id : myController.getLevelSprites(level)) {
-			currentElements.add(myController.getRepresentationFromSpriteId(id));
-		}
-		myPlayArea.getChildren().addAll(currentElements);
-	}
-
 	private void step() {
+		// Update latestUpdate = myController.update();
 		myController.update();
 		if (myController.isLevelCleared()) {
 			level++;
@@ -218,8 +229,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		} else if (myController.isWon()) {
 			// launch win screen
 		}
-		hud.update(myController.getResourceEndowments());
+		// handleUpdate(latestUpdate);
 		loadSprites();
+		hud.update(myController.getResourceEndowments());
 	}
 
 	private void createGameArea(int sideLength) {
@@ -269,10 +281,44 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.show();
 	}
 
+	// The following methods were written while half-drunk, please check next
+	// morning (12/9/17)
+	private void handleUpdate(Update update) {
+		update.getNewSpritesList().forEach(newSprite -> addNewSpriteToDisplay(newSprite));
+		update.getSpriteUpdatesList().forEach(updatedSprite -> updateSpriteDisplay(updatedSprite));
+		update.getSpriteDeletionsList().forEach(deletedSprite -> removeDeadSpriteFromDisplay(deletedSprite));
+	}
+
+	private void addNewSpriteToDisplay(NewSprite newSprite) {
+		ImageView imageViewForSprite = new ImageView(new Image(newSprite.getImageURL()));
+		imageViewForSprite.setFitHeight(newSprite.getImageHeight());
+		imageViewForSprite.setFitWidth(newSprite.getImageWidth());
+		imageViewForSprite.setX(newSprite.getSpawnX());
+		imageViewForSprite.setY(newSprite.getSpawnY());
+		idsToImageViews.put(newSprite.getSpriteId(), imageViewForSprite);
+		myPlayArea.getChildren().add(imageViewForSprite);
+	}
+
+	private void updateSpriteDisplay(SpriteUpdate updatedSprite) {
+		ImageView imageViewForSprite = idsToImageViews.get(updatedSprite.getSpriteId());
+		imageViewForSprite.setX(updatedSprite.getNewX());
+		imageViewForSprite.setY(updatedSprite.getNewY());
+	}
+
+	private void removeDeadSpriteFromDisplay(SpriteDeletion spriteDeletion) {
+		myPlayArea.getChildren().remove(idsToImageViews.get(spriteDeletion.getSpriteId()));
+	}
+
+	// TODO - Check if this is repeated code,
+
+	public void save(File saveName) {
+		myController.saveGameState(saveName);
+	}
+
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

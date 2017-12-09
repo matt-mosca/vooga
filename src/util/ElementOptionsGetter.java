@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *
  * @author Ben Schwennesen
  */
-public class SpriteOptionsGetter {
+public class ElementOptionsGetter {
 
     private final String PROPERTIES_EXTENSION = ".properties";
     private final String PARAMETER_TRANSLATIONS_FILE_NAME = "ParameterTranslations" + PROPERTIES_EXTENSION;
@@ -36,7 +36,7 @@ public class SpriteOptionsGetter {
     private Map<String, String> parameterToDescription = new HashMap<>();
     private Map<String, String> descriptionToParameter = new HashMap<>();
 
-    public SpriteOptionsGetter() {
+    public ElementOptionsGetter() {
         loadTranslations();
     }
 

@@ -27,5 +27,9 @@ public class NoopFiringStrategy implements FiringStrategy {
 	public boolean isExpended() {
 		return false;
 	}
-
+	
+	@Override
+	public String getAudioURI() {
+		return null;
+	}
 }

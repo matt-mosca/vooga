@@ -35,4 +35,10 @@ public class RandomWaveFiringStrategy extends AbstractWaveFiringStrategy {
         int insertionPoint = -1 * Collections.binarySearch(probabilities, movementRand) - 1;
         return templates.get(insertionPoint);
     }
+
+	@Override
+	public String getAudioURI() {
+		return null;
+	}
+
 }
