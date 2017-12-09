@@ -4,6 +4,7 @@ import engine.behavior.collision.CollisionHandler;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.TrackingPoint;
+import factory.AudioClipFactory;
 import javafx.scene.image.ImageView;
 
 import javafx.geometry.Point2D;
@@ -25,6 +26,7 @@ public final class GameElement {
 	private FiringStrategy firingStrategy;
 	private MovementStrategy movementStrategy;
 	private CollisionHandler collisionHandler;
+	private AudioClipFactory audioClipFactory;
 
 	public GameElement(FiringStrategy firingStrategy, MovementStrategy movementStrategy,
 					   CollisionHandler collisionHandler) {
@@ -54,6 +56,11 @@ public final class GameElement {
 
 	public String fire() {
 		return firingStrategy.fire();
+	}
+	
+	public void playAudio() {
+		audioClipFactory = new AudioClipFactory(firingStrategy.getAudioURI());
+		audioClipFactory.getAudioClip().play();
 	}
 
 	/**
