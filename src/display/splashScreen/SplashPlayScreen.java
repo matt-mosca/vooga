@@ -207,7 +207,7 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	@Override
-	public void save(File saveName) {
+	public void save() {
 		// TODO Auto-generated method stub
 		
 	}

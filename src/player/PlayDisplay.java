@@ -269,8 +269,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.show();
 	}
 
-	public void save(File saveName) {
-		myController.saveGameState(saveName);
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
