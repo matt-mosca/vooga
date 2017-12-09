@@ -1,6 +1,6 @@
 package engine.game_elements;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 import util.ElementOptionsGetter;
 
@@ -85,8 +85,7 @@ public final class GameElementFactory {
         for (int i = 0; i < spriteConstructionArguments.length; i++) {
             Parameter parameter = spriteConstructionParameters[i];
             try {
-                spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(), spriteProperties,
-                        auxiliaryObjects);
+                spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(), spriteProperties, auxiliaryObjects);
             } catch (ReflectiveOperationException reflectionException) {
                 // TODO - throw custom exception or fallback to a default
                 reflectionException.printStackTrace();
@@ -126,7 +125,7 @@ public final class GameElementFactory {
                 Parameter[] parameters = parameterClassConstructors[0].getParameters();
                 Object[] constructorParameters = new Object[parameters.length];
                 for (int i = 0; i < parameters.length; i++) {
-                    ParameterName parameterNameAnnotation = parameters[i].getAnnotation(ParameterName.class);
+                    ElementProperty parameterNameAnnotation = parameters[i].getAnnotation(ElementProperty.class);
                     if (parameterNameAnnotation != null) {
                         constructorParameters[i] = setConstructorParameter(
                                 properties.get(parameterNameAnnotation.value()));

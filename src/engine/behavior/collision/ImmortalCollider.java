@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 
 /**
  * Represents immortal collider behavior - does not take any damage, always
@@ -11,7 +11,8 @@ import engine.behavior.ParameterName;
  */
 public class ImmortalCollider extends GenericCollider {
 
-	public ImmortalCollider(@ParameterName("playerId") int playerId) {
+	public ImmortalCollider(
+			@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId) {
 		super(playerId);
 	}
 	
