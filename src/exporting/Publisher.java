@@ -31,7 +31,7 @@ public class Publisher {
 
     private final String ERROR_MESSAGE = "Failed to publish the game to Google Drive";
     private final String APPLICATION_NAME = "VOOGASalad Game Exporter";
-    private final String CLIENT_SECRETS_JSON = "client_secret.json";
+    private final String CLIENT_SECRETS_JSON = "client_secrets.json";
     private final String WEB_CONTENT_LINK_FIELD = "webContentLink";
     private final String USER_ID = "user";
 
@@ -51,6 +51,7 @@ public class Publisher {
         try {
             initialize();
         } catch (IOException | GeneralSecurityException failedToPublishException) {
+            failedToPublishException.printStackTrace();
             throw new IOException(ERROR_MESSAGE);
         }
     }
@@ -64,9 +65,9 @@ public class Publisher {
     }
 
     // authorize the installed application to access user's protected data.
-    private Credential authorize() throws IOException {
+    public Credential authorize() throws IOException {
         // load client secrets
-        InputStream in = getClass().getResourceAsStream(CLIENT_SECRETS_JSON);
+        InputStream in = getClass().getClassLoader().getResourceAsStream(CLIENT_SECRETS_JSON);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow =
