@@ -178,6 +178,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		gameElementUpgrader.registerNewSprite(elementTemplateName, gameElement);
@@ -256,6 +257,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, gameElement);

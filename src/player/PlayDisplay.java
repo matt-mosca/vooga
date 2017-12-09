@@ -70,7 +70,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private int level = 1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
-	private final MovementStrategy testMovement = new StationaryMovementStrategy();
+	private final MovementStrategy testMovement = new StationaryMovementStrategy(new Point2D(0, 0));
 	private final CollisionHandler testCollision = new CollisionHandler(new ImmortalCollider(1),
 			new NoopCollisionVisitable(), "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;

@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,22 +27,44 @@ public class SpriteQueryHandler {
 			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
 		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
-		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
-		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
+		auxiliarySpriteConstructionObjects.put("targetLocation", targetLocation);
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		return auxiliarySpriteConstructionObjects;
 	}
 
 	private GameElement getNearestEnemySpriteToPoint(int toGenerateId, Point2D coordinates, List<GameElement> levelGameElements) {
+		return getNearestEnemyWithinRange(toGenerateId,coordinates,levelGameElements,Double.POSITIVE_INFINITY);
+	}
+
+	public GameElement getNearestEnemyWithinRange(int toGenerateId, Point2D coordinates, List<GameElement> levelGameElements,
+													double range) {
 		double nearestDistance = Double.MAX_VALUE;
 		GameElement nearestGameElement = null;
 		for (GameElement gameElement : levelGameElements) {
 			double distanceToSprite = new Point2D(gameElement.getX(), gameElement.getY()).distance(coordinates);
-			if (distanceToSprite < nearestDistance && gameElement.getPlayerId() != toGenerateId) {
+			if ((distanceToSprite<=range)&&(distanceToSprite < nearestDistance )&& gameElement.getPlayerId() != toGenerateId) {
 				nearestDistance = distanceToSprite;
 				nearestGameElement = gameElement;
 			}
 		}
 		return nearestGameElement;
 	}
-
+	
+	public List<GameElement> getAllElementsWithinRange(int toGenerateId, Point2D coordinates,
+													   List<GameElement> levelGameElements, 
+													   double rangeRadius){
+		ArrayList<GameElement> targetElements = new ArrayList<>();
+		
+		for(GameElement gameElement : levelGameElements) {
+			if(getDistance(coordinates,new Point2D(gameElement.getX(),gameElement.getY()))<rangeRadius
+												&& gameElement.getPlayerId() != toGenerateId) {
+				targetElements.add(gameElement);
+			}
+		}
+		return targetElements;
+	}
+	
+	private double getDistance(Point2D start, Point2D end) {
+		return start.distance(end);
+	}
 }

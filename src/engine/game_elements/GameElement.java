@@ -60,8 +60,8 @@ public final class GameElement {
 	}
 	
 	public void playAudio() {
-		audioClipFactory = new AudioClipFactory(firingStrategy.getAudioURI());
-		audioClipFactory.getAudioClip().play();
+		//audioClipFactory = new AudioClipFactory(firingStrategy.getAudioURI());
+		//audioClipFactory.getAudioClip().play();
 	}
 
 	/**
