@@ -105,7 +105,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
 			List<GameElement> updatedElements = elementManager.getUpdatedElements();
 			List<GameElement> deadElements = elementManager.getDeadElements();
-			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
 			for (GameElement element : newlyGeneratedElements) {
 				cacheAndCreateIdentifier(element);
 			}
