@@ -17996,45 +17996,25 @@ public final class PlayerServer {
         getElementNameBytes();
 
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     java.util.List<PlayerServer.Resource> 
         getCostsList();
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     PlayerServer.Resource getCosts(int index);
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     int getCostsCount();
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     java.util.List<? extends PlayerServer.ResourceOrBuilder> 
         getCostsOrBuilderList();
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     PlayerServer.ResourceOrBuilder getCostsOrBuilder(
         int index);
@@ -18171,52 +18151,32 @@ public final class PlayerServer {
     public static final int COSTS_FIELD_NUMBER = 2;
     private java.util.List<PlayerServer.Resource> costs_;
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     public java.util.List<PlayerServer.Resource> getCostsList() {
       return costs_;
     }
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     public java.util.List<? extends PlayerServer.ResourceOrBuilder> 
         getCostsOrBuilderList() {
       return costs_;
     }
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     public int getCostsCount() {
       return costs_.size();
     }
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     public PlayerServer.Resource getCosts(int index) {
       return costs_.get(index);
     }
     /**
-<<<<<<< HEAD
      * <code>repeated .Resource costs = 2;</code>
-=======
-     * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
      */
     public PlayerServer.ResourceOrBuilder getCostsOrBuilder(
         int index) {
@@ -18671,11 +18631,7 @@ public final class PlayerServer {
           PlayerServer.Resource, PlayerServer.Resource.Builder, PlayerServer.ResourceOrBuilder> costsBuilder_;
 
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public java.util.List<PlayerServer.Resource> getCostsList() {
         if (costsBuilder_ == null) {
@@ -18685,11 +18641,7 @@ public final class PlayerServer {
         }
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public int getCostsCount() {
         if (costsBuilder_ == null) {
@@ -18699,11 +18651,7 @@ public final class PlayerServer {
         }
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public PlayerServer.Resource getCosts(int index) {
         if (costsBuilder_ == null) {
@@ -18713,11 +18661,7 @@ public final class PlayerServer {
         }
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder setCosts(
           int index, PlayerServer.Resource value) {
@@ -18734,11 +18678,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder setCosts(
           int index, PlayerServer.Resource.Builder builderForValue) {
@@ -18752,11 +18692,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder addCosts(PlayerServer.Resource value) {
         if (costsBuilder_ == null) {
@@ -18772,11 +18708,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder addCosts(
           int index, PlayerServer.Resource value) {
@@ -18793,11 +18725,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder addCosts(
           PlayerServer.Resource.Builder builderForValue) {
@@ -18811,11 +18739,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder addCosts(
           int index, PlayerServer.Resource.Builder builderForValue) {
@@ -18829,11 +18753,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder addAllCosts(
           java.lang.Iterable<? extends PlayerServer.Resource> values) {
@@ -18848,11 +18768,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder clearCosts() {
         if (costsBuilder_ == null) {
@@ -18865,11 +18781,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public Builder removeCosts(int index) {
         if (costsBuilder_ == null) {
@@ -18882,22 +18794,14 @@ public final class PlayerServer {
         return this;
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public PlayerServer.Resource.Builder getCostsBuilder(
           int index) {
         return getCostsFieldBuilder().getBuilder(index);
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public PlayerServer.ResourceOrBuilder getCostsOrBuilder(
           int index) {
@@ -18907,11 +18811,7 @@ public final class PlayerServer {
         }
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public java.util.List<? extends PlayerServer.ResourceOrBuilder> 
            getCostsOrBuilderList() {
@@ -18922,22 +18822,14 @@ public final class PlayerServer {
         }
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public PlayerServer.Resource.Builder addCostsBuilder() {
         return getCostsFieldBuilder().addBuilder(
             PlayerServer.Resource.getDefaultInstance());
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public PlayerServer.Resource.Builder addCostsBuilder(
           int index) {
@@ -18945,11 +18837,7 @@ public final class PlayerServer {
             index, PlayerServer.Resource.getDefaultInstance());
       }
       /**
-<<<<<<< HEAD
        * <code>repeated .Resource costs = 2;</code>
-=======
-       * <code>repeated .ElementProperty property = 2;</code>
->>>>>>> mts40
        */
       public java.util.List<PlayerServer.Resource.Builder> 
            getCostsBuilderList() {
@@ -19018,13 +18906,8 @@ public final class PlayerServer {
 
   }
 
-<<<<<<< HEAD
   public interface ResourceOrBuilder extends
       // @@protoc_insertion_point(interface_extends:Resource)
-=======
-  public interface TemplatePropertyOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ElementProperty)
->>>>>>> mts40
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -19051,25 +18934,14 @@ public final class PlayerServer {
     double getAmount();
   }
   /**
-<<<<<<< HEAD
    * Protobuf type {@code Resource}
-=======
-   * Protobuf type {@code ElementProperty}
->>>>>>> mts40
    */
   public  static final class Resource extends
       com.google.protobuf.GeneratedMessageV3 implements
-<<<<<<< HEAD
       // @@protoc_insertion_point(message_implements:Resource)
       ResourceOrBuilder {
     // Use Resource.newBuilder() to construct.
     private Resource(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-=======
-      // @@protoc_insertion_point(message_implements:ElementProperty)
-      TemplatePropertyOrBuilder {
-    // Use ElementProperty.newBuilder() to construct.
-    private TemplateProperty(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
->>>>>>> mts40
       super(builder);
     }
     private Resource() {
@@ -19371,21 +19243,12 @@ public final class PlayerServer {
       return builder;
     }
     /**
-<<<<<<< HEAD
      * Protobuf type {@code Resource}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:Resource)
         PlayerServer.ResourceOrBuilder {
-=======
-     * Protobuf type {@code ElementProperty}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ElementProperty)
-        PlayerServer.TemplatePropertyOrBuilder {
->>>>>>> mts40
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return PlayerServer.internal_static_Resource_descriptor;
@@ -19398,11 +19261,7 @@ public final class PlayerServer {
                 PlayerServer.Resource.class, PlayerServer.Resource.Builder.class);
       }
 
-<<<<<<< HEAD
       // Construct using PlayerServer.Resource.newBuilder()
-=======
-      // Construct using PlayerServer.ElementProperty.newBuilder()
->>>>>>> mts40
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -19657,19 +19516,11 @@ public final class PlayerServer {
       }
 
 
-<<<<<<< HEAD
       // @@protoc_insertion_point(builder_scope:Resource)
     }
 
     // @@protoc_insertion_point(class_scope:Resource)
     private static final PlayerServer.Resource DEFAULT_INSTANCE;
-=======
-      // @@protoc_insertion_point(builder_scope:ElementProperty)
-    }
-
-    // @@protoc_insertion_point(class_scope:ElementProperty)
-    private static final PlayerServer.TemplateProperty DEFAULT_INSTANCE;
->>>>>>> mts40
     static {
       DEFAULT_INSTANCE = new PlayerServer.Resource();
     }
