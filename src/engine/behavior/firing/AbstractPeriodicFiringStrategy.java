@@ -1,5 +1,7 @@
 package engine.behavior.firing;
 
+import engine.behavior.ElementProperty;
+
 /**
  * Periodically fires projectiles.
  *
@@ -11,7 +13,8 @@ public abstract class AbstractPeriodicFiringStrategy implements FiringStrategy {
     private double attackPeriod;
     private double attackCounter;
 
-    public AbstractPeriodicFiringStrategy(double attackPeriod) {
+    public AbstractPeriodicFiringStrategy(
+            @ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod) {
         this.attackPeriod = attackPeriod;
         resetAttackTimer();
     }

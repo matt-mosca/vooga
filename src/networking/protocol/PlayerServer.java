@@ -13389,25 +13389,25 @@ public final class PlayerServer {
         getElementNameBytes();
 
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     java.util.List<PlayerServer.TemplateProperty> 
         getPropertyList();
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     PlayerServer.TemplateProperty getProperty(int index);
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     int getPropertyCount();
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     java.util.List<? extends PlayerServer.TemplatePropertyOrBuilder> 
         getPropertyOrBuilderList();
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     PlayerServer.TemplatePropertyOrBuilder getPropertyOrBuilder(
         int index);
@@ -13544,32 +13544,32 @@ public final class PlayerServer {
     public static final int PROPERTY_FIELD_NUMBER = 2;
     private java.util.List<PlayerServer.TemplateProperty> property_;
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     public java.util.List<PlayerServer.TemplateProperty> getPropertyList() {
       return property_;
     }
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     public java.util.List<? extends PlayerServer.TemplatePropertyOrBuilder> 
         getPropertyOrBuilderList() {
       return property_;
     }
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     public int getPropertyCount() {
       return property_.size();
     }
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     public PlayerServer.TemplateProperty getProperty(int index) {
       return property_.get(index);
     }
     /**
-     * <code>repeated .TemplateProperty property = 2;</code>
+     * <code>repeated .ElementProperty property = 2;</code>
      */
     public PlayerServer.TemplatePropertyOrBuilder getPropertyOrBuilder(
         int index) {
@@ -14024,7 +14024,7 @@ public final class PlayerServer {
           PlayerServer.TemplateProperty, PlayerServer.TemplateProperty.Builder, PlayerServer.TemplatePropertyOrBuilder> propertyBuilder_;
 
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public java.util.List<PlayerServer.TemplateProperty> getPropertyList() {
         if (propertyBuilder_ == null) {
@@ -14034,7 +14034,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public int getPropertyCount() {
         if (propertyBuilder_ == null) {
@@ -14044,7 +14044,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public PlayerServer.TemplateProperty getProperty(int index) {
         if (propertyBuilder_ == null) {
@@ -14054,7 +14054,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder setProperty(
           int index, PlayerServer.TemplateProperty value) {
@@ -14071,7 +14071,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder setProperty(
           int index, PlayerServer.TemplateProperty.Builder builderForValue) {
@@ -14085,7 +14085,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder addProperty(PlayerServer.TemplateProperty value) {
         if (propertyBuilder_ == null) {
@@ -14101,7 +14101,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder addProperty(
           int index, PlayerServer.TemplateProperty value) {
@@ -14118,7 +14118,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder addProperty(
           PlayerServer.TemplateProperty.Builder builderForValue) {
@@ -14132,7 +14132,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder addProperty(
           int index, PlayerServer.TemplateProperty.Builder builderForValue) {
@@ -14146,7 +14146,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder addAllProperty(
           java.lang.Iterable<? extends PlayerServer.TemplateProperty> values) {
@@ -14161,7 +14161,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder clearProperty() {
         if (propertyBuilder_ == null) {
@@ -14174,7 +14174,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public Builder removeProperty(int index) {
         if (propertyBuilder_ == null) {
@@ -14187,14 +14187,14 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public PlayerServer.TemplateProperty.Builder getPropertyBuilder(
           int index) {
         return getPropertyFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public PlayerServer.TemplatePropertyOrBuilder getPropertyOrBuilder(
           int index) {
@@ -14204,7 +14204,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public java.util.List<? extends PlayerServer.TemplatePropertyOrBuilder> 
            getPropertyOrBuilderList() {
@@ -14215,14 +14215,14 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public PlayerServer.TemplateProperty.Builder addPropertyBuilder() {
         return getPropertyFieldBuilder().addBuilder(
             PlayerServer.TemplateProperty.getDefaultInstance());
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public PlayerServer.TemplateProperty.Builder addPropertyBuilder(
           int index) {
@@ -14230,7 +14230,7 @@ public final class PlayerServer {
             index, PlayerServer.TemplateProperty.getDefaultInstance());
       }
       /**
-       * <code>repeated .TemplateProperty property = 2;</code>
+       * <code>repeated .ElementProperty property = 2;</code>
        */
       public java.util.List<PlayerServer.TemplateProperty.Builder> 
            getPropertyBuilderList() {
@@ -14300,7 +14300,7 @@ public final class PlayerServer {
   }
 
   public interface TemplatePropertyOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:TemplateProperty)
+      // @@protoc_insertion_point(interface_extends:ElementProperty)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -14332,13 +14332,13 @@ public final class PlayerServer {
         getValueBytes();
   }
   /**
-   * Protobuf type {@code TemplateProperty}
+   * Protobuf type {@code ElementProperty}
    */
   public  static final class TemplateProperty extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:TemplateProperty)
+      // @@protoc_insertion_point(message_implements:ElementProperty)
       TemplatePropertyOrBuilder {
-    // Use TemplateProperty.newBuilder() to construct.
+    // Use ElementProperty.newBuilder() to construct.
     private TemplateProperty(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
@@ -14665,11 +14665,11 @@ public final class PlayerServer {
       return builder;
     }
     /**
-     * Protobuf type {@code TemplateProperty}
+     * Protobuf type {@code ElementProperty}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:TemplateProperty)
+        // @@protoc_insertion_point(builder_implements:ElementProperty)
         PlayerServer.TemplatePropertyOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
@@ -14683,7 +14683,7 @@ public final class PlayerServer {
                 PlayerServer.TemplateProperty.class, PlayerServer.TemplateProperty.Builder.class);
       }
 
-      // Construct using PlayerServer.TemplateProperty.newBuilder()
+      // Construct using PlayerServer.ElementProperty.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -14984,10 +14984,10 @@ public final class PlayerServer {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:TemplateProperty)
+      // @@protoc_insertion_point(builder_scope:ElementProperty)
     }
 
-    // @@protoc_insertion_point(class_scope:TemplateProperty)
+    // @@protoc_insertion_point(class_scope:ElementProperty)
     private static final PlayerServer.TemplateProperty DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new PlayerServer.TemplateProperty();

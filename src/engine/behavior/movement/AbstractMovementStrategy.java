@@ -1,5 +1,6 @@
 package engine.behavior.movement;
 
+import engine.behavior.ElementProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
@@ -18,9 +19,10 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	// trackingPoint in setX and setY respectively ... preferred approach?
 	private TrackingPoint trackingPoint;
 
-	public AbstractMovementStrategy(Point2D startingCoordinate) {
-		DoubleProperty xCoordinate = new SimpleDoubleProperty(startingCoordinate.getX());
-		DoubleProperty yCoordinate = new SimpleDoubleProperty(startingCoordinate.getX());
+	public AbstractMovementStrategy(
+			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint) {
+		DoubleProperty xCoordinate = new SimpleDoubleProperty(startPoint.getX());
+		DoubleProperty yCoordinate = new SimpleDoubleProperty(startPoint.getX());
 		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
 	}
 

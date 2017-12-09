@@ -1,6 +1,6 @@
 package engine.behavior.movement;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 
 /**
@@ -15,12 +15,14 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 	private double radius;
 	private double angularVelocity;
 	
-	public CircularMovementStrategy(Point2D startingLocation,
-									@ParameterName("centerX") double centerX, @ParameterName("centerY") double centerY,
-									@ParameterName("radius") double radius,
-									@ParameterName("initialAngle") double initialAngle,
-									@ParameterName("velocity") double velocity) {
-		super(startingLocation,new Point2D(radius * Math.cos(Math.toRadians(initialAngle)),radius * Math.sin(Math.toRadians(initialAngle))),
+	public CircularMovementStrategy(
+			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
+			@ElementProperty(value = "centerX", isTemplateProperty = true) double centerX,
+			@ElementProperty(value = "centerY", isTemplateProperty = true) double centerY,
+			@ElementProperty(value = "radius", isTemplateProperty = true) double radius,
+			@ElementProperty(value = "initialAngle", isTemplateProperty = true) double initialAngle,
+			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
+		super(startPoint,new Point2D(radius * Math.cos(Math.toRadians(initialAngle)),radius * Math.sin(Math.toRadians(initialAngle))),
 							radius);
 		this.radius = radius;
 		this.angle = Math.toRadians(initialAngle);
