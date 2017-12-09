@@ -46,12 +46,12 @@ public interface AuthoringModelController extends AbstractGameModelController {
     void exportGame();
 
     /**
-     * Create a new level for the game being authored. Saves the state of the
+     * Set level for the game being authored. Saves the state of the
      * current level being authored when the transition occurs.
      *
      * @param level the number associated with the new level
      */
-    void createNewLevel(int level);
+    void setLevel(int level);
 
     /**
      * Delete the previously created level.
@@ -153,6 +153,11 @@ public interface AuthoringModelController extends AbstractGameModelController {
      */
     void addElementToInventory(String elementName);
 
+    /**
+     * Get current level
+     */
+    int getCurrentLevel();
+    
     /**
      * Retrieve the inventory for the current level
      *
@@ -319,7 +324,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
      */
     void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
                            Point2D spawningPoint);
-
+    
     /**
      * Retrieve a collection of descriptions of the possible victory conditions
      *

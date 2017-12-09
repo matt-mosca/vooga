@@ -44,6 +44,8 @@ public interface AbstractGameModelController {
 
 	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates);
 
+	public int getCurrentLevel();
+	
 	public Set<String> getInventory();
 
 	/**
