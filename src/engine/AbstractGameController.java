@@ -178,6 +178,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	}
 
 	@Override
+	public int getCurrentLevel() {
+		return currentLevel;
+	}
+	
+	@Override
 	public Set<String> getInventory() {
 		return getLevelInventories().get(getCurrentLevel());
 	}
@@ -212,6 +217,21 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	public Map<String, String> getAvailableGames() throws IllegalStateException {
 		return ioController.getAvailableGames();
 	}
+	
+	/**
+	 * Create a new level for the game being authored. Saves the state of the
+	 * current level being authored when the transition occurs.
+	 *
+	 * @param level
+	 *            the number associated with the new level
+	 */
+	public void setLevel(int level) {
+		assertValidLevel(level);
+		currentLevel = level;
+		if (level == getLevelSprites().size()) {
+			initializeLevel();
+		}
+	}
 
 	public TemplateProperties packageTemplateProperties(String templateName) {
 		return getServerMessageUtils().packageTemplateProperties(templateName, getTemplateProperties(templateName));
@@ -245,21 +265,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	protected void cacheGeneratedSprite(GameElement gameElement) {
 		List<GameElement> levelGameElements = levelSpritesCache.get(currentLevel);
 		levelGameElements.add(gameElement);
-	}
-
-	/**
-	 * Create a new level for the game being authored. Saves the state of the
-	 * current level being authored when the transition occurs.
-	 *
-	 * @param level
-	 *            the number associated with the new level
-	 */
-	protected void setLevel(int level) {
-		assertValidLevel(level);
-		currentLevel = level;
-		if (level == getLevelSprites().size()) {
-			initializeLevel();
-		}
 	}
 
 	protected IOController getIoController() {
@@ -300,10 +305,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	protected List<Bank> getLevelBanks() {
 		return levelBanks;
-	}
-
-	protected int getCurrentLevel() {
-		return currentLevel;
 	}
 
 	protected void loadLevelData(String saveName, int level, boolean originalGame) throws FileNotFoundException {

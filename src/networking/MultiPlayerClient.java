@@ -211,6 +211,12 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		return handleAllTemplatePropertiesResponse(readServerResponse());
 	}
 
+	// TODO - Need to wrap this within LevelInitialized method
+	@Override 
+	public int getCurrentLevel() {
+		return 1;//TEMP
+	}
+	
 	@Override
 	public Set<String> getInventory() {
 		writeRequestBytes(
