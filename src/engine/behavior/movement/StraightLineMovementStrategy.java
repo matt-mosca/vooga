@@ -1,6 +1,6 @@
 package engine.behavior.movement;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 
 /**
@@ -13,9 +13,12 @@ import javafx.geometry.Point2D;
 
 public class StraightLineMovementStrategy extends TargetedMovementStrategy {
 
-	public StraightLineMovementStrategy(Point2D startingPoint,@ParameterName("targetX") double targetX,
-			@ParameterName("targetY") double targetY, @ParameterName("velocity") double velocity) {
-		super(startingPoint,new Point2D(targetX, targetY), velocity);
+	public StraightLineMovementStrategy(
+			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
+			@ElementProperty(value = "targetX", isTemplateProperty = true) double targetX,
+			@ElementProperty(value = "targetY", isTemplateProperty = true) double targetY,
+			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
+		super(startPoint, new Point2D(targetX, targetY), velocity);
 		setVelocityComponents();
 	}
 

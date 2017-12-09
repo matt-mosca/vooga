@@ -1,6 +1,6 @@
 package engine.game_elements;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 import util.SpriteOptionsGetter;
 
@@ -127,10 +127,10 @@ public final class GameElementFactory {
 				Parameter[] parameters = parameterClassConstructors[0].getParameters();
 				Object[] constructorParameters = new Object[parameters.length];
 				for (int i = 0; i < parameters.length; i++) {
-					ParameterName parameterNameAnnotation = parameters[i].getAnnotation(ParameterName.class);
-					if (parameterNameAnnotation != null) {
+					ElementProperty elementPropertyAnnotation = parameters[i].getAnnotation(ElementProperty.class);
+					if (elementPropertyAnnotation != null) {
 						constructorParameters[i] = setConstructorParameter(
-								properties.get(parameterNameAnnotation.value()));
+								properties.get(elementPropertyAnnotation.value()));
 					} else {
 						constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties,
 								auxiliaryObjects);

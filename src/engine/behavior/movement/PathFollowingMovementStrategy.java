@@ -1,9 +1,7 @@
 package engine.behavior.movement;
 
-import java.util.ArrayList;
-
 import authoring.path.PathList;
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 
 /**
@@ -17,8 +15,11 @@ public class PathFollowingMovementStrategy extends TargetedMovementStrategy {
 	private PathList coordinates;
 	private Point2D target;
 
-	public PathFollowingMovementStrategy(@ParameterName("velocity") double velocity, PathList coordinates) {
+	public PathFollowingMovementStrategy(
+			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity,
+			@ElementProperty(value = "pathList", isTemplateProperty = true) PathList coordinates) {
 		super(coordinates.next(),new Point2D(0, 0), velocity);
+		// TODO - deserialize
 		setPathCoordinates(coordinates);
 	}
 

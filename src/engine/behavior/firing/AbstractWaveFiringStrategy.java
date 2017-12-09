@@ -1,5 +1,7 @@
 package engine.behavior.firing;
 
+import engine.behavior.ElementProperty;
+
 import java.util.Set;
 
 /**
@@ -12,8 +14,11 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 	private Set<String> templatesToFire;
 	private int wavesLeft;
 
-	public AbstractWaveFiringStrategy(Set<String> templatesToFire, double period, int totalWaves) {
-		super(period);
+	public AbstractWaveFiringStrategy(
+			@ElementProperty(value = "templateToFire", isTemplateProperty = true) Set<String> templatesToFire,
+			@ElementProperty(value = "spawnPeriod", isTemplateProperty = true) double spawnPeriod,
+			@ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
+		super(spawnPeriod);
 		if (templatesToFire.isEmpty()) {
 			throw new IllegalArgumentException();
 		}

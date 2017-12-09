@@ -1,6 +1,6 @@
 package util;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import engine.game_elements.GameElement;
 
 import java.io.IOException;
@@ -97,8 +97,8 @@ public class SpriteOptionsGetter {
             Class parameterClass = spriteParameter.getType();
             Map<String, Class> baseSpriteParameterMap = spriteMemberParametersMap.getOrDefault
                     (SPRITE_BASE_PARAMETER_NAME, new HashMap<>());
-            if (spriteParameter.getAnnotation(ParameterName.class) != null) {
-                String parameterName = spriteParameter.getAnnotation(ParameterName.class).value();
+            if (spriteParameter.getAnnotation(ElementProperty.class) != null) {
+                String parameterName = spriteParameter.getAnnotation(ElementProperty.class).value();
                 baseSpriteParameterMap.put(parameterName, spriteParameter.getType());
                 spriteMemberParametersMap.put(SPRITE_BASE_PARAMETER_NAME, baseSpriteParameterMap);
             }
@@ -119,9 +119,9 @@ public class SpriteOptionsGetter {
             Constructor desiredConstructor = subclassConstructors[0];
             Parameter[] constructorParameters = desiredConstructor.getParameters();
             for (Parameter constructorParameter : constructorParameters) {
-                ParameterName parameterNameAnnotation = constructorParameter.getAnnotation(ParameterName.class);
-                if (parameterNameAnnotation != null) {
-                    String parameterName = parameterNameAnnotation.value();
+                ElementProperty elementPropertyAnnotation = constructorParameter.getAnnotation(ElementProperty.class);
+                if (elementPropertyAnnotation != null & elementPropertyAnnotation.isTemplateProperty()) {
+                    String parameterName = elementPropertyAnnotation.value();
                     String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
                     if (parameterDescription != null) {
                         parameterToDescription.put(parameterName, parameterDescription);
@@ -134,6 +134,7 @@ public class SpriteOptionsGetter {
                         parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
                     }
                 } else {
+                    System.out.println("\n\n\nTHIS SHOULD NOT HAPPEN\n\n\n");
                     String parameterTypeSimple = constructorParameter.getType().getSimpleName();
                     parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
                     descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);
@@ -154,8 +155,8 @@ public class SpriteOptionsGetter {
     }
 
     private String getParameterIdentifier(Parameter parameter) {
-        if (parameter.isAnnotationPresent(ParameterName.class)) {
-            return parameter.getAnnotation(ParameterName.class).value();
+        if (parameter.isAnnotationPresent(ElementProperty.class)) {
+            return parameter.getAnnotation(ElementProperty.class).value();
         } else {
             return parameter.getType().getName();
         }
