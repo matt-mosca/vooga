@@ -1,10 +1,22 @@
 package util.path;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import javafx.geometry.Point2D;
 
-public class PathList extends LinkedList{
+public class PathList extends LinkedList {
+
 	private PathNode current;
 	private PathNode head;
 	private PathPoint headpoint;
@@ -45,8 +57,23 @@ public class PathList extends LinkedList{
 		}
 		return copy;
 	}
+
+	public String writeToSerializationFile() throws IOException {
+		final String PATH_FILE_DIRECTORY = "data/tmp/path";
+		final String SERIALIZED_EXTENSION = ".ser";
+		String filePath = PATH_FILE_DIRECTORY + points.hashCode() + SERIALIZED_EXTENSION;
+		File file = new File(filePath);
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		OutputStream out = new FileOutputStream(file);
+		ObjectOutputStream objectOutput = new ObjectOutputStream(out);
+		objectOutput.writeObject(this);
+		out.flush();
+		return filePath;
+	}
 	
-	private class PathNode{
+	private class PathNode implements Serializable {
 		private double x;
 		private double y;
 		private PathNode next = null;
@@ -57,4 +84,6 @@ public class PathList extends LinkedList{
 			this.next = null;
 		}
 	}
+
+
 }
