@@ -17,8 +17,10 @@ public class InventoryTab extends SimpleTab{
 	
 	@Override
 	protected void addHandler() {
-		myListView.setOnMouseClicked(e->myProperties.clicked(e,
-        		myListView.getSelectionModel().getSelectedItem(), this));
+		myListView.setOnMouseClicked(e->{
+			if(myListView.getSelectionModel().isEmpty()) return;
+			myProperties.clicked(e, myListView.getSelectionModel().getSelectedItem(), this);
+		});
 	}
 
 }
