@@ -168,7 +168,7 @@ public abstract class AbstractGameController {
 
 	/**
 	 * Get resources left for current level
-	 * 
+	 * @deprecated
 	 * @return map of resource name to quantity left
 	 */
 	public Map<String, Double> getStatus() {

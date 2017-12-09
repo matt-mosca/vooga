@@ -4,6 +4,7 @@ import engine.AbstractGameController;
 import engine.PlayModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.Inventory;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
@@ -26,7 +27,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Controls the model for a game being played. Allows the view to modify and
@@ -107,8 +110,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				cacheAndCreateIdentifier(element);
 			}
 			// Package these changes into an Update message
-			latestUpdate = packageUpdates(newlyGeneratedElements,
-			updatedElements, deadElements);
+			latestUpdate = packageUpdates(newlyGeneratedElements, updatedElements, deadElements);
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
@@ -175,7 +177,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public boolean isReadyForNextLevel() {
 		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not last level
 	}
-	
+
 	public Update getLatestUpdate() {
 		return latestUpdate;
 	}
@@ -215,9 +217,32 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return templatePropertiesBuilder.build();
 	}
 
+	public ElementCost packageElementCosts(String elementName) {
+		Map<String, Double> elementCosts = getLevelBanks().get(getCurrentLevel()).getCostsForUnit(elementName);
+		ElementCost.Builder elementCostBuilder = ElementCost.newBuilder();
+		elementCostBuilder.setElementName(elementName);
+		elementCosts.keySet().forEach(resourceName -> elementCostBuilder.addCosts(
+				Resource.newBuilder().setName(resourceName).setAmount(elementCosts.get(resourceName)).build()));
+		return elementCostBuilder.build();
+	}
+
+	public Collection<TemplateProperties> packageAllTemplateProperties() {
+		return packageAllMessages(getAllDefinedTemplateProperties().keySet(),
+				templateName -> packageTemplateProperties(templateName));
+	}
+
+	public Collection<ElementCost> packageAllElementCosts() {
+		return packageAllMessages(getElementCosts().keySet(), elementName -> packageElementCosts(elementName));
+	}
+
 	public NewSprite placeAndPackageElement(String templateName, double x, double y) {
 		GameElement placedElement = getSpriteIdMap().get(placeElement(templateName, new Point2D(x, y)));
 		return packageNewSprite(placedElement);
+	}
+
+	public Collection<NewSprite> packageLevelElements(int level) {
+		return getLevelSprites(level).stream().map(spriteId -> getSpriteIdMap().get(spriteId))
+				.map(sprite -> packageNewSprite(sprite)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -311,6 +336,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return elementManager.enemyReachedTarget();
 	}
 
+	private <R> Collection<R> packageAllMessages(Collection<String> messageDataSupplier,
+			Function<String, R> messagePackager) {
+		return messageDataSupplier.stream().map(messageData -> messagePackager.apply(messageData))
+				.collect(Collectors.toSet());
+	}
+
 	// TODO - move to some utils class?
 	private Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
 			Collection<GameElement> deadSprites) {
@@ -333,7 +364,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				Resource.newBuilder().setName(resourceName).setAmount(resourceEndowments.get(resourceName)).build()));
 		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
 	}
-	
+
 	private StatusUpdate getStatusUpdate() {
 		// Just always send status update for now
 		return StatusUpdate.newBuilder().setLevelCleared(levelCleared).setIsWon(isWon).setIsLost(isLost)
