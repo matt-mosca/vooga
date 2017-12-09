@@ -198,15 +198,28 @@ public final class PlayerClient {
     PlayerClient.GetAllTemplatePropertiesOrBuilder getGetAllTemplatePropertiesOrBuilder();
 
     /**
-     * <code>optional .PlaceElement placeElement = 13;</code>
+     * <code>optional .GetElementCosts getElementCosts = 13;</code>
+     */
+    boolean hasGetElementCosts();
+    /**
+     * <code>optional .GetElementCosts getElementCosts = 13;</code>
+     */
+    PlayerClient.GetElementCosts getGetElementCosts();
+    /**
+     * <code>optional .GetElementCosts getElementCosts = 13;</code>
+     */
+    PlayerClient.GetElementCostsOrBuilder getGetElementCostsOrBuilder();
+
+    /**
+     * <code>optional .PlaceElement placeElement = 14;</code>
      */
     boolean hasPlaceElement();
     /**
-     * <code>optional .PlaceElement placeElement = 13;</code>
+     * <code>optional .PlaceElement placeElement = 14;</code>
      */
     PlayerClient.PlaceElement getPlaceElement();
     /**
-     * <code>optional .PlaceElement placeElement = 13;</code>
+     * <code>optional .PlaceElement placeElement = 14;</code>
      */
     PlayerClient.PlaceElementOrBuilder getPlaceElementOrBuilder();
 
@@ -215,7 +228,7 @@ public final class PlayerClient {
      * Has no corresponding response? Client doesn't check if upgrade succeeded
      * </pre>
      *
-     * <code>optional .UpgradeElement upgradeElement = 14;</code>
+     * <code>optional .UpgradeElement upgradeElement = 15;</code>
      */
     boolean hasUpgradeElement();
     /**
@@ -223,7 +236,7 @@ public final class PlayerClient {
      * Has no corresponding response? Client doesn't check if upgrade succeeded
      * </pre>
      *
-     * <code>optional .UpgradeElement upgradeElement = 14;</code>
+     * <code>optional .UpgradeElement upgradeElement = 15;</code>
      */
     PlayerClient.UpgradeElement getUpgradeElement();
     /**
@@ -231,35 +244,48 @@ public final class PlayerClient {
      * Has no corresponding response? Client doesn't check if upgrade succeeded
      * </pre>
      *
-     * <code>optional .UpgradeElement upgradeElement = 14;</code>
+     * <code>optional .UpgradeElement upgradeElement = 15;</code>
      */
     PlayerClient.UpgradeElementOrBuilder getUpgradeElementOrBuilder();
 
     /**
-     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
      */
     boolean hasCheckReadyForNextLevel();
     /**
-     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
      */
     PlayerClient.CheckReadyForNextLevel getCheckReadyForNextLevel();
     /**
-     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
      */
     PlayerClient.CheckReadyForNextLevelOrBuilder getCheckReadyForNextLevelOrBuilder();
 
     /**
-     * <code>optional .LoadLevel loadLevel = 16;</code>
+     * <code>optional .LoadLevel loadLevel = 17;</code>
      */
     boolean hasLoadLevel();
     /**
-     * <code>optional .LoadLevel loadLevel = 16;</code>
+     * <code>optional .LoadLevel loadLevel = 17;</code>
      */
     PlayerClient.LoadLevel getLoadLevel();
     /**
-     * <code>optional .LoadLevel loadLevel = 16;</code>
+     * <code>optional .LoadLevel loadLevel = 17;</code>
      */
     PlayerClient.LoadLevelOrBuilder getLoadLevelOrBuilder();
+
+    /**
+     * <code>optional .GetLevelElements getLevelElements = 18;</code>
+     */
+    boolean hasGetLevelElements();
+    /**
+     * <code>optional .GetLevelElements getLevelElements = 18;</code>
+     */
+    PlayerClient.GetLevelElements getGetLevelElements();
+    /**
+     * <code>optional .GetLevelElements getLevelElements = 18;</code>
+     */
+    PlayerClient.GetLevelElementsOrBuilder getGetLevelElementsOrBuilder();
   }
   /**
    * Protobuf type {@code ClientMessage}
@@ -460,8 +486,21 @@ public final class PlayerClient {
               break;
             }
             case 106: {
-              PlayerClient.PlaceElement.Builder subBuilder = null;
+              PlayerClient.GetElementCosts.Builder subBuilder = null;
               if (((bitField0_ & 0x00001000) == 0x00001000)) {
+                subBuilder = getElementCosts_.toBuilder();
+              }
+              getElementCosts_ = input.readMessage(PlayerClient.GetElementCosts.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(getElementCosts_);
+                getElementCosts_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00001000;
+              break;
+            }
+            case 114: {
+              PlayerClient.PlaceElement.Builder subBuilder = null;
+              if (((bitField0_ & 0x00002000) == 0x00002000)) {
                 subBuilder = placeElement_.toBuilder();
               }
               placeElement_ = input.readMessage(PlayerClient.PlaceElement.PARSER, extensionRegistry);
@@ -469,12 +508,12 @@ public final class PlayerClient {
                 subBuilder.mergeFrom(placeElement_);
                 placeElement_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00001000;
+              bitField0_ |= 0x00002000;
               break;
             }
-            case 114: {
+            case 122: {
               PlayerClient.UpgradeElement.Builder subBuilder = null;
-              if (((bitField0_ & 0x00002000) == 0x00002000)) {
+              if (((bitField0_ & 0x00004000) == 0x00004000)) {
                 subBuilder = upgradeElement_.toBuilder();
               }
               upgradeElement_ = input.readMessage(PlayerClient.UpgradeElement.PARSER, extensionRegistry);
@@ -482,12 +521,12 @@ public final class PlayerClient {
                 subBuilder.mergeFrom(upgradeElement_);
                 upgradeElement_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00002000;
+              bitField0_ |= 0x00004000;
               break;
             }
-            case 122: {
+            case 130: {
               PlayerClient.CheckReadyForNextLevel.Builder subBuilder = null;
-              if (((bitField0_ & 0x00004000) == 0x00004000)) {
+              if (((bitField0_ & 0x00008000) == 0x00008000)) {
                 subBuilder = checkReadyForNextLevel_.toBuilder();
               }
               checkReadyForNextLevel_ = input.readMessage(PlayerClient.CheckReadyForNextLevel.PARSER, extensionRegistry);
@@ -495,12 +534,12 @@ public final class PlayerClient {
                 subBuilder.mergeFrom(checkReadyForNextLevel_);
                 checkReadyForNextLevel_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00004000;
+              bitField0_ |= 0x00008000;
               break;
             }
-            case 130: {
+            case 138: {
               PlayerClient.LoadLevel.Builder subBuilder = null;
-              if (((bitField0_ & 0x00008000) == 0x00008000)) {
+              if (((bitField0_ & 0x00010000) == 0x00010000)) {
                 subBuilder = loadLevel_.toBuilder();
               }
               loadLevel_ = input.readMessage(PlayerClient.LoadLevel.PARSER, extensionRegistry);
@@ -508,7 +547,20 @@ public final class PlayerClient {
                 subBuilder.mergeFrom(loadLevel_);
                 loadLevel_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00008000;
+              bitField0_ |= 0x00010000;
+              break;
+            }
+            case 146: {
+              PlayerClient.GetLevelElements.Builder subBuilder = null;
+              if (((bitField0_ & 0x00020000) == 0x00020000)) {
+                subBuilder = getLevelElements_.toBuilder();
+              }
+              getLevelElements_ = input.readMessage(PlayerClient.GetLevelElements.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(getLevelElements_);
+                getLevelElements_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00020000;
               break;
             }
           }
@@ -812,45 +864,66 @@ public final class PlayerClient {
       return getAllTemplateProperties_ == null ? PlayerClient.GetAllTemplateProperties.getDefaultInstance() : getAllTemplateProperties_;
     }
 
-    public static final int PLACEELEMENT_FIELD_NUMBER = 13;
-    private PlayerClient.PlaceElement placeElement_;
+    public static final int GETELEMENTCOSTS_FIELD_NUMBER = 13;
+    private PlayerClient.GetElementCosts getElementCosts_;
     /**
-     * <code>optional .PlaceElement placeElement = 13;</code>
+     * <code>optional .GetElementCosts getElementCosts = 13;</code>
      */
-    public boolean hasPlaceElement() {
+    public boolean hasGetElementCosts() {
       return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
-     * <code>optional .PlaceElement placeElement = 13;</code>
+     * <code>optional .GetElementCosts getElementCosts = 13;</code>
+     */
+    public PlayerClient.GetElementCosts getGetElementCosts() {
+      return getElementCosts_ == null ? PlayerClient.GetElementCosts.getDefaultInstance() : getElementCosts_;
+    }
+    /**
+     * <code>optional .GetElementCosts getElementCosts = 13;</code>
+     */
+    public PlayerClient.GetElementCostsOrBuilder getGetElementCostsOrBuilder() {
+      return getElementCosts_ == null ? PlayerClient.GetElementCosts.getDefaultInstance() : getElementCosts_;
+    }
+
+    public static final int PLACEELEMENT_FIELD_NUMBER = 14;
+    private PlayerClient.PlaceElement placeElement_;
+    /**
+     * <code>optional .PlaceElement placeElement = 14;</code>
+     */
+    public boolean hasPlaceElement() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional .PlaceElement placeElement = 14;</code>
      */
     public PlayerClient.PlaceElement getPlaceElement() {
       return placeElement_ == null ? PlayerClient.PlaceElement.getDefaultInstance() : placeElement_;
     }
     /**
-     * <code>optional .PlaceElement placeElement = 13;</code>
+     * <code>optional .PlaceElement placeElement = 14;</code>
      */
     public PlayerClient.PlaceElementOrBuilder getPlaceElementOrBuilder() {
       return placeElement_ == null ? PlayerClient.PlaceElement.getDefaultInstance() : placeElement_;
     }
 
-    public static final int UPGRADEELEMENT_FIELD_NUMBER = 14;
+    public static final int UPGRADEELEMENT_FIELD_NUMBER = 15;
     private PlayerClient.UpgradeElement upgradeElement_;
     /**
      * <pre>
      * Has no corresponding response? Client doesn't check if upgrade succeeded
      * </pre>
      *
-     * <code>optional .UpgradeElement upgradeElement = 14;</code>
+     * <code>optional .UpgradeElement upgradeElement = 15;</code>
      */
     public boolean hasUpgradeElement() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
+      return ((bitField0_ & 0x00004000) == 0x00004000);
     }
     /**
      * <pre>
      * Has no corresponding response? Client doesn't check if upgrade succeeded
      * </pre>
      *
-     * <code>optional .UpgradeElement upgradeElement = 14;</code>
+     * <code>optional .UpgradeElement upgradeElement = 15;</code>
      */
     public PlayerClient.UpgradeElement getUpgradeElement() {
       return upgradeElement_ == null ? PlayerClient.UpgradeElement.getDefaultInstance() : upgradeElement_;
@@ -860,52 +933,73 @@ public final class PlayerClient {
      * Has no corresponding response? Client doesn't check if upgrade succeeded
      * </pre>
      *
-     * <code>optional .UpgradeElement upgradeElement = 14;</code>
+     * <code>optional .UpgradeElement upgradeElement = 15;</code>
      */
     public PlayerClient.UpgradeElementOrBuilder getUpgradeElementOrBuilder() {
       return upgradeElement_ == null ? PlayerClient.UpgradeElement.getDefaultInstance() : upgradeElement_;
     }
 
-    public static final int CHECKREADYFORNEXTLEVEL_FIELD_NUMBER = 15;
+    public static final int CHECKREADYFORNEXTLEVEL_FIELD_NUMBER = 16;
     private PlayerClient.CheckReadyForNextLevel checkReadyForNextLevel_;
     /**
-     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
      */
     public boolean hasCheckReadyForNextLevel() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
+      return ((bitField0_ & 0x00008000) == 0x00008000);
     }
     /**
-     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
      */
     public PlayerClient.CheckReadyForNextLevel getCheckReadyForNextLevel() {
       return checkReadyForNextLevel_ == null ? PlayerClient.CheckReadyForNextLevel.getDefaultInstance() : checkReadyForNextLevel_;
     }
     /**
-     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+     * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
      */
     public PlayerClient.CheckReadyForNextLevelOrBuilder getCheckReadyForNextLevelOrBuilder() {
       return checkReadyForNextLevel_ == null ? PlayerClient.CheckReadyForNextLevel.getDefaultInstance() : checkReadyForNextLevel_;
     }
 
-    public static final int LOADLEVEL_FIELD_NUMBER = 16;
+    public static final int LOADLEVEL_FIELD_NUMBER = 17;
     private PlayerClient.LoadLevel loadLevel_;
     /**
-     * <code>optional .LoadLevel loadLevel = 16;</code>
+     * <code>optional .LoadLevel loadLevel = 17;</code>
      */
     public boolean hasLoadLevel() {
-      return ((bitField0_ & 0x00008000) == 0x00008000);
+      return ((bitField0_ & 0x00010000) == 0x00010000);
     }
     /**
-     * <code>optional .LoadLevel loadLevel = 16;</code>
+     * <code>optional .LoadLevel loadLevel = 17;</code>
      */
     public PlayerClient.LoadLevel getLoadLevel() {
       return loadLevel_ == null ? PlayerClient.LoadLevel.getDefaultInstance() : loadLevel_;
     }
     /**
-     * <code>optional .LoadLevel loadLevel = 16;</code>
+     * <code>optional .LoadLevel loadLevel = 17;</code>
      */
     public PlayerClient.LoadLevelOrBuilder getLoadLevelOrBuilder() {
       return loadLevel_ == null ? PlayerClient.LoadLevel.getDefaultInstance() : loadLevel_;
+    }
+
+    public static final int GETLEVELELEMENTS_FIELD_NUMBER = 18;
+    private PlayerClient.GetLevelElements getLevelElements_;
+    /**
+     * <code>optional .GetLevelElements getLevelElements = 18;</code>
+     */
+    public boolean hasGetLevelElements() {
+      return ((bitField0_ & 0x00020000) == 0x00020000);
+    }
+    /**
+     * <code>optional .GetLevelElements getLevelElements = 18;</code>
+     */
+    public PlayerClient.GetLevelElements getGetLevelElements() {
+      return getLevelElements_ == null ? PlayerClient.GetLevelElements.getDefaultInstance() : getLevelElements_;
+    }
+    /**
+     * <code>optional .GetLevelElements getLevelElements = 18;</code>
+     */
+    public PlayerClient.GetLevelElementsOrBuilder getGetLevelElementsOrBuilder() {
+      return getLevelElements_ == null ? PlayerClient.GetLevelElements.getDefaultInstance() : getLevelElements_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -962,6 +1056,12 @@ public final class PlayerClient {
           return false;
         }
       }
+      if (hasGetLevelElements()) {
+        if (!getGetLevelElements().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1005,16 +1105,22 @@ public final class PlayerClient {
         output.writeMessage(12, getGetAllTemplateProperties());
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeMessage(13, getPlaceElement());
+        output.writeMessage(13, getGetElementCosts());
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeMessage(14, getUpgradeElement());
+        output.writeMessage(14, getPlaceElement());
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeMessage(15, getCheckReadyForNextLevel());
+        output.writeMessage(15, getUpgradeElement());
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        output.writeMessage(16, getLoadLevel());
+        output.writeMessage(16, getCheckReadyForNextLevel());
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        output.writeMessage(17, getLoadLevel());
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        output.writeMessage(18, getGetLevelElements());
       }
       unknownFields.writeTo(output);
     }
@@ -1074,19 +1180,27 @@ public final class PlayerClient {
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(13, getPlaceElement());
+          .computeMessageSize(13, getGetElementCosts());
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(14, getUpgradeElement());
+          .computeMessageSize(14, getPlaceElement());
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(15, getCheckReadyForNextLevel());
+          .computeMessageSize(15, getUpgradeElement());
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(16, getLoadLevel());
+          .computeMessageSize(16, getCheckReadyForNextLevel());
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(17, getLoadLevel());
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(18, getGetLevelElements());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1165,6 +1279,11 @@ public final class PlayerClient {
         result = result && getGetAllTemplateProperties()
             .equals(other.getGetAllTemplateProperties());
       }
+      result = result && (hasGetElementCosts() == other.hasGetElementCosts());
+      if (hasGetElementCosts()) {
+        result = result && getGetElementCosts()
+            .equals(other.getGetElementCosts());
+      }
       result = result && (hasPlaceElement() == other.hasPlaceElement());
       if (hasPlaceElement()) {
         result = result && getPlaceElement()
@@ -1184,6 +1303,11 @@ public final class PlayerClient {
       if (hasLoadLevel()) {
         result = result && getLoadLevel()
             .equals(other.getLoadLevel());
+      }
+      result = result && (hasGetLevelElements() == other.hasGetLevelElements());
+      if (hasGetLevelElements()) {
+        result = result && getGetLevelElements()
+            .equals(other.getGetLevelElements());
       }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
@@ -1244,6 +1368,10 @@ public final class PlayerClient {
         hash = (37 * hash) + GETALLTEMPLATEPROPERTIES_FIELD_NUMBER;
         hash = (53 * hash) + getGetAllTemplateProperties().hashCode();
       }
+      if (hasGetElementCosts()) {
+        hash = (37 * hash) + GETELEMENTCOSTS_FIELD_NUMBER;
+        hash = (53 * hash) + getGetElementCosts().hashCode();
+      }
       if (hasPlaceElement()) {
         hash = (37 * hash) + PLACEELEMENT_FIELD_NUMBER;
         hash = (53 * hash) + getPlaceElement().hashCode();
@@ -1259,6 +1387,10 @@ public final class PlayerClient {
       if (hasLoadLevel()) {
         hash = (37 * hash) + LOADLEVEL_FIELD_NUMBER;
         hash = (53 * hash) + getLoadLevel().hashCode();
+      }
+      if (hasGetLevelElements()) {
+        hash = (37 * hash) + GETLEVELELEMENTS_FIELD_NUMBER;
+        hash = (53 * hash) + getGetLevelElements().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1386,10 +1518,12 @@ public final class PlayerClient {
           getGetInventoryFieldBuilder();
           getGetTemplatePropertiesFieldBuilder();
           getGetAllTemplatePropertiesFieldBuilder();
+          getGetElementCostsFieldBuilder();
           getPlaceElementFieldBuilder();
           getUpgradeElementFieldBuilder();
           getCheckReadyForNextLevelFieldBuilder();
           getLoadLevelFieldBuilder();
+          getGetLevelElementsFieldBuilder();
         }
       }
       public Builder clear() {
@@ -1466,30 +1600,42 @@ public final class PlayerClient {
           getAllTemplatePropertiesBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000800);
+        if (getElementCostsBuilder_ == null) {
+          getElementCosts_ = null;
+        } else {
+          getElementCostsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00001000);
         if (placeElementBuilder_ == null) {
           placeElement_ = null;
         } else {
           placeElementBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         if (upgradeElementBuilder_ == null) {
           upgradeElement_ = null;
         } else {
           upgradeElementBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00002000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         if (checkReadyForNextLevelBuilder_ == null) {
           checkReadyForNextLevel_ = null;
         } else {
           checkReadyForNextLevelBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00004000);
+        bitField0_ = (bitField0_ & ~0x00008000);
         if (loadLevelBuilder_ == null) {
           loadLevel_ = null;
         } else {
           loadLevelBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00008000);
+        bitField0_ = (bitField0_ & ~0x00010000);
+        if (getLevelElementsBuilder_ == null) {
+          getLevelElements_ = null;
+        } else {
+          getLevelElementsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00020000);
         return this;
       }
 
@@ -1613,34 +1759,50 @@ public final class PlayerClient {
         if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
           to_bitField0_ |= 0x00001000;
         }
+        if (getElementCostsBuilder_ == null) {
+          result.getElementCosts_ = getElementCosts_;
+        } else {
+          result.getElementCosts_ = getElementCostsBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
         if (placeElementBuilder_ == null) {
           result.placeElement_ = placeElement_;
         } else {
           result.placeElement_ = placeElementBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
-          to_bitField0_ |= 0x00002000;
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00004000;
         }
         if (upgradeElementBuilder_ == null) {
           result.upgradeElement_ = upgradeElement_;
         } else {
           result.upgradeElement_ = upgradeElementBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
-          to_bitField0_ |= 0x00004000;
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00008000;
         }
         if (checkReadyForNextLevelBuilder_ == null) {
           result.checkReadyForNextLevel_ = checkReadyForNextLevel_;
         } else {
           result.checkReadyForNextLevel_ = checkReadyForNextLevelBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
-          to_bitField0_ |= 0x00008000;
+        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+          to_bitField0_ |= 0x00010000;
         }
         if (loadLevelBuilder_ == null) {
           result.loadLevel_ = loadLevel_;
         } else {
           result.loadLevel_ = loadLevelBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+          to_bitField0_ |= 0x00020000;
+        }
+        if (getLevelElementsBuilder_ == null) {
+          result.getLevelElements_ = getLevelElements_;
+        } else {
+          result.getLevelElements_ = getLevelElementsBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -1720,6 +1882,9 @@ public final class PlayerClient {
         if (other.hasGetAllTemplateProperties()) {
           mergeGetAllTemplateProperties(other.getGetAllTemplateProperties());
         }
+        if (other.hasGetElementCosts()) {
+          mergeGetElementCosts(other.getGetElementCosts());
+        }
         if (other.hasPlaceElement()) {
           mergePlaceElement(other.getPlaceElement());
         }
@@ -1731,6 +1896,9 @@ public final class PlayerClient {
         }
         if (other.hasLoadLevel()) {
           mergeLoadLevel(other.getLoadLevel());
+        }
+        if (other.hasGetLevelElements()) {
+          mergeGetLevelElements(other.getGetLevelElements());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1775,6 +1943,11 @@ public final class PlayerClient {
         }
         if (hasLoadLevel()) {
           if (!getLoadLevel().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasGetLevelElements()) {
+          if (!getGetLevelElements().isInitialized()) {
             return false;
           }
         }
@@ -3288,17 +3461,135 @@ public final class PlayerClient {
         return getAllTemplatePropertiesBuilder_;
       }
 
+      private PlayerClient.GetElementCosts getElementCosts_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerClient.GetElementCosts, PlayerClient.GetElementCosts.Builder, PlayerClient.GetElementCostsOrBuilder> getElementCostsBuilder_;
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      public boolean hasGetElementCosts() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      public PlayerClient.GetElementCosts getGetElementCosts() {
+        if (getElementCostsBuilder_ == null) {
+          return getElementCosts_ == null ? PlayerClient.GetElementCosts.getDefaultInstance() : getElementCosts_;
+        } else {
+          return getElementCostsBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      public Builder setGetElementCosts(PlayerClient.GetElementCosts value) {
+        if (getElementCostsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          getElementCosts_ = value;
+          onChanged();
+        } else {
+          getElementCostsBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      public Builder setGetElementCosts(
+          PlayerClient.GetElementCosts.Builder builderForValue) {
+        if (getElementCostsBuilder_ == null) {
+          getElementCosts_ = builderForValue.build();
+          onChanged();
+        } else {
+          getElementCostsBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      public Builder mergeGetElementCosts(PlayerClient.GetElementCosts value) {
+        if (getElementCostsBuilder_ == null) {
+          if (((bitField0_ & 0x00001000) == 0x00001000) &&
+              getElementCosts_ != null &&
+              getElementCosts_ != PlayerClient.GetElementCosts.getDefaultInstance()) {
+            getElementCosts_ =
+              PlayerClient.GetElementCosts.newBuilder(getElementCosts_).mergeFrom(value).buildPartial();
+          } else {
+            getElementCosts_ = value;
+          }
+          onChanged();
+        } else {
+          getElementCostsBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      public Builder clearGetElementCosts() {
+        if (getElementCostsBuilder_ == null) {
+          getElementCosts_ = null;
+          onChanged();
+        } else {
+          getElementCostsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00001000);
+        return this;
+      }
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      public PlayerClient.GetElementCosts.Builder getGetElementCostsBuilder() {
+        bitField0_ |= 0x00001000;
+        onChanged();
+        return getGetElementCostsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      public PlayerClient.GetElementCostsOrBuilder getGetElementCostsOrBuilder() {
+        if (getElementCostsBuilder_ != null) {
+          return getElementCostsBuilder_.getMessageOrBuilder();
+        } else {
+          return getElementCosts_ == null ?
+              PlayerClient.GetElementCosts.getDefaultInstance() : getElementCosts_;
+        }
+      }
+      /**
+       * <code>optional .GetElementCosts getElementCosts = 13;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerClient.GetElementCosts, PlayerClient.GetElementCosts.Builder, PlayerClient.GetElementCostsOrBuilder> 
+          getGetElementCostsFieldBuilder() {
+        if (getElementCostsBuilder_ == null) {
+          getElementCostsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerClient.GetElementCosts, PlayerClient.GetElementCosts.Builder, PlayerClient.GetElementCostsOrBuilder>(
+                  getGetElementCosts(),
+                  getParentForChildren(),
+                  isClean());
+          getElementCosts_ = null;
+        }
+        return getElementCostsBuilder_;
+      }
+
       private PlayerClient.PlaceElement placeElement_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerClient.PlaceElement, PlayerClient.PlaceElement.Builder, PlayerClient.PlaceElementOrBuilder> placeElementBuilder_;
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       public boolean hasPlaceElement() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
+        return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       public PlayerClient.PlaceElement getPlaceElement() {
         if (placeElementBuilder_ == null) {
@@ -3308,7 +3599,7 @@ public final class PlayerClient {
         }
       }
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       public Builder setPlaceElement(PlayerClient.PlaceElement value) {
         if (placeElementBuilder_ == null) {
@@ -3320,11 +3611,11 @@ public final class PlayerClient {
         } else {
           placeElementBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       public Builder setPlaceElement(
           PlayerClient.PlaceElement.Builder builderForValue) {
@@ -3334,15 +3625,15 @@ public final class PlayerClient {
         } else {
           placeElementBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       public Builder mergePlaceElement(PlayerClient.PlaceElement value) {
         if (placeElementBuilder_ == null) {
-          if (((bitField0_ & 0x00001000) == 0x00001000) &&
+          if (((bitField0_ & 0x00002000) == 0x00002000) &&
               placeElement_ != null &&
               placeElement_ != PlayerClient.PlaceElement.getDefaultInstance()) {
             placeElement_ =
@@ -3354,11 +3645,11 @@ public final class PlayerClient {
         } else {
           placeElementBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       public Builder clearPlaceElement() {
         if (placeElementBuilder_ == null) {
@@ -3367,19 +3658,19 @@ public final class PlayerClient {
         } else {
           placeElementBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       public PlayerClient.PlaceElement.Builder getPlaceElementBuilder() {
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         onChanged();
         return getPlaceElementFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       public PlayerClient.PlaceElementOrBuilder getPlaceElementOrBuilder() {
         if (placeElementBuilder_ != null) {
@@ -3390,7 +3681,7 @@ public final class PlayerClient {
         }
       }
       /**
-       * <code>optional .PlaceElement placeElement = 13;</code>
+       * <code>optional .PlaceElement placeElement = 14;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerClient.PlaceElement, PlayerClient.PlaceElement.Builder, PlayerClient.PlaceElementOrBuilder> 
@@ -3414,17 +3705,17 @@ public final class PlayerClient {
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       public boolean hasUpgradeElement() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
+        return ((bitField0_ & 0x00004000) == 0x00004000);
       }
       /**
        * <pre>
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       public PlayerClient.UpgradeElement getUpgradeElement() {
         if (upgradeElementBuilder_ == null) {
@@ -3438,7 +3729,7 @@ public final class PlayerClient {
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       public Builder setUpgradeElement(PlayerClient.UpgradeElement value) {
         if (upgradeElementBuilder_ == null) {
@@ -3450,7 +3741,7 @@ public final class PlayerClient {
         } else {
           upgradeElementBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         return this;
       }
       /**
@@ -3458,7 +3749,7 @@ public final class PlayerClient {
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       public Builder setUpgradeElement(
           PlayerClient.UpgradeElement.Builder builderForValue) {
@@ -3468,7 +3759,7 @@ public final class PlayerClient {
         } else {
           upgradeElementBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         return this;
       }
       /**
@@ -3476,11 +3767,11 @@ public final class PlayerClient {
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       public Builder mergeUpgradeElement(PlayerClient.UpgradeElement value) {
         if (upgradeElementBuilder_ == null) {
-          if (((bitField0_ & 0x00002000) == 0x00002000) &&
+          if (((bitField0_ & 0x00004000) == 0x00004000) &&
               upgradeElement_ != null &&
               upgradeElement_ != PlayerClient.UpgradeElement.getDefaultInstance()) {
             upgradeElement_ =
@@ -3492,7 +3783,7 @@ public final class PlayerClient {
         } else {
           upgradeElementBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         return this;
       }
       /**
@@ -3500,7 +3791,7 @@ public final class PlayerClient {
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       public Builder clearUpgradeElement() {
         if (upgradeElementBuilder_ == null) {
@@ -3509,7 +3800,7 @@ public final class PlayerClient {
         } else {
           upgradeElementBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00002000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
       /**
@@ -3517,10 +3808,10 @@ public final class PlayerClient {
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       public PlayerClient.UpgradeElement.Builder getUpgradeElementBuilder() {
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         onChanged();
         return getUpgradeElementFieldBuilder().getBuilder();
       }
@@ -3529,7 +3820,7 @@ public final class PlayerClient {
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       public PlayerClient.UpgradeElementOrBuilder getUpgradeElementOrBuilder() {
         if (upgradeElementBuilder_ != null) {
@@ -3544,7 +3835,7 @@ public final class PlayerClient {
        * Has no corresponding response? Client doesn't check if upgrade succeeded
        * </pre>
        *
-       * <code>optional .UpgradeElement upgradeElement = 14;</code>
+       * <code>optional .UpgradeElement upgradeElement = 15;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerClient.UpgradeElement, PlayerClient.UpgradeElement.Builder, PlayerClient.UpgradeElementOrBuilder> 
@@ -3564,13 +3855,13 @@ public final class PlayerClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerClient.CheckReadyForNextLevel, PlayerClient.CheckReadyForNextLevel.Builder, PlayerClient.CheckReadyForNextLevelOrBuilder> checkReadyForNextLevelBuilder_;
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       public boolean hasCheckReadyForNextLevel() {
-        return ((bitField0_ & 0x00004000) == 0x00004000);
+        return ((bitField0_ & 0x00008000) == 0x00008000);
       }
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       public PlayerClient.CheckReadyForNextLevel getCheckReadyForNextLevel() {
         if (checkReadyForNextLevelBuilder_ == null) {
@@ -3580,7 +3871,7 @@ public final class PlayerClient {
         }
       }
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       public Builder setCheckReadyForNextLevel(PlayerClient.CheckReadyForNextLevel value) {
         if (checkReadyForNextLevelBuilder_ == null) {
@@ -3592,11 +3883,11 @@ public final class PlayerClient {
         } else {
           checkReadyForNextLevelBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         return this;
       }
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       public Builder setCheckReadyForNextLevel(
           PlayerClient.CheckReadyForNextLevel.Builder builderForValue) {
@@ -3606,15 +3897,15 @@ public final class PlayerClient {
         } else {
           checkReadyForNextLevelBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         return this;
       }
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       public Builder mergeCheckReadyForNextLevel(PlayerClient.CheckReadyForNextLevel value) {
         if (checkReadyForNextLevelBuilder_ == null) {
-          if (((bitField0_ & 0x00004000) == 0x00004000) &&
+          if (((bitField0_ & 0x00008000) == 0x00008000) &&
               checkReadyForNextLevel_ != null &&
               checkReadyForNextLevel_ != PlayerClient.CheckReadyForNextLevel.getDefaultInstance()) {
             checkReadyForNextLevel_ =
@@ -3626,11 +3917,11 @@ public final class PlayerClient {
         } else {
           checkReadyForNextLevelBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         return this;
       }
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       public Builder clearCheckReadyForNextLevel() {
         if (checkReadyForNextLevelBuilder_ == null) {
@@ -3639,19 +3930,19 @@ public final class PlayerClient {
         } else {
           checkReadyForNextLevelBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00004000);
+        bitField0_ = (bitField0_ & ~0x00008000);
         return this;
       }
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       public PlayerClient.CheckReadyForNextLevel.Builder getCheckReadyForNextLevelBuilder() {
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         onChanged();
         return getCheckReadyForNextLevelFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       public PlayerClient.CheckReadyForNextLevelOrBuilder getCheckReadyForNextLevelOrBuilder() {
         if (checkReadyForNextLevelBuilder_ != null) {
@@ -3662,7 +3953,7 @@ public final class PlayerClient {
         }
       }
       /**
-       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 15;</code>
+       * <code>optional .CheckReadyForNextLevel checkReadyForNextLevel = 16;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerClient.CheckReadyForNextLevel, PlayerClient.CheckReadyForNextLevel.Builder, PlayerClient.CheckReadyForNextLevelOrBuilder> 
@@ -3682,13 +3973,13 @@ public final class PlayerClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerClient.LoadLevel, PlayerClient.LoadLevel.Builder, PlayerClient.LoadLevelOrBuilder> loadLevelBuilder_;
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       public boolean hasLoadLevel() {
-        return ((bitField0_ & 0x00008000) == 0x00008000);
+        return ((bitField0_ & 0x00010000) == 0x00010000);
       }
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       public PlayerClient.LoadLevel getLoadLevel() {
         if (loadLevelBuilder_ == null) {
@@ -3698,7 +3989,7 @@ public final class PlayerClient {
         }
       }
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       public Builder setLoadLevel(PlayerClient.LoadLevel value) {
         if (loadLevelBuilder_ == null) {
@@ -3710,11 +4001,11 @@ public final class PlayerClient {
         } else {
           loadLevelBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         return this;
       }
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       public Builder setLoadLevel(
           PlayerClient.LoadLevel.Builder builderForValue) {
@@ -3724,15 +4015,15 @@ public final class PlayerClient {
         } else {
           loadLevelBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         return this;
       }
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       public Builder mergeLoadLevel(PlayerClient.LoadLevel value) {
         if (loadLevelBuilder_ == null) {
-          if (((bitField0_ & 0x00008000) == 0x00008000) &&
+          if (((bitField0_ & 0x00010000) == 0x00010000) &&
               loadLevel_ != null &&
               loadLevel_ != PlayerClient.LoadLevel.getDefaultInstance()) {
             loadLevel_ =
@@ -3744,11 +4035,11 @@ public final class PlayerClient {
         } else {
           loadLevelBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         return this;
       }
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       public Builder clearLoadLevel() {
         if (loadLevelBuilder_ == null) {
@@ -3757,19 +4048,19 @@ public final class PlayerClient {
         } else {
           loadLevelBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00008000);
+        bitField0_ = (bitField0_ & ~0x00010000);
         return this;
       }
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       public PlayerClient.LoadLevel.Builder getLoadLevelBuilder() {
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         onChanged();
         return getLoadLevelFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       public PlayerClient.LoadLevelOrBuilder getLoadLevelOrBuilder() {
         if (loadLevelBuilder_ != null) {
@@ -3780,7 +4071,7 @@ public final class PlayerClient {
         }
       }
       /**
-       * <code>optional .LoadLevel loadLevel = 16;</code>
+       * <code>optional .LoadLevel loadLevel = 17;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerClient.LoadLevel, PlayerClient.LoadLevel.Builder, PlayerClient.LoadLevelOrBuilder> 
@@ -3794,6 +4085,124 @@ public final class PlayerClient {
           loadLevel_ = null;
         }
         return loadLevelBuilder_;
+      }
+
+      private PlayerClient.GetLevelElements getLevelElements_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerClient.GetLevelElements, PlayerClient.GetLevelElements.Builder, PlayerClient.GetLevelElementsOrBuilder> getLevelElementsBuilder_;
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      public boolean hasGetLevelElements() {
+        return ((bitField0_ & 0x00020000) == 0x00020000);
+      }
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      public PlayerClient.GetLevelElements getGetLevelElements() {
+        if (getLevelElementsBuilder_ == null) {
+          return getLevelElements_ == null ? PlayerClient.GetLevelElements.getDefaultInstance() : getLevelElements_;
+        } else {
+          return getLevelElementsBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      public Builder setGetLevelElements(PlayerClient.GetLevelElements value) {
+        if (getLevelElementsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          getLevelElements_ = value;
+          onChanged();
+        } else {
+          getLevelElementsBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00020000;
+        return this;
+      }
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      public Builder setGetLevelElements(
+          PlayerClient.GetLevelElements.Builder builderForValue) {
+        if (getLevelElementsBuilder_ == null) {
+          getLevelElements_ = builderForValue.build();
+          onChanged();
+        } else {
+          getLevelElementsBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00020000;
+        return this;
+      }
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      public Builder mergeGetLevelElements(PlayerClient.GetLevelElements value) {
+        if (getLevelElementsBuilder_ == null) {
+          if (((bitField0_ & 0x00020000) == 0x00020000) &&
+              getLevelElements_ != null &&
+              getLevelElements_ != PlayerClient.GetLevelElements.getDefaultInstance()) {
+            getLevelElements_ =
+              PlayerClient.GetLevelElements.newBuilder(getLevelElements_).mergeFrom(value).buildPartial();
+          } else {
+            getLevelElements_ = value;
+          }
+          onChanged();
+        } else {
+          getLevelElementsBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00020000;
+        return this;
+      }
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      public Builder clearGetLevelElements() {
+        if (getLevelElementsBuilder_ == null) {
+          getLevelElements_ = null;
+          onChanged();
+        } else {
+          getLevelElementsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00020000);
+        return this;
+      }
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      public PlayerClient.GetLevelElements.Builder getGetLevelElementsBuilder() {
+        bitField0_ |= 0x00020000;
+        onChanged();
+        return getGetLevelElementsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      public PlayerClient.GetLevelElementsOrBuilder getGetLevelElementsOrBuilder() {
+        if (getLevelElementsBuilder_ != null) {
+          return getLevelElementsBuilder_.getMessageOrBuilder();
+        } else {
+          return getLevelElements_ == null ?
+              PlayerClient.GetLevelElements.getDefaultInstance() : getLevelElements_;
+        }
+      }
+      /**
+       * <code>optional .GetLevelElements getLevelElements = 18;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerClient.GetLevelElements, PlayerClient.GetLevelElements.Builder, PlayerClient.GetLevelElementsOrBuilder> 
+          getGetLevelElementsFieldBuilder() {
+        if (getLevelElementsBuilder_ == null) {
+          getLevelElementsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerClient.GetLevelElements, PlayerClient.GetLevelElements.Builder, PlayerClient.GetLevelElementsOrBuilder>(
+                  getGetLevelElements(),
+                  getParentForChildren(),
+                  isClean());
+          getLevelElements_ = null;
+        }
+        return getLevelElementsBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -9382,6 +9791,379 @@ public final class PlayerClient {
 
   }
 
+  public interface GetElementCostsOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetElementCosts)
+      com.google.protobuf.MessageOrBuilder {
+  }
+  /**
+   * Protobuf type {@code GetElementCosts}
+   */
+  public  static final class GetElementCosts extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:GetElementCosts)
+      GetElementCostsOrBuilder {
+    // Use GetElementCosts.newBuilder() to construct.
+    private GetElementCosts(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetElementCosts() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetElementCosts(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return PlayerClient.internal_static_GetElementCosts_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return PlayerClient.internal_static_GetElementCosts_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              PlayerClient.GetElementCosts.class, PlayerClient.GetElementCosts.Builder.class);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof PlayerClient.GetElementCosts)) {
+        return super.equals(obj);
+      }
+      PlayerClient.GetElementCosts other = (PlayerClient.GetElementCosts) obj;
+
+      boolean result = true;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static PlayerClient.GetElementCosts parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static PlayerClient.GetElementCosts parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static PlayerClient.GetElementCosts parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static PlayerClient.GetElementCosts parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static PlayerClient.GetElementCosts parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static PlayerClient.GetElementCosts parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static PlayerClient.GetElementCosts parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static PlayerClient.GetElementCosts parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static PlayerClient.GetElementCosts parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static PlayerClient.GetElementCosts parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(PlayerClient.GetElementCosts prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code GetElementCosts}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetElementCosts)
+        PlayerClient.GetElementCostsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return PlayerClient.internal_static_GetElementCosts_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return PlayerClient.internal_static_GetElementCosts_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                PlayerClient.GetElementCosts.class, PlayerClient.GetElementCosts.Builder.class);
+      }
+
+      // Construct using PlayerClient.GetElementCosts.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return PlayerClient.internal_static_GetElementCosts_descriptor;
+      }
+
+      public PlayerClient.GetElementCosts getDefaultInstanceForType() {
+        return PlayerClient.GetElementCosts.getDefaultInstance();
+      }
+
+      public PlayerClient.GetElementCosts build() {
+        PlayerClient.GetElementCosts result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public PlayerClient.GetElementCosts buildPartial() {
+        PlayerClient.GetElementCosts result = new PlayerClient.GetElementCosts(this);
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof PlayerClient.GetElementCosts) {
+          return mergeFrom((PlayerClient.GetElementCosts)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(PlayerClient.GetElementCosts other) {
+        if (other == PlayerClient.GetElementCosts.getDefaultInstance()) return this;
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        PlayerClient.GetElementCosts parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (PlayerClient.GetElementCosts) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:GetElementCosts)
+    }
+
+    // @@protoc_insertion_point(class_scope:GetElementCosts)
+    private static final PlayerClient.GetElementCosts DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new PlayerClient.GetElementCosts();
+    }
+
+    public static PlayerClient.GetElementCosts getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<GetElementCosts>
+        PARSER = new com.google.protobuf.AbstractParser<GetElementCosts>() {
+      public GetElementCosts parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new GetElementCosts(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetElementCosts> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetElementCosts> getParserForType() {
+      return PARSER;
+    }
+
+    public PlayerClient.GetElementCosts getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface PlaceElementOrBuilder extends
       // @@protoc_insertion_point(interface_extends:PlaceElement)
       com.google.protobuf.MessageOrBuilder {
@@ -11626,6 +12408,487 @@ public final class PlayerClient {
 
   }
 
+  public interface GetLevelElementsOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:GetLevelElements)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 level = 1;</code>
+     */
+    boolean hasLevel();
+    /**
+     * <code>required int32 level = 1;</code>
+     */
+    int getLevel();
+  }
+  /**
+   * <pre>
+   * Keep level parameter to support extensibility to collaborative editing as above
+   * </pre>
+   *
+   * Protobuf type {@code GetLevelElements}
+   */
+  public  static final class GetLevelElements extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:GetLevelElements)
+      GetLevelElementsOrBuilder {
+    // Use GetLevelElements.newBuilder() to construct.
+    private GetLevelElements(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetLevelElements() {
+      level_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetLevelElements(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              level_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return PlayerClient.internal_static_GetLevelElements_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return PlayerClient.internal_static_GetLevelElements_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              PlayerClient.GetLevelElements.class, PlayerClient.GetLevelElements.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int LEVEL_FIELD_NUMBER = 1;
+    private int level_;
+    /**
+     * <code>required int32 level = 1;</code>
+     */
+    public boolean hasLevel() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 level = 1;</code>
+     */
+    public int getLevel() {
+      return level_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasLevel()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, level_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, level_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof PlayerClient.GetLevelElements)) {
+        return super.equals(obj);
+      }
+      PlayerClient.GetLevelElements other = (PlayerClient.GetLevelElements) obj;
+
+      boolean result = true;
+      result = result && (hasLevel() == other.hasLevel());
+      if (hasLevel()) {
+        result = result && (getLevel()
+            == other.getLevel());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasLevel()) {
+        hash = (37 * hash) + LEVEL_FIELD_NUMBER;
+        hash = (53 * hash) + getLevel();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static PlayerClient.GetLevelElements parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static PlayerClient.GetLevelElements parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static PlayerClient.GetLevelElements parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static PlayerClient.GetLevelElements parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static PlayerClient.GetLevelElements parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static PlayerClient.GetLevelElements parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static PlayerClient.GetLevelElements parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static PlayerClient.GetLevelElements parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static PlayerClient.GetLevelElements parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static PlayerClient.GetLevelElements parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(PlayerClient.GetLevelElements prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Keep level parameter to support extensibility to collaborative editing as above
+     * </pre>
+     *
+     * Protobuf type {@code GetLevelElements}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:GetLevelElements)
+        PlayerClient.GetLevelElementsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return PlayerClient.internal_static_GetLevelElements_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return PlayerClient.internal_static_GetLevelElements_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                PlayerClient.GetLevelElements.class, PlayerClient.GetLevelElements.Builder.class);
+      }
+
+      // Construct using PlayerClient.GetLevelElements.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        level_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return PlayerClient.internal_static_GetLevelElements_descriptor;
+      }
+
+      public PlayerClient.GetLevelElements getDefaultInstanceForType() {
+        return PlayerClient.GetLevelElements.getDefaultInstance();
+      }
+
+      public PlayerClient.GetLevelElements build() {
+        PlayerClient.GetLevelElements result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public PlayerClient.GetLevelElements buildPartial() {
+        PlayerClient.GetLevelElements result = new PlayerClient.GetLevelElements(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.level_ = level_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof PlayerClient.GetLevelElements) {
+          return mergeFrom((PlayerClient.GetLevelElements)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(PlayerClient.GetLevelElements other) {
+        if (other == PlayerClient.GetLevelElements.getDefaultInstance()) return this;
+        if (other.hasLevel()) {
+          setLevel(other.getLevel());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasLevel()) {
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        PlayerClient.GetLevelElements parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (PlayerClient.GetLevelElements) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int level_ ;
+      /**
+       * <code>required int32 level = 1;</code>
+       */
+      public boolean hasLevel() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 level = 1;</code>
+       */
+      public int getLevel() {
+        return level_;
+      }
+      /**
+       * <code>required int32 level = 1;</code>
+       */
+      public Builder setLevel(int value) {
+        bitField0_ |= 0x00000001;
+        level_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 level = 1;</code>
+       */
+      public Builder clearLevel() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        level_ = 0;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:GetLevelElements)
+    }
+
+    // @@protoc_insertion_point(class_scope:GetLevelElements)
+    private static final PlayerClient.GetLevelElements DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new PlayerClient.GetLevelElements();
+    }
+
+    public static PlayerClient.GetLevelElements getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<GetLevelElements>
+        PARSER = new com.google.protobuf.AbstractParser<GetLevelElements>() {
+      public GetLevelElements parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new GetLevelElements(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetLevelElements> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetLevelElements> getParserForType() {
+      return PARSER;
+    }
+
+    public PlayerClient.GetLevelElements getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ClientMessage_descriptor;
   private static final 
@@ -11692,6 +12955,11 @@ public final class PlayerClient {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_GetAllTemplateProperties_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetElementCosts_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_GetElementCosts_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_PlaceElement_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -11711,6 +12979,11 @@ public final class PlayerClient {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_LoadLevel_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_GetLevelElements_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_GetLevelElements_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -11720,7 +12993,7 @@ public final class PlayerClient {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022PlayerClient.proto\"\241\005\n\rClientMessage\022-" +
+      "\n\022PlayerClient.proto\"\371\005\n\rClientMessage\022-" +
       "\n\021getAvailableGames\030\001 \001(\0132\022.GetAvailable" +
       "Games\022\'\n\016createGameRoom\030\002 \001(\0132\017.CreateGa" +
       "meRoom\022\033\n\010joinRoom\030\003 \001(\0132\t.JoinRoom\022\'\n\016l" +
@@ -11733,23 +13006,27 @@ public final class PlayerClient {
       "\r.GetInventory\0225\n\025getTemplateProperties\030" +
       "\013 \001(\0132\026.GetTemplateProperties\022;\n\030getAllT" +
       "emplateProperties\030\014 \001(\0132\031.GetAllTemplate" +
-      "Properties\022#\n\014placeElement\030\r \001(\0132\r.Place" +
-      "Element\022\'\n\016upgradeElement\030\016 \001(\0132\017.Upgrad" +
-      "eElement\0227\n\026checkReadyForNextLevel\030\017 \001(\013" +
-      "2\027.CheckReadyForNextLevel\022\035\n\tloadLevel\030\020" +
-      " \001(\0132\n.LoadLevel\"\023\n\021GetAvailableGames\"\"\n" +
-      "\016CreateGameRoom\022\020\n\010roomName\030\001 \002(\t\".\n\010Joi" +
-      "nRoom\022\020\n\010roomName\030\001 \002(\t\022\020\n\010userName\030\002 \002(",
-      "\t\"\"\n\016LaunchGameRoom\022\020\n\010roomName\030\001 \002(\t\"\016\n" +
-      "\014GetGameRooms\"\"\n\016GetPlayerNames\022\020\n\010roomN" +
-      "ame\030\001 \002(\t\"\017\n\rPerformUpdate\"\013\n\tPauseGame\"" +
-      "\014\n\nResumeGame\"\016\n\014GetInventory\",\n\025GetTemp" +
-      "lateProperties\022\023\n\013elementName\030\001 \002(\t\"\032\n\030G" +
-      "etAllTemplateProperties\"C\n\014PlaceElement\022" +
-      "\023\n\013elementName\030\001 \002(\t\022\016\n\006xCoord\030\002 \002(\001\022\016\n\006" +
-      "yCoord\030\003 \002(\001\"\"\n\016UpgradeElement\022\020\n\010sprite" +
-      "Id\030\001 \002(\005\"\030\n\026CheckReadyForNextLevel\",\n\tLo" +
-      "adLevel\022\020\n\010gameName\030\001 \002(\t\022\r\n\005level\030\002 \002(\005"
+      "Properties\022)\n\017getElementCosts\030\r \001(\0132\020.Ge" +
+      "tElementCosts\022#\n\014placeElement\030\016 \001(\0132\r.Pl" +
+      "aceElement\022\'\n\016upgradeElement\030\017 \001(\0132\017.Upg" +
+      "radeElement\0227\n\026checkReadyForNextLevel\030\020 " +
+      "\001(\0132\027.CheckReadyForNextLevel\022\035\n\tloadLeve" +
+      "l\030\021 \001(\0132\n.LoadLevel\022+\n\020getLevelElements\030" +
+      "\022 \001(\0132\021.GetLevelElements\"\023\n\021GetAvailable",
+      "Games\"\"\n\016CreateGameRoom\022\020\n\010roomName\030\001 \002(" +
+      "\t\".\n\010JoinRoom\022\020\n\010roomName\030\001 \002(\t\022\020\n\010userN" +
+      "ame\030\002 \002(\t\"\"\n\016LaunchGameRoom\022\020\n\010roomName\030" +
+      "\001 \002(\t\"\016\n\014GetGameRooms\"\"\n\016GetPlayerNames\022" +
+      "\020\n\010roomName\030\001 \002(\t\"\017\n\rPerformUpdate\"\013\n\tPa" +
+      "useGame\"\014\n\nResumeGame\"\016\n\014GetInventory\",\n" +
+      "\025GetTemplateProperties\022\023\n\013elementName\030\001 " +
+      "\002(\t\"\032\n\030GetAllTemplateProperties\"\021\n\017GetEl" +
+      "ementCosts\"C\n\014PlaceElement\022\023\n\013elementNam" +
+      "e\030\001 \002(\t\022\016\n\006xCoord\030\002 \002(\001\022\016\n\006yCoord\030\003 \002(\001\"",
+      "\"\n\016UpgradeElement\022\020\n\010spriteId\030\001 \002(\005\"\030\n\026C" +
+      "heckReadyForNextLevel\",\n\tLoadLevel\022\020\n\010ga" +
+      "meName\030\001 \002(\t\022\r\n\005level\030\002 \002(\005\"!\n\020GetLevelE" +
+      "lements\022\r\n\005level\030\001 \002(\005"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11768,7 +13045,7 @@ public final class PlayerClient {
     internal_static_ClientMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ClientMessage_descriptor,
-        new java.lang.String[] { "GetAvailableGames", "CreateGameRoom", "JoinRoom", "LaunchGameRoom", "GetGameRooms", "GetPlayerNames", "PerformUpdate", "PauseGame", "ResumeGame", "GetInventory", "GetTemplateProperties", "GetAllTemplateProperties", "PlaceElement", "UpgradeElement", "CheckReadyForNextLevel", "LoadLevel", });
+        new java.lang.String[] { "GetAvailableGames", "CreateGameRoom", "JoinRoom", "LaunchGameRoom", "GetGameRooms", "GetPlayerNames", "PerformUpdate", "PauseGame", "ResumeGame", "GetInventory", "GetTemplateProperties", "GetAllTemplateProperties", "GetElementCosts", "PlaceElement", "UpgradeElement", "CheckReadyForNextLevel", "LoadLevel", "GetLevelElements", });
     internal_static_GetAvailableGames_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_GetAvailableGames_fieldAccessorTable = new
@@ -11841,30 +13118,42 @@ public final class PlayerClient {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetAllTemplateProperties_descriptor,
         new java.lang.String[] { });
-    internal_static_PlaceElement_descriptor =
+    internal_static_GetElementCosts_descriptor =
       getDescriptor().getMessageTypes().get(13);
+    internal_static_GetElementCosts_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_GetElementCosts_descriptor,
+        new java.lang.String[] { });
+    internal_static_PlaceElement_descriptor =
+      getDescriptor().getMessageTypes().get(14);
     internal_static_PlaceElement_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PlaceElement_descriptor,
         new java.lang.String[] { "ElementName", "XCoord", "YCoord", });
     internal_static_UpgradeElement_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_UpgradeElement_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UpgradeElement_descriptor,
         new java.lang.String[] { "SpriteId", });
     internal_static_CheckReadyForNextLevel_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_CheckReadyForNextLevel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CheckReadyForNextLevel_descriptor,
         new java.lang.String[] { });
     internal_static_LoadLevel_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_LoadLevel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoadLevel_descriptor,
         new java.lang.String[] { "GameName", "Level", });
+    internal_static_GetLevelElements_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_GetLevelElements_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_GetLevelElements_descriptor,
+        new java.lang.String[] { "Level", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

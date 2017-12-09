@@ -4,6 +4,7 @@ import engine.AbstractGameController;
 import engine.PlayModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.Inventory;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Controls the model for a game being played. Allows the view to modify and
@@ -215,15 +217,32 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return templatePropertiesBuilder.build();
 	}
 
+	public ElementCost packageElementCosts(String elementName) {
+		Map<String, Double> elementCosts = getLevelBanks().get(getCurrentLevel()).getCostsForUnit(elementName);
+		ElementCost.Builder elementCostBuilder = ElementCost.newBuilder();
+		elementCostBuilder.setElementName(elementName);
+		elementCosts.keySet().forEach(resourceName -> elementCostBuilder.addCosts(
+				Resource.newBuilder().setName(resourceName).setAmount(elementCosts.get(resourceName)).build()));
+		return elementCostBuilder.build();
+	}
+
 	public Collection<TemplateProperties> packageAllTemplateProperties() {
-		Map<String, Map<String, String>> allTemplateProperties = getAllDefinedTemplateProperties();
-		return allTemplateProperties.keySet().stream().map(templateName -> packageTemplateProperties(templateName))
-				.collect(Collectors.toList());
+		return packageAllMessages(getAllDefinedTemplateProperties().keySet(),
+				templateName -> packageTemplateProperties(templateName));
+	}
+
+	public Collection<ElementCost> packageAllElementCosts() {
+		return packageAllMessages(getElementCosts().keySet(), elementName -> packageElementCosts(elementName));
 	}
 
 	public NewSprite placeAndPackageElement(String templateName, double x, double y) {
 		GameElement placedElement = getSpriteIdMap().get(placeElement(templateName, new Point2D(x, y)));
 		return packageNewSprite(placedElement);
+	}
+
+	public Collection<NewSprite> packageLevelElements(int level) {
+		return getLevelSprites(level).stream().map(spriteId -> getSpriteIdMap().get(spriteId))
+				.map(sprite -> packageNewSprite(sprite)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -315,6 +334,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private boolean enemyReachedTarget() {
 		return elementManager.enemyReachedTarget();
+	}
+
+	private <R> Collection<R> packageAllMessages(Collection<String> messageDataSupplier,
+			Function<String, R> messagePackager) {
+		return messageDataSupplier.stream().map(messageData -> messagePackager.apply(messageData))
+				.collect(Collectors.toSet());
 	}
 
 	// TODO - move to some utils class?

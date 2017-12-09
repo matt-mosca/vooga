@@ -16,7 +16,9 @@ message ServerMessage {
 	optional Update update = 9;
 	optional Inventory inventory = 10;
 	repeated TemplateProperties templateProperties = 11;
-	optional NewSprite elementPlaced = 12;
+	repeated ElementCost elementCosts = 12;
+	optional NewSprite elementPlaced = 13;
+	repeated NewSprite levelSprites = 14;
 }
 
 /*
@@ -118,11 +120,6 @@ message Inventory {
 	repeated string templates = 1;
 }
 
-message Resource {
-	required string name = 1;
-	required double amount = 2;
-}
-
 message TemplateProperties {
 	required string elementName = 1;
 	repeated TemplateProperty property = 2;
@@ -133,3 +130,12 @@ message TemplateProperty {
 	required string value = 2;
 }
 
+message ElementCost {
+	required string elementName = 1;
+	repeated Resource costs = 2;
+}
+
+message Resource {
+	required string name = 1;
+	required double amount = 2;
+}

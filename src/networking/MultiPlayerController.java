@@ -24,6 +24,7 @@ import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.GameRooms;
 import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ReadyForNextLevel;
 import networking.protocol.PlayerServer.ServerMessage;
@@ -205,20 +206,18 @@ class MultiPlayerController {
 
 	void getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetInventory()) {
-			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to get inventory without belonging to a
 			// game room?
-			serverMessageBuilder.setInventory(playController.packageInventory());
+			serverMessageBuilder.setInventory(clientIdsToPlayEngines.get(clientId).packageInventory());
 		}
 	}
 
 	void getTemplateProperties(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetTemplateProperties()) {
-			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to get template properties without
 			// belonging to a
 			// game room?
-			serverMessageBuilder.addTemplateProperties(playController
+			serverMessageBuilder.addTemplateProperties(clientIdsToPlayEngines.get(clientId)
 					.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()));
 		}
 	}
@@ -226,11 +225,19 @@ class MultiPlayerController {
 	void getAllTemplateProperties(int clientId, ClientMessage clientMessage,
 			ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetAllTemplateProperties()) {
-			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to get template properties without
 			// belonging to a
 			// game room?
-			serverMessageBuilder.addAllTemplateProperties(playController.packageAllTemplateProperties());
+			serverMessageBuilder
+					.addAllTemplateProperties(clientIdsToPlayEngines.get(clientId).packageAllTemplateProperties());
+		}
+	}
+
+	void getElementCosts(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetElementCosts()) {
+			// TODO - Handle case where client tries to get template properties without
+			// belonging to a game room?
+			serverMessageBuilder.addAllElementCosts(clientIdsToPlayEngines.get(clientId).packageAllElementCosts());
 		}
 	}
 
@@ -267,7 +274,6 @@ class MultiPlayerController {
 	void loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasLoadLevel()) {
 			LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
-			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to load level without belonging to a
 			// game room?
 			LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
@@ -280,7 +286,17 @@ class MultiPlayerController {
 				return;
 			}
 			String gameName = getGameNameFromGameRoomName(roomName);
-			serverMessageBuilder.setLevelInitialized(playController.packageInitialState(gameName, levelToLoad));
+			serverMessageBuilder.setLevelInitialized(
+					clientIdsToPlayEngines.get(clientId).packageInitialState(gameName, levelToLoad));
+		}
+	}
+
+	void getLevelElements(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetLevelElements()) {
+			// TODO - Handle case where client tries to load level without belonging to a
+			// game room?
+			serverMessageBuilder.addAllLevelSprites(clientIdsToPlayEngines.get(clientId)
+					.packageLevelElements(clientMessage.getGetLevelElements().getLevel()));
 		}
 	}
 
@@ -324,6 +340,8 @@ class MultiPlayerController {
 			getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
 			// Get all template properties
 			getAllTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+			// Get element costs for current level
+			getElementCosts(clientId, clientMessage, serverMessageBuilder);
 			// Handle place element request
 			placeElement(clientId, clientMessage, serverMessageBuilder);
 			// Handle upgrade element request
@@ -332,6 +350,8 @@ class MultiPlayerController {
 			checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);
 			// Handle load request
 			loadLevel(clientId, clientMessage, serverMessageBuilder);
+			// Get level elements
+			getLevelElements(clientId, clientMessage, serverMessageBuilder);
 			return serverMessageBuilder.build().toByteArray();
 		} catch (IOException e) {
 			e.printStackTrace(); // TEMP
