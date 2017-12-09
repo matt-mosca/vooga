@@ -27,6 +27,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Slider;
@@ -57,6 +58,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final String GAME_FILE_KEY = "gameFile";
 
 	private InventoryToolBar myInventoryToolBar;
+	private TransitorySplashScreen myTransition;
+	private Scene myTransitionScene;
 	private VBox myLeftBar;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
@@ -81,6 +84,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = isMultiPlayer ? new MultiPlayerClient() : new PlayController();
+		myTransition = new TransitorySplashScreen(myController);
+		myTransitionScene = new Scene(myTransition, width, height);
 		myLeftBar = new VBox();
 		hud = new HUD(width);
 		styleLeftBar();
@@ -157,27 +162,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	protected void reloadGame() throws IOException {
 		myController.loadOriginalGameState(gameState, 1);
 	}
-	//
-	// private void initializeInventory() {
-	// Map<String, Map<String, String>> templates =
-	// myController.getAllDefinedTemplateProperties();
-	// for (String s : myController.getInventory()) {
-	// ImageView imageView;
-	// try {
-	// imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
-	//
-	// } catch (NullPointerException e) {
-	// imageView = new ImageView(
-	// new
-	// Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
-	// }
-	// imageView.setFitHeight(70);
-	// imageView.setFitWidth(60);
-	// imageView.setId(s);
-	// imageView.setUserData(templates.get(s).get("imageUrl"));
-	// // myInventoryToolBar.addToToolbar(imageView);
-	// }
-	// }
 
 	private void styleLeftBar() {
 		myLeftBar.setPrefHeight(650);
@@ -218,10 +202,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void step() {
 		// Update latestUpdate = myController.update();
 		myController.update();
+		if(myController.isReadyForNextLevel()) {
+			hideTransitorySplashScreen();
+//			animation.play();
+			myController.resume();
+		}
 		if (myController.isLevelCleared()) {
 			level++;
 			animation.pause();
 			myController.pause();
+			launchTransitorySplashScreen();
 			hud.initialize(myController.getResourceEndowments());
 			myInventoryToolBar.initializeInventory();
 		} else if (myController.isLost()) {
@@ -232,6 +222,14 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		// handleUpdate(latestUpdate);
 		loadSprites();
 		hud.update(myController.getResourceEndowments());
+	}
+	
+	private void launchTransitorySplashScreen() {
+		this.getStage().setScene(myTransitionScene);
+	}
+	
+	private void hideTransitorySplashScreen() {
+		this.getStage().setScene(this.getScene());
 	}
 
 	private void createGameArea(int sideLength) {
