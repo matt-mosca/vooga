@@ -55,6 +55,7 @@ public final class GameElement {
 	}
 
 	public String fire() {
+		playAudio();
 		return firingStrategy.fire();
 	}
 	

@@ -117,7 +117,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea.toggleMovement(movementToggle.isSelected());
 		if (movement.isSelected()) {
 			this.getScene().setCursor(new ImageCursor(
-					new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
+					new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png")),30,30));
 		} else {
 			this.getScene().setCursor(Cursor.DEFAULT);
 		}
