@@ -32,7 +32,7 @@ public class Bank {
 	}
 	
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
-		this.resourceEndowments = resourceEndowments;
+		this.resourceEndowments = new HashMap<>(resourceEndowments);
 	}
 
 	public void setUnitCost(String unitName, Map<String, Double> costsForUnitName) {
@@ -97,6 +97,6 @@ public class Bank {
 	}
 	
 	private void setUnitCosts(Map<String, Map<String, Double>> unitCosts) {
-		this.unitCosts = unitCosts;
+		this.unitCosts = new HashMap<>(unitCosts);
 	}
 }

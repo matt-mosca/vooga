@@ -138,13 +138,11 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		throw new UnsupportedOperationException();
 	}
 
-	// TODO - Will be modified in interface to return Update message
 	@Override
-	public void update() {
+	public Update update() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setPerformUpdate(PerformUpdate.getDefaultInstance()).build().toByteArray());
-		// Return the following line when front end is ready
-		handleUpdateResponse(readServerResponse());
+		return handleUpdateResponse(readServerResponse());
 	}
 
 	@Override
