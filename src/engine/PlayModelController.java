@@ -9,7 +9,6 @@ import java.util.Set;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
-import networking.protocol.PlayerServer.Update;
 
 /**
  * Controls the model for a game being played. Allows the view to modify and
@@ -56,7 +55,7 @@ public interface PlayModelController extends AbstractGameModelController {
 	/**
 	 * Run one cycle of update
 	 */
-	Update update();
+	void update();
 
 	/**
 	 * Pause the game.
