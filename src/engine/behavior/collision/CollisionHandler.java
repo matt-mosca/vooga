@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import util.Exclude;
@@ -24,9 +24,9 @@ public class CollisionHandler {
     @Exclude private ImageView graphicalRepresentation;
 
     public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
-                            @ParameterName("imageUrl") String imageUrl,
-                            @ParameterName("imageHeight") double imageHeight,
-                            @ParameterName("imageWidth") double imageWidth) {
+                            @ElementProperty(value = "imageUrl", isTemplateProperty = true) String imageUrl,
+                            @ElementProperty(value = "imageHeight", isTemplateProperty = true) double imageHeight,
+                            @ElementProperty(value = "imageWidth", isTemplateProperty = true) double imageWidth) {
         this.collisionVisitor = collisionVisitor;
         this.collisionVisitable = collisionVisitable;
         this.imageUrl = imageUrl;
