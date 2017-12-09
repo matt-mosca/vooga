@@ -157,6 +157,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		gameElementUpgrader.registerNewSprite(elementTemplateName, gameElement);

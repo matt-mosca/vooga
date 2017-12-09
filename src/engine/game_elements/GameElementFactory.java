@@ -22,7 +22,6 @@ import java.util.Map;
 public final class GameElementFactory {
 
     private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
-    private Map<String, List<Map<String, String>>> spriteTemplatesU = new HashMap<>();
 
     private ElementOptionsGetter elementOptionsGetter = new ElementOptionsGetter();
 
@@ -44,7 +43,6 @@ public final class GameElementFactory {
         spriteTemplates.put(spriteTemplateName, properties);
         List<Map<String, String>> templateUpgrades = new ArrayList<>();
         templateUpgrades.add(properties);
-        spriteTemplatesU.put(spriteTemplateName, templateUpgrades);
     }
 
 
@@ -127,14 +125,17 @@ public final class GameElementFactory {
                 for (int i = 0; i < parameters.length; i++) {
                     ElementProperty parameterNameAnnotation = parameters[i].getAnnotation(ElementProperty.class);
                     if (parameterNameAnnotation != null) {
-                        constructorParameters[i] = setConstructorParameter(
-                                properties.get(parameterNameAnnotation.value()));
+                        if (parameterNameAnnotation.isTemplateProperty()) {
+                            constructorParameters[i] = setConstructorParameter(
+                                    properties.get(parameterNameAnnotation.value()));
+                        } else {
+                            constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties,
+                                    auxiliaryObjects);
+                        }
                     } else {
-                        constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties,
-                                auxiliaryObjects);
+                        System.out.println("\n\n\nTHIS DEFINITELY SHOULD NOT HAPPEN\n\n\n");
                     }
                 }
-                System.out.println(Arrays.asList(constructorParameters));
                 return parameterClass.getConstructors()[0].newInstance(constructorParameters);
             } else {
                 return null;

@@ -98,6 +98,7 @@ public class ElementOptionsGetter {
             Map<String, Class> baseSpriteParameterMap = spriteMemberParametersMap.getOrDefault
                     (SPRITE_BASE_PARAMETER_NAME, new HashMap<>());
             if (spriteParameter.getAnnotation(ElementProperty.class) != null) {
+                // property common to all sprites !!!! eg imageURL
                 String parameterName = spriteParameter.getAnnotation(ElementProperty.class).value();
                 baseSpriteParameterMap.put(parameterName, spriteParameter.getType());
                 spriteMemberParametersMap.put(SPRITE_BASE_PARAMETER_NAME, baseSpriteParameterMap);
@@ -119,28 +120,42 @@ public class ElementOptionsGetter {
             Constructor desiredConstructor = subclassConstructors[0];
             Parameter[] constructorParameters = desiredConstructor.getParameters();
             for (Parameter constructorParameter : constructorParameters) {
-                ElementProperty elementPropertyAnnotation = constructorParameter.getAnnotation(ElementProperty.class);
-                if (elementPropertyAnnotation != null & elementPropertyAnnotation.isTemplateProperty()) {
-                    String parameterName = elementPropertyAnnotation.value();
-                    String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
-                    if (parameterDescription != null) {
-                        parameterToDescription.put(parameterName, parameterDescription);
-                        descriptionToParameter.put(parameterDescription, parameterName);
-                        // TODO - eliminate above?
-                        parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
-                    } else {
-                        parameterToDescription.put(parameterName, parameterName);
-                        descriptionToParameter.put(parameterName, parameterName);
-                        parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
-                    }
-                } else {
-                    System.out.println("\n\n\nTHIS SHOULD NOT HAPPEN\n\n\n");
-                    String parameterTypeSimple = constructorParameter.getType().getSimpleName();
-                    parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
-                    descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);
-                    parameterDescriptionsToClasses.put(parameterTypeSimple, constructorParameter.getType());
-                }
+                processElementParameter(parameterDescriptionsToClasses, constructorParameter);
             }
+        }
+    }
+
+    private void processElementParameter(Map<String, Class> parameterDescriptionsToClasses, Parameter constructorParameter) {
+        ElementProperty elementPropertyAnnotation = constructorParameter.getAnnotation(ElementProperty.class);
+        if (elementPropertyAnnotation != null) {
+            if (elementPropertyAnnotation.isTemplateProperty()) {
+                // property that needs to be set in the frontend
+                addTemplatePropertyTranslation(parameterDescriptionsToClasses, constructorParameter, elementPropertyAnnotation);
+            } else {
+                // property that we need to supply ourselves
+                // so don't pass it to them
+            }
+        } else {
+            System.out.println("\n\n\nTHIS SHOULD NOT HAPPEN\n\n\n");
+            String parameterTypeSimple = constructorParameter.getType().getSimpleName();
+            parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
+            descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);
+            parameterDescriptionsToClasses.put(parameterTypeSimple, constructorParameter.getType());
+        }
+    }
+
+    private void addTemplatePropertyTranslation(Map<String, Class> parameterDescriptionsToClasses, Parameter constructorParameter, ElementProperty elementPropertyAnnotation) {
+        String parameterName = elementPropertyAnnotation.value();
+        String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
+        if (parameterDescription != null) {
+            parameterToDescription.put(parameterName, parameterDescription);
+            descriptionToParameter.put(parameterDescription, parameterName);
+            // TODO - eliminate above?
+            parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
+        } else {
+            parameterToDescription.put(parameterName, parameterName);
+            descriptionToParameter.put(parameterName, parameterName);
+            parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
         }
     }
 

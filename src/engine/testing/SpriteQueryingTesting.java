@@ -35,7 +35,7 @@ public class SpriteQueryingTesting {
 	}
 	
 	private GameElement createElement(double x, double y) {
-		GameElement element = new GameElement(null,new StationaryMovementStrategy(),null);
+		GameElement element = new GameElement(null,new StationaryMovementStrategy(new Point2D(0,0)),null);
 		element.setX(x); 
 		element.setY(y);
 		return element;
