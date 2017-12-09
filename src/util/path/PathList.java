@@ -59,10 +59,14 @@ public class PathList extends LinkedList {
 	}
 
 	public String writeToSerializationFile() throws IOException {
-		final String PATH_FILE_DIRECTORY = "data/tmp/path";
+		final String PATH_FILE_DIRECTORY = "data/tmp/";
 		final String SERIALIZED_EXTENSION = ".ser";
-		String filePath = PATH_FILE_DIRECTORY + points.hashCode() + SERIALIZED_EXTENSION;
+		String filePath = PATH_FILE_DIRECTORY + "path" + points.hashCode() + SERIALIZED_EXTENSION;
 		File file = new File(filePath);
+		File directory = new File(PATH_FILE_DIRECTORY);
+		if(!directory.exists()) {
+			directory.mkdir();
+		}
 		if (!file.exists()) {
 			file.createNewFile();
 		}
