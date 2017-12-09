@@ -1,5 +1,6 @@
 package engine.behavior.movement;
 
+import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 
 /**
@@ -10,8 +11,9 @@ import javafx.geometry.Point2D;
  */
 public class StationaryMovementStrategy extends AbstractMovementStrategy {
 
-	public StationaryMovementStrategy() {
-		super();
+	public StationaryMovementStrategy(
+			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint) {
+		super(startPoint);
 
 	}
 

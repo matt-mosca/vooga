@@ -1,6 +1,6 @@
 package engine.behavior.firing;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 
 /**
  * Captures whatever is common across all implementations of FiringStrategy
@@ -14,7 +14,8 @@ public abstract class GenericFiringStrategy implements FiringStrategy {
 	private String projectileTemplate;
 	private String audioURI;
 
-	public GenericFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate, String audioURI) {
+	public GenericFiringStrategy(
+			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate) {
 		this.projectileTemplate = projectileTemplate;
 		this.audioURI = audioURI;
 	}
