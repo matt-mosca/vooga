@@ -21,9 +21,15 @@ import javafx.stage.Stage;
 import main.Main;
 import player.PlayDisplay;
 
+/**
+ * Todo - refactor code common with other splash screen
+ * @author tyler
+ */
 public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 
-	public static final String EXPORTED_GAME_PROPERTIES_FILE = "ExportedGameName.properties";
+	public static final String EXPORTED_GAME_PROPERTIES_FILE = "Export.properties";
+	public static final String EXPORTED_GAME_NAME_KEY = "gameFile";
+
 	private final String DEFAULT_GAME_NAME = "Game";
 	private final String PLAY = "Play ";
 
@@ -64,10 +70,7 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 		try {
 			Properties gameProperties = new Properties();
 			gameProperties.load(getClass().getClassLoader().getResourceAsStream(EXPORTED_GAME_PROPERTIES_FILE));
-			for (String propertyName : gameProperties.stringPropertyNames()) {
-				gameName = gameProperties.getProperty(propertyName);
-				// only one entry (yes there should be a better way to do this I know)
-			}
+			gameName = gameProperties.getProperty(EXPORTED_GAME_NAME_KEY);
 		} catch (IOException e) {
 			// won't happen so ignore (let's hope)
 		}
@@ -193,7 +196,9 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 
 	@Override
 	public void playExisting() {
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage());
+		// TODO - Update this method accordingly to determine the isMultiPlayer param
+		// for PlayDisplay constructor
+		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), false); // TEMP
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);

@@ -13,4 +13,6 @@ public interface PropertiesInterface {
 
 	public void addToWave();
 
+	public void addToLevel();
+
 }

@@ -11,11 +11,18 @@ message ClientMessage {
 	optional LaunchGameRoom launchGameRoom = 4;
 	optional GetGameRooms getGameRooms = 5;
 	optional GetPlayerNames getPlayerNames = 6;
-	optional PauseGame pauseGame = 7;
-	optional ResumeGame resumeGame = 8;
-	optional GetInventory getInventory = 9;
-	optional GetTemplateProperties getTemplateProperties = 10;
-	optional PlaceElement placeElement = 11;
+	optional PerformUpdate performUpdate = 7; // Add one for passively requesting latest update?
+	optional PauseGame pauseGame = 8;
+	optional ResumeGame resumeGame = 9;
+	optional GetInventory getInventory = 10;
+	optional GetTemplateProperties getTemplateProperties = 11;
+	optional GetAllTemplateProperties getAllTemplateProperties = 12; // Should deprecate from PlayModelController interface?
+	optional GetElementCosts getElementCosts = 13;
+	optional PlaceElement placeElement = 14;
+	optional UpgradeElement upgradeElement = 15; // Has no corresponding response? Client doesn't check if upgrade succeeded
+	optional CheckReadyForNextLevel checkReadyForNextLevel = 16;
+	optional LoadLevel loadLevel = 17;
+	optional GetLevelElements getLevelElements = 18;
 }
 
 /*
@@ -50,6 +57,9 @@ message GetPlayerNames {
 	(Should these requests be stateful instead, to make the server relatively stateless? Need to balance against security / client privileges)
 */
 
+message PerformUpdate {
+}
+
 message PauseGame {
 }
 
@@ -63,9 +73,33 @@ message GetTemplateProperties {
 	required string elementName = 1;
 }
 
+message GetAllTemplateProperties {
+}
+
+message GetElementCosts {
+}
+
 message PlaceElement {
 	required string elementName = 1;
 	required double xCoord = 2;
 	required double yCoord = 3;
+}
+
+message UpgradeElement {
+	required int32 spriteId = 1;
+}
+
+message CheckReadyForNextLevel {
+}
+
+// Keep gameName parameter to support extensibility to collaborative editing (authoring) where arbitrary levels can be loaded, not just next level
+message LoadLevel {
+	required string gameName = 1;
+	required int32 level = 2;
+}
+
+// Keep level parameter to support extensibility to collaborative editing as above
+message GetLevelElements {
+	required int32 level = 1;
 }
 

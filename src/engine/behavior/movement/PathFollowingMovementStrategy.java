@@ -1,8 +1,6 @@
 package engine.behavior.movement;
 
-import java.util.ArrayList;
-
-import authoring.path.PathList;
+import util.path.PathList;
 import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
 

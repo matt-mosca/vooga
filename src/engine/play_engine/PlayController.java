@@ -4,6 +4,7 @@ import engine.AbstractGameController;
 import engine.PlayModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.Inventory;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
@@ -26,7 +27,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Controls the model for a game being played. Allows the view to modify and
@@ -50,6 +53,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private Method defeatConditionMethod;
 	private int maxLevels = DEFAULT_MAX_LEVELS;
 	private List<Set<Entry<Integer, GameElement>>> savedList;
+	private Update latestUpdate;
 
 	public PlayController() {
 		super();
@@ -57,6 +61,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		elementManager = new ElementManager(getGameElementFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
+		latestUpdate = Update.getDefaultInstance();
 	}
 
 	@Override
@@ -97,18 +102,20 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			 */
 			savedList.add(getSpriteIdMap().entrySet());
 			elementManager.update();
+			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
+			List<GameElement> updatedElements = elementManager.getUpdatedElements();
 			List<GameElement> deadElements = elementManager.getDeadElements();
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
-			for (GameElement s : elementManager.getNewlyGeneratedElements()) {
-				cacheAndCreateIdentifier(s);
+			for (GameElement element : newlyGeneratedElements) {
+				cacheAndCreateIdentifier(element);
 			}
 			// Package these changes into an Update message
-			// Update packagedUpdate = packageUpdates(newlyGeneratedElements,
-			// updatedElements, deadElements, statusUpdates, resourceUpdates);
+			latestUpdate = packageUpdates(newlyGeneratedElements, updatedElements, deadElements);
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
-			// return packagedUpdate;
+			elementManager.clearUpdatedElements();
+			// return latestUpdate;
 		}
 	}
 
@@ -166,34 +173,29 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return levelCleared;
 	}
 
-	// TODO - move to some utils class?
-	public Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
-			Collection<GameElement> deadSprites) {
-		Update.Builder updateBuilder = Update.newBuilder();
-		// Sprite Creations
-		newSprites.forEach(newSprite -> updateBuilder.addNewSprites(packageNewSprite(newSprite)));
-		// Sprite Updates
-		updatedSprites.forEach(updatedSprite -> updateBuilder
-				.addSpriteUpdates(SpriteUpdate.newBuilder().setSpriteId(getIdFromSprite(updatedSprite))
-						.setNewX(updatedSprite.getX()).setNewY(updatedSprite.getY()).build()));
-		// Sprite Deletions
-		deadSprites.forEach(deadSprite -> updateBuilder
-				.addSpriteDeletions(SpriteDeletion.newBuilder().setSpriteId(getIdFromSprite(deadSprite)).build()));
-		// Status Updates
-		updateBuilder.setStatusUpdates(getStatusUpdate());
-		// Resources - Just send all resources in update for now
-		ResourceUpdate.Builder resourceUpdateBuilder = ResourceUpdate.newBuilder();
-		Map<String, Double> resourceEndowments = getResourceEndowments();
-		resourceEndowments.keySet().forEach(resourceName -> resourceUpdateBuilder.addResources(
-				Resource.newBuilder().setName(resourceName).setAmount(resourceEndowments.get(resourceName)).build()));
-		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
+	@Override
+	public boolean isReadyForNextLevel() {
+		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not last level
 	}
 
-	public LevelInitialized packageInitialState() {
+	public Update getLatestUpdate() {
+		return latestUpdate;
+	}
+
+	public LevelInitialized packageCurrentState() {
 		return LevelInitialized.newBuilder()
 				.setSpritesAndStatus(packageUpdates(getLevelSprites().get(getCurrentLevel()), Collections.emptyList(),
 						Collections.emptyList()))
 				.setInventory(packageInventory()).build();
+	}
+
+	public LevelInitialized packageInitialState(String saveName, int level) {
+		try {
+			loadOriginalGameState(saveName, level);
+			return packageCurrentState();
+		} catch (IOException e) {
+			return LevelInitialized.getDefaultInstance(); // shouldn't happen
+		}
 	}
 
 	public Update packageStatusUpdate() {
@@ -215,9 +217,32 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return templatePropertiesBuilder.build();
 	}
 
+	public ElementCost packageElementCosts(String elementName) {
+		Map<String, Double> elementCosts = getLevelBanks().get(getCurrentLevel()).getCostsForUnit(elementName);
+		ElementCost.Builder elementCostBuilder = ElementCost.newBuilder();
+		elementCostBuilder.setElementName(elementName);
+		elementCosts.keySet().forEach(resourceName -> elementCostBuilder.addCosts(
+				Resource.newBuilder().setName(resourceName).setAmount(elementCosts.get(resourceName)).build()));
+		return elementCostBuilder.build();
+	}
+
+	public Collection<TemplateProperties> packageAllTemplateProperties() {
+		return packageAllMessages(getAllDefinedTemplateProperties().keySet(),
+				templateName -> packageTemplateProperties(templateName));
+	}
+
+	public Collection<ElementCost> packageAllElementCosts() {
+		return packageAllMessages(getElementCosts().keySet(), elementName -> packageElementCosts(elementName));
+	}
+
 	public NewSprite placeAndPackageElement(String templateName, double x, double y) {
 		GameElement placedElement = getSpriteIdMap().get(placeElement(templateName, new Point2D(x, y)));
 		return packageNewSprite(placedElement);
+	}
+
+	public Collection<NewSprite> packageLevelElements(int level) {
+		return getLevelSprites(level).stream().map(spriteId -> getSpriteIdMap().get(spriteId))
+				.map(sprite -> packageNewSprite(sprite)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -309,6 +334,35 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private boolean enemyReachedTarget() {
 		return elementManager.enemyReachedTarget();
+	}
+
+	private <R> Collection<R> packageAllMessages(Collection<String> messageDataSupplier,
+			Function<String, R> messagePackager) {
+		return messageDataSupplier.stream().map(messageData -> messagePackager.apply(messageData))
+				.collect(Collectors.toSet());
+	}
+
+	// TODO - move to some utils class?
+	private Update packageUpdates(Collection<GameElement> newSprites, Collection<GameElement> updatedSprites,
+			Collection<GameElement> deadSprites) {
+		Update.Builder updateBuilder = Update.newBuilder();
+		// Sprite Creations
+		newSprites.forEach(newSprite -> updateBuilder.addNewSprites(packageNewSprite(newSprite)));
+		// Sprite Updates
+		updatedSprites.forEach(updatedSprite -> updateBuilder
+				.addSpriteUpdates(SpriteUpdate.newBuilder().setSpriteId(getIdFromSprite(updatedSprite))
+						.setNewX(updatedSprite.getX()).setNewY(updatedSprite.getY()).build()));
+		// Sprite Deletions
+		deadSprites.forEach(deadSprite -> updateBuilder
+				.addSpriteDeletions(SpriteDeletion.newBuilder().setSpriteId(getIdFromSprite(deadSprite)).build()));
+		// Status Updates
+		updateBuilder.setStatusUpdates(getStatusUpdate());
+		// Resources - Just send all resources in update for now
+		ResourceUpdate.Builder resourceUpdateBuilder = ResourceUpdate.newBuilder();
+		Map<String, Double> resourceEndowments = getResourceEndowments();
+		resourceEndowments.keySet().forEach(resourceName -> resourceUpdateBuilder.addResources(
+				Resource.newBuilder().setName(resourceName).setAmount(resourceEndowments.get(resourceName)).build()));
+		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
 	}
 
 	private StatusUpdate getStatusUpdate() {

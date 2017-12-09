@@ -4,21 +4,21 @@ import java.util.ArrayList;
 
 import display.factory.TabFactory;
 import display.tabs.SimpleTab;
-import engine.play_engine.PlayController;
+import engine.PlayModelController;
 import javafx.scene.control.TabPane;
 import display.splashScreen.ScreenDisplay;
 
 public class InventoryToolBar extends ToolBar{
 	private static final int Y_POSITION = 50;
 	
-	private PlayController myController;
+	private PlayModelController myController;
 	private ScreenDisplay myDisplay;
 	private TabFactory tabFactory;
 	private SimpleTab towerTab;
 	private SimpleTab troopTab;
 	private SimpleTab projectileTab;
 	
-	public InventoryToolBar(ScreenDisplay display, PlayController controller) {
+	public InventoryToolBar(ScreenDisplay display, PlayModelController controller) {
 		this.setLayoutY(Y_POSITION);
 		myController = controller;
 		myDisplay = display;
