@@ -1,5 +1,6 @@
 package player;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +20,7 @@ public class ValueDisplay extends HBox {
 		myValue = new Label(Double.toString(quantity));
 		setStandardDisplayValue();
 		setStandardBoxStyle();
+		this.setPadding(new Insets(0, 20, 0, 20));
 //		this.getStyleClass().add("coin-display");
 	}
 	
@@ -40,7 +42,7 @@ public class ValueDisplay extends HBox {
 	}
 	
 	protected void setStandardDisplayLabel(String labelText) {
-		myLabel = new Label(labelText);
+		myLabel = new Label(labelText + ": ");
 //		myLabel.setLayoutX(0);
 //		myLabel.setFont(new Font(30));
 //		myLabel.setTextFill(Color.WHITE);
@@ -88,6 +90,11 @@ public class ValueDisplay extends HBox {
 	
 	public void increaseByAmount(double amount) {
 		quantity += amount;
+	}
+	
+	public void setValue(double amount) {
+		myValue.setText(Double.toString(amount));
+		quantity = amount;
 	}
 	
 	protected double getQuantity() {
