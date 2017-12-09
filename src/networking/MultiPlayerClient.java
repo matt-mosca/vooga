@@ -139,10 +139,11 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 	}
 
 	@Override
-	public Update update() {
+	public void update() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setPerformUpdate(PerformUpdate.getDefaultInstance()).build().toByteArray());
-		return handleUpdateResponse(readServerResponse());
+		// Return the following line when ready to deprecate old interface
+		handleUpdateResponse(readServerResponse());
 	}
 
 	@Override
