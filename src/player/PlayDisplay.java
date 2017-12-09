@@ -52,18 +52,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private InventoryToolBar myInventoryToolBar;
 	private VBox myLeftBar;
-	private PlacementGrid myMainGrid;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
 	private PlayModelController myController;
-	private CoinDisplay myCoinDisplay;
-	private HealthDisplay myHealthDisplay;
-	private PointsDisplay myPointsDisplay;
 	private Button pause;
 	private Button play;
 	private Timeline animation;
 	private String gameState;
 	private Slider volumeSlider;
+	private HUD hud;
 
 	private int level = 1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
@@ -77,6 +74,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = isMultiPlayer ? new MultiPlayerClient() : new PlayController();
 		myLeftBar = new VBox();
+		hud = new HUD(width);
 		styleLeftBar();
 		createGameArea(height - 20);
 		addItems();
@@ -84,6 +82,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		initializeGameState();
 		initializeButtons();
 		myInventoryToolBar.initializeInventory();
+		hud.initialize(myController.getResourceEndowments());
+		hud.toFront();
 
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
@@ -100,12 +100,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void addItems() {
-		myCoinDisplay = new CoinDisplay();
-		rootAdd(myCoinDisplay);
-		myHealthDisplay = new HealthDisplay();
-		rootAdd(myHealthDisplay);
-		myPointsDisplay = new PointsDisplay();
-		rootAdd(myPointsDisplay);
+		rootAdd(hud);
 		myInventoryToolBar = new InventoryToolBar(this, myController);
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		rootAdd(myLeftBar);
@@ -154,25 +149,25 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	protected void reloadGame() throws IOException {
 		myController.loadOriginalGameState(gameState, 1);
 	}
-
-	private void initializeInventory() {
-		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-		for (String s : myController.getInventory()) {
-			ImageView imageView;
-			try {
-				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
-
-			} catch (NullPointerException e) {
-				imageView = new ImageView(
-						new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
-			}
-			imageView.setFitHeight(70);
-			imageView.setFitWidth(60);
-			imageView.setId(s);
-			imageView.setUserData(templates.get(s).get("imageUrl"));
-			// myInventoryToolBar.addToToolbar(imageView);
-		}
-	}
+//
+//	private void initializeInventory() {
+//		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
+//		for (String s : myController.getInventory()) {
+//			ImageView imageView;
+//			try {
+//				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
+//
+//			} catch (NullPointerException e) {
+//				imageView = new ImageView(
+//						new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
+//			}
+//			imageView.setFitHeight(70);
+//			imageView.setFitWidth(60);
+//			imageView.setId(s);
+//			imageView.setUserData(templates.get(s).get("imageUrl"));
+//			// myInventoryToolBar.addToToolbar(imageView);
+//		}
+//	}
 
 	private void styleLeftBar() {
 		myLeftBar.setPrefHeight(650);
@@ -211,24 +206,20 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void step() {
-		updateStatusBar();
 		myController.update();
 		if (myController.isLevelCleared()) {
 			level++;
 			animation.pause();
 			myController.pause();
-			initializeInventory();
+			hud.initialize(myController.getResourceEndowments());
 			myInventoryToolBar.initializeInventory();
 		} else if (myController.isLost()) {
 			// launch lost screen
 		} else if (myController.isWon()) {
 			// launch win screen
 		}
+		hud.update(myController.getResourceEndowments());
 		loadSprites();
-	}
-
-	private void updateStatusBar() {
-		myCoinDisplay.increment();
 	}
 
 	private void createGameArea(int sideLength) {
@@ -249,9 +240,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	@Override
 	public void listItemClicked(ImageView image) {
-		// double cost = myController.getElementCosts().get(image.getId()).get(COST);
-		double cost = 200;
-		if (cost > myCoinDisplay.getQuantity()) {
+		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
+		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
 			return;
 		} else {
@@ -262,7 +252,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 			Optional<ButtonType> result = costDialog.showAndWait();
 			if (result.get() == ButtonType.OK) {
-				myCoinDisplay.decreaseByAmount(cost);
 				placeable = new StaticObject(1, this, (String) image.getUserData());
 				placeable.setElementName(image.getId());
 				this.getScene().setCursor(new ImageCursor(image.getImage()));
