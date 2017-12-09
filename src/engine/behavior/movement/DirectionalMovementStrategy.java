@@ -7,8 +7,8 @@ public class DirectionalMovementStrategy extends TargetedMovementStrategy{
 	private double angle;
 	private final double DEFAULT_STARTING_POSITION = -1;
 	
-	public DirectionalMovementStrategy(double velocityMagnitude, double angle) {
-		super(new Point2D(-1,-1), velocityMagnitude);
+	public DirectionalMovementStrategy(Point2D startingLocation,double velocityMagnitude, double angle) {
+		super(startingLocation,new Point2D(-1,-1), velocityMagnitude);
 		this.angle = Math.toRadians(angle);
 		setVelocityComponents(this.angle);
 	}

@@ -18,9 +18,9 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	// trackingPoint in setX and setY respectively ... preferred approach?
 	private TrackingPoint trackingPoint;
 
-	public AbstractMovementStrategy() {
-		DoubleProperty xCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
-		DoubleProperty yCoordinate = new SimpleDoubleProperty(DEFAULT_START_COORDINATE);
+	public AbstractMovementStrategy(Point2D startingCoordinate) {
+		DoubleProperty xCoordinate = new SimpleDoubleProperty(startingCoordinate.getX());
+		DoubleProperty yCoordinate = new SimpleDoubleProperty(startingCoordinate.getX());
 		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
 	}
 

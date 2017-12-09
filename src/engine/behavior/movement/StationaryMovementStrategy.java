@@ -10,8 +10,8 @@ import javafx.geometry.Point2D;
  */
 public class StationaryMovementStrategy extends AbstractMovementStrategy {
 
-	public StationaryMovementStrategy() {
-		super();
+	public StationaryMovementStrategy(Point2D startingLocation) {
+		super(startingLocation);
 
 	}
 
