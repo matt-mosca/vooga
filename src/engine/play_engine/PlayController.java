@@ -92,7 +92,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	// TODO - Deprecate in favor of public Update update() variant
 	@Override
-	public void update() {
+	public Update update() {
 		if (inPlay) {
 			/*
 			 * if (checkLevelClearanceCondition()) { if (checkVictoryCondition()) {
@@ -114,8 +114,10 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
 			elementManager.clearUpdatedElements();
-			// return latestUpdate;
+			return latestUpdate;
 		}
+		// No update if not in play
+		return Update.getDefaultInstance();
 	}
 
 	@Override
