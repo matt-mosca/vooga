@@ -42,10 +42,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import networking.MultiPlayerClient;
+import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.Update;
+import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
 import display.splashScreen.SplashPlayScreen;
 import display.sprites.StaticObject;
@@ -76,11 +78,12 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private boolean selected = false;
 	private StaticObject placeable;
 
-	private Map<Integer, ImageView> idsToImageViews = new HashMap<>();
+	private ClientMessageUtils clientMessageUtils;
 
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = isMultiPlayer ? new MultiPlayerClient() : new PlayController();
+		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
 		hud = new HUD(width);
 		styleLeftBar();
@@ -99,6 +102,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
+
 	}
 
 	public void tester() {
@@ -131,7 +135,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			if (result.isPresent()) {
 				try {
 					gameState = result.get();
-					myController.loadOriginalGameState(gameState, 1);
+					clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
 					System.out.println(gameState);
 				} catch (IOException e) {
 					// TODO Change to alert for the user
@@ -147,7 +151,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				exportedGameProperties.load(in);
 				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY);
 				System.out.println("GN: " + gameName);
-				myController.loadOriginalGameState(gameName, 1);
+				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
 			} catch (IOException ioException) {
 				// todo
 			}
@@ -155,7 +159,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	protected void reloadGame() throws IOException {
-		myController.loadOriginalGameState(gameState, 1);
+		clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
 	}
 	//
 	// private void initializeInventory() {
@@ -186,14 +190,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getStyleClass().add("left-bar");
 	}
 
-	private void loadSprites() {
-		myPlayArea.getChildren().removeAll(currentElements);
-		currentElements.clear();
-		for (Integer id : myController.getLevelSprites(level)) {
-			currentElements.add(myController.getRepresentationFromSpriteId(id));
-		}
-		myPlayArea.getChildren().addAll(currentElements);
-	}
+	/*
+	 * private void loadSprites() {
+	 * myPlayArea.getChildren().removeAll(currentElements); currentElements.clear();
+	 * for (Integer id : myController.getLevelSprites(level)) {
+	 * currentElements.add(myController.getRepresentationFromSpriteId(id)); }
+	 * myPlayArea.getChildren().addAll(currentElements); }
+	 */
 
 	private void initializeButtons() {
 		pause = new Button();
@@ -216,26 +219,23 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void step() {
-		// Update latestUpdate = myController.update();
-		myController.update();
+		Update latestUpdate = myController.update();
 		if (myController.isLevelCleared()) {
 			level++;
 			animation.pause();
 			myController.pause();
 			hud.initialize(myController.getResourceEndowments());
-			myInventoryToolBar.initializeInventory();
 		} else if (myController.isLost()) {
 			// launch lost screen
 		} else if (myController.isWon()) {
 			// launch win screen
 		}
-		// handleUpdate(latestUpdate);
-		loadSprites();
 		hud.update(myController.getResourceEndowments());
+		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 	}
 
 	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(myController, sideLength, sideLength);
+		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
 		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
@@ -246,13 +246,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			selected = false;
 			this.getScene().setCursor(Cursor.DEFAULT);
 			if (e.getButton().equals(MouseButton.PRIMARY))
-				myController.placeElement(placeable.getElementName(), new Point2D(e.getX(), e.getY()));
+				clientMessageUtils.addNewSpriteToDisplay(
+						myController.placeElement(placeable.getElementName(), new Point2D(e.getX(), e.getY())));
 		}
 	}
 
 	@Override
 	public void listItemClicked(ImageView image) {
 		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
+		System.out.println("Get");
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
 			return;
@@ -279,34 +281,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.setHeaderText(null);
 		error.setContentText("You do not have the funds for this item.");
 		error.show();
-	}
-
-	// The following methods were written while half-drunk, please check next
-	// morning (12/9/17)
-	private void handleUpdate(Update update) {
-		update.getNewSpritesList().forEach(newSprite -> addNewSpriteToDisplay(newSprite));
-		update.getSpriteUpdatesList().forEach(updatedSprite -> updateSpriteDisplay(updatedSprite));
-		update.getSpriteDeletionsList().forEach(deletedSprite -> removeDeadSpriteFromDisplay(deletedSprite));
-	}
-
-	private void addNewSpriteToDisplay(NewSprite newSprite) {
-		ImageView imageViewForSprite = new ImageView(new Image(newSprite.getImageURL()));
-		imageViewForSprite.setFitHeight(newSprite.getImageHeight());
-		imageViewForSprite.setFitWidth(newSprite.getImageWidth());
-		imageViewForSprite.setX(newSprite.getSpawnX());
-		imageViewForSprite.setY(newSprite.getSpawnY());
-		idsToImageViews.put(newSprite.getSpriteId(), imageViewForSprite);
-		myPlayArea.getChildren().add(imageViewForSprite);
-	}
-
-	private void updateSpriteDisplay(SpriteUpdate updatedSprite) {
-		ImageView imageViewForSprite = idsToImageViews.get(updatedSprite.getSpriteId());
-		imageViewForSprite.setX(updatedSprite.getNewX());
-		imageViewForSprite.setY(updatedSprite.getNewY());
-	}
-
-	private void removeDeadSpriteFromDisplay(SpriteDeletion spriteDeletion) {
-		myPlayArea.getChildren().remove(idsToImageViews.get(spriteDeletion.getSpriteId()));
 	}
 
 	// TODO - Check if this is repeated code,

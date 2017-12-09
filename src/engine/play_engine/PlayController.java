@@ -4,6 +4,8 @@ import engine.AbstractGameController;
 import engine.PlayModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Update;
 import util.GameConditionsReader;
 
@@ -50,13 +52,14 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public void loadOriginalGameState(String saveName, int level) throws IOException {
-		super.loadOriginalGameState(saveName, level);
+	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
+		LevelInitialized levelData = super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
+		return levelData;
 	}
 
 	@Override
-	public void loadSavedPlayState(String savePlayStateName) throws FileNotFoundException {
+	public LevelInitialized loadSavedPlayState(String savePlayStateName) throws FileNotFoundException {
 		// Get number of levels in play state
 		int lastLevelPlayed = getNumLevelsForGame(savePlayStateName, false);
 		// Load levels up to that level, as played (not original)
@@ -65,13 +68,14 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			loadLevelData(savePlayStateName, level, false);
 		}
 		updateForLevelChange(savePlayStateName, lastLevelPlayed);
+		return packageCurrentState();
 	}
 
 	// TODO - Deprecate in favor of public Update update() variant
 	@Override
-	public void update() {
+	public Update update() {
 		if (inPlay) {
-			/*
+			/* Uncomment when front end is ready to set wave properties fully (team & no. of attacks of wave)
 			 * if (checkLevelClearanceCondition()) { if (checkVictoryCondition()) {
 			 * registerVictory(); } else { registerLevelCleared(); } } else if
 			 * (checkDefeatCondition()) { registerDefeat(); } else { // Move elements, check
@@ -86,15 +90,15 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				cacheAndCreateIdentifier(element);
 			}
 			// Package these changes into an Update message
-			latestUpdate = getServerMessageUtils().packageUpdates(getFilteredSpriteIdMap(newlyGeneratedElements),
-					getFilteredSpriteIdMap(updatedElements), getFilteredSpriteIdMap(deadElements), levelCleared, isWon,
-					isLost, inPlay, getResourceEndowments());
+			latestUpdate = packageSpriteUpdates(newlyGeneratedElements, updatedElements, deadElements);
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
 			elementManager.clearUpdatedElements();
-			// return latestUpdate;
+			return latestUpdate;
 		}
+		// If not in play, only one of the status properties could have changed, yes?
+		return packageStatusUpdate();
 	}
 
 	@Override
@@ -125,7 +129,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
+	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
 			// TODO - keep track of the resources that were changed in this cycle, and only
 			// send them to client?
@@ -178,6 +182,13 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		elementManager.setCurrentElements(getLevelSprites().get(level));
 		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
 		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
+	}
+
+	private Update packageSpriteUpdates(Collection<GameElement> newlyGeneratedElements,
+			Collection<GameElement> updatedElements, Collection<GameElement> deletedElements) {
+		return getServerMessageUtils().packageUpdates(getFilteredSpriteIdMap(newlyGeneratedElements),
+				getFilteredSpriteIdMap(updatedElements), getFilteredSpriteIdMap(deletedElements), levelCleared, isWon,
+				isLost, inPlay, getResourceEndowments());
 	}
 
 	private boolean checkVictoryCondition() {
