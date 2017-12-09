@@ -129,11 +129,11 @@ public final class GameElementFactory {
                             constructorParameters[i] = setConstructorParameter(
                                     properties.get(parameterNameAnnotation.value()));
                         } else {
-                            constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties,
-                                    auxiliaryObjects);
+                            constructorParameters[i] = auxiliaryObjects.get(parameterNameAnnotation.value());
                         }
                     } else {
-                        System.out.println("\n\n\nTHIS DEFINITELY SHOULD NOT HAPPEN\n\n\n");
+                        constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties,
+                                auxiliaryObjects);
                     }
                 }
                 return parameterClass.getConstructors()[0].newInstance(constructorParameters);
@@ -167,10 +167,8 @@ public final class GameElementFactory {
         } catch (NumberFormatException nonIntegerProperty) {
             try {
                 return Double.parseDouble(propertyValueAsString);
-            } catch (NumberFormatException nonDoubleProperty) {
+            } catch (NumberFormatException | NullPointerException nonDoubleProperty) {
                 return propertyValueAsString;
-            } catch (NullPointerException nullptr) {
-                return null;
             }
         }
     }

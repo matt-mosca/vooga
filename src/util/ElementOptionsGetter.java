@@ -127,16 +127,11 @@ public class ElementOptionsGetter {
 
     private void processElementParameter(Map<String, Class> parameterDescriptionsToClasses, Parameter constructorParameter) {
         ElementProperty elementPropertyAnnotation = constructorParameter.getAnnotation(ElementProperty.class);
-        if (elementPropertyAnnotation != null) {
-            if (elementPropertyAnnotation.isTemplateProperty()) {
-                // property that needs to be set in the frontend
-                addTemplatePropertyTranslation(parameterDescriptionsToClasses, constructorParameter, elementPropertyAnnotation);
-            } else {
-                // property that we need to supply ourselves
-                // so don't pass it to them
-            }
+        if (elementPropertyAnnotation != null && elementPropertyAnnotation.isTemplateProperty()) {
+            // property that needs to be set in the frontend
+            addTemplatePropertyTranslation(parameterDescriptionsToClasses, constructorParameter, elementPropertyAnnotation);
         } else {
-            System.out.println("\n\n\nTHIS SHOULD NOT HAPPEN\n\n\n");
+            // property that we need to supply ourselves so don't pass it to them
             String parameterTypeSimple = constructorParameter.getType().getSimpleName();
             parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
             descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);

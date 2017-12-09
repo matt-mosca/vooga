@@ -18,7 +18,7 @@ public class StraightLineMovementStrategy extends TargetedMovementStrategy {
 			@ElementProperty(value = "targetX", isTemplateProperty = true) double targetX,
 			@ElementProperty(value = "targetY", isTemplateProperty = true) double targetY,
 			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
-		super(startPoint, new Point2D(targetX, targetY), velocity);
+		super(startPoint, targetX, targetY, velocity);
 		setVelocityComponents();
 	}
 

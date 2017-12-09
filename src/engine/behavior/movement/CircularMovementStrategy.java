@@ -22,8 +22,8 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 			@ElementProperty(value = "radius", isTemplateProperty = true) double radius,
 			@ElementProperty(value = "initialAngle", isTemplateProperty = true) double initialAngle,
 			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
-		super(startPoint,new Point2D(radius * Math.cos(Math.toRadians(initialAngle)),radius * Math.sin(Math.toRadians(initialAngle))),
-							radius);
+		super(startPoint, radius * Math.cos(Math.toRadians(initialAngle)),
+				radius * Math.sin(Math.toRadians(initialAngle)), radius);
 		this.radius = radius;
 		this.angle = Math.toRadians(initialAngle);
 		this.angularVelocity = velocity/radius;

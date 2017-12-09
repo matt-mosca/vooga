@@ -12,7 +12,7 @@ public class DirectionalMovementStrategy extends TargetedMovementStrategy{
 			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
 			@ElementProperty(value = "velocityMagnitude", isTemplateProperty = true) double velocityMagnitude,
 			@ElementProperty(value = "angle", isTemplateProperty = true) double angle) {
-		super(startPoint,new Point2D(-1,-1), velocityMagnitude);
+		super(startPoint, -1,-1, velocityMagnitude);
 		this.angle = Math.toRadians(angle);
 		setVelocityComponents(this.angle);
 	}

@@ -12,9 +12,6 @@ import util.Exclude;
  */
 public class CollisionHandler {
 
-    // TODO - default from prop getter
-    private final String DEFAULT_IMAGE_PATH = "https://users.cs.duke.edu/~rcd/images/rcd.jpg";
-
     private CollisionVisitor collisionVisitor;
     private CollisionVisitable collisionVisitable;
 

@@ -27,8 +27,8 @@ public class SpriteQueryHandler {
 			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
 		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
-		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
-		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
+		auxiliarySpriteConstructionObjects.put("targetLocation", targetLocation);
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		return auxiliarySpriteConstructionObjects;
 	}
 
