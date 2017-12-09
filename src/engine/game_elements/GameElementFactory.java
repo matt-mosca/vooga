@@ -2,7 +2,7 @@ package engine.game_elements;
 
 import engine.behavior.ParameterName;
 import javafx.geometry.Point2D;
-import util.SpriteOptionsGetter;
+import util.ElementOptionsGetter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
@@ -24,7 +24,7 @@ public final class GameElementFactory {
     private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
     private Map<String, List<Map<String, String>>> spriteTemplatesU = new HashMap<>();
 
-    private SpriteOptionsGetter spriteOptionsGetter = new SpriteOptionsGetter();
+    private ElementOptionsGetter elementOptionsGetter = new ElementOptionsGetter();
 
     /**
      * Define a new template with specified properties. The template should not use
@@ -108,9 +108,9 @@ public final class GameElementFactory {
     private Object generateSpriteParameter(Class parameterClass, Map<String, String> properties,
                                            Map<String, ?> auxiliaryObjects) throws ReflectiveOperationException {
         try {
-            String chosenSubclassName = spriteOptionsGetter.getChosenSubclassName(parameterClass, properties);
+            String chosenSubclassName = elementOptionsGetter.getChosenSubclassName(parameterClass, properties);
             Class chosenParameterSubclass = Class.forName(chosenSubclassName);
-            List<String> constructorParameterIdentifiers = spriteOptionsGetter
+            List<String> constructorParameterIdentifiers = elementOptionsGetter
                     .getConstructorParameterIdentifiers(chosenParameterSubclass);
             Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
                     constructorParameterIdentifiers);
@@ -148,7 +148,7 @@ public final class GameElementFactory {
         Object[] constructorParameters = new Object[constructorParameterIdentifiers.size()];
         for (int i = 0; i < constructorParameters.length; i++) {
             String parameterIdentifier = constructorParameterIdentifiers.get(i);
-            String parameterDescription = spriteOptionsGetter.translateParameterToDescription(parameterIdentifier);
+            String parameterDescription = elementOptionsGetter.translateParameterToDescription(parameterIdentifier);
             if (!properties.containsKey(parameterDescription)) {
                 constructorParameters[i] = auxiliaryObjects.get(parameterIdentifier);
                 // TODO - throw exception if aux objects doesn't contain key
@@ -184,7 +184,7 @@ public final class GameElementFactory {
      * options
      */
     public Map<String, List<String>> getElementBaseConfigurationOptions() {
-        return spriteOptionsGetter.getSpriteParameterSubclassOptions();
+        return elementOptionsGetter.getSpriteParameterSubclassOptions();
     }
 
     /**
@@ -195,7 +195,7 @@ public final class GameElementFactory {
      * class type
      */
     public Map<String, Class> getAuxiliaryElementProperties(Map<String, String> subclassChoices) {
-        return spriteOptionsGetter.getAuxiliaryParametersFromSubclassChoices(subclassChoices);
+        return elementOptionsGetter.getAuxiliaryParametersFromSubclassChoices(subclassChoices);
     }
 
     /**
