@@ -38,14 +38,16 @@ public class ClientMessageUtils {
 	public ImageView getRepresentationFromSpriteId(int id) {
 		return idsToImageViews.get(id);
 	}
-
-	private void addNewSpriteToDisplay(NewSprite newSprite) {
+	
+	public int addNewSpriteToDisplay(NewSprite newSprite) {
 		ImageView imageViewForSprite = new ImageView(new Image(newSprite.getImageURL()));
 		imageViewForSprite.setFitHeight(newSprite.getImageHeight());
 		imageViewForSprite.setFitWidth(newSprite.getImageWidth());
 		imageViewForSprite.setX(newSprite.getSpawnX());
 		imageViewForSprite.setY(newSprite.getSpawnY());
-		idsToImageViews.put(newSprite.getSpriteId(), imageViewForSprite);
+		int spriteId = newSprite.getSpriteId();
+		idsToImageViews.put(spriteId, imageViewForSprite);
+		return spriteId;
 	}
 
 	private void updateSpriteDisplay(SpriteUpdate updatedSprite) {

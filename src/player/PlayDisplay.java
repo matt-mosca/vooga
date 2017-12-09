@@ -77,9 +77,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			new NoopCollisionVisitable(), "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;
 	private StaticObject placeable;
-	
-	private ClientMessageUtils clientMessageUtils;
 
+	private ClientMessageUtils clientMessageUtils;
 
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
@@ -103,7 +102,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
-		
+
 	}
 
 	public void tester() {
@@ -192,15 +191,12 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	/*
-	private void loadSprites() {
-		myPlayArea.getChildren().removeAll(currentElements);
-		currentElements.clear();
-		for (Integer id : myController.getLevelSprites(level)) {
-			currentElements.add(myController.getRepresentationFromSpriteId(id));
-		}
-		myPlayArea.getChildren().addAll(currentElements);
-	}
-	*/
+	 * private void loadSprites() {
+	 * myPlayArea.getChildren().removeAll(currentElements); currentElements.clear();
+	 * for (Integer id : myController.getLevelSprites(level)) {
+	 * currentElements.add(myController.getRepresentationFromSpriteId(id)); }
+	 * myPlayArea.getChildren().addAll(currentElements); }
+	 */
 
 	private void initializeButtons() {
 		pause = new Button();
@@ -239,7 +235,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(myController, sideLength, sideLength);
+		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
 		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
@@ -250,13 +246,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			selected = false;
 			this.getScene().setCursor(Cursor.DEFAULT);
 			if (e.getButton().equals(MouseButton.PRIMARY))
-				myController.placeElement(placeable.getElementName(), new Point2D(e.getX(), e.getY()));
+				clientMessageUtils.addNewSpriteToDisplay(
+						myController.placeElement(placeable.getElementName(), new Point2D(e.getX(), e.getY())));
 		}
 	}
 
 	@Override
 	public void listItemClicked(ImageView image) {
 		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
+		System.out.println("Get");
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
 			return;
@@ -284,7 +282,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.setContentText("You do not have the funds for this item.");
 		error.show();
 	}
-
 
 	// TODO - Check if this is repeated code,
 

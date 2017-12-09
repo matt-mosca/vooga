@@ -66,7 +66,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	private SpriteTesterButton myTesterButton;
-	
+
 	private ClientMessageUtils clientMessageUtils;
 
 	public EditDisplay(int width, int height, Stage stage, boolean loaded) {
@@ -121,7 +121,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea.toggleMovement(movementToggle.isSelected());
 		if (movement.isSelected()) {
 			this.getScene().setCursor(new ImageCursor(
-					new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png")),30,30));
+					new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png")), 30, 30));
 		} else {
 			this.getScene().setCursor(Cursor.DEFAULT);
 		}
@@ -215,7 +215,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getCellSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
-		newObject.setElementId(controller.placeElement(newObject.getElementName(), new Point2D(0, 0)).getSpriteId());
+		newObject.setElementId(clientMessageUtils
+				.addNewSpriteToDisplay(controller.placeElement(newObject.getElementName(), new Point2D(0, 0))));
 	}
 
 	@Override
@@ -236,7 +237,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void save() {
 		File saveFile = SaveDialog.SaveLocation(getScene());
-		if(saveFile != null) {
+		if (saveFile != null) {
 			controller.setGameName(saveFile.getName());
 			// TODO change the save game so it saves a string instead
 			controller.saveGameState(saveFile);
@@ -301,9 +302,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void returnButtonPressed() {
-		if(!controller.getGameName().equals("untitled")) {
+		if (!controller.getGameName().equals("untitled")) {
 			controller.saveGameState(new File(PATH_DIRECTORY_NAME + controller.getGameName()));
-		}else {
+		} else {
 			this.save();
 		}
 		VBox newProject = new VBox();
