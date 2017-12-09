@@ -12,9 +12,11 @@ import engine.behavior.ParameterName;
 public abstract class GenericFiringStrategy implements FiringStrategy {
 
 	private String projectileTemplate;
+	private String audioURI;
 
-	public GenericFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate) {
+	public GenericFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate, String audioURI) {
 		this.projectileTemplate = projectileTemplate;
+		this.audioURI = audioURI;
 	}
 
 	@Override
@@ -25,5 +27,10 @@ public abstract class GenericFiringStrategy implements FiringStrategy {
 	@Override
 	public boolean isExpended() {
 		return false;
+	}
+	
+
+	public String getAudioURI() {
+		return audioURI;
 	}
 }

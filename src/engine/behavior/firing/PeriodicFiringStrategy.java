@@ -13,16 +13,23 @@ import engine.behavior.ParameterName;
 public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 
 	private String projectileTemplate;
+	private String audioURI;
 
-	public PeriodicFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate,
+	public PeriodicFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate, String audioURI,
 			@ParameterName("attackPeriod") double attackPeriod) {
 		super(attackPeriod);
 		this.projectileTemplate = projectileTemplate;
+		this.audioURI = audioURI;
 		
 	}
 
 	@Override
 	public String fire() {
 		return projectileTemplate;
+	}
+
+	@Override
+	public String getAudioURI() {
+		return audioURI;
 	}
 }

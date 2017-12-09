@@ -40,12 +40,14 @@ import display.splashScreen.ScreenDisplay;
 import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
 import display.sprites.StaticObject;
+import display.tabs.SaveDialog;
 import display.toolbars.LeftToolBar;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	private static final double GRID_X_LOCATION = 620;
 	private static final double GRID_Y_LOCATION = 20;
+	private final String PATH_DIRECTORY_NAME = "authoring/";
 	private AuthoringController controller;
 	private LeftToolBar myLeftToolBar;
 	private GameArea myGameArea;
@@ -115,7 +117,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myGameArea.toggleMovement(movementToggle.isSelected());
 		if (movement.isSelected()) {
 			this.getScene().setCursor(new ImageCursor(
-					new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png"))));
+					new Image(getClass().getClassLoader().getResourceAsStream("scroll_arrow_icon.png")),30,30));
 		} else {
 			this.getScene().setCursor(Cursor.DEFAULT);
 		}
@@ -228,11 +230,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	@Override
-	public void save(File saveName) {
-		controller.setGameName(saveName.getName().replace(".voog", ""));
-		// TODO change the save game so it saves a string instead
-		controller.saveGameState(saveName);
-		myGameArea.savePath();
+	public void save() {
+		File saveFile = SaveDialog.SaveLocation(getScene());
+		if(saveFile != null) {
+			controller.setGameName(saveFile.getName());
+			// TODO change the save game so it saves a string instead
+			controller.saveGameState(saveFile);
+			myGameArea.savePath();
+		}
 	}
 
 	private void loadGame() {
@@ -292,6 +297,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void returnButtonPressed() {
+		if(!controller.getGameName().equals("untitled")) {
+			controller.saveGameState(new File(PATH_DIRECTORY_NAME + controller.getGameName()));
+		}else {
+			this.save();
+		}
 		VBox newProject = new VBox();
 		Scene newScene = new Scene(newProject, 400, 400);
 		Stage myStage = new Stage();
