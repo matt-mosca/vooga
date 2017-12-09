@@ -142,11 +142,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void createNewLevel(int level) {
-		setLevel(level);
-	}
-
-	@Override
 	public void setStatusProperty(String property, Double value) {
 		getLevelStatuses().get(getCurrentLevel()).put(property, value);
 	}

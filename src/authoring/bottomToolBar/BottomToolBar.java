@@ -92,7 +92,7 @@ public class BottomToolBar extends VBox {
 		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(myLevels.size() + 1, myController);
 		myGameAreas.add(new GameArea(myController));
-		myController.createNewLevel(myLevels.size() + 1);
+		myController.setLevel(myLevels.size() + 1);
 		if (myLevels.size() == 0) {
 			newTab.setClosable(false);
 		} else {
@@ -125,7 +125,7 @@ public class BottomToolBar extends VBox {
 		currentDisplay = i;
 		myScrollableArea.changeLevel(myGameAreas.get(i - 1));
 		myCreated.setDroppable(myGameAreas.get(i - 1));
-		myController.createNewLevel(i);
+		myController.setLevel(i);
 		myCreated.setGameArea(myGameAreas.get(i - 1));
 		updateSpriteDisplay(i);
 	}
