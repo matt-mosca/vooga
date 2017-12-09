@@ -18,8 +18,10 @@ import java.util.Set;
  * @author Ben Schwennesen
  * @author radithya
  */
-public interface AuthoringModelController {
+public interface AuthoringModelController extends AbstractGameModelController {
 
+	// TODO - Remove the inherited methods? Or keep to facilitate quick survey of all authoring methods?
+	
     /**
      * Save the current state of the current level a game being authored.
      *

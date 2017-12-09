@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 import authoring.PlacementGrid;
+import engine.PlayModelController;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.NoopCollisionVisitable;
@@ -55,7 +56,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlacementGrid myMainGrid;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
-	private PlayController myController;
+	private PlayModelController myController;
 	private CoinDisplay myCoinDisplay;
 	private HealthDisplay myHealthDisplay;
 	private PointsDisplay myPointsDisplay;

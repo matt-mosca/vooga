@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @author radithya
  * @author Ben Schwennesen
  */
-public abstract class AbstractGameController {
+public abstract class AbstractGameController implements AbstractGameModelController {
 
 	protected static final int DEFAULT_MAX_LEVELS = 1;
 	protected static final String VICTORY = "victory";
@@ -84,6 +84,7 @@ public abstract class AbstractGameController {
 	 * @param saveName
 	 *            the name to assign to the save file
 	 */
+	@Override
 	public void saveGameState(File saveName) {
 		// Note : saveName overrides previously set gameName if different - need to
 		// handle this?
@@ -114,6 +115,7 @@ public abstract class AbstractGameController {
 	 * @throws IOException
 	 *             if the save name does not refer to existing files
 	 */
+	@Override
 	public void loadOriginalGameState(String saveName, int level) throws IOException {
 		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
@@ -140,14 +142,17 @@ public abstract class AbstractGameController {
 		}
 	}
 
+	@Override
 	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
 		return getGameElementFactory().getTemplateProperties(elementName);
 	}
 	
+	@Override
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
 		return getGameElementFactory().getAllDefinedTemplateProperties();
 	}
 
+	@Override
 	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
@@ -158,10 +163,13 @@ public abstract class AbstractGameController {
 		return cacheAndCreateIdentifier(elementTemplateName, gameElement);
 	}
 
+	@Override
 	public Set<String> getInventory() {
 		return getLevelInventories().get(getCurrentLevel());
 	}
 
+	@Override
+	@Deprecated
 	public ImageView getRepresentationFromSpriteId(int spriteId) {
 		return spriteIdMap.get(spriteId).getGraphicalRepresentation();
 	}
@@ -171,14 +179,17 @@ public abstract class AbstractGameController {
 	 * @deprecated
 	 * @return map of resource name to quantity left
 	 */
+	@Override
 	public Map<String, Double> getStatus() {
 		return getLevelStatuses().get(getCurrentLevel());
 	}
 
+	@Override
 	public Map<String, Double> getResourceEndowments() {
 		return getLevelBanks().get(getCurrentLevel()).getResourceEndowments();
 	}
 
+	@Override
 	public Map<String, Map<String, Double>> getElementCosts() {
 		return getLevelBanks().get(getCurrentLevel()).getUnitCosts();
 	}
@@ -188,6 +199,7 @@ public abstract class AbstractGameController {
 	 * 
 	 * @return map where keys are game names and values are game descriptions
 	 */
+	@Override
 	public Map<String, String> getAvailableGames() throws IllegalStateException {
 		return ioController.getAvailableGames();
 	}
