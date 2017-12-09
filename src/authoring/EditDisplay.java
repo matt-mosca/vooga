@@ -36,6 +36,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
 import player.PlayDisplay;
+import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
 import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
@@ -65,10 +66,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	private SpriteTesterButton myTesterButton;
+	
+	private ClientMessageUtils clientMessageUtils;
 
 	public EditDisplay(int width, int height, Stage stage, boolean loaded) {
 		super(width, height, Color.BLACK, stage);
 		controller = new AuthoringController();
+		clientMessageUtils = new ClientMessageUtils();
 		if (loaded) {
 			loadGame();
 		}
@@ -211,7 +215,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getCellSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
-		newObject.setElementId(controller.placeElement(newObject.getElementName(), new Point2D(0, 0)));
+		newObject.setElementId(controller.placeElement(newObject.getElementName(), new Point2D(0, 0)).getSpriteId());
 	}
 
 	@Override
@@ -253,7 +257,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Optional<String> result = loadChoices.showAndWait();
 		if (result.isPresent()) {
 			try {
-				controller.loadOriginalGameState(result.get(), 1);
+				clientMessageUtils.initializeLoadedLevel(controller.loadOriginalGameState(result.get(), 1));
 			} catch (IOException e) {
 				// TODO Change to alert for the user
 				e.printStackTrace();

@@ -123,34 +123,31 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 
 	// TODO - Will be modified in interface to return LevelInitialized message
 	@Override
-	public void loadOriginalGameState(String saveName, int level) throws IOException {
+	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setLoadLevel(LoadLevel.newBuilder().setGameName(saveName).setLevel(level)).build().toByteArray());
-		// Return the following line when front end is ready
-		handleLoadOriginalGameStateResponse(readServerResponse());
+		return handleLoadOriginalGameStateResponse(readServerResponse());
 	}
 
 	// Since saving is not allowed, this won't be allowed either
 	@Override
-	public void loadSavedPlayState(String savePlayStateName) throws UnsupportedOperationException {
+	public LevelInitialized loadSavedPlayState(String savePlayStateName) throws UnsupportedOperationException {
 		// TODO - Define custom exception in exceptions properties file and pass that
 		// string here
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void update() {
+	public Update update() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setPerformUpdate(PerformUpdate.getDefaultInstance()).build().toByteArray());
-		// Return the following line when ready to deprecate old interface
-		handleUpdateResponse(readServerResponse());
+		return handleUpdateResponse(readServerResponse());
 	}
 
 	@Override
 	public void pause() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setPauseGame(PauseGame.getDefaultInstance()).build().toByteArray());
-		// Return the following line when front end is ready
 		handleUpdateResponse(readServerResponse());
 	}
 
@@ -158,7 +155,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 	public void resume() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setResumeGame(ResumeGame.getDefaultInstance()).build().toByteArray());
-		// Return the following line when front end is ready
 		handleUpdateResponse(readServerResponse());
 	}
 
@@ -184,16 +180,13 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		return getLatestStatusUpdate().getIsWon();
 	}
 
-	// TODO - Will be modified in interface to return NewSprite (a message type)
 	@Override
-	public int placeElement(String elementName, Point2D startCoordinates) {
+	public NewSprite placeElement(String elementName, Point2D startCoordinates) {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setPlaceElement(PlaceElement.newBuilder().setElementName(elementName)
 						.setXCoord(startCoordinates.getX()).setYCoord(startCoordinates.getY()).build())
 				.build().toByteArray());
-		// Replace following line by the commented one after when front end is ready
-		return handlePlaceElementResponse(readServerResponse()).getSpriteId();
-		// return handlePlaceElementResponse(readServerResponse());
+		return handlePlaceElementResponse(readServerResponse());
 	}
 
 	@Override
@@ -223,14 +216,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		writeRequestBytes(
 				ClientMessage.newBuilder().setGetInventory(GetInventory.getDefaultInstance()).build().toByteArray());
 		return handleInventoryResponse(readServerResponse());
-	}
-
-	// TODO - Deprecate
-	@Deprecated
-	@Override
-	public ImageView getRepresentationFromSpriteId(int spriteId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	// TODO - Deprecate? Doesn't seem to be used anywhere?

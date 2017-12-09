@@ -6,7 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
+import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
 
 /**
  * Represents the common back-end methods available across play and authoring
@@ -35,18 +36,15 @@ public interface AbstractGameModelController {
 	 * @throws IOException
 	 *             if the save name does not refer to existing files
 	 */
-	public void loadOriginalGameState(String saveName, int level) throws IOException;
+	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException;
 
 	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException;
 
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties();
 
-	public int placeElement(String elementTemplateName, Point2D startCoordinates);
+	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates);
 
 	public Set<String> getInventory();
-
-	@Deprecated
-	public ImageView getRepresentationFromSpriteId(int spriteId);
 
 	/**
 	 * Get resources left for current level
