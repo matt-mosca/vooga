@@ -1,24 +1,25 @@
 package util.path;
 
+import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-public class PathLine extends Line{
+public class PathLine extends Line implements Serializable{
 	private final static String WIDTH = "Path_Width";
 	private final static String INACTIVE = "Path_Color";
 	private final static String ACTIVE = "Path_Active_Color";
 	
-	private ResourceBundle pathProperties;
+	private transient ResourceBundle pathProperties;
 	private PathPoint start;
 	private PathPoint end;
 	private LineDirection direction;
-	private Group node;
+	private transient Group node;
 	private boolean active = false;
-	private Color activeColor;
-	private Color inactiveColor;
+	private transient Color activeColor;
+	private transient Color inactiveColor;
 	private int width;
 	
 	public PathLine(PathPoint start, PathPoint end, Color color) {

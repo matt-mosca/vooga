@@ -1,9 +1,11 @@
 package util.path;
 
+import java.io.Serializable;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
-public class LineDirection extends Polygon{
+public class LineDirection extends Polygon implements Serializable{
 	private PathLine line;
 	
 	public LineDirection(PathPoint start, PathPoint end, PathLine line, Color color) {
