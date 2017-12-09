@@ -4,7 +4,6 @@ import engine.authoring_engine.AuthoringController;
 import engine.game_elements.GameElement;
 import engine.game_elements.GameElementFactory;
 import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
 import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.Inventory;
 import networking.protocol.PlayerServer.LevelInitialized;
@@ -124,24 +123,16 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	 *             if the save name does not refer to existing files
 	 */
 	@Override
-	public void loadOriginalGameState(String saveName, int level) throws IOException {
+	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
 		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;
 		gameElementFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
 		gameElementUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadSpriteUpgrades(gameName));
+		return packageCurrentState();
 	}
 
-	public LevelInitialized packageInitialState(String saveName, int level) {
-		try {
-			loadOriginalGameState(saveName, level);
-			return packageCurrentState();
-		} catch (IOException e) {
-			return LevelInitialized.getDefaultInstance(); // shouldn't happen
-		}
-	}
-	
 	public Inventory packageInventory() {
 		return getServerMessageUtils().packageInventory(getInventory());
 	}
@@ -174,32 +165,21 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	}
 
 	@Override
-	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
+	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		gameElementUpgrader.registerNewSprite(elementTemplateName, gameElement);
-		return cacheAndCreateIdentifier(elementTemplateName, gameElement);
+		int spriteId = cacheAndCreateIdentifier(elementTemplateName, gameElement);
+		return serverMessageUtils.packageNewSprite(gameElement, spriteId);
 	}
-	
-	public NewSprite placeAndPackageElement(String templateName, double x, double y) {
-		int idOfPlacedElement = placeElement(templateName, new Point2D(x, y));
-		GameElement placedElement = getSpriteIdMap().get(idOfPlacedElement);
-		return getServerMessageUtils().packageNewSprite(placedElement, idOfPlacedElement);
-	}
-
 
 	@Override
 	public Set<String> getInventory() {
 		return getLevelInventories().get(getCurrentLevel());
-	}
-
-	@Override
-	@Deprecated
-	public ImageView getRepresentationFromSpriteId(int spriteId) {
-		return spriteIdMap.get(spriteId).getGraphicalRepresentation();
 	}
 
 	/**
@@ -232,7 +212,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	public Map<String, String> getAvailableGames() throws IllegalStateException {
 		return ioController.getAvailableGames();
 	}
-	
+
 	public TemplateProperties packageTemplateProperties(String templateName) {
 		return getServerMessageUtils().packageTemplateProperties(templateName, getTemplateProperties(templateName));
 	}
@@ -256,6 +236,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, gameElement);
@@ -396,7 +377,21 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 				.filter(spriteEntry -> spritesToFilter.contains(spriteEntry.getValue()))
 				.collect(Collectors.toMap(spriteEntry -> spriteEntry.getKey(), spriteEntry -> spriteEntry.getValue()));
 	}
-	
+
+	protected LevelInitialized packageInitialState() {
+		return LevelInitialized.newBuilder()
+				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
+						new HashMap<>(), false, false, false, false, getResourceEndowments()))
+				.setInventory(packageInventory()).build();
+	}
+
+	protected LevelInitialized packageCurrentState() {
+		return LevelInitialized.newBuilder()
+				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
+						new HashMap<>(), false, false, false, false, getResourceEndowments()))
+				.setInventory(packageInventory()).build();
+	}
+
 	private void loadGameStateSettingsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);
@@ -470,12 +465,5 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private String getDefaultDefeatCondition() {
 		return new ArrayList<>(gameConditionsReader.getPossibleDefeatConditions()).get(0);
 	}
-	
-	private LevelInitialized packageCurrentState() {
-		return LevelInitialized.newBuilder()
-				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
-						new HashMap<>(), false, false, false, false, getResourceEndowments()))
-				.setInventory(packageInventory()).build();
-	}
-	
+
 }

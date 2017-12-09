@@ -1,6 +1,6 @@
 package engine.behavior.firing;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 
 /**
  * Shoots periodically (once every x number of cycles, where x is any positive
@@ -15,8 +15,9 @@ public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 	private String projectileTemplate;
 	private String audioURI;
 
-	public PeriodicFiringStrategy(@ParameterName("projectileTemplate") String projectileTemplate, String audioURI,
-			@ParameterName("attackPeriod") double attackPeriod) {
+	public PeriodicFiringStrategy(
+			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate,
+			@ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod) {
 		super(attackPeriod);
 		this.projectileTemplate = projectileTemplate;
 		this.audioURI = audioURI;

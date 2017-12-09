@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import engine.play_engine.PlayController;
+import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.JoinRoom;
@@ -137,8 +138,14 @@ class MultiPlayerController {
 				return;
 			}
 			String gameName = getGameNameFromGameRoomName(gameRoomToLaunch);
-			serverMessageBuilder.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder
-					.setInitialState(clientIdsToPlayEngines.get(clientId).packageInitialState(gameName, 1)).build());// TEMP
+			try {
+				serverMessageBuilder.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder
+						.setInitialState(clientIdsToPlayEngines.get(clientId).loadOriginalGameState(gameName, 1))
+						.build());
+			} catch (IOException e) {
+				serverMessageBuilder.setGameRoomLaunchStatus(
+						gameRoomLaunchStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build());
+			}
 		}
 	}
 
@@ -244,9 +251,8 @@ class MultiPlayerController {
 			// TODO - Handle case where client tries to place element without belonging to a
 			// game room?
 			PlaceElement placeElementRequest = clientMessage.getPlaceElement();
-			serverMessageBuilder
-					.setElementPlaced(playController.placeAndPackageElement(placeElementRequest.getElementName(),
-							placeElementRequest.getXCoord(), placeElementRequest.getYCoord()));
+			serverMessageBuilder.setElementPlaced(playController.placeElement(placeElementRequest.getElementName(),
+					new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord())));
 		}
 	}
 
@@ -283,8 +289,12 @@ class MultiPlayerController {
 				return;
 			}
 			String gameName = getGameNameFromGameRoomName(roomName);
-			serverMessageBuilder.setLevelInitialized(
-					clientIdsToPlayEngines.get(clientId).packageInitialState(gameName, levelToLoad));
+			try {
+				serverMessageBuilder.setLevelInitialized(
+						clientIdsToPlayEngines.get(clientId).loadOriginalGameState(gameName, levelToLoad));
+			} catch (IOException e) {
+				serverMessageBuilder.setLevelInitialized(LevelInitialized.getDefaultInstance());
+			}
 		}
 	}
 

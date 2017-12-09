@@ -1,5 +1,6 @@
 package engine.behavior.movement;
 
+import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 
 public class DirectionalMovementStrategy extends TargetedMovementStrategy{
@@ -7,8 +8,11 @@ public class DirectionalMovementStrategy extends TargetedMovementStrategy{
 	private double angle;
 	private final double DEFAULT_STARTING_POSITION = -1;
 	
-	public DirectionalMovementStrategy(double velocityMagnitude, double angle) {
-		super(new Point2D(-1,-1), velocityMagnitude);
+	public DirectionalMovementStrategy(
+			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
+			@ElementProperty(value = "velocityMagnitude", isTemplateProperty = true) double velocityMagnitude,
+			@ElementProperty(value = "angle", isTemplateProperty = true) double angle) {
+		super(startPoint, -1,-1, velocityMagnitude);
 		this.angle = Math.toRadians(angle);
 		setVelocityComponents(this.angle);
 	}
