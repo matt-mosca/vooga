@@ -16,7 +16,10 @@ import javafx.scene.image.ImageView;
  *
  * @author Ben Schwennesen
  */
-public interface PlayModelController {
+public interface PlayModelController extends AbstractGameModelController {
+
+	// TODO - Remove the inherited methods? Or keep to facilitate quick survey of
+	// all authoring methods?
 
 	/**
 	 * Save the current state of a game being played.

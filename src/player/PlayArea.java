@@ -1,7 +1,7 @@
 package player;
 
 import util.path.Path;
-import engine.play_engine.PlayController;
+import engine.PlayModelController;
 
 import java.util.Map;
 
@@ -13,11 +13,11 @@ import javafx.scene.paint.Color;
 import display.sprites.InteractiveObject;
 
 public class PlayArea extends Pane implements Droppable {
-	private PlayController myController;
+	private PlayModelController myController;
 	private double lastX;
 	private double lastY;
 	
-	public PlayArea(PlayController controller, int width, int height) {
+	public PlayArea(PlayModelController controller, int width, int height) {
 		myController = controller;
 		this.setLayoutX(310);
 		this.setLayoutY(10);

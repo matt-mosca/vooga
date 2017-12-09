@@ -3,7 +3,7 @@ package display.toolbars;
 import java.util.Map;
 
 import display.tabs.SimpleTab;
-import engine.AbstractGameController;
+import engine.AbstractGameModelController;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -28,7 +28,7 @@ public abstract class ToolBar extends VBox{
 		}
 	}
 	
-	protected void initializeInventory(AbstractGameController controller, TabPane pane) {
+	protected void initializeInventory(AbstractGameModelController controller, TabPane pane) {
 		Map<String, Map<String, String>> templates = controller.getAllDefinedTemplateProperties();
 		for(String s:controller.getInventory()) {
 			ImageView imageView;
