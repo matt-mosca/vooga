@@ -18,6 +18,8 @@ import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
 import factory.MediaPlayerFactory;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
@@ -100,6 +102,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/110 - pokemon center.mp3");
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
+		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 	}
 
 	private void createGridToggle() {
@@ -168,7 +171,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMenuBar);
 		myBottomToolBar = new LevelToolBar(this, controller, myGameEnvironment);
 		rootAdd(myBottomToolBar);
-		volumeSlider = new Slider(0, 100, 5);
+		volumeSlider = new Slider(0, 1, .1);
 		rootAdd(volumeSlider);
 	}
 
