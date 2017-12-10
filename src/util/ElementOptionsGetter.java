@@ -72,34 +72,17 @@ public class ElementOptionsGetter {
         InputStream parameterClassPossibilitiesStream = getClass().getClassLoader()
                 .getResourceAsStream(parameterClassSimpleName + PROPERTIES_EXTENSION);
         if (parameterClassPossibilitiesStream != null) {
-            spriteParameterSubclassProperties.load(parameterClassPossibilitiesStream);
-            String parameterClassFullName = spriteParameter.getType().getName();
-            List<String> subclassOptions = new ArrayList<>();
-            String referenceClassDescription = null;
-            for (String subclassOptionName : spriteParameterSubclassProperties.stringPropertyNames()) {
-                String subclassDescription = spriteParameterSubclassProperties.getProperty(subclassOptionName);
-                classToDescription.put(subclassOptionName, subclassDescription);
-                descriptionToClass.put(subclassDescription, subclassOptionName);
-                if (!subclassOptionName.equals(parameterClassFullName)) {
-                    subclassOptions.add(subclassDescription);
-                } else {
-                    referenceClassDescription = subclassDescription;
-                }
-                Map<String, Class> parameterDescriptions = spriteMemberParametersMap.getOrDefault
-                        (subclassOptionName, new HashMap<>());
-                loadTranslationsForSpriteParameter(subclassOptionName, parameterDescriptions);
-                spriteMemberParametersMap.put(subclassOptionName, parameterDescriptions);
-            }
-            spriteParameterSubclassOptions.put(referenceClassDescription != null ?
-                    referenceClassDescription : parameterClassFullName, subclassOptions);
+            processBehaviorObjectParameterTranslations(spriteParameter,
+                    spriteParameterSubclassProperties, parameterClassPossibilitiesStream);
         } else {
             // DIDNT FIND PROP FILE --> recur on parameter's parameters
             Class parameterClass = spriteParameter.getType();
             Map<String, Class> baseSpriteParameterMap = spriteMemberParametersMap.getOrDefault
                     (SPRITE_BASE_PARAMETER_NAME, new HashMap<>());
-            if (spriteParameter.getAnnotation(ElementProperty.class) != null) {
+            ElementProperty elementProperty = spriteParameter.getAnnotation(ElementProperty.class);
+            if (elementProperty != null && elementProperty.isTemplateProperty()) {
                 // property common to all sprites !!!! eg imageURL
-                String parameterName = spriteParameter.getAnnotation(ElementProperty.class).value();
+                String parameterName = elementProperty.value();
                 baseSpriteParameterMap.put(parameterName, spriteParameter.getType());
                 spriteMemberParametersMap.put(SPRITE_BASE_PARAMETER_NAME, baseSpriteParameterMap);
             }
@@ -109,6 +92,29 @@ public class ElementOptionsGetter {
                 }
             }
         }
+    }
+
+    private void processBehaviorObjectParameterTranslations(Parameter spriteParameter, Properties spriteParameterSubclassProperties, InputStream parameterClassPossibilitiesStream) throws IOException, ReflectiveOperationException {
+        spriteParameterSubclassProperties.load(parameterClassPossibilitiesStream);
+        String parameterClassFullName = spriteParameter.getType().getName();
+        List<String> subclassOptions = new ArrayList<>();
+        String referenceClassDescription = null;
+        for (String subclassOptionName : spriteParameterSubclassProperties.stringPropertyNames()) {
+            String subclassDescription = spriteParameterSubclassProperties.getProperty(subclassOptionName);
+            classToDescription.put(subclassOptionName, subclassDescription);
+            descriptionToClass.put(subclassDescription, subclassOptionName);
+            if (!subclassOptionName.equals(parameterClassFullName)) {
+                subclassOptions.add(subclassDescription);
+            } else {
+                referenceClassDescription = subclassDescription;
+            }
+            Map<String, Class> parameterDescriptions = spriteMemberParametersMap.getOrDefault
+                    (subclassOptionName, new HashMap<>());
+            loadTranslationsForSpriteParameter(subclassOptionName, parameterDescriptions);
+            spriteMemberParametersMap.put(subclassOptionName, parameterDescriptions);
+        }
+        spriteParameterSubclassOptions.put(referenceClassDescription != null ?
+                referenceClassDescription : parameterClassFullName, subclassOptions);
     }
 
     // TODO - refactor
@@ -135,7 +141,7 @@ public class ElementOptionsGetter {
             String parameterTypeSimple = constructorParameter.getType().getSimpleName();
             parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
             descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);
-            parameterDescriptionsToClasses.put(parameterTypeSimple, constructorParameter.getType());
+            //parameterDescriptionsToClasses.put(parameterTypeSimple, constructorParameter.getType());
         }
     }
 

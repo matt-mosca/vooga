@@ -13,7 +13,7 @@ public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
 	private AuthoringController controller;
 	private Map<String, Object> myPossibleProperties;
-	private Map<String, Object> myBaseProperties;
+	private Map<String, String> myBaseProperties;
 	private String myName;
 	private ResourceBundle myResourceBundle;
 	private Map<String, Object> defaultValues;
@@ -64,13 +64,30 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	public void createInitialProperties(Map<String, Class> newMap) {
+		System.out.println(newMap);
 		if (myPossibleProperties.isEmpty()) {
 			myPossibleProperties.put("Name", myName);
 			for (String s : newMap.keySet()) {
 				String def = getDefault(s);
-				if(def != null) myPossibleProperties.put(s, def);
+				if(def != null) {
+					myPossibleProperties.put(s, castAsObject(def));
+				}else {
+					myPossibleProperties.put(s, newMap.get(s));
+				}
 			}
 		} 
+	}
+	
+	private Object castAsObject(String def) {
+		try {
+			return Integer.parseInt(def);
+		}catch(NumberFormatException nonInteger) {
+			try {
+				return Double.parseDouble(def);
+			}catch(NumberFormatException | NullPointerException nonDouble) {
+				return def;
+			}
+		}
 	}
 	
 	public void update(String newProperty, String newValue) {
@@ -89,7 +106,7 @@ public abstract class SpriteImage extends InteractiveObject {
 		myPossibleProperties = newMap;
 	}
 	
-	public void setBaseProperties(Map<String, Object> baseProperties) {
+	public void setBaseProperties(Map<String, String> baseProperties) {
 		myBaseProperties = baseProperties;
 	}
 	

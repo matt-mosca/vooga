@@ -45,7 +45,7 @@ public class PropertiesPane extends TabPane {
 		addUpgrade(myController.getTemplateProperties(imageView.getId()));
 		
 		if(!myController.getAllDefinedElementUpgrades().isEmpty() &&
-				myController.getAllDefinedElementUpgrades().get(imageView.getId()) == null) {
+				myController.getAllDefinedElementUpgrades().get(imageView.getId()) != null) {
 			for(Map<String, Object> upgradeMap : myController.getAllDefinedElementUpgrades().get(imageView.getId())) {
 				addUpgrade(upgradeMap);
 			}
