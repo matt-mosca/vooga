@@ -15,7 +15,8 @@ public abstract class GenericFiringStrategy implements FiringStrategy {
 	private String audioURI;
 
 	public GenericFiringStrategy(
-			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate) {
+			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate,
+			@ElementProperty(value = "audioURI", isTemplateProperty = true) String audioURI) {
 		this.projectileTemplate = projectileTemplate;
 		this.audioURI = audioURI;
 	}
