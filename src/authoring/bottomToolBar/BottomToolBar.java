@@ -93,7 +93,7 @@ public class BottomToolBar extends VBox {
 		}else {
 		newTab.setOnClosed(e->deleteLevel(newLv.getLvNumber()));
 		}
-		newTab.setOnSelectionChanged(e->changeDisplay(newLv.getLvNumber()));
+		newTab.setOnSelectionChanged(e->changeLevel(newLv.getLvNumber()));
 		newLv.attach(newTab);
 		myLevels.add(newLv);
 		myTabPane.getTabs().add(newTab);
@@ -115,11 +115,12 @@ public class BottomToolBar extends VBox {
 		}
 	}
 
-	private void changeDisplay(int i) {
+	public void changeLevel(int i) {
 		currentDisplay = i;
 		myScrollableArea.changeLevel(myGameAreas.get(i-1));
 		myCreated.setDroppable(myGameAreas.get(i-1));
 		myController.createNewLevel(i);
+		//Changes the level
 		myCreated.setGameArea(myGameAreas.get(i-1));
 		updateSpriteDisplay(i);
 	}
@@ -135,15 +136,16 @@ public class BottomToolBar extends VBox {
 		
 	}
 	
-	public void addToLevel(ImageView newSprite, int level) {
-		mySprites.get(level-1).add(newSprite);
-		System.out.println(mySprites.toString());
+
+	
+	public void addToWave(ImageView newSprite, int wave, int amount) {
+		mySprites.get(wave-1).add(newSprite);
 		updateSpriteDisplay(currentDisplay);
 	}
 
-	private void updateSpriteDisplay(int level) {
-		if(!mySprites.get(level-1).isEmpty()) {
-		mySpriteDisplay.addToScroll(mySprites.get(level-1));
+	private void updateSpriteDisplay(int wave) {
+		if(!mySprites.get(wave-1).isEmpty()) {
+			mySpriteDisplay.addToScroll(mySprites.get(wave-1));
 		}
 		else {
 			mySpriteDisplay.clear();
@@ -154,8 +156,8 @@ public class BottomToolBar extends VBox {
 		return myLevels.size();
 	}
 
-	public void addLevelProperties(ImageView currSprite, int level) {
-		myLevels.get(level-1).update(currSprite);
+	public void addLevelProperties(ImageView currSprite, int wave) {
+		myLevels.get(wave-1).update(currSprite);
 		
 	}
 }
