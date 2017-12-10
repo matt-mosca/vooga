@@ -153,7 +153,8 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			tab.removeItem(imageView);
 		}else {
 			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
-			String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
+			String tabType =
+					myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName").toString();
 			if (tabType.equals("Towers")) {
 				newPaneWithProjectileSlot(clone(imageView));
 			}else {
@@ -194,8 +195,10 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		imageBackground.setStyle("-fx-background-color: white");
 		imageBackground.getChildren().add(clone(imageView));
 		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null) {
-			String projectileName = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name");
-			ProjectileImage projectile = new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl"));
+			String projectileName = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get
+					("Projectile Type Name").toString();
+			ProjectileImage projectile = new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties
+					().get(projectileName).get("imageUrl").toString());
 			projectile.resize(projectileSlot.getPrefHeight());
 			projectileSlot.getChildren().add(projectile);
 		}
@@ -241,7 +244,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	private void projectileSelected(ImageView imageView, ImageView projectile) {
 		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
 		projectileSlot.getChildren().add(projectile);
-		Map<String, String> newProperties = new HashMap<>();
+		Map<String, Object> newProperties = new HashMap<>();
 		newProperties.put("Projectile Type Name", projectile.getId());
 		myController.updateElementDefinition(imageView.getId(), newProperties, true);
 	}

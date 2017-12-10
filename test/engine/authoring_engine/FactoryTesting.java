@@ -30,20 +30,26 @@ public class FactoryTesting {
         GameElementFactory sf = new GameElementFactory(new SerializationUtils());
         Map<String, List<String>> baseConfig = sf.getElementBaseConfigurationOptions();
         Scanner in = new Scanner(System.in);
-        Map<String, String> choices = new HashMap<>();
+        Map<String, Object> choices = new HashMap<>();
         for (String k : baseConfig.keySet()) {
             System.out.println(String.format("Pick one of the following options for %s", k));
             baseConfig.get(k).forEach(option -> System.out.println("\t" + option));
             choices.put(k, in.nextLine().trim());
         }
-        for (Map.Entry<String, Class> e : sf.getAuxiliaryElementProperties(choices).entrySet()) {
+        /*for (Map.Entry<String, Class> e : sf.getAuxiliaryElementProperties(choices).entrySet()) {
             System.out.println(String.format("Set %s (%s)", e.getKey(), e.getValue().getName()));
             choices.put(e.getKey(), in.nextLine().trim());
-        }
+        }*/
         sf.defineElement("Tower1", choices);
         JFXPanel jfxPanel = new JFXPanel(); // so that ImageView can be made
-        GameElement tower = sf.generateSprite("Tower1", new Point2D(10,10));
-        System.out.println(tower.getX() + " " + tower.getY());
+        Map<String, Object> auxArgs = new HashMap<>();
+        auxArgs.put("startPoint", new Point2D(0,0));
+        try {
+            GameElement tower = sf.generateElement("Tower1", auxArgs);
+            System.out.println(tower.getX() + " " + tower.getY());
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
     }
 
     public GameElement generateSingleTestSprite() {
@@ -65,9 +71,16 @@ public class FactoryTesting {
         choices.put("imageWidth", "42.0");
         choices.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
         choices.put("imageHeight", "42.0");
-        gameElementFactory.defineElement("test element", choices);
+        Map<String, Object> cc = new HashMap<>(choices);
+        gameElementFactory.defineElement("test element", cc);
         JFXPanel jfxPanel = new JFXPanel(); // so that ImageView can be made
-        return gameElementFactory.generateSprite("test element", new Point2D(0, 0));
+        Map<String, Object> auxArgs = new HashMap<>();
+        auxArgs.put("startPoint", new Point2D(0,0));
+        try {
+            return  gameElementFactory.generateElement("Tower1", auxArgs);
+        } catch (ReflectiveOperationException e) {
+            return null;
+        }
     }
 
     private void testExport(GameElementFactory gameElementFactory) {

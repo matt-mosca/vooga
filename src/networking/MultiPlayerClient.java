@@ -49,6 +49,7 @@ import networking.protocol.PlayerServer.ServerMessage;
 import networking.protocol.PlayerServer.StatusUpdate;
 import networking.protocol.PlayerServer.TemplateProperties;
 import networking.protocol.PlayerServer.Update;
+import util.io.SerializationUtils;
 
 /**
  * Gateway of player in multi-player game to remote back-end data and logic
@@ -66,6 +67,7 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 	private Socket socket;
 	private DataInputStream input;
 	private DataOutputStream outputWriter;
+	private SerializationUtils serializationUtils = new SerializationUtils();
 
 	private Update latestUpdate;
 
@@ -197,18 +199,29 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 	}
 
 	@Override
-	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
+	public Map<String, Object> getTemplateProperties(String elementName) throws IllegalArgumentException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetTemplateProperties(GetTemplateProperties.newBuilder().setElementName(elementName).build())
 				.build().toByteArray());
-		return handleAllTemplatePropertiesResponse(readServerResponse()).values().iterator().next();
+		Map<String, String> templateSerialization =  handleAllTemplatePropertiesResponse(readServerResponse()).values()
+				.iterator().next();
+		Map<String, Object> template = serializationUtils.deserializeElementTemplate(templateSerialization);
+		return template;
 	}
 
 	@Override
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
+	public Map<String, Map<String, Object>> getAllDefinedTemplateProperties() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetAllTemplateProperties(GetAllTemplateProperties.getDefaultInstance()).build().toByteArray());
-		return handleAllTemplatePropertiesResponse(readServerResponse());
+		Map<String, Map<String, String>> templateSerializations = handleAllTemplatePropertiesResponse(readServerResponse());
+		Map<String, Map<String, Object>> templates = new HashMap<>();
+		// TODO - i'm pretty sure i've done Map<String, Map<String, String>> -> Map<String, Map<String, Object>>
+		// multiple times so we should make a method for it in SUtils
+		for (String templateName : templateSerializations.keySet()) {
+			templates.put(templateName,
+					serializationUtils.deserializeElementTemplate(templateSerializations.get(templateName)));
+		}
+		return templates;
 	}
 
 	// TODO - Need to wrap this within LevelInitialized method

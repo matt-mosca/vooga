@@ -129,7 +129,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) {
+	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates)
+			throws ReflectiveOperationException {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
 			// TODO - keep track of the resources that were changed in this cycle, and only
 			// send them to client?
@@ -140,7 +141,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public void upgradeElement(int elementId) throws IllegalArgumentException {
+	public void upgradeElement(int elementId) throws IllegalArgumentException, ReflectiveOperationException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
 		}

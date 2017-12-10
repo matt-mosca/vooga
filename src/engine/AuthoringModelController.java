@@ -97,7 +97,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @throws IllegalArgumentException
 	 *             if the template already exists.
 	 */
-	void defineElement(String elementName, Map<String, String> properties) throws IllegalArgumentException;
+	void defineElement(String elementName, Map<String, Object> properties) throws IllegalArgumentException;
 
 	/**
 	 * Define an upgrade for a previously defined game element.
@@ -112,7 +112,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *             if the element name does not refer to a previously defined
 	 *             element
 	 */
-	void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, String> upgradeProperties)
+	void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, Object> upgradeProperties)
 			throws IllegalArgumentException;
 
 	/**
@@ -130,7 +130,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @throws IllegalArgumentException
 	 *             if the template does not already exist
 	 */
-	void updateElementDefinition(String elementName, Map<String, String> propertiesToUpdate, boolean retroactive)
+	void updateElementDefinition(String elementName, Map<String, Object> propertiesToUpdate, boolean retroactive)
 			throws IllegalArgumentException;
 
 	/**
@@ -152,21 +152,9 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *            the coordinates at which the element should be placed
 	 * @return a unique identifier for the sprite abstraction representing the game
 	 *         element
+	 * @throws ReflectiveOperationException if the element's template did not define all the necessary properties
 	 */
-	NewSprite placeElement(String elementName, Point2D startCoordinates);
-
-	/**
-	 * Place a game element of previously defined type within the game which follows
-	 * a path defined in the authoring environment as it moves.
-	 *
-	 * @param elementName
-	 *            the template name for the element
-	 * @param pathList
-	 *            a list of points the object should target as it moves
-	 * @return a unique identifier for the sprite abstraction representing the game
-	 *         element
-	 */
-	int placePathFollowingElement(String elementName, PathList pathList);
+	NewSprite placeElement(String elementName, Point2D startCoordinates) throws ReflectiveOperationException;
 
 	/**
 	 * Add element of given name
@@ -236,7 +224,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @param propertiesToUpdate
 	 *            a map containing the new properties of the element
 	 */
-	void updateElementProperties(int elementId, Map<String, String> propertiesToUpdate);
+	void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate);
 
 	/**
 	 * Delete a previously created game element.
@@ -275,21 +263,21 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @throws IllegalArgumentException
 	 *             if the element name does not refer to a defined template
 	 */
-	Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException;
+	Map<String, Object> getTemplateProperties(String elementName) throws IllegalArgumentException;
 
 	/**
 	 * Get map of all defined template names to their properties
 	 *
 	 * @return map of template names to properties of each template
 	 */
-	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
+	Map<String, Map<String, Object>> getAllDefinedTemplateProperties();
 
 	/**
 	 * Get all the defined upgrades for elements.
 	 *
 	 * @return a map from an element's template name to a list of its upgrade property maps
 	 */
-	Map<String, List<Map<String, String>>> getAllDefinedElementUpgrades();
+	Map<String, List<Map<String, Object>>> getAllDefinedElementUpgrades();
 
 	/**
 	 * Get the available resources.
@@ -379,11 +367,16 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *            name of elements to spawn
 	 * @param spawningPoint
 	 *            the point at which to spawn the wave
+	 * @throws ReflectiveOperationException if the wave object could not be regenerated with the new properties due
+	 * to the map lacking a necessary properties
 	 */
-	int setWaveProperties(Map<String, ? extends Object> waveProperties, Collection<String> elementNamesToSpawn, Point2D spawningPoint);
+	int setWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn, Point2D
+			spawningPoint)
+			throws ReflectiveOperationException;
 
-	void editWaveProperties(int waveId, Map<String, ? extends Object> updatedProperties, Collection<String> newElementNamesToSpawn,
-			Point2D newSpawningPoint);
+	void editWaveProperties(int waveId, Map<String, Object> updatedProperties, Collection<String>
+			newElementNamesToSpawn,
+			Point2D newSpawningPoint) throws ReflectiveOperationException;
 
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions

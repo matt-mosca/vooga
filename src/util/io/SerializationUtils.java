@@ -77,12 +77,13 @@ public class SerializationUtils {
 	 *            other than the Sprites
 	 * @param levelGameElements
 	 *            the cache of generated sprites for a level
-	 * @param levelGameWaves
+	 * @param levelWaves
 	 * 			the waves for this level
 	 * @return serialization of map of level to serialized level data
 	 */
 	public String serializeGameData(String gameDescription, Map<String, String> gameConditions, Bank gameBank,
-									int level, Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories, List<GameElement> levelWaves) {
+									int level, Map<String, Double> status, List<GameElement> levelGameElements,
+									Set<String> levelInventories, List<GameElement> levelWaves) {
 		Map<String, String> serializedLevelData = new HashMap<>();
 		serializedLevelData.put(Integer.toString(level),
 				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelGameElements, levelInventories, levelWaves, level));
@@ -373,6 +374,40 @@ public class SerializationUtils {
 	}
 
 	public Object deserializeElementProperty(String propertySerialization, Class propertyClass) {
-		return gsonBuilder.create().fromJson(propertySerialization, propertyClass);
+		if (propertyClass != String.class) {
+			return gsonBuilder.create().fromJson(propertySerialization, propertyClass);
+		} else {
+			return propertySerialization;
+		}
+	}
+
+	private final String COMMA = ",";
+	private final int VALUE_INDEX = 0, CLASS_INDEX = 1;
+
+	public Map<String, String> serializeElementTemplate(Map<String, ?> elementTemplate) {
+
+		Map<String, String> serializedTemplate = new HashMap<>();
+		for (String propertyName : elementTemplate.keySet()) {
+			Class propertyClass = elementTemplate.get(propertyName).getClass();
+			String serializedProperty = elementTemplate.get(propertyName) + COMMA + propertyClass.toString();
+			serializedTemplate.put(propertyName, serializedProperty);
+		}
+		return serializedTemplate;
+	}
+
+	public Map<String, Object> deserializeElementTemplate(Map<String, String> elementTemplate) {
+		Map<String, Object> serializedTemplate = new HashMap<>();
+		for (String propertyName : elementTemplate.keySet()) {
+			String[] serializedProperty = elementTemplate.get(propertyName).split(COMMA);
+			Class propertyClass;
+			try {
+				propertyClass = Class.forName(serializedProperty[CLASS_INDEX]);
+			} catch (ClassNotFoundException exception) {
+				propertyClass = String.class;
+			}
+			serializedTemplate.put(propertyName,
+					deserializeElementProperty(serializedProperty[VALUE_INDEX], propertyClass));
+		}
+		return serializedTemplate;
 	}
 }

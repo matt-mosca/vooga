@@ -1,13 +1,11 @@
 package engine.game_elements;
 
 import engine.behavior.ElementProperty;
-import javafx.geometry.Point2D;
 import util.ElementOptionsGetter;
 import util.io.SerializationUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +17,7 @@ import java.util.Map;
  */
 public final class GameElementFactory {
 
-    private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
+    private Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
 
     private ElementOptionsGetter elementOptionsGetter = new ElementOptionsGetter();
     private SerializationUtils serializationUtils;
@@ -29,64 +27,49 @@ public final class GameElementFactory {
     }
 
     /**
-     * Define a new template with specified properties. The template should not use
-     * an identical name as an existing template; updating a template is achieved
-     * with updateElementDefinition().
+     * Define a new template with specified properties. The template should not use an identical name as an existing
+     * template; updating a template is achieved with updateElementDefinition().
      *
      * @param spriteTemplateName the name of the sprite template
      * @param properties         a map of properties for sprites using this template
      * @throws IllegalArgumentException if the template already exists
      */
-    public void defineElement(String spriteTemplateName, Map<String, String> properties)
+    public void defineElement(String spriteTemplateName, Map<String, Object> properties)
             throws IllegalArgumentException {
         if (spriteTemplates.containsKey(spriteTemplateName)) {
             // TODO - custom exception?
             throw new IllegalArgumentException();
         }
         spriteTemplates.put(spriteTemplateName, properties);
-        List<Map<String, String>> templateUpgrades = new ArrayList<>();
-        templateUpgrades.add(properties);
-    }
-
-
-    /**
-     * Generate a sprite from an existing template which specifies its properties.
-     *
-     * @param spriteTemplateName the name of the sprite template
-     * @param startCoordinates
-     * @return a sprite object with properties set to those specified in the
-     * template
-     */
-    public GameElement generateSprite(String spriteTemplateName, Point2D startCoordinates) {
-        return generateSprite(spriteTemplateName, startCoordinates, new HashMap<>());
     }
 
     /**
      * Generate a sprite from an existing template which specifies its properties.
      *
-     * @param spriteTemplateName the name of the sprite template
-     * @param startCoordinates
-     * @param auxiliaryObjects   map of optional objects needed for certain types of elements
-     * @return a sprite object with properties set to those specified in the
-     * template
+     * @param elementTemplateName  the name of the sprite template
+     * @param nonTemplateArguments map of auxiliary, instance-specific objects needed for certain types of elements
+     * @return a sprite object with properties set to those specified in the template
+     * @throws ReflectiveOperationException if there are element arguments not specified in the template or the
+     *                                      auxiliary arguments map
      */
-    public GameElement generateSprite(String spriteTemplateName, Point2D startCoordinates, Map<String, ?> auxiliaryObjects) {
-        Map<String, String> properties = spriteTemplates.getOrDefault(spriteTemplateName, new HashMap<>());
-        GameElement gameElement = generateSprite(properties, auxiliaryObjects);
-        gameElement.setX(startCoordinates.getX());
-        gameElement.setY(startCoordinates.getY());
-        return gameElement;
+    public GameElement generateElement(String elementTemplateName, Map<String, ?> nonTemplateArguments)
+            throws ReflectiveOperationException {
+        Map<String, Object> properties =
+                new HashMap<>(spriteTemplates.getOrDefault(elementTemplateName, new HashMap<>()));
+        properties.putAll(nonTemplateArguments);
+        return generateElement(properties);
     }
 
     // generate a sprite based on a map of string properties and auxiliary elements which are not part of a template
-    GameElement generateSprite(Map<String, String> spriteProperties, Map<String, ?> auxiliaryObjects) {
+    GameElement generateElement(Map<String, ?> properties)
+            throws ReflectiveOperationException {
         Parameter[] spriteConstructionParameters = getSpriteParameters();
         // TODO - check that params are returned in the right order
         Object[] spriteConstructionArguments = new Object[spriteConstructionParameters.length];
         for (int i = 0; i < spriteConstructionArguments.length; i++) {
             Parameter parameter = spriteConstructionParameters[i];
             try {
-                spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(), spriteProperties, auxiliaryObjects);
+                spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(), properties);
             } catch (ReflectiveOperationException reflectionException) {
                 // TODO - throw custom exception or fallback to a default
                 reflectionException.printStackTrace();
@@ -105,43 +88,33 @@ public final class GameElementFactory {
         return GameElement.class.getConstructors()[0].getParameters();
     }
 
-    private Object generateSpriteParameter(Class parameterClass, Map<String, String> properties,
-                                           Map<String, ?> auxiliaryObjects) throws ReflectiveOperationException {
+    private Object generateSpriteParameter(Class parameterClass, Map<String, ?> properties) throws
+            ReflectiveOperationException {
         String chosenSubclassName = elementOptionsGetter.getChosenSubclassName(parameterClass, properties);
         if (chosenSubclassName != null) {
-            return generateBehaviorObject(properties, auxiliaryObjects, chosenSubclassName);
+            return generateBehaviorObject(properties, chosenSubclassName);
         } else {
             // Case where constructor has the main objects encapsulated (i.e., MovementHandler and CollisionHandler)
             // or where constructor has aux parameter encapsulated (but not bottom level behavior object)
-            return generateBehaviorObjectWrapper(parameterClass, properties, auxiliaryObjects);
+            return generateBehaviorWrapper(parameterClass, properties);
         }
     }
 
-    private Object generateBehaviorObject(Map<String, String> properties, Map<String, ?> auxiliaryObjects, String chosenSubclassName) throws ReflectiveOperationException {
+    private Object generateBehaviorObject(Map<String, ?> properties, String chosenSubclassName)
+            throws ReflectiveOperationException {
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
-        List<String> constructorParameterIdentifiers = elementOptionsGetter
-                .getConstructorParameterIdentifiers(chosenParameterSubclass);
-        Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
-                constructorParameterIdentifiers);
+        Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
     }
 
-    private Object generateBehaviorObjectWrapper(Class parameterClass, Map<String, String> properties,
-                                                 Map<String, ?> auxiliaryObjects) throws ReflectiveOperationException {
+    private Object generateBehaviorWrapper(Class parameterClass, Map<String, ?> properties) throws
+            ReflectiveOperationException {
         Constructor[] parameterClassConstructors = parameterClass.getConstructors();
         if (parameterClassConstructors.length > 0) {
             Parameter[] parameters = parameterClassConstructors[0].getParameters();
             Object[] constructorParameters = new Object[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
-                ElementProperty propertyParameterName = parameters[i].getAnnotation(ElementProperty.class);
-                if (propertyParameterName != null) {
-                    constructorParameters[i] =
-                            supplyElementArgument(properties, auxiliaryObjects, propertyParameterName);
-                } else {
-                    // nested behavior object
-                    Class subparameterClass = parameters[i].getType();
-                    constructorParameters[i] = generateSpriteParameter(subparameterClass, properties, auxiliaryObjects);
-                }
+                constructorParameters[i] = supplyConstructorArgument(properties, parameters[i]);
             }
             return parameterClass.getConstructors()[0].newInstance(constructorParameters);
         } else {
@@ -150,37 +123,49 @@ public final class GameElementFactory {
         }
     }
 
-    private Object supplyElementArgument(Map<String, String> properties, Map<String, ?> auxiliaryObjects,
-                                        ElementProperty propertyParameterName) {
-        if (propertyParameterName.isTemplateProperty()) {
-            String propertyArgument = properties.get(propertyParameterName.value());
-            return setConstructorParameter(propertyArgument);
+    private Object supplyConstructorArgument(Map<String, ?> properties,
+                                             Parameter parameter) throws ReflectiveOperationException {
+        ElementProperty propertyParameterName = parameter.getAnnotation(ElementProperty.class);
+        if (propertyParameterName != null) {
+            //if (propertyParameterName.isTemplateProperty()) {
+                // String propertyArgument = properties.get(propertyParameterName.value());
+                return properties.get(propertyParameterName.value());
+            /*} else {
+                return nonTemplateArguments.get(propertyParameterName.value());
+            }*/
         } else {
-            return auxiliaryObjects.get(propertyParameterName.value());
+            // nested behavior object
+            return generateSpriteParameter(parameter.getType(), properties);
         }
     }
 
-    private Object[] getParameterConstructorArguments(Map<String, String> properties, Map<String, ?> auxiliaryObjects,
-                                                      List<String> constructorParameterIdentifiers) throws ReflectiveOperationException {
-        Object[] constructorParameters = new Object[constructorParameterIdentifiers.size()];
-        for (int i = 0; i < constructorParameters.length; i++) {
-            String parameterIdentifier = constructorParameterIdentifiers.get(i);
+    private Object[] getConstructorArguments(Map<String, ?> properties, Class chosenParameterSubclass)
+            throws ReflectiveOperationException {
+        Parameter[] constructorParameters = chosenParameterSubclass.getConstructors()[0].getParameters();
+        List<String> parameterIdentifiers =
+                elementOptionsGetter.getConstructorParameterIdentifiers(constructorParameters);
+        Object[] constructorArguments = new Object[parameterIdentifiers.size()];
+        for (int i = 0; i < constructorArguments.length; i++) {
+            String parameterIdentifier = parameterIdentifiers.get(i);
             String parameterDescription = elementOptionsGetter.translateParameterToDescription(parameterIdentifier);
             // TODO - this should change now that everything should be a part of the map
-            if (!properties.containsKey(parameterDescription)) {
-                constructorParameters[i] = auxiliaryObjects.get(parameterIdentifier);
+            /*if (!properties.containsKey(parameterDescription)) {
+                constructorArguments[i] = nonTemplateArguments.get(parameterIdentifier);
                 // TODO - throw exception if aux objects doesn't contain key
-            } else {
-                String propertyValueAsString = properties.get(parameterDescription);
-                constructorParameters[i] = setConstructorParameter(propertyValueAsString);
-            }
+            } else {*/
+                //String propertyValueAsString = properties.get(parameterDescription);
+                //Class parameterClass = constructorParameters[i].getType();
+                constructorArguments[i] = properties.get(parameterDescription);//setConstructorParameter
+            // (propertyValueAsString,
+            // parameterClass);
+            //}
         }
-        return constructorParameters;
+        return constructorArguments;
     }
 
     // TODO - make more elegant if possible
-    private Object setConstructorParameter(String propertyValueAsString) {
-        try {
+    private Object setConstructorParameter(String propertyValueAsString, Class propertyClass) {
+        /*try {
             return Integer.parseInt(propertyValueAsString);
         } catch (NumberFormatException nonIntegerProperty) {
             try {
@@ -188,9 +173,11 @@ public final class GameElementFactory {
             } catch (NumberFormatException | NullPointerException nonDoubleProperty) {
                 return propertyValueAsString;
             }
-        }
+        }*/
+        return serializationUtils.deserializeElementProperty(propertyValueAsString, propertyClass);
     }
 
+    // todo - refactor these out
     /**
      * Obtain the base configuration options for sprites; specifically, obtain
      * descriptive names for the subclass options for the sprite's construction
@@ -219,20 +206,21 @@ public final class GameElementFactory {
      * new specified values. Should not be used to create a new template, the
      * defineElement method should be used for that.
      *
-     * @param spriteTemplateName - the name of the sprite template to update
-     * @param propertiesToUpdate - map of property keys to update and their new values
+     * @param spriteTemplateName the name of the sprite template to update
+     * @param propertiesToUpdate map of property keys to update and their new values
      * @throws IllegalArgumentException if the template does not already exist
      */
-    public void updateElementDefinition(String spriteTemplateName, Map<String, String> propertiesToUpdate)
+    public void updateElementDefinition(String spriteTemplateName, Map<String, ?> propertiesToUpdate)
             throws IllegalArgumentException {
         if (!spriteTemplates.containsKey(spriteTemplateName)) {
             // TODO - custom exception?
             throw new IllegalArgumentException();
         }
-        Map<String, String> outdatedTemplateProperties = spriteTemplates.get(spriteTemplateName);
+        Map<String, Object> outdatedTemplateProperties = spriteTemplates.get(spriteTemplateName);
         for (String propertyToUpdate : propertiesToUpdate.keySet()) {
             outdatedTemplateProperties.put(propertyToUpdate, propertiesToUpdate.get(propertyToUpdate));
         }
+        outdatedTemplateProperties.putAll(propertiesToUpdate);
     }
 
     /**
@@ -249,7 +237,7 @@ public final class GameElementFactory {
         spriteTemplates.remove(spriteTemplateName);
     }
 
-    public Map<String, String> getTemplateProperties(String spriteTemplateName) throws IllegalArgumentException {
+    public Map<String, Object> getTemplateProperties(String spriteTemplateName) throws IllegalArgumentException {
         if (!spriteTemplates.containsKey(spriteTemplateName)) {
             // TODO - custom exception?
             throw new IllegalArgumentException();
@@ -262,7 +250,7 @@ public final class GameElementFactory {
      *
      * @return map of template names to their properties
      */
-    public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
+    public Map<String, Map<String, Object>> getAllDefinedTemplateProperties() {
         return new HashMap<>(spriteTemplates);
     }
 
@@ -271,7 +259,7 @@ public final class GameElementFactory {
      *
      * @param loadedTemplates the previously refined templates loaded in from memory
      */
-    public void loadSpriteTemplates(Map<String, Map<String, String>> loadedTemplates) {
+    public void loadSpriteTemplates(Map<String, Map<String, Object>> loadedTemplates) {
         spriteTemplates.putAll(loadedTemplates);
     }
 }

@@ -245,7 +245,8 @@ class MultiPlayerController {
 		}
 	}
 
-	void placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+	void placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
+			throws ReflectiveOperationException {
 		if (clientMessage.hasPlaceElement()) {
 			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to place element without belonging to a
@@ -256,7 +257,8 @@ class MultiPlayerController {
 		}
 	}
 
-	void upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+	void upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) throws
+			ReflectiveOperationException {
 		if (clientMessage.hasUpgradeElement()) {
 			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to upgrade element without belonging to
@@ -317,7 +319,7 @@ class MultiPlayerController {
 		}
 	}
 
-	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) {
+	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) throws ReflectiveOperationException {
 		System.out.println("ClientId: " + clientId);
 		// Dispatch appropriate method - TODO : Reflection ?
 		try {
