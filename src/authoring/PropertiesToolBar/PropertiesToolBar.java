@@ -63,7 +63,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	private ScreenDisplay myDisplay;
 	private AddNewButton myNewButton;
 	private PropertiesBox myPropertiesBox;
-	private Pane propertiesPane;
+	private PropertiesPane propertiesPane;
 	private Label projectileLabel;
 	private HBox projectileSlot;
 	private Button deleteButton;
@@ -161,35 +161,21 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			}
 		}
 	}
-	private void newPropertiesPane() {
-		propertiesPane = new Pane();
-		myWaveAdder = new AddToWaveButton(this);
-//		myLevelAdder = new AddToLevelButton(this);
-		deleteButton = new Button("Back");
+	
+
+	private PropertiesPane newPane(ImageView imageView) {
+		this.getChildren().clear();
+		propertiesPane = new PropertiesPane(this, clone(imageView), myPropertiesBox);
+		this.getChildren().add(propertiesPane);
+		this.getChildren().add(bottomTabPane);
+		return propertiesPane;
 	}
+	
 	private void newPaneWithProjectileSlot(ImageView imageView) {
-		/**
-		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
-		 */
 		projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
-		projectileSlot = new HBox();
-		projectileSlot.setPrefWidth(50);
-		projectileSlot.setPrefHeight(50);
-		projectileSlot.setLayoutY(170);
-		projectileSlot.setStyle("-fx-background-color: white");
-		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow(clone(imageView)));
-		propertiesPane = new Pane();
-	    myWaveAdder = new AddToWaveButton(this);
-	    myCost = new CostButton(this, imageView);
-	    myLevelAdder = new AddToLevelButton(this);
-		deleteButton = new Button("Back");
-		deleteButton.setLayoutX(370);
-		Label info = new Label("Properties here");
-		info.setLayoutY(100);
-		info.setFont(new Font("Arial", 30));
-		myPropertiesBox.setLayoutX(100);
-		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
+		projectileSlot = new ProjectileSlot(this, clone(imageView));
+		propertiesPane = newPane(clone(imageView));
 		HBox imageBackground = new HBox();
 		imageBackground.setStyle("-fx-background-color: white");
 		imageBackground.getChildren().add(clone(imageView));
@@ -200,19 +186,11 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			projectileSlot.getChildren().add(projectile);
 		}
 		propertiesPane.getChildren().add(imageBackground);
-		propertiesPane.getChildren().add(deleteButton);
-		propertiesPane.getChildren().add(myPropertiesBox);
 		propertiesPane.getChildren().add(projectileLabel);
 		propertiesPane.getChildren().add(projectileSlot);
-		propertiesPane.getChildren().add(myWaveAdder);
-		propertiesPane.getChildren().add(myCost);
-		propertiesPane.getChildren().add(myLevelAdder);
-		this.getChildren().removeAll(this.getChildren());
-		this.getChildren().add(propertiesPane);
-		this.getChildren().add(bottomTabPane);
 	}
 	
-	private void newProjectilesWindow(ImageView myTowerImage) {
+	protected void newProjectilesWindow(ImageView myTowerImage) {
 		ScrollPane projectilesWindow = new ScrollPane();
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
 		if (availableProjectiles.isEmpty()) {
@@ -245,29 +223,8 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		newProperties.put("Projectile Type Name", projectile.getId());
 		myController.updateElementDefinition(imageView.getId(), newProperties, true);
 	}
-
-	private void newPane(ImageView imageView) {
-//		myPropertiesBox = new PropertiesBox(created, imageView);
-		propertiesPane = new Pane();
-		myWaveAdder = new AddToWaveButton(this);
-		myCost = new CostButton(this, imageView);
-		Button deleteButton = new Button("Back");
-		deleteButton.setLayoutX(350);
-		Label info = new Label("Properties here");
-		info.setLayoutY(100);
-		info.setFont(new Font("Arial", 30));
-		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
-		propertiesPane.getChildren().add(clone(imageView));
-		propertiesPane.getChildren().add(deleteButton);
-		propertiesPane.getChildren().add(myPropertiesBox);
-		this.getChildren().removeAll(this.getChildren());
-		this.getChildren().add(propertiesPane);
-		this.getChildren().add(bottomTabPane);
-		propertiesPane.getChildren().add(myWaveAdder);
-		propertiesPane.getChildren().add(myCost);
-	}
 	
-	private void removeButtonPressed() {
+	protected void removeButtonPressed() {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(topTabPane);
 		this.getChildren().add(bottomTabPane);
