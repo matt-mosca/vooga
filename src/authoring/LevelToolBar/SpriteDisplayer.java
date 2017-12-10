@@ -16,14 +16,14 @@ public class SpriteDisplayer extends ScrollPane {
 	public SpriteDisplayer() {
 		myBox = new HBox();
 		myBox.setPrefWidth(400);
-		myBox.setPrefHeight(100);
+		myBox.setPrefHeight(70);
 		myBox.setStyle("-fx-background-color: #336699;");
 		this.setContent(myBox);
 	}
 	
-	public void addToScroll(List<ImageView> newSprites) {
+	public void addToScroll(List<ImageView> newImage) {
 		clear();
-		myBox.getChildren().addAll(newSprites);
+		myBox.getChildren().addAll(newImage);
 		this.setContent(myBox);
 	}
 

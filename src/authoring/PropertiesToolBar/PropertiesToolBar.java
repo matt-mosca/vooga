@@ -301,14 +301,15 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         myVBox.getChildren().add(amountField);
         Button submitButton = new Button("Submit");
         submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-        		e->submitToWaves(waveAndLevelField.getText().split(" "), 
+        		e->submitToWaves(waveAndLevelField.getText().split("\\s+"), 
         				Integer.valueOf(amountField.getText())));
         myVBox.getChildren().add(submitButton);
 	}
 	
 	private void submitToWaves(String[] levelsAndWaves, int amount) {
+		System.out.println(levelsAndWaves[0]);
         for (int i = 0; i < levelsAndWaves.length; i++) {
-        	String[] currLevelAndWave = levelsAndWaves[i].split(".");
+        	String[] currLevelAndWave = levelsAndWaves[i].split("\\.");
     		display.submit(Integer.valueOf(currLevelAndWave[0]), 
     				Integer.valueOf(currLevelAndWave[1]), amount, clone(myPropertiesBox.getCurrSprite()));
         }

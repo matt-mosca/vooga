@@ -24,8 +24,9 @@ public class LevelToolBar extends VBox {
 	private AuthoringController myController;
 	private TabPane myTabPane;
 	private List<LevelTab> myLevels;
+	private List<WavesDisplay> myWaves;
 	private List<GameArea> myGameAreas;
-	private List<List<ImageView>> mySprites;
+	private List<List<List<ImageView>>> mySpriteList;
 	private ScrollableArea myScrollableArea;
 	private TabFactory tabMaker;
 	private final int X_LAYOUT = 260;
@@ -34,7 +35,9 @@ public class LevelToolBar extends VBox {
 	private Button editLevel;
 	private int currentDisplay;
 	private EditDisplay myCreated;
-	private SpriteDisplayer mySpriteDisplay;
+	private WavesDisplay currWavesDisplay;
+//	private SpriteDisplayer mySpriteDisplay;
+//	private WavesDisplay myWavesDisplay;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -49,14 +52,20 @@ public class LevelToolBar extends VBox {
 		this.setLayoutY(Y_LAYOUT);
 		this.setWidth(400);
 		myLevels = new ArrayList<>();
-		mySprites = new ArrayList<>();
-		mySprites.add(new ArrayList<>());
+		mySpriteList = new ArrayList<>();
+		mySpriteList.add(new ArrayList<>());
 		newLevel = new Button("New Level");
 		newLevel.setOnAction(e -> addLevel());
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
-		mySpriteDisplay = new SpriteDisplayer();
-		this.getChildren().add(mySpriteDisplay);
+		myWaves =  new ArrayList<WavesDisplay>();
+		myWaves.add(new WavesDisplay());
+		this.getChildren().add(myWaves.get(0));
+		currWavesDisplay = myWaves.get(0);
+//		myWavesDisplay = new WavesDisplay();
+//		this.getChildren().add(myWavesDisplay);
+//		mySpriteDisplay = new SpriteDisplayer();
+//		this.getChildren().add(mySpriteDisplay);
 		myTabPane.setMaxSize(400, 100);
 		myTabPane.setPrefSize(400, 100);
 		editLevel = new Button("Edit Level");
@@ -86,9 +95,9 @@ public class LevelToolBar extends VBox {
 	}
 
 	private void addLevel() {
-		mySprites.add(new ArrayList<>());
+		mySpriteList.add(new ArrayList<>());
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size() + 1), null, myTabPane);
-		newTab.setContent(mySpriteDisplay);
+//		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(myLevels.size() + 1, myController);
 		myGameAreas.add(new GameArea(myController));
 		myController.setLevel(myLevels.size() + 1);
@@ -101,6 +110,7 @@ public class LevelToolBar extends VBox {
 		newLv.attach(newTab);
 		myLevels.add(newLv);
 		myTabPane.getTabs().add(newTab);
+		myWaves.add(new WavesDisplay());
 	}
 
 	// TODO need load in static object rather than just imageview
@@ -120,39 +130,45 @@ public class LevelToolBar extends VBox {
 	}
 
 	public void changeLevel(int i) {
+		this.getChildren().remove(currWavesDisplay);
 		currentDisplay = i;
 		myScrollableArea.changeLevel(myGameAreas.get(i - 1));
 		myCreated.setDroppable(myGameAreas.get(i - 1));
 		myController.setLevel(i);
 		myCreated.setGameArea(myGameAreas.get(i - 1));
 		updateSpriteDisplay(i);
+		currWavesDisplay = myWaves.get(i-1);
+		this.getChildren().add(currWavesDisplay);
 	}
 
 	private void deleteLevel(int lvNumber) {
 		myController.deleteLevel(lvNumber);
 		myLevels.remove(lvNumber - 1);
 		myGameAreas.remove(lvNumber - 1);
+		myWaves.remove(lvNumber - 1);
 		for (int i = lvNumber - 1; i < myLevels.size(); i++) {
 			myLevels.get(i).decrementLevel();
 			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i + 1));
 		}
+		
 
 	}
 	
 
 	
 	public void addToWave(ImageView newSprite, int wave, int amount) {
-		mySprites.get(wave-1).add(newSprite);
+//		mySprites.get(wave-1).add(newSprite);
 		updateSpriteDisplay(currentDisplay);
+		myWaves.get(currentDisplay - 1).updateLevel(newSprite, wave);
 	}
 
 	private void updateSpriteDisplay(int wave) {
-		if (!mySprites.get(wave-1).isEmpty()) {
-			mySpriteDisplay.addToScroll(mySprites.get(wave-1));
-		}
-		else {
-			mySpriteDisplay.clear();
-		}
+//		if (!mySprites.get(wave-1).isEmpty()) {
+//			mySpriteDisplay.addToScroll(mySprites.get(wave-1));
+//		}
+//		else {
+//			mySpriteDisplay.clear();
+//		}
 	}
 
 	public int getMaxLevel() {
