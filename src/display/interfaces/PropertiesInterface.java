@@ -11,8 +11,8 @@ public interface PropertiesInterface {
 
 	public void imageSelected(SpriteImage imageView);
 
-	public void addToWave();
+	public void addToWave(ImageView imageView);
 
-	public void addToLevel();
+	public void addToLevel(ImageView imageView);
 
 }
