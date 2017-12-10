@@ -57,6 +57,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private List<String> levelDescriptions = new ArrayList<>();
 	private List<Bank> levelBanks = new ArrayList<>();
 	private List<Set<String>> levelInventories = new ArrayList<>();
+	private List<List<GameElement>> levelWaves = new ArrayList<>();
 
 	// TODO - move these into own object? Or have them in the sprite factory?
 	private AtomicInteger spriteIdCounter;
@@ -101,7 +102,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			serializedLevelsData.put(level,
 					getIoController().getLevelSerialization(level, getLevelDescriptions().get(level),
 							getLevelConditions().get(level), getLevelBanks().get(level), getLevelStatuses().get(level),
-							levelSpritesCache.get(level), levelInventories.get(level)));
+							levelSpritesCache.get(level), levelInventories.get(level), levelWaves.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
@@ -145,6 +146,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		this.gameName = gameName;
 	}
 
+	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
 		try {
 			// Want to load as author to get total number of levels for actual game
@@ -306,6 +308,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	protected List<Bank> getLevelBanks() {
 		return levelBanks;
 	}
+	
+	protected List<List<GameElement>> getLevelWaves() {
+		return levelWaves;
+	}
 
 	protected void loadLevelData(String saveName, int level, boolean originalGame) throws FileNotFoundException {
 		loadGameStateElementsForLevel(saveName, level, originalGame);
@@ -314,6 +320,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		loadGameDescriptionForLevel(saveName, level);
 		loadGameBankForLevel(saveName, level, originalGame);
 		loadGameInventoryElementsForLevel(saveName, level, originalGame);
+		loadGameWavesForLevel(saveName, level);
 	}
 
 	protected GameElementFactory getGameElementFactory() {
@@ -423,6 +430,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		assertValidLevel(level);
 		addOrSetLevelData(levelBanks, ioController.loadGameBank(savedGameName, level, originalGame), level);
 	}
+	
+	private void loadGameWavesForLevel(String savedGameName, int level) throws FileNotFoundException {
+		assertValidLevel(level);
+		addOrSetLevelData(levelWaves, ioController.loadGameWaves(savedGameName, level), level);
+	}
 
 	private boolean isAuthoring() {
 		// TODO - remove the forAuthoring param from ioController method so we don't
@@ -450,6 +462,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelInventories().add(new HashSet<>());
 		getLevelDescriptions().add(new String());
 		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
+		getLevelWaves().add(new ArrayList<>());
 		initializeLevelConditions();
 	}
 

@@ -371,9 +371,9 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @param spawningPoint
 	 *            the point at which to spawn the wave
 	 */
-	void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn, Point2D spawningPoint);
+	int setWaveProperties(Map<String, ? extends Object> waveProperties, Collection<String> elementNamesToSpawn, Point2D spawningPoint);
 
-	void editWaveProperties(int waveId, Map<String, String> updatedProperties, Collection<String> newElementNamesToSpawn,
+	void editWaveProperties(int waveId, Map<String, ? extends Object> updatedProperties, Collection<String> newElementNamesToSpawn,
 			Point2D newSpawningPoint);
 
 	/**
