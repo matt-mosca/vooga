@@ -75,6 +75,8 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
     private AddToWaveButton myWaveAdder;
     private CostButton myCost;
     private AddToLevelButton myLevelAdder;
+    private VBox myVBox;
+    private Stage waveStage;
 
 	private List<SpriteImage> availableProjectiles;
 
@@ -281,36 +283,36 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	@Override
 	public void addToWave() {
 		int maxLevel = display.getMaxLevel();
-		Stage waveStage = new Stage();
+		waveStage = new Stage();
 		waveStage.setTitle("CheckBox Experiment 1");
-        VBox myVBox = new VBox();
-
-        for (int i = 1; i <= maxLevel; i++) {
-        	CheckBox myCheckBox = new CheckBox(Integer.toString(i));
-        	myVBox.getChildren().add(myCheckBox);
-        }
-        TextField amountField = new TextField();
-        amountField.setPromptText("How many of this Sprite?");
-        myVBox.getChildren().add(amountField);
-        Button submitButton = new Button("Submit");
-        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage));
-        myVBox.getChildren().add(submitButton);
-        Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
+        myVBox = new VBox();
+        createTextFields();
+        Scene scene = new Scene(myVBox, 200, 100);
         waveStage.setScene(scene);
         waveStage.show();
 	}
 	
-	private void submitToWaves(VBox myVBox, Stage waveStage) {
-		for (Node n : myVBox.getChildren()) {
-			if (n instanceof CheckBox) {
-				CheckBox c = (CheckBox) n;
-				if (c.isSelected()) {
-//					for (int i = 0; i < integer; i++) {
-						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()), 1);
-//					}
-				}
-			}
-		}
+	private void createTextFields() {
+        TextField waveAndLevelField = new TextField();
+        waveAndLevelField.setPromptText("Which level and waves? Seperate by commas");
+        TextField amountField = new TextField();
+        amountField.setPromptText("How many of this Sprite?");
+        myVBox.getChildren().add(waveAndLevelField);
+        myVBox.getChildren().add(amountField);
+        Button submitButton = new Button("Submit");
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+        		e->submitToWaves(waveAndLevelField.getText().split("\\s+"), 
+        				Integer.valueOf(amountField.getText())));
+        myVBox.getChildren().add(submitButton);
+	}
+	
+	private void submitToWaves(String[] levelsAndWaves, int amount) {
+		System.out.println(levelsAndWaves[0]);
+        for (int i = 0; i < levelsAndWaves.length; i++) {
+        	String[] currLevelAndWave = levelsAndWaves[i].split("\\.");
+    		display.submit(Integer.valueOf(currLevelAndWave[0]), 
+    				Integer.valueOf(currLevelAndWave[1]), amount, clone(myPropertiesBox.getCurrSprite()));
+        }
 		waveStage.hide();
 	}
 	
