@@ -53,6 +53,7 @@ import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.Update;
 import util.io.SerializationUtils;
 import util.protocol.ClientMessageUtils;
+import display.factory.ButtonFactory;
 import display.splashScreen.ScreenDisplay;
 import display.splashScreen.SplashPlayScreen;
 import display.sprites.StaticObject;
@@ -65,6 +66,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private InventoryToolBar myInventoryToolBar;
 	private TransitorySplashScreen myTransition;
+	private WinScreen myWinScreen;
+	private GameOverScreen myGameOver;
 	private Scene myTransitionScene;
 	private VBox myLeftBar;
 	private PlayArea myPlayArea;
@@ -79,6 +82,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private MediaPlayer mediaPlayer;
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
+	
+//	private ButtonFactory buttonMaker;
+//	private Button testButton;
 
 	private int level = 1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
@@ -92,9 +98,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
+		
+//		buttonMaker = new ButtonFactory();
+//		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> openSesame(stage));
+		
 		myController = isMultiPlayer ? new MultiPlayerClient(new SerializationUtils()) : new PlayController();
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
+		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
+		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
 		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
 		hud = new HUD(width);
@@ -117,8 +129,12 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
-
 	}
+	
+//	private void openSesame(Stage stage) {
+//		stage.setScene(myWinScreen.getScene());
+//		stage.setScene(myGameOver.getScene());
+//	}
 
 	public void tester() {
 		for (int i = 0; i < 100; i++) {
@@ -215,6 +231,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		play.setText("Play");
 		rootAdd(play);
 		play.setLayoutY(pause.getLayoutY() + 30);
+		
+//		rootAdd(testButton);
+//		testButton.setLayoutY(play.getLayoutY() + 30);
 	}
 
 	private void step() {
