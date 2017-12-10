@@ -97,14 +97,26 @@ public class ServerMessageUtils {
 		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
 	}
 
+	public Collection<NewSprite> packageNewSprites(Map<Integer, GameElement> newSprites) {
+		return packageSprites(newSprites, (newSprite, newSpriteId) -> packageNewSprite(newSprite, newSpriteId));
+	}
+	
+	public NewSprite packageNewSprite(GameElement newSprite, int spriteId) {
+		return NewSprite.newBuilder().setSpriteId(spriteId).setImageURL(newSprite.getImageUrl())
+				.setImageHeight(newSprite.getGraphicalRepresentation().getFitHeight())
+				.setImageWidth(newSprite.getGraphicalRepresentation().getFitWidth()).setSpawnX(newSprite.getX())
+				.setSpawnY(newSprite.getY()).build();
+	}
+
+	public SpriteUpdate packageUpdatedSprite(GameElement spriteToUpdate, int spriteId) {
+		return SpriteUpdate.newBuilder().setSpriteId(spriteId).setNewX(spriteToUpdate.getX())
+				.setNewY(spriteToUpdate.getY()).build();
+	}
+
 	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay, int currentLevel) {
 		// Just always send status update for now
 		return StatusUpdate.newBuilder().setLevelCleared(levelCleared).setIsWon(isWon).setIsLost(isLost)
 				.setInPlay(inPlay).setCurrentLevel(currentLevel).build();
-	}
-
-	public Collection<NewSprite> packageNewSprites(Map<Integer, GameElement> newSprites) {
-		return packageSprites(newSprites, (newSprite, newSpriteId) -> packageNewSprite(newSprite, newSpriteId));
 	}
 
 	private Collection<SpriteUpdate> packageUpdatedSprites(Map<Integer, GameElement> updatedSprites) {
@@ -122,18 +134,6 @@ public class ServerMessageUtils {
 		return spriteMap.entrySet().stream()
 				.map(spriteEntry -> spriteFunction.apply(spriteEntry.getValue(), spriteEntry.getKey()))
 				.collect(Collectors.toList());
-	}
-
-	public NewSprite packageNewSprite(GameElement newSprite, int spriteId) {
-		return NewSprite.newBuilder().setSpriteId(spriteId).setImageURL(newSprite.getImageUrl())
-				.setImageHeight(newSprite.getGraphicalRepresentation().getFitHeight())
-				.setImageWidth(newSprite.getGraphicalRepresentation().getFitWidth()).setSpawnX(newSprite.getX())
-				.setSpawnY(newSprite.getY()).build();
-	}
-
-	private SpriteUpdate packageUpdatedSprite(GameElement spriteToUpdate, int spriteId) {
-		return SpriteUpdate.newBuilder().setSpriteId(spriteId).setNewX(spriteToUpdate.getX())
-				.setNewY(spriteToUpdate.getY()).build();
 	}
 
 	private SpriteDeletion packageDeletedSprite(GameElement spriteToDelete, int spriteId) {

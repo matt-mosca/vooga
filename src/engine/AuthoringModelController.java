@@ -4,6 +4,7 @@ import util.path.PathList;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteUpdate;
 
 import java.io.File;
 import java.io.IOException;
@@ -225,7 +226,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @param yCoordinate
 	 *            the new vertical position of the element within the game
 	 */
-	void moveElement(int elementId, double xCoordinate, double yCoordinate);
+	SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate);
 
 	/**
 	 * Update the properties of a particular game element, without changing the
