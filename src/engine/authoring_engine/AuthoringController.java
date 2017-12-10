@@ -1,5 +1,6 @@
 package engine.authoring_engine;
 
+import exporting.Publisher;
 import util.path.PathList;
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
@@ -7,6 +8,7 @@ import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
 import exporting.Packager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,9 +32,7 @@ import com.google.gson.GsonBuilder;
 public class AuthoringController extends AbstractGameController implements AuthoringModelController {
 
 	private Packager packager;
-	// Making a hard-coded map just so we can test in the front end with author and
-	// player
-	// We'll fix it soon
+	private Publisher publisher;
 
 	private final String WAVE = "wave_";
 
@@ -53,8 +53,18 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void exportGame() {
 		getSpriteTemplateIoHandler().exportSpriteTemplates(getGameName(),
 				getGameElementFactory().getAllDefinedTemplateProperties());
-		// packager.generateJar(getGameName());
-		// need to supply more args ^ once testing is done
+		try {
+			if (publisher == null) {
+				publisher = new Publisher();
+			}
+			String pathToExportedJar = packager.generateJar(getGameName());
+			String urlForSharedJar = publisher.uploadExportedJar(pathToExportedJar);
+			// TODO - push the link to Facebook
+		} catch (IOException failedToExportOrPublishException) {
+			// TODO - handle
+			// this one does have a custom message set already (getMessage()) but
+			// it's hard coded as a final string
+		}
 	}
 
 	public void setGameDescription(String gameDescription) {

@@ -30,6 +30,6 @@ public class AuthoringControllerTesting {
         choices.put("Projectile Type Name", "fake name");
         authoringController.defineElement("test element", choices);
         JFXPanel jfxPanel = new JFXPanel(); // so that ImageView can be made
-        int id = authoringController.placeElement("test element", new Point2D(0, 0));
+        // int id = authoringController.placeElement("test element", new Point2D(0, 0));
     }
 }

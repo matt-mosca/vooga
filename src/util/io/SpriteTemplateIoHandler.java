@@ -120,11 +120,14 @@ public class SpriteTemplateIoHandler {
         } else {
             loadTemplatesInsideJar(loadUpgrades, spriteTemplates, directoryPath);
         }
+        System.out.println("\n\n\n\n\nARE YOU FUCKING KIDDING? " + loadUpgrades + " " + spriteTemplates + "\n\n\n\n\n");
         return spriteTemplates;
     }
 
-    private void loadTemplatesInsideJar(boolean loadUpgrades, Map<String, Map<String, String>> spriteTemplates, String directoryPath) throws IOException {
+    private void loadTemplatesInsideJar(boolean loadUpgrades, Map<String, Map<String, String>> spriteTemplates,
+                                        String directoryPath) throws IOException {
         CodeSource src = getClass().getProtectionDomain().getCodeSource();
+        System.out.println(src);
         if (src != null) {
             URL jar = src.getLocation();
             ZipFile zipFile = new ZipFile(jar.getPath());
@@ -159,6 +162,7 @@ public class SpriteTemplateIoHandler {
                 spritePropertiesMap.put(propertyName, spriteProperties.getProperty(propertyName)));
         String templateName = fileName.replace(PROPERTIES_EXTENSION, "");
         spriteTemplates.put(templateName, spritePropertiesMap);
+        System.out.println("Hey bb: " + spriteTemplates);
     }
 
     private void createDirectoryIfNonExistent(String directoryPath) {
