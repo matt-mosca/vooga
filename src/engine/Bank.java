@@ -12,14 +12,9 @@ import java.util.Map;
  */
 public class Bank {
 
-	private Map<String, Double> resourceEndowments;
-	private Map<String, Map<String, Double>> unitCosts;
+	private Map<String, Double> resourceEndowments = new HashMap<>();
+	private Map<String, Map<String, Double>> unitCosts = new HashMap<>();
 
-	public Bank() {
-		resourceEndowments = new HashMap<>();
-		unitCosts = new HashMap<>();
-	}
-	
 	public Bank fromBank() {
 		Bank bankCopy = new Bank();
 		bankCopy.setResourceEndowments(getResourceEndowments());
@@ -32,7 +27,7 @@ public class Bank {
 	}
 	
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
-		this.resourceEndowments = resourceEndowments;
+		this.resourceEndowments = new HashMap<>(resourceEndowments);
 	}
 
 	public void setUnitCost(String unitName, Map<String, Double> costsForUnitName) {
@@ -63,6 +58,10 @@ public class Bank {
 	}
 
 	public Map<String, Map<String, Double>> getUnitCosts() {
+		System.out.println("Unit costs: ");
+		for (String unit : unitCosts.keySet()) {
+			System.out.println("unit: " + unit);
+		}
 		return unitCosts;
 	}
 	
@@ -97,6 +96,6 @@ public class Bank {
 	}
 	
 	private void setUnitCosts(Map<String, Map<String, Double>> unitCosts) {
-		this.unitCosts = unitCosts;
+		this.unitCosts = new HashMap<>(unitCosts);
 	}
 }

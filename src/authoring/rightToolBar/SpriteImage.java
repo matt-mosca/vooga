@@ -52,11 +52,11 @@ public abstract class SpriteImage extends InteractiveObject {
 		}
 		defaultValues.put("imageUrl", imageName);
 		this.setImage(image);
-		this.setId(imageName);
 	}
 	
 	public void setName(String name) {
 		myName = name;
+		this.setId(name);
 	}
 	
 	public String getName() {

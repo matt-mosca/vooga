@@ -1,5 +1,9 @@
 package util.path;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -8,18 +12,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class PathPoint extends Circle{
+public class PathPoint extends Circle implements Serializable {
 	private final static String RADIUS = "Path_Point_Radius";
 	private final static String INACTIVE = "Path_Point_Color";
 	private final static String ACTIVE = "Path_Active_Color";
 	
 	private Map<PathPoint,PathLine> linesToPrev;
 	private Map<PathPoint,PathLine> linesToNext;
-	private ResourceBundle pathProperties;
+	private transient ResourceBundle pathProperties;
 	private boolean active = false;
 	private boolean wasDragged = false;
-	private Color activeColor;
-	private Color inactiveColor;
+	private transient Color activeColor;
+	private transient Color inactiveColor;
 	private int radius;
 	
 	protected PathPoint(double x, double y, Color color) {
@@ -92,4 +96,13 @@ public class PathPoint extends Circle{
 	protected Map<PathPoint, PathLine> getNextLines(){
 		return linesToNext;
 	}
+
+	/*private void writeObject(ObjectOutputStream out) throws IOException {
+
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+	}*/
+
 }

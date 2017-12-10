@@ -3,7 +3,6 @@ package networking;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Collection;
@@ -18,32 +17,49 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import engine.PlayModelController;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
+import networking.protocol.PlayerClient.CheckReadyForNextLevel;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerClient.GetAllTemplateProperties;
 import networking.protocol.PlayerClient.GetAvailableGames;
+import networking.protocol.PlayerClient.GetElementCosts;
 import networking.protocol.PlayerClient.GetGameRooms;
+import networking.protocol.PlayerClient.GetInventory;
+import networking.protocol.PlayerClient.GetLevelElements;
 import networking.protocol.PlayerClient.GetPlayerNames;
+import networking.protocol.PlayerClient.GetTemplateProperties;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.LaunchGameRoom;
 import networking.protocol.PlayerClient.LoadLevel;
+import networking.protocol.PlayerClient.PauseGame;
+import networking.protocol.PlayerClient.PerformUpdate;
+import networking.protocol.PlayerClient.PlaceElement;
+import networking.protocol.PlayerClient.ResumeGame;
+import networking.protocol.PlayerClient.UpgradeElement;
+import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
 import networking.protocol.PlayerServer.GameRoomJoinStatus;
 import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.PlayerNames;
+import networking.protocol.PlayerServer.ResourceUpdate;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.StatusUpdate;
+import networking.protocol.PlayerServer.TemplateProperties;
+import networking.protocol.PlayerServer.Update;
 
 /**
+ * Gateway of player in multi-player game to remote back-end data and logic
+ * Provides abstraction of a local controller / back-end to the player front-end
+ * by providing the same interface
  * 
  * @author radithya
  *
  */
 public class MultiPlayerClient implements PlayModelController { // Is this weird?
 
-	// TODO - Refactor common data / set-up logic of ChatClient and
-	// MultiPlayerClient into
-	// abstract class
 	// get from some properties file
 	private final String SERVER_ADDRESS = "127.0.0.1"; // Change to "152.3.53.39" once uploaded to VM
 	private final int PORT = 9041;
@@ -51,10 +67,13 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 	private DataInputStream input;
 	private DataOutputStream outputWriter;
 
+	private Update latestUpdate;
+
 	// Game client state (keeping track of which multi-player game it is in, etc)
 
 	public MultiPlayerClient() {
 		setupChatSocketAndStreams();
+		latestUpdate = Update.getDefaultInstance();
 	}
 
 	public Map<String, String> getAvailableGames() {
@@ -104,121 +123,141 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 
 	// TODO - Will be modified in interface to return LevelInitialized message
 	@Override
-	public void loadOriginalGameState(String saveName, int level) throws IOException {
+	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setLoadLevel(LoadLevel.newBuilder().setGameName(saveName).setLevel(level)).build().toByteArray());
-		// Return the following line when front end is ready
-		handleLoadOriginalGameStateResponse(readServerResponse());
+		return handleLoadOriginalGameStateResponse(readServerResponse());
 	}
 
 	// Since saving is not allowed, this won't be allowed either
 	@Override
-	public void loadSavedPlayState(String savePlayStateName) throws UnsupportedOperationException {
+	public LevelInitialized loadSavedPlayState(String savePlayStateName) throws UnsupportedOperationException {
 		// TODO - Define custom exception in exceptions properties file and pass that
 		// string here
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void update() {
-		
+	public Update update() {
+		writeRequestBytes(
+				ClientMessage.newBuilder().setPerformUpdate(PerformUpdate.getDefaultInstance()).build().toByteArray());
+		return handleUpdateResponse(readServerResponse());
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
+		writeRequestBytes(
+				ClientMessage.newBuilder().setPauseGame(PauseGame.getDefaultInstance()).build().toByteArray());
+		handleUpdateResponse(readServerResponse());
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
+		writeRequestBytes(
+				ClientMessage.newBuilder().setResumeGame(ResumeGame.getDefaultInstance()).build().toByteArray());
+		handleUpdateResponse(readServerResponse());
 	}
 
 	@Override
 	public boolean isLost() {
-		// TODO Auto-generated method stub
-		return false;
+		return getLatestStatusUpdate().getIsLost();
 	}
 
 	@Override
 	public boolean isLevelCleared() {
-		// TODO Auto-generated method stub
-		return false;
+		return getLatestStatusUpdate().getLevelCleared();
 	}
 
 	@Override
 	public boolean isReadyForNextLevel() {
-		// TODO - implement after corresponding logic has been added on
-		// MultiPlayerController
-		return false; // TEMP
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setCheckReadyForNextLevel(CheckReadyForNextLevel.getDefaultInstance()).build().toByteArray());
+		return handleCheckReadyResponse(readServerResponse());
 	}
 
 	@Override
 	public boolean isWon() {
-		// TODO Auto-generated method stub
-		return false;
+		return getLatestStatusUpdate().getIsWon();
 	}
 
 	@Override
-	public int placeElement(String elementName, Point2D startCoordinates) {
-		// TODO Auto-generated method stub
-		return 0;
+	public NewSprite placeElement(String elementName, Point2D startCoordinates) {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setPlaceElement(PlaceElement.newBuilder().setElementName(elementName)
+						.setXCoord(startCoordinates.getX()).setYCoord(startCoordinates.getY()).build())
+				.build().toByteArray());
+		return handlePlaceElementResponse(readServerResponse());
 	}
 
 	@Override
 	public void upgradeElement(int elementId) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setUpgradeElement(UpgradeElement.newBuilder().setSpriteId(elementId).build()).build().toByteArray());
+		// This request doesn't care about response
 	}
 
 	@Override
 	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setGetTemplateProperties(GetTemplateProperties.newBuilder().setElementName(elementName).build())
+				.build().toByteArray());
+		return handleAllTemplatePropertiesResponse(readServerResponse()).values().iterator().next();
 	}
 
 	@Override
 	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
-		// TODO Auto-generated method stub
-		return null;
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setGetAllTemplateProperties(GetAllTemplateProperties.getDefaultInstance()).build().toByteArray());
+		return handleAllTemplatePropertiesResponse(readServerResponse());
 	}
 
+	// TODO - Need to wrap this within LevelInitialized method
+	@Override 
+	public int getCurrentLevel() {
+		return 1;//TEMP
+	}
+	
 	@Override
 	public Set<String> getInventory() {
-		// TODO Auto-generated method stub
-		return null;
+		writeRequestBytes(
+				ClientMessage.newBuilder().setGetInventory(GetInventory.getDefaultInstance()).build().toByteArray());
+		return handleInventoryResponse(readServerResponse());
 	}
 
-	@Override
-	public ImageView getRepresentationFromSpriteId(int spriteId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	// TODO - Deprecate? Doesn't seem to be used anywhere?
+	@Deprecated
 	@Override
 	public Map<String, Double> getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return new HashMap<>();
 	}
 
 	@Override
 	public Map<String, Double> getResourceEndowments() {
-		// TODO Auto-generated method stub
-		return null;
+		ResourceUpdate resourceUpdate = latestUpdate.hasResourceUpdates() ? latestUpdate.getResourceUpdates()
+				: ResourceUpdate.getDefaultInstance();
+		Map<String, Double> resourcesMap = new HashMap<>();
+		resourceUpdate.getResourcesList()
+				.forEach(resource -> resourcesMap.put(resource.getName(), resource.getAmount()));
+		return resourcesMap;
 	}
 
 	@Override
 	public Map<String, Map<String, Double>> getElementCosts() {
-		// TODO Auto-generated method stub
-		return null;
+		writeRequestBytes(ClientMessage.newBuilder().setGetElementCosts(GetElementCosts.getDefaultInstance()).build()
+				.toByteArray());
+		return handleElementCostsResponse(readServerResponse());
 	}
 
+	// TODO - Will be modified in interface to return Collection<NewSprite>
+	// (NewSprite is a message type)
 	@Override
 	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setGetLevelElements(GetLevelElements.newBuilder().setLevel(level).build()).build().toByteArray());
+		// Replace following line by the commented one after when front end is ready
+		return handleLevelSpritesResponse(readServerResponse()).stream().map(newSprite -> newSprite.getSpriteId())
+				.collect(Collectors.toList());
+		// return handleLevelSpritesResponse(readServerResponse());
 	}
 
 	private Map<String, String> handleAvailableGamesResponse(ServerMessage serverMessage) {
@@ -290,7 +329,7 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		}
 		return new HashSet<>();
 	}
-	
+
 	private LevelInitialized handleLoadOriginalGameStateResponse(ServerMessage serverMessage) {
 		if (serverMessage.hasLevelInitialized()) {
 			LevelInitialized levelInitialized = serverMessage.getLevelInitialized();
@@ -300,6 +339,74 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			return levelInitialized;
 		}
 		return LevelInitialized.getDefaultInstance();
+	}
+
+	private Update handleUpdateResponse(ServerMessage serverMessage) {
+		return getUpdate(serverMessage);
+	}
+
+	private boolean handleCheckReadyResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasReadyForNextLevel()) {
+			return serverMessage.getReadyForNextLevel().getIsReady();
+		}
+		return false;
+	}
+
+	private NewSprite handlePlaceElementResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasElementPlaced()) {
+			return serverMessage.getElementPlaced();
+		}
+		return NewSprite.getDefaultInstance(); // Should be careful not to interpret as having spriteId = 0
+	}
+
+	private Map<String, String> handleTemplatePropertiesResponse(TemplateProperties templateProperties) {
+		Map<String, String> templatePropertiesMap = new HashMap<>();
+		templateProperties.getPropertyList().forEach(
+				templateProperty -> templatePropertiesMap.put(templateProperty.getName(), templateProperty.getValue()));
+		return templatePropertiesMap;
+	}
+
+	private Map<String, Map<String, String>> handleAllTemplatePropertiesResponse(ServerMessage serverMessage) {
+		Map<String, Map<String, String>> allTemplatePropertiesMap = new HashMap<>();
+		serverMessage.getTemplatePropertiesList().forEach(templateProperties -> allTemplatePropertiesMap
+				.put(templateProperties.getElementName(), handleTemplatePropertiesResponse(templateProperties)));
+		return allTemplatePropertiesMap;
+	}
+
+	private Set<String> handleInventoryResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasInventory()) {
+			return serverMessage.getInventory().getTemplatesList().stream().collect(Collectors.toSet());
+		}
+		return new HashSet<>();
+	}
+
+	private Map<String, Map<String, Double>> handleElementCostsResponse(ServerMessage serverMessage) {
+		Map<String, Map<String, Double>> allElementCostsMap = new HashMap<>();
+		serverMessage.getElementCostsList().stream().forEach(elementCosts -> allElementCostsMap
+				.put(elementCosts.getElementName(), handleElementCosts(elementCosts)));
+		return allElementCostsMap;
+	}
+
+	private Map<String, Double> handleElementCosts(ElementCost elementCost) {
+		Map<String, Double> elementCosts = new HashMap<>();
+		elementCost.getCostsList().stream()
+				.forEach(resource -> elementCosts.put(resource.getName(), resource.getAmount()));
+		return elementCosts;
+	}
+
+	private Collection<NewSprite> handleLevelSpritesResponse(ServerMessage serverMessage) {
+		return serverMessage.getLevelSpritesList();
+	}
+
+	private Update getUpdate(ServerMessage serverMessage) {
+		if (serverMessage.hasUpdate()) {
+			return serverMessage.getUpdate();
+		}
+		return Update.getDefaultInstance();
+	}
+
+	private StatusUpdate getLatestStatusUpdate() {
+		return latestUpdate.hasStatusUpdates() ? latestUpdate.getStatusUpdates() : StatusUpdate.getDefaultInstance();
 	}
 
 	private void writeRequestBytes(byte[] requestBytes) {

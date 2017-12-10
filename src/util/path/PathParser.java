@@ -20,12 +20,12 @@ public class PathParser {
 		}
 
 		for(PathPoint next:point.getNextLines().keySet()) {
-			if(!particularPath.add(next)) {
-				paths.add(particularPath);
+			PathList pathCopy = particularPath.clone();
+			if(!pathCopy.add(next)) {
+				paths.add(pathCopy);
 				break;
 			}
-			recursiveParse(paths, particularPath, path, next);
-			particularPath.removeLast();
+			recursiveParse(paths, pathCopy, path, next);
 		}
 	}
 }

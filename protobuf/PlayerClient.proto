@@ -16,10 +16,13 @@ message ClientMessage {
 	optional ResumeGame resumeGame = 9;
 	optional GetInventory getInventory = 10;
 	optional GetTemplateProperties getTemplateProperties = 11;
-	optional PlaceElement placeElement = 12;
-	optional UpgradeElement upgradeElement = 13; // Has no corresponding response? Client doesn't check if upgrade succeeded
-	optional CheckReadyForNextLevel checkReadyForNextLevel = 14;
-	optional LoadLevel loadLevel = 15;
+	optional GetAllTemplateProperties getAllTemplateProperties = 12; // Should deprecate from PlayModelController interface?
+	optional GetElementCosts getElementCosts = 13;
+	optional PlaceElement placeElement = 14;
+	optional UpgradeElement upgradeElement = 15; // Has no corresponding response? Client doesn't check if upgrade succeeded
+	optional CheckReadyForNextLevel checkReadyForNextLevel = 16;
+	optional LoadLevel loadLevel = 17;
+	optional GetLevelElements getLevelElements = 18;
 }
 
 /*
@@ -70,6 +73,12 @@ message GetTemplateProperties {
 	required string elementName = 1;
 }
 
+message GetAllTemplateProperties {
+}
+
+message GetElementCosts {
+}
+
 message PlaceElement {
 	required string elementName = 1;
 	required double xCoord = 2;
@@ -87,5 +96,10 @@ message CheckReadyForNextLevel {
 message LoadLevel {
 	required string gameName = 1;
 	required int32 level = 2;
+}
+
+// Keep level parameter to support extensibility to collaborative editing as above
+message GetLevelElements {
+	required int32 level = 1;
 }
 

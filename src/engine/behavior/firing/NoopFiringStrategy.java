@@ -1,7 +1,5 @@
 package engine.behavior.firing;
 
-import engine.behavior.ParameterName;
-
 /**
  * Represents strategy of not firing at all, applies to sprites whose firing is
  * to be disabled
@@ -27,5 +25,9 @@ public class NoopFiringStrategy implements FiringStrategy {
 	public boolean isExpended() {
 		return false;
 	}
-
+	
+	@Override
+	public String getAudioURI() {
+		return null;
+	}
 }

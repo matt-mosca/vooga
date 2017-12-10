@@ -133,6 +133,7 @@ public class ElementManager {
 	private void handleElementFiring(GameElement element) {
 		if (element.shouldFire()) {
 			String elementTemplateName = element.fire();
+			System.out.println(elementTemplateName);
 			List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
 			exclusionOfSelf.remove(element);
 			// Use player id of firing element rather than projectile? This allows greater

@@ -22,7 +22,7 @@ public class SpriteDisplayer extends ScrollPane {
 	}
 	
 	public void addToScroll(List<ImageView> newSprites) {
-		myBox.getChildren().removeAll(myBox.getChildren());
+		clear();
 		myBox.getChildren().addAll(newSprites);
 		this.setContent(myBox);
 	}

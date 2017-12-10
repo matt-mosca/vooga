@@ -196,7 +196,8 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		imageBackground.setStyle("-fx-background-color: white");
 		imageBackground.getChildren().add(clone(imageView));
 		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null) {
-			ProjectileImage projectile = new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name"));
+			String projectileName = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name");
+			ProjectileImage projectile = new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl"));
 			projectile.resize(projectileSlot.getPrefHeight());
 			projectileSlot.getChildren().add(projectile);
 		}
@@ -335,7 +336,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 				if(unitCosts.get(resourceNames.getSelectionModel().getSelectedItem()) != null) {
 					amount.setText(Double.toString(unitCosts.get(resourceNames.getSelectionModel().getSelectedItem())));
 				}else {
-					amount.setText("No cost yet");
+					amount.setText("0.0");
 				}
 				
 			}
@@ -344,7 +345,11 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 		Button update = new Button();
 		update.setText("Update");
 		update.addEventHandler(MouseEvent.MOUSE_CLICKED, event->{
-			unitCosts.put(resourceNames.getSelectionModel().getSelectedItem(), Double.parseDouble(amount.getText()));
+			try{
+				unitCosts.put(resourceNames.getSelectionModel().getSelectedItem(), Double.parseDouble(amount.getText()));
+			}catch(NumberFormatException e) {
+				unitCosts.put(resourceNames.getSelectionModel().getSelectedItem(), 0.0);
+			}
 		});
 		
 		resources.getChildren().add(resourceNames);

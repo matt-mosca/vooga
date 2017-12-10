@@ -1,6 +1,6 @@
 package util;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import engine.game_elements.GameElement;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *
  * @author Ben Schwennesen
  */
-public class SpriteOptionsGetter {
+public class ElementOptionsGetter {
 
     private final String PROPERTIES_EXTENSION = ".properties";
     private final String PARAMETER_TRANSLATIONS_FILE_NAME = "ParameterTranslations" + PROPERTIES_EXTENSION;
@@ -36,7 +36,7 @@ public class SpriteOptionsGetter {
     private Map<String, String> parameterToDescription = new HashMap<>();
     private Map<String, String> descriptionToParameter = new HashMap<>();
 
-    public SpriteOptionsGetter() {
+    public ElementOptionsGetter() {
         loadTranslations();
     }
 
@@ -97,8 +97,9 @@ public class SpriteOptionsGetter {
             Class parameterClass = spriteParameter.getType();
             Map<String, Class> baseSpriteParameterMap = spriteMemberParametersMap.getOrDefault
                     (SPRITE_BASE_PARAMETER_NAME, new HashMap<>());
-            if (spriteParameter.getAnnotation(ParameterName.class) != null) {
-                String parameterName = spriteParameter.getAnnotation(ParameterName.class).value();
+            if (spriteParameter.getAnnotation(ElementProperty.class) != null) {
+                // property common to all sprites !!!! eg imageURL
+                String parameterName = spriteParameter.getAnnotation(ElementProperty.class).value();
                 baseSpriteParameterMap.put(parameterName, spriteParameter.getType());
                 spriteMemberParametersMap.put(SPRITE_BASE_PARAMETER_NAME, baseSpriteParameterMap);
             }
@@ -119,27 +120,37 @@ public class SpriteOptionsGetter {
             Constructor desiredConstructor = subclassConstructors[0];
             Parameter[] constructorParameters = desiredConstructor.getParameters();
             for (Parameter constructorParameter : constructorParameters) {
-                ParameterName parameterNameAnnotation = constructorParameter.getAnnotation(ParameterName.class);
-                if (parameterNameAnnotation != null) {
-                    String parameterName = parameterNameAnnotation.value();
-                    String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
-                    if (parameterDescription != null) {
-                        parameterToDescription.put(parameterName, parameterDescription);
-                        descriptionToParameter.put(parameterDescription, parameterName);
-                        // TODO - eliminate above?
-                        parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
-                    } else {
-                        parameterToDescription.put(parameterName, parameterName);
-                        descriptionToParameter.put(parameterName, parameterName);
-                        parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
-                    }
-                } else {
-                    String parameterTypeSimple = constructorParameter.getType().getSimpleName();
-                    parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
-                    descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);
-                    parameterDescriptionsToClasses.put(parameterTypeSimple, constructorParameter.getType());
-                }
+                processElementParameter(parameterDescriptionsToClasses, constructorParameter);
             }
+        }
+    }
+
+    private void processElementParameter(Map<String, Class> parameterDescriptionsToClasses, Parameter constructorParameter) {
+        ElementProperty elementPropertyAnnotation = constructorParameter.getAnnotation(ElementProperty.class);
+        if (elementPropertyAnnotation != null && elementPropertyAnnotation.isTemplateProperty()) {
+            // property that needs to be set in the frontend
+            addTemplatePropertyTranslation(parameterDescriptionsToClasses, constructorParameter, elementPropertyAnnotation);
+        } else {
+            // property that we need to supply ourselves so don't pass it to them
+            String parameterTypeSimple = constructorParameter.getType().getSimpleName();
+            parameterToDescription.put(parameterTypeSimple, parameterTypeSimple);
+            descriptionToParameter.put(parameterTypeSimple, parameterTypeSimple);
+            parameterDescriptionsToClasses.put(parameterTypeSimple, constructorParameter.getType());
+        }
+    }
+
+    private void addTemplatePropertyTranslation(Map<String, Class> parameterDescriptionsToClasses, Parameter constructorParameter, ElementProperty elementPropertyAnnotation) {
+        String parameterName = elementPropertyAnnotation.value();
+        String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
+        if (parameterDescription != null) {
+            parameterToDescription.put(parameterName, parameterDescription);
+            descriptionToParameter.put(parameterDescription, parameterName);
+            // TODO - eliminate above?
+            parameterDescriptionsToClasses.put(parameterDescription, constructorParameter.getType());
+        } else {
+            parameterToDescription.put(parameterName, parameterName);
+            descriptionToParameter.put(parameterName, parameterName);
+            parameterDescriptionsToClasses.put(parameterName, constructorParameter.getType());
         }
     }
 
@@ -154,8 +165,8 @@ public class SpriteOptionsGetter {
     }
 
     private String getParameterIdentifier(Parameter parameter) {
-        if (parameter.isAnnotationPresent(ParameterName.class)) {
-            return parameter.getAnnotation(ParameterName.class).value();
+        if (parameter.isAnnotationPresent(ElementProperty.class)) {
+            return parameter.getAnnotation(ElementProperty.class).value();
         } else {
             return parameter.getType().getName();
         }

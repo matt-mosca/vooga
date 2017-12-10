@@ -57,16 +57,7 @@ public class MainMenuBar extends MenuBar{
 	}
 	
 	private void saveGame() {
-//		Optional<String> saveName = launchInput(SAVE);
-//		if(saveName.isPresent()) {
-//			myDisplay.save(saveName.get());
-//		}
-		
-		File saveFile = SaveDialog.SaveLocation(getScene());
-		if(saveFile != null) {
-			myDisplay.save(saveFile);
-		}
-		
+		myDisplay.save();
 	}
 	
 	private void exportGame() {

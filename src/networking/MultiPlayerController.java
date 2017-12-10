@@ -3,7 +3,6 @@ package networking;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,12 +10,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import engine.play_engine.PlayController;
+import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.LoadLevel;
 import networking.protocol.PlayerClient.PlaceElement;
-import networking.protocol.PlayerClient.UpgradeElement;
 import networking.protocol.PlayerServer.Game;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
 import networking.protocol.PlayerServer.GameRoomJoinStatus;
@@ -139,8 +138,14 @@ class MultiPlayerController {
 				return;
 			}
 			String gameName = getGameNameFromGameRoomName(gameRoomToLaunch);
-			serverMessageBuilder.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder
-					.setInitialState(clientIdsToPlayEngines.get(clientId).packageInitialState(gameName, 1)).build());// TEMP
+			try {
+				serverMessageBuilder.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder
+						.setInitialState(clientIdsToPlayEngines.get(clientId).loadOriginalGameState(gameName, 1))
+						.build());
+			} catch (IOException e) {
+				serverMessageBuilder.setGameRoomLaunchStatus(
+						gameRoomLaunchStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build());
+			}
 		}
 	}
 
@@ -205,21 +210,38 @@ class MultiPlayerController {
 
 	void getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetInventory()) {
-			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to get inventory without belonging to a
 			// game room?
-			serverMessageBuilder.setInventory(playController.packageInventory());
+			serverMessageBuilder.setInventory(clientIdsToPlayEngines.get(clientId).packageInventory());
 		}
 	}
 
 	void getTemplateProperties(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetTemplateProperties()) {
-			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to get template properties without
 			// belonging to a
 			// game room?
-			serverMessageBuilder.setTemplateProperties(playController
+			serverMessageBuilder.addTemplateProperties(clientIdsToPlayEngines.get(clientId)
 					.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()));
+		}
+	}
+
+	void getAllTemplateProperties(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetAllTemplateProperties()) {
+			// TODO - Handle case where client tries to get template properties without
+			// belonging to a
+			// game room?
+			serverMessageBuilder
+					.addAllTemplateProperties(clientIdsToPlayEngines.get(clientId).packageAllTemplateProperties());
+		}
+	}
+
+	void getElementCosts(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetElementCosts()) {
+			// TODO - Handle case where client tries to get template properties without
+			// belonging to a game room?
+			serverMessageBuilder.addAllElementCosts(clientIdsToPlayEngines.get(clientId).packageAllElementCosts());
 		}
 	}
 
@@ -229,9 +251,8 @@ class MultiPlayerController {
 			// TODO - Handle case where client tries to place element without belonging to a
 			// game room?
 			PlaceElement placeElementRequest = clientMessage.getPlaceElement();
-			serverMessageBuilder
-					.setElementPlaced(playController.placeAndPackageElement(placeElementRequest.getElementName(),
-							placeElementRequest.getXCoord(), placeElementRequest.getYCoord()));
+			serverMessageBuilder.setElementPlaced(playController.placeElement(placeElementRequest.getElementName(),
+					new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord())));
 		}
 	}
 
@@ -256,7 +277,6 @@ class MultiPlayerController {
 	void loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasLoadLevel()) {
 			LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
-			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to load level without belonging to a
 			// game room?
 			LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
@@ -269,7 +289,21 @@ class MultiPlayerController {
 				return;
 			}
 			String gameName = getGameNameFromGameRoomName(roomName);
-			serverMessageBuilder.setLevelInitialized(playController.packageInitialState(gameName, levelToLoad));
+			try {
+				serverMessageBuilder.setLevelInitialized(
+						clientIdsToPlayEngines.get(clientId).loadOriginalGameState(gameName, levelToLoad));
+			} catch (IOException e) {
+				serverMessageBuilder.setLevelInitialized(LevelInitialized.getDefaultInstance());
+			}
+		}
+	}
+
+	void getLevelElements(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetLevelElements()) {
+			// TODO - Handle case where client tries to load level without belonging to a
+			// game room?
+			serverMessageBuilder.addAllLevelSprites(clientIdsToPlayEngines.get(clientId)
+					.packageLevelElements(clientMessage.getGetLevelElements().getLevel()));
 		}
 	}
 
@@ -311,6 +345,10 @@ class MultiPlayerController {
 			getInventory(clientId, clientMessage, serverMessageBuilder);
 			// Get template properties
 			getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+			// Get all template properties
+			getAllTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+			// Get element costs for current level
+			getElementCosts(clientId, clientMessage, serverMessageBuilder);
 			// Handle place element request
 			placeElement(clientId, clientMessage, serverMessageBuilder);
 			// Handle upgrade element request
@@ -319,6 +357,8 @@ class MultiPlayerController {
 			checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);
 			// Handle load request
 			loadLevel(clientId, clientMessage, serverMessageBuilder);
+			// Get level elements
+			getLevelElements(clientId, clientMessage, serverMessageBuilder);
 			return serverMessageBuilder.build().toByteArray();
 		} catch (IOException e) {
 			e.printStackTrace(); // TEMP

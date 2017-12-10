@@ -1,5 +1,7 @@
 package engine.behavior.firing;
 
+import engine.behavior.ElementProperty;
+
 import java.util.Iterator;
 import java.util.Set;
 
@@ -12,7 +14,10 @@ public class RoundRobinWaveFiringStrategy extends AbstractWaveFiringStrategy {
 
 	Iterator<String> elementChooser;
 
-	public RoundRobinWaveFiringStrategy(Set<String> templatesToFire, double period, int totalWaves) {
+	public RoundRobinWaveFiringStrategy(
+			@ElementProperty(value = "templatesToFire", isTemplateProperty = true) Set<String> templatesToFire,
+			@ElementProperty(value = "period", isTemplateProperty = true) double period,
+			@ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
 		super(templatesToFire, period, totalWaves);
 		elementChooser = templatesToFire.iterator();
 	}
@@ -23,6 +28,11 @@ public class RoundRobinWaveFiringStrategy extends AbstractWaveFiringStrategy {
 			elementChooser = getTemplatesToFire().iterator();
 		}
 		return elementChooser.next();
+	}
+
+	@Override
+	public String getAudioURI() {
+		return null;
 	}
 
 }
