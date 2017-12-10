@@ -38,11 +38,17 @@ public abstract class EndScreen extends ScreenDisplay {
 	
 	protected void addLabel(String text, int screenWidth, int screenHeight) {
 		Label screenLabel = new Label(text);
+		Label backLayer = new Label(text);
 		screenLabel.setLayoutY(200);
-		screenLabel.getStyleClass().add("player/resources/endScreen.css");
-		screenLabel.getStylesheets().add("label");
-		double width = screenLabel.getBoundsInLocal().getWidth();
-		screenLabel.setLayoutX((screenWidth - width) / 2);
+		backLayer.setLayoutY(202);
+		screenLabel.getStylesheets().add("player/resources/endScreen.css");
+		screenLabel.getStyleClass().add("label");
+		backLayer.getStylesheets().add("player/resources/endScreen.css");
+		backLayer.getStyleClass().add("label2");
+		screenLabel.setLayoutX((screenWidth) / 2 - 70 * (text.length() / 2));
+		backLayer.setLayoutX((screenWidth) / 2 - 69 * (text.length() / 2));
+		rootAdd(backLayer);
+		rootAdd(screenLabel);
 	}
 	
 	protected abstract void createButtons();
