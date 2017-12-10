@@ -1,8 +1,8 @@
 package engine.game_elements;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
-import util.SpriteOptionsGetter;
+import util.ElementOptionsGetter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
@@ -22,9 +22,8 @@ import java.util.Map;
 public final class GameElementFactory {
 
     private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
-    private Map<String, List<Map<String, String>>> spriteTemplatesU = new HashMap<>();
 
-    private SpriteOptionsGetter spriteOptionsGetter = new SpriteOptionsGetter();
+    private ElementOptionsGetter elementOptionsGetter = new ElementOptionsGetter();
 
     /**
      * Define a new template with specified properties. The template should not use
@@ -44,7 +43,6 @@ public final class GameElementFactory {
         spriteTemplates.put(spriteTemplateName, properties);
         List<Map<String, String>> templateUpgrades = new ArrayList<>();
         templateUpgrades.add(properties);
-        spriteTemplatesU.put(spriteTemplateName, templateUpgrades);
     }
 
 
@@ -85,8 +83,7 @@ public final class GameElementFactory {
         for (int i = 0; i < spriteConstructionArguments.length; i++) {
             Parameter parameter = spriteConstructionParameters[i];
             try {
-                spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(), spriteProperties,
-                        auxiliaryObjects);
+                spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(), spriteProperties, auxiliaryObjects);
             } catch (ReflectiveOperationException reflectionException) {
                 // TODO - throw custom exception or fallback to a default
                 reflectionException.printStackTrace();
@@ -108,9 +105,9 @@ public final class GameElementFactory {
     private Object generateSpriteParameter(Class parameterClass, Map<String, String> properties,
                                            Map<String, ?> auxiliaryObjects) throws ReflectiveOperationException {
         try {
-            String chosenSubclassName = spriteOptionsGetter.getChosenSubclassName(parameterClass, properties);
+            String chosenSubclassName = elementOptionsGetter.getChosenSubclassName(parameterClass, properties);
             Class chosenParameterSubclass = Class.forName(chosenSubclassName);
-            List<String> constructorParameterIdentifiers = spriteOptionsGetter
+            List<String> constructorParameterIdentifiers = elementOptionsGetter
                     .getConstructorParameterIdentifiers(chosenParameterSubclass);
             Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
                     constructorParameterIdentifiers);
@@ -126,16 +123,19 @@ public final class GameElementFactory {
                 Parameter[] parameters = parameterClassConstructors[0].getParameters();
                 Object[] constructorParameters = new Object[parameters.length];
                 for (int i = 0; i < parameters.length; i++) {
-                    ParameterName parameterNameAnnotation = parameters[i].getAnnotation(ParameterName.class);
+                    ElementProperty parameterNameAnnotation = parameters[i].getAnnotation(ElementProperty.class);
                     if (parameterNameAnnotation != null) {
-                        constructorParameters[i] = setConstructorParameter(
-                                properties.get(parameterNameAnnotation.value()));
+                        if (parameterNameAnnotation.isTemplateProperty()) {
+                            constructorParameters[i] = setConstructorParameter(
+                                    properties.get(parameterNameAnnotation.value()));
+                        } else {
+                            constructorParameters[i] = auxiliaryObjects.get(parameterNameAnnotation.value());
+                        }
                     } else {
                         constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties,
                                 auxiliaryObjects);
                     }
                 }
-                System.out.println(Arrays.asList(constructorParameters));
                 return parameterClass.getConstructors()[0].newInstance(constructorParameters);
             } else {
                 return null;
@@ -148,7 +148,7 @@ public final class GameElementFactory {
         Object[] constructorParameters = new Object[constructorParameterIdentifiers.size()];
         for (int i = 0; i < constructorParameters.length; i++) {
             String parameterIdentifier = constructorParameterIdentifiers.get(i);
-            String parameterDescription = spriteOptionsGetter.translateParameterToDescription(parameterIdentifier);
+            String parameterDescription = elementOptionsGetter.translateParameterToDescription(parameterIdentifier);
             if (!properties.containsKey(parameterDescription)) {
                 constructorParameters[i] = auxiliaryObjects.get(parameterIdentifier);
                 // TODO - throw exception if aux objects doesn't contain key
@@ -167,10 +167,8 @@ public final class GameElementFactory {
         } catch (NumberFormatException nonIntegerProperty) {
             try {
                 return Double.parseDouble(propertyValueAsString);
-            } catch (NumberFormatException nonDoubleProperty) {
+            } catch (NumberFormatException | NullPointerException nonDoubleProperty) {
                 return propertyValueAsString;
-            } catch (NullPointerException nullptr) {
-                return null;
             }
         }
     }
@@ -184,7 +182,7 @@ public final class GameElementFactory {
      * options
      */
     public Map<String, List<String>> getElementBaseConfigurationOptions() {
-        return spriteOptionsGetter.getSpriteParameterSubclassOptions();
+        return elementOptionsGetter.getSpriteParameterSubclassOptions();
     }
 
     /**
@@ -195,7 +193,7 @@ public final class GameElementFactory {
      * class type
      */
     public Map<String, Class> getAuxiliaryElementProperties(Map<String, String> subclassChoices) {
-        return spriteOptionsGetter.getAuxiliaryParametersFromSubclassChoices(subclassChoices);
+        return elementOptionsGetter.getAuxiliaryParametersFromSubclassChoices(subclassChoices);
     }
 
     /**

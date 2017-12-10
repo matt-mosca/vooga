@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,6 +27,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Slider;
@@ -40,6 +43,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import networking.MultiPlayerClient;
+import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteDeletion;
+import networking.protocol.PlayerServer.SpriteUpdate;
+import networking.protocol.PlayerServer.Update;
+import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
 import display.splashScreen.SplashPlayScreen;
 import display.sprites.StaticObject;
@@ -51,6 +60,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final String GAME_FILE_KEY = "gameFile";
 
 	private InventoryToolBar myInventoryToolBar;
+	private TransitorySplashScreen myTransition;
+	private Scene myTransitionScene;
 	private VBox myLeftBar;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
@@ -64,15 +75,20 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private int level = 1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
-	private final MovementStrategy testMovement = new StationaryMovementStrategy();
+	private final MovementStrategy testMovement = new StationaryMovementStrategy(new Point2D(0, 0));
 	private final CollisionHandler testCollision = new CollisionHandler(new ImmortalCollider(1),
 			new NoopCollisionVisitable(), "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;
 	private StaticObject placeable;
 
+	private ClientMessageUtils clientMessageUtils;
+
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		myController = isMultiPlayer ? new MultiPlayerClient() : new PlayController();
+		myTransition = new TransitorySplashScreen(myController);
+		myTransitionScene = new Scene(myTransition, width, height);
+		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
 		hud = new HUD(width);
 		styleLeftBar();
@@ -91,6 +107,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
+
 	}
 
 	public void tester() {
@@ -123,7 +140,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			if (result.isPresent()) {
 				try {
 					gameState = result.get();
-					myController.loadOriginalGameState(gameState, 1);
+					clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
 					System.out.println(gameState);
 				} catch (IOException e) {
 					// TODO Change to alert for the user
@@ -139,7 +156,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				exportedGameProperties.load(in);
 				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY);
 				System.out.println("GN: " + gameName);
-				myController.loadOriginalGameState(gameName, 1);
+				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
 			} catch (IOException ioException) {
 				// todo
 			}
@@ -147,33 +164,24 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	protected void reloadGame() throws IOException {
-		myController.loadOriginalGameState(gameState, 1);
+		clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
 	}
-//
-//	private void initializeInventory() {
-//		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-//		for (String s : myController.getInventory()) {
-//			ImageView imageView;
-//			try {
-//				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
-//
-//			} catch (NullPointerException e) {
-//				imageView = new ImageView(
-//						new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
-//			}
-//			imageView.setFitHeight(70);
-//			imageView.setFitWidth(60);
-//			imageView.setId(s);
-//			imageView.setUserData(templates.get(s).get("imageUrl"));
-//			// myInventoryToolBar.addToToolbar(imageView);
-//		}
-//	}
 
 	private void styleLeftBar() {
 		myLeftBar.setPrefHeight(650);
 		myLeftBar.setLayoutY(25);
 		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
 		myLeftBar.getStyleClass().add("left-bar");
+	}
+
+	// TODO - can make it more efficient?
+	private void loadSprites() {
+		myPlayArea.getChildren().removeAll(currentElements);
+		currentElements.clear();
+		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
+			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
+		}
+		myPlayArea.getChildren().addAll(currentElements);
 	}
 
 	private void initializeButtons() {
@@ -196,34 +204,39 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		play.setLayoutY(pause.getLayoutY() + 30);
 	}
 
-	private void loadSprites() {
-		myPlayArea.getChildren().removeAll(currentElements);
-		currentElements.clear();
-		for (Integer id : myController.getLevelSprites(level)) {
-			currentElements.add(myController.getRepresentationFromSpriteId(id));
-		}
-		myPlayArea.getChildren().addAll(currentElements);
-	}
-
 	private void step() {
-		myController.update();
+		Update latestUpdate = myController.update();
+		if (myController.isReadyForNextLevel()) {
+			hideTransitorySplashScreen();
+			// animation.play();
+			myController.resume();
+		}
 		if (myController.isLevelCleared()) {
 			level++;
 			animation.pause();
 			myController.pause();
+			launchTransitorySplashScreen();
 			hud.initialize(myController.getResourceEndowments());
-			myInventoryToolBar.initializeInventory();
 		} else if (myController.isLost()) {
 			// launch lost screen
 		} else if (myController.isWon()) {
 			// launch win screen
 		}
 		hud.update(myController.getResourceEndowments());
+		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		loadSprites();
 	}
 
+	private void launchTransitorySplashScreen() {
+		this.getStage().setScene(myTransitionScene);
+	}
+
+	private void hideTransitorySplashScreen() {
+		this.getStage().setScene(this.getScene());
+	}
+
 	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(myController, sideLength, sideLength);
+		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
 		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
@@ -234,13 +247,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			selected = false;
 			this.getScene().setCursor(Cursor.DEFAULT);
 			if (e.getButton().equals(MouseButton.PRIMARY))
-				myController.placeElement(placeable.getElementName(), new Point2D(e.getX(), e.getY()));
+				clientMessageUtils.addNewSpriteToDisplay(
+						myController.placeElement(placeable.getElementName(), new Point2D(e.getX(), e.getY())));
 		}
 	}
 
 	@Override
 	public void listItemClicked(ImageView image) {
 		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
+		System.out.println("Get");
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
 			return;
@@ -269,10 +284,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.show();
 	}
 
+	// TODO - Check if this is repeated code,
+
+	public void save(File saveName) {
+		myController.saveGameState(saveName);
+	}
+
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

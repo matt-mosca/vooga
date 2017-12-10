@@ -3,7 +3,7 @@ package authoring;
 import java.util.List;
 import java.util.Map;
 
-import authoring.rightToolBar.SpriteImage;
+import authoring.PropertiesToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import display.interfaces.PropertiesInterface;
 import javafx.scene.Scene;

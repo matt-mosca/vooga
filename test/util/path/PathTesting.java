@@ -25,7 +25,7 @@ public class PathTesting {
         pathList.add(new PathPoint(10, 20, Color.BLACK));
         try {
             String pathToFile = pathList.writeToSerializationFile();
-            ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(pathToFile));
+            ObjectInputStream objectInput = new ObjectInputStream(PathTesting.class.getClassLoader().getResourceAsStream(pathToFile));
             PathList pathListRecovered = (PathList) objectInput.readObject();
             System.out.println(pathListRecovered.next().getX());
         } catch (ClassNotFoundException | IOException e) {
