@@ -30,19 +30,27 @@ public class SpriteTemplateIoHandler {
     private final String UPGRADE_INDICATOR = "_upgrade_";
     private final char DOT = '.';
 
+    private SerializationUtils serializationUtils;
+
+    public SpriteTemplateIoHandler(SerializationUtils serializationUtils) {
+        this.serializationUtils = serializationUtils;
+    }
+
     /**
      * Export all the stored sprite templates for an authored game to properties files.
      *
      * @param gameName        the name of the authored game
      * @param spriteTemplates the sprite templates defined in the game
      */
-    public void exportSpriteTemplates(String gameName, Map<String, Map<String, String>> spriteTemplates) {
+    public void exportSpriteTemplates(String gameName, Map<String, Map<String, Object>> spriteTemplates) {
         String directoryPath = createDirectoryPath(gameName);
         createDirectoryIfNonExistent(directoryPath);
         for (String templateName : spriteTemplates.keySet()) {
             Properties templateProperties = new Properties();
-            Map<String, String> templatePropertiesMap = spriteTemplates.get(templateName);
-            templatePropertiesMap.forEach(templateProperties::setProperty);
+            Map<String, ?> templatePropertiesMap = spriteTemplates.get(templateName);
+            Map<String, String> serializedPropertiesMap =
+                    serializationUtils.serializeElementTemplate(templatePropertiesMap);
+            serializedPropertiesMap.forEach(templateProperties::setProperty);
             String fileName = templateName + PROPERTIES_EXTENSION;
             File exportFile = new File(directoryPath + File.separator + fileName);
             writeTemplateToFile(templateProperties, exportFile);
@@ -55,10 +63,10 @@ public class SpriteTemplateIoHandler {
      * @param gameName       the name of the authored game
      * @param spriteUpgrades the sprite upgrades defined in the game, associated with sprite templates
      */
-    public void exportSpriteUpgrades(String gameName, Map<String, List<Map<String, String>>> spriteUpgrades) {
-        Map<String, Map<String, String>> upgradeTemplates = new HashMap<>();
+    public void exportSpriteUpgrades(String gameName, Map<String, List<Map<String, Object>>> spriteUpgrades) {
+        Map<String, Map<String, Object>> upgradeTemplates = new HashMap<>();
         for (String templateName : spriteUpgrades.keySet()) {
-            List<Map<String, String>> upgradesForTemplate = spriteUpgrades.get(templateName);
+            List<Map<String, Object>> upgradesForTemplate = spriteUpgrades.get(templateName);
             for (int upgradeLevel = 0; upgradeLevel < upgradesForTemplate.size(); upgradeLevel++) {
                 String upgradeFileName = templateName + UPGRADE_INDICATOR + upgradeLevel;
                 upgradeTemplates.put(upgradeFileName, upgradesForTemplate.get(upgradeLevel));
@@ -74,8 +82,15 @@ public class SpriteTemplateIoHandler {
      * @return the sprite templates defined in the game in a map
      * @throws IOException if data files for the game are corrupted
      */
-    public Map<String, Map<String, String>> loadSpriteTemplates(String gameName) throws IOException {
-        Map<String, Map<String, String>> spriteTemplates = loadSpriteProperties(gameName, false);
+    public Map<String, Map<String, Object>> loadElementTemplates(String gameName) throws IOException {
+        Map<String, Map<String, String>> spriteTemplatesSerializations = loadTemplateSerializations(gameName, false);
+        Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
+        for (String templateName : spriteTemplatesSerializations.keySet()) {
+            Map<String, String> spriteTemplateSerialization = spriteTemplatesSerializations.get(templateName);
+            Map<String, Object> spriteTemplate =
+                    serializationUtils.deserializeElementTemplate(spriteTemplateSerialization);
+            spriteTemplates.put(templateName, spriteTemplate);
+        }
         return spriteTemplates;
     }
 
@@ -87,20 +102,22 @@ public class SpriteTemplateIoHandler {
      * @return the upgrades defined for each sprite template defined in the game, in a map
      * @throws IOException if data files for the game are corrupted
      */
-    public Map<String, List<Map<String, String>>> loadSpriteUpgrades(String gameName) throws IOException {
-        Map<String, Map<String, String>> spriteTemplates = new TreeMap<>(loadSpriteProperties(gameName, true));
-        Map<String, List<Map<String, String>>> spriteUpgrades = new HashMap<>();
-        for (String upgradeTemplateName : spriteTemplates.keySet()) {
+    public Map<String, List<Map<String, Object>>> loadElementUpgrades(String gameName) throws IOException {
+        Map<String, Map<String, String>> serializedTemplates = new TreeMap<>(loadTemplateSerializations(gameName, true));
+        Map<String, List<Map<String, Object>>> spriteUpgrades = new HashMap<>();
+        for (String upgradeTemplateName : serializedTemplates.keySet()) {
             String templateName = upgradeTemplateName.substring(0, upgradeTemplateName.indexOf(UPGRADE_INDICATOR));
-            List<Map<String, String>> templateUpgrades = spriteUpgrades.getOrDefault(templateName, new ArrayList<>());
+            List<Map<String, Object>> templateUpgrades = spriteUpgrades.getOrDefault(templateName, new ArrayList<>());
+            Map<String, Object> upgradeTemplate =
+                    serializationUtils.deserializeElementTemplate(serializedTemplates.get(upgradeTemplateName));
             // TreeMap ensures correct ordering
-            templateUpgrades.add(spriteTemplates.get(upgradeTemplateName));
+            templateUpgrades.add(upgradeTemplate);
         }
         return spriteUpgrades;
     }
 
 
-    private Map<String, Map<String, String>> loadSpriteProperties(String gameName, boolean loadUpgrades)
+    private Map<String, Map<String, String>> loadTemplateSerializations(String gameName, boolean loadUpgrades)
             throws IOException {
         Map<String, Map<String, String>> spriteTemplates = new TreeMap<>();
         String directoryPath = createDirectoryPath(gameName);

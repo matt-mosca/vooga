@@ -30,7 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class PropertiesBox extends VBox {
-	private Map<String, String> propertiesMap;
+	private Map<String, Object> propertiesMap;
 	private String[] propertyArr;
 	private TableView<Properties> table;
 	private ObservableList<Properties> data;
@@ -41,17 +41,18 @@ public class PropertiesBox extends VBox {
 	private Droppable myDroppable;
 
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, AuthoringController author) {
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringController
+			author) {
 		currSprite = mySprite;
 		myDroppable = droppable;
-		propertiesMap = author.getTemplateProperties(mySprite.getId());
+		propertiesMap = propertyMap;
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
 		valuesColumn = new TableColumn<Properties, String>("Values");
 		data = FXCollections.observableArrayList();
 		for (String s : propertiesMap.keySet()) {
-			data.add(new Properties(s, propertiesMap.get(s)));
+			data.add(new Properties(s, propertiesMap.get(s).toString()));
 			
 		}
 		propertiesColumn.setCellValueFactory(
@@ -71,7 +72,7 @@ public class PropertiesBox extends VBox {
 
 					@Override
 					public void handle(CellEditEvent<Properties, String> t) {
-						if(t.getRowValue().getMyProperty().equals("PathList")) {
+						if(t.getRowValue().getMyProperty().equals("pathList")) {
 							String filePath = new String();
 							Random rand = new Random();
 							PathParser parser = new PathParser();
@@ -99,7 +100,7 @@ public class PropertiesBox extends VBox {
 			            ((Properties) t.getTableView().getItems().get(
 			                t.getTablePosition().getRow())
 			                ).setMyValue(t.getNewValue());
-			            Map<String, String> newPropertiesMap = new HashMap<String, String>();
+			            Map<String, Object> newPropertiesMap = new HashMap<>();
 			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getNewValue());
 			            author.updateElementDefinition(mySprite.getId(), newPropertiesMap, true);
 			        }

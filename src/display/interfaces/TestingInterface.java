@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface TestingInterface {
 	
-	public void createTesterLevel(Map<String, String> fun, List<String> sprites);
+	public void createTesterLevel(Map<String, Object> fun, List<String> sprites);
 
 }

@@ -70,9 +70,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private final String DEFAULT_GAME_NAME = "untitled";
 
 	private int currentLevel;
+	private SerializationUtils serializationUtils;
 
 	public AbstractGameController() {
-		SerializationUtils serializationUtils = new SerializationUtils();
+		this.serializationUtils = new SerializationUtils();
 		ioController = new IOController(serializationUtils);
 		gameConditionsReader = new GameConditionsReader();
 		serverMessageUtils = new ServerMessageUtils();
@@ -80,9 +81,9 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		gameName = DEFAULT_GAME_NAME;
 		spriteIdCounter = new AtomicInteger();
 		spriteIdMap = new HashMap<>();
-		gameElementFactory = new GameElementFactory();
+		gameElementFactory = new GameElementFactory(serializationUtils);
 		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
-		spriteTemplateIoHandler = new SpriteTemplateIoHandler();
+		spriteTemplateIoHandler = new SpriteTemplateIoHandler(serializationUtils);
 		spriteQueryHandler = new SpriteQueryHandler();
 	}
 
@@ -130,8 +131,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;
-		gameElementFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
-		gameElementUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadSpriteUpgrades(gameName));
+		gameElementFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadElementTemplates(gameName));
+		gameElementUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadElementUpgrades(gameName));
 		return packageStateChange(oldGameElements);
 	}
 
@@ -158,22 +159,22 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	}
 
 	@Override
-	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
+	public Map<String, Object> getTemplateProperties(String elementName) throws IllegalArgumentException {
 		return getGameElementFactory().getTemplateProperties(elementName);
 	}
 
 	@Override
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
+	public Map<String, Map<String, Object>> getAllDefinedTemplateProperties() {
 		return getGameElementFactory().getAllDefinedTemplateProperties();
 	}
 
 	@Override
-	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) {
+	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) throws ReflectiveOperationException {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
-		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
+		GameElement gameElement = gameElementFactory.generateElement(elementTemplateName,
 				auxiliarySpriteConstructionObjects);
 		gameElementUpgrader.registerNewSprite(elementTemplateName, gameElement);
 		int spriteId = cacheAndCreateIdentifier(elementTemplateName, gameElement);
@@ -237,22 +238,31 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	}
 
 	public TemplateProperties packageTemplateProperties(String templateName) {
-		return getServerMessageUtils().packageTemplateProperties(templateName, getTemplateProperties(templateName));
+		return getServerMessageUtils().packageTemplateProperties(templateName,
+				serializationUtils.serializeElementTemplate(getTemplateProperties(templateName)));
 	}
 
 	public Collection<TemplateProperties> packageAllTemplateProperties() {
-		return getServerMessageUtils().packageAllTemplateProperties(getAllDefinedTemplateProperties());
+		Map<String, Map<String, String>> serializedTemplates = new HashMap<>();
+		Map<String, Map<String, Object>> templates = getAllDefinedTemplateProperties();
+		for (String templateName : templates.keySet()) {
+			serializedTemplates.put(templateName,
+					serializationUtils.serializeElementTemplate(templates.get(templateName)));
+		}
+		return getServerMessageUtils().packageAllTemplateProperties(serializedTemplates);
 	}
 
 	public Collection<ElementCost> packageAllElementCosts() {
 		return getServerMessageUtils().packageAllElementCosts(getElementCosts());
 	}
 
-	public Collection<NewSprite> packageLevelElements(int level) {
+	@Override
+	public Collection<NewSprite> getLevelSprites(int level) {
 		return getServerMessageUtils().packageNewSprites(getFilteredSpriteIdMap(getLevelSprites().get(level)));
 	}
 
-	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs) {
+	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)
+			throws ReflectiveOperationException {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
@@ -260,7 +270,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
-		GameElement gameElement = gameElementFactory.generateSprite(elementTemplateName, startCoordinates,
+		GameElement gameElement = gameElementFactory.generateElement(elementTemplateName,
 				auxiliarySpriteConstructionObjects);
 		return cacheAndCreateIdentifier(elementTemplateName, gameElement);
 	}
@@ -391,7 +401,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		
 		return LevelInitialized.newBuilder()
 				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
-						getFilteredSpriteIdMap(oldGameElements), false, false, false, false, getResourceEndowments()))
+						getFilteredSpriteIdMap(oldGameElements), false, false, false, false, getResourceEndowments(), getCurrentLevel()))
 				.setInventory(packageInventory()).build();
 	}
 

@@ -13,14 +13,15 @@ import engine.behavior.ElementProperty;
 public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 
 	private String projectileTemplate;
-	private String audioURI;
+	private String audioUrl;
 
 	public PeriodicFiringStrategy(
 			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate,
-			@ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod) {
+			@ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod,
+			@ElementProperty(value = "firingAudioUrl", isTemplateProperty = true) String audioUrl) {
 		super(attackPeriod);
 		this.projectileTemplate = projectileTemplate;
-		this.audioURI = audioURI;
+		this.audioUrl = audioUrl;
 		
 	}
 
@@ -30,7 +31,7 @@ public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 	}
 
 	@Override
-	public String getAudioURI() {
-		return audioURI;
+	public String getAudioUrl() {
+		return audioUrl;
 	}
 }
