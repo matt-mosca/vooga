@@ -17,9 +17,9 @@ import javafx.geometry.Point2D;
  */
 public class SpriteQueryHandler {
 
-	/*public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(int elementPlayerId, Point2D startCoordinates,
+	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(int elementPlayerId, Point2D startCoordinates,
 			List<GameElement> levelGameElements) {
-		GameElement gameElementToTrack = getNearestEnemySpriteToPoint(elementPlayerId, startCoordinates, levelGameElements);
+		GameElement gameElementToTrack = getNearestEnemy(elementPlayerId, startCoordinates, levelGameElements);
 		TrackingPoint targetLocation;
 		if (gameElementToTrack != null)
 			targetLocation = gameElementToTrack.getPositionForTracking();
@@ -30,7 +30,7 @@ public class SpriteQueryHandler {
 		auxiliarySpriteConstructionObjects.put("targetLocation", targetLocation);
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		return auxiliarySpriteConstructionObjects;
-	}*/
+	}
 
 	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(GameElement gameElementToTrack) {
 		TrackingPoint targetLocation;
