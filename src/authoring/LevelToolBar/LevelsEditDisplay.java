@@ -5,6 +5,7 @@ import engine.authoring_engine.AuthoringController;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LevelsEditDisplay {
@@ -31,6 +32,7 @@ public class LevelsEditDisplay {
 		myStage.setScene(myScene);
 //		myStage.show();
 	}
+	
 	
 	public void open() {
 		myStage.show();

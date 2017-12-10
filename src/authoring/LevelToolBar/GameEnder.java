@@ -24,8 +24,13 @@ public class GameEnder extends VBox{
 	
 	public GameEnder(AuthoringController controller, EditDisplay edit) {
 		myController = controller; 
+		this.setPrefWidth(300);
 		myDisplay = edit;
 		selectedLevels = new HashSet<Integer>();
+		addMiscElements();
+		}
+	
+	private void addMiscElements() {
 		victory = new ComboBox<>();
 		victory.setPromptText("Choose your victory condition!");
 		victory.getItems().addAll(myController.getPossibleVictoryConditions());
@@ -36,15 +41,17 @@ public class GameEnder extends VBox{
 		Button recordConditions = new Button("Record end condtions!");
 		recordConditions.setOnAction(e->record());
 		Label l = new Label("Select which levels you want to set these conditions for!");
+		l.setWrapText(true);
 		this.getChildren().addAll(victory, defeat, l);
 		createLevelBoxes();
 		this.getChildren().add(recordConditions);
-		}
+	}
 	
 	private void createLevelBoxes() {
 		checkBoxes = new ArrayList<>();
 		for (int i = 0; i<myDisplay.getMaxLevel(); i++) {
 			checkBoxes.add(new CheckBox());
+			checkBoxes.get(i).setText(Integer.toString(i+1));
 		}
 		this.getChildren().addAll(checkBoxes);
 		
@@ -61,6 +68,12 @@ public class GameEnder extends VBox{
 		}
 	}
 		myController.setLevel(currLevel);
+		this.getChildren().clear();
+		Label completed = new Label("You have added your win and loss conditions!"
+				+ " Remember that every level must have a condition.");
+		completed.setWrapText(true);
+		this.getChildren().add(completed);
+		addMiscElements();
 	}
 	
 	public Set<Integer>getSelectedLevels() {
