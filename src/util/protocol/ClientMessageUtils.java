@@ -1,5 +1,6 @@
 package util.protocol;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,10 @@ public class ClientMessageUtils {
 		}
 	}
 
+	public Collection<Integer> getCurrentSpriteIds() {
+		return idsToImageViews.keySet();
+	}
+	
 	public void handleSpriteUpdates(Update update) {
 		update.getNewSpritesList().forEach(newSprite -> addNewSpriteToDisplay(newSprite));
 		update.getSpriteUpdatesList().forEach(updatedSprite -> updateSpriteDisplay(updatedSprite));

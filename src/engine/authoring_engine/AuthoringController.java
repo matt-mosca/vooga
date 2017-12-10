@@ -187,6 +187,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 		placeElement(waveName, spawningPoint, elementNamesToSpawn);
 	}
 
+	public void editWaveProperties(int waveId, Map<String, String> updatedProperties, Collection<String> newElementNamesToSpawn,
+			Point2D newSpawningPoint) {
+		
+	}
+	
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
 		return getGameElementFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
