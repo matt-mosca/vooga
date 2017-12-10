@@ -18,7 +18,7 @@ public class LevelTab extends ScrollPane{
 	private final int DISPLAY_SIZE = 40;
 	private int myNumber;
 	private Button editLevel;
-	private LevelDisplay myLevelDisplay;
+//	private LevelDisplay myLevelDisplay;
 	private boolean edited;
 	private AuthoringController myController;
 	private HBox myDisplay;
@@ -31,7 +31,7 @@ public class LevelTab extends ScrollPane{
 		//needs to be a check for what kind of level it is, so that we either create an attackleveldisplay or a 
 		//defenseleveldisplay
 		
-		myLevelDisplay = new DefenseLevelDisplay(n, this, controller); //for now assuming it has to be a defense one.
+//		myLevelDisplay = new DefenseLevelDisplay(n, this, controller); //for now assuming it has to be a defense one.
 //		Label initialLabel = new Label("You have to add content to this first! Click the edit button!");
 //		updateLevelContents();
 	}
@@ -44,9 +44,9 @@ public class LevelTab extends ScrollPane{
 //	}
 
 
-	public void openLevelDisplay() {
-		myLevelDisplay.open();
-	}
+//	public void openLevelDisplay() {
+//		myLevelDisplay.open();
+//	}
 	
 	public void attach(Tab level) {
 		level.setContent(this);
@@ -68,7 +68,7 @@ public class LevelTab extends ScrollPane{
 
 	public void decrementLevel() {
 		myNumber-=1;
-		myLevelDisplay.decrementLevel();
+//		myLevelDisplay.decrementLevel();
 		
 	}
 }
