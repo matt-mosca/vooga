@@ -79,7 +79,7 @@ public class StaticObjectToolBar extends ToolBar {
 		return tempStatic;
 	}
 
-	public void defineElement(int size, String imageString) {
+	public void defineElement(double size, String imageString) {
 		if(myController.getAllDefinedTemplateProperties().containsKey(imageString)) return;
 		Map<String, Object> defaultValues = getDefaultProperties();
 		defaultValues.put("imageWidth", size);
@@ -92,10 +92,10 @@ public class StaticObjectToolBar extends ToolBar {
 		Map<String, Object> values = new HashMap<>();
 		for(String key : defaultProperties.keySet()) {
 			try {
-				values.put(key, Double.parseDouble(defaultProperties.getString(key)));
+				values.put(key, Integer.parseInt(defaultProperties.getString(key)));
 			} catch(NumberFormatException e) {
 				try {
-					values.put(key, Integer.parseInt(defaultProperties.getString(key)));
+					values.put(key, Double.parseDouble(defaultProperties.getString(key)));
 				} catch (NumberFormatException ee) {
 					values.put(key, defaultProperties.getString(key));
 				}
