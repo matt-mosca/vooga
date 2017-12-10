@@ -1,7 +1,9 @@
 package exporting;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Properties;
@@ -23,10 +25,15 @@ public final class JarPropertiesGetter {
     private final String INCLUDED_DIRECTORIES_KEY = "included-directories";
     private final String RESOURCE_ROOTS_KEY = "resource-roots";
     private final String DATA_DIRECTORIES_KEY = "data-directories";
+    private final String DISPLAYED_GAME_NAME_KEY = "displayed-game-name";
     private final String MULTIPLE_VALUES_DELIMITER = ",";
     // Set to your heart's desire
     private final String DEFAULT = "";
     private final String ERROR_MESSAGE = "Failed to load the export properties file";
+    private final String RESOURCES_DIRECTORY = "resources/";
+    private final String VOOG_EXTENSION = ".voog";
+
+    private final OutputStream PROPERTIES_OUTPUT;
 
     /**
      * Load in the properties file.
@@ -34,6 +41,7 @@ public final class JarPropertiesGetter {
     public JarPropertiesGetter() throws IOException {
         properties = new Properties();
         InputStream propertiesStream = JarPropertiesGetter.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
+        PROPERTIES_OUTPUT = new FileOutputStream(RESOURCES_DIRECTORY + PROPERTIES_FILE);
         try {
             properties.load(propertiesStream);
         } catch (NullPointerException | IOException failure) {
@@ -49,7 +57,8 @@ public final class JarPropertiesGetter {
      */
     public String getExportTargetPath(String gameName) {
         final String JAR_EXTENSION = ".jar";
-        return properties.getProperty(EXPORT_PATH_KEY, DEFAULT) + gameName + JAR_EXTENSION;
+        return properties.getProperty(EXPORT_PATH_KEY, DEFAULT)
+                + properties.getProperty(DISPLAYED_GAME_NAME_KEY, gameName) + JAR_EXTENSION;
     }
 
     /**
@@ -100,5 +109,20 @@ public final class JarPropertiesGetter {
      */
     public Collection<String> getDataAndLibraryDirectories() {
         return Arrays.asList(properties.getProperty(DATA_DIRECTORIES_KEY, DEFAULT).split(MULTIPLE_VALUES_DELIMITER));
+    }
+
+    /**
+     * Set the name of the game displayed in the splash screen for the main class of the JAR when it's run.
+     *
+     * @param gameName the name of the particular authored game
+     */
+    public void setDisplayedGameName(String gameName) {
+        properties.setProperty(DISPLAYED_GAME_NAME_KEY, gameName.substring(0, gameName.indexOf(VOOG_EXTENSION)));
+        try {
+            properties.store(PROPERTIES_OUTPUT, "");
+        } catch (IOException failedToExportProperties) {
+            // leave the property as default
+            // this should not occur though since we were able to access the file via an input stream
+        }
     }
 }

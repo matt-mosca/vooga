@@ -57,7 +57,7 @@ import display.toolbars.InventoryToolBar;
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private final String COST = "Cost";
-	private final String GAME_FILE_KEY = "gameFile";
+	private final String GAME_FILE_KEY = "displayed-game-name";
 
 	private InventoryToolBar myInventoryToolBar;
 	private TransitorySplashScreen myTransition;
@@ -154,8 +154,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			try {
 				Properties exportedGameProperties = new Properties();
 				exportedGameProperties.load(in);
-				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY);
-				System.out.println("GN: " + gameName);
+				System.out.println(in);
+				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
+				System.out.println("GN: " + gameName );
 				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
 			} catch (IOException ioException) {
 				// todo

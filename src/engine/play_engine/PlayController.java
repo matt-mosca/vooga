@@ -44,7 +44,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	public PlayController() {
 		super();
-		savedList = new ArrayList<Set<Entry<Integer, GameElement>>>();
+		savedList = new ArrayList<>();
 		elementManager = new ElementManager(getGameElementFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;

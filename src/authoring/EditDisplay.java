@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import authoring.bottomToolBar.BottomToolBar;
+import authoring.LevelToolBar.LevelToolBar;
+import authoring.PropertiesToolBar.PropertiesToolBar;
+import authoring.PropertiesToolBar.SpriteImage;
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
-import authoring.rightToolBar.RightToolBar;
-import authoring.rightToolBar.SpriteImage;
 import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Point2D;
@@ -42,7 +42,7 @@ import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
 import display.sprites.StaticObject;
 import display.tabs.SaveDialog;
-import display.toolbars.LeftToolBar;
+import display.toolbars.StaticObjectToolBar;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
@@ -50,10 +50,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_Y_LOCATION = 20;
 	private final String PATH_DIRECTORY_NAME = "authoring/";
 	private AuthoringController controller;
-	private LeftToolBar myLeftToolBar;
+	private StaticObjectToolBar myLeftToolBar;
 	private GameArea myGameArea;
 	private ScrollableArea myGameEnvironment;
-	private RightToolBar myRightToolBar;
+	private PropertiesToolBar myRightToolBar;
 	private MainMenuBar myMenuBar;
 	private ToggleButton gridToggle;
 	private ToggleButton movementToggle;
@@ -62,7 +62,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
 	private Map<String, String> basePropertyMap;
-	private BottomToolBar myBottomToolBar;
+	private LevelToolBar myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	private SpriteTesterButton myTesterButton;
@@ -151,18 +151,18 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		this.setDroppable(myGameArea);
 		addToLeftBar();
 		rootAdd(myLeftBar);
-		myRightToolBar = new RightToolBar(this, controller);
+		myRightToolBar = new PropertiesToolBar(this, controller);
 		rootAdd(myRightToolBar);
 		myThemeChanger = new ThemeChanger(this);
 		rootAdd(myThemeChanger);
 		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
-		myBottomToolBar = new BottomToolBar(this, controller, myGameEnvironment);
+		myBottomToolBar = new LevelToolBar(this, controller, myGameEnvironment);
 		rootAdd(myBottomToolBar);
 	}
 
 	private void addToLeftBar() {
-		myLeftToolBar = new LeftToolBar(this, controller);
+		myLeftToolBar = new StaticObjectToolBar(this, controller);
 		myLeftBar.getChildren().add(myLeftToolBar);
 		addToLeftButtonsBar();
 		myLeftBar.getChildren().add(myLeftButtonsBar);

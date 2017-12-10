@@ -2,7 +2,7 @@ package display.tabs;
 
 import java.util.List;
 
-import authoring.rightToolBar.SpriteImage;
+import authoring.PropertiesToolBar.SpriteImage;
 import display.interfaces.PropertiesInterface;
 import javafx.scene.image.ImageView;
 import display.splashScreen.ScreenDisplay;

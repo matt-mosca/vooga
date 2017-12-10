@@ -1,6 +1,6 @@
 package display.interfaces;
 
-import authoring.rightToolBar.SpriteImage;
+import authoring.PropertiesToolBar.SpriteImage;
 import display.tabs.SimpleTab;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
