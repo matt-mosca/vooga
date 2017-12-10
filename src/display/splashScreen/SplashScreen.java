@@ -26,7 +26,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	private static final int PREFSIZE = 80;
 	private static final int MAINWIDTH = 1100;
-	private static final int MAINHEIGHT = 750;
+	private static final int MAINHEIGHT = 650;
 	private static final int PLAYWIDTH = 1000;
 	private static final int PLAYHEIGHT = 700;
 	private static final String TITLEFONT = "Verdana";
@@ -189,6 +189,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setScene(myScene.getScene());
 		
 	}
+	
+	
 
 	@Override
 	public void save() {
