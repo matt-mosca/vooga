@@ -1,4 +1,4 @@
-package authoring.bottomToolBar;
+package authoring.LevelToolBar;
 
 import javafx.scene.control.TextField;
 @Deprecated

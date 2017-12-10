@@ -1,4 +1,4 @@
-package authoring.rightToolBar;
+package authoring.PropertiesToolBar;
 
 import java.io.IOException;
 import java.util.HashMap;

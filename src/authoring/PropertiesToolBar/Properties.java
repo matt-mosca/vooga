@@ -1,4 +1,4 @@
-package authoring.rightToolBar;
+package authoring.PropertiesToolBar;
 
 public class Properties {
 	private String myProperty;

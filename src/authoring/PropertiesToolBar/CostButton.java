@@ -1,4 +1,4 @@
-package authoring.rightToolBar;
+package authoring.PropertiesToolBar;
 
 import display.interfaces.PropertiesInterface;
 import javafx.scene.control.Button;
@@ -7,7 +7,7 @@ import javafx.scene.input.MouseEvent;
 
 public class CostButton extends Button {
 
-	public CostButton(RightToolBar toolbar, ImageView currentElement) {
+	public CostButton(PropertiesToolBar toolbar, ImageView currentElement) {
 		this.setText("Add Unit Cost");
 		this.setLayoutX(350);
 		this.setLayoutY(80);

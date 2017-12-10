@@ -1,4 +1,4 @@
-package authoring.rightToolBar;
+package authoring.PropertiesToolBar;
 
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ import javafx.stage.Stage;
 import display.splashScreen.ScreenDisplay;
 import display.toolbars.ToolBar;
  
-public class RightToolBar extends ToolBar implements PropertiesInterface {
+public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	
 	private TabFactory tabMaker;
 	private TabPane topTabPane;
@@ -84,7 +84,7 @@ public class RightToolBar extends ToolBar implements PropertiesInterface {
 	private final int Y_LAYOUT = 30;
 
 	
-	public RightToolBar(EditDisplay display, AuthoringController controller) {
+	public PropertiesToolBar(EditDisplay display, AuthoringController controller) {
 		this.display = display;
 		myDisplay = display;
 		retB = new ReturnButton(display);

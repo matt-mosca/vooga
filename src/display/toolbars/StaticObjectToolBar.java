@@ -19,7 +19,7 @@ import display.sprites.StaticObject;
 /**
  * @author Matt
  */
-public class LeftToolBar extends ToolBar {
+public class StaticObjectToolBar extends ToolBar {
 	private static final int Y_POSITION = 50;
 	private ScreenDisplay myDisplay;
 	private AuthoringController myController;
@@ -30,7 +30,7 @@ public class LeftToolBar extends ToolBar {
 	private AddTab addTab;
 	private ResourceBundle defaultProperties;
 	
-	public LeftToolBar(ScreenDisplay display, AuthoringController controller) {
+	public StaticObjectToolBar(ScreenDisplay display, AuthoringController controller) {
 		this.setLayoutY(Y_POSITION);
 		myDisplay = display;
 		myController = controller;

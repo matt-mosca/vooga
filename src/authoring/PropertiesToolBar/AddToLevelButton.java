@@ -1,4 +1,4 @@
-package authoring.rightToolBar;
+package authoring.PropertiesToolBar;
 
 import display.interfaces.PropertiesInterface;
 import javafx.scene.control.Button;

@@ -1,4 +1,4 @@
-package authoring.rightToolBar;
+package authoring.PropertiesToolBar;
 
 import display.interfaces.CreationInterface;
 import display.interfaces.PropertiesInterface;

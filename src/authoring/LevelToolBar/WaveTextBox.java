@@ -1,4 +1,4 @@
-package authoring.bottomToolBar;import javafx.event.EventHandler;
+package authoring.LevelToolBar;import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 

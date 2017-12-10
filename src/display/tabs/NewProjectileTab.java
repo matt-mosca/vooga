@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.EditDisplay;
-import authoring.rightToolBar.ProjectileImage;
+import authoring.PropertiesToolBar.ProjectileImage;
 
 public class NewProjectileTab extends NewSpriteTab {
 	
