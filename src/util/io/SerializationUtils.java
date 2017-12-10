@@ -16,6 +16,7 @@ import util.AnnotationExclusionStrategy;
 import util.InterfaceAdapter;
 
 import java.io.StringReader;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -365,5 +366,13 @@ public class SerializationUtils {
 		}
 		System.out.println(Arrays.asList(serializedSections));
 		return serializedSections;
+	}
+
+	public String serializeElementProperty(Object propertyValue) {
+		return gsonBuilder.create().toJson(propertyValue, propertyValue.getClass());
+	}
+
+	public Object deserializeElementProperty(String propertySerialization, Class propertyClass) {
+		return gsonBuilder.create().fromJson(propertySerialization, propertyClass);
 	}
 }

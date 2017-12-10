@@ -31,7 +31,7 @@ public class RoundRobinWaveFiringStrategy extends AbstractWaveFiringStrategy {
 	}
 
 	@Override
-	public String getAudioURI() {
+	public String getAudioUrl() {
 		return null;
 	}
 

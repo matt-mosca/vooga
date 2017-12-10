@@ -80,7 +80,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		gameName = DEFAULT_GAME_NAME;
 		spriteIdCounter = new AtomicInteger();
 		spriteIdMap = new HashMap<>();
-		gameElementFactory = new GameElementFactory();
+		gameElementFactory = new GameElementFactory(serializationUtils);
 		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
 		spriteTemplateIoHandler = new SpriteTemplateIoHandler();
 		spriteQueryHandler = new SpriteQueryHandler();
@@ -248,7 +248,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getServerMessageUtils().packageAllElementCosts(getElementCosts());
 	}
 
-	public Collection<NewSprite> packageLevelElements(int level) {
+	@Override
+	public Collection<NewSprite> getLevelSprites(int level) {
 		return getServerMessageUtils().packageNewSprites(getFilteredSpriteIdMap(getLevelSprites().get(level)));
 	}
 
@@ -391,7 +392,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		
 		return LevelInitialized.newBuilder()
 				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
-						getFilteredSpriteIdMap(oldGameElements), false, false, false, false, getResourceEndowments()))
+						getFilteredSpriteIdMap(oldGameElements), false, false, false, false, getResourceEndowments(), getCurrentLevel()))
 				.setInventory(packageInventory()).build();
 	}
 
