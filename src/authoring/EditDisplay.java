@@ -298,11 +298,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void defense() {
 		attackDefenseLabel.setText("Attack");
 	}
-
-	@Override
-	public void doSomething() {
-		// TODO Auto-generated method stub
-
+	
+	public void submit(int level, int waves, int amount, ImageView mySprite) {
+//		myBottomToolBar.changeLevel(level);
+//		myBottomToolBar.addToWave(mySprite, waves, amount);
 	}
 
 	@Override
@@ -359,19 +358,17 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
 		getStage().setScene(testingScene.getScene());
 		controller.setGameName("testingGame");
-		controller.setWaveProperties(fun, sprites, new Point2D(100, 100));
-
+		controller.setWaveProperties(fun, sprites, new Point2D(100,100));
 	}
 
 	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {
-		if (kind == 1) {
-			myBottomToolBar.addToLevel(currSprite, level);
+		if (kind==1) {
+//			myBottomToolBar.addToWave(currSprite, level, 3);
 		}
 		if (kind == 2) {
 			myBottomToolBar.addLevelProperties(currSprite, level);
 		}
 	}
-
 	public int getMaxLevel() {
 		return myBottomToolBar.getMaxLevel();
 	}
