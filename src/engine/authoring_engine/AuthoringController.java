@@ -6,6 +6,7 @@ import engine.game_elements.GameElement;
 import exporting.Packager;
 import exporting.Publisher;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -227,8 +228,10 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
 
     @Override
-    public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
-        return getIdsCollectionFromSpriteCollection(getLevelSprites().get(getCurrentLevel()));
+    public Collection<PlayerServer.NewSprite> getLevelSprites(int level) throws IllegalArgumentException {
+        //return getIdsCollectionFromSpriteCollection(getLevelSprites().get(getCurrentLevel()));
+		return null;
+		// TODO!!! - (sorry Adi)
     }
 
     @Override
@@ -298,5 +301,4 @@ public class AuthoringController extends AbstractGameController implements Autho
             e.printStackTrace();
         }
     }
-
 }

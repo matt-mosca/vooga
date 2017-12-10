@@ -126,14 +126,14 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	 */
 	@Override
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
-		// TODO - remove old level
+		Collection<GameElement> oldGameElements = getLevelSprites().get(getCurrentLevel());
 		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;
 		gameElementFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadElementTemplates(gameName));
 		gameElementUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadElementUpgrades(gameName));
-		return packageInitialState();
+		return packageStateChange(oldGameElements);
 	}
 
 	public Inventory packageInventory() {
@@ -256,7 +256,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getServerMessageUtils().packageAllElementCosts(getElementCosts());
 	}
 
-	public Collection<NewSprite> packageLevelElements(int level) {
+	@Override
+	public Collection<NewSprite> getLevelSprites(int level) {
 		return getServerMessageUtils().packageNewSprites(getFilteredSpriteIdMap(getLevelSprites().get(level)));
 	}
 
@@ -396,10 +397,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 				.collect(Collectors.toMap(spriteEntry -> spriteEntry.getKey(), spriteEntry -> spriteEntry.getValue()));
 	}
 
-	protected LevelInitialized packageInitialState() {
+	protected LevelInitialized packageStateChange(Collection<GameElement> oldGameElements) {
+		
 		return LevelInitialized.newBuilder()
 				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
-						new HashMap<>(), false, false, false, false, getResourceEndowments()))
+						getFilteredSpriteIdMap(oldGameElements), false, false, false, false, getResourceEndowments(), getCurrentLevel()))
 				.setInventory(packageInventory()).build();
 	}
 

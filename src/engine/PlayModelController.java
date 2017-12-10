@@ -20,9 +20,6 @@ import java.util.Set;
  */
 public interface PlayModelController extends AbstractGameModelController {
 
-    // TODO - Remove the inherited methods? Or keep to facilitate quick survey of
-    // all authoring methods?
-
     /**
      * Save the current state of a game being played.
      *
@@ -171,5 +168,5 @@ public interface PlayModelController extends AbstractGameModelController {
      * @return all the game elements (sprites) represented in the level
      * @throws IllegalArgumentException if there is no corresponding level in the current game
      */
-    Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException;
+    Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException;
 }
