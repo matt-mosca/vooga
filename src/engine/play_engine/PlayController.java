@@ -60,6 +60,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	@Override
 	public LevelInitialized loadSavedPlayState(String savePlayStateName) throws FileNotFoundException {
+		Collection<GameElement> oldGameElements = getLevelSprites().get(getCurrentLevel());
 		// Get number of levels in play state
 		int lastLevelPlayed = getNumLevelsForGame(savePlayStateName, false);
 		// Load levels up to that level, as played (not original)
@@ -68,7 +69,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			loadLevelData(savePlayStateName, level, false);
 		}
 		updateForLevelChange(savePlayStateName, lastLevelPlayed);
-		return packageInitialState();
+		return packageStateChange(oldGameElements);
 	}
 
 	// TODO - Deprecate in favor of public Update update() variant
