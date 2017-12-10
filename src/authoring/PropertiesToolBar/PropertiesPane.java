@@ -21,7 +21,7 @@ public class PropertiesPane extends TabPane{
 	
 	public PropertiesPane(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView,
 			AuthoringController controller, boolean hasProjectile) {
-		myImageView = imageView;
+		myImageView = clone(imageView);
 		myProperties = properties;
 		myController = controller;
 		myDisplay = display;
@@ -53,16 +53,26 @@ public class PropertiesPane extends TabPane{
 	}
 	
 	private void addUpgrade(Map<String, String> propertyMap) {
-		PropertiesTab newTab = (projectile) ? new PropertiesTabWithProjectile(myDisplay, myProperties, myImageView, propertyMap, myController) 
-				: new PropertiesTab(myDisplay, myProperties, myImageView, propertyMap, myController);
+		PropertiesTab newTab = (projectile) ? new PropertiesTabWithProjectile(myDisplay, myProperties, clone(myImageView), propertyMap, myController) 
+				: new PropertiesTab(myDisplay, myProperties, clone(myImageView), propertyMap, myController);
 		if(this.getTabs().isEmpty()) {
 			this.getTabs().add(tabMaker.buildTab("Base Level", null, newTab, this));
 			this.getTabs().get(0).setClosable(false);
 			
 			this.getTabs().add(addTab);
 		}else {
-			this.getTabs().add(upgradeSize, tabMaker.buildTab("Upgrade " + ++upgradeSize, null, newTab, this));
+			Tab tab = tabMaker.buildTab("Upgrade " + ++upgradeSize, null, newTab, this);
+			tab.setOnClosed(e->{ upgradeSize--; });
+			this.getTabs().add(this.getTabs().size()-1, tab);
 		}
+	}
+	
+	private ImageView clone(ImageView imageView) {
+		ImageView cloneImage = new ImageView(imageView.getImage());
+		cloneImage.setFitHeight(imageView.getFitHeight());
+		cloneImage.setFitWidth(imageView.getFitWidth());
+		cloneImage.setId(imageView.getId());
+		return cloneImage;
 	}
 
 }
