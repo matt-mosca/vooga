@@ -15,13 +15,16 @@ public class WavesDisplay extends TabPane {
 	private SpriteDisplayer mySpriteDisplay;
 	private List<SpriteDisplayer> myWaves;
 	
-	public WavesDisplay() {
+	public WavesDisplay(int numberOfWaves) {
 		myWaves = new ArrayList<SpriteDisplayer>();
 		myWaves.add(new SpriteDisplayer());
-		Tab tab = new Tab();
-		tab.setText("wave 1");
-		tab.setContent(myWaves.get(0));
-		this.getTabs().add(tab);
+		for (int i = 0; i < numberOfWaves; i++) {
+			Tab tab = new Tab();
+			tab.setText("wave" + String.valueOf(i));
+			tab.setContent(mySpriteDisplay);
+			this.getTabs().add(tab);
+		}
+		
 	}	
 	
 	public void addWave() {

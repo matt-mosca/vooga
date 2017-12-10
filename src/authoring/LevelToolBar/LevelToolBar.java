@@ -36,8 +36,8 @@ public class LevelToolBar extends VBox {
 	private int currentDisplay;
 	private EditDisplay myCreated;
 	private WavesDisplay currWavesDisplay;
-//	private SpriteDisplayer mySpriteDisplay;
-//	private WavesDisplay myWavesDisplay;
+	private SpriteDisplayer mySpriteDisplay;
+	private WavesDisplay myWavesDisplay;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -51,21 +51,20 @@ public class LevelToolBar extends VBox {
 		this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 		this.setWidth(400);
-		myLevels = new ArrayList<>();
-		mySpriteList = new ArrayList<>();
-		mySpriteList.add(new ArrayList<>());
+		mySpriteList = new ArrayList<List<List<ImageView>>>();
+		addNewLevel();
 		newLevel = new Button("New Level");
 		newLevel.setOnAction(e -> addLevel());
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
 		myWaves =  new ArrayList<WavesDisplay>();
-		myWaves.add(new WavesDisplay());
+		myWaves.add(new WavesDisplay(1));
 		this.getChildren().add(myWaves.get(0));
 		currWavesDisplay = myWaves.get(0);
-//		myWavesDisplay = new WavesDisplay();
-//		this.getChildren().add(myWavesDisplay);
-//		mySpriteDisplay = new SpriteDisplayer();
-//		this.getChildren().add(mySpriteDisplay);
+		myWavesDisplay = new WavesDisplay(1);
+		this.getChildren().add(myWavesDisplay);
+		mySpriteDisplay = new SpriteDisplayer();
+		this.getChildren().add(mySpriteDisplay);
 		myTabPane.setMaxSize(400, 100);
 		myTabPane.setPrefSize(400, 100);
 		editLevel = new Button("Edit Level");
@@ -82,6 +81,13 @@ public class LevelToolBar extends VBox {
 		created.setGameArea(myGameAreas.get(0));
 	}
 
+	private void addNewLevel() {
+		List<ImageView> oneWave = new ArrayList<ImageView>();
+		List<List<ImageView>> multipleWaves = new ArrayList<List<ImageView>>();
+		multipleWaves.add(oneWave);
+		mySpriteList.add(multipleWaves);
+	}
+
 	private void loadLevels() {
 		if (myController.getGameName().equals("untitled")
 				|| myController.getNumLevelsForGame(myController.getGameName(), true) == 0) {
@@ -95,7 +101,7 @@ public class LevelToolBar extends VBox {
 	}
 
 	private void addLevel() {
-		mySpriteList.add(new ArrayList<>());
+		addNewLevel();
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size() + 1), null, myTabPane);
 //		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(myLevels.size() + 1, myController);
@@ -110,7 +116,7 @@ public class LevelToolBar extends VBox {
 		newLv.attach(newTab);
 		myLevels.add(newLv);
 		myTabPane.getTabs().add(newTab);
-		myWaves.add(new WavesDisplay());
+		myWaves.add(new WavesDisplay(myLevels.size()));
 	}
 
 	// TODO need load in static object rather than just imageview
@@ -159,7 +165,9 @@ public class LevelToolBar extends VBox {
 	public void addToWave(ImageView newSprite, int wave, int amount) {
 //		mySprites.get(wave-1).add(newSprite);
 		updateSpriteDisplay(currentDisplay);
-		myWaves.get(currentDisplay - 1).updateLevel(newSprite, wave);
+		List<ImageView> spriteList = new ArrayList<ImageView>();
+		spriteList.add(newSprite);
+		myWaves.get(currentDisplay - 1).updateLevel(spriteList, wave);
 	}
 
 	private void updateSpriteDisplay(int wave) {
