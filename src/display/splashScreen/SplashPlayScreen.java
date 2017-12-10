@@ -27,8 +27,10 @@ import player.PlayDisplay;
  */
 public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 
+	// change this
 	public static final String EXPORTED_GAME_PROPERTIES_FILE = "Export.properties";
-	public static final String EXPORTED_GAME_NAME_KEY = "gameFile";
+	private final String EXPORTED_GAME_NAME_KEY = "displayed-game-name";
+	// ^
 
 	private final String DEFAULT_GAME_NAME = "Game";
 	private final String PLAY = "Play ";
@@ -73,8 +75,9 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 			gameName = gameProperties.getProperty(EXPORTED_GAME_NAME_KEY);
 		} catch (IOException e) {
 			// won't happen so ignore (let's hope)
+			e.printStackTrace();
 		}
-		return gameName.substring(0, gameName.indexOf('.'));
+		return gameName;
 	}
 
 	private void basicSetup() {

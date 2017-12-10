@@ -52,11 +52,12 @@ public final class Packager {
      * Generate an executable JAR file for an authored game, obtaining the necessary information about parts of the
      * project being included from a properties file.
      *
-     * @param gameExportName the name to give the exported JAR file, not including path or extension
+     * @param gameExportName the name of the game being exported
      * @return the path to the exported JAR file
      */
     public String generateJar(String gameExportName) throws IOException {
         propertiesGetter = new JarPropertiesGetter();
+        propertiesGetter.setDisplayedGameName(gameExportName);
         exportJarOutputPath = propertiesGetter.getExportTargetPath(gameExportName);
         try {
             target = initializeJarOutputStream(exportJarOutputPath, propertiesGetter.getMainClassFullName());
