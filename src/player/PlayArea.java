@@ -1,5 +1,6 @@
 package player;
 
+import networking.protocol.PlayerServer.NewSprite;
 import util.path.Path;
 import util.protocol.ClientMessageUtils;
 import engine.PlayModelController;
@@ -35,8 +36,14 @@ public class PlayArea extends Pane implements Droppable {
 	protected void placeInGrid(InteractiveObject currObject) {
 		lastX = currObject.getX();
 		lastY = currObject.getY();
-		clientMessageUtils.addNewSpriteToDisplay((myController.placeElement(currObject.getElementName(),
-				new Point2D(currObject.getX(), currObject.getY()))));
+		Point2D startLocation = new Point2D(currObject.getX(), currObject.getY());
+		try {
+			NewSprite newSprite = myController.placeElement(currObject.getElementName(), startLocation);
+			clientMessageUtils.addNewSpriteToDisplay(newSprite);
+		} catch (ReflectiveOperationException failedToPlaceElementException) {
+			// todo - handle
+		}
+
 	}
 
 	@Override

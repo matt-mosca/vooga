@@ -154,12 +154,7 @@ public class ElementOptionsGetter {
         }
     }
 
-    public List<String> getConstructorParameterIdentifiers(Class clazz) {
-        if (clazz.getConstructors().length == 0) {
-            return new ArrayList<>();
-        }
-        Constructor constructor = clazz.getConstructors()[0];
-        Parameter[] parameters = constructor.getParameters();
+    public List<String> getConstructorParameterIdentifiers(Parameter[] parameters) {
         // TODO - make sure getParameters() returns them in order
         return Arrays.stream(parameters).map(this::getParameterIdentifier).collect(Collectors.toList());
     }
@@ -191,26 +186,22 @@ public class ElementOptionsGetter {
     }
 
     private String translateDescriptionToClass(String description) {
-        return descriptionToClass.get(description);
+        return descriptionToClass.getOrDefault(description, description);
     }
 
     private String translateClassToDescription(String className) {
-        return classToDescription.get(className);
+        return classToDescription.getOrDefault(className, className);
     }
 
     public String translateParameterToDescription(String parameterName) {
         return parameterToDescription.get(parameterName);
     }
 
-    public String getChosenSubclassName(Class parameterClass, Map<String, String> properties)
+    public String getChosenSubclassName(Class parameterClass, Map<String, ?> properties)
             throws IllegalArgumentException {
         String parameterClassDescription = translateClassToDescription(parameterClass.getName());
-        String chosenSubclassDescription;
-        if (parameterClassDescription == null ||
-                (chosenSubclassDescription = properties.get(parameterClassDescription)) == null) {
-            throw new IllegalArgumentException();
-            // TODO - custom exception
-        }
-        return translateDescriptionToClass(chosenSubclassDescription);
+        Object chosenSubclassNameAsObject = properties.get(parameterClassDescription);
+        return chosenSubclassNameAsObject == null ? null :
+                translateDescriptionToClass(chosenSubclassNameAsObject.toString());
     }
 }

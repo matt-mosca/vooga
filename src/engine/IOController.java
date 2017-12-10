@@ -49,11 +49,11 @@ public class IOController {
 	 *            approach? reflection?
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
-							  Map<String, String> levelConditions, Bank levelBank, List<GameElement> levelGameElements, Set<String> levelInventories, Map<String, Double> status,
-							  boolean forAuthoring) {
+			Map<String, String> levelConditions, Bank levelBank, List<GameElement> levelGameElements,
+			Set<String> levelInventories, List<GameElement> levelWaves, Map<String, Double> status, boolean forAuthoring) {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
-				currentLevel, status, levelGameElements, levelInventories);
+				currentLevel, status, levelGameElements, levelInventories, levelWaves);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -142,10 +142,16 @@ public class IOController {
 		// deserialize string into map through utils module
 		return serializationUtils.deserializeGameDescription(serializedGameData, level);
 	}
-	
-	public Set<String> loadGameInventories(String savedGameName, int level, boolean forAuthoring) throws FileNotFoundException {
+
+	public Set<String> loadGameInventories(String savedGameName, int level, boolean forAuthoring)
+			throws FileNotFoundException {
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		return serializationUtils.deserializeGameInventories(serializedGameData, level);
+	}
+
+	public List<GameElement> loadGameWaves(String savedGameName, int level) throws FileNotFoundException {
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
+		return serializationUtils.deserializeGameWaves(serializedGameData, level);
 	}
 
 	/**
@@ -169,7 +175,8 @@ public class IOController {
 	 * Fetch all available game names and their corresponding descriptions
 	 * 
 	 * @return map where keys are game names and values are game descriptions
-	 * @throws IllegalStateException if no games are found
+	 * @throws IllegalStateException
+	 *             if no games are found
 	 */
 	public Map<String, String> getAvailableGames() throws IllegalStateException {
 		// retrieve set of files from authoring folder through io module
@@ -238,9 +245,6 @@ public class IOController {
 		Map<String, String> authoredGameSerializationMap = new HashMap<>();
 		// iterate over file names in authored_games folder, serialize each
 		File authoredGamesDirectory = new File(AUTHORING_GAMES_FOLDER);
-		// System.out.println("EXISTS: " + authoredGamesDirectory.exists());
-
-		System.out.println(authoredGamesDirectory.getPath() + " " + authoredGamesDirectory.exists());
 		// String decodedPath = URLDecoder.decode(path, "UTF-8");
 		File[] authoredGames = authoredGamesDirectory.listFiles();
 		if (authoredGames == null) {
@@ -273,11 +277,17 @@ public class IOController {
 	 * @return string representing serialization of level's data
 	 */
 	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
-										Bank levelBank, Map<String, Double> levelStatus, List<GameElement> levelGameElements, Set<String> levelInventories) {
+			Bank levelBank, Map<String, Double> levelStatus, List<GameElement> levelGameElements,
+			Set<String> levelInventories, List<GameElement> levelWaves) {
 		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelBank, levelStatus,
-				levelGameElements, levelInventories, level);
+				levelGameElements, levelInventories, levelWaves, level);
 	}
 
+	public Map<String, String> getWaveSerialization(Map<String, ?> waveProperties) {
+		return serializationUtils.serializeWaveProperties(waveProperties);
+	} 
+
+	
 	/**
 	 * Save game state for multiple levels using mapping of level to serialized data
 	 * for level Especially useful for authoring use-case where a (partially) built
@@ -294,9 +304,11 @@ public class IOController {
 	public void saveGameStateForMultipleLevels(File saveName, Map<Integer, String> serializedLevelsData,
 			boolean forAuthoring) {
 		String serializedGameData = serializationUtils.serializeLevelsData(serializedLevelsData);
-		//gamePersistence.saveGameState(getResolvedGameName(saveName, forAuthoring), serializedGameData);
+		// gamePersistence.saveGameState(getResolvedGameName(saveName, forAuthoring),
+		// serializedGameData);
 		gamePersistence.saveGameState(saveName, serializedGameData);
 	}
+	
 
 	private String getResolvedGameName(String savedGameName, boolean forAuthoring) {
 		String prefix = forAuthoring ? AUTHORING_GAMES_FOLDER : PLAY_GAMES_FOLDER;

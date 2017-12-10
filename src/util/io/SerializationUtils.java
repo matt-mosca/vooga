@@ -16,6 +16,7 @@ import util.AnnotationExclusionStrategy;
 import util.InterfaceAdapter;
 
 import java.io.StringReader;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,15 +34,17 @@ public class SerializationUtils {
 	public static final String STATUS = "status";
 	public static final String SPRITES = "gameElements";
 	public static final String INVENTORY = "inventory";
+	public static final String WAVE = "wave";
 	public static final String DELIMITER = "\n";
 	// Description, Status, Sprites
-	public static final int NUM_SERIALIZATION_SECTIONS = 6;
+	public static final int NUM_SERIALIZATION_SECTIONS = 7;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
 	public static final int CONDITIONS_SERIALIZATION_INDEX = 1;
 	public static final int BANK_SERIALIZATION_INDEX = 2;
 	public static final int STATUS_SERIALIZATION_INDEX = 3;
 	public static final int SPRITES_SERIALIZATION_INDEX = 4;
 	public static final int INVENTORY_SERIALIZATION_INDEX = 5;
+	public static final int WAVE_SERIALIZATION_INDEX = 6;
 	private GsonBuilder gsonBuilder;
 
 	public SerializationUtils() {
@@ -74,13 +77,16 @@ public class SerializationUtils {
 	 *            other than the Sprites
 	 * @param levelGameElements
 	 *            the cache of generated sprites for a level
+	 * @param levelWaves
+	 * 			the waves for this level
 	 * @return serialization of map of level to serialized level data
 	 */
 	public String serializeGameData(String gameDescription, Map<String, String> gameConditions, Bank gameBank,
-									int level, Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories) {
+									int level, Map<String, Double> status, List<GameElement> levelGameElements,
+									Set<String> levelInventories, List<GameElement> levelWaves) {
 		Map<String, String> serializedLevelData = new HashMap<>();
-		serializedLevelData.put(Integer.toString(level),
-				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelGameElements, levelInventories, level));
+		serializedLevelData.put(Integer.toString(level), serializeLevelData(gameDescription, gameConditions, gameBank,
+				status, levelGameElements, levelInventories, levelWaves, level));
 		return gsonBuilder.create().toJson(serializedLevelData);
 	}
 
@@ -119,7 +125,8 @@ public class SerializationUtils {
 	 * @return serialization of level data
 	 */
 	public String serializeLevelData(String gameDescription, Map<String, String> levelConditions, Bank bank,
-									 Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories, int level) {
+			Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories,
+			List<GameElement> levelWaves, int level) {
 		StringBuilder gameDataStringBuilder = new StringBuilder();
 		gameDataStringBuilder.append(serializeGameDescription(gameDescription));
 		gameDataStringBuilder.append(DELIMITER);
@@ -132,8 +139,10 @@ public class SerializationUtils {
 		gameDataStringBuilder.append(serializeSprites(levelGameElements, level));
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeInventories(levelInventories, level));
+		gameDataStringBuilder.append(DELIMITER);
+		gameDataStringBuilder.append(serializeWaves(levelWaves, level));
 		return gameDataStringBuilder.toString();
-		
+
 	}
 
 	// TODO - for all deserialization methods : take level as parameter
@@ -219,14 +228,22 @@ public class SerializationUtils {
 	 * @throws IllegalArgumentException
 	 *             if serialization is ill-formatted
 	 */
-	public List<GameElement> deserializeGameSprites(String serializedGameData, int level) throws IllegalArgumentException {
+	public List<GameElement> deserializeGameSprites(String serializedGameData, int level)
+			throws IllegalArgumentException {
 		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
 		return deserializeSprites(serializedSections[SPRITES_SERIALIZATION_INDEX]);
 	}
-	
-	public Set<String> deserializeGameInventories(String serializedGameData, int level) throws IllegalArgumentException {
+
+	public Set<String> deserializeGameInventories(String serializedGameData, int level)
+			throws IllegalArgumentException {
 		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
 		return deserializeInventories(serializedSections[INVENTORY_SERIALIZATION_INDEX]);
+	}
+
+	public List<GameElement> deserializeGameWaves(String serializedGameData, int level)
+			throws IllegalArgumentException {
+		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
+		return deserializeWaves(serializedSections[WAVE_SERIALIZATION_INDEX]);
 	}
 
 	/**
@@ -244,6 +261,13 @@ public class SerializationUtils {
 	public int getNumLevelsFromSerializedGame(String serializedGameData) throws IllegalArgumentException {
 		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(serializedGameData, Map.class);
 		return serializedLevelData.keySet().size();
+	}
+
+	public Map<String, String> serializeWaveProperties(Map<String, ?> waveProperties) {
+		Map<String, String> stringifiedWaveProperties = new HashMap<>();
+		waveProperties.entrySet().forEach(
+				entry -> stringifiedWaveProperties.put(entry.getKey(), gsonBuilder.create().toJson(entry.getValue())));
+		return stringifiedWaveProperties;
 	}
 
 	private String serializeGameDescription(String gameDescription) {
@@ -276,33 +300,43 @@ public class SerializationUtils {
 		spritesMap.put(SPRITES, levelGameElements);
 		return gsonBuilder.create().toJson(spritesMap);
 	}
-	
+
 	private String serializeInventories(Set<String> levelInventories, int level) {
 		Map<String, Set<String>> inventoriesMap = new HashMap<>();
 		inventoriesMap.put(INVENTORY, levelInventories);
 		return gsonBuilder.create().toJson(inventoriesMap);
 	}
 
+	private String serializeWaves(List<GameElement> levelWaves, int level) {
+		Map<String, List<GameElement>> wavesMap = new HashMap<>();
+		wavesMap.put(WAVE, levelWaves);
+		return gsonBuilder.create().toJson(wavesMap);
+	}
+
 	private String deserializeDescription(String serializedDescription) {
-		Type mapType = new TypeToken<Map<String, String>>(){}.getType();
+		Type mapType = new TypeToken<Map<String, String>>() {
+		}.getType();
 		Map<String, String> descriptionMap = gsonBuilder.create().fromJson(serializedDescription, mapType);
 		return descriptionMap != null ? descriptionMap.get(DESCRIPTION) : new String();
 	}
 
 	private Map<String, String> deserializeConditions(String serializedConditions) {
-		Type mapType = new TypeToken<Map<String, Map<String, String>>>(){}.getType();
+		Type mapType = new TypeToken<Map<String, Map<String, String>>>() {
+		}.getType();
 		Map<String, Map<String, String>> conditionsMap = gsonBuilder.create().fromJson(serializedConditions, mapType);
 		return conditionsMap != null ? conditionsMap.get(CONDITIONS) : new HashMap<>();
 	}
 
 	private Bank deserializeBank(String serializedBank) {
-		Type mapType = new TypeToken<Map<String, Bank>>(){}.getType();
+		Type mapType = new TypeToken<Map<String, Bank>>() {
+		}.getType();
 		Map<String, Bank> bankMap = gsonBuilder.create().fromJson(serializedBank, mapType);
 		return bankMap != null ? bankMap.get(BANK) : new Bank();
 	}
 
 	private Map<String, Double> deserializeStatus(String serializedStatus) {
-		Type mapType = new TypeToken<Map<String, Map<String, Double>>>(){}.getType();
+		Type mapType = new TypeToken<Map<String, Map<String, Double>>>() {
+		}.getType();
 		Map<String, Map<String, Double>> statusMap = gsonBuilder.create().fromJson(serializedStatus, mapType);
 		return statusMap != null ? statusMap.get(STATUS) : new HashMap<>();
 	}
@@ -310,73 +344,105 @@ public class SerializationUtils {
 	// Return a map of sprite name to list of elements, which can be used by
 	// ElementFactory to construct sprite objects
 	private List<GameElement> deserializeSprites(String serializedSprites) {
-		Type mapType = new TypeToken<Map<String, List<GameElement>>>(){}.getType();
+		Type mapType = new TypeToken<Map<String, List<GameElement>>>() {
+		}.getType();
 		Map<String, List<GameElement>> spritesMap = gsonBuilder.create().fromJson(serializedSprites, mapType);
 		return spritesMap != null ? spritesMap.get(SPRITES) : new ArrayList<>();
 	}
-	
+
 	private Set<String> deserializeInventories(String serializedInventories) {
-		Type mapType = new TypeToken<Map<String, Set<String>>>(){}.getType();
+		Type mapType = new TypeToken<Map<String, Set<String>>>() {
+		}.getType();
 		Map<String, Set<String>> inventoriesMap = gsonBuilder.create().fromJson(serializedInventories, mapType);
 		return inventoriesMap != null ? inventoriesMap.get(INVENTORY) : new HashSet<>();
 	}
 
+	private List<GameElement> deserializeWaves(String serializedWaves) {
+		Type mapType = new TypeToken<Map<String, List<GameElement>>>() {
+		}.getType();
+		Map<String, List<GameElement>> wavesMap = gsonBuilder.create().fromJson(serializedWaves, mapType);
+		return wavesMap != null ? wavesMap.get(WAVE) : new ArrayList<>();
+	}
+
 	private String[] retrieveSerializedSectionsForLevel(String serializedGameData, int level)
 			throws IllegalArgumentException {
-		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(new JsonReader(new
-				StringReader(serializedGameData)),	Map.class);
+		Map<String, String> serializedLevelData = gsonBuilder.create()
+				.fromJson(new JsonReader(new StringReader(serializedGameData)), Map.class);
 		String levelString = Integer.toString(level);
 		if (!serializedLevelData.containsKey(levelString)) {
 			throw new IllegalArgumentException();
 		}
-		System.out.println(serializedGameData);
 		String[] serializedSections = serializedLevelData.get(levelString).split(DELIMITER);
+		System.out.println("Number of serialized sections: " + serializedSections.length);
+		Arrays.asList(serializedSections).forEach(section -> {
+			System.out.println("SECTION");
+			System.out.println(section);
+		});
 		if (serializedSections.length < NUM_SERIALIZATION_SECTIONS) {
 			throw new IllegalArgumentException();
 		}
-		System.out.println(Arrays.asList(serializedSections));
 		return serializedSections;
 	}
 
-	// For testing
-	public static void main(String[] args) {
-		SerializationUtils tester = new SerializationUtils();
-		String testDescription = "test_game";
-		int testLevel = 1;
-		Map<String, String> testStatus = new HashMap<>();
-		testStatus.put("lives", "3");
-		testStatus.put("gold", "100");
-
-		GameElementFactory factory = new GameElementFactory();
-
-		Map<String, Object> towerMap = new HashMap<>();
-		towerMap.put("collisionVisitable", new DamageDealingCollisionVisitable(1.0));
-		towerMap.put("collisionVisitor", new ImmortalCollider(1));
-		// TODO - don't serialize sprites; cache their properties and reconstruct using
-		// spriteFactory
-		// since the sprite serialization is causing StackOverflowError
-		// how to handle coordinates though?
-
-		/*
-		 * GameElement testTower = factory.defineElement("testTower", towerMap); GameElement
-		 * testTower2 = factory.defineElement("testTower2", towerMap); GameElement testTower3
-		 * = factory.defineElement("testTower"); GameElement testSoldier =
-		 * factory.defineElement("testSoldier", soldierMap); GameElement testSoldier2 =
-		 * factory.defineElement("testSoldier2", soldierMap); GameElement testSoldier3 =
-		 * factory.defineElement("testSoldier"); List<GameElement> levelSprites =
-		 * Arrays.asList(testTower, testTower2, testTower3, testSoldier, testSoldier2,
-		 * testSoldier3); String serializedGameData =
-		 * tester.serializeGameData(testDescription, testLevel, testStatus,
-		 * levelSprites); System.out.println("Serialized sprites: " +
-		 * serializedGameData); System.out.println("Game Description: " +
-		 * tester.deserializeGameDescription(serializedGameData, testLevel));
-		 * Map<String, String> deserializedStatus =
-		 * tester.deserializeGameStatus(serializedGameData, testLevel); List<GameElement>
-		 * deserializedSprites = tester.deserializeGameSprites(serializedGameData,
-		 * testLevel); for (String statusKey : deserializedStatus.keySet()) {
-		 * System.out.println(statusKey + " : " + deserializedStatus.get(statusKey)); }
-		 * for (GameElement sprite : deserializedSprites) { System.out.println(sprite); }
-		 */
+	public String serializeElementProperty(Object propertyValue) {
+		return gsonBuilder.create().toJson(propertyValue, propertyValue.getClass());
 	}
 
+	public Object deserializeElementProperty(String propertySerialization, Class propertyClass) {
+		if (propertyClass != String.class) {
+			return gsonBuilder.create().fromJson(propertySerialization, propertyClass);
+		} else {
+			return propertySerialization;
+		}
+	}
+
+	private final String COMMA = ",";
+	private final int VALUE_INDEX = 0, CLASS_INDEX = 1;
+
+	public Map<String, String> serializeElementTemplate(Map<String, ?> elementTemplate) {
+
+		Map<String, String> serializedTemplate = new HashMap<>();
+		for (String propertyName : elementTemplate.keySet()) {
+			Class propertyClass = elementTemplate.get(propertyName).getClass();
+			String serializedProperty = elementTemplate.get(propertyName) + COMMA + propertyClass.toString();
+			serializedTemplate.put(propertyName, serializedProperty);
+		}
+		return serializedTemplate;
+	}
+
+	public Map<String, Object> deserializeElementTemplate(Map<String, String> elementTemplate) {
+		Map<String, Object> serializedTemplate = new HashMap<>();
+		for (String propertyName : elementTemplate.keySet()) {
+			String[] serializedProperty = elementTemplate.get(propertyName).split(COMMA);
+			Class propertyClass;
+			try {
+				propertyClass = Class.forName(serializedProperty[CLASS_INDEX]);
+			} catch (ClassNotFoundException exception) {
+				propertyClass = String.class;
+			}
+			serializedTemplate.put(propertyName,
+					deserializeElementProperty(serializedProperty[VALUE_INDEX], propertyClass));
+		}
+		return serializedTemplate;
+	}
+
+	public Map<String, Map<String, String>> serializeTemplates(Map<String, Map<String, Object>> elementTemplates) {
+		Map<String, Map<String, String>> serializedTemplates = new HashMap<>();
+		for (String templateName : elementTemplates.keySet()) {
+			Map<String, Object> template = elementTemplates.get(templateName);
+			Map<String, String> serializedTemplate = serializeElementTemplate(template);
+			serializedTemplates.put(templateName, serializedTemplate);
+		}
+		return serializedTemplates;
+	}
+
+	public Map<String, Map<String, Object>> deserializeTemplates(Map<String, Map<String, String>> serializedTemplates) {
+		Map<String, Map<String, Object>> templates = new HashMap<>();
+		for (String templateName : serializedTemplates.keySet()) {
+			Map<String, String> serializedTemplate = serializedTemplates.get(templateName);
+			Map<String, Object> template = deserializeElementTemplate(serializedTemplate);
+			templates.put(templateName, template);
+		}
+		return templates;
+	}
 }

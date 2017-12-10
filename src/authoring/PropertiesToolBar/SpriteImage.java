@@ -12,22 +12,22 @@ import display.sprites.InteractiveObject;
 public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
 	private AuthoringController controller;
-	private Map<String, String> myPossibleProperties;
-	private Map<String, String> myBaseProperties;
+	private Map<String, Object> myPossibleProperties;
+	private Map<String, Object> myBaseProperties;
 	private String myName;
 	private ResourceBundle myResourceBundle;
-	private Map<String, String> defaultValues;
-	private Map<String, String> allProperties;
+	private Map<String, Object> defaultValues;
+	private Map<String, Object> allProperties;
 
 	
 	public SpriteImage(ScreenDisplay display) {
 		super(display,null);
 		defaultValues = new HashMap<>();
 		myResourceBundle = ResourceBundle.getBundle("authoring/resources/SpriteProperties");
-		myBaseProperties = new HashMap<String, String>();
-		myPossibleProperties = new HashMap<String, String>();
+		myBaseProperties = new HashMap<>();
+		myPossibleProperties = new HashMap<>();
 		addDefaultValues();
-		allProperties = new HashMap<String, String>();
+		allProperties = new HashMap<>();
 	}
 	
 	private void addDefaultValues() {
@@ -81,15 +81,15 @@ public abstract class SpriteImage extends InteractiveObject {
 		myPossibleProperties.put("Projectile Type Name", imageName);
 	}
 	
-	public Map<String, String> getMyProperties() {
+	public Map<String, Object> getMyProperties() {
 		return myPossibleProperties;
 	}
 	
-	public void setMyProperties(Map<String, String> newMap) {
+	public void setMyProperties(Map<String, Object> newMap) {
 		myPossibleProperties = newMap;
 	}
 	
-	public void setBaseProperties(Map<String, String> baseProperties) {
+	public void setBaseProperties(Map<String, Object> baseProperties) {
 		myBaseProperties = baseProperties;
 	}
 	
@@ -105,7 +105,7 @@ public abstract class SpriteImage extends InteractiveObject {
 	public void createElement() {
 	}
 	
-	public Map<String, String> getAllProperties() {
+	public Map<String, Object> getAllProperties() {
 		allProperties.putAll(myPossibleProperties);
 		allProperties.putAll(myBaseProperties);
 		allProperties.putAll(defaultValues);

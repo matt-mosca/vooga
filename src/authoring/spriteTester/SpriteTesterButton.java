@@ -17,9 +17,9 @@ public class SpriteTesterButton extends Button {
 		this.setLayoutY(700);
 		this.setText("PlayGame");
 		this.setOnAction(e -> {
-			Map<String, String> fun = new HashMap<>();
-			fun.put("frequency", "50");
-			fun.put("number", "100");
+			Map<String, Object> fun = new HashMap<>();
+			fun.put("frequency", 50);
+			fun.put("number", 100);
 			/*
 			 * for (int i=0; i<defaults.size(); i++) { fun.put((String)
 			 * defaults.keySet().toArray()[i], (String) defaults.entrySet().toArray()[i]); }
@@ -29,20 +29,20 @@ public class SpriteTesterButton extends Button {
 			fun.put("Move an object", "Object will stay at desired location");
 			fun.put("Firing Behavior", "Shoot periodically");
 			fun.put("imageUrl", DEFAULT_IMAGE_URL);
-			fun.put("imageWidth", "45.0");
-			fun.put("imageHeight", "45.0");
-			fun.put("Numerical \"team\" association", "0");
-			fun.put("Health points", "50");
-			fun.put("Damage dealt to colliding objects", "20");
-			fun.put("Speed of movement", "5");
-			fun.put("initialAngle", "0");
-			fun.put("radius", "10");
-			fun.put("centerY", "0");
-			fun.put("centerX", "0");
-			fun.put("Target y-coordinate", "0");
-			fun.put("Target x-coordinate", "0");
+			fun.put("imageWidth", 45.0);
+			fun.put("imageHeight", 45.0);
+			fun.put("Numerical \"team\" association", 0);
+			fun.put("Health points", 50);
+			fun.put("Damage dealt to colliding objects", 20);
+			fun.put("Speed of movement", 5);
+			fun.put("initialAngle", 0);
+			fun.put("radius", 10);
+			fun.put("centerY", 0);
+			fun.put("centerX", 0);
+			fun.put("Target y-coordinate", 0);
+			fun.put("Target x-coordinate", 0);
 			fun.put("Projectile Type Name", "Tank");
-			fun.put("Attack period", "10");
+			fun.put("Attack period", 10);
 			List<String> sprites = new ArrayList<String>();
 			sprites.add("Tank");
 			tester.createTesterLevel(fun, sprites);

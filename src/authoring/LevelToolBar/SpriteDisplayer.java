@@ -1,6 +1,8 @@
 package authoring.LevelToolBar;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javafx.scene.control.ScrollPane;
@@ -16,14 +18,16 @@ public class SpriteDisplayer extends ScrollPane {
 	public SpriteDisplayer() {
 		myBox = new HBox();
 		myBox.setPrefWidth(400);
-		myBox.setPrefHeight(100);
+		myBox.setPrefHeight(30);
+		myBox.setMaxHeight(30);
 		myBox.setStyle("-fx-background-color: #336699;");
 		this.setContent(myBox);
 	}
 	
 	public void addToScroll(List<ImageView> newSprites) {
-		clear();
-		myBox.getChildren().addAll(newSprites);
+		myBox.getChildren().clear();
+		myBox.getChildren().addAll(new ArrayList<ImageView>(new HashSet<ImageView>(newSprites)));
+		
 //		this.setContent(myBox);
 	}
 

@@ -19,6 +19,7 @@ public class MediaPlayerFactory {
 	public MediaPlayerFactory(String mediaName) {
 		media = new Media(composeResourceStringUrl(mediaName));
 		mediaPlayer = new MediaPlayer(media);
+		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
 	}
 	
 	public MediaPlayer getMediaPlayer() {
