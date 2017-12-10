@@ -251,6 +251,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	private Collection<NewSprite> handleLevelSpritesResponse(ServerMessage serverMessage) {
+		System.out.print("No. of level sprites: " + serverMessage.getLevelSpritesCount());
 		return serverMessage.getLevelSpritesList();
 	}
 

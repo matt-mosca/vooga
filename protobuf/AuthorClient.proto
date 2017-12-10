@@ -1,0 +1,93 @@
+syntax = "proto2";
+
+/*
+	Top-Level message
+*/
+
+message AuthoringClientMessage {
+	optional ExportGame exportGame = 1;
+	optional SetLevel setLevel = 2;
+	optional DeleteLevel deleteLevel = 3;
+	optional GetElementBaseConfigurationOptions getElementBaseConfig = 4;
+	optional GetAuxiliaryElementConfigurationOptions getAuxiliaryElementConfig = 5;
+	optional DefineElement defineElement = 6;
+	optional DefineElementUpgrade defineElementUpgrade = 7;
+	optional UpdateElementDefinition updateElementDefinition = 8;
+	optional DeleteElementDefinition deleteElementDefinition = 9;
+	optional PlacePathFollowingElement placePathFollowingElement = 10;
+	optional AddElementToInventory addElementToInventory = 11;
+	optional GetCurrentLevel getCurrentLevel = 12;
+	optional MoveElement moveElement = 13;
+	optional UpdateElementProperties updateElementProperties = 14;
+	optional DeleteElement deleteElement = 15;
+	optional GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 16;
+	optional GetResourceEndowments getResourceEndowments = 17;
+	optional SetGameName setGameName = 18;
+	optional SetGameDescription setGameDescription = 19;
+	optional SetVictoryCondition setVictoryCondition = 20;
+	optional SetDefeatCondition setDefeatCondition = 21;
+	optional SetStatusProperty setStatusProperty = 22;
+	optional SetResourceEndowments setResourceEndowments = 23;
+	optional SetResourceEndowment setResourceEndowment = 24;
+	optional SetUnitCost setUnitCost = 25;
+	optional SetWaveProperties setWaveProperties = 26;
+	optional EditWaveProperties editWaveProperties = 27;
+	optional GetPossibleVictoryConditions getPossibleVictoryConditions = 28;
+	optional GetPossibleDefeatConditions getPossibleDefeatConditions = 29;
+}
+
+message ExportGame {
+}
+
+message SetLevel {
+	required int32 level = 1;
+}
+
+message DeleteLevel {
+	required int32 level = 1;
+}
+
+message GetElementBaseConfigurationOptions {
+}
+
+message GetAuxiliaryElementConfigurationOptions {
+	repeated BaseConfigurationChoice baseConfigurationChoices = 1;
+}
+
+message DefineElement {
+	required string elementName = 1;
+	repeated Property properties = 2;
+}
+
+message DefineElementUpgrade {
+	required string elementName = 1;
+	required int32 upgradeLevel = 2;
+	repeated Property properties = 3;
+}
+
+message UpdateElementDefinition {
+	required string elementName = 1;
+	repeated Property properties = 2;
+	required bool retroactive = 3;
+}
+
+message DeleteElementDefinition {
+	required string elementName = 1;
+}
+
+
+
+
+
+
+
+
+message BaseConfigurationChoice {
+	required string choiceKey = 1;
+	required string choiceValue = 2;
+}
+
+message Property {
+	required string name = 1;
+	required string value = 2;
+}
