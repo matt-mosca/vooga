@@ -100,6 +100,7 @@ public class PropertiesBox extends VBox {
 			        @Override
 			        
 			        public void handle(CellEditEvent<Properties, String> t) {
+			        		if(t.getRowValue().getMyProperty().equals("pathList")) return;
 			            t.getTableView().getItems().get(t.getTablePosition().getRow()).setMyValue(t.getNewValue());
 			            Map<String, Object> newPropertiesMap = new HashMap<>();
 			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
@@ -113,17 +114,6 @@ public class PropertiesBox extends VBox {
 		return currSprite;
 		
 	}
-	
-	private Object setConstructorParameter(String propertyValueAsString, Class propertyClass) {
-        try {
-            return Integer.parseInt(propertyValueAsString);
-        } catch (NumberFormatException nonIntegerProperty) {
-            try {
-                return Double.parseDouble(propertyValueAsString);
-            } catch (NumberFormatException | NullPointerException nonDoubleProperty) {
-                return propertyValueAsString;
-            }
-      }}
 	
 	private Path launchPathSelection() {
 		Dialog<String> pathChooser = new Dialog<>();

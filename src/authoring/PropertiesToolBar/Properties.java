@@ -1,5 +1,7 @@
 package authoring.PropertiesToolBar;
 
+import javafx.geometry.Point2D;
+
 public class Properties {
 	private String myProperty;
 	private Object myObject;
