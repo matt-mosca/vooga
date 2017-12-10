@@ -1,4 +1,4 @@
-package authoring.bottomToolBar;
+package authoring.LevelToolBar;
 
 import java.util.HashMap;
 import java.util.Map;

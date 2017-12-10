@@ -1,4 +1,4 @@
-package authoring.bottomToolBar;
+package authoring.LevelToolBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.List;
 import authoring.EditDisplay;
 import authoring.GameArea;
 import authoring.ScrollableArea;
-import authoring.rightToolBar.SpriteImage;
+import authoring.PropertiesToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import display.factory.TabFactory;
 import display.interfaces.CreationInterface;
@@ -19,7 +19,7 @@ import javafx.scene.layout.VBox;
 import util.protocol.ClientMessageUtils;
 import display.sprites.InteractiveObject;
 
-public class BottomToolBar extends VBox {
+public class LevelToolBar extends VBox {
 	private final int CELL_SIZE = 40;
 
 	private AuthoringController myController;
@@ -39,7 +39,7 @@ public class BottomToolBar extends VBox {
 
 	private ClientMessageUtils clientMessageUtils;
 
-	public BottomToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
+	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
 		currentDisplay = 1;
 		myCreated = created;

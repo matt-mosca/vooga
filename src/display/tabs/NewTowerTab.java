@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.EditDisplay;
-import authoring.rightToolBar.TowerImage;
+import authoring.PropertiesToolBar.TowerImage;
 
 public class NewTowerTab extends NewSpriteTab {
 	

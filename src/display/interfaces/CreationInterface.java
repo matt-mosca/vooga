@@ -1,6 +1,6 @@
 package display.interfaces;
 
-import authoring.rightToolBar.SpriteImage;
+import authoring.PropertiesToolBar.SpriteImage;
 
 public interface CreationInterface {
 	

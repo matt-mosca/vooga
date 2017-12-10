@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.EditDisplay;
-import authoring.rightToolBar.TroopImage;
+import authoring.PropertiesToolBar.TroopImage;
 
 public class NewTroopTab extends NewSpriteTab {
 	

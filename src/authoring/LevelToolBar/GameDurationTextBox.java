@@ -1,4 +1,4 @@
-package authoring.bottomToolBar;
+package authoring.LevelToolBar;
 
 @Deprecated
 public class GameDurationTextBox extends TextBox{

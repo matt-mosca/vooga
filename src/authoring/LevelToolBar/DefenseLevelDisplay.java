@@ -1,4 +1,4 @@
-package authoring.bottomToolBar;
+package authoring.LevelToolBar;
 
 import java.util.ArrayList;
 import java.util.Arrays;

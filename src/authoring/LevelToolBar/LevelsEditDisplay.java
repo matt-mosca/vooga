@@ -1,4 +1,4 @@
-package authoring.bottomToolBar;
+package authoring.LevelToolBar;
 
 import authoring.EditDisplay;
 import engine.authoring_engine.AuthoringController;
