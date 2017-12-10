@@ -234,11 +234,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
-		return getIdsCollectionFromSpriteCollection(getLevelSprites().get(getCurrentLevel()));
-	}
-
-	@Override
 	public Map<String, List<Map<String, String>>> getAllDefinedElementUpgrades() {
 		return getGameElementUpgrader().getSpriteUpgradesForEachTemplate();
 	}
