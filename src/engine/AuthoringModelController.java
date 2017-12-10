@@ -21,9 +21,6 @@ import java.util.Set;
  */
 public interface AuthoringModelController extends AbstractGameModelController {
 
-	// TODO - Remove the inherited methods? Or keep to facilitate quick survey of
-	// all authoring methods?
-
 	/**
 	 * Save the current state of the current level a game being authored.
 	 *
@@ -287,6 +284,18 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 */
 	Map<String, Map<String, String>> getAllDefinedTemplateProperties();
 
+	/**
+	 * Get all the defined upgrades for elements.
+	 *
+	 * @return a map from an element's template name to a list of its upgrade property maps
+	 */
+	Map<String, List<Map<String, String>>> getAllDefinedElementUpgrades();
+
+	/**
+	 * Get the available resources.
+	 *
+	 * @return a map from the name of defined resources to the quantity available in the current level
+	 */
 	Map<String, Double> getResourceEndowments();
 
 	/**
