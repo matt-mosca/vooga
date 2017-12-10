@@ -254,18 +254,6 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	Map<String, String> getAvailableGames();
 
 	/**
-	 * Get a map of properties for a particular game element, so as to allow for
-	 * their displaying in a modification area of the display.
-	 *
-	 * @param elementId
-	 *            the unique identifier for the game element
-	 * @return a map of properties for the element with this identifier
-	 * @throws IllegalArgumentException
-	 *             if the element ID does not refer to a created element
-	 */
-	Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException;
-
-	/**
 	 * Get a map of properties for an element template / model, so as to allow for
 	 * their displaying in a modification area of the display
 	 *
