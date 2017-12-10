@@ -11,11 +11,7 @@ public class Properties {
 	public Properties(String rowName, Object object) {
 		myProperty = rowName;
 		myObject = object;
-		if(object instanceof Class) {
-			myClass = (Class) object;
-		}else {
-			myClass = object.getClass();
-		}
+		myClass = object.getClass();
 		myValue = object.toString();
 	}
 	

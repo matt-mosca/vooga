@@ -72,7 +72,15 @@ public abstract class SpriteImage extends InteractiveObject {
 				if(def != null) {
 					myPossibleProperties.put(s, castAsObject(def));
 				}else {
-					myPossibleProperties.put(s, newMap.get(s));
+					try {
+						myPossibleProperties.put(s, newMap.get(s).newInstance());
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		} 
