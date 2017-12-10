@@ -76,11 +76,13 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public Update update() {
 		if (inPlay) {
-			/* Uncomment when front end is ready to set wave properties fully (team & no. of attacks of wave)
-			 * if (checkLevelClearanceCondition()) { if (checkVictoryCondition()) {
-			 * registerVictory(); } else { registerLevelCleared(); } } else if
-			 * (checkDefeatCondition()) { registerDefeat(); } else { // Move elements, check
-			 * and handle collisions elementManager.update(); }
+			/*
+			 * Uncomment when front end is ready to set wave properties fully (team & no. of
+			 * attacks of wave) if (checkLevelClearanceCondition()) { if
+			 * (checkVictoryCondition()) { registerVictory(); } else {
+			 * registerLevelCleared(); } } else if (checkDefeatCondition()) {
+			 * registerDefeat(); } else { // Move elements, check and handle collisions
+			 * elementManager.update(); }
 			 */
 			savedList.add(getSpriteIdMap().entrySet());
 			elementManager.update();
@@ -123,13 +125,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
-		assertValidLevel(level);
-		Collection<GameElement> levelGameElements = elementManager.getCurrentElements();
-		return getIdsCollectionFromSpriteCollection(levelGameElements);
-	}
-
-	@Override
 	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
 			// TODO - keep track of the resources that were changed in this cycle, and only
@@ -166,7 +161,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	public Update packageStatusUpdate() {
-		return getServerMessageUtils().packageStatusUpdate(levelCleared, isWon, isLost, inPlay);
+		return getServerMessageUtils().packageStatusUpdate(levelCleared, isWon, isLost, inPlay, getCurrentLevel());
 	}
 
 	@Override
@@ -189,7 +184,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			Collection<GameElement> updatedElements, Collection<GameElement> deletedElements) {
 		return getServerMessageUtils().packageUpdates(getFilteredSpriteIdMap(newlyGeneratedElements),
 				getFilteredSpriteIdMap(updatedElements), getFilteredSpriteIdMap(deletedElements), levelCleared, isWon,
-				isLost, inPlay, getResourceEndowments());
+				isLost, inPlay, getResourceEndowments(), getCurrentLevel());
 	}
 
 	private boolean checkVictoryCondition() {

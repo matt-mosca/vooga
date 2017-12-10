@@ -23,6 +23,7 @@ message ClientMessage {
 	optional CheckReadyForNextLevel checkReadyForNextLevel = 16;
 	optional LoadLevel loadLevel = 17;
 	optional GetLevelElements getLevelElements = 18;
+	optional GetNumberOfLevels getNumLevels = 19;
 }
 
 /*
@@ -101,5 +102,10 @@ message LoadLevel {
 // Keep level parameter to support extensibility to collaborative editing as above
 message GetLevelElements {
 	required int32 level = 1;
+}
+
+message GetNumberOfLevels {
+	required string gameName = 1;
+	required bool originalGame = 2;
 }
 
