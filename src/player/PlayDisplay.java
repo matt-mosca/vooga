@@ -180,13 +180,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getStyleClass().add("left-bar");
 	}
 
-	/*
-	 * private void loadSprites() {
-	 * myPlayArea.getChildren().removeAll(currentElements); currentElements.clear();
-	 * for (Integer id : myController.getLevelSprites(level)) {
-	 * currentElements.add(myController.getRepresentationFromSpriteId(id)); }
-	 * myPlayArea.getChildren().addAll(currentElements); }
-	 */
+	// TODO - can make it more efficient?
+	private void loadSprites() {
+		myPlayArea.getChildren().removeAll(currentElements);
+		currentElements.clear();
+		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
+			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
+		}
+		myPlayArea.getChildren().addAll(currentElements);
+	}
 
 	private void initializeButtons() {
 		pause = new Button();
@@ -210,9 +212,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private void step() {
 		Update latestUpdate = myController.update();
-		if(myController.isReadyForNextLevel()) {
+		if (myController.isReadyForNextLevel()) {
 			hideTransitorySplashScreen();
-//			animation.play();
+			// animation.play();
 			myController.resume();
 		}
 		if (myController.isLevelCleared()) {
@@ -228,12 +230,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 		hud.update(myController.getResourceEndowments());
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
+		loadSprites();
 	}
-	
+
 	private void launchTransitorySplashScreen() {
 		this.getStage().setScene(myTransitionScene);
 	}
-	
+
 	private void hideTransitorySplashScreen() {
 		this.getStage().setScene(this.getScene());
 	}
