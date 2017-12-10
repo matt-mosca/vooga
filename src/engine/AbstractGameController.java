@@ -125,13 +125,14 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	 */
 	@Override
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
+		// TODO - remove old level
 		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
 		gameName = saveName;
 		gameElementFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadSpriteTemplates(gameName));
 		gameElementUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadSpriteUpgrades(gameName));
-		return packageCurrentState();
+		return packageInitialState();
 	}
 
 	public Inventory packageInventory() {
@@ -387,13 +388,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	}
 
 	protected LevelInitialized packageInitialState() {
-		return LevelInitialized.newBuilder()
-				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
-						new HashMap<>(), false, false, false, false, getResourceEndowments()))
-				.setInventory(packageInventory()).build();
-	}
-
-	protected LevelInitialized packageCurrentState() {
 		return LevelInitialized.newBuilder()
 				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
 						new HashMap<>(), false, false, false, false, getResourceEndowments()))

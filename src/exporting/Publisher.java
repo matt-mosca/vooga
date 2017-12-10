@@ -13,6 +13,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,12 +28,13 @@ import java.util.List;
  * @author Ben Schwennesen
  * @see <a href="https://developers.google.com/drive/v3/web/quickstart/java"></a> reference code
  */
-public class Publisher {
+public final class Publisher {
 
     private final String ERROR_MESSAGE = "Failed to publish the game to Google Drive";
     private final String APPLICATION_NAME = "VOOGASalad Game Exporter";
     private final String CLIENT_SECRETS_JSON = "client_secrets.json";
     private final String WEB_CONTENT_LINK_FIELD = "webContentLink";
+    private final String JAR_MIME_TYPE = "application/zip";
     private final String USER_ID = "user";
 
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -44,8 +46,7 @@ public class Publisher {
     /**
      * Load the Google Drive instance, which entails logging into a Google account through a browser.
      *
-     * @throws GeneralSecurityException if a safe http transport connection cannot be established
-     * @throws IOException              if the user's client secrets JSON cannot be accessed
+     * @throws IOException if the user's client secrets JSON cannot be accessed
      */
     public Publisher() throws IOException {
         try {
@@ -93,5 +94,15 @@ public class Publisher {
         File uploadedFile = drive.files().create(fileMetadata, mediaContent)
                 .setFields(WEB_CONTENT_LINK_FIELD).execute();
         return uploadedFile.getWebContentLink();
+    }
+
+    /**
+     * Uploads a game JAR to the Google Drive account logged into when the exporter is created.
+     *
+     * @param uploadFilePath the path to the file to be uploaded
+     * @return a shareable URL link to the JAR
+     */
+    public String uploadExportedJar(String uploadFilePath) throws IOException {
+        return uploadFile(JAR_MIME_TYPE, uploadFilePath);
     }
 }

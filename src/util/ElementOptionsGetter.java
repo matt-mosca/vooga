@@ -186,6 +186,7 @@ public class ElementOptionsGetter {
             }
             auxiliaryParameters.putAll(spriteMemberParametersMap.get(subclassChoiceName));
         }
+        System.out.println(auxiliaryParameters);
         auxiliaryParameters.putAll(spriteMemberParametersMap.getOrDefault(SPRITE_BASE_PARAMETER_NAME, new HashMap<>()));
         return auxiliaryParameters;
     }
