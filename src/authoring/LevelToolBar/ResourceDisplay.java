@@ -49,12 +49,9 @@ public class ResourceDisplay extends VBox{
 			this.getChildren().clear();
 			this.getChildren().add(editResources);
 			try {
-				System.out.println("hi");
 				myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
-			} catch(Exception nfe) {
+			} catch(NumberFormatException nfe) {
 				System.out.println("you have to type in a number");
-			
-//				throw new NumberFormatException();
 			}
 			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			update();

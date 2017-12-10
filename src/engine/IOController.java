@@ -245,9 +245,6 @@ public class IOController {
 		Map<String, String> authoredGameSerializationMap = new HashMap<>();
 		// iterate over file names in authored_games folder, serialize each
 		File authoredGamesDirectory = new File(AUTHORING_GAMES_FOLDER);
-		// System.out.println("EXISTS: " + authoredGamesDirectory.exists());
-
-		System.out.println(authoredGamesDirectory.getPath() + " " + authoredGamesDirectory.exists());
 		// String decodedPath = URLDecoder.decode(path, "UTF-8");
 		File[] authoredGames = authoredGamesDirectory.listFiles();
 		if (authoredGames == null) {
