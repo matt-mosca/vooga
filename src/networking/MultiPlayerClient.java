@@ -217,6 +217,12 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		return 1;//TEMP
 	}
 	
+	// TODO - Need to wrap / implement
+	@Override
+	public int getNumLevelsForGame(String gameName, boolean originalGame) {
+		return 1;// TEMP
+	}
+	
 	@Override
 	public Set<String> getInventory() {
 		writeRequestBytes(
@@ -266,7 +272,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			Games availableGames = serverMessage.getAvailableGames();
 			availableGames.getGamesList().forEach(game -> {
 				availableGamesMap.put(game.getName(), game.getDescription());
-				System.out.println("Game name: " + game.getName() + "; Game Description: " + game.getDescription());
 			});
 		}
 		return availableGamesMap;
@@ -278,10 +283,8 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			GameRoomCreationStatus gameRoomCreationStatus = serverMessage.getGameRoomCreationStatus();
 			if (!gameRoomCreationStatus.hasError()) {
 				gameRoomId = gameRoomCreationStatus.getRoomId();
-				System.out.println("Setting gameRoomId to " + gameRoomId);
 			} else {
 				// TODO - throw exception to be handled by front end?
-				System.out.println("Error creating game room: " + gameRoomCreationStatus.getError());
 				throw new IllegalArgumentException(gameRoomCreationStatus.getError());
 			}
 		}
@@ -293,7 +296,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			GameRoomJoinStatus gameRoomJoinStatus = serverMessage.getGameRoomJoinStatus();
 			if (gameRoomJoinStatus.hasError()) {
 				// TODO - throw exception to be handled by front end?
-				System.out.println("Error joining game room: " + gameRoomJoinStatus.getError());
 				throw new IllegalArgumentException(gameRoomJoinStatus.getError());
 			}
 		}
@@ -304,7 +306,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			GameRoomLaunchStatus gameRoomLaunchStatus = serverMessage.getGameRoomLaunchStatus();
 			if (gameRoomLaunchStatus.hasError()) {
 				// TODO - throw exception to be handled by front end?
-				System.out.println("Error initializing level: " + gameRoomLaunchStatus.getError());
 				throw new IllegalArgumentException(gameRoomLaunchStatus.getError());
 			}
 			return gameRoomLaunchStatus.getInitialState();

@@ -58,7 +58,7 @@ import display.toolbars.InventoryToolBar;
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private final String COST = "Cost";
-	private final String GAME_FILE_KEY = "gameFile";
+	private final String GAME_FILE_KEY = "displayed-game-name";
 
 	private InventoryToolBar myInventoryToolBar;
 	private TransitorySplashScreen myTransition;
@@ -147,7 +147,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				try {
 					gameState = result.get();
 					clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
-					System.out.println(gameState);
 				} catch (IOException e) {
 					// TODO Change to alert for the user
 					e.printStackTrace();
@@ -160,8 +159,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			try {
 				Properties exportedGameProperties = new Properties();
 				exportedGameProperties.load(in);
-				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY);
-				System.out.println("GN: " + gameName);
+				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
 				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
 			} catch (IOException ioException) {
 				// todo
@@ -261,7 +259,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void listItemClicked(ImageView image) {
 		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
-		System.out.println("Get");
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
 			return;

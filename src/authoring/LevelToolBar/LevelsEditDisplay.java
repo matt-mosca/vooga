@@ -25,9 +25,14 @@ public class LevelsEditDisplay {
 		myRoot = new BorderPane();
 		myScene = new Scene(myRoot, SIZE, SIZE);
 		resourceEditor = new ResourceDisplay(controller);
-		gameEnder = new GameEnder(controller);
+		gameEnder = new GameEnder(controller, display);
 		myRoot.setLeft(gameEnder);
 		myRoot.setRight(resourceEditor);
+		myStage.setScene(myScene);
+//		myStage.show();
+	}
+	
+	public void open() {
 		myStage.show();
 	}
 }
