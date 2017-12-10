@@ -68,7 +68,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
-	private Map<String, Object> basePropertyMap;
+	private Map<String, String> basePropertyMap;
 	private LevelToolBar myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
@@ -340,7 +340,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void imageSelected(SpriteImage imageView) {
 		imageView.setBaseProperties(basePropertyMap);
-		// imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
+		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		controller.defineElement(imageView.getId(), imageView.getAllProperties());
 		controller.setUnitCost(imageView.getId(), new HashMap<>());
 		controller.addElementToInventory(imageView.getId());
