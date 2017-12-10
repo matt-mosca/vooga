@@ -68,7 +68,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			loadLevelData(savePlayStateName, level, false);
 		}
 		updateForLevelChange(savePlayStateName, lastLevelPlayed);
-		return packageCurrentState();
+		return packageInitialState();
 	}
 
 	// TODO - Deprecate in favor of public Update update() variant

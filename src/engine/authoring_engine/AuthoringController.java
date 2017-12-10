@@ -20,8 +20,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import com.google.gson.GsonBuilder;
-
 /**
  * Controls the model for a game being authored. Allows the view to modify and
  * retrieve information about the model.
