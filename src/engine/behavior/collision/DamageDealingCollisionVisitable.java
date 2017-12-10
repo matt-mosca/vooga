@@ -15,7 +15,7 @@ public class DamageDealingCollisionVisitable implements CollisionVisitable {
 
     public DamageDealingCollisionVisitable(
             @ElementProperty(value = "damageToDeal", isTemplateProperty = true) double damageToDeal,
-            @ElementProperty(value = "audioUrl", isTemplateProperty = true) String audioUrl) {
+            @ElementProperty(value = "collisonAudioUrl", isTemplateProperty = true) String audioUrl) {
         this.damageToDeal = damageToDeal;
         this.audioUrl = audioUrl;
     }
