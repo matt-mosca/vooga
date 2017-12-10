@@ -90,4 +90,8 @@ public class CollisionHandler {
     public String getImageUrl() {
     		return imageUrl;
     }
+    
+    public String getAudioUrl() {
+    	return collisionVisitable.getAudioUrl();
+    }
 }

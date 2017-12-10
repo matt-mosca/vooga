@@ -43,7 +43,7 @@ public class RandomWaveFiringStrategy extends AbstractWaveFiringStrategy {
     }
 
 	@Override
-	public String getAudioURI() {
+	public String getAudioUrl() {
 		return null;
 	}
 

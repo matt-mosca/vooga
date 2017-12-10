@@ -392,7 +392,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		
 		return LevelInitialized.newBuilder()
 				.setSpritesAndStatus(serverMessageUtils.packageUpdates(getSpriteIdMap(), new HashMap<>(),
-						getFilteredSpriteIdMap(oldGameElements), false, false, false, false, getResourceEndowments()))
+						getFilteredSpriteIdMap(oldGameElements), false, false, false, false, getResourceEndowments(), getCurrentLevel()))
 				.setInventory(packageInventory()).build();
 	}
 

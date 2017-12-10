@@ -141,7 +141,7 @@ public class LevelToolBar extends VBox {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for (Integer id : myController.getLevelSprites(level)) {
+		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
 			savedObject.setImageView(imageView);

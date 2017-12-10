@@ -10,6 +10,7 @@ import engine.SpriteQueryHandler;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
 import engine.game_elements.GameElementFactory;
+import factory.AudioClipFactory;
 
 /**
  * Single-source of truth for elements and their behavior when in-play
@@ -26,6 +27,8 @@ public class ElementManager {
 	private List<GameElement> newElements;
 	private List<GameElement> updatedElements;
 	private List<GameElement> deadElements;
+	
+	private AudioClipFactory audioClipFactory;
 
 	private SpriteQueryHandler spriteQueryHandler;
 
@@ -126,6 +129,8 @@ public class ElementManager {
 			if (element.collidesWith(otherElement)) {
 				element.processCollision(otherElement);
 				otherElement.processCollision(element);
+				playAudio(element.getCollisionAudio());
+				playAudio(otherElement.getCollisionAudio());
 			}
 		}
 	}
@@ -133,6 +138,7 @@ public class ElementManager {
 	private void handleElementFiring(GameElement element) {
 		Point2D nearestTargetLocation;
 		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
+		exclusionOfSelf.remove(element);
 		GameElement nearestEnemyElement = spriteQueryHandler.getNearestEnemy(
 				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
 		if(nearestEnemyElement == null) {
@@ -143,8 +149,8 @@ public class ElementManager {
 		//@ TODO Fix should fire to take in nearest point
 		if (element.shouldFire()) {
 			String elementTemplateName = element.fire();
+			playAudio(element.getFiringAudio());
 			System.out.println(elementTemplateName);
-			exclusionOfSelf.remove(element);
 			// Use player id of firing element rather than projectile? This allows greater
 			// flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
@@ -155,5 +161,15 @@ public class ElementManager {
 		}
 
 	}
+	
+	private void playAudio(String audioUrl) {
+		if(audioUrl != null)
+		{
+			//audioClipFactory = new AudioClipFactory(audioUrl);
+			audioClipFactory = new AudioClipFactory();
+			audioClipFactory.getAudioClip().play();
+		}
+	}
+
 
 }
