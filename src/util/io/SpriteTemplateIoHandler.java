@@ -25,7 +25,7 @@ import java.util.zip.ZipInputStream;
 public class SpriteTemplateIoHandler {
 
     private final String PROPERTIES_COMMENT = "Programmatically generated sprite template file";
-    private final String TEMPLATE_FILE_OUTPUT_PATH = "data/sprite-templates/";
+    private final String TEMPLATE_FILE_OUTPUT_PATH = "authoring/sprite-templates/";
     private final String PROPERTIES_EXTENSION = ".properties";
     private final String UPGRADE_INDICATOR = "_upgrade_";
     private final char DOT = '.';
@@ -42,7 +42,6 @@ public class SpriteTemplateIoHandler {
         for (String templateName : spriteTemplates.keySet()) {
             Properties templateProperties = new Properties();
             Map<String, String> templatePropertiesMap = spriteTemplates.get(templateName);
-            System.out.println(templatePropertiesMap);
             templatePropertiesMap.forEach(templateProperties::setProperty);
             String fileName = templateName + PROPERTIES_EXTENSION;
             File exportFile = new File(directoryPath + File.separator + fileName);
@@ -77,7 +76,6 @@ public class SpriteTemplateIoHandler {
      */
     public Map<String, Map<String, String>> loadSpriteTemplates(String gameName) throws IOException {
         Map<String, Map<String, String>> spriteTemplates = loadSpriteProperties(gameName, false);
-        System.out.println("\n\n\n\n\n"+spriteTemplates+"\n\n\n\n\n");
         return spriteTemplates;
     }
 
@@ -93,7 +91,6 @@ public class SpriteTemplateIoHandler {
         Map<String, Map<String, String>> spriteTemplates = new TreeMap<>(loadSpriteProperties(gameName, true));
         Map<String, List<Map<String, String>>> spriteUpgrades = new HashMap<>();
         for (String upgradeTemplateName : spriteTemplates.keySet()) {
-            System.out.println(upgradeTemplateName);
             String templateName = upgradeTemplateName.substring(0, upgradeTemplateName.indexOf(UPGRADE_INDICATOR));
             List<Map<String, String>> templateUpgrades = spriteUpgrades.getOrDefault(templateName, new ArrayList<>());
             // TreeMap ensures correct ordering
@@ -120,14 +117,12 @@ public class SpriteTemplateIoHandler {
         } else {
             loadTemplatesInsideJar(loadUpgrades, spriteTemplates, directoryPath);
         }
-        System.out.println("\n\n\n\n\nARE YOU FUCKING KIDDING? " + loadUpgrades + " " + spriteTemplates + "\n\n\n\n\n");
         return spriteTemplates;
     }
 
     private void loadTemplatesInsideJar(boolean loadUpgrades, Map<String, Map<String, String>> spriteTemplates,
                                         String directoryPath) throws IOException {
         CodeSource src = getClass().getProtectionDomain().getCodeSource();
-        System.out.println(src);
         if (src != null) {
             URL jar = src.getLocation();
             ZipFile zipFile = new ZipFile(jar.getPath());
@@ -162,7 +157,6 @@ public class SpriteTemplateIoHandler {
                 spritePropertiesMap.put(propertyName, spriteProperties.getProperty(propertyName)));
         String templateName = fileName.replace(PROPERTIES_EXTENSION, "");
         spriteTemplates.put(templateName, spritePropertiesMap);
-        System.out.println("Hey bb: " + spriteTemplates);
     }
 
     private void createDirectoryIfNonExistent(String directoryPath) {

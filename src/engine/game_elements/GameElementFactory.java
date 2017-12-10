@@ -111,7 +111,6 @@ public final class GameElementFactory {
                     .getConstructorParameterIdentifiers(chosenParameterSubclass);
             Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
                     constructorParameterIdentifiers);
-            System.out.println(parameterClass.getName());
             return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
         } catch (IllegalArgumentException illegalArgumentException) {
             // Case where constructor has the main objects encapsulated (i.e.,
