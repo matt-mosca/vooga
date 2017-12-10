@@ -94,6 +94,7 @@ public class LevelToolBar extends VBox {
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
+		this.getChildren().add(newWaveButton);
 		this.getChildren().add(waveButton);
 		loadLevels();
 		created.setGameArea(myGameAreas.get(0));
