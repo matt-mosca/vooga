@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,6 +15,7 @@ import authoring.PropertiesToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import display.factory.TabFactory;
 import display.interfaces.CreationInterface;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -44,6 +46,8 @@ public class LevelToolBar extends VBox {
 	private LevelsEditDisplay myLevelDisplayer;
 	private Map<Integer, Integer> wavesPerLevel;
 	private Map<String, List<ImageView>> waveToImage;
+	private Map<String, String> myProperties;
+	private List<String> elementsToSpawn;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -83,12 +87,38 @@ public class LevelToolBar extends VBox {
 			// edited = true;
 			// this.update();
 		});
+		Button waveButton = new Button("Wave");
+		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+				e->myController.setWaveProperties(myProperties, elementsToSpawn, 
+						new Point2D(100, 100)));
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
-		this.getChildren().add(newWaveButton);
+		this.getChildren().add(waveButton);
 		loadLevels();
 		created.setGameArea(myGameAreas.get(0));
+		createProperties();
+	}
+
+	private void createProperties() {
+		myProperties = new TreeMap<String, String>();
+		myProperties.put("Collision effects", "Invulnerable to collision damage");
+		myProperties.put("Collided-with effects", "Do nothing to collided objects");
+		myProperties.put("Move an object", "Object will stay at desired location");
+		myProperties.put("Firing Behavior", "Shoot a series of various projectile types");
+		myProperties.put("imageHeight", "40");
+		myProperties.put("imageWidth", "40");
+		myProperties.put("imageUrl", "monkey.png");
+		myProperties.put("name", "tower1");
+//		myProperties.put("")
+//		elementsToSpawn = new ArrayList<String>();
+//		elementsToSpawn.add("Tower1");
+//		elementsToSpawn.add("Tower2");
+//		elementsToSpawn.add("Tower3");
+		
+//		System.out.println(myController.getAuxiliaryElementConfigurationOptions(myProperties));
+//		myController.defineElement("tower1", myProperties);
+
 	}
 	
 	private void newWaveButtonPressed() {
