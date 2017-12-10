@@ -43,6 +43,7 @@ public class LevelToolBar extends VBox {
 	private SpriteDisplayer mySpriteDisplay;
 	private LevelsEditDisplay myLevelDisplayer;
 	private Map<Integer, Integer> wavesPerLevel;
+	private Map<String, List<ImageView>> waveToImage;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -63,6 +64,7 @@ public class LevelToolBar extends VBox {
 		newLevel = new Button("New Level");
 		Button newWaveButton = new Button("New Wave");
 		wavesPerLevel = new TreeMap<Integer, Integer>();
+		waveToImage = new TreeMap<String, List<ImageView>>();
 		newLevel.setOnAction(e -> addLevel());
 		newWaveButton.setOnAction(e->newWaveButtonPressed());
 		myTabPane = new TabPane();
@@ -149,8 +151,12 @@ public class LevelToolBar extends VBox {
 			myGameAreas.get(level - 1).addBackObject(savedObject);
 		}
 	}
-
-	private void changeDisplay(int i) {
+	
+	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
+		
+	}
+	
+	public void changeDisplay(int i) {
 		currentDisplay = i;
 		myScrollableArea.changeLevel(myGameAreas.get(i - 1));
 		myCreated.setDroppable(myGameAreas.get(i - 1));
