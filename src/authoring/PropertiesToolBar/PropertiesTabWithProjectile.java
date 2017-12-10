@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import display.splashScreen.ScreenDisplay;
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,11 +22,11 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	private AuthoringController myController;
 	private ImageView myImageView;
 	
-	public PropertiesTabWithProjectile(PropertiesToolBar properties, ImageView imageView, AuthoringController author) {
-		super(properties, imageView);
-		myProperties = properties;
+	public PropertiesTabWithProjectile(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView, Map<String, String> propertyMap, AuthoringController author) {
+		super(display, properties, imageView, propertyMap, author);
 		myController = author;
 		myImageView = imageView;
+		myProperties = properties;
 		
 		Label projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
@@ -44,11 +45,7 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	private void addProjectileImage() {
 		String projectileName = myController.getAllDefinedTemplateProperties().get(myImageView.getId()).get("Projectile Type Name");
 		String url = myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl");
-		Double height =  Double.parseDouble(myController.getAllDefinedTemplateProperties().get(projectileName).get("imageHeight"));
-		Double width =  Double.parseDouble(myController.getAllDefinedTemplateProperties().get(projectileName).get("imageWidth"));
 		ImageView projectile = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(url)));
-		projectile.setFitWidth(width);
-		projectile.setFitHeight(height);
 		resize(projectileSlot.getPrefHeight(), projectile);
 		projectileSlot.getChildren().add(projectile);
 	}
@@ -58,7 +55,7 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
 		if (myProperties.getAvailableProjectiles().isEmpty()) {
 			Label emptyLabel = new Label("You have no projectiles\nin your inventory");
-//			this.getChildren().remove(propBox);
+			this.getChildren().remove(getPropertiesBox());
 			emptyLabel.setLayoutX(100);
 			this.getChildren().add(emptyLabel);
 		} else {
@@ -74,7 +71,7 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	        projectilesWindow.setPrefHeight(250);
 	        projectilesView.setOnMouseClicked(e->projectileSelected(imageView,
 	        		projectilesView.getSelectionModel().getSelectedItem().clone()));
-//	        this.getChildren().remove(myPropertiesBox);
+	        this.getChildren().remove(getPropertiesBox());
 	        this.getChildren().add(projectilesWindow);
 		}
 	}
@@ -89,8 +86,8 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	}
 	
 	private void resize(double displaySize, ImageView imageView) {
-		double spriteWidth = this.getBoundsInLocal().getWidth();
-		double spriteHeight = this.getBoundsInLocal().getHeight();
+		double spriteWidth = imageView.getBoundsInLocal().getWidth();
+		double spriteHeight = imageView.getBoundsInLocal().getHeight();
 		double maxDimension = Math.max(spriteWidth, spriteHeight);
 		double scaleValue = maxDimension / displaySize;
 		imageView.setFitWidth(spriteWidth / scaleValue);

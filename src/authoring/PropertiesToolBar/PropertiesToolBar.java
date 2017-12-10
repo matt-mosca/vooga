@@ -137,7 +137,6 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	
 	@Override
 	public void imageSelected(SpriteImage myImageView) {
-		myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), myImageView, myController);
 		if (myImageView instanceof TowerImage) inventoryTower.addItem(myImageView.clone());
 		if (myImageView instanceof TroopImage) inventoryTroop.addItem(myImageView.clone());
 		if (myImageView instanceof ProjectileImage) {
@@ -152,7 +151,6 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			myController.deleteElementDefinition(imageView.getId());
 			tab.removeItem(imageView);
 		}else {
-			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
 			String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
 			if (tabType.equals("Towers")) {
 				newPane(clone(imageView), true);
@@ -164,7 +162,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 
 	private void newPane(ImageView imageView, boolean hasProjectile) {
 		this.getChildren().clear();
-		propertiesPane = new PropertiesPane(this, clone(imageView), myController, hasProjectile);
+		propertiesPane = new PropertiesPane(myDisplay, this, clone(imageView), myController, hasProjectile);
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
 	}
@@ -181,7 +179,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	}
 	
 	@Override
-	public void addToWave() {
+	public void addToWave(ImageView imageView) {
 		int maxLevel = display.getMaxLevel();
 		Stage waveStage = new Stage();
 		waveStage.setTitle("CheckBox Experiment 1");
@@ -195,20 +193,20 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         amountField.setPromptText("How many of this Sprite?");
         myVBox.getChildren().add(amountField);
         Button submitButton = new Button("Submit");
-        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage));
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToWaves(myVBox, waveStage, imageView));
         myVBox.getChildren().add(submitButton);
         Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
         waveStage.setScene(scene);
         waveStage.show();
 	}
 	
-	private void submitToWaves(VBox myVBox, Stage waveStage) {
+	private void submitToWaves(VBox myVBox, Stage waveStage, ImageView imageView) {
 		for (Node n : myVBox.getChildren()) {
 			if (n instanceof CheckBox) {
 				CheckBox c = (CheckBox) n;
 				if (c.isSelected()) {
 //					for (int i = 0; i < integer; i++) {
-						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()), 1);
+						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(imageView), 1);
 //					}
 				}
 			}
@@ -278,7 +276,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	}
 
 	@Override
-	public void addToLevel() {
+	public void addToLevel(ImageView imageView) {
 		int maxLevel = display.getMaxLevel();
 		Stage levelStage = new Stage();
 		levelStage.setTitle("CheckBox Experiment 1");
@@ -289,19 +287,19 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         	myVBox.getChildren().add(myCheckBox);
         }
         Button submitButton = new Button("Submit");	
-        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToLevel(myVBox, levelStage));
+        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->submitToLevel(myVBox, levelStage, imageView));
         myVBox.getChildren().add(submitButton);
         Scene scene = new Scene(myVBox, 200, 50 + 20*maxLevel);
         levelStage.setScene(scene);
         levelStage.show();
 	}
 
-	private void submitToLevel(VBox myVBox, Stage levelStage) {
+	private void submitToLevel(VBox myVBox, Stage levelStage, ImageView imageView) {
 		for (Node n : myVBox.getChildren()) {
 			if (n instanceof CheckBox) {
 				CheckBox c = (CheckBox) n;
 				if (c.isSelected()) {				
-						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(myPropertiesBox.getCurrSprite()), 2);
+						display.addToBottomToolBar(Integer.valueOf(c.getText()), clone(imageView), 2);
 
 				}
 			}
