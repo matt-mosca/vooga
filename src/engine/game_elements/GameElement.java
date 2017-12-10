@@ -26,7 +26,6 @@ public final class GameElement {
 	private FiringStrategy firingStrategy;
 	private MovementStrategy movementStrategy;
 	private CollisionHandler collisionHandler;
-	private AudioClipFactory audioClipFactory;
 
 	public GameElement(FiringStrategy firingStrategy, MovementStrategy movementStrategy,
 					   CollisionHandler collisionHandler) {
@@ -55,15 +54,9 @@ public final class GameElement {
 	}
 
 	public String fire() {
-		playAudio();
 		return firingStrategy.fire();
 	}
 	
-	public void playAudio() {
-		//audioClipFactory = new AudioClipFactory(firingStrategy.getAudioURI());
-		//audioClipFactory.getAudioClip().play();
-	}
-
 	/**
 	 * Check for a collision with another sprite.
 	 *
@@ -115,6 +108,14 @@ public final class GameElement {
 
 	public double getY() {
 		return movementStrategy.getCurrentY();
+	}
+	
+	public String getFiringAudio() {
+		return firingStrategy.getAudioUrl();
+	}
+	
+	public String getCollisionAudio() {
+		return collisionHandler.getAudioUrl();
 	}
 
 	public boolean shouldRemoveUponCompletion() {
