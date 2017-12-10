@@ -70,7 +70,7 @@ public class LevelToolBar extends VBox {
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
 		mySpriteDisplay = new SpriteDisplayer();
-		myWaveDisplay = new WaveDisplay();
+		myWaveDisplay = new WaveDisplay(this);
 		this.getChildren().add(myWaveDisplay);
 		this.getChildren().add(mySpriteDisplay);
 		myTabPane.setMaxSize(400, 100);
@@ -103,6 +103,7 @@ public class LevelToolBar extends VBox {
 	
 	private void updateWaveDisplay() {
 		myWaveDisplay.addTabs(wavesPerLevel.get(currentDisplay));
+		updateImages();
 	}
 
 	private void loadLevels() {
@@ -175,12 +176,16 @@ public class LevelToolBar extends VBox {
 		myCreated.setDroppable(myGameAreas.get(i - 1));
 		myController.setLevel(i);
 		myCreated.setGameArea(myGameAreas.get(i - 1));
-		updateSpriteDisplay(i);
+//		updateSpriteDisplay(i);
 		updateWaveDisplay();
+		updateImages();
 	}
 	
-	private void updateImages() {
-		
+	public void updateImages() {
+		mySpriteDisplay.clear();
+		if (waveToImage.get(currentDisplay + "." + myWaveDisplay.getCurrTab()) != null) {
+			mySpriteDisplay.addToScroll(waveToImage.get(currentDisplay + "." + myWaveDisplay.getCurrTab()));
+		}
 	}
 
 	private void deleteLevel(int lvNumber) {
@@ -192,19 +197,6 @@ public class LevelToolBar extends VBox {
 			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i + 1));
 		}
 
-	}
-
-	public void addToLevel(ImageView newSprite, int level) {
-		mySprites.get(level - 1).add(newSprite);
-		updateSpriteDisplay(currentDisplay);
-	}
-
-	private void updateSpriteDisplay(int level) {
-		if (!mySprites.get(level - 1).isEmpty()) {
-			mySpriteDisplay.addToScroll(mySprites.get(level - 1));
-		} else {
-			mySpriteDisplay.clear();
-		}
 	}
 
 	public int getMaxLevel() {
