@@ -258,25 +258,43 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	@Override
 	public void listItemClicked(ImageView image) {
+		if(checkFunds(image)) return;
+		Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		costDialog.setTitle("Purchase Resource");
+		costDialog.setHeaderText(null);
+		costDialog.setContentText("Would you like to purchase this object?");
+
+		Optional<ButtonType> result = costDialog.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			placeable = new StaticObject(1, this, (String) image.getUserData());
+			placeable.setElementName(image.getId());
+			this.getScene().setCursor(new ImageCursor(image.getImage()));
+			selected = true;
+		}
+	}
+	
+	//TODO call this on click event of the static objects
+	public void upgradeableClicked(ImageView image) {
+		if(checkFunds(image)) return;
+		Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		costDialog.setTitle("Upgrade Resource");
+		costDialog.setHeaderText(null);
+		costDialog.setContentText("Would you like to upgrade this object?");
+		
+		Optional<ButtonType> result = costDialog.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			//pass in the image id to this, but make sure we're actually setting it
+//			myController.upgradeElement();
+		}
+	}
+	
+	private boolean checkFunds(ImageView image) {
 		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
-			return;
-		} else {
-			Alert costDialog = new Alert(AlertType.CONFIRMATION);
-			costDialog.setTitle("Purchase Resource");
-			costDialog.setHeaderText(null);
-			costDialog.setContentText("Would you like to purchase this object?");
-
-			Optional<ButtonType> result = costDialog.showAndWait();
-			if (result.get() == ButtonType.OK) {
-				placeable = new StaticObject(1, this, (String) image.getUserData());
-				placeable.setElementName(image.getId());
-				this.getScene().setCursor(new ImageCursor(image.getImage()));
-				selected = true;
-			}
+			return false;
 		}
-
+		return true;
 	}
 
 	private void launchInvalidResources() {
