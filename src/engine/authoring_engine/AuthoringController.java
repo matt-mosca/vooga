@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
 import exporting.Packager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
+import com.google.gson.GsonBuilder;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -37,8 +41,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	private Map<String, Set<Integer>> templateToIdMap;
 	private AtomicInteger gameWaveCounter;
-
-
 
 	public AuthoringController() {
 		super();
@@ -187,21 +189,37 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void setWaveProperties(Map<String, String> waveProperties, Collection<String> elementNamesToSpawn,
+	public int setWaveProperties(Map<String, ?> waveProperties, Collection<String> elementNamesToSpawn,
 			Point2D spawningPoint) {
 		String waveName = getNameForWave();
 		// Set wave as enemy, overriding (or filling if missing) playerId
 		// TODO - remove / refactor for multi-player extension
-		waveProperties.put(PLAYER_ID, Integer.toString(GameElement.Team.COMPUTER.ordinal()));
-		defineElement(waveName, waveProperties);
-		placeElement(waveName, spawningPoint, elementNamesToSpawn);
+		Map<String, String> stringifiedWaveProperties = getStringifiedWaveProperties(waveProperties);
+		defineElement(waveName, stringifiedWaveProperties);
+		int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
+		// save this to level waves
+		getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
+		return gameWaveCounter.get();
 	}
 
-	public void editWaveProperties(int waveId, Map<String, String> updatedProperties, Collection<String> newElementNamesToSpawn,
-			Point2D newSpawningPoint) {
-		
+	public void editWaveProperties(int waveId, Map<String, ?> updatedProperties,
+			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) {
+		Map<String, String> stringifiedWaveProperties = getStringifiedWaveProperties(updatedProperties);
+		String waveName = getNameForWaveNumber(waveId);
+		// Overwrite the template
+		defineElement(waveName, stringifiedWaveProperties);
+		deleteOutdatedWave(waveId);
+		// Place the new wave
+		int newSpriteId = placeElement(waveName, newSpawningPoint, newElementNamesToSpawn);
+		GameElement newWave = getSpriteIdMap().get(newSpriteId);
+		getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
 	}
 	
+	public List<Map<String, String>> getWaveProperties(int level) {
+		return getLevelWaves().get(getCurrentLevel()).stream().map(wave -> getElementProperties(getIdFromSprite(wave)))
+				.collect(Collectors.toList());
+	}
+
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
 		return getGameElementFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
@@ -251,8 +269,34 @@ public class AuthoringController extends AbstractGameController implements Autho
 		// TODO - can't use old method
 	}
 
+	private void deleteOutdatedWave(int waveId) {
+		GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
+		// Remove the old placed wave
+		getSpriteIdMap().remove(getIdFromSprite(oldWave));
+	}
+	
+	private Map<String, String> getStringifiedWaveProperties(Map<String, ?> waveProperties) {
+		Map<String, String> stringifiedWaveProperties = getIoController().getWaveSerialization(waveProperties);
+		stringifiedWaveProperties.put(PLAYER_ID, Integer.toString(GameElement.Team.COMPUTER.ordinal()));
+		return stringifiedWaveProperties;
+	}
+	
 	private String getNameForWave() {
-		return WAVE + Integer.toString(gameWaveCounter.incrementAndGet());
+		return getNameForWaveNumber(gameWaveCounter.incrementAndGet());
+	}
+	
+	private String getNameForWaveNumber(int num) {
+		return WAVE + Integer.toString(num);
+	}
+
+	public static void main(String[] args) {
+		AuthoringController tester = new AuthoringController();
+		Map<String, Object> propMap = new HashMap<>();
+		// Just test that serialization works
+		propMap.put("hi", "1");
+		propMap.put("attacks", new Double(2));
+		propMap.put("hello", 3.0);
+		tester.setWaveProperties(propMap, new ArrayList<>(), new Point2D(0, 0));
 	}
 
 }

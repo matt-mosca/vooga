@@ -36,6 +36,7 @@ public class LevelToolBar extends VBox {
 	private int currentDisplay;
 	private EditDisplay myCreated;
 	private SpriteDisplayer mySpriteDisplay;
+	private LevelsEditDisplay myLevelDisplayer;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -63,7 +64,8 @@ public class LevelToolBar extends VBox {
 		editLevel = new Button("Edit Level");
 		// Need to put the button somewhere first.
 		editLevel.setOnAction(e -> {
-			myLevels.get(currentDisplay - 1).openLevelDisplay();
+//			myLevels.get(currentDisplay - 1).openLevelDisplay();
+			openLevelDisplay();
 			// edited = true;
 			// this.update();
 		});
@@ -72,6 +74,11 @@ public class LevelToolBar extends VBox {
 		this.getChildren().add(editLevel);
 		loadLevels();
 		created.setGameArea(myGameAreas.get(0));
+	}
+
+	private void openLevelDisplay() {
+		myLevelDisplayer = new LevelsEditDisplay(myController, myCreated);
+		myLevelDisplayer.open();
 	}
 
 	private void loadLevels() {
