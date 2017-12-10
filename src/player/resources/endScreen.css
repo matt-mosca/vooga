@@ -6,6 +6,10 @@
 	-fx-text-fill: rgb(255, 255, 255);
 	-fx-font-size: 100pt;
 	-fx-font-family: "Times New Roman";
-	-fx-stroke: black; 
-	-fx-stroke-width: 5;
+}
+
+.label2{
+	-fx-text-fill: rgb(0, 0, 0);
+	-fx-font-size: 100pt;
+	-fx-font-family: "Times New Roman";
 }
