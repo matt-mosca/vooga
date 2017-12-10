@@ -1,5 +1,6 @@
 package authoring.bottomToolBar;
 
+import authoring.EditDisplay;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -15,8 +16,10 @@ public class LevelsEditDisplay {
 	private BorderPane myRoot;
 	private ResourceDisplay resourceEditor;
 	private GameEnder gameEnder;
+	private EditDisplay myDisplay;
 	
-	public LevelsEditDisplay(AuthoringController controller) {
+	public LevelsEditDisplay(AuthoringController controller, EditDisplay display) {
+		myDisplay = display;
 		myController = controller;
 		myStage = new Stage();
 		myRoot = new BorderPane();
