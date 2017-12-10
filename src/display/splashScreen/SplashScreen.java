@@ -36,7 +36,6 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	
 	private HBox titleBox = new HBox();
 	private Text VoogaTitle;
-	
 	private NewGameButton myNewGameButton;
 	private EditGameButton myEditGameButton;
 	private PlayExistingGameButton myLoadGameButton;
