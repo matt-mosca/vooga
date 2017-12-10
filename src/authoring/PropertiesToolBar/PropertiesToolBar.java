@@ -155,73 +155,18 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
 			String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
 			if (tabType.equals("Towers")) {
-				newPaneWithProjectileSlot(clone(imageView));
+				newPane(clone(imageView), true);
 			}else {
-				newPane(imageView);
+				newPane(clone(imageView), false);
 			}
 		}
 	}
-	
 
-	private PropertiesPane newPane(ImageView imageView) {
+	private void newPane(ImageView imageView, boolean hasProjectile) {
 		this.getChildren().clear();
-		propertiesPane = new PropertiesPane(this, clone(imageView), myPropertiesBox);
+		propertiesPane = new PropertiesPane(this, clone(imageView), myController, hasProjectile);
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
-		return propertiesPane;
-	}
-	
-	private void newPaneWithProjectileSlot(ImageView imageView) {
-		projectileLabel = new Label("Click to\nChoose a\nprojectile");
-		projectileLabel.setLayoutY(90);
-		projectileSlot = new ProjectileSlot(this, clone(imageView));
-		propertiesPane = newPane(clone(imageView));
-		HBox imageBackground = new HBox();
-		imageBackground.setStyle("-fx-background-color: white");
-		imageBackground.getChildren().add(clone(imageView));
-		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null) {
-			String projectileName = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name");
-			ProjectileImage projectile = new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl"));
-			projectile.resize(projectileSlot.getPrefHeight());
-			projectileSlot.getChildren().add(projectile);
-		}
-		propertiesPane.getChildren().add(imageBackground);
-		propertiesPane.getChildren().add(projectileLabel);
-		propertiesPane.getChildren().add(projectileSlot);
-	}
-	
-	protected void newProjectilesWindow(ImageView myTowerImage) {
-		ScrollPane projectilesWindow = new ScrollPane();
-		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
-		if (availableProjectiles.isEmpty()) {
-			Label emptyLabel = new Label("You have no projectiles\nin your inventory");
-			propertiesPane.getChildren().remove(myPropertiesBox);
-			emptyLabel.setLayoutX(100);
-			propertiesPane.getChildren().add(emptyLabel);
-		} else {
-			List<SpriteImage> cloneList = new ArrayList<>();
-			for (SpriteImage s : availableProjectiles) {
-				cloneList.add(s.clone());
-			}
-			ObservableList<SpriteImage> items =FXCollections.observableArrayList(cloneList);
-	        projectilesView.setItems(items);
-	        projectilesView.getSelectionModel();
-	        projectilesWindow.setContent(projectilesView);
-	        projectilesWindow.setLayoutX(100);
-	        projectilesWindow.setPrefHeight(250);
-	        projectilesView.setOnMouseClicked(e->projectileSelected(myTowerImage,
-	        		projectilesView.getSelectionModel().getSelectedItem().clone()));
-        propertiesPane.getChildren().remove(myPropertiesBox);
-        propertiesPane.getChildren().add(projectilesWindow);
-		}
-	}
-	
-	private void projectileSelected(ImageView imageView, ImageView projectile) {
-		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
-		projectileSlot.getChildren().add(projectile);
-		Map<String, String> newProperties = new HashMap<>();
-		newProperties.put("Projectile Type Name", projectile.getId());
-		myController.updateElementDefinition(imageView.getId(), newProperties, true);
 	}
 	
 	protected void removeButtonPressed() {
@@ -362,5 +307,9 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			}
 		}
 		levelStage.close();
+	}
+	
+	protected List<SpriteImage> getAvailableProjectiles(){
+		return availableProjectiles;
 	}
 } 

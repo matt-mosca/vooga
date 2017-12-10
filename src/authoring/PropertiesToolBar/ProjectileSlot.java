@@ -6,11 +6,11 @@ import javafx.scene.layout.HBox;
 
 public class ProjectileSlot extends HBox {
 
-	public ProjectileSlot(PropertiesToolBar propBar, ImageView imageView) {
+	public ProjectileSlot(PropertiesTabWithProjectile tab, ImageView imageView) {
 		this.setPrefWidth(50);
 		this.setPrefHeight(50);
 		this.setLayoutY(170);
 		this.setStyle("-fx-background-color: white");
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->propBar.newProjectilesWindow(imageView));
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->tab.newProjectileList(imageView));
 	}
 }
