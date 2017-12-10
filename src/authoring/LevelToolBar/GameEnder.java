@@ -20,6 +20,7 @@ public class GameEnder extends VBox{
 	private EditDisplay myDisplay;
 	private ArrayList<CheckBox> checkBoxes;
 	private HashSet<Integer> selectedLevels;
+	private GameEnderRecorder recorder;
 	
 	
 	public GameEnder(AuthoringController controller, EditDisplay edit) {
@@ -64,7 +65,7 @@ public class GameEnder extends VBox{
 			if (checkBoxes.get(i).isSelected()) {
 			myController.setVictoryCondition(victory.getValue());
 			myController.setDefeatCondition(defeat.getValue());	
-			selectedLevels.add(i);
+			selectedLevels.add(i+1);
 		}
 	}
 		myController.setLevel(currLevel);
@@ -74,10 +75,15 @@ public class GameEnder extends VBox{
 		completed.setWrapText(true);
 		this.getChildren().add(completed);
 		addMiscElements();
+		recorder.update();
 	}
 	
 	public Set<Integer>getSelectedLevels() {
 		return selectedLevels;
+	}
+	
+	public void setRecorder(GameEnderRecorder v) {
+		recorder = v;
 	}
 	
 }
