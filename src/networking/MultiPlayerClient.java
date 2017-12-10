@@ -16,7 +16,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import engine.PlayModelController;
 import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
 import networking.protocol.PlayerClient.CheckReadyForNextLevel;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
