@@ -22,6 +22,7 @@ import engine.behavior.firing.NoopFiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.StationaryMovementStrategy;
 import engine.play_engine.PlayController;
+import factory.MediaPlayerFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
@@ -40,6 +41,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -72,6 +74,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Timeline animation;
 	private String gameState;
 	private Slider volumeSlider;
+	private MediaPlayerFactory mediaPlayerFactory;
+	private MediaPlayer mediaPlayer;
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
 
@@ -102,7 +106,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myInventoryToolBar.initializeInventory();
 		hud.initialize(myController.getResourceEndowments());
 		hud.toFront();
-
+		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/128 - battle (vs gym leader).mp3");
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaPlayer.play();
+		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
@@ -129,6 +136,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myLeftBar);
 		volumeSlider = new Slider(0, 100, 5);
 		rootAdd(volumeSlider);
+		
 	}
 
 	public void initializeGameState() {
