@@ -380,7 +380,7 @@ public class SerializationUtils {
 		GameElementFactory factory = new GameElementFactory();
 
 		Map<String, Object> towerMap = new HashMap<>();
-		towerMap.put("collisionVisitable", new DamageDealingCollisionVisitable(1.0));
+		towerMap.put("collisionVisitable", new DamageDealingCollisionVisitable(1.0,""));
 		towerMap.put("collisionVisitor", new ImmortalCollider(1));
 		// TODO - don't serialize sprites; cache their properties and reconstruct using
 		// spriteFactory

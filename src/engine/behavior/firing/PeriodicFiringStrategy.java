@@ -31,7 +31,7 @@ public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 	}
 
 	@Override
-	public String getAudioURI() {
+	public String getAudioUrl() {
 		return audioURI;
 	}
 }
