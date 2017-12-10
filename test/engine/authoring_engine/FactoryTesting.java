@@ -1,7 +1,9 @@
 package engine.authoring_engine;
 
+import engine.behavior.movement.TrackingPoint;
 import engine.game_elements.GameElement;
 import engine.game_elements.GameElementFactory;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Point2D;
 import util.io.SerializationUtils;
@@ -65,20 +67,26 @@ public class FactoryTesting {
         choices.put("Collision effects", "Invulnerable to collision damage");
         choices.put("Collided-with effects", "Deal damage to colliding objects");
         choices.put("Firing Behavior", "Do not fire projectiles");
+        Map<String, Object> allChoices = new HashMap<>(choices);
+
         Map<String, Class> auxProperties = gameElementFactory.getAuxiliaryElementProperties(choices);
         System.out.println(auxProperties);
-        choices.put("Numerical \"team\" association", "0");
-        choices.put("imageWidth", "42.0");
-        choices.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
-        choices.put("imageHeight", "42.0");
-        Map<String, Object> cc = new HashMap<>(choices);
-        gameElementFactory.defineElement("test element", cc);
+        allChoices.put("Numerical \"team\" association", 0);
+        allChoices.put("imageWidth", 42.0);
+        allChoices.put("imageUrl", "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png");
+        allChoices.put("imageHeight", 42.0);
+        allChoices.put("Damage dealt to colliding objects", 1.0);
+        allChoices.put("collisonAudioUrl", "https://github.com/anars/blank-audio/blob/master/1-second-of-silence.mp3");
+        allChoices.put("Speed of movement", 12.0);
+        gameElementFactory.defineElement("Tower1", allChoices);
         JFXPanel jfxPanel = new JFXPanel(); // so that ImageView can be made
         Map<String, Object> auxArgs = new HashMap<>();
         auxArgs.put("startPoint", new Point2D(0,0));
+        auxArgs.put("targetLocation", new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0)));
         try {
             return  gameElementFactory.generateElement("Tower1", auxArgs);
         } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
             return null;
         }
     }

@@ -148,7 +148,10 @@ public final class GameElementFactory {
         for (int i = 0; i < constructorArguments.length; i++) {
             String parameterIdentifier = parameterIdentifiers.get(i);
             String parameterDescription = elementOptionsGetter.translateParameterToDescription(parameterIdentifier);
-            // TODO - this should change now that everything should be a part of the map
+            if (parameterDescription == null) {
+                constructorArguments[i] = properties.get(parameterIdentifier);
+            } else {
+                // TODO - this should change now that everything should be a part of the map
             /*if (!properties.containsKey(parameterDescription)) {
                 constructorArguments[i] = nonTemplateArguments.get(parameterIdentifier);
                 // TODO - throw exception if aux objects doesn't contain key
@@ -156,9 +159,10 @@ public final class GameElementFactory {
                 //String propertyValueAsString = properties.get(parameterDescription);
                 //Class parameterClass = constructorParameters[i].getType();
                 constructorArguments[i] = properties.get(parameterDescription);//setConstructorParameter
-            // (propertyValueAsString,
-            // parameterClass);
-            //}
+                // (propertyValueAsString,
+                // parameterClass);
+                //}
+            }
         }
         return constructorArguments;
     }
