@@ -248,7 +248,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getServerMessageUtils().packageAllElementCosts(getElementCosts());
 	}
 
-	public Collection<NewSprite> packageLevelElements(int level) {
+	@Override
+	public Collection<NewSprite> getLevelSprites(int level) {
 		return getServerMessageUtils().packageNewSprites(getFilteredSpriteIdMap(getLevelSprites().get(level)));
 	}
 

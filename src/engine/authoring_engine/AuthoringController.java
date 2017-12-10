@@ -239,6 +239,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
+	public Map<String, List<Map<String, String>>> getAllDefinedElementUpgrades() {
+		return getGameElementUpgrader().getSpriteUpgradesForEachTemplate();
+	}
+
+	@Override
 	public int cacheAndCreateIdentifier(String elementTemplateName, GameElement gameElement) {
 		int spriteId = super.cacheAndCreateIdentifier(elementTemplateName, gameElement);
 		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementTemplateName, new HashSet<>());

@@ -27,15 +27,15 @@ public class ServerMessageUtils {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LevelInitialized packageState(Map<Integer, GameElement> levelSprites, Collection<String> inventory, Map<String, Double> resourceEndowments) {
+	public LevelInitialized packageState(Map<Integer, GameElement> levelSprites, Collection<String> inventory, Map<String, Double> resourceEndowments, int currentLevel) {
 		return LevelInitialized.newBuilder()
 				.setSpritesAndStatus(packageUpdates(levelSprites, new HashMap<>(),
-						new HashMap<>(), false, false, false, false, resourceEndowments))
+						new HashMap<>(), false, false, false, false, resourceEndowments, currentLevel))
 				.setInventory(packageInventory(inventory)).build();
 	}
 
-	public Update packageStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay) {
-		return Update.newBuilder().setStatusUpdates(getStatusUpdate(levelCleared, isWon, isLost, inPlay)).build();
+	public Update packageStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay, int currentLevel) {
+		return Update.newBuilder().setStatusUpdates(getStatusUpdate(levelCleared, isWon, isLost, inPlay, currentLevel)).build();
 	}
 
 	public Inventory packageInventory(Collection<String> inventory) {
@@ -80,7 +80,7 @@ public class ServerMessageUtils {
 
 	public Update packageUpdates(Map<Integer, GameElement> newSprites, Map<Integer, GameElement> updatedSprites,
 			Map<Integer, GameElement> deletedSprites, boolean levelCleared, boolean isWon, boolean isLost,
-			boolean inPlay, Map<String, Double> resourceEndowments) {
+			boolean inPlay, Map<String, Double> resourceEndowments, int currentLevel) {
 		Update.Builder updateBuilder = Update.newBuilder();
 		// Sprite Creations
 		updateBuilder.addAllNewSprites(packageNewSprites(newSprites));
@@ -89,7 +89,7 @@ public class ServerMessageUtils {
 		// Sprite Deletions
 		updateBuilder.addAllSpriteDeletions(packageDeletedSprites(deletedSprites));
 		// Status Updates
-		updateBuilder.setStatusUpdates(getStatusUpdate(levelCleared, isWon, isLost, inPlay));
+		updateBuilder.setStatusUpdates(getStatusUpdate(levelCleared, isWon, isLost, inPlay, currentLevel));
 		// Resources - Just send all resources in update for now
 		ResourceUpdate.Builder resourceUpdateBuilder = ResourceUpdate.newBuilder();
 		resourceEndowments.keySet().forEach(resourceName -> resourceUpdateBuilder.addResources(
@@ -97,10 +97,10 @@ public class ServerMessageUtils {
 		return updateBuilder.setResourceUpdates(resourceUpdateBuilder.build()).build();
 	}
 
-	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay) {
+	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay, int currentLevel) {
 		// Just always send status update for now
 		return StatusUpdate.newBuilder().setLevelCleared(levelCleared).setIsWon(isWon).setIsLost(isLost)
-				.setInPlay(inPlay).build();
+				.setInPlay(inPlay).setCurrentLevel(currentLevel).build();
 	}
 
 	public Collection<NewSprite> packageNewSprites(Map<Integer, GameElement> newSprites) {
