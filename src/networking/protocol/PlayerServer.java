@@ -244,6 +244,20 @@ public final class PlayerServer {
      * <code>optional .NumberOfLevels numLevels = 15;</code>
      */
     PlayerServer.NumberOfLevelsOrBuilder getNumLevelsOrBuilder();
+
+    /**
+     * <code>optional string error = 16;</code>
+     */
+    boolean hasError();
+    /**
+     * <code>optional string error = 16;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>optional string error = 16;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * Protobuf type {@code ServerMessage}
@@ -260,6 +274,7 @@ public final class PlayerServer {
       templateProperties_ = java.util.Collections.emptyList();
       elementCosts_ = java.util.Collections.emptyList();
       levelSprites_ = java.util.Collections.emptyList();
+      error_ = "";
     }
 
     @java.lang.Override
@@ -471,6 +486,12 @@ public final class PlayerServer {
                 numLevels_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000800;
+              break;
+            }
+            case 130: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00001000;
+              error_ = bs;
               break;
             }
           }
@@ -864,6 +885,48 @@ public final class PlayerServer {
       return numLevels_ == null ? PlayerServer.NumberOfLevels.getDefaultInstance() : numLevels_;
     }
 
+    public static final int ERROR_FIELD_NUMBER = 16;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 16;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional string error = 16;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          error_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string error = 16;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -987,6 +1050,9 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         output.writeMessage(15, getNumLevels());
       }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 16, error_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1054,6 +1120,9 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(15, getNumLevels());
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1138,6 +1207,11 @@ public final class PlayerServer {
         result = result && getNumLevels()
             .equals(other.getNumLevels());
       }
+      result = result && (hasError() == other.hasError());
+      if (hasError()) {
+        result = result && getError()
+            .equals(other.getError());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1208,6 +1282,10 @@ public final class PlayerServer {
       if (hasNumLevels()) {
         hash = (37 * hash) + NUMLEVELS_FIELD_NUMBER;
         hash = (53 * hash) + getNumLevels().hashCode();
+      }
+      if (hasError()) {
+        hash = (37 * hash) + ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getError().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1432,6 +1510,8 @@ public final class PlayerServer {
           numLevelsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00004000);
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00008000);
         return this;
       }
 
@@ -1579,6 +1659,10 @@ public final class PlayerServer {
         } else {
           result.numLevels_ = numLevelsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.error_ = error_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1734,6 +1818,11 @@ public final class PlayerServer {
         }
         if (other.hasNumLevels()) {
           mergeNumLevels(other.getNumLevels());
+        }
+        if (other.hasError()) {
+          bitField0_ |= 0x00008000;
+          error_ = other.error_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3952,6 +4041,82 @@ public final class PlayerServer {
           numLevels_ = null;
         }
         return numLevelsBuilder_;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 16;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional string error = 16;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            error_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 16;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 16;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00008000;
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 16;</code>
+       */
+      public Builder clearError() {
+        bitField0_ = (bitField0_ & ~0x00008000);
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 16;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00008000;
+        error_ = value;
+        onChanged();
+        return this;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -12434,6 +12599,20 @@ public final class PlayerServer {
      * <code>required double spawnY = 6;</code>
      */
     double getSpawnY();
+
+    /**
+     * <code>optional string error = 7;</code>
+     */
+    boolean hasError();
+    /**
+     * <code>optional string error = 7;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>optional string error = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * Protobuf type {@code NewSprite}
@@ -12453,6 +12632,7 @@ public final class PlayerServer {
       imageWidth_ = 0D;
       spawnX_ = 0D;
       spawnY_ = 0D;
+      error_ = "";
     }
 
     @java.lang.Override
@@ -12512,6 +12692,12 @@ public final class PlayerServer {
             case 49: {
               bitField0_ |= 0x00000020;
               spawnY_ = input.readDouble();
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              error_ = bs;
               break;
             }
           }
@@ -12656,6 +12842,48 @@ public final class PlayerServer {
       return spawnY_;
     }
 
+    public static final int ERROR_FIELD_NUMBER = 7;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 7;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string error = 7;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          error_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string error = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -12710,6 +12938,9 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeDouble(6, spawnY_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, error_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -12740,6 +12971,9 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeDoubleSize(6, spawnY_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -12796,6 +13030,11 @@ public final class PlayerServer {
             == java.lang.Double.doubleToLongBits(
                 other.getSpawnY()));
       }
+      result = result && (hasError() == other.hasError());
+      if (hasError()) {
+        result = result && getError()
+            .equals(other.getError());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -12834,6 +13073,10 @@ public final class PlayerServer {
         hash = (37 * hash) + SPAWNY_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             java.lang.Double.doubleToLongBits(getSpawnY()));
+      }
+      if (hasError()) {
+        hash = (37 * hash) + ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getError().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -12965,6 +13208,8 @@ public final class PlayerServer {
         bitField0_ = (bitField0_ & ~0x00000010);
         spawnY_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000020);
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -13013,6 +13258,10 @@ public final class PlayerServer {
           to_bitField0_ |= 0x00000020;
         }
         result.spawnY_ = spawnY_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.error_ = error_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -13074,6 +13323,11 @@ public final class PlayerServer {
         }
         if (other.hasSpawnY()) {
           setSpawnY(other.getSpawnY());
+        }
+        if (other.hasError()) {
+          bitField0_ |= 0x00000040;
+          error_ = other.error_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -13353,6 +13607,82 @@ public final class PlayerServer {
       public Builder clearSpawnY() {
         bitField0_ = (bitField0_ & ~0x00000020);
         spawnY_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 7;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string error = 7;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            error_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 7;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 7;</code>
+       */
+      public Builder clearError() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 7;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        error_ = value;
         onChanged();
         return this;
       }
@@ -16174,6 +16504,20 @@ public final class PlayerServer {
      */
     com.google.protobuf.ByteString
         getTemplatesBytes(int index);
+
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    boolean hasError();
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * Protobuf type {@code Inventory}
@@ -16188,6 +16532,7 @@ public final class PlayerServer {
     }
     private Inventory() {
       templates_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      error_ = "";
     }
 
     @java.lang.Override
@@ -16227,6 +16572,12 @@ public final class PlayerServer {
               templates_.add(bs);
               break;
             }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              error_ = bs;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -16254,6 +16605,7 @@ public final class PlayerServer {
               PlayerServer.Inventory.class, PlayerServer.Inventory.Builder.class);
     }
 
+    private int bitField0_;
     public static final int TEMPLATES_FIELD_NUMBER = 1;
     private com.google.protobuf.LazyStringList templates_;
     /**
@@ -16283,6 +16635,48 @@ public final class PlayerServer {
       return templates_.getByteString(index);
     }
 
+    public static final int ERROR_FIELD_NUMBER = 2;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          error_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -16297,6 +16691,9 @@ public final class PlayerServer {
                         throws java.io.IOException {
       for (int i = 0; i < templates_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, templates_.getRaw(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -16313,6 +16710,9 @@ public final class PlayerServer {
         }
         size += dataSize;
         size += 1 * getTemplatesList().size();
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -16333,6 +16733,11 @@ public final class PlayerServer {
       boolean result = true;
       result = result && getTemplatesList()
           .equals(other.getTemplatesList());
+      result = result && (hasError() == other.hasError());
+      if (hasError()) {
+        result = result && getError()
+            .equals(other.getError());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -16347,6 +16752,10 @@ public final class PlayerServer {
       if (getTemplatesCount() > 0) {
         hash = (37 * hash) + TEMPLATES_FIELD_NUMBER;
         hash = (53 * hash) + getTemplatesList().hashCode();
+      }
+      if (hasError()) {
+        hash = (37 * hash) + ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getError().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -16468,6 +16877,8 @@ public final class PlayerServer {
         super.clear();
         templates_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000001);
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -16491,11 +16902,17 @@ public final class PlayerServer {
       public PlayerServer.Inventory buildPartial() {
         PlayerServer.Inventory result = new PlayerServer.Inventory(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           templates_ = templates_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.templates_ = templates_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.error_ = error_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -16545,6 +16962,11 @@ public final class PlayerServer {
             ensureTemplatesIsMutable();
             templates_.addAll(other.templates_);
           }
+          onChanged();
+        }
+        if (other.hasError()) {
+          bitField0_ |= 0x00000002;
+          error_ = other.error_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -16667,6 +17089,82 @@ public final class PlayerServer {
         onChanged();
         return this;
       }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            error_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public Builder clearError() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        error_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
@@ -16757,6 +17255,20 @@ public final class PlayerServer {
      */
     PlayerServer.TemplatePropertyOrBuilder getPropertyOrBuilder(
         int index);
+
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    boolean hasError();
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * Protobuf type {@code TemplateProperties}
@@ -16772,6 +17284,7 @@ public final class PlayerServer {
     private TemplateProperties() {
       elementName_ = "";
       property_ = java.util.Collections.emptyList();
+      error_ = "";
     }
 
     @java.lang.Override
@@ -16815,6 +17328,12 @@ public final class PlayerServer {
               }
               property_.add(
                   input.readMessage(PlayerServer.TemplateProperty.PARSER, extensionRegistry));
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              error_ = bs;
               break;
             }
           }
@@ -16922,6 +17441,48 @@ public final class PlayerServer {
       return property_.get(index);
     }
 
+    public static final int ERROR_FIELD_NUMBER = 3;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          error_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -16950,6 +17511,9 @@ public final class PlayerServer {
       for (int i = 0; i < property_.size(); i++) {
         output.writeMessage(2, property_.get(i));
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, error_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -16964,6 +17528,9 @@ public final class PlayerServer {
       for (int i = 0; i < property_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, property_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -16989,6 +17556,11 @@ public final class PlayerServer {
       }
       result = result && getPropertyList()
           .equals(other.getPropertyList());
+      result = result && (hasError() == other.hasError());
+      if (hasError()) {
+        result = result && getError()
+            .equals(other.getError());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -17007,6 +17579,10 @@ public final class PlayerServer {
       if (getPropertyCount() > 0) {
         hash = (37 * hash) + PROPERTY_FIELD_NUMBER;
         hash = (53 * hash) + getPropertyList().hashCode();
+      }
+      if (hasError()) {
+        hash = (37 * hash) + ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getError().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -17135,6 +17711,8 @@ public final class PlayerServer {
         } else {
           propertyBuilder_.clear();
         }
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -17172,6 +17750,10 @@ public final class PlayerServer {
         } else {
           result.property_ = propertyBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.error_ = error_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -17244,6 +17826,11 @@ public final class PlayerServer {
               propertyBuilder_.addAllMessages(other.property_);
             }
           }
+        }
+        if (other.hasError()) {
+          bitField0_ |= 0x00000004;
+          error_ = other.error_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -17596,6 +18183,82 @@ public final class PlayerServer {
         }
         return propertyBuilder_;
       }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            error_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder clearError() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        error_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
@@ -17686,6 +18349,20 @@ public final class PlayerServer {
      */
     PlayerServer.ResourceOrBuilder getCostsOrBuilder(
         int index);
+
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    boolean hasError();
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * Protobuf type {@code ElementCost}
@@ -17701,6 +18378,7 @@ public final class PlayerServer {
     private ElementCost() {
       elementName_ = "";
       costs_ = java.util.Collections.emptyList();
+      error_ = "";
     }
 
     @java.lang.Override
@@ -17744,6 +18422,12 @@ public final class PlayerServer {
               }
               costs_.add(
                   input.readMessage(PlayerServer.Resource.PARSER, extensionRegistry));
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              error_ = bs;
               break;
             }
           }
@@ -17851,6 +18535,48 @@ public final class PlayerServer {
       return costs_.get(index);
     }
 
+    public static final int ERROR_FIELD_NUMBER = 3;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          error_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string error = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -17879,6 +18605,9 @@ public final class PlayerServer {
       for (int i = 0; i < costs_.size(); i++) {
         output.writeMessage(2, costs_.get(i));
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, error_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -17893,6 +18622,9 @@ public final class PlayerServer {
       for (int i = 0; i < costs_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, costs_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -17918,6 +18650,11 @@ public final class PlayerServer {
       }
       result = result && getCostsList()
           .equals(other.getCostsList());
+      result = result && (hasError() == other.hasError());
+      if (hasError()) {
+        result = result && getError()
+            .equals(other.getError());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -17936,6 +18673,10 @@ public final class PlayerServer {
       if (getCostsCount() > 0) {
         hash = (37 * hash) + COSTS_FIELD_NUMBER;
         hash = (53 * hash) + getCostsList().hashCode();
+      }
+      if (hasError()) {
+        hash = (37 * hash) + ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getError().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -18064,6 +18805,8 @@ public final class PlayerServer {
         } else {
           costsBuilder_.clear();
         }
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -18101,6 +18844,10 @@ public final class PlayerServer {
         } else {
           result.costs_ = costsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.error_ = error_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -18173,6 +18920,11 @@ public final class PlayerServer {
               costsBuilder_.addAllMessages(other.costs_);
             }
           }
+        }
+        if (other.hasError()) {
+          bitField0_ |= 0x00000004;
+          error_ = other.error_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -18525,6 +19277,82 @@ public final class PlayerServer {
         }
         return costsBuilder_;
       }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            error_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder clearError() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 3;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        error_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
@@ -18586,6 +19414,20 @@ public final class PlayerServer {
      * <code>required int32 numLevels = 1;</code>
      */
     int getNumLevels();
+
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    boolean hasError();
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * Protobuf type {@code NumberOfLevels}
@@ -18600,6 +19442,7 @@ public final class PlayerServer {
     }
     private NumberOfLevels() {
       numLevels_ = 0;
+      error_ = "";
     }
 
     @java.lang.Override
@@ -18633,6 +19476,12 @@ public final class PlayerServer {
             case 8: {
               bitField0_ |= 0x00000001;
               numLevels_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              error_ = bs;
               break;
             }
           }
@@ -18675,6 +19524,48 @@ public final class PlayerServer {
       return numLevels_;
     }
 
+    public static final int ERROR_FIELD_NUMBER = 2;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          error_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string error = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -18694,6 +19585,9 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt32(1, numLevels_);
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, error_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -18705,6 +19599,9 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, numLevels_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -18728,6 +19625,11 @@ public final class PlayerServer {
         result = result && (getNumLevels()
             == other.getNumLevels());
       }
+      result = result && (hasError() == other.hasError());
+      if (hasError()) {
+        result = result && getError()
+            .equals(other.getError());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -18742,6 +19644,10 @@ public final class PlayerServer {
       if (hasNumLevels()) {
         hash = (37 * hash) + NUMLEVELS_FIELD_NUMBER;
         hash = (53 * hash) + getNumLevels();
+      }
+      if (hasError()) {
+        hash = (37 * hash) + ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getError().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -18863,6 +19769,8 @@ public final class PlayerServer {
         super.clear();
         numLevels_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -18891,6 +19799,10 @@ public final class PlayerServer {
           to_bitField0_ |= 0x00000001;
         }
         result.numLevels_ = numLevels_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.error_ = error_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -18935,6 +19847,11 @@ public final class PlayerServer {
         if (other == PlayerServer.NumberOfLevels.getDefaultInstance()) return this;
         if (other.hasNumLevels()) {
           setNumLevels(other.getNumLevels());
+        }
+        if (other.hasError()) {
+          bitField0_ |= 0x00000002;
+          error_ = other.error_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -18995,6 +19912,82 @@ public final class PlayerServer {
       public Builder clearNumLevels() {
         bitField0_ = (bitField0_ & ~0x00000001);
         numLevels_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            error_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public Builder clearError() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 2;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        error_ = value;
         onChanged();
         return this;
       }
@@ -20537,7 +21530,7 @@ public final class PlayerServer {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022PlayerServer.proto\"\342\004\n\rServerMessage\022\036" +
+      "\n\022PlayerServer.proto\"\361\004\n\rServerMessage\022\036" +
       "\n\016availableGames\030\001 \001(\0132\006.Games\0227\n\026gameRo" +
       "omCreationStatus\030\002 \001(\0132\027.GameRoomCreatio" +
       "nStatus\022/\n\022gameRoomJoinStatus\030\003 \001(\0132\023.Ga" +
@@ -20552,42 +21545,44 @@ public final class PlayerServer {
       "teProperties\022\"\n\014elementCosts\030\014 \003(\0132\014.Ele" +
       "mentCost\022!\n\relementPlaced\030\r \001(\0132\n.NewSpr" +
       "ite\022 \n\014levelSprites\030\016 \003(\0132\n.NewSprite\022\"\n" +
-      "\tnumLevels\030\017 \001(\0132\017.NumberOfLevels\"\035\n\005Gam" +
-      "es\022\024\n\005games\030\001 \003(\0132\005.Game\")\n\004Game\022\014\n\004name" +
-      "\030\001 \002(\t\022\023\n\013description\030\002 \002(\t\"7\n\026GameRoomC" +
-      "reationStatus\022\016\n\006roomId\030\001 \001(\t\022\r\n\005error\030\002" +
-      " \001(\t\"4\n\022GameRoomJoinStatus\022\017\n\007success\030\001 ",
-      "\002(\010\022\r\n\005error\030\002 \001(\t\"N\n\024GameRoomLaunchStat" +
-      "us\022\'\n\014initialState\030\001 \001(\0132\021.LevelInitiali" +
-      "zed\022\r\n\005error\030\002 \001(\t\"\036\n\tGameRooms\022\021\n\troomN" +
-      "ames\030\001 \003(\t\"/\n\013PlayerNames\022\021\n\tuserNames\030\001" +
-      " \003(\t\022\r\n\005error\030\002 \001(\t\"$\n\021ReadyForNextLevel" +
-      "\022\017\n\007isReady\030\001 \002(\010\"v\n\020LevelInitialized\022\035\n" +
-      "\tinventory\030\001 \001(\0132\n.Inventory\022!\n\020spritesA" +
-      "ndStatus\030\002 \001(\0132\007.Update\022\021\n\tnumLevels\030\003 \001" +
-      "(\005\022\r\n\005error\030\004 \001(\t\"\310\001\n\006Update\022\036\n\nnewSprit" +
-      "es\030\001 \003(\0132\n.NewSprite\022$\n\rspriteUpdates\030\002 ",
-      "\003(\0132\r.SpriteUpdate\022(\n\017spriteDeletions\030\003 " +
-      "\003(\0132\017.SpriteDeletion\022$\n\rstatusUpdates\030\004 " +
-      "\001(\0132\r.StatusUpdate\022(\n\017resourceUpdates\030\005 " +
-      "\001(\0132\017.ResourceUpdate\"x\n\tNewSprite\022\020\n\010spr" +
-      "iteId\030\001 \002(\005\022\020\n\010imageURL\030\002 \002(\t\022\023\n\013imageHe" +
-      "ight\030\003 \002(\001\022\022\n\nimageWidth\030\004 \002(\001\022\016\n\006spawnX" +
-      "\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\"<\n\014SpriteUpdate\022\020" +
-      "\n\010spriteId\030\001 \002(\005\022\014\n\004newX\030\002 \002(\001\022\014\n\004newY\030\003" +
-      " \002(\001\"\"\n\016SpriteDeletion\022\020\n\010spriteId\030\001 \002(\005" +
-      "\"i\n\014StatusUpdate\022\024\n\014levelCleared\030\001 \002(\010\022\r",
-      "\n\005isWon\030\002 \002(\010\022\016\n\006isLost\030\003 \002(\010\022\016\n\006inPlay\030" +
-      "\004 \002(\010\022\024\n\014currentLevel\030\005 \002(\005\".\n\016ResourceU" +
-      "pdate\022\034\n\tresources\030\001 \003(\0132\t.Resource\"\036\n\tI" +
-      "nventory\022\021\n\ttemplates\030\001 \003(\t\"N\n\022TemplateP" +
-      "roperties\022\023\n\013elementName\030\001 \002(\t\022#\n\010proper" +
-      "ty\030\002 \003(\0132\021.TemplateProperty\"<\n\013ElementCo" +
-      "st\022\023\n\013elementName\030\001 \002(\t\022\030\n\005costs\030\002 \003(\0132\t" +
-      ".Resource\"#\n\016NumberOfLevels\022\021\n\tnumLevels" +
-      "\030\001 \002(\005\"/\n\020TemplateProperty\022\014\n\004name\030\001 \002(\t" +
-      "\022\r\n\005value\030\002 \002(\t\"(\n\010Resource\022\014\n\004name\030\001 \002(",
-      "\t\022\016\n\006amount\030\002 \002(\001"
+      "\tnumLevels\030\017 \001(\0132\017.NumberOfLevels\022\r\n\005err" +
+      "or\030\020 \001(\t\"\035\n\005Games\022\024\n\005games\030\001 \003(\0132\005.Game\"" +
+      ")\n\004Game\022\014\n\004name\030\001 \002(\t\022\023\n\013description\030\002 \002" +
+      "(\t\"7\n\026GameRoomCreationStatus\022\016\n\006roomId\030\001" +
+      " \001(\t\022\r\n\005error\030\002 \001(\t\"4\n\022GameRoomJoinStatu",
+      "s\022\017\n\007success\030\001 \002(\010\022\r\n\005error\030\002 \001(\t\"N\n\024Gam" +
+      "eRoomLaunchStatus\022\'\n\014initialState\030\001 \001(\0132" +
+      "\021.LevelInitialized\022\r\n\005error\030\002 \001(\t\"\036\n\tGam" +
+      "eRooms\022\021\n\troomNames\030\001 \003(\t\"/\n\013PlayerNames" +
+      "\022\021\n\tuserNames\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"$\n\021Re" +
+      "adyForNextLevel\022\017\n\007isReady\030\001 \002(\010\"v\n\020Leve" +
+      "lInitialized\022\035\n\tinventory\030\001 \001(\0132\n.Invent" +
+      "ory\022!\n\020spritesAndStatus\030\002 \001(\0132\007.Update\022\021" +
+      "\n\tnumLevels\030\003 \001(\005\022\r\n\005error\030\004 \001(\t\"\310\001\n\006Upd" +
+      "ate\022\036\n\nnewSprites\030\001 \003(\0132\n.NewSprite\022$\n\rs",
+      "priteUpdates\030\002 \003(\0132\r.SpriteUpdate\022(\n\017spr" +
+      "iteDeletions\030\003 \003(\0132\017.SpriteDeletion\022$\n\rs" +
+      "tatusUpdates\030\004 \001(\0132\r.StatusUpdate\022(\n\017res" +
+      "ourceUpdates\030\005 \001(\0132\017.ResourceUpdate\"\207\001\n\t" +
+      "NewSprite\022\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030" +
+      "\002 \002(\t\022\023\n\013imageHeight\030\003 \002(\001\022\022\n\nimageWidth" +
+      "\030\004 \002(\001\022\016\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\022\r" +
+      "\n\005error\030\007 \001(\t\"<\n\014SpriteUpdate\022\020\n\010spriteI" +
+      "d\030\001 \002(\005\022\014\n\004newX\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016S" +
+      "priteDeletion\022\020\n\010spriteId\030\001 \002(\005\"i\n\014Statu",
+      "sUpdate\022\024\n\014levelCleared\030\001 \002(\010\022\r\n\005isWon\030\002" +
+      " \002(\010\022\016\n\006isLost\030\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010\022\024\n\014" +
+      "currentLevel\030\005 \002(\005\".\n\016ResourceUpdate\022\034\n\t" +
+      "resources\030\001 \003(\0132\t.Resource\"-\n\tInventory\022" +
+      "\021\n\ttemplates\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"]\n\022Tem" +
+      "plateProperties\022\023\n\013elementName\030\001 \002(\t\022#\n\010" +
+      "property\030\002 \003(\0132\021.TemplateProperty\022\r\n\005err" +
+      "or\030\003 \001(\t\"K\n\013ElementCost\022\023\n\013elementName\030\001" +
+      " \002(\t\022\030\n\005costs\030\002 \003(\0132\t.Resource\022\r\n\005error\030" +
+      "\003 \001(\t\"2\n\016NumberOfLevels\022\021\n\tnumLevels\030\001 \002",
+      "(\005\022\r\n\005error\030\002 \001(\t\"/\n\020TemplateProperty\022\014\n" +
+      "\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"(\n\010Resource\022\014" +
+      "\n\004name\030\001 \002(\t\022\016\n\006amount\030\002 \002(\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -20606,7 +21601,7 @@ public final class PlayerServer {
     internal_static_ServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ServerMessage_descriptor,
-        new java.lang.String[] { "AvailableGames", "GameRoomCreationStatus", "GameRoomJoinStatus", "GameRoomLaunchStatus", "GameRooms", "PlayerNames", "ReadyForNextLevel", "LevelInitialized", "Update", "Inventory", "TemplateProperties", "ElementCosts", "ElementPlaced", "LevelSprites", "NumLevels", });
+        new java.lang.String[] { "AvailableGames", "GameRoomCreationStatus", "GameRoomJoinStatus", "GameRoomLaunchStatus", "GameRooms", "PlayerNames", "ReadyForNextLevel", "LevelInitialized", "Update", "Inventory", "TemplateProperties", "ElementCosts", "ElementPlaced", "LevelSprites", "NumLevels", "Error", });
     internal_static_Games_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_Games_fieldAccessorTable = new
@@ -20672,7 +21667,7 @@ public final class PlayerServer {
     internal_static_NewSprite_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_NewSprite_descriptor,
-        new java.lang.String[] { "SpriteId", "ImageURL", "ImageHeight", "ImageWidth", "SpawnX", "SpawnY", });
+        new java.lang.String[] { "SpriteId", "ImageURL", "ImageHeight", "ImageWidth", "SpawnX", "SpawnY", "Error", });
     internal_static_SpriteUpdate_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_SpriteUpdate_fieldAccessorTable = new
@@ -20702,25 +21697,25 @@ public final class PlayerServer {
     internal_static_Inventory_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Inventory_descriptor,
-        new java.lang.String[] { "Templates", });
+        new java.lang.String[] { "Templates", "Error", });
     internal_static_TemplateProperties_descriptor =
       getDescriptor().getMessageTypes().get(17);
     internal_static_TemplateProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TemplateProperties_descriptor,
-        new java.lang.String[] { "ElementName", "Property", });
+        new java.lang.String[] { "ElementName", "Property", "Error", });
     internal_static_ElementCost_descriptor =
       getDescriptor().getMessageTypes().get(18);
     internal_static_ElementCost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ElementCost_descriptor,
-        new java.lang.String[] { "ElementName", "Costs", });
+        new java.lang.String[] { "ElementName", "Costs", "Error", });
     internal_static_NumberOfLevels_descriptor =
       getDescriptor().getMessageTypes().get(19);
     internal_static_NumberOfLevels_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_NumberOfLevels_descriptor,
-        new java.lang.String[] { "NumLevels", });
+        new java.lang.String[] { "NumLevels", "Error", });
     internal_static_TemplateProperty_descriptor =
       getDescriptor().getMessageTypes().get(20);
     internal_static_TemplateProperty_fieldAccessorTable = new
