@@ -200,19 +200,22 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         myVBox.getChildren().add(waveAndLevelField);
         myVBox.getChildren().add(amountField);
         Button submitButton = new Button("Submit");
+//        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+//        		e->submitToWaves(waveAndLevelField.getText().split("\\s+"), 
+//        				Integer.valueOf(amountField.getText())));
         submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-        		e->submitToWaves(waveAndLevelField.getText().split("\\s+"), 
+        		e->submitToWaves(waveAndLevelField.getText(), 
         				Integer.valueOf(amountField.getText()), imageView));
         myVBox.getChildren().add(submitButton);
 	}
 	
-	private void submitToWaves(String[] levelsAndWaves, int amount, ImageView imageView) {
-		System.out.println(levelsAndWaves[0]);
-        for (int i = 0; i < levelsAndWaves.length; i++) {
-        	String[] currLevelAndWave = levelsAndWaves[i].split("\\.");
-    		display.submit(Integer.valueOf(currLevelAndWave[0]), 
-    				Integer.valueOf(currLevelAndWave[1]), amount, clone(imageView));
-        }
+	private void submitToWaves(String levelsAndWaves, int amount, ImageView imageView) {
+//        for (int i = 0; i < levelsAndWaves.length; i++) {
+//        	String[] currLevelAndWave = levelsAndWaves[i].split("\\.");
+//    		display.submit(Integer.valueOf(currLevelAndWave[0]), 
+//    				Integer.valueOf(currLevelAndWave[1]), amount, clone(myPropertiesBox.getCurrSprite()));
+//        }
+		display.submit(levelsAndWaves, amount, imageView);
 		waveStage.hide();
 	}
 	
