@@ -189,6 +189,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setScene(myScene.getScene());
 		
 	}
+	
+	
 
 	@Override
 	public void save() {
