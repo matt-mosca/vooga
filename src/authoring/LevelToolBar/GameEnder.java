@@ -43,7 +43,7 @@ public class GameEnder extends VBox{
 	
 	private void createLevelBoxes() {
 		checkBoxes = new ArrayList<>();
-		for (int i = 1; i<=myDisplay.getMaxLevel(); i++) {
+		for (int i = 0; i<myDisplay.getMaxLevel(); i++) {
 			checkBoxes.add(new CheckBox());
 		}
 		this.getChildren().addAll(checkBoxes);

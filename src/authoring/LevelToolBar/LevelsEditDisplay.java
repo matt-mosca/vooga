@@ -28,6 +28,11 @@ public class LevelsEditDisplay {
 		gameEnder = new GameEnder(controller, display);
 		myRoot.setLeft(gameEnder);
 		myRoot.setRight(resourceEditor);
+		myStage.setScene(myScene);
+//		myStage.show();
+	}
+	
+	public void open() {
 		myStage.show();
 	}
 }

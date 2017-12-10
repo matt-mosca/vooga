@@ -45,7 +45,6 @@ public class LevelToolBar extends VBox {
 		currentDisplay = 1;
 		myCreated = created;
 		myController = controller;
-		myLevelDisplayer = new LevelsEditDisplay(controller, created);
 		clientMessageUtils = new ClientMessageUtils();
 		myGameAreas = new ArrayList<>();
 		this.setLayoutX(X_LAYOUT);
@@ -78,8 +77,8 @@ public class LevelToolBar extends VBox {
 	}
 
 	private void openLevelDisplay() {
-		
-		
+		myLevelDisplayer = new LevelsEditDisplay(myController, myCreated);
+		myLevelDisplayer.open();
 	}
 
 	private void loadLevels() {
