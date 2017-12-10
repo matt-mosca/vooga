@@ -22,6 +22,7 @@ import engine.behavior.firing.NoopFiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.StationaryMovementStrategy;
 import engine.play_engine.PlayController;
+import factory.MediaPlayerFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
@@ -34,11 +35,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -71,6 +74,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Timeline animation;
 	private String gameState;
 	private Slider volumeSlider;
+	private MediaPlayerFactory mediaPlayerFactory;
+	private MediaPlayer mediaPlayer;
+	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
 
 	private int level = 1;
@@ -100,7 +106,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myInventoryToolBar.initializeInventory();
 		hud.initialize(myController.getResourceEndowments());
 		hud.toFront();
-
+		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/128 - battle (vs gym leader).mp3");
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaPlayer.play();
+		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
@@ -119,10 +128,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void addItems() {
 		rootAdd(hud);
 		myInventoryToolBar = new InventoryToolBar(this, myController);
+		levelSelector = new ChoiceBox<>();
+		levelSelector.getItems().addAll(1,2,3);
+		levelSelector.setOnAction(e->changeLevel(levelSelector.getSelectionModel().getSelectedItem()));
 		myLeftBar.getChildren().add(myInventoryToolBar);
+		myLeftBar.getChildren().add(levelSelector);
 		rootAdd(myLeftBar);
-		volumeSlider = new Slider(0, 100, 5);
+		volumeSlider = new Slider(0, 1, .1);;
 		rootAdd(volumeSlider);
+		
 	}
 
 	public void initializeGameState() {
@@ -258,25 +272,43 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	@Override
 	public void listItemClicked(ImageView image) {
+		if(checkFunds(image)) return;
+		Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		costDialog.setTitle("Purchase Resource");
+		costDialog.setHeaderText(null);
+		costDialog.setContentText("Would you like to purchase this object?");
+
+		Optional<ButtonType> result = costDialog.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			placeable = new StaticObject(1, this, (String) image.getUserData());
+			placeable.setElementName(image.getId());
+			this.getScene().setCursor(new ImageCursor(image.getImage()));
+			selected = true;
+		}
+	}
+	
+	//TODO call this on click event of the static objects
+	public void upgradeableClicked(ImageView image) {
+		if(checkFunds(image)) return;
+		Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		costDialog.setTitle("Upgrade Resource");
+		costDialog.setHeaderText(null);
+		costDialog.setContentText("Would you like to upgrade this object?");
+		
+		Optional<ButtonType> result = costDialog.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			//pass in the image id to this, but make sure we're actually setting it
+//			myController.upgradeElement();
+		}
+	}
+	
+	private boolean checkFunds(ImageView image) {
 		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
-			return;
-		} else {
-			Alert costDialog = new Alert(AlertType.CONFIRMATION);
-			costDialog.setTitle("Purchase Resource");
-			costDialog.setHeaderText(null);
-			costDialog.setContentText("Would you like to purchase this object?");
-
-			Optional<ButtonType> result = costDialog.showAndWait();
-			if (result.get() == ButtonType.OK) {
-				placeable = new StaticObject(1, this, (String) image.getUserData());
-				placeable.setElementName(image.getId());
-				this.getScene().setCursor(new ImageCursor(image.getImage()));
-				selected = true;
-			}
+			return false;
 		}
-
+		return true;
 	}
 
 	private void launchInvalidResources() {
@@ -287,16 +319,20 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.show();
 	}
 
-	// TODO - Check if this is repeated code,
-
-	public void save(File saveName) {
-		myController.saveGameState(saveName);
-	}
-
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	protected void changeLevel(int newLevel) {
+		level = newLevel;
+		try {
+			clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, newLevel));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

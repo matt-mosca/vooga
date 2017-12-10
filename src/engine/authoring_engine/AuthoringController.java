@@ -3,6 +3,8 @@ package engine.authoring_engine;
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
 import engine.game_elements.GameElement;
+import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer.SpriteUpdate;
 import exporting.Packager;
 import exporting.Publisher;
 import javafx.geometry.Point2D;
@@ -17,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and

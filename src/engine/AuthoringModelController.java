@@ -4,6 +4,7 @@ import util.path.PathList;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteUpdate;
 
 import java.io.File;
 import java.io.IOException;
@@ -213,7 +214,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @param yCoordinate
 	 *            the new vertical position of the element within the game
 	 */
-	void moveElement(int elementId, double xCoordinate, double yCoordinate);
+	SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate);
 
 	/**
 	 * Update the properties of a particular game element, without changing the
@@ -240,18 +241,6 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @return map where keys are game names and values are game descriptions
 	 */
 	Map<String, String> getAvailableGames();
-
-	/**
-	 * Get a map of properties for a particular game element, so as to allow for
-	 * their displaying in a modification area of the display.
-	 *
-	 * @param elementId
-	 *            the unique identifier for the game element
-	 * @return a map of properties for the element with this identifier
-	 * @throws IllegalArgumentException
-	 *             if the element ID does not refer to a created element
-	 */
-	Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException;
 
 	/**
 	 * Get a map of properties for an element template / model, so as to allow for

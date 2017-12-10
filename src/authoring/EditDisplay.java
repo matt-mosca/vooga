@@ -17,6 +17,9 @@ import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
+import factory.MediaPlayerFactory;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
@@ -25,11 +28,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -68,6 +73,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	private SpriteTesterButton myTesterButton;
+	private Slider volumeSlider;
+	private MediaPlayerFactory mediaPlayerFactory;
+	private MediaPlayer mediaPlayer;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -93,6 +101,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(saveButton);
 		myTesterButton = new SpriteTesterButton(this);
 		rootAdd(myTesterButton);
+		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/110 - pokemon center.mp3");
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaPlayer.play();
+		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 	}
 
 	private void createGridToggle() {
@@ -161,6 +173,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMenuBar);
 		myBottomToolBar = new LevelToolBar(this, controller, myGameEnvironment);
 		rootAdd(myBottomToolBar);
+		volumeSlider = new Slider(0, 1, .1);
+		rootAdd(volumeSlider);
 	}
 
 	private void addToLeftBar() {
@@ -295,9 +309,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		attackDefenseLabel.setText("Attack");
 	}
 	
-	public void submit(int level, int waves, int amount, ImageView mySprite) {
-//		myBottomToolBar.changeLevel(level);
-//		myBottomToolBar.addToWave(mySprite, waves, amount);
+	public void submit(String levelAndWave, int amount, ImageView mySprite) {
+		myBottomToolBar.addToWave(levelAndWave, amount, mySprite);
 	}
 
 	@Override
@@ -313,6 +326,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		} else {
 			this.save();
 		}
+		mediaPlayer.stop();
 		VBox newProject = new VBox();
 		Scene newScene = new Scene(newProject, 400, 400);
 		Stage myStage = new Stage();

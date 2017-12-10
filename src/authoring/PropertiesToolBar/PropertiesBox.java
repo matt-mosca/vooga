@@ -41,10 +41,10 @@ public class PropertiesBox extends VBox {
 	private Droppable myDroppable;
 
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, AuthoringController author) {
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, String> propertyMap, AuthoringController author) {
 		currSprite = mySprite;
 		myDroppable = droppable;
-		propertiesMap = author.getTemplateProperties(mySprite.getId());
+		myPropertiesMap = propertyMap;
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
@@ -71,7 +71,7 @@ public class PropertiesBox extends VBox {
 
 					@Override
 					public void handle(CellEditEvent<Properties, String> t) {
-						if(t.getRowValue().getMyProperty().equals("PathList")) {
+						if(t.getRowValue().getMyProperty().equals("pathList")) {
 							String filePath = new String();
 							Random rand = new Random();
 							PathParser parser = new PathParser();
