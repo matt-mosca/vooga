@@ -1,16 +1,11 @@
 package networking;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
-import networking.protocol.PlayerServer.LevelInitialized;
-import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import util.path.PathList;
 
@@ -21,23 +16,10 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	public CollaborativeAuthoringClient() {
 		super();
 	}
-	
-	@Override
-	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void saveGameState(File fileToSaveTo) {
-		// TODO Auto-generated method stub
 		
-	}
-
 	@Override
-	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	protected int getPort() {
+		return PORT;
 	}
 
 	@Override
@@ -97,12 +79,6 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	@Override
-	public NewSprite placeElement(String elementName, Point2D startCoordinates) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int placePathFollowingElement(String elementName, PathList pathList) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -121,30 +97,6 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	@Override
-	public Set<String> getInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Double> getStatus() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Map<String, Double>> getElementCosts() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate) {
 		// TODO Auto-generated method stub
 		return null;
@@ -160,24 +112,6 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	public void deleteElement(int elementId) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Map<String, String> getAvailableGames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -264,11 +198,6 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	public Collection<String> getPossibleDefeatConditions() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	@Override
-	protected int getPort() {
-		return PORT;
 	}
 
 }
