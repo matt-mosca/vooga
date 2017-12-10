@@ -138,6 +138,7 @@ public class ElementManager {
 	private void handleElementFiring(GameElement element) {
 		Point2D nearestTargetLocation;
 		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
+		exclusionOfSelf.remove(element);
 		GameElement nearestEnemyElement = spriteQueryHandler.getNearestEnemy(
 				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
 		if(nearestEnemyElement == null) {
@@ -150,7 +151,6 @@ public class ElementManager {
 			String elementTemplateName = element.fire();
 			playAudio(element.getFiringAudio());
 			System.out.println(elementTemplateName);
-			exclusionOfSelf.remove(element);
 			// Use player id of firing element rather than projectile? This allows greater
 			// flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
