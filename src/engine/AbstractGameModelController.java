@@ -2,6 +2,7 @@ package engine;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,6 +62,20 @@ public interface AbstractGameModelController {
 	public Map<String, Double> getResourceEndowments();
 
 	public Map<String, Map<String, Double>> getElementCosts();
+	
+	/**
+	 * Get the elements of a game (represented as sprites) for a particular level.
+	 *
+	 * TODO - custom exception?
+	 *
+	 * @param level
+	 *            the level of the game which should be loaded
+	 * @return all the game elements (sprites) represented in the level
+	 * @throws IllegalArgumentException
+	 *             if there is no corresponding level in the current game
+	 */
+	Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException;
+
 
 	/**
 	 * Fetch all available game names and their corresponding descriptions

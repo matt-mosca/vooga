@@ -208,7 +208,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @throws IllegalArgumentException
 	 *             if there is no corresponding level in the current game
 	 */
-	Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException;
+	Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException;
 
 	/**
 	 * Retrieve information on the cost of each element in terms of the various
