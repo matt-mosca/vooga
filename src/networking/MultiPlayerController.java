@@ -28,8 +28,6 @@ import networking.protocol.PlayerServer.NumberOfLevels;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ReadyForNextLevel;
 import networking.protocol.PlayerServer.ServerMessage;
-import networking.protocol.PlayerServer.ServerMessage.Builder;
-import networking.protocol.PlayerServer.Update;
 
 /**
  * Gateway of multi-player player clients to server back end. Can handle
@@ -327,11 +325,11 @@ class MultiPlayerController {
 	void disconnectClient(int clientId) {
 		clientIdsToPlayEngines.remove(clientId);
 		clientIdsToUserNames.remove(clientId);
-		for (String gameRoomName : roomMembers.keySet()) {
-			if (roomMembers.get(gameRoomName).contains(clientId)) {
-				roomMembers.get(gameRoomName).remove(clientId);
+		roomMembers.entrySet().forEach(roomEntry -> {
+			if (roomEntry.getValue().contains(clientId)) {
+				roomEntry.getValue().remove(clientId);
 			}
-		}
+		});
 	}
 
 	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) {
