@@ -80,7 +80,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		gameName = DEFAULT_GAME_NAME;
 		spriteIdCounter = new AtomicInteger();
 		spriteIdMap = new HashMap<>();
-		gameElementFactory = new GameElementFactory();
+		gameElementFactory = new GameElementFactory(serializationUtils);
 		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
 		spriteTemplateIoHandler = new SpriteTemplateIoHandler();
 		spriteQueryHandler = new SpriteQueryHandler();
