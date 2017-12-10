@@ -31,7 +31,6 @@ import javafx.scene.shape.Rectangle;
 
 public class PropertiesBox extends VBox {
 	private Map<String, Object> propertiesMap;
-	private Map<String, Class> classMap;
 	private String[] propertyArr;
 	private TableView<Properties> table;
 	private ObservableList<Properties> data;
@@ -47,7 +46,6 @@ public class PropertiesBox extends VBox {
 		currSprite = mySprite;
 		myDroppable = droppable;
 		propertiesMap = propertyMap;
-		classMap = new HashMap<>();
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
