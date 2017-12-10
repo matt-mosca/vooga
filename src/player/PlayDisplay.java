@@ -51,6 +51,7 @@ import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.Update;
+import util.io.SerializationUtils;
 import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
 import display.splashScreen.SplashPlayScreen;
@@ -91,7 +92,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
-		myController = isMultiPlayer ? new MultiPlayerClient() : new PlayController();
+		myController = isMultiPlayer ? new MultiPlayerClient(new SerializationUtils()) : new PlayController();
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
 		clientMessageUtils = new ClientMessageUtils();

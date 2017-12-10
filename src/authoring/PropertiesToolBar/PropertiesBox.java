@@ -30,7 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class PropertiesBox extends VBox {
-	private Map<String, ?> propertiesMap;
+	private Map<String, Object> propertiesMap;
 	private String[] propertyArr;
 	private TableView<Properties> table;
 	private ObservableList<Properties> data;
@@ -41,10 +41,11 @@ public class PropertiesBox extends VBox {
 	private Droppable myDroppable;
 
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, String> propertyMap, AuthoringController author) {
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringController
+			author) {
 		currSprite = mySprite;
 		myDroppable = droppable;
-		myPropertiesMap = propertyMap;
+		propertiesMap = propertyMap;
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");

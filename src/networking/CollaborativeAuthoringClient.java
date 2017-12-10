@@ -9,263 +9,161 @@ import java.util.Set;
 
 import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteUpdate;
+import util.io.SerializationUtils;
 import util.path.PathList;
 
 public class CollaborativeAuthoringClient extends AbstractClient implements AuthoringModelController  {
 
 	private final int PORT = 9043;
 	
-	public CollaborativeAuthoringClient() {
-		super();
-	}
-	
-	@Override
-	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void saveGameState(File fileToSaveTo) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public CollaborativeAuthoringClient(SerializationUtils serializationUtils) {
+		super(serializationUtils);
 	}
 
 	@Override
 	public void exportGame() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setLevel(int level) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteLevel(int level) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Map<String, List<String>> getElementBaseConfigurationOptions() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void defineElement(String elementName, Map<String, String> properties) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+	public void defineElement(String elementName, Map<String, Object> properties) throws IllegalArgumentException {
+
 	}
 
 	@Override
-	public void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, String> upgradeProperties)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+	public void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, Object> upgradeProperties) throws IllegalArgumentException {
+
 	}
 
 	@Override
-	public void updateElementDefinition(String elementName, Map<String, String> propertiesToUpdate, boolean retroactive)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+	public void updateElementDefinition(String elementName, Map<String, Object> propertiesToUpdate, boolean retroactive) throws IllegalArgumentException {
+
 	}
 
 	@Override
 	public void deleteElementDefinition(String elementName) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public NewSprite placeElement(String elementName, Point2D startCoordinates) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int placePathFollowingElement(String elementName, PathList pathList) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
 	public void addElementToInventory(String elementName) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public int getCurrentLevel() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Set<String> getInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Double> getStatus() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Map<String, Double>> getElementCosts() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void updateElementProperties(int elementId, Map<String, String> propertiesToUpdate) {
-		// TODO Auto-generated method stub
-		
+	public void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate) {
+
 	}
 
 	@Override
 	public void deleteElement(int elementId) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public Map<String, String> getAvailableGames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, List<Map<String, String>>> getAllDefinedElementUpgrades() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<String, Double> getResourceEndowments() {
-		// TODO Auto-generated method stub
+	public Map<String, List<Map<String, Object>>> getAllDefinedElementUpgrades() {
 		return null;
 	}
 
 	@Override
 	public void setGameName(String gameName) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setGameDescription(String gameDescription) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setVictoryCondition(String conditionIdentifier) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setDefeatCondition(String conditionIdentifier) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setStatusProperty(String property, Double value) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setResourceEndowment(String resourceName, double newResourceEndowment) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public int setWaveProperties(Map<String, ? extends Object> waveProperties, Collection<String> elementNamesToSpawn,
-			Point2D spawningPoint) {
-		// TODO Auto-generated method stub
+	public int setWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn, Point2D spawningPoint) throws ReflectiveOperationException {
 		return 0;
 	}
 
 	@Override
-	public void editWaveProperties(int waveId, Map<String, ? extends Object> updatedProperties,
-			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) {
-		// TODO Auto-generated method stub
-		
+	public void editWaveProperties(int waveId, Map<String, Object> updatedProperties, Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException {
+
 	}
 
 	@Override
 	public Collection<String> getPossibleVictoryConditions() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection<String> getPossibleDefeatConditions() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	@Override
+	public int getCurrentLevel() {
+		return 0;
+	}
+
+	@Override
+	public Map<String, Double> getResourceEndowments() {
+		return null;
+	}
+
 	@Override
 	protected int getPort() {
 		return PORT;

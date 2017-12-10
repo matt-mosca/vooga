@@ -425,4 +425,24 @@ public class SerializationUtils {
 		}
 		return serializedTemplate;
 	}
+
+	public Map<String, Map<String, String>> serializeTemplates(Map<String, Map<String, Object>> elementTemplates) {
+		Map<String, Map<String, String>> serializedTemplates = new HashMap<>();
+		for (String templateName : elementTemplates.keySet()) {
+			Map<String, Object> template = elementTemplates.get(templateName);
+			Map<String, String> serializedTemplate = serializeElementTemplate(template);
+			serializedTemplates.put(templateName, serializedTemplate);
+		}
+		return serializedTemplates;
+	}
+
+	public Map<String, Map<String, Object>> deserializeTemplates(Map<String, Map<String, String>> serializedTemplates) {
+		Map<String, Map<String, Object>> templates = new HashMap<>();
+		for (String templateName : serializedTemplates.keySet()) {
+			Map<String, String> serializedTemplate = serializedTemplates.get(templateName);
+			Map<String, Object> template = deserializeElementTemplate(serializedTemplate);
+			templates.put(templateName, template);
+		}
+		return templates;
+	}
 }

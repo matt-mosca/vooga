@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -108,10 +109,11 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
 
     @Override
-    public void moveElement(int elementId, double xCoordinate, double yCoordinate) throws IllegalArgumentException {
+    public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate) throws IllegalArgumentException {
         GameElement gameElement = getElement(elementId);
         gameElement.setX(xCoordinate);
         gameElement.setY(yCoordinate);
+        return null; // todo
     }
 
     @Override
@@ -131,7 +133,6 @@ public class AuthoringController extends AbstractGameController implements Autho
         getLevelInventories().get(getCurrentLevel()).add(elementName);
     }
 
-    @Override
     public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
         GameElement gameElement = getElement(elementId);
         // TODO - implement (or, more likely, eliminate)

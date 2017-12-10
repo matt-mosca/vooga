@@ -9,7 +9,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 
-public class PropertiesPane extends TabPane{
+public class PropertiesPane extends TabPane {
 	private ScreenDisplay myDisplay;
 	private AuthoringController myController;
     private ImageView myImageView;
@@ -33,7 +33,7 @@ public class PropertiesPane extends TabPane{
 		addTab.setText("Add Upgrade");
 		this.getSelectionModel().selectedItemProperty().addListener(e->{
 			if(this.getSelectionModel().getSelectedItem() == addTab) {
-				Map<String, String> lastUpdateProperties = (upgradeSize > 1) ?
+				Map<String, Object> lastUpdateProperties = (upgradeSize > 1) ?
 						myController.getAllDefinedElementUpgrades().get(myImageView.getId()).get(upgradeSize-1) :
 							myController.getAllDefinedTemplateProperties().get(myImageView.getId());
 				myController.defineElementUpgrade(myImageView.getId(), upgradeSize, lastUpdateProperties);
@@ -46,13 +46,13 @@ public class PropertiesPane extends TabPane{
 		
 		if(!myController.getAllDefinedElementUpgrades().isEmpty() &&
 				myController.getAllDefinedElementUpgrades().get(imageView.getId()) == null) {
-			for(Map<String, String> upgradeMap : myController.getAllDefinedElementUpgrades().get(imageView.getId())) {
+			for(Map<String, Object> upgradeMap : myController.getAllDefinedElementUpgrades().get(imageView.getId())) {
 				addUpgrade(upgradeMap);
 			}
 		}
 	}
 	
-	private void addUpgrade(Map<String, String> propertyMap) {
+	private void addUpgrade(Map<String, Object> propertyMap) {
 		PropertiesTab newTab = (projectile) ? new PropertiesTabWithProjectile(myDisplay, myProperties, clone(myImageView), propertyMap, myController) 
 				: new PropertiesTab(myDisplay, myProperties, clone(myImageView), propertyMap, myController);
 		if(this.getTabs().isEmpty()) {

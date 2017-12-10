@@ -70,7 +70,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	private ReturnButton retB;
 	private CreationInterface created;
 	private AuthoringController myController;
-	private Map<String, String> basePropertyMap;
+	private Map<String, Object> basePropertyMap;
 	private EditDisplay display;
     private AddToWaveButton myWaveAdder;
     private CostButton myCost;
@@ -115,7 +115,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         newTroop.attach(topTabPane.getTabs().get(1));
         newProjectile.attach(topTabPane.getTabs().get(2));
         
-        basePropertyMap = new HashMap<String, String>();
+        basePropertyMap = new HashMap<>();
         initializeInventory(myController, bottomTabPane);
     }
 	
@@ -153,7 +153,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			myController.deleteElementDefinition(imageView.getId());
 			tab.removeItem(imageView);
 		}else {
-			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
+			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, new HashMap<>(), myController);
 			String tabType =
 					myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName").toString();
 			if (tabType.equals("Towers")) {
@@ -164,8 +164,8 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		}
 	}
 	private void newPropertiesPane() {
-		propertiesPane = new Pane();
-		myWaveAdder = new AddToWaveButton(this);
+		//propertiesPane = new PropertiesPane(display, toolba);
+		//myWaveAdder = new AddToWaveButton(this);
 //		myLevelAdder = new AddToLevelButton(this);
 		deleteButton = new Button("Back");
 	}
@@ -181,10 +181,10 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		projectileSlot.setLayoutY(170);
 		projectileSlot.setStyle("-fx-background-color: white");
 		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow(clone(imageView)));
-		propertiesPane = new Pane();
-	    myWaveAdder = new AddToWaveButton(this);
+		propertiesPane = new PropertiesPane(myDisplay, this, imageView, myController, false);
+	    myWaveAdder = new AddToWaveButton(this, imageView);
 	    myCost = new CostButton(this, imageView);
-	    myLevelAdder = new AddToLevelButton(this);
+	    myLevelAdder = new AddToLevelButton(this, imageView);
 		deleteButton = new Button("Back");
 		deleteButton.setLayoutX(370);
 		Label info = new Label("Properties here");
@@ -203,14 +203,14 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			projectile.resize(projectileSlot.getPrefHeight());
 			projectileSlot.getChildren().add(projectile);
 		}
-		propertiesPane.getChildren().add(imageBackground);
+		/*propertiesPane.getChildren().add(imageBackground);
 		propertiesPane.getChildren().add(deleteButton);
 		propertiesPane.getChildren().add(myPropertiesBox);
 		propertiesPane.getChildren().add(projectileLabel);
 		propertiesPane.getChildren().add(projectileSlot);
 		propertiesPane.getChildren().add(myWaveAdder);
 		propertiesPane.getChildren().add(myCost);
-		propertiesPane.getChildren().add(myLevelAdder);
+		propertiesPane.getChildren().add(myLevelAdder);*/
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
@@ -221,9 +221,9 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
 		if (availableProjectiles.isEmpty()) {
 			Label emptyLabel = new Label("You have no projectiles\nin your inventory");
-			propertiesPane.getChildren().remove(myPropertiesBox);
+			/*propertiesPane.getChildren().remove(myPropertiesBox);
 			emptyLabel.setLayoutX(100);
-			propertiesPane.getChildren().add(emptyLabel);
+			propertiesPane.getChildren().add(emptyLabel);*/
 		} else {
 			List<SpriteImage> cloneList = new ArrayList<>();
 			for (SpriteImage s : availableProjectiles) {
@@ -237,8 +237,8 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	        projectilesWindow.setPrefHeight(250);
 	        projectilesView.setOnMouseClicked(e->projectileSelected(myTowerImage,
 	        		projectilesView.getSelectionModel().getSelectedItem().clone()));
-        propertiesPane.getChildren().remove(myPropertiesBox);
-        propertiesPane.getChildren().add(projectilesWindow);
+        /*propertiesPane.getChildren().remove(myPropertiesBox);
+        propertiesPane.getChildren().add(projectilesWindow);*/
 		}
 	}
 	
@@ -252,7 +252,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 
 	private void newPane(ImageView imageView, boolean hasProjectile) {
 		this.getChildren().clear();
-		propertiesPane = new PropertiesPane(myDisplay, this, imageView, myController, hasProjectile);
+		propertiesPane = new PropertiesPane(display, this, imageView, myController, false);
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
 	}
