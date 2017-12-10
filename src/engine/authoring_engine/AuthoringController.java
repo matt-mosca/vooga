@@ -6,6 +6,7 @@ import engine.AbstractGameController;
 import engine.AuthoringModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer.SpriteUpdate;
 import exporting.Packager;
 
 import java.io.IOException;
@@ -114,10 +115,12 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void moveElement(int elementId, double xCoordinate, double yCoordinate) throws IllegalArgumentException {
+	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate)
+			throws IllegalArgumentException {
 		GameElement gameElement = getElement(elementId);
 		gameElement.setX(xCoordinate);
 		gameElement.setY(yCoordinate);
+		return getServerMessageUtils().packageUpdatedSprite(gameElement, elementId);
 	}
 
 	@Override
@@ -205,7 +208,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 		GameElement newWave = getSpriteIdMap().get(newSpriteId);
 		getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
 	}
-	
+
 	public Map<String, String> getWaveProperties(int level, int waveNum) {
 		return getTemplateProperties(getNameForWaveNumber(level, waveNum));
 	}
@@ -264,17 +267,17 @@ public class AuthoringController extends AbstractGameController implements Autho
 		// Remove the old placed wave
 		getSpriteIdMap().remove(getIdFromSprite(oldWave));
 	}
-	
+
 	private Map<String, String> getStringifiedWaveProperties(Map<String, ?> waveProperties) {
 		Map<String, String> stringifiedWaveProperties = getIoController().getWaveSerialization(waveProperties);
 		stringifiedWaveProperties.put(PLAYER_ID, Integer.toString(GameElement.Team.COMPUTER.ordinal()));
 		return stringifiedWaveProperties;
 	}
-	
+
 	private String getNameForWave() {
 		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.incrementAndGet());
 	}
-	
+
 	private String getNameForWaveNumber(int level, int waveNum) {
 		return WAVE + WAVE_DELIMITER + level + WAVE_DELIMITER + Integer.toString(waveNum);
 	}
