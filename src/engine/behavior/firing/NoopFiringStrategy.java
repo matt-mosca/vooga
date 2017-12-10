@@ -27,7 +27,7 @@ public class NoopFiringStrategy implements FiringStrategy {
 	}
 	
 	@Override
-	public String getAudioURI() {
+	public String getAudioUrl() {
 		return null;
 	}
 }

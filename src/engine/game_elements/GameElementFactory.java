@@ -3,6 +3,7 @@ package engine.game_elements;
 import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 import util.ElementOptionsGetter;
+import util.io.SerializationUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
@@ -21,6 +22,11 @@ public final class GameElementFactory {
     private Map<String, Map<String, String>> spriteTemplates = new HashMap<>();
 
     private ElementOptionsGetter elementOptionsGetter = new ElementOptionsGetter();
+    private SerializationUtils serializationUtils;
+
+    public GameElementFactory(SerializationUtils serializationUtils) {
+        this.serializationUtils = serializationUtils;
+    }
 
     /**
      * Define a new template with specified properties. The template should not use
