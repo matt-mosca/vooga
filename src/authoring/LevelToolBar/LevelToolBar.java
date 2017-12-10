@@ -20,7 +20,6 @@ import util.protocol.ClientMessageUtils;
 import display.sprites.InteractiveObject;
 
 public class LevelToolBar extends VBox {
-	private final int CELL_SIZE = 40;
 
 	private AuthoringController myController;
 	private TabPane myTabPane;
@@ -102,7 +101,6 @@ public class LevelToolBar extends VBox {
 		newLv.attach(newTab);
 		myLevels.add(newLv);
 		myTabPane.getTabs().add(newTab);
-
 	}
 
 	// TODO need load in static object rather than just imageview
