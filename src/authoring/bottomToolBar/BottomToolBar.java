@@ -149,7 +149,7 @@ public class BottomToolBar extends VBox {
 	}
 
 	private void updateSpriteDisplay(int wave) {
-		if(!mySprites.get(wave-1).isEmpty()) {
+		if (!mySprites.get(wave-1).isEmpty()) {
 			mySpriteDisplay.addToScroll(mySprites.get(wave-1));
 		}
 		else {
