@@ -147,8 +147,8 @@ public class ElementManager {
 			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
 		}
 		//@ TODO Fix should fire to take in nearest point
-		if (element.shouldFire()) {
-			String elementTemplateName = element.fire();
+		String elementTemplateName;
+		if (element.shouldFire() && (elementTemplateName = element.fire()) != null) {
 			playAudio(element.getFiringAudio());
 			System.out.println(elementTemplateName);
 			// Use player id of firing element rather than projectile? This allows greater

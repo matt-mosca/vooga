@@ -30,8 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class PropertiesBox extends VBox {
-	private Map<String, String> propertiesMap;
-	private String[] propertyArr;
+	private Map<String, String> myPropertiesMap;
 	private TableView<Properties> table;
 	private ObservableList<Properties> data;
 	private TableColumn<Properties, String> propertiesColumn;
@@ -41,17 +40,17 @@ public class PropertiesBox extends VBox {
 	private Droppable myDroppable;
 
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, AuthoringController author) {
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, String> propertyMap, AuthoringController author) {
 		currSprite = mySprite;
 		myDroppable = droppable;
-		propertiesMap = author.getTemplateProperties(mySprite.getId());
+		myPropertiesMap = propertyMap;
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
 		valuesColumn = new TableColumn<Properties, String>("Values");
 		data = FXCollections.observableArrayList();
-		for (String s : propertiesMap.keySet()) {
-			data.add(new Properties(s, propertiesMap.get(s)));
+		for (String s : myPropertiesMap.keySet()) {
+			data.add(new Properties(s, myPropertiesMap.get(s)));
 			
 		}
 		propertiesColumn.setCellValueFactory(
@@ -71,7 +70,7 @@ public class PropertiesBox extends VBox {
 
 					@Override
 					public void handle(CellEditEvent<Properties, String> t) {
-						if(t.getRowValue().getMyProperty().equals("PathList")) {
+						if(t.getRowValue().getMyProperty().equals("pathList")) {
 							String filePath = new String();
 							Random rand = new Random();
 							PathParser parser = new PathParser();
