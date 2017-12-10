@@ -200,7 +200,8 @@ public class ElementOptionsGetter {
     public String getChosenSubclassName(Class parameterClass, Map<String, ?> properties)
             throws IllegalArgumentException {
         String parameterClassDescription = translateClassToDescription(parameterClass.getName());
-        String chosenSubclassDescription = properties.get(parameterClassDescription).toString();
-        return translateDescriptionToClass(chosenSubclassDescription);
+        Object chosenSubclassNameAsObject = properties.get(parameterClassDescription);
+        return chosenSubclassNameAsObject == null ? null :
+                translateDescriptionToClass(chosenSubclassNameAsObject.toString());
     }
 }
