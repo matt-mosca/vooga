@@ -191,11 +191,11 @@ public class ElementOptionsGetter {
     }
 
     private String translateDescriptionToClass(String description) {
-        return descriptionToClass.get(description);
+        return descriptionToClass.getOrDefault(description, description);
     }
 
     private String translateClassToDescription(String className) {
-        return classToDescription.get(className);
+        return classToDescription.getOrDefault(className, className);
     }
 
     public String translateParameterToDescription(String parameterName) {
@@ -205,12 +205,7 @@ public class ElementOptionsGetter {
     public String getChosenSubclassName(Class parameterClass, Map<String, String> properties)
             throws IllegalArgumentException {
         String parameterClassDescription = translateClassToDescription(parameterClass.getName());
-        String chosenSubclassDescription;
-        if (parameterClassDescription == null ||
-                (chosenSubclassDescription = properties.get(parameterClassDescription)) == null) {
-            throw new IllegalArgumentException();
-            // TODO - custom exception
-        }
+        String chosenSubclassDescription = properties.get(parameterClassDescription);
         return translateDescriptionToClass(chosenSubclassDescription);
     }
 }
