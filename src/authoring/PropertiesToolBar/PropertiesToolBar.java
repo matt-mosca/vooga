@@ -155,16 +155,16 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		}else {
 			String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
 			if (tabType.equals("Towers")) {
-				newPane(clone(imageView), true);
+				newPane(imageView, true);
 			}else {
-				newPane(clone(imageView), false);
+				newPane(imageView, false);
 			}
 		}
 	}
 
 	private void newPane(ImageView imageView, boolean hasProjectile) {
 		this.getChildren().clear();
-		propertiesPane = new PropertiesPane(myDisplay, this, clone(imageView), myController, hasProjectile);
+		propertiesPane = new PropertiesPane(myDisplay, this, imageView, myController, hasProjectile);
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
 	}
