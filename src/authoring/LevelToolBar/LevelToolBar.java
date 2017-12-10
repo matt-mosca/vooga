@@ -46,7 +46,7 @@ public class LevelToolBar extends VBox {
 	private LevelsEditDisplay myLevelDisplayer;
 	private Map<Integer, Integer> wavesPerLevel;
 	private Map<String, List<ImageView>> waveToImage;
-	private Map<String, String> myProperties;
+	private Map<String, Object> myProperties;
 	private List<String> elementsToSpawn;
 
 	private ClientMessageUtils clientMessageUtils;
@@ -89,8 +89,11 @@ public class LevelToolBar extends VBox {
 		});
 		Button waveButton = new Button("Wave");
 		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-				e->myController.setWaveProperties(myProperties, elementsToSpawn, 
-						new Point2D(100, 100)));
+				e->{ try {
+			myController.setWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
+		} catch (ReflectiveOperationException exc) {
+			//
+		}});
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
@@ -102,7 +105,7 @@ public class LevelToolBar extends VBox {
 	}
 
 	private void createProperties() {
-		myProperties = new TreeMap<String, String>();
+		myProperties = new TreeMap<>();
 		myProperties.put("Collision effects", "Invulnerable to collision damage");
 		myProperties.put("Collided-with effects", "Do nothing to collided objects");
 		myProperties.put("Move an object", "Object will stay at desired location");

@@ -22,7 +22,8 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	private AuthoringController myController;
 	private ImageView myImageView;
 	
-	public PropertiesTabWithProjectile(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView, Map<String, String> propertyMap, AuthoringController author) {
+	public PropertiesTabWithProjectile(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView,
+									   Map<String, Object> propertyMap, AuthoringController author) {
 		super(display, properties, imageView, propertyMap, author);
 		myController = author;
 		myImageView = imageView;
@@ -43,8 +44,9 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	}
 
 	private void addProjectileImage() {
-		String projectileName = myController.getAllDefinedTemplateProperties().get(myImageView.getId()).get("Projectile Type Name");
-		String url = myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl");
+		String projectileName = myController.getAllDefinedTemplateProperties().get(myImageView.getId()).get
+				("Projectile Type Name").toString();
+		String url = myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl").toString();
 		ImageView projectile = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(url)));
 		resize(projectileSlot.getPrefHeight(), projectile);
 		projectileSlot.getChildren().add(projectile);
@@ -80,7 +82,7 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	private void projectileSelected(ImageView imageView, ImageView projectile) {
 		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
 		projectileSlot.getChildren().add(projectile);
-		Map<String, String> newProperties = new HashMap<>();
+		Map<String, Object> newProperties = new HashMap<>();
 		newProperties.put("Projectile Type Name", projectile.getId());
 		myController.updateElementDefinition(imageView.getId(), newProperties, true);
 	}

@@ -32,6 +32,7 @@ import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.ServerMessage;
 import networking.protocol.PlayerServer.TemplateProperties;
+import util.io.SerializationUtils;
 
 public abstract class AbstractClient implements AbstractGameModelController {
 
@@ -40,8 +41,12 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	private Socket socket;
 	private DataInputStream input;
 	private DataOutputStream outputWriter;
+	protected SerializationUtils serializationUtils;
+	// todo make private with getter
 
-	public AbstractClient() {
+
+	public AbstractClient(SerializationUtils serializationUtils) {
+		this.serializationUtils = serializationUtils;
 		setupChatSocketAndStreams();
 	}
 
@@ -50,7 +55,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	/**
 	 * Save the current state of the current level a game being played or authored.
 	 *
-	 * @param saveName
+	 * @param fileToSaveTo
 	 *            the name to assign to the save file
 	 */
 	@Override
@@ -79,18 +84,22 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	@Override
-	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException {
+	public Map<String, Object> getTemplateProperties(String elementName) throws IllegalArgumentException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetTemplateProperties(GetTemplateProperties.newBuilder().setElementName(elementName).build())
 				.build().toByteArray());
-		return handleAllTemplatePropertiesResponse(readServerResponse()).values().iterator().next();
+		Map<String, String> serializedTemplate =
+				handleAllTemplatePropertiesResponse(readServerResponse()).values().iterator().next();
+		return serializationUtils.deserializeElementTemplate(serializedTemplate);
 	}
 
 	@Override
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties() {
+	public Map<String, Map<String, Object>> getAllDefinedTemplateProperties() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetAllTemplateProperties(GetAllTemplateProperties.getDefaultInstance()).build().toByteArray());
-		return handleAllTemplatePropertiesResponse(readServerResponse());
+		Map<String, Map<String, String>> serializedTemplates =
+				handleAllTemplatePropertiesResponse(readServerResponse());
+		return serializationUtils.deserializeTemplates(serializedTemplates);
 	}
 
 	@Override
