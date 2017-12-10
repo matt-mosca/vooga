@@ -153,7 +153,20 @@ public class LevelToolBar extends VBox {
 	}
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
-		
+		String[] levelWaveArray = levelAndWave.split("\\s+");
+		for (String s : levelWaveArray) {
+			for (int i = 0; i < amount; i++) {
+				if (waveToImage.get(s) != null) {
+					waveToImage.get(s).add(mySprite);
+				} else {
+					ArrayList<ImageView> newImages = new ArrayList<ImageView>();
+					newImages.add(mySprite);
+					waveToImage.put(s, newImages);
+				}
+	
+			}
+		}
+		updateImages();
 	}
 	
 	public void changeDisplay(int i) {
@@ -164,6 +177,10 @@ public class LevelToolBar extends VBox {
 		myCreated.setGameArea(myGameAreas.get(i - 1));
 		updateSpriteDisplay(i);
 		updateWaveDisplay();
+	}
+	
+	private void updateImages() {
+		
 	}
 
 	private void deleteLevel(int lvNumber) {

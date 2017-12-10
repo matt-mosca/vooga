@@ -4,6 +4,7 @@ import engine.game_elements.GameElement;
 import engine.game_elements.GameElementFactory;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Point2D;
+import util.io.SerializationUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +21,13 @@ public class FactoryTesting {
     public static void main(String[] args) {
         FactoryTesting factoryTesting = new FactoryTesting();
         //factoryTesting.testWithConsole();
-        GameElementFactory gameElementFactory = new GameElementFactory();
+        GameElementFactory gameElementFactory = new GameElementFactory(new SerializationUtils());
         GameElement gameElement = factoryTesting.generateSingleTestSprite(gameElementFactory);
         factoryTesting.testExport(gameElementFactory);
     }
 
     private void testWithConsole() {
-        GameElementFactory sf = new GameElementFactory();
+        GameElementFactory sf = new GameElementFactory(new SerializationUtils());
         Map<String, List<String>> baseConfig = sf.getElementBaseConfigurationOptions();
         Scanner in = new Scanner(System.in);
         Map<String, String> choices = new HashMap<>();
@@ -46,7 +47,7 @@ public class FactoryTesting {
     }
 
     public GameElement generateSingleTestSprite() {
-        GameElementFactory gameElementFactory = new GameElementFactory();
+        GameElementFactory gameElementFactory = new GameElementFactory(new SerializationUtils());
         return generateSingleTestSprite(gameElementFactory);
     }
 

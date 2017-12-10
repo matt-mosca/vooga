@@ -72,7 +72,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return packageStateChange(oldGameElements);
 	}
 
-	// TODO - Deprecate in favor of public Update update() variant
 	@Override
 	public Update update() {
 		if (inPlay) {

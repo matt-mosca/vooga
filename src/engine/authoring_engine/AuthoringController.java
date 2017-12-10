@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -32,7 +31,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 	private Packager packager;
 	private Publisher publisher;
 
-	private final String WAVE = "wave_";
+	private final String WAVE = "wave";
+	private final String WAVE_DELIMITER = "_";
 
 	// TODO - move elsewhere
 	private final String PLAYER_ID = "playerId";
@@ -137,13 +137,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 		getLevelInventories().get(getCurrentLevel()).add(elementName);
 	}
 
-	@Override
-	public Map<String, String> getElementProperties(int elementId) throws IllegalArgumentException {
-		GameElement gameElement = getElement(elementId);
-		// TODO - implement (or, more likely, eliminate)
-		return null;
-	}
-
 	private GameElement getElement(int elementId) throws IllegalArgumentException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
@@ -203,7 +196,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void editWaveProperties(int waveId, Map<String, ?> updatedProperties,
 			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) {
 		Map<String, String> stringifiedWaveProperties = getStringifiedWaveProperties(updatedProperties);
-		String waveName = getNameForWaveNumber(waveId);
+		String waveName = getNameForWaveNumber(getCurrentLevel(), waveId);
 		// Overwrite the template
 		defineElement(waveName, stringifiedWaveProperties);
 		deleteOutdatedWave(waveId);
@@ -213,9 +206,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 		getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
 	}
 	
-	public List<Map<String, String>> getWaveProperties(int level) {
-		return getLevelWaves().get(getCurrentLevel()).stream().map(wave -> getElementProperties(getIdFromSprite(wave)))
-				.collect(Collectors.toList());
+	public Map<String, String> getWaveProperties(int level, int waveNum) {
+		return getTemplateProperties(getNameForWaveNumber(level, waveNum));
 	}
 
 	@Override
@@ -280,11 +272,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 	
 	private String getNameForWave() {
-		return getNameForWaveNumber(gameWaveCounter.incrementAndGet());
+		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.incrementAndGet());
 	}
 	
-	private String getNameForWaveNumber(int num) {
-		return WAVE + Integer.toString(num);
+	private String getNameForWaveNumber(int level, int waveNum) {
+		return WAVE + WAVE_DELIMITER + level + WAVE_DELIMITER + Integer.toString(waveNum);
 	}
 
 	public static void main(String[] args) {
