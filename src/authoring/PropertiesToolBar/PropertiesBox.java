@@ -31,6 +31,7 @@ import javafx.scene.shape.Rectangle;
 
 public class PropertiesBox extends VBox {
 	private Map<String, Object> propertiesMap;
+	private Map<String, Class> classMap;
 	private String[] propertyArr;
 	private TableView<Properties> table;
 	private ObservableList<Properties> data;
@@ -46,15 +47,17 @@ public class PropertiesBox extends VBox {
 		currSprite = mySprite;
 		myDroppable = droppable;
 		propertiesMap = propertyMap;
+		classMap = new HashMap<>();
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
 		valuesColumn = new TableColumn<Properties, String>("Values");
 		data = FXCollections.observableArrayList();
-		for (String s : propertiesMap.keySet()) {
-			data.add(new Properties(s, propertiesMap.get(s).toString()));
-			
+		
+		for (String propertyName : propertiesMap.keySet()) {
+			data.add(new Properties(propertyName, propertiesMap.get(propertyName)));
 		}
+		
 		propertiesColumn.setCellValueFactory(
 				new PropertyValueFactory<Properties, String>("myProperty"));
 		valuesColumn.setCellValueFactory(
@@ -97,11 +100,10 @@ public class PropertiesBox extends VBox {
 			        @Override
 			        
 			        public void handle(CellEditEvent<Properties, String> t) {
-			            ((Properties) t.getTableView().getItems().get(
-			                t.getTablePosition().getRow())
-			                ).setMyValue(t.getNewValue());
+			        		if(t.getRowValue().getMyProperty().equals("pathList")) return;
+			            t.getTableView().getItems().get(t.getTablePosition().getRow()).setMyValue(t.getNewValue());
 			            Map<String, Object> newPropertiesMap = new HashMap<>();
-			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getNewValue());
+			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
 			            author.updateElementDefinition(mySprite.getId(), newPropertiesMap, true);
 			        }
 			    }
@@ -110,6 +112,7 @@ public class PropertiesBox extends VBox {
 	
 	public ImageView getCurrSprite() {
 		return currSprite;
+		
 	}
 	
 	private Path launchPathSelection() {

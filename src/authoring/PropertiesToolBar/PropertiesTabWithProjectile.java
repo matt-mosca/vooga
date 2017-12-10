@@ -28,7 +28,7 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 		myController = author;
 		myImageView = imageView;
 		myProperties = properties;
-		
+
 		Label projectileLabel = new Label("Click to\nChoose a\nprojectile");
 		projectileLabel.setLayoutY(90);
 		projectileSlot = new ProjectileSlot(this, imageView);
