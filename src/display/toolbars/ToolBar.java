@@ -29,20 +29,21 @@ public abstract class ToolBar extends VBox{
 	}
 	
 	protected void initializeInventory(AbstractGameModelController controller, TabPane pane) {
-		Map<String, Map<String, String>> templates = controller.getAllDefinedTemplateProperties();
+		Map<String, Map<String, Object>> templates = controller.getAllDefinedTemplateProperties();
 		for(String s:controller.getInventory()) {
 			ImageView imageView;
 			try {
-				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
+				imageView = new ImageView(new Image(templates.get(s).get("imageUrl").toString()));
 				
 			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
+				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s)
+						.get("imageUrl").toString())));
 			}
 			imageView.setFitHeight(70);
 			imageView.setFitWidth(60);
 			imageView.setId(s);
 			imageView.setUserData(templates.get(s).get("imageUrl"));
-			addToToolbar(imageView, templates.get(s).get("tabName"), pane);
+			addToToolbar(imageView, templates.get(s).get("tabName").toString(), pane);
 		}
 	}
 	

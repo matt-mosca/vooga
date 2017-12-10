@@ -153,13 +153,101 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			myController.deleteElementDefinition(imageView.getId());
 			tab.removeItem(imageView);
 		}else {
-			String tabType = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName");
+			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, myController);
+			String tabType =
+					myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName").toString();
 			if (tabType.equals("Towers")) {
 				newPane(imageView, true);
 			}else {
 				newPane(imageView, false);
 			}
 		}
+	}
+	private void newPropertiesPane() {
+		propertiesPane = new Pane();
+		myWaveAdder = new AddToWaveButton(this);
+//		myLevelAdder = new AddToLevelButton(this);
+		deleteButton = new Button("Back");
+	}
+	private void newPaneWithProjectileSlot(ImageView imageView) {
+		/**
+		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
+		 */
+		projectileLabel = new Label("Click to\nChoose a\nprojectile");
+		projectileLabel.setLayoutY(90);
+		projectileSlot = new HBox();
+		projectileSlot.setPrefWidth(50);
+		projectileSlot.setPrefHeight(50);
+		projectileSlot.setLayoutY(170);
+		projectileSlot.setStyle("-fx-background-color: white");
+		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow(clone(imageView)));
+		propertiesPane = new Pane();
+	    myWaveAdder = new AddToWaveButton(this);
+	    myCost = new CostButton(this, imageView);
+	    myLevelAdder = new AddToLevelButton(this);
+		deleteButton = new Button("Back");
+		deleteButton.setLayoutX(370);
+		Label info = new Label("Properties here");
+		info.setLayoutY(100);
+		info.setFont(new Font("Arial", 30));
+		myPropertiesBox.setLayoutX(100);
+		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
+		HBox imageBackground = new HBox();
+		imageBackground.setStyle("-fx-background-color: white");
+		imageBackground.getChildren().add(clone(imageView));
+		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null) {
+			String projectileName = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get
+					("Projectile Type Name").toString();
+			ProjectileImage projectile = new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties
+					().get(projectileName).get("imageUrl").toString());
+			projectile.resize(projectileSlot.getPrefHeight());
+			projectileSlot.getChildren().add(projectile);
+		}
+		propertiesPane.getChildren().add(imageBackground);
+		propertiesPane.getChildren().add(deleteButton);
+		propertiesPane.getChildren().add(myPropertiesBox);
+		propertiesPane.getChildren().add(projectileLabel);
+		propertiesPane.getChildren().add(projectileSlot);
+		propertiesPane.getChildren().add(myWaveAdder);
+		propertiesPane.getChildren().add(myCost);
+		propertiesPane.getChildren().add(myLevelAdder);
+		this.getChildren().removeAll(this.getChildren());
+		this.getChildren().add(propertiesPane);
+		this.getChildren().add(bottomTabPane);
+	}
+	
+	private void newProjectilesWindow(ImageView myTowerImage) {
+		ScrollPane projectilesWindow = new ScrollPane();
+		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
+		if (availableProjectiles.isEmpty()) {
+			Label emptyLabel = new Label("You have no projectiles\nin your inventory");
+			propertiesPane.getChildren().remove(myPropertiesBox);
+			emptyLabel.setLayoutX(100);
+			propertiesPane.getChildren().add(emptyLabel);
+		} else {
+			List<SpriteImage> cloneList = new ArrayList<>();
+			for (SpriteImage s : availableProjectiles) {
+				cloneList.add(s.clone());
+			}
+			ObservableList<SpriteImage> items =FXCollections.observableArrayList(cloneList);
+	        projectilesView.setItems(items);
+	        projectilesView.getSelectionModel();
+	        projectilesWindow.setContent(projectilesView);
+	        projectilesWindow.setLayoutX(100);
+	        projectilesWindow.setPrefHeight(250);
+	        projectilesView.setOnMouseClicked(e->projectileSelected(myTowerImage,
+	        		projectilesView.getSelectionModel().getSelectedItem().clone()));
+        propertiesPane.getChildren().remove(myPropertiesBox);
+        propertiesPane.getChildren().add(projectilesWindow);
+		}
+	}
+	
+	private void projectileSelected(ImageView imageView, ImageView projectile) {
+		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
+		projectileSlot.getChildren().add(projectile);
+		Map<String, Object> newProperties = new HashMap<>();
+		newProperties.put("Projectile Type Name", projectile.getId());
+		myController.updateElementDefinition(imageView.getId(), newProperties, true);
 	}
 
 	private void newPane(ImageView imageView, boolean hasProjectile) {

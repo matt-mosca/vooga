@@ -258,9 +258,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		if (selected) {
 			selected = false;
 			this.getScene().setCursor(Cursor.DEFAULT);
-			if (e.getButton().equals(MouseButton.PRIMARY))
-				clientMessageUtils.addNewSpriteToDisplay(
-						myController.placeElement(placeable.getElementName(), new Point2D(e.getX(), e.getY())));
+			if (e.getButton().equals(MouseButton.PRIMARY)) {
+				Point2D startLocation = new Point2D(e.getX(), e.getY());
+				try {
+					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
+					clientMessageUtils.addNewSpriteToDisplay(newSprite);
+				} catch (ReflectiveOperationException failedToPlaceElementException) {
+					// todo - handle
+				}
+			}
 		}
 	}
 

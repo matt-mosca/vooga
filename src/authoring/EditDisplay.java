@@ -40,6 +40,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
+import networking.protocol.PlayerServer;
+import networking.protocol.PlayerServer.NewSprite;
 import player.PlayDisplay;
 import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
@@ -66,7 +68,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private ThemeChanger myThemeChanger;
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
-	private Map<String, String> basePropertyMap;
+	private Map<String, Object> basePropertyMap;
 	private LevelToolBar myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
@@ -93,7 +95,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		createGridToggle();
 		createMovementToggle();
 		createLabel();
-		basePropertyMap = new HashMap<String, String>();
+		basePropertyMap = new HashMap<>();
 		Button saveButton = new Button("Save");
 		saveButton.setLayoutY(600);
 		rootAdd(saveButton);
@@ -215,9 +217,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	private void updateObjectSize(StaticObject object) {
-		Map<String, String> newProperties = controller.getTemplateProperties(object.getElementName());
-		newProperties.put("imageWidth", Integer.toString(object.getSize()));
-		newProperties.put("imageHeight", Integer.toString(object.getSize()));
+		Map<String, Object> newProperties = controller.getTemplateProperties(object.getElementName());
+		newProperties.put("imageWidth", object.getSize());
+		newProperties.put("imageHeight", object.getSize());
 		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
 
@@ -229,8 +231,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getCellSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
-		newObject.setElementId(clientMessageUtils
-				.addNewSpriteToDisplay(controller.placeElement(newObject.getElementName(), new Point2D(0, 0))));
+		try {
+			NewSprite newSprite = controller.placeElement(newObject.getElementName(), new Point2D(0, 0));
+			newObject.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
+		} catch (ReflectiveOperationException failedToAddObjectException) {
+
+		}
+
 	}
 
 	@Override
@@ -333,7 +340,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void imageSelected(SpriteImage imageView) {
 		imageView.setBaseProperties(basePropertyMap);
-		imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
+		// imageView.createInitialProperties(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap));
 		controller.defineElement(imageView.getId(), imageView.getAllProperties());
 		controller.setUnitCost(imageView.getId(), new HashMap<>());
 		controller.addElementToInventory(imageView.getId());
@@ -351,7 +358,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	@Override
-	public void createTesterLevel(Map<String, String> fun, List<String> sprites) {
+	public void createTesterLevel(Map<String, Object> fun, List<String> sprites) {
 		// TODO - Update this method accordingly to determine the isMultiPlayer param
 		// for PlayDisplay constructor
 		PlayDisplay testingScene = new PlayDisplay(1000, 1000, getStage(), false); // TEMP
@@ -360,7 +367,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
 		getStage().setScene(testingScene.getScene());
 		controller.setGameName("testingGame");
-		controller.setWaveProperties(fun, sprites, new Point2D(100,100));
+		try {
+			controller.setWaveProperties(fun, sprites, new Point2D(100, 100));
+		} catch (ReflectiveOperationException failedToGenerateWaveException) {
+			// todo - handle
+		}
 	}
 
 	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {

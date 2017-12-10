@@ -30,7 +30,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class PropertiesBox extends VBox {
-	private Map<String, String> myPropertiesMap;
+	private Map<String, ?> propertiesMap;
+	private String[] propertyArr;
 	private TableView<Properties> table;
 	private ObservableList<Properties> data;
 	private TableColumn<Properties, String> propertiesColumn;
@@ -49,8 +50,8 @@ public class PropertiesBox extends VBox {
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
 		valuesColumn = new TableColumn<Properties, String>("Values");
 		data = FXCollections.observableArrayList();
-		for (String s : myPropertiesMap.keySet()) {
-			data.add(new Properties(s, myPropertiesMap.get(s)));
+		for (String s : propertiesMap.keySet()) {
+			data.add(new Properties(s, propertiesMap.get(s).toString()));
 			
 		}
 		propertiesColumn.setCellValueFactory(
@@ -98,7 +99,7 @@ public class PropertiesBox extends VBox {
 			            ((Properties) t.getTableView().getItems().get(
 			                t.getTablePosition().getRow())
 			                ).setMyValue(t.getNewValue());
-			            Map<String, String> newPropertiesMap = new HashMap<String, String>();
+			            Map<String, Object> newPropertiesMap = new HashMap<>();
 			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getNewValue());
 			            author.updateElementDefinition(mySprite.getId(), newPropertiesMap, true);
 			        }

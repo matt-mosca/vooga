@@ -154,12 +154,7 @@ public class ElementOptionsGetter {
         }
     }
 
-    public List<String> getConstructorParameterIdentifiers(Class clazz) {
-        if (clazz.getConstructors().length == 0) {
-            return new ArrayList<>();
-        }
-        Constructor constructor = clazz.getConstructors()[0];
-        Parameter[] parameters = constructor.getParameters();
+    public List<String> getConstructorParameterIdentifiers(Parameter[] parameters) {
         // TODO - make sure getParameters() returns them in order
         return Arrays.stream(parameters).map(this::getParameterIdentifier).collect(Collectors.toList());
     }
@@ -202,10 +197,10 @@ public class ElementOptionsGetter {
         return parameterToDescription.get(parameterName);
     }
 
-    public String getChosenSubclassName(Class parameterClass, Map<String, String> properties)
+    public String getChosenSubclassName(Class parameterClass, Map<String, ?> properties)
             throws IllegalArgumentException {
         String parameterClassDescription = translateClassToDescription(parameterClass.getName());
-        String chosenSubclassDescription = properties.get(parameterClassDescription);
+        String chosenSubclassDescription = properties.get(parameterClassDescription).toString();
         return translateDescriptionToClass(chosenSubclassDescription);
     }
 }

@@ -27,6 +27,7 @@ import networking.protocol.PlayerServer.ResourceUpdate;
 import networking.protocol.PlayerServer.ServerMessage;
 import networking.protocol.PlayerServer.StatusUpdate;
 import networking.protocol.PlayerServer.Update;
+import util.io.SerializationUtils;
 
 /**
  * Gateway of player in multi-player game to remote back-end data and logic
@@ -36,7 +37,15 @@ import networking.protocol.PlayerServer.Update;
  * @author radithya
  *
  */
-public class MultiPlayerClient extends AbstractClient implements PlayModelController { // Is this weird?
+public class MultiPlayerClient implements PlayModelController { // Is this weird?
+
+	// get from some properties file
+	private final String SERVER_ADDRESS = "127.0.0.1"; // Change to "152.3.53.39" once uploaded to VM
+	private final int PORT = 9041;
+	private Socket socket;
+	private DataInputStream input;
+	private DataOutputStream outputWriter;
+	private SerializationUtils serializationUtils = new SerializationUtils();
 
 	private Update latestUpdate;
 	private final int PORT = 9042;
@@ -128,6 +137,48 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	@Override
 	public boolean isWon() {
 		return getLatestStatusUpdate().getIsWon();
+	}
+
+	@Override
+	public NewSprite placeElement(String elementName, Point2D startCoordinates) {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setPlaceElement(PlaceElement.newBuilder().setElementName(elementName)
+						.setXCoord(startCoordinates.getX()).setYCoord(startCoordinates.getY()).build())
+				.build().toByteArray());
+		return handlePlaceElementResponse(readServerResponse());
+	}
+
+	@Override
+	public void upgradeElement(int elementId) throws IllegalArgumentException {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setUpgradeElement(UpgradeElement.newBuilder().setSpriteId(elementId).build()).build().toByteArray());
+		// This request doesn't care about response
+	}
+
+	@Override
+	public Map<String, Object> getTemplateProperties(String elementName) throws IllegalArgumentException {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setGetTemplateProperties(GetTemplateProperties.newBuilder().setElementName(elementName).build())
+				.build().toByteArray());
+		Map<String, String> templateSerialization =  handleAllTemplatePropertiesResponse(readServerResponse()).values()
+				.iterator().next();
+		Map<String, Object> template = serializationUtils.deserializeElementTemplate(templateSerialization);
+		return template;
+	}
+
+	@Override
+	public Map<String, Map<String, Object>> getAllDefinedTemplateProperties() {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setGetAllTemplateProperties(GetAllTemplateProperties.getDefaultInstance()).build().toByteArray());
+		Map<String, Map<String, String>> templateSerializations = handleAllTemplatePropertiesResponse(readServerResponse());
+		Map<String, Map<String, Object>> templates = new HashMap<>();
+		// TODO - i'm pretty sure i've done Map<String, Map<String, String>> -> Map<String, Map<String, Object>>
+		// multiple times so we should make a method for it in SUtils
+		for (String templateName : templateSerializations.keySet()) {
+			templates.put(templateName,
+					serializationUtils.deserializeElementTemplate(templateSerializations.get(templateName)));
+		}
+		return templates;
 	}
 
 	@Override
