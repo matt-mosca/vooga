@@ -46,8 +46,9 @@ public class LevelToolBar extends VBox {
 	private LevelsEditDisplay myLevelDisplayer;
 	private Map<Integer, Integer> wavesPerLevel;
 	private Map<String, List<ImageView>> waveToImage;
-	private Map<String, String> myProperties;
+	private Map<String, Object> myProperties;
 	private List<String> elementsToSpawn;
+	private Map<String, Integer> waveToId;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -68,6 +69,7 @@ public class LevelToolBar extends VBox {
 		newLevel = new Button("New Level");
 		Button newWaveButton = new Button("New Wave");
 		wavesPerLevel = new TreeMap<Integer, Integer>();
+		waveToId = new TreeMap<String, Integer>();
 		waveToImage = new TreeMap<String, List<ImageView>>();
 		newLevel.setOnAction(e -> addLevel());
 		newWaveButton.setOnAction(e->newWaveButtonPressed());
@@ -89,8 +91,11 @@ public class LevelToolBar extends VBox {
 		});
 		Button waveButton = new Button("Wave");
 		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-				e->myController.setWaveProperties(myProperties, elementsToSpawn, 
-						new Point2D(100, 100)));
+				e->{ try {
+			myController.setWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
+		} catch (ReflectiveOperationException exc) {
+			//
+		}});
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
@@ -102,7 +107,7 @@ public class LevelToolBar extends VBox {
 	}
 
 	private void createProperties() {
-		myProperties = new TreeMap<String, String>();
+		myProperties = new TreeMap<>();
 		myProperties.put("Collision effects", "Invulnerable to collision damage");
 		myProperties.put("Collided-with effects", "Do nothing to collided objects");
 		myProperties.put("Move an object", "Object will stay at desired location");
@@ -185,6 +190,12 @@ public class LevelToolBar extends VBox {
 	}
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
+		if (waveToId.containsKey(levelAndWave)) {
+//			myController.editWaveProperties(waveToImage.get(levelAndWave), updatedProperties, newElementNamesToSpawn, newSpawningPoint);
+		} else {
+//			waveToId.put(levelAndWave, 
+//					myController.setWaveProperties(waveProperties, elementNamesToSpawn, spawningPoint));
+		}
 		String[] levelWaveArray = levelAndWave.split("\\s+");
 		for (String s : levelWaveArray) {
 			for (int i = 0; i < amount; i++) {

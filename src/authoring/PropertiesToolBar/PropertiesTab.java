@@ -17,7 +17,7 @@ public class PropertiesTab extends Pane{
 	private ImageView myImageView;
 	
 	public PropertiesTab(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView,
-			Map<String, String> propertyMap, AuthoringController controller) {
+			Map<String, Object> propertyMap, AuthoringController controller) {
 		myProperties = properties;
 		myImageView = imageView;
 		myPropertiesBox = new PropertiesBox(display.getDroppable(), myImageView, propertyMap, controller);

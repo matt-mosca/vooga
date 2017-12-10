@@ -48,4 +48,9 @@ public class SerializationTesting {
             assertEquals("Can (de)serialize map property using gson", map.get(key), mapAgain.get(key));
         }
     }
+
+    @Test
+    public void testStringSerialization() {
+
+    }
 }

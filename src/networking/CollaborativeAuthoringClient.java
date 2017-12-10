@@ -7,20 +7,17 @@ import java.util.Map;
 import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.SpriteUpdate;
-import util.path.PathList;
+import util.io.SerializationUtils;
 
 public class CollaborativeAuthoringClient extends AbstractClient implements AuthoringModelController  {
 
 	private final int PORT = 9043;
 	
-	public CollaborativeAuthoringClient() {
-		super();
+	
+	public CollaborativeAuthoringClient(SerializationUtils serializationUtils) {
+		super(serializationUtils);
 	}
-		
-	@Override
-	protected int getPort() {
-		return PORT;
-	}
+
 
 	@Override
 	public void exportGame() {
@@ -28,11 +25,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
+
 	@Override
 	public void setLevel(int level) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void deleteLevel(int level) throws IllegalArgumentException {
@@ -40,11 +39,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
+
 	@Override
 	public Map<String, List<String>> getElementBaseConfigurationOptions() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
@@ -52,25 +53,29 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		return null;
 	}
 
+
 	@Override
-	public void defineElement(String elementName, Map<String, String> properties) throws IllegalArgumentException {
+	public void defineElement(String elementName, Map<String, Object> properties) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		
 	}
 
+
 	@Override
-	public void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, String> upgradeProperties)
+	public void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, Object> upgradeProperties)
 			throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		
 	}
 
+
 	@Override
-	public void updateElementDefinition(String elementName, Map<String, String> propertiesToUpdate, boolean retroactive)
+	public void updateElementDefinition(String elementName, Map<String, Object> propertiesToUpdate, boolean retroactive)
 			throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void deleteElementDefinition(String elementName) throws IllegalArgumentException {
@@ -78,11 +83,6 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
-	@Override
-	public int placePathFollowingElement(String elementName, PathList pathList) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public void addElementToInventory(String elementName) {
@@ -90,11 +90,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
+
 	@Override
 	public int getCurrentLevel() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 
 	@Override
 	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate) {
@@ -102,11 +104,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		return null;
 	}
 
+
 	@Override
-	public void updateElementProperties(int elementId, Map<String, String> propertiesToUpdate) {
+	public void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void deleteElement(int elementId) {
@@ -114,11 +118,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
+
 	@Override
-	public Map<String, List<Map<String, String>>> getAllDefinedElementUpgrades() {
+	public Map<String, List<Map<String, Object>>> getAllDefinedElementUpgrades() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 	@Override
 	public Map<String, Double> getResourceEndowments() {
@@ -126,11 +132,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		return null;
 	}
 
+
 	@Override
 	public void setGameName(String gameName) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void setGameDescription(String gameDescription) {
@@ -138,11 +146,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
+
 	@Override
 	public void setVictoryCondition(String conditionIdentifier) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void setDefeatCondition(String conditionIdentifier) {
@@ -150,11 +160,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
+
 	@Override
 	public void setStatusProperty(String property, Double value) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
@@ -162,11 +174,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
+
 	@Override
 	public void setResourceEndowment(String resourceName, double newResourceEndowment) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
@@ -174,19 +188,22 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		
 	}
 
+
 	@Override
-	public int setWaveProperties(Map<String, ? extends Object> waveProperties, Collection<String> elementNamesToSpawn,
-			Point2D spawningPoint) {
+	public int setWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
+			Point2D spawningPoint) throws ReflectiveOperationException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+
 	@Override
-	public void editWaveProperties(int waveId, Map<String, ? extends Object> updatedProperties,
-			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) {
+	public void editWaveProperties(int waveId, Map<String, Object> updatedProperties,
+			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public Collection<String> getPossibleVictoryConditions() {
@@ -194,10 +211,17 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		return null;
 	}
 
+
 	@Override
 	public Collection<String> getPossibleDefeatConditions() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	protected int getPort() {
+		return PORT;
 	}
 
 }

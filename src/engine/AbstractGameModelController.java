@@ -37,19 +37,26 @@ public interface AbstractGameModelController {
 	 * @throws IOException
 	 *             if the save name does not refer to existing files
 	 */
-	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException;
+	LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException;
 
-	public Map<String, String> getTemplateProperties(String elementName) throws IllegalArgumentException;
+	Map<String, Object> getTemplateProperties(String elementName) throws IllegalArgumentException;
 
-	public Map<String, Map<String, String>> getAllDefinedTemplateProperties();
+	Map<String, Map<String, Object>> getAllDefinedTemplateProperties();
 
-	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates);
+	/**
+	 * Place a game element into the game area.
+	 *
+	 * @param elementTemplateName the name of the element template to use for the instance being places
+	 * @param startCoordinates    the desired starting location of the element
+	 * @return a message containing the necessary information for the frontend to keep track of the element
+	 */
+	NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) throws ReflectiveOperationException;
 
-	public int getNumLevelsForGame(String gameName, boolean forOriginalGame);
+	int getNumLevelsForGame(String gameName, boolean forOriginalGame);
 	
-	public int getCurrentLevel();
+	int getCurrentLevel();
 	
-	public Set<String> getInventory();
+	Set<String> getInventory();
 
 	/**
 	 * Get resources left for current level
@@ -57,11 +64,11 @@ public interface AbstractGameModelController {
 	 * @deprecated
 	 * @return map of resource name to quantity left
 	 */
-	public Map<String, Double> getStatus();
+	Map<String, Double> getStatus();
 
-	public Map<String, Double> getResourceEndowments();
+	Map<String, Double> getResourceEndowments();
 
-	public Map<String, Map<String, Double>> getElementCosts();
+	Map<String, Map<String, Double>> getElementCosts();
 	
 	/**
 	 * Get the elements of a game (represented as sprites) for a particular level.
@@ -76,12 +83,11 @@ public interface AbstractGameModelController {
 	 */
 	Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException;
 
-
 	/**
 	 * Fetch all available game names and their corresponding descriptions
 	 * 
 	 * @return map where keys are game names and values are game descriptions
 	 */
-	public Map<String, String> getAvailableGames() throws IllegalStateException;
+	Map<String, String> getAvailableGames() throws IllegalStateException;
 
 }
