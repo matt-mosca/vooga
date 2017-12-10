@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 import authoring.EditDisplay;
+import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -51,6 +53,8 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 	private NewGameButton myNewGameButton;
 	private EditGameButton myEditGameButton;
 	private PlayExistingGameButton myLoadGameButton;
+	private MediaPlayerFactory mediaPlayerFactory;
+	private MediaPlayer mediaPlayer;
 
 
 	public SplashPlayScreen(int width, int height, Paint background, Stage currentStage) {
@@ -65,6 +69,9 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 		myLoadGameButton = new PlayExistingGameButton(this);
 		myLoadGameButton.setText(PLAY + gameName);
 		rootAdd(myLoadGameButton);
+		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/101 - opening.mp3");
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaPlayer.play();
 	}
 
 	private String getGameName() {
@@ -195,6 +202,7 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
 		getStage().setScene(myScene.getScene());
+		mediaPlayer.stop();
 	}
 
 	@Override
