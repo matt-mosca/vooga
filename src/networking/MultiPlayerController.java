@@ -13,6 +13,7 @@ import engine.play_engine.PlayController;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerClient.GetNumberOfLevels;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.LoadLevel;
 import networking.protocol.PlayerClient.PlaceElement;
@@ -23,6 +24,7 @@ import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.GameRooms;
 import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NumberOfLevels;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ReadyForNextLevel;
 import networking.protocol.PlayerServer.ServerMessage;
@@ -303,7 +305,19 @@ class MultiPlayerController {
 			// TODO - Handle case where client tries to load level without belonging to a
 			// game room?
 			serverMessageBuilder.addAllLevelSprites(clientIdsToPlayEngines.get(clientId)
-					.packageLevelElements(clientMessage.getGetLevelElements().getLevel()));
+					.getLevelSprites(clientMessage.getGetLevelElements().getLevel()));
+		}
+	}
+
+	void getNumberOfLevels(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetNumLevels()) {
+			GetNumberOfLevels getNumLevelsRequest = clientMessage.getGetNumLevels();
+			serverMessageBuilder
+					.setNumLevels(
+							NumberOfLevels.newBuilder()
+									.setNumLevels(clientIdsToPlayEngines.get(clientId).getNumLevelsForGame(
+											getNumLevelsRequest.getGameName(), getNumLevelsRequest.getOriginalGame()))
+									.build());
 		}
 	}
 
@@ -359,6 +373,8 @@ class MultiPlayerController {
 			loadLevel(clientId, clientMessage, serverMessageBuilder);
 			// Get level elements
 			getLevelElements(clientId, clientMessage, serverMessageBuilder);
+			// Get number of levels
+			getNumberOfLevels(clientId, clientMessage, serverMessageBuilder);
 			return serverMessageBuilder.build().toByteArray();
 		} catch (IOException e) {
 			e.printStackTrace(); // TEMP

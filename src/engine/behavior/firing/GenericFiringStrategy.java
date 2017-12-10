@@ -12,12 +12,13 @@ import engine.behavior.ElementProperty;
 public abstract class GenericFiringStrategy implements FiringStrategy {
 
 	private String projectileTemplate;
-	private String audioURI;
+	private String audioUrl;
 
 	public GenericFiringStrategy(
-			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate) {
+			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate,
+			@ElementProperty(value = "firingAudioUrl", isTemplateProperty = true) String audioUrl) {
 		this.projectileTemplate = projectileTemplate;
-		this.audioURI = audioURI;
+		this.audioUrl = audioUrl;
 	}
 
 	@Override
@@ -30,8 +31,8 @@ public abstract class GenericFiringStrategy implements FiringStrategy {
 		return false;
 	}
 	
-
-	public String getAudioURI() {
-		return audioURI;
+	@Override
+	public String getAudioUrl() {
+		return audioUrl;
 	}
 }
