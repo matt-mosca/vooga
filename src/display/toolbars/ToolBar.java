@@ -30,7 +30,6 @@ public abstract class ToolBar extends VBox{
 	
 	protected void initializeInventory(AbstractGameModelController controller, TabPane pane) {
 		Map<String, Map<String, String>> templates = controller.getAllDefinedTemplateProperties();
-		System.out.println(templates);
 		for(String s:controller.getInventory()) {
 			ImageView imageView;
 			try {

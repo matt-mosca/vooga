@@ -150,7 +150,6 @@ public class LevelToolBar extends VBox {
 
 	public void addToLevel(ImageView newSprite, int level) {
 		mySprites.get(level - 1).add(newSprite);
-		System.out.println(mySprites.toString());
 		updateSpriteDisplay(currentDisplay);
 	}
 

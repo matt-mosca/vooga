@@ -359,7 +359,6 @@ public class SerializationUtils {
 		if (!serializedLevelData.containsKey(levelString)) {
 			throw new IllegalArgumentException();
 		}
-		System.out.println(serializedGameData);
 		String[] serializedSections = serializedLevelData.get(levelString).split(DELIMITER);
 		if (serializedSections.length < NUM_SERIALIZATION_SECTIONS) {
 			throw new IllegalArgumentException();
@@ -367,46 +366,4 @@ public class SerializationUtils {
 		System.out.println(Arrays.asList(serializedSections));
 		return serializedSections;
 	}
-
-	// For testing
-	public static void main(String[] args) {
-		SerializationUtils tester = new SerializationUtils();
-		String testDescription = "test_game";
-		int testLevel = 1;
-		Map<String, String> testStatus = new HashMap<>();
-		testStatus.put("lives", "3");
-		testStatus.put("gold", "100");
-
-		GameElementFactory factory = new GameElementFactory();
-
-		Map<String, Object> towerMap = new HashMap<>();
-		towerMap.put("collisionVisitable", new DamageDealingCollisionVisitable(1.0));
-		towerMap.put("collisionVisitor", new ImmortalCollider(1));
-		// TODO - don't serialize sprites; cache their properties and reconstruct using
-		// spriteFactory
-		// since the sprite serialization is causing StackOverflowError
-		// how to handle coordinates though?
-
-		/*
-		 * GameElement testTower = factory.defineElement("testTower", towerMap); GameElement
-		 * testTower2 = factory.defineElement("testTower2", towerMap); GameElement testTower3
-		 * = factory.defineElement("testTower"); GameElement testSoldier =
-		 * factory.defineElement("testSoldier", soldierMap); GameElement testSoldier2 =
-		 * factory.defineElement("testSoldier2", soldierMap); GameElement testSoldier3 =
-		 * factory.defineElement("testSoldier"); List<GameElement> levelSprites =
-		 * Arrays.asList(testTower, testTower2, testTower3, testSoldier, testSoldier2,
-		 * testSoldier3); String serializedGameData =
-		 * tester.serializeGameData(testDescription, testLevel, testStatus,
-		 * levelSprites); System.out.println("Serialized sprites: " +
-		 * serializedGameData); System.out.println("Game Description: " +
-		 * tester.deserializeGameDescription(serializedGameData, testLevel));
-		 * Map<String, String> deserializedStatus =
-		 * tester.deserializeGameStatus(serializedGameData, testLevel); List<GameElement>
-		 * deserializedSprites = tester.deserializeGameSprites(serializedGameData,
-		 * testLevel); for (String statusKey : deserializedStatus.keySet()) {
-		 * System.out.println(statusKey + " : " + deserializedStatus.get(statusKey)); }
-		 * for (GameElement sprite : deserializedSprites) { System.out.println(sprite); }
-		 */
-	}
-
 }
