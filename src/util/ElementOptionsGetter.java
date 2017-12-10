@@ -186,17 +186,16 @@ public class ElementOptionsGetter {
             }
             auxiliaryParameters.putAll(spriteMemberParametersMap.get(subclassChoiceName));
         }
-        System.out.println(auxiliaryParameters);
         auxiliaryParameters.putAll(spriteMemberParametersMap.getOrDefault(SPRITE_BASE_PARAMETER_NAME, new HashMap<>()));
         return auxiliaryParameters;
     }
 
     private String translateDescriptionToClass(String description) {
-        return descriptionToClass.get(description);
+        return descriptionToClass.getOrDefault(description, description);
     }
 
     private String translateClassToDescription(String className) {
-        return classToDescription.get(className);
+        return classToDescription.getOrDefault(className, className);
     }
 
     public String translateParameterToDescription(String parameterName) {
@@ -206,12 +205,7 @@ public class ElementOptionsGetter {
     public String getChosenSubclassName(Class parameterClass, Map<String, String> properties)
             throws IllegalArgumentException {
         String parameterClassDescription = translateClassToDescription(parameterClass.getName());
-        String chosenSubclassDescription;
-        if (parameterClassDescription == null ||
-                (chosenSubclassDescription = properties.get(parameterClassDescription)) == null) {
-            throw new IllegalArgumentException();
-            // TODO - custom exception
-        }
+        String chosenSubclassDescription = properties.get(parameterClassDescription);
         return translateDescriptionToClass(chosenSubclassDescription);
     }
 }

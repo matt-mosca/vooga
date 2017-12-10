@@ -3,6 +3,7 @@ package authoring.LevelToolBar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import authoring.EditDisplay;
 import authoring.GameArea;
@@ -120,7 +121,7 @@ public class LevelToolBar extends VBox {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for (Integer id : myController.getLevelSprites(level)) {
+		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
 			savedObject.setImageView(imageView);
@@ -150,7 +151,6 @@ public class LevelToolBar extends VBox {
 
 	public void addToLevel(ImageView newSprite, int level) {
 		mySprites.get(level - 1).add(newSprite);
-		System.out.println(mySprites.toString());
 		updateSpriteDisplay(currentDisplay);
 	}
 

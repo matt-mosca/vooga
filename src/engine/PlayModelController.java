@@ -181,5 +181,5 @@ public interface PlayModelController extends AbstractGameModelController {
 	 * @throws IllegalArgumentException
 	 *             if there is no corresponding level in the current game
 	 */
-	Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException;
+	Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException;
 }

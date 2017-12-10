@@ -359,7 +359,6 @@ public class SerializationUtils {
 		if (!serializedLevelData.containsKey(levelString)) {
 			throw new IllegalArgumentException();
 		}
-		System.out.println(serializedGameData);
 		String[] serializedSections = serializedLevelData.get(levelString).split(DELIMITER);
 		if (serializedSections.length < NUM_SERIALIZATION_SECTIONS) {
 			throw new IllegalArgumentException();

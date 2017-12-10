@@ -58,10 +58,6 @@ public class Bank {
 	}
 
 	public Map<String, Map<String, Double>> getUnitCosts() {
-		System.out.println("Unit costs: ");
-		for (String unit : unitCosts.keySet()) {
-			System.out.println("unit: " + unit);
-		}
 		return unitCosts;
 	}
 	

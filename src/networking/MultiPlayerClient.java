@@ -16,7 +16,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import engine.PlayModelController;
 import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
 import networking.protocol.PlayerClient.CheckReadyForNextLevel;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
@@ -26,6 +25,7 @@ import networking.protocol.PlayerClient.GetElementCosts;
 import networking.protocol.PlayerClient.GetGameRooms;
 import networking.protocol.PlayerClient.GetInventory;
 import networking.protocol.PlayerClient.GetLevelElements;
+import networking.protocol.PlayerClient.GetNumberOfLevels;
 import networking.protocol.PlayerClient.GetPlayerNames;
 import networking.protocol.PlayerClient.GetTemplateProperties;
 import networking.protocol.PlayerClient.JoinRoom;
@@ -121,7 +121,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		throw new UnsupportedOperationException();
 	}
 
-	// TODO - Will be modified in interface to return LevelInitialized message
 	@Override
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
 		writeRequestBytes(ClientMessage.newBuilder()
@@ -211,18 +210,19 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		return handleAllTemplatePropertiesResponse(readServerResponse());
 	}
 
-	// TODO - Need to wrap this within LevelInitialized method
-	@Override 
+	@Override
 	public int getCurrentLevel() {
-		return 1;//TEMP
+		return getLatestStatusUpdate().getCurrentLevel();
 	}
-	
-	// TODO - Need to wrap / implement
+
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean originalGame) {
-		return 1;// TEMP
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setGetNumLevels(GetNumberOfLevels.newBuilder().setGameName(gameName).setOriginalGame(originalGame))
+				.build().toByteArray());
+		return handleNumLevelsForGameResponse(readServerResponse());
 	}
-	
+
 	@Override
 	public Set<String> getInventory() {
 		writeRequestBytes(
@@ -254,16 +254,11 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		return handleElementCostsResponse(readServerResponse());
 	}
 
-	// TODO - Will be modified in interface to return Collection<NewSprite>
-	// (NewSprite is a message type)
 	@Override
-	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
+	public Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetLevelElements(GetLevelElements.newBuilder().setLevel(level).build()).build().toByteArray());
-		// Replace following line by the commented one after when front end is ready
-		return handleLevelSpritesResponse(readServerResponse()).stream().map(newSprite -> newSprite.getSpriteId())
-				.collect(Collectors.toList());
-		// return handleLevelSpritesResponse(readServerResponse());
+		return handleLevelSpritesResponse(readServerResponse());
 	}
 
 	private Map<String, String> handleAvailableGamesResponse(ServerMessage serverMessage) {
@@ -272,7 +267,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			Games availableGames = serverMessage.getAvailableGames();
 			availableGames.getGamesList().forEach(game -> {
 				availableGamesMap.put(game.getName(), game.getDescription());
-				System.out.println("Game name: " + game.getName() + "; Game Description: " + game.getDescription());
 			});
 		}
 		return availableGamesMap;
@@ -284,10 +278,8 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			GameRoomCreationStatus gameRoomCreationStatus = serverMessage.getGameRoomCreationStatus();
 			if (!gameRoomCreationStatus.hasError()) {
 				gameRoomId = gameRoomCreationStatus.getRoomId();
-				System.out.println("Setting gameRoomId to " + gameRoomId);
 			} else {
 				// TODO - throw exception to be handled by front end?
-				System.out.println("Error creating game room: " + gameRoomCreationStatus.getError());
 				throw new IllegalArgumentException(gameRoomCreationStatus.getError());
 			}
 		}
@@ -299,7 +291,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			GameRoomJoinStatus gameRoomJoinStatus = serverMessage.getGameRoomJoinStatus();
 			if (gameRoomJoinStatus.hasError()) {
 				// TODO - throw exception to be handled by front end?
-				System.out.println("Error joining game room: " + gameRoomJoinStatus.getError());
 				throw new IllegalArgumentException(gameRoomJoinStatus.getError());
 			}
 		}
@@ -310,7 +301,6 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 			GameRoomLaunchStatus gameRoomLaunchStatus = serverMessage.getGameRoomLaunchStatus();
 			if (gameRoomLaunchStatus.hasError()) {
 				// TODO - throw exception to be handled by front end?
-				System.out.println("Error initializing level: " + gameRoomLaunchStatus.getError());
 				throw new IllegalArgumentException(gameRoomLaunchStatus.getError());
 			}
 			return gameRoomLaunchStatus.getInitialState();
@@ -402,6 +392,13 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 
 	private Collection<NewSprite> handleLevelSpritesResponse(ServerMessage serverMessage) {
 		return serverMessage.getLevelSpritesList();
+	}
+
+	private int handleNumLevelsForGameResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasNumLevels()) {
+			return serverMessage.getNumLevels().getNumLevels();
+		}
+		return 0;
 	}
 
 	private Update getUpdate(ServerMessage serverMessage) {

@@ -7,15 +7,12 @@ import util.ElementOptionsGetter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.
- * <p>
- * TODO - change the way the aux map is handled (use the param annotation) ?
  *
  * @author Ben Schwennesen
  */
@@ -104,42 +101,56 @@ public final class GameElementFactory {
 
     private Object generateSpriteParameter(Class parameterClass, Map<String, String> properties,
                                            Map<String, ?> auxiliaryObjects) throws ReflectiveOperationException {
-        try {
-            String chosenSubclassName = elementOptionsGetter.getChosenSubclassName(parameterClass, properties);
-            Class chosenParameterSubclass = Class.forName(chosenSubclassName);
-            List<String> constructorParameterIdentifiers = elementOptionsGetter
-                    .getConstructorParameterIdentifiers(chosenParameterSubclass);
-            Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
-                    constructorParameterIdentifiers);
-            System.out.println(parameterClass.getName());
-            return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
-        } catch (IllegalArgumentException illegalArgumentException) {
-            // Case where constructor has the main objects encapsulated (i.e.,
-            // MovementHandler and CollisionHandler)
-            // or where constructor has aux parameter encapsulated (but not bottom level
-            // behavior object)
-            Constructor[] parameterClassConstructors = parameterClass.getConstructors();
-            if (parameterClassConstructors.length > 0) {
-                Parameter[] parameters = parameterClassConstructors[0].getParameters();
-                Object[] constructorParameters = new Object[parameters.length];
-                for (int i = 0; i < parameters.length; i++) {
-                    ElementProperty parameterNameAnnotation = parameters[i].getAnnotation(ElementProperty.class);
-                    if (parameterNameAnnotation != null) {
-                        if (parameterNameAnnotation.isTemplateProperty()) {
-                            constructorParameters[i] = setConstructorParameter(
-                                    properties.get(parameterNameAnnotation.value()));
-                        } else {
-                            constructorParameters[i] = auxiliaryObjects.get(parameterNameAnnotation.value());
-                        }
-                    } else {
-                        constructorParameters[i] = generateSpriteParameter(parameters[i].getType(), properties,
-                                auxiliaryObjects);
-                    }
+        String chosenSubclassName = elementOptionsGetter.getChosenSubclassName(parameterClass, properties);
+        if (chosenSubclassName != null) {
+            return generateBehaviorObject(properties, auxiliaryObjects, chosenSubclassName);
+        } else {
+            // Case where constructor has the main objects encapsulated (i.e., MovementHandler and CollisionHandler)
+            // or where constructor has aux parameter encapsulated (but not bottom level behavior object)
+            return generateBehaviorObjectWrapper(parameterClass, properties, auxiliaryObjects);
+        }
+    }
+
+    private Object generateBehaviorObject(Map<String, String> properties, Map<String, ?> auxiliaryObjects, String chosenSubclassName) throws ReflectiveOperationException {
+        Class chosenParameterSubclass = Class.forName(chosenSubclassName);
+        List<String> constructorParameterIdentifiers = elementOptionsGetter
+                .getConstructorParameterIdentifiers(chosenParameterSubclass);
+        Object[] constructorParameters = getParameterConstructorArguments(properties, auxiliaryObjects,
+                constructorParameterIdentifiers);
+        return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
+    }
+
+    private Object generateBehaviorObjectWrapper(Class parameterClass, Map<String, String> properties,
+                                                 Map<String, ?> auxiliaryObjects) throws ReflectiveOperationException {
+        Constructor[] parameterClassConstructors = parameterClass.getConstructors();
+        if (parameterClassConstructors.length > 0) {
+            Parameter[] parameters = parameterClassConstructors[0].getParameters();
+            Object[] constructorParameters = new Object[parameters.length];
+            for (int i = 0; i < parameters.length; i++) {
+                ElementProperty propertyParameterName = parameters[i].getAnnotation(ElementProperty.class);
+                if (propertyParameterName != null) {
+                    constructorParameters[i] =
+                            supplyElementArgument(properties, auxiliaryObjects, propertyParameterName);
+                } else {
+                    // nested behavior object
+                    Class subparameterClass = parameters[i].getType();
+                    constructorParameters[i] = generateSpriteParameter(subparameterClass, properties, auxiliaryObjects);
                 }
-                return parameterClass.getConstructors()[0].newInstance(constructorParameters);
-            } else {
-                return null;
             }
+            return parameterClass.getConstructors()[0].newInstance(constructorParameters);
+        } else {
+            // TODO - exception here
+            return null;
+        }
+    }
+
+    private Object supplyElementArgument(Map<String, String> properties, Map<String, ?> auxiliaryObjects,
+                                        ElementProperty propertyParameterName) {
+        if (propertyParameterName.isTemplateProperty()) {
+            String propertyArgument = properties.get(propertyParameterName.value());
+            return setConstructorParameter(propertyArgument);
+        } else {
+            return auxiliaryObjects.get(propertyParameterName.value());
         }
     }
 
@@ -149,6 +160,7 @@ public final class GameElementFactory {
         for (int i = 0; i < constructorParameters.length; i++) {
             String parameterIdentifier = constructorParameterIdentifiers.get(i);
             String parameterDescription = elementOptionsGetter.translateParameterToDescription(parameterIdentifier);
+            // TODO - this should change now that everything should be a part of the map
             if (!properties.containsKey(parameterDescription)) {
                 constructorParameters[i] = auxiliaryObjects.get(parameterIdentifier);
                 // TODO - throw exception if aux objects doesn't contain key

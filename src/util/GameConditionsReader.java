@@ -27,7 +27,6 @@ public class GameConditionsReader {
 			DEFEAT_CONDITIONS_PROPERTIES.load(defeatConditionsPropertiesStream);
 
 		} catch (IOException e) {
-			System.out.println("Couldn't load");
 		}
 	}
 
