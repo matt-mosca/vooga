@@ -137,10 +137,7 @@ public class ElementManager {
 
 	private void handleElementFiring(GameElement element) {
 		Point2D nearestTargetLocation;
-		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
-		exclusionOfSelf.remove(element);
-		GameElement nearestEnemyElement = spriteQueryHandler.getNearestEnemy(
-				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+		GameElement nearestEnemyElement = getNearestEnemyElement(element);
 		if(nearestEnemyElement == null) {
 			nearestTargetLocation = new Point2D(0,0);
 		} else {
@@ -148,7 +145,7 @@ public class ElementManager {
 		}
 		//@ TODO Fix should fire to take in nearest point
 		String elementTemplateName;
-		if (element.shouldFire() && (elementTemplateName = element.fire()) != null) {
+		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) && (elementTemplateName = element.fire()) != null) {
 			playAudio(element.getFiringAudio());
 			System.out.println(elementTemplateName);
 			// Use player id of firing element rather than projectile? This allows greater
@@ -160,6 +157,14 @@ public class ElementManager {
 			newElements.add(projectileGameElement);
 		}
 
+	}
+	
+	private GameElement getNearestEnemyElement(GameElement element) {
+		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
+		exclusionOfSelf.remove(element);
+		return spriteQueryHandler.getNearestEnemy(
+				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+		
 	}
 	
 	private void playAudio(String audioUrl) {

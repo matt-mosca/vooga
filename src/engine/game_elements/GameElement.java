@@ -49,8 +49,8 @@ public final class GameElement {
 		collisionHandler.getGraphicalRepresentation().setY(newLocation.getY());
 	}
 
-	public boolean shouldFire() {
-		return firingStrategy.shouldFire();
+	public boolean shouldFire(double distanceToTarget) {
+		return firingStrategy.shouldFire(distanceToTarget);
 	}
 
 	public String fire() {
