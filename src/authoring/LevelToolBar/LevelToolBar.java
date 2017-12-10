@@ -48,6 +48,7 @@ public class LevelToolBar extends VBox {
 	private Map<String, List<ImageView>> waveToImage;
 	private Map<String, Object> myProperties;
 	private List<String> elementsToSpawn;
+	private Map<String, Integer> waveToId;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -68,6 +69,7 @@ public class LevelToolBar extends VBox {
 		newLevel = new Button("New Level");
 		Button newWaveButton = new Button("New Wave");
 		wavesPerLevel = new TreeMap<Integer, Integer>();
+		waveToId = new TreeMap<String, Integer>();
 		waveToImage = new TreeMap<String, List<ImageView>>();
 		newLevel.setOnAction(e -> addLevel());
 		newWaveButton.setOnAction(e->newWaveButtonPressed());
@@ -188,6 +190,12 @@ public class LevelToolBar extends VBox {
 	}
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
+		if (waveToId.containsKey(levelAndWave)) {
+//			myController.editWaveProperties(waveToImage.get(levelAndWave), updatedProperties, newElementNamesToSpawn, newSpawningPoint);
+		} else {
+//			waveToId.put(levelAndWave, 
+//					myController.setWaveProperties(waveProperties, elementNamesToSpawn, spawningPoint));
+		}
 		String[] levelWaveArray = levelAndWave.split("\\s+");
 		for (String s : levelWaveArray) {
 			for (int i = 0; i < amount; i++) {
