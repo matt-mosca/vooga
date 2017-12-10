@@ -33,15 +33,17 @@ public class SerializationUtils {
 	public static final String STATUS = "status";
 	public static final String SPRITES = "gameElements";
 	public static final String INVENTORY = "inventory";
+	public static final String WAVE = "wave";
 	public static final String DELIMITER = "\n";
 	// Description, Status, Sprites
-	public static final int NUM_SERIALIZATION_SECTIONS = 6;
+	public static final int NUM_SERIALIZATION_SECTIONS = 7;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
 	public static final int CONDITIONS_SERIALIZATION_INDEX = 1;
 	public static final int BANK_SERIALIZATION_INDEX = 2;
 	public static final int STATUS_SERIALIZATION_INDEX = 3;
 	public static final int SPRITES_SERIALIZATION_INDEX = 4;
 	public static final int INVENTORY_SERIALIZATION_INDEX = 5;
+	public static final int WAVE_SERIALIZATION_INDEX = 6;
 	private GsonBuilder gsonBuilder;
 
 	public SerializationUtils() {
@@ -74,13 +76,15 @@ public class SerializationUtils {
 	 *            other than the Sprites
 	 * @param levelGameElements
 	 *            the cache of generated sprites for a level
+	 * @param levelGameWaves
+	 * 			the waves for this level
 	 * @return serialization of map of level to serialized level data
 	 */
 	public String serializeGameData(String gameDescription, Map<String, String> gameConditions, Bank gameBank,
-									int level, Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories) {
+									int level, Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories, List<GameElement> levelWaves) {
 		Map<String, String> serializedLevelData = new HashMap<>();
 		serializedLevelData.put(Integer.toString(level),
-				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelGameElements, levelInventories, level));
+				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelGameElements, levelInventories, levelWaves, level));
 		return gsonBuilder.create().toJson(serializedLevelData);
 	}
 
@@ -119,7 +123,7 @@ public class SerializationUtils {
 	 * @return serialization of level data
 	 */
 	public String serializeLevelData(String gameDescription, Map<String, String> levelConditions, Bank bank,
-									 Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories, int level) {
+									 Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories, List<GameElement> levelWaves, int level) {
 		StringBuilder gameDataStringBuilder = new StringBuilder();
 		gameDataStringBuilder.append(serializeGameDescription(gameDescription));
 		gameDataStringBuilder.append(DELIMITER);
@@ -132,6 +136,8 @@ public class SerializationUtils {
 		gameDataStringBuilder.append(serializeSprites(levelGameElements, level));
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeInventories(levelInventories, level));
+		gameDataStringBuilder.append(DELIMITER);
+		gameDataStringBuilder.append(serializeWaves(levelWaves, level));
 		return gameDataStringBuilder.toString();
 		
 	}
@@ -228,6 +234,11 @@ public class SerializationUtils {
 		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
 		return deserializeInventories(serializedSections[INVENTORY_SERIALIZATION_INDEX]);
 	}
+	
+	public List<GameElement> deserializeGameWaves(String serializedGameData, int level) throws IllegalArgumentException {
+		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
+		return deserializeWaves(serializedSections[WAVE_SERIALIZATION_INDEX]);
+	}
 
 	/**
 	 * The number of levels that exist in this game currently, as set by the
@@ -244,6 +255,13 @@ public class SerializationUtils {
 	public int getNumLevelsFromSerializedGame(String serializedGameData) throws IllegalArgumentException {
 		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(serializedGameData, Map.class);
 		return serializedLevelData.keySet().size();
+	}
+	
+	public Map<String, String> serializeWaveProperties(Map<String, ?> waveProperties) {
+		Map<String, String> stringifiedWaveProperties = new HashMap<>();
+		waveProperties.entrySet().forEach(
+				entry -> stringifiedWaveProperties.put(entry.getKey(), gsonBuilder.create().toJson(entry.getValue())));
+		return stringifiedWaveProperties;
 	}
 
 	private String serializeGameDescription(String gameDescription) {
@@ -281,6 +299,12 @@ public class SerializationUtils {
 		Map<String, Set<String>> inventoriesMap = new HashMap<>();
 		inventoriesMap.put(INVENTORY, levelInventories);
 		return gsonBuilder.create().toJson(inventoriesMap);
+	}
+	
+	private String serializeWaves(List<GameElement> levelWaves, int level) {
+		Map<String, List<GameElement>> wavesMap = new HashMap<>();
+		wavesMap.put(WAVE, levelWaves);
+		return gsonBuilder.create().toJson(wavesMap);
 	}
 
 	private String deserializeDescription(String serializedDescription) {
@@ -321,6 +345,12 @@ public class SerializationUtils {
 		return inventoriesMap != null ? inventoriesMap.get(INVENTORY) : new HashSet<>();
 	}
 
+	private List<GameElement> deserializeWaves(String serializedWaves) {
+		Type mapType = new TypeToken<Map<String, List<GameElement>>>(){}.getType();
+		Map<String, List<GameElement>> wavesMap = gsonBuilder.create().fromJson(serializedWaves, mapType);
+		return wavesMap != null ? wavesMap.get(WAVE) : new ArrayList<>();
+	}
+	
 	private String[] retrieveSerializedSectionsForLevel(String serializedGameData, int level)
 			throws IllegalArgumentException {
 		Map<String, String> serializedLevelData = gsonBuilder.create().fromJson(new JsonReader(new

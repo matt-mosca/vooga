@@ -217,6 +217,12 @@ public class MultiPlayerClient implements PlayModelController { // Is this weird
 		return 1;//TEMP
 	}
 	
+	// TODO - Need to wrap / implement
+	@Override
+	public int getNumLevelsForGame(String gameName, boolean originalGame) {
+		return 1;// TEMP
+	}
+	
 	@Override
 	public Set<String> getInventory() {
 		writeRequestBytes(

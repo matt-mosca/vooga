@@ -38,6 +38,7 @@ public class LevelToolBar extends VBox {
 	private WavesDisplay currWavesDisplay;
 	private SpriteDisplayer mySpriteDisplay;
 	private WavesDisplay myWavesDisplay;
+	private LevelsEditDisplay myLevelDisplayer;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -70,7 +71,8 @@ public class LevelToolBar extends VBox {
 		editLevel = new Button("Edit Level");
 		// Need to put the button somewhere first.
 		editLevel.setOnAction(e -> {
-			myLevels.get(currentDisplay - 1).openLevelDisplay();
+//			myLevels.get(currentDisplay - 1).openLevelDisplay();
+			openLevelDisplay();
 			// edited = true;
 			// this.update();
 		});
@@ -81,11 +83,17 @@ public class LevelToolBar extends VBox {
 		created.setGameArea(myGameAreas.get(0));
 	}
 
+
 	private void addNewLevel() {
 		List<ImageView> oneWave = new ArrayList<ImageView>();
 		List<List<ImageView>> multipleWaves = new ArrayList<List<ImageView>>();
 		multipleWaves.add(oneWave);
 		mySpriteList.add(multipleWaves);
+	}
+
+	private void openLevelDisplay() {
+		myLevelDisplayer = new LevelsEditDisplay(myController, myCreated);
+		myLevelDisplayer.open();
 	}
 
 	private void loadLevels() {
