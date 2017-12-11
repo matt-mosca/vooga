@@ -214,7 +214,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 	
 	private void createLobby() {
-		multiClient.createGameRoom("circularMonkey.voog");
+		multiClient.createGameRoom("circularMonkey.voog", "mosca_dope_game");
 		changeHomeToLobby();
 		promptForLobbyName();
 		//createLobby + set lobby name

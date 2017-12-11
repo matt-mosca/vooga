@@ -18,6 +18,7 @@ import engine.AbstractGameModelController;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerClient.ExitRoom;
 import networking.protocol.PlayerClient.GetAllTemplateProperties;
 import networking.protocol.PlayerClient.GetAvailableGames;
 import networking.protocol.PlayerClient.GetElementCosts;
@@ -60,9 +61,10 @@ public abstract class AbstractClient implements AbstractGameModelController {
 
 	protected abstract int getPort();
 
-	public String createGameRoom(String gameName) {
+	public String createGameRoom(String gameName, String roomName) {
 		ClientMessage.Builder clientMessageBuilder = ClientMessage.newBuilder();
-		CreateGameRoom gameRoomCreationRequest = CreateGameRoom.newBuilder().setRoomName(gameName).build();
+		CreateGameRoom gameRoomCreationRequest = CreateGameRoom.newBuilder().setGameName(gameName).setRoomName(gameName)
+				.build();
 		writeRequestBytes(clientMessageBuilder.setCreateGameRoom(gameRoomCreationRequest).build().toByteArray());
 		return handleGameRoomCreationResponse(readServerResponse());
 	}
@@ -73,7 +75,12 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		handleGameRoomJoinResponse(readServerResponse());
 	}
 
-	public LevelInitialized launchGameRoom(String roomName) {
+	public void exitGameRoom() {
+		writeRequestBytes(ClientMessage.newBuilder().setExitRoom(ExitRoom.newBuilder().getDefaultInstanceForType())
+				.build().toByteArray());
+	}
+
+	public LevelInitialized launchGameRoom() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setLaunchGameRoom(LaunchGameRoom.newBuilder().getDefaultInstanceForType()).build().toByteArray());
 		return handleLevelInitializedResponse(readServerResponse());
@@ -85,7 +92,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		return handleGameRoomsResponse(readServerResponse());
 	}
 
-	public Set<String> getPlayerNames(String roomName) {
+	public Set<String> getPlayerNames() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetPlayerNames(GetPlayerNames.newBuilder().getDefaultInstanceForType()).build().toByteArray());
 		return handlePlayerNamesResponse(readServerResponse());

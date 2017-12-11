@@ -52,7 +52,7 @@ class MultiPlayerController {
 	private final String GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME = "This game does not exist";
 	private final String GAME_ROOM_JOIN_ERROR_USERNAME_TAKEN = "This username has already been taken for this game room";
 	private final String LOAD_LEVEL_ERROR_NOT_READY = "Your peers are not yet ready to load this level";
-	
+
 	private final String ROOM_NAME_DEDUP_DELIMITER = "_";
 
 	// Should support multiple concurrent game rooms, i.e. need multiple
@@ -124,10 +124,17 @@ class MultiPlayerController {
 						.setError(GAME_ROOM_JOIN_ERROR_USERNAME_TAKEN).build());
 				return;
 			}
-			clientIdsToPlayEngines.put(clientId, getPlayControllerForGameRoom(roomName));
-			roomMembers.get(roomName).add(clientId);
-			clientIdsToUserNames.put(clientId, userName);
+			processUserJoinRoom(clientId, roomName, userName);
 			serverMessageBuilder.setGameRoomJoinStatus(gameRoomJoinStatusBuilder.setSuccess(true).build());
+		}
+	}
+
+	void exitGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasExitRoom()) {
+			if (clientIsInAGameRoom(clientId)) {
+				processUserExitRoom(clientId);
+			}
+			// just ignore if client is not in a game room
 		}
 	}
 
@@ -155,8 +162,8 @@ class MultiPlayerController {
 	void getPlayerNames(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetPlayerNames()) {
 			PlayerNames.Builder playerNamesBuilder = PlayerNames.newBuilder();
-			serverMessageBuilder
-					.setPlayerNames(playerNamesBuilder.addAllUserNames(getUserNamesInGameRoom(getGameRoomNameOfClient(clientId))).build());
+			serverMessageBuilder.setPlayerNames(playerNamesBuilder
+					.addAllUserNames(getUserNamesInGameRoom(getGameRoomNameOfClient(clientId))).build());
 		}
 	}
 
@@ -227,8 +234,8 @@ class MultiPlayerController {
 		}
 	}
 
-	void upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) throws
-			ReflectiveOperationException {
+	void upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
+			throws ReflectiveOperationException {
 		if (clientMessage.hasUpgradeElement()) {
 			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			playController.upgradeElement(clientMessage.getUpgradeElement().getSpriteId());
@@ -304,6 +311,7 @@ class MultiPlayerController {
 			if (!clientIsInAGameRoom(clientId)) {
 				return serverMessageBuilder.setError(ERROR_UNAUTHORIZED).build().toByteArray();
 			}
+			exitGameRoom(clientId, clientMessage, serverMessageBuilder);
 			launchGameRoom(clientId, clientMessage, serverMessageBuilder);
 			getPlayerNames(clientId, clientMessage, serverMessageBuilder);
 			handleUpdate(clientId, clientMessage, serverMessageBuilder);
@@ -361,7 +369,7 @@ class MultiPlayerController {
 		}
 		return roomName;
 	}
-	
+
 	private String retrieveGameNameFromRoomName(String roomName) throws IllegalArgumentException {
 		if (!roomNamesToGameNames.containsKey(roomName)) {
 			throw new IllegalArgumentException(ERROR_NONEXISTENT_ROOM);
@@ -380,6 +388,18 @@ class MultiPlayerController {
 
 	private boolean checkIfWaitingRoomIsFull(String roomName) {
 		return waitingInRoom.get(roomName) < roomMembers.get(roomName).size();
+	}
+	
+	private void processUserJoinRoom(int clientId, String roomName, String userName) {
+		clientIdsToPlayEngines.put(clientId, getPlayControllerForGameRoom(roomName));
+		roomMembers.get(roomName).add(clientId);
+		clientIdsToUserNames.put(clientId, userName);
+	}
+	
+	private void processUserExitRoom(int clientId) {
+		clientIdsToPlayEngines.remove(clientId);
+		clientIdsToUserNames.remove(clientId);
+		roomMembers.get(getGameRoomNameOfClient(clientId)).remove(new Integer(clientId));
 	}
 
 }
