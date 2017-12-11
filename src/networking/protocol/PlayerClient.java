@@ -1067,18 +1067,6 @@ public final class PlayerClient {
           return false;
         }
       }
-      if (hasLaunchGameRoom()) {
-        if (!getLaunchGameRoom().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasGetPlayerNames()) {
-        if (!getGetPlayerNames().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       if (hasGetTemplateProperties()) {
         if (!getGetTemplateProperties().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -2000,16 +1988,6 @@ public final class PlayerClient {
         }
         if (hasJoinRoom()) {
           if (!getJoinRoom().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasLaunchGameRoom()) {
-          if (!getLaunchGameRoom().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasGetPlayerNames()) {
-          if (!getGetPlayerNames().isInitialized()) {
             return false;
           }
         }
@@ -4841,15 +4819,29 @@ public final class PlayerClient {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required string roomName = 1;</code>
+     * <code>required string gameName = 1;</code>
+     */
+    boolean hasGameName();
+    /**
+     * <code>required string gameName = 1;</code>
+     */
+    java.lang.String getGameName();
+    /**
+     * <code>required string gameName = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getGameNameBytes();
+
+    /**
+     * <code>required string roomName = 2;</code>
      */
     boolean hasRoomName();
     /**
-     * <code>required string roomName = 1;</code>
+     * <code>required string roomName = 2;</code>
      */
     java.lang.String getRoomName();
     /**
-     * <code>required string roomName = 1;</code>
+     * <code>required string roomName = 2;</code>
      */
     com.google.protobuf.ByteString
         getRoomNameBytes();
@@ -4866,6 +4858,7 @@ public final class PlayerClient {
       super(builder);
     }
     private CreateGameRoom() {
+      gameName_ = "";
       roomName_ = "";
     }
 
@@ -4900,6 +4893,12 @@ public final class PlayerClient {
             case 10: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
+              gameName_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
               roomName_ = bs;
               break;
             }
@@ -4928,16 +4927,58 @@ public final class PlayerClient {
     }
 
     private int bitField0_;
-    public static final int ROOMNAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object roomName_;
+    public static final int GAMENAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object gameName_;
     /**
-     * <code>required string roomName = 1;</code>
+     * <code>required string gameName = 1;</code>
      */
-    public boolean hasRoomName() {
+    public boolean hasGameName() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string roomName = 1;</code>
+     * <code>required string gameName = 1;</code>
+     */
+    public java.lang.String getGameName() {
+      java.lang.Object ref = gameName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          gameName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string gameName = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGameNameBytes() {
+      java.lang.Object ref = gameName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gameName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ROOMNAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object roomName_;
+    /**
+     * <code>required string roomName = 2;</code>
+     */
+    public boolean hasRoomName() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string roomName = 2;</code>
      */
     public java.lang.String getRoomName() {
       java.lang.Object ref = roomName_;
@@ -4954,7 +4995,7 @@ public final class PlayerClient {
       }
     }
     /**
-     * <code>required string roomName = 1;</code>
+     * <code>required string roomName = 2;</code>
      */
     public com.google.protobuf.ByteString
         getRoomNameBytes() {
@@ -4976,6 +5017,10 @@ public final class PlayerClient {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (!hasGameName()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasRoomName()) {
         memoizedIsInitialized = 0;
         return false;
@@ -4987,7 +5032,10 @@ public final class PlayerClient {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, roomName_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, gameName_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, roomName_);
       }
       unknownFields.writeTo(output);
     }
@@ -4998,7 +5046,10 @@ public final class PlayerClient {
 
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, roomName_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, gameName_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, roomName_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5017,6 +5068,11 @@ public final class PlayerClient {
       PlayerClient.CreateGameRoom other = (PlayerClient.CreateGameRoom) obj;
 
       boolean result = true;
+      result = result && (hasGameName() == other.hasGameName());
+      if (hasGameName()) {
+        result = result && getGameName()
+            .equals(other.getGameName());
+      }
       result = result && (hasRoomName() == other.hasRoomName());
       if (hasRoomName()) {
         result = result && getRoomName()
@@ -5033,6 +5089,10 @@ public final class PlayerClient {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasGameName()) {
+        hash = (37 * hash) + GAMENAME_FIELD_NUMBER;
+        hash = (53 * hash) + getGameName().hashCode();
+      }
       if (hasRoomName()) {
         hash = (37 * hash) + ROOMNAME_FIELD_NUMBER;
         hash = (53 * hash) + getRoomName().hashCode();
@@ -5155,8 +5215,10 @@ public final class PlayerClient {
       }
       public Builder clear() {
         super.clear();
-        roomName_ = "";
+        gameName_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
+        roomName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -5183,6 +5245,10 @@ public final class PlayerClient {
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
+        }
+        result.gameName_ = gameName_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
         }
         result.roomName_ = roomName_;
         result.bitField0_ = to_bitField0_;
@@ -5227,8 +5293,13 @@ public final class PlayerClient {
 
       public Builder mergeFrom(PlayerClient.CreateGameRoom other) {
         if (other == PlayerClient.CreateGameRoom.getDefaultInstance()) return this;
-        if (other.hasRoomName()) {
+        if (other.hasGameName()) {
           bitField0_ |= 0x00000001;
+          gameName_ = other.gameName_;
+          onChanged();
+        }
+        if (other.hasRoomName()) {
+          bitField0_ |= 0x00000002;
           roomName_ = other.roomName_;
           onChanged();
         }
@@ -5238,6 +5309,9 @@ public final class PlayerClient {
       }
 
       public final boolean isInitialized() {
+        if (!hasGameName()) {
+          return false;
+        }
         if (!hasRoomName()) {
           return false;
         }
@@ -5263,15 +5337,91 @@ public final class PlayerClient {
       }
       private int bitField0_;
 
-      private java.lang.Object roomName_ = "";
+      private java.lang.Object gameName_ = "";
       /**
-       * <code>required string roomName = 1;</code>
+       * <code>required string gameName = 1;</code>
        */
-      public boolean hasRoomName() {
+      public boolean hasGameName() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string roomName = 1;</code>
+       * <code>required string gameName = 1;</code>
+       */
+      public java.lang.String getGameName() {
+        java.lang.Object ref = gameName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gameName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string gameName = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGameNameBytes() {
+        java.lang.Object ref = gameName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gameName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string gameName = 1;</code>
+       */
+      public Builder setGameName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        gameName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string gameName = 1;</code>
+       */
+      public Builder clearGameName() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        gameName_ = getDefaultInstance().getGameName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string gameName = 1;</code>
+       */
+      public Builder setGameNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        gameName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object roomName_ = "";
+      /**
+       * <code>required string roomName = 2;</code>
+       */
+      public boolean hasRoomName() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string roomName = 2;</code>
        */
       public java.lang.String getRoomName() {
         java.lang.Object ref = roomName_;
@@ -5288,7 +5438,7 @@ public final class PlayerClient {
         }
       }
       /**
-       * <code>required string roomName = 1;</code>
+       * <code>required string roomName = 2;</code>
        */
       public com.google.protobuf.ByteString
           getRoomNameBytes() {
@@ -5304,36 +5454,36 @@ public final class PlayerClient {
         }
       }
       /**
-       * <code>required string roomName = 1;</code>
+       * <code>required string roomName = 2;</code>
        */
       public Builder setRoomName(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         roomName_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string roomName = 1;</code>
+       * <code>required string roomName = 2;</code>
        */
       public Builder clearRoomName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         roomName_ = getDefaultInstance().getRoomName();
         onChanged();
         return this;
       }
       /**
-       * <code>required string roomName = 1;</code>
+       * <code>required string roomName = 2;</code>
        */
       public Builder setRoomNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         roomName_ = value;
         onChanged();
         return this;
@@ -6113,20 +6263,6 @@ public final class PlayerClient {
   public interface LaunchGameRoomOrBuilder extends
       // @@protoc_insertion_point(interface_extends:LaunchGameRoom)
       com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    boolean hasRoomName();
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    java.lang.String getRoomName();
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getRoomNameBytes();
   }
   /**
    * Protobuf type {@code LaunchGameRoom}
@@ -6140,7 +6276,6 @@ public final class PlayerClient {
       super(builder);
     }
     private LaunchGameRoom() {
-      roomName_ = "";
     }
 
     @java.lang.Override
@@ -6153,7 +6288,6 @@ public final class PlayerClient {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -6169,12 +6303,6 @@ public final class PlayerClient {
                                      extensionRegistry, tag)) {
                 done = true;
               }
-              break;
-            }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              roomName_ = bs;
               break;
             }
           }
@@ -6201,68 +6329,18 @@ public final class PlayerClient {
               PlayerClient.LaunchGameRoom.class, PlayerClient.LaunchGameRoom.Builder.class);
     }
 
-    private int bitField0_;
-    public static final int ROOMNAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object roomName_;
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    public boolean hasRoomName() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    public java.lang.String getRoomName() {
-      java.lang.Object ref = roomName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          roomName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getRoomNameBytes() {
-      java.lang.Object ref = roomName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        roomName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasRoomName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, roomName_);
-      }
       unknownFields.writeTo(output);
     }
 
@@ -6271,9 +6349,6 @@ public final class PlayerClient {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, roomName_);
-      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -6291,11 +6366,6 @@ public final class PlayerClient {
       PlayerClient.LaunchGameRoom other = (PlayerClient.LaunchGameRoom) obj;
 
       boolean result = true;
-      result = result && (hasRoomName() == other.hasRoomName());
-      if (hasRoomName()) {
-        result = result && getRoomName()
-            .equals(other.getRoomName());
-      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6307,10 +6377,6 @@ public final class PlayerClient {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasRoomName()) {
-        hash = (37 * hash) + ROOMNAME_FIELD_NUMBER;
-        hash = (53 * hash) + getRoomName().hashCode();
-      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -6429,8 +6495,6 @@ public final class PlayerClient {
       }
       public Builder clear() {
         super.clear();
-        roomName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -6453,13 +6517,6 @@ public final class PlayerClient {
 
       public PlayerClient.LaunchGameRoom buildPartial() {
         PlayerClient.LaunchGameRoom result = new PlayerClient.LaunchGameRoom(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.roomName_ = roomName_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -6501,20 +6558,12 @@ public final class PlayerClient {
 
       public Builder mergeFrom(PlayerClient.LaunchGameRoom other) {
         if (other == PlayerClient.LaunchGameRoom.getDefaultInstance()) return this;
-        if (other.hasRoomName()) {
-          bitField0_ |= 0x00000001;
-          roomName_ = other.roomName_;
-          onChanged();
-        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasRoomName()) {
-          return false;
-        }
         return true;
       }
 
@@ -6533,83 +6582,6 @@ public final class PlayerClient {
             mergeFrom(parsedMessage);
           }
         }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object roomName_ = "";
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public boolean hasRoomName() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public java.lang.String getRoomName() {
-        java.lang.Object ref = roomName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            roomName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getRoomNameBytes() {
-        java.lang.Object ref = roomName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          roomName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public Builder setRoomName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        roomName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public Builder clearRoomName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        roomName_ = getDefaultInstance().getRoomName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public Builder setRoomNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        roomName_ = value;
-        onChanged();
         return this;
       }
       public final Builder setUnknownFields(
@@ -7037,20 +7009,6 @@ public final class PlayerClient {
   public interface GetPlayerNamesOrBuilder extends
       // @@protoc_insertion_point(interface_extends:GetPlayerNames)
       com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    boolean hasRoomName();
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    java.lang.String getRoomName();
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getRoomNameBytes();
   }
   /**
    * Protobuf type {@code GetPlayerNames}
@@ -7064,7 +7022,6 @@ public final class PlayerClient {
       super(builder);
     }
     private GetPlayerNames() {
-      roomName_ = "";
     }
 
     @java.lang.Override
@@ -7077,7 +7034,6 @@ public final class PlayerClient {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -7093,12 +7049,6 @@ public final class PlayerClient {
                                      extensionRegistry, tag)) {
                 done = true;
               }
-              break;
-            }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              roomName_ = bs;
               break;
             }
           }
@@ -7125,68 +7075,18 @@ public final class PlayerClient {
               PlayerClient.GetPlayerNames.class, PlayerClient.GetPlayerNames.Builder.class);
     }
 
-    private int bitField0_;
-    public static final int ROOMNAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object roomName_;
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    public boolean hasRoomName() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    public java.lang.String getRoomName() {
-      java.lang.Object ref = roomName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          roomName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string roomName = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getRoomNameBytes() {
-      java.lang.Object ref = roomName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        roomName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasRoomName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, roomName_);
-      }
       unknownFields.writeTo(output);
     }
 
@@ -7195,9 +7095,6 @@ public final class PlayerClient {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, roomName_);
-      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -7215,11 +7112,6 @@ public final class PlayerClient {
       PlayerClient.GetPlayerNames other = (PlayerClient.GetPlayerNames) obj;
 
       boolean result = true;
-      result = result && (hasRoomName() == other.hasRoomName());
-      if (hasRoomName()) {
-        result = result && getRoomName()
-            .equals(other.getRoomName());
-      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -7231,10 +7123,6 @@ public final class PlayerClient {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasRoomName()) {
-        hash = (37 * hash) + ROOMNAME_FIELD_NUMBER;
-        hash = (53 * hash) + getRoomName().hashCode();
-      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7353,8 +7241,6 @@ public final class PlayerClient {
       }
       public Builder clear() {
         super.clear();
-        roomName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -7377,13 +7263,6 @@ public final class PlayerClient {
 
       public PlayerClient.GetPlayerNames buildPartial() {
         PlayerClient.GetPlayerNames result = new PlayerClient.GetPlayerNames(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.roomName_ = roomName_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -7425,20 +7304,12 @@ public final class PlayerClient {
 
       public Builder mergeFrom(PlayerClient.GetPlayerNames other) {
         if (other == PlayerClient.GetPlayerNames.getDefaultInstance()) return this;
-        if (other.hasRoomName()) {
-          bitField0_ |= 0x00000001;
-          roomName_ = other.roomName_;
-          onChanged();
-        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasRoomName()) {
-          return false;
-        }
         return true;
       }
 
@@ -7457,83 +7328,6 @@ public final class PlayerClient {
             mergeFrom(parsedMessage);
           }
         }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object roomName_ = "";
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public boolean hasRoomName() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public java.lang.String getRoomName() {
-        java.lang.Object ref = roomName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            roomName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getRoomNameBytes() {
-        java.lang.Object ref = roomName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          roomName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public Builder setRoomName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        roomName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public Builder clearRoomName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        roomName_ = getDefaultInstance().getRoomName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string roomName = 1;</code>
-       */
-      public Builder setRoomNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        roomName_ = value;
-        onChanged();
         return this;
       }
       public final Builder setUnknownFields(
@@ -13875,22 +13669,21 @@ public final class PlayerClient {
       "l\030\021 \001(\0132\n.LoadLevel\022+\n\020getLevelElements\030" +
       "\022 \001(\0132\021.GetLevelElements\022(\n\014getNumLevels",
       "\030\023 \001(\0132\022.GetNumberOfLevels\"\023\n\021GetAvailab" +
-      "leGames\"\"\n\016CreateGameRoom\022\020\n\010roomName\030\001 " +
-      "\002(\t\".\n\010JoinRoom\022\020\n\010roomName\030\001 \002(\t\022\020\n\010use" +
-      "rName\030\002 \002(\t\"\"\n\016LaunchGameRoom\022\020\n\010roomNam" +
-      "e\030\001 \002(\t\"\016\n\014GetGameRooms\"\"\n\016GetPlayerName" +
-      "s\022\020\n\010roomName\030\001 \002(\t\"\017\n\rPerformUpdate\"\013\n\t" +
-      "PauseGame\"\014\n\nResumeGame\"\016\n\014GetInventory\"" +
-      ",\n\025GetTemplateProperties\022\023\n\013elementName\030" +
-      "\001 \002(\t\"\032\n\030GetAllTemplateProperties\"\021\n\017Get" +
-      "ElementCosts\"C\n\014PlaceElement\022\023\n\013elementN",
-      "ame\030\001 \002(\t\022\016\n\006xCoord\030\002 \002(\001\022\016\n\006yCoord\030\003 \002(" +
-      "\001\"\"\n\016UpgradeElement\022\020\n\010spriteId\030\001 \002(\005\"\030\n" +
-      "\026CheckReadyForNextLevel\",\n\tLoadLevel\022\020\n\010" +
-      "gameName\030\001 \002(\t\022\r\n\005level\030\002 \002(\005\"!\n\020GetLeve" +
-      "lElements\022\r\n\005level\030\001 \002(\005\";\n\021GetNumberOfL" +
-      "evels\022\020\n\010gameName\030\001 \002(\t\022\024\n\014originalGame\030" +
-      "\002 \002(\010"
+      "leGames\"4\n\016CreateGameRoom\022\020\n\010gameName\030\001 " +
+      "\002(\t\022\020\n\010roomName\030\002 \002(\t\".\n\010JoinRoom\022\020\n\010roo" +
+      "mName\030\001 \002(\t\022\020\n\010userName\030\002 \002(\t\"\020\n\016LaunchG" +
+      "ameRoom\"\016\n\014GetGameRooms\"\020\n\016GetPlayerName" +
+      "s\"\017\n\rPerformUpdate\"\013\n\tPauseGame\"\014\n\nResum" +
+      "eGame\"\016\n\014GetInventory\",\n\025GetTemplateProp" +
+      "erties\022\023\n\013elementName\030\001 \002(\t\"\032\n\030GetAllTem" +
+      "plateProperties\"\021\n\017GetElementCosts\"C\n\014Pl" +
+      "aceElement\022\023\n\013elementName\030\001 \002(\t\022\016\n\006xCoor",
+      "d\030\002 \002(\001\022\016\n\006yCoord\030\003 \002(\001\"\"\n\016UpgradeElemen" +
+      "t\022\020\n\010spriteId\030\001 \002(\005\"\030\n\026CheckReadyForNext" +
+      "Level\",\n\tLoadLevel\022\020\n\010gameName\030\001 \002(\t\022\r\n\005" +
+      "level\030\002 \002(\005\"!\n\020GetLevelElements\022\r\n\005level" +
+      "\030\001 \002(\005\";\n\021GetNumberOfLevels\022\020\n\010gameName\030" +
+      "\001 \002(\t\022\024\n\014originalGame\030\002 \002(\010"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13921,7 +13714,7 @@ public final class PlayerClient {
     internal_static_CreateGameRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CreateGameRoom_descriptor,
-        new java.lang.String[] { "RoomName", });
+        new java.lang.String[] { "GameName", "RoomName", });
     internal_static_JoinRoom_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_JoinRoom_fieldAccessorTable = new
@@ -13933,7 +13726,7 @@ public final class PlayerClient {
     internal_static_LaunchGameRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LaunchGameRoom_descriptor,
-        new java.lang.String[] { "RoomName", });
+        new java.lang.String[] { });
     internal_static_GetGameRooms_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_GetGameRooms_fieldAccessorTable = new
@@ -13945,7 +13738,7 @@ public final class PlayerClient {
     internal_static_GetPlayerNames_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetPlayerNames_descriptor,
-        new java.lang.String[] { "RoomName", });
+        new java.lang.String[] { });
     internal_static_PerformUpdate_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_PerformUpdate_fieldAccessorTable = new
