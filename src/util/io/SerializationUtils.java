@@ -32,6 +32,7 @@ public class SerializationUtils {
 	public static final String INVENTORY = "inventory";
 	public static final String WAVE = "wave";
 	public static final String DELIMITER = "\n";
+	public static final String COMMA = ",";
 	// Description, Status, Sprites
 	public static final int NUM_SERIALIZATION_SECTIONS = 7;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
@@ -393,7 +394,6 @@ public class SerializationUtils {
 	}
 
 	private final String SEMICOLON = ";";
-	private final String COMMA = ",";
 	private final int VALUE_INDEX = 0, CLASS_INDEX = 1;
 
 	public Map<String, String> serializeElementTemplate(Map<String, ?> elementTemplate) {
