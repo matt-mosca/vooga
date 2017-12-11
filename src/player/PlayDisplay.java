@@ -85,8 +85,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private HUD hud;
 	private String backgroundSong = "src/MediaTesting/128 - battle (vs gym leader).mp3";
 	
-	private ButtonFactory buttonMaker;
-	private Button testButton;
+//	private ButtonFactory buttonMaker;
+//	private Button testButton;
 
 	private int level = 1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
@@ -101,15 +101,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public PlayDisplay(int width, int height, Stage stage, PlayModelController myController) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		
-		buttonMaker = new ButtonFactory();
-		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> testOpenMultiplayer(stage));
+//		buttonMaker = new ButtonFactory();
+//		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> testOpenMultiplayer(stage));
 		
 		this.myController = myController;
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
 		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
 		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
-		myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage);
+//		myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage, this);
 		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
 		hud = new HUD(width);
@@ -144,9 +144,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		stage.setScene(myGameOver.getScene());
 //	}
 	
-	private void testOpenMultiplayer(Stage stage) {
-		stage.setScene(myMulti.getScene());
-	}
+//	private void testOpenMultiplayer(Stage stage) {
+//		stage.setScene(myMulti.getScene());
+//	}
 
 	public void tester() {
 		for (int i = 0; i < 100; i++) {
@@ -243,8 +243,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(play);
 		play.setLayoutY(pause.getLayoutY() + 30);
 		
-		rootAdd(testButton);
-		testButton.setLayoutY(play.getLayoutY() + 30);
+//		rootAdd(testButton);
+//		testButton.setLayoutY(play.getLayoutY() + 30);
 	}
 
 	private void step() {
