@@ -59,6 +59,8 @@ public final class GameElementFactory {
             throws ReflectiveOperationException {
         Map<String, Object> properties =
                 new HashMap<>(spriteTemplates.getOrDefault(elementTemplateName, new HashMap<>()));
+        System.out.println("*********************NON TEMPLATE ARGUEMENTS********************");
+        System.out.println(nonTemplateArguments);
         properties.putAll(nonTemplateArguments);
         return generateElement(properties);
     }
@@ -67,8 +69,10 @@ public final class GameElementFactory {
     GameElement generateElement(Map<String, ?> properties)
             throws ReflectiveOperationException {
         Parameter[] spriteConstructionParameters = getSpriteParameters();
+        System.out.println("---------------Sprite construction parameter------"+Arrays.asList(spriteConstructionParameters));
         // TODO - check that params are returned in the right order
         Object[] spriteConstructionArguments = new Object[spriteConstructionParameters.length];
+      
         for (int i = 0; i < spriteConstructionArguments.length; i++) {
             Parameter parameter = spriteConstructionParameters[i];
             try {
@@ -78,6 +82,7 @@ public final class GameElementFactory {
                 reflectionException.printStackTrace();
             }
         }
+        System.out.println("Arguments"+Arrays.asList(spriteConstructionArguments));
         try {
             return (GameElement) GameElement.class.getConstructors()[0].newInstance(spriteConstructionArguments);
         } catch (ReflectiveOperationException reflectionException) {
@@ -95,6 +100,8 @@ public final class GameElementFactory {
             ReflectiveOperationException {
         String chosenSubclassName = elementOptionsGetter.getChosenSubclassName(parameterClass, properties);
         if (chosenSubclassName != null) {
+        	System.out.println("*****************Properites*********************");
+        	System.out.println(properties.toString());
             return generateBehaviorObject(properties, chosenSubclassName);
         } else {
             // Case where constructor has the main objects encapsulated (i.e., MovementHandler and CollisionHandler)
@@ -104,9 +111,23 @@ public final class GameElementFactory {
     }
 
     private Object generateBehaviorObject(Map<String, ?> properties, String chosenSubclassName)
-            throws ReflectiveOperationException {
+            throws ReflectiveOperationException{
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
+        System.out.println("---------------------------------------------");
+        System.out.println(chosenSubclassName);
+        System.out.println();
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
+        System.out.print("[");
+        for(int i=0;i<constructorParameters.length;i++) {
+        	//System.out.print(constructorParameters[i].getClass());
+        	System.out.print(constructorParameters[i].getClass()+"=");
+        	System.out.print(constructorParameters[i]);
+        	if(i!=constructorParameters.length-1)
+        		System.out.print(", ");
+        }
+        System.out.println("]");
+        System.out.println("next is the chose subclass params");
+        System.out.println(Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameterTypes()));
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
     }
 
