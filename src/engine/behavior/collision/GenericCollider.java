@@ -14,10 +14,13 @@ public abstract class GenericCollider implements CollisionVisitor {
 
 	private int playerId;
 	private boolean blocked;
+	private String explosionTemplate;
 
 	public GenericCollider(
-			@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId) {
+			@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId,
+			@ElementProperty(value = "explosionTemplate", isTemplateProperty = true) String explosionTemplate) {
 		this.playerId = playerId;
+		this.explosionTemplate = explosionTemplate;
 	}
 	
 	// All colliders (except perhaps an 'Unstoppable' collider type) would be
@@ -54,6 +57,10 @@ public abstract class GenericCollider implements CollisionVisitor {
 	
 	private void setBlocked() {
 		blocked = true;
+	}
+	
+	public String explode() {
+		return explosionTemplate;
 	}
 
 }
