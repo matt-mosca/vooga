@@ -92,7 +92,7 @@ public class LevelToolBar extends VBox {
 		Button waveButton = new Button("Wave");
 		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 				e->{ try {
-			myController.setWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
+			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
 		} catch (ReflectiveOperationException exc) {
 		}});
 		this.getChildren().add(myTabPane);
@@ -174,6 +174,7 @@ public class LevelToolBar extends VBox {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println(myController.getLevelSprites(level));
 		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());

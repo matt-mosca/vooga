@@ -1,5 +1,7 @@
 package engine.game_elements;
 
+import java.util.List;
+
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
@@ -49,8 +51,8 @@ public final class GameElement {
 		collisionHandler.getGraphicalRepresentation().setY(newLocation.getY());
 	}
 
-	public boolean shouldFire() {
-		return firingStrategy.shouldFire();
+	public boolean shouldFire(double distanceToTarget) {
+		return firingStrategy.shouldFire(distanceToTarget);
 	}
 
 	public String fire() {
@@ -69,13 +71,15 @@ public final class GameElement {
 	}
 
 	/**
-	 * Apply the effects of a collision with another sprite to this sprite.
+	 * Apply the effects of a collision with other sprites to this sprite.
 	 * 
-	 * @param other
-	 *            the other sprite with which this sprite collided
+	 * @param otherElements
+	 *            the other sprites with which this sprite collided with
 	 */
-	public void processCollision(GameElement other) {
-		this.collisionHandler.processCollision(other.collisionHandler);
+	public void processCollision(List<GameElement> otherElements) {
+		for(GameElement other : otherElements) {
+			this.collisionHandler.processCollision(other.collisionHandler);
+		}
 	}
 
 	/**
@@ -164,4 +168,9 @@ public final class GameElement {
 	public boolean isAlly() {
 		return getPlayerId() == Team.HUMAN.ordinal();
 	}
+	
+	public double getBlastRadius() {
+		return collisionHandler.getBlastRadius();
+	}
+	
 }

@@ -370,7 +370,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setScene(testingScene.getScene());
 		controller.setGameName("testingGame");
 		try {
-			controller.setWaveProperties(fun, sprites, new Point2D(100, 100));
+			controller.createWaveProperties(fun, sprites, new Point2D(100, 100));
 		} catch (ReflectiveOperationException failedToGenerateWaveException) {
 			// todo - handle
 		}

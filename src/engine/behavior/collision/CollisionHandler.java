@@ -1,5 +1,7 @@
 package engine.behavior.collision;
 
+import java.util.List;
+
 import engine.behavior.ElementProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,7 +54,7 @@ public class CollisionHandler {
     }
 
     public void processCollision(CollisionHandler other) {
-        other.collisionVisitable.accept(collisionVisitor);
+    	other.collisionVisitable.accept(collisionVisitor);
     }
 
     public boolean isBlocked() {
@@ -93,5 +95,9 @@ public class CollisionHandler {
     
     public String getAudioUrl() {
     	return collisionVisitable.getAudioUrl();
+    }
+    
+    public double getBlastRadius() {
+    	return collisionVisitable.getBlastRadius();
     }
 }

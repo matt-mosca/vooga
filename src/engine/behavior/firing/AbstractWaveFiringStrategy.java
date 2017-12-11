@@ -1,6 +1,7 @@
 package engine.behavior.firing;
 
 import engine.behavior.ElementProperty;
+import javafx.geometry.Point2D;
 
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 			@ElementProperty(value = "templateToFire", isTemplateProperty = true) Set<String> templatesToFire,
 			@ElementProperty(value = "spawnPeriod", isTemplateProperty = true) double spawnPeriod,
 			@ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
-		super(spawnPeriod);
+		super(spawnPeriod,Double.POSITIVE_INFINITY);
 		if (templatesToFire.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
@@ -37,8 +38,8 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 	}
 	
 	@Override
-	public boolean shouldFire() {
-		return !isExpended() && super.shouldFire();
+	public boolean shouldFire(double targetLocation) {
+		return !isExpended() && super.shouldFire(targetLocation);
 	}
 	
 	@Override
