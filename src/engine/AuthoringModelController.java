@@ -359,7 +359,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @throws ReflectiveOperationException if the wave object could not be regenerated with the new properties due
 	 * to the map lacking a necessary properties
 	 */
-	int setWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn, Point2D
+	int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn, Point2D
 			spawningPoint)
 			throws ReflectiveOperationException;
 
@@ -367,6 +367,8 @@ public interface AuthoringModelController extends AbstractGameModelController {
 			newElementNamesToSpawn,
 			Point2D newSpawningPoint) throws ReflectiveOperationException;
 
+	Map<String, Object> getWaveProperties(int waveNum);
+	
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions
 	 *
