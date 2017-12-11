@@ -158,8 +158,11 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(hud);
 		myInventoryToolBar = new InventoryToolBar(this, myController);
 		levelSelector = new ChoiceBox<>();
-		levelSelector.getItems().addAll(1,2,3);
-		levelSelector.setOnAction(e->changeLevel(levelSelector.getSelectionModel().getSelectedItem()));
+		levelSelector.getItems().addAll(1,2,3,4);
+		levelSelector.setOnAction(e->{
+			changeLevel(levelSelector.getSelectionModel().getSelectedItem());
+			//Maybe clear the screen here?? myPlayArea.getChildren().clear() didn't work.
+		});
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		myLeftBar.getChildren().add(levelSelector);
 		rootAdd(myLeftBar);
