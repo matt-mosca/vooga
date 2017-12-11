@@ -127,18 +127,22 @@ public class ElementManager {
 		for (int otherIndex = elementIndex + 1; otherIndex < activeElements.size(); otherIndex++) {
 			GameElement otherElement = activeElements.get(otherIndex);
 			if (element.collidesWith(otherElement)) {
-				element.processCollision(getAllDamageAffectedElements(element));
-				otherElement.processCollision(getAllDamageAffectedElements(otherElement));
+				element.processCollision(getAllDamageAffectedElements(element,otherElement));
+				otherElement.processCollision(getAllDamageAffectedElements(otherElement,element));
 				playAudio(element.getCollisionAudio());
 				playAudio(otherElement.getCollisionAudio());
 			}
 		}
 	}
 	
-	private List<GameElement> getAllDamageAffectedElements(GameElement collider) {
+	private List<GameElement> getAllDamageAffectedElements(GameElement collider, GameElement collidee) {
 		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(collider);
-		return spriteQueryHandler.
+		List<GameElement> allAffectedElements = spriteQueryHandler.
 				getAllElementsWithinRange(collider.getPlayerId(), new Point2D(collider.getX(), collider.getY()), exclusionOfSelf, collider.getBlastRadius());
+		if(!allAffectedElements.contains(collidee)) {
+			allAffectedElements.add(collidee);
+		}
+		return allAffectedElements;
 	}
 
 	private void handleElementFiring(GameElement element) {
