@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.
@@ -105,12 +106,11 @@ public final class GameElementFactory {
             throws ReflectiveOperationException {
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
-        Parameter[] params = chosenParameterSubclass.getConstructors()[0].getParameters();
-        System.out.println(chosenParameterSubclass + " " + params.length + " " + constructorParameters.length);
-        for (int i = 0 ; i < params.length; i++) {
-            System.out.println(params[i].getAnnotation(ElementProperty.class).value()) ;
-            System.out.println( params[i].getType() + " " + constructorParameters[i].getClass());
-        }
+        List<Parameter> params = Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameters());
+        List<Object> args = Arrays.asList(constructorParameters);
+        System.out.println(chosenSubclassName + " " + params + " "+ args);
+        System.out.println("\t"+params.stream().map(param -> param.getType()).collect(Collectors.toList()));
+        System.out.println("\t"+args.stream().map(arg -> arg.getClass()).collect(Collectors.toList()));
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
     }
 
