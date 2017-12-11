@@ -32,6 +32,7 @@ public class SerializationUtils {
 	public static final String INVENTORY = "inventory";
 	public static final String WAVE = "wave";
 	public static final String DELIMITER = "\n";
+	public static final String COMMA = ",";
 	// Description, Status, Sprites
 	public static final int NUM_SERIALIZATION_SECTIONS = 7;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
