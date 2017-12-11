@@ -25,6 +25,11 @@ public abstract class AbstractPeriodicFiringStrategy implements FiringStrategy {
 
     @Override
     public boolean shouldFire(double distanceToTarget) {
+    	System.out.println("TOWER_RANGE = "+range);
+    	System.out.println("Timer="+updateAndCheckTimer());
+    	System.out.println(distanceToTarget);
+    	System.out.println("Range="+checkIfWithinRange(distanceToTarget));
+    	//System.out.println(updateAndCheckTimer() && checkIfWithinRange(distanceToTarget));
         return updateAndCheckTimer() && checkIfWithinRange(distanceToTarget);
     }
     

@@ -150,12 +150,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		try {
-			// Want to load as author to get total number of levels for actual game
-			return getIoController().getNumberOfLevelsForGame(gameName, forOriginalGame);
-		} catch (FileNotFoundException e) {
-			return 0;
-		}
+		return getLevelSprites().size() - 1; // Account for 0-indexing vs 1-indexing
 	}
 
 	@Override

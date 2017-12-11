@@ -154,8 +154,9 @@ public class ElementManager {
 		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) && (elementTemplateName = element.fire()) != null) {
 			
 			// Use player id of firing element rather than projectile? This allows greater flexibility
-			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(nearestEnemyElement);
+			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
 			try {
+				System.out.println("elementTemplateName: "+elementTemplateName);
 				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectile);
 			} catch (ReflectiveOperationException failedToGenerateProjectileException) {
