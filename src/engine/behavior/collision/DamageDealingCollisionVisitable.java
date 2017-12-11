@@ -8,7 +8,7 @@ import engine.behavior.ElementProperty;
  *
  * @author radithya
  */
-public abstract class DamageDealingCollisionVisitable implements CollisionVisitable {
+public class DamageDealingCollisionVisitable implements CollisionVisitable {
 
     private double damageToDeal;
     private String audioUrl;

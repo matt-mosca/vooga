@@ -34,6 +34,7 @@ public class PathList extends LinkedList {
 	}
 	
 	public Point2D next() {
+		if(current == null) return null;
 		double x = current.x;
 		double y = current.y;
 		current = current.next;

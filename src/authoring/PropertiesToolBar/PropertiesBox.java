@@ -89,6 +89,11 @@ public class PropertiesBox extends VBox {
 							((Properties) t.getTableView().getItems().get(
 					                t.getTablePosition().getRow())
 					                ).setMyObject(filePath);
+							
+							Map<String, Object> newPropertiesMap = new HashMap<>();
+				            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
+				            author.updateElementDefinition(mySprite.getId(), newPropertiesMap, true);
+						
 						}
 					}  
 				 }       
@@ -98,7 +103,7 @@ public class PropertiesBox extends VBox {
 			        @Override
 			        
 			        public void handle(CellEditEvent<Properties, String> t) {
-			        		if(t.getRowValue().getMyProperty().equals("pathList")) return;
+			        		if(t.getRowValue().getMyProperty().equals("Path to follow")) return;
 			            t.getTableView().getItems().get(t.getTablePosition().getRow()).setMyValue(t.getNewValue());
 			            Map<String, Object> newPropertiesMap = new HashMap<>();
 			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
