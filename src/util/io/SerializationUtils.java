@@ -6,17 +6,13 @@ import com.google.gson.stream.JsonReader;
 import engine.Bank;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
-import engine.behavior.collision.DamageDealingCollisionVisitable;
-import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.game_elements.GameElement;
-import engine.game_elements.GameElementFactory;
 import util.AnnotationExclusionStrategy;
 import util.InterfaceAdapter;
 
 import java.io.StringReader;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -396,6 +392,7 @@ public class SerializationUtils {
 		}
 	}
 
+	private final String SEMICOLON = ";";
 	private final String COMMA = ",";
 	private final int VALUE_INDEX = 0, CLASS_INDEX = 1;
 
@@ -404,7 +401,7 @@ public class SerializationUtils {
 		Map<String, String> serializedTemplate = new HashMap<>();
 		for (String propertyName : elementTemplate.keySet()) {
 			Class propertyClass = elementTemplate.get(propertyName).getClass();
-			String serializedProperty = elementTemplate.get(propertyName) + COMMA + propertyClass.toString();
+			String serializedProperty = elementTemplate.get(propertyName) + SEMICOLON + propertyClass.toString();
 			serializedTemplate.put(propertyName, serializedProperty);
 		}
 		return serializedTemplate;
@@ -413,7 +410,7 @@ public class SerializationUtils {
 	public Map<String, Object> deserializeElementTemplate(Map<String, String> elementTemplate) {
 		Map<String, Object> serializedTemplate = new HashMap<>();
 		for (String propertyName : elementTemplate.keySet()) {
-			String[] serializedProperty = elementTemplate.get(propertyName).split(COMMA);
+			String[] serializedProperty = elementTemplate.get(propertyName).split(SEMICOLON);
 			String[] splitClass = serializedProperty[CLASS_INDEX].split("\\s+");
 			Class propertyClass;
 			try {
