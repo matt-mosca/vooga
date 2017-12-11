@@ -102,7 +102,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		buttonMaker = new ButtonFactory();
 //		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> openSesame(stage));
 		
-		myController = isMultiPlayer ? new MultiPlayerClient(new SerializationUtils()) : new PlayController();
+		myController = isMultiPlayer ? new MultiPlayerClient() : new PlayController();
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
 		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);

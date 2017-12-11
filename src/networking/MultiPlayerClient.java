@@ -32,8 +32,8 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 
 	// Game client state (keeping track of which multi-player game it is in, etc)
 
-	public MultiPlayerClient(SerializationUtils serializationUtils) {
-		super(serializationUtils);
+	public MultiPlayerClient() {
+		super();
 		latestUpdate = Update.getDefaultInstance();
 	}
 
@@ -140,7 +140,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 
 	// Test client-server integration
 	public static void main(String[] args) {
-		MultiPlayerClient testClient = new MultiPlayerClient(new SerializationUtils());
+		MultiPlayerClient testClient = new MultiPlayerClient();
 		testClient.getAvailableGames();
 		testClient.createGameRoom("abc.voog");
 	}

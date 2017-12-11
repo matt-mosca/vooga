@@ -30,7 +30,6 @@ public class MultiPlayerServerHandler extends AbstractServerHandler {
 			int len = input.readInt();
 			if (len > 0) {
 				byte[] readBytes = new byte[len];
-				System.out.println("Server waiting for input");
 				input.readFully(readBytes);
 				byte[] response = multiPlayerController
 						.handleRequestAndSerializeResponse(getSocket().getRemoteSocketAddress().hashCode(), readBytes);
