@@ -198,7 +198,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 
 
 	@Override
-	public void editWaveProperties(int waveId, Map<String, Object> updatedProperties,
+	public void editWaveProperties(int waveNum, Map<String, Object> updatedProperties,
 			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException {
 		// TODO Auto-generated method stub
 		
@@ -222,7 +222,19 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Map<String, Collection<Integer>> getCurrentVictoryConditions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+
+	@Override
+	public Map<String, Collection<Integer>> getCurrentDefeatConditions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	protected int getPort() {
