@@ -69,6 +69,18 @@ public class ElementManager {
 		}
 		activeElements.forEach(element -> {
 			if (!element.isAlive()) {
+				System.out.println("Exploded="+element.explode());
+				if(element.shouldExplode()) {
+					Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
+					try {
+						GameElement explosionElement = gameElementFactory.generateElement(element.explode(), auxiliaryObjects);
+						updatedElements.add(explosionElement);
+					} catch (ReflectiveOperationException failedToGenerateProjectileException) {
+						// don't generate the projectile
+						// TODO - throw exception? (prob not)
+					}					
+				}
+				System.out.println("Added to dead elements "+element.getImageUrl());
 				deadElements.add(element);
 			} else {
 				updatedElements.add(element);
@@ -142,6 +154,7 @@ public class ElementManager {
 		if(!allAffectedElements.contains(collidee)) {
 			allAffectedElements.add(collidee);
 		}
+		//System.out.println("Affected Enemies="+ ""+allAffectedElements);
 		return allAffectedElements;
 	}
 
@@ -149,7 +162,7 @@ public class ElementManager {
 		Point2D nearestTargetLocation;
 		GameElement nearestEnemyElement = getNearestEnemyElement(element);
 		if(nearestEnemyElement == null) {
-			nearestTargetLocation = new Point2D(0,0);
+			nearestTargetLocation = new Point2D(500,500);
 		} else {
 			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
 		}
@@ -160,7 +173,6 @@ public class ElementManager {
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
 			try {
-				System.out.println("elementTemplateName: "+elementTemplateName);
 				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectile);
 			} catch (ReflectiveOperationException failedToGenerateProjectileException) {
@@ -168,7 +180,6 @@ public class ElementManager {
 				// TODO - throw exception? (prob not)
 			}
 			playAudio(element.getFiringAudio());
-			System.out.println(elementTemplateName);
 			// Use player id of firing element rather than projectile? This allows greater
 			// flexibility
 			try {
