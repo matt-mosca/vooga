@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,6 +15,7 @@ import authoring.PropertiesToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import display.factory.TabFactory;
 import display.interfaces.CreationInterface;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -43,6 +45,10 @@ public class LevelToolBar extends VBox {
 	private SpriteDisplayer mySpriteDisplay;
 	private LevelsEditDisplay myLevelDisplayer;
 	private Map<Integer, Integer> wavesPerLevel;
+	private Map<String, List<ImageView>> waveToImage;
+	private Map<String, Object> myProperties;
+	private List<String> elementsToSpawn;
+	private Map<String, Integer> waveToId;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -63,12 +69,14 @@ public class LevelToolBar extends VBox {
 		newLevel = new Button("New Level");
 		Button newWaveButton = new Button("New Wave");
 		wavesPerLevel = new TreeMap<Integer, Integer>();
+		waveToId = new TreeMap<String, Integer>();
+		waveToImage = new TreeMap<String, List<ImageView>>();
 		newLevel.setOnAction(e -> addLevel());
 		newWaveButton.setOnAction(e->newWaveButtonPressed());
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
 		mySpriteDisplay = new SpriteDisplayer();
-		myWaveDisplay = new WaveDisplay();
+		myWaveDisplay = new WaveDisplay(this);
 		this.getChildren().add(myWaveDisplay);
 		this.getChildren().add(mySpriteDisplay);
 		myTabPane.setMaxSize(400, 100);
@@ -81,12 +89,42 @@ public class LevelToolBar extends VBox {
 			// edited = true;
 			// this.update();
 		});
+		Button waveButton = new Button("Wave");
+		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+				e->{ try {
+			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
+		} catch (ReflectiveOperationException exc) {
+			//
+		}});
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
 		this.getChildren().add(newWaveButton);
+		this.getChildren().add(waveButton);
 		loadLevels();
 		created.setGameArea(myGameAreas.get(0));
+		createProperties();
+	}
+
+	private void createProperties() {
+		myProperties = new TreeMap<>();
+		myProperties.put("Collision effects", "Invulnerable to collision damage");
+		myProperties.put("Collided-with effects", "Do nothing to collided objects");
+		myProperties.put("Move an object", "Object will stay at desired location");
+		myProperties.put("Firing Behavior", "Shoot a series of various projectile types");
+		myProperties.put("imageHeight", "40");
+		myProperties.put("imageWidth", "40");
+		myProperties.put("imageUrl", "monkey.png");
+		myProperties.put("name", "tower1");
+//		myProperties.put("")
+//		elementsToSpawn = new ArrayList<String>();
+//		elementsToSpawn.add("Tower1");
+//		elementsToSpawn.add("Tower2");
+//		elementsToSpawn.add("Tower3");
+		
+//		System.out.println(myController.getAuxiliaryElementConfigurationOptions(myProperties));
+//		myController.defineElement("tower1", myProperties);
+
 	}
 	
 	private void newWaveButtonPressed() {
@@ -101,6 +139,7 @@ public class LevelToolBar extends VBox {
 	
 	private void updateWaveDisplay() {
 		myWaveDisplay.addTabs(wavesPerLevel.get(currentDisplay));
+		updateImages();
 	}
 
 	private void loadLevels() {
@@ -142,6 +181,7 @@ public class LevelToolBar extends VBox {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println(myController.getLevelSprites(level));
 		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
@@ -149,15 +189,46 @@ public class LevelToolBar extends VBox {
 			myGameAreas.get(level - 1).addBackObject(savedObject);
 		}
 	}
-
-	private void changeDisplay(int i) {
+	
+	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
+		if (waveToId.containsKey(levelAndWave)) {
+//			myController.editWaveProperties(waveToImage.get(levelAndWave), updatedProperties, newElementNamesToSpawn, newSpawningPoint);
+		} else {
+//			waveToId.put(levelAndWave, 
+//					myController.setWaveProperties(waveProperties, elementNamesToSpawn, spawningPoint));
+		}
+		String[] levelWaveArray = levelAndWave.split("\\s+");
+		for (String s : levelWaveArray) {
+			for (int i = 0; i < amount; i++) {
+				if (waveToImage.get(s) != null) {
+					waveToImage.get(s).add(mySprite);
+				} else {
+					ArrayList<ImageView> newImages = new ArrayList<ImageView>();
+					newImages.add(mySprite);
+					waveToImage.put(s, newImages);
+				}
+	
+			}
+		}
+		updateImages();
+	}
+	
+	public void changeDisplay(int i) {
 		currentDisplay = i;
 		myScrollableArea.changeLevel(myGameAreas.get(i - 1));
 		myCreated.setDroppable(myGameAreas.get(i - 1));
 		myController.setLevel(i);
 		myCreated.setGameArea(myGameAreas.get(i - 1));
-		updateSpriteDisplay(i);
+//		updateSpriteDisplay(i);
 		updateWaveDisplay();
+		updateImages();
+	}
+	
+	public void updateImages() {
+		mySpriteDisplay.clear();
+		if (waveToImage.get(currentDisplay + "." + myWaveDisplay.getCurrTab()) != null) {
+			mySpriteDisplay.addToScroll(waveToImage.get(currentDisplay + "." + myWaveDisplay.getCurrTab()));
+		}
 	}
 
 	private void deleteLevel(int lvNumber) {
@@ -169,19 +240,6 @@ public class LevelToolBar extends VBox {
 			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i + 1));
 		}
 
-	}
-
-	public void addToLevel(ImageView newSprite, int level) {
-		mySprites.get(level - 1).add(newSprite);
-		updateSpriteDisplay(currentDisplay);
-	}
-
-	private void updateSpriteDisplay(int level) {
-		if (!mySprites.get(level - 1).isEmpty()) {
-			mySpriteDisplay.addToScroll(mySprites.get(level - 1));
-		} else {
-			mySpriteDisplay.clear();
-		}
 	}
 
 	public int getMaxLevel() {

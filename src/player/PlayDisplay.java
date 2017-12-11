@@ -51,7 +51,9 @@ import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.Update;
+import util.io.SerializationUtils;
 import util.protocol.ClientMessageUtils;
+import display.factory.ButtonFactory;
 import display.splashScreen.ScreenDisplay;
 import display.splashScreen.SplashPlayScreen;
 import display.sprites.StaticObject;
@@ -64,6 +66,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private InventoryToolBar myInventoryToolBar;
 	private TransitorySplashScreen myTransition;
+	private WinScreen myWinScreen;
+	private GameOverScreen myGameOver;
 	private Scene myTransitionScene;
 	private VBox myLeftBar;
 	private PlayArea myPlayArea;
@@ -78,6 +82,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private MediaPlayer mediaPlayer;
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
+	
+//	private ButtonFactory buttonMaker;
+//	private Button testButton;
 
 	private int level = 1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
@@ -91,9 +98,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
-		myController = isMultiPlayer ? new MultiPlayerClient() : new PlayController();
+		
+//		buttonMaker = new ButtonFactory();
+//		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> openSesame(stage));
+		
+		myController = isMultiPlayer ? new MultiPlayerClient(new SerializationUtils()) : new PlayController();
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
+		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
+		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
 		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
 		hud = new HUD(width);
@@ -111,13 +124,19 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
+		volumeSlider.setLayoutY(7);
+		volumeSlider.setLayoutX(55);
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
-
 	}
+	
+//	private void openSesame(Stage stage) {
+//		stage.setScene(myWinScreen.getScene());
+//		stage.setScene(myGameOver.getScene());
+//	}
 
 	public void tester() {
 		for (int i = 0; i < 100; i++) {
@@ -214,6 +233,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		play.setText("Play");
 		rootAdd(play);
 		play.setLayoutY(pause.getLayoutY() + 30);
+		
+//		rootAdd(testButton);
+//		testButton.setLayoutY(play.getLayoutY() + 30);
 	}
 
 	private void step() {
@@ -258,15 +280,21 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		if (selected) {
 			selected = false;
 			this.getScene().setCursor(Cursor.DEFAULT);
-			if (e.getButton().equals(MouseButton.PRIMARY))
-				clientMessageUtils.addNewSpriteToDisplay(
-						myController.placeElement(placeable.getElementName(), new Point2D(e.getX(), e.getY())));
+			if (e.getButton().equals(MouseButton.PRIMARY)) {
+				Point2D startLocation = new Point2D(e.getX(), e.getY());
+				try {
+					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
+					clientMessageUtils.addNewSpriteToDisplay(newSprite);
+				} catch (ReflectiveOperationException failedToPlaceElementException) {
+					// todo - handle
+				}
+			}
 		}
 	}
 
 	@Override
 	public void listItemClicked(ImageView image) {
-		if(checkFunds(image)) return;
+		if(!checkFunds(image)) return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);

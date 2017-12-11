@@ -30,7 +30,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class PropertiesBox extends VBox {
-	private Map<String, String> myPropertiesMap;
+	private Map<String, Object> propertiesMap;
+	private String[] propertyArr;
 	private TableView<Properties> table;
 	private ObservableList<Properties> data;
 	private TableColumn<Properties, String> propertiesColumn;
@@ -40,19 +41,21 @@ public class PropertiesBox extends VBox {
 	private Droppable myDroppable;
 
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, String> propertyMap, AuthoringController author) {
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringController
+			author) {
 		currSprite = mySprite;
 		myDroppable = droppable;
-		myPropertiesMap = propertyMap;
+		propertiesMap = propertyMap;
 		table = new TableView<Properties>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<Properties, String>("Properties");
 		valuesColumn = new TableColumn<Properties, String>("Values");
 		data = FXCollections.observableArrayList();
-		for (String s : myPropertiesMap.keySet()) {
-			data.add(new Properties(s, myPropertiesMap.get(s)));
-			
+		
+		for (String propertyName : propertiesMap.keySet()) {
+			data.add(new Properties(propertyName, propertiesMap.get(propertyName)));
 		}
+		
 		propertiesColumn.setCellValueFactory(
 				new PropertyValueFactory<Properties, String>("myProperty"));
 		valuesColumn.setCellValueFactory(
@@ -95,11 +98,10 @@ public class PropertiesBox extends VBox {
 			        @Override
 			        
 			        public void handle(CellEditEvent<Properties, String> t) {
-			            ((Properties) t.getTableView().getItems().get(
-			                t.getTablePosition().getRow())
-			                ).setMyValue(t.getNewValue());
-			            Map<String, String> newPropertiesMap = new HashMap<String, String>();
-			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getNewValue());
+			        		if(t.getRowValue().getMyProperty().equals("pathList")) return;
+			            t.getTableView().getItems().get(t.getTablePosition().getRow()).setMyValue(t.getNewValue());
+			            Map<String, Object> newPropertiesMap = new HashMap<>();
+			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
 			            author.updateElementDefinition(mySprite.getId(), newPropertiesMap, true);
 			        }
 			    }
@@ -108,6 +110,7 @@ public class PropertiesBox extends VBox {
 	
 	public ImageView getCurrSprite() {
 		return currSprite;
+		
 	}
 	
 	private Path launchPathSelection() {

@@ -20,6 +20,7 @@ message ServerMessage {
 	optional NewSprite elementPlaced = 13;
 	repeated NewSprite levelSprites = 14;
 	optional NumberOfLevels numLevels = 15;
+	optional string error = 16;
 }
 
 /*
@@ -95,6 +96,7 @@ message NewSprite {
 	required double imageWidth = 4;
 	required double spawnX = 5;
 	required double spawnY = 6;
+	optional string error = 7;
 }
 
 message SpriteUpdate {
@@ -121,20 +123,24 @@ message ResourceUpdate {
 
 message Inventory {
 	repeated string templates = 1;
+	optional string error = 2;
 }
 
 message TemplateProperties {
 	required string elementName = 1;
 	repeated TemplateProperty property = 2;
+	optional string error = 3;
 }
 
 message ElementCost {
 	required string elementName = 1;
 	repeated Resource costs = 2;
+	optional string error = 3;
 }
 
 message NumberOfLevels {
 	required int32 numLevels = 1;
+	optional string error = 2;
 }
 
 message TemplateProperty {

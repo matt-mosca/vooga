@@ -5,7 +5,10 @@ import javafx.scene.control.TabPane;
 
 public class WaveDisplay extends TabPane {
 	
-	public WaveDisplay() {
+	private LevelToolBar level;
+	
+	public WaveDisplay(LevelToolBar level) {
+		this.level = level;
 	}
 
 	public void addTabs(int numberOfWaves) {
@@ -14,6 +17,11 @@ public class WaveDisplay extends TabPane {
 			Tab tab = new Tab();
 			tab.setText("wave" + String.valueOf(i+1));
 			this.getTabs().add(tab);
+			tab.setOnSelectionChanged(e -> level.updateImages());
 		}
+	}
+	
+	public int getCurrTab() {
+		return this.getSelectionModel().getSelectedIndex() + 1;
 	}
 }
