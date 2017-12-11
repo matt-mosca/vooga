@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,19 +90,21 @@ public class LevelToolBar extends VBox {
 			// edited = true;
 			// this.update();
 		});
-		Button waveButton = new Button("Wave");
-		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-				e->{ try {
-			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
-			
-		} catch (ReflectiveOperationException exc) {
-			//
-		}});
+//		Button waveButton = new Button("Wave");
+//		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+//				e->{ try {
+//					elementsToSpawn = new ArrayList<String>();
+//					elementsToSpawn.add(waveToImage.get("1.1").get(0).getId());
+//			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
+//			
+//		} catch (ReflectiveOperationException exc) {
+//		}});
+		elementsToSpawn = new ArrayList<String>();
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
 		this.getChildren().add(newWaveButton);
-		this.getChildren().add(waveButton);
+//		this.getChildren().add(waveButton);
 		loadLevels();
 		created.setGameArea(myGameAreas.get(0));
 		createProperties();
@@ -110,21 +113,23 @@ public class LevelToolBar extends VBox {
 	private void createProperties() {
 		myProperties = new TreeMap<>();
 		myProperties.put("Collision effects", "Invulnerable to collision damage");
-		myProperties.put("Collided-with effects", "Do nothing to collided objects");
+		myProperties.put("Collided-with effects", "Do nothing to colliding objects");
 		myProperties.put("Move an object", "Object will stay at desired location");
-		myProperties.put("Firing Behavior", "Shoot a series of various projectile types");
-		myProperties.put("imageHeight", "40");
-		myProperties.put("imageWidth", "40");
+		myProperties.put("Firing Behavior", "Shoot periodically");
+		myProperties.put("imageHeight", 40);
+		myProperties.put("imageWidth", 40);
 		myProperties.put("imageUrl", "monkey.png");
-		myProperties.put("name", "tower1");
-//		myProperties.put("")
-//		elementsToSpawn = new ArrayList<String>();
-//		elementsToSpawn.add("Tower1");
-//		elementsToSpawn.add("Tower2");
-//		elementsToSpawn.add("Tower3");
+		myProperties.put("Name", "myWave");
+		myProperties.put("tabName", "Troops");
+		myProperties.put("Range of tower", 50000);
+		myProperties.put("Attack period", 60);
+		myProperties.put("Firing Sound", "Sounds");
+//		myProperties.put("Projectile Type Name", "projectile1");
+		myProperties.put("Numerical \"team\" association", 1);
+//		myProperties.put("period", 10000);
+//		myProperties.put("totalWaves", 1);
+//		myProperties.put("templatesToFire", "myTroop");
 		
-//		System.out.println(myController.getAuxiliaryElementConfigurationOptions(myProperties));
-//		myController.defineElement("tower1", myProperties);
 
 	}
 	
@@ -192,26 +197,49 @@ public class LevelToolBar extends VBox {
 	}
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
-		if (waveToId.containsKey(levelAndWave)) {
-//			myController.editWaveProperties(waveToImage.get(levelAndWave), updatedProperties, newElementNamesToSpawn, newSpawningPoint);
-		} else {
-//			waveToId.put(levelAndWave, 
-//					myController.setWaveProperties(waveProperties, elementNamesToSpawn, spawningPoint));
-		}
 		String[] levelWaveArray = levelAndWave.split("\\s+");
-		for (String s : levelWaveArray) {
-			for (int i = 0; i < amount; i++) {
-				if (waveToImage.get(s) != null) {
-					waveToImage.get(s).add(mySprite);
-				} else {
-					ArrayList<ImageView> newImages = new ArrayList<ImageView>();
-					newImages.add(mySprite);
-					waveToImage.put(s, newImages);
-				}
-	
-			}
+		elementsToSpawn.add(mySprite.getId());
+		System.out.println(myProperties);
+		System.out.println(Arrays.asList(elementsToSpawn).toString());
+		try {
+			myProperties.put("Projectile Type Name", "myTroop");
+			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(30,60));
+		} catch (ReflectiveOperationException e) {
+			System.out.println("Could not add to wave");
+			e.printStackTrace();
 		}
-		updateImages();
+//		for (String s : levelWaveArray) {
+//			
+//			for (int i = 0; i < amount; i++) {
+//				if (waveToImage.get(s) != null) {
+//					//Editing a previously defined wave
+////					myController.editWaveProperties(waveId, updatedProperties, newElementNamesToSpawn, newSpawningPoint);
+//					waveToImage.get(s).add(mySprite);
+//				} else {
+//					//New wave you've never seen before
+//					ArrayList<ImageView> newImages = new ArrayList<ImageView>();
+//					newImages.add(mySprite);
+//					waveToImage.put(s, newImages);
+//					elementsToSpawn.clear();
+//					int level = Integer.valueOf(s.split("\\.+")[0]);
+//					changeDisplay(level);
+//					for (ImageView imageView : waveToImage.get(s)) {
+//						elementsToSpawn.add(imageView.getId());
+//					}
+//					try {
+//						waveToId.put(s, myController.createWaveProperties
+//								(myProperties, elementsToSpawn, new Point2D(100,100)));
+//						System.out.printf("Created level %s", s);
+//						System.out.println(waveToId.get(s));
+//					} catch (ReflectiveOperationException e) {
+//						System.out.println("Not able to create level");
+//						e.printStackTrace();
+//					}
+//				}
+//	
+//			}
+//		}
+//		updateImages();
 	}
 	
 	public void changeDisplay(int i) {
