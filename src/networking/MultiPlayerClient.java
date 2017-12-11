@@ -15,7 +15,6 @@ import networking.protocol.PlayerServer.ResourceUpdate;
 import networking.protocol.PlayerServer.ServerMessage;
 import networking.protocol.PlayerServer.StatusUpdate;
 import networking.protocol.PlayerServer.Update;
-import util.io.SerializationUtils;
 
 /**
  * Gateway of player in multi-player game to remote back-end data and logic
@@ -28,7 +27,7 @@ import util.io.SerializationUtils;
 public class MultiPlayerClient extends AbstractClient implements PlayModelController { // Is this weird?
 
 	private Update latestUpdate;
-	private final int PORT = 9042;
+	private final int PORT = 9041;
 
 	// Game client state (keeping track of which multi-player game it is in, etc)
 

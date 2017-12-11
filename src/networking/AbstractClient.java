@@ -56,6 +56,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 
 	public AbstractClient() {
 		setupChatSocketAndStreams();
+		serializationUtils = new SerializationUtils();
+		System.out.println("Set up chat socket and streams");
 	}
 
 	protected abstract int getPort();

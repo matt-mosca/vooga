@@ -335,7 +335,6 @@ class MultiPlayerController {
 	}
 
 	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) throws ReflectiveOperationException {
-		System.out.println("ClientId: " + clientId);
 		try {
 			ServerMessage.Builder serverMessageBuilder = ServerMessage.newBuilder();
 			ClientMessage clientMessage = ClientMessage.parseFrom(inputBytes);
