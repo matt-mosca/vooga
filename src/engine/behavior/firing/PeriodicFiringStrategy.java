@@ -17,7 +17,7 @@ public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 
 	public PeriodicFiringStrategy(
 			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate,
-			@ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod,
+			@ElementProperty(value = "attackPeriod", isTemplateProperty = true) Double attackPeriod,
 			@ElementProperty(value = "firingAudioUrl", isTemplateProperty = true) String audioUrl) {
 		super(attackPeriod);
 		this.projectileTemplate = projectileTemplate;

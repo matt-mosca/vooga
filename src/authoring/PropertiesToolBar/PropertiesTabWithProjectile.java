@@ -35,7 +35,7 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 		HBox imageBackground = new HBox();
 		imageBackground.setStyle("-fx-background-color: white");
 		imageBackground.getChildren().add(imageView);
-		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null) {
+		if (!myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name").toString().isEmpty()) {
 			addProjectileImage();
 		}
 		this.getChildren().add(imageBackground);
@@ -46,6 +46,7 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	private void addProjectileImage() {
 		String projectileName = myController.getAllDefinedTemplateProperties().get(myImageView.getId()).get
 				("Projectile Type Name").toString();
+		System.out.println(projectileName);
 		String url = myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl").toString();
 		ImageView projectile = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(url)));
 		resize(projectileSlot.getPrefHeight(), projectile);
