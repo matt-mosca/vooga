@@ -22,12 +22,11 @@ public class GameEnderRecorder extends VBox{
 	public GameEnderRecorder(AuthoringController controller) {
 //		myCompletedLevels=levels;
 		myController = controller;
-		update();
+//		update();
 		
 	}
 
 	public void update() {
-		this.getChildren().clear();
 		makeTables();
 		this.getChildren().addAll(victoryConditions, defeatConditions);
 	}
