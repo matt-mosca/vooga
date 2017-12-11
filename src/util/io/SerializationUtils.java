@@ -409,7 +409,7 @@ public class SerializationUtils {
 	public Map<String, Object> deserializeElementTemplate(Map<String, String> elementTemplate) {
 		Map<String, Object> serializedTemplate = new HashMap<>();
 		for (String propertyName : elementTemplate.keySet()) {
-			String[] serializedProperty = elementTemplate.get(propertyName).split(COMMA);
+			String[] serializedProperty = elementTemplate.get(propertyName).split(SEMICOLON);
 			String[] splitClass = serializedProperty[CLASS_INDEX].split("\\s+");
 			Class propertyClass;
 			try {
