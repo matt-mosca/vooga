@@ -95,6 +95,7 @@ public class LevelToolBar extends VBox {
 					elementsToSpawn = new ArrayList<String>();
 					elementsToSpawn.add(waveToImage.get("1.1").get(0).getId());
 			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
+			
 		} catch (ReflectiveOperationException exc) {
 		}});
 		this.getChildren().add(myTabPane);
