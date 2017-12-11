@@ -106,18 +106,6 @@ public final class GameElementFactory {
             throws ReflectiveOperationException {
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
-        System.out.println("--------------------------------");
-        System.out.println(chosenSubclassName);
-        System.out.println(chosenParameterSubclass);
-        System.out.println(Arrays.asList(constructorParameters));
-        System.out.print("[");
-        for(int i=0;i<constructorParameters.length;i++) {
-        	 System.out.print(constructorParameters[i].getClass());
-        	 System.out.print(", ");
-        } 
-        System.out.println("]");
-        System.out.println(chosenParameterSubclass.getConstructors()[0].getParameterCount());
-        System.out.println(Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameterTypes()));
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
     }
 
