@@ -17,8 +17,8 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 	
 	public CircularMovementStrategy(
 			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
-			@ElementProperty(value = "centerX", isTemplateProperty = true) double centerX,
-			@ElementProperty(value = "centerY", isTemplateProperty = true) double centerY,
+			//@ElementProperty(value = "centerX", isTemplateProperty = true) double centerX,
+			//@ElementProperty(value = "centerY", isTemplateProperty = true) double centerY,
 			@ElementProperty(value = "radius", isTemplateProperty = true) double radius,
 			@ElementProperty(value = "initialAngle", isTemplateProperty = true) double initialAngle,
 			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
