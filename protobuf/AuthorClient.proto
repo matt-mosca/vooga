@@ -26,14 +26,15 @@ message AuthoringClientMessage {
 	optional SetVictoryCondition setVictoryCondition = 19;
 	optional SetDefeatCondition setDefeatCondition = 20;
 	optional SetStatusProperty setStatusProperty = 21;
-	optional SetResourceEndowments setResourceEndowments = 22;
-	optional SetResourceEndowment setResourceEndowment = 23;
-	optional SetUnitCost setUnitCost = 24;
-	optional CreateWaveProperties createWaveProperties = 25;
-	optional EditWaveProperties editWaveProperties = 26;
-	optional GetWaveProperties getWaveProperties = 27;
-	optional GetPossibleVictoryConditions getPossibleVictoryConditions = 28;
-	optional GetPossibleDefeatConditions getPossibleDefeatConditions = 29;
+	repeated ResourceEndowment setResourceEndowments = 22;
+	optional SetUnitCost setUnitCost = 23;
+	optional CreateWaveProperties createWaveProperties = 24;
+	optional EditWaveProperties editWaveProperties = 25;
+	optional GetWaveProperties getWaveProperties = 26;
+	optional GetPossibleVictoryConditions getPossibleVictoryConditions = 27;
+	optional GetPossibleDefeatConditions getPossibleDefeatConditions = 28;
+	optional GetCurrentVictoryConditions getCurrentVictoryConditions = 29;
+	optional GetCurrentDefeatConditions getCurrentDefeatConditions = 30;
 }
 
 message ExportGame {
@@ -51,7 +52,7 @@ message GetElementBaseConfigurationOptions {
 }
 
 message GetAuxiliaryElementConfigurationOptions {
-	repeated BaseConfigurationChoice baseConfigurationChoices = 1;
+	repeated Property baseConfigurationChoices = 1;
 }
 
 message DefineElement {
@@ -75,19 +76,99 @@ message DeleteElementDefinition {
 	required string elementName = 1;
 }
 
-
-
-
-
-
-
-
-message BaseConfigurationChoice {
-	required string choiceKey = 1;
-	required string choiceValue = 2;
+message AddElementToInventory {
+	required string elementName = 1;
 }
+
+message GetCurrentLevel {
+}
+
+message MoveElement {
+	required int32 elementId = 1;
+	required double xCoord = 2;
+	required double yCoord = 3;
+}
+
+message UpdateElementProperties {
+	required int32 elementId = 1;
+	repeated Property properties = 2;
+}
+
+message DeleteElement {
+	required int32 elementId = 1;
+}
+
+message GetAllDefinedElementUpgrades {
+}
+
+message GetResourceEndowments {
+}
+
+message SetGameName {
+	required string gameName = 1;
+}
+
+message SetGameDescription {
+	required string gameDescription = 1;
+}
+
+message SetVictoryCondition {
+	required string conditionIdentifier = 1;
+}
+
+message SetDefeatCondition {
+	required string conditionIdentifier = 1;
+}
+
+message SetStatusProperty {
+	required string propertyName = 1;
+	required double propertyValue = 2;
+}
+
+message ResourceEndowment {
+	required string name = 1;
+	required double amount = 2;
+}
+
+message SetUnitCost {
+	required string elementName = 1;
+	repeated ResourceEndowment elementCosts = 2;
+}
+
+message CreateWaveProperties {
+	repeated Property waveProperties = 1;
+	repeated string elementNamesToSpawn = 2;
+	required Point spawningPoint = 3;
+}
+
+message EditWaveProperties {
+	required int32 waveNum = 1;
+	required CreateWaveProperties editProperties = 2;
+}
+
+message GetWaveProperties {
+	required int32 waveNum = 1;
+}
+
+message GetPossibleVictoryConditions {
+}
+
+message GetPossibleDefeatConditions {
+}
+
+message GetCurrentVictoryConditions {
+}
+
+message GetCurrentDefeatConditions {
+}
+
 
 message Property {
 	required string name = 1;
 	required string value = 2;
+}
+
+message Point {
+	required double x = 1;
+	required double y = 2;
 }
