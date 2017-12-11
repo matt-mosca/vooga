@@ -73,7 +73,7 @@ public class PropertiesBox extends VBox {
 
 					@Override
 					public void handle(CellEditEvent<Properties, String> t) {
-						if(t.getRowValue().getMyProperty().equals("pathList")) {
+						if(t.getRowValue().getMyProperty().equals("Path to follow")) {
 							String filePath = new String();
 							Random rand = new Random();
 							PathParser parser = new PathParser();
@@ -88,7 +88,7 @@ public class PropertiesBox extends VBox {
 						
 							((Properties) t.getTableView().getItems().get(
 					                t.getTablePosition().getRow())
-					                ).setMyValue(filePath);
+					                ).setMyObject(filePath);
 						}
 					}  
 				 }       

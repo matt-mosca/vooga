@@ -127,20 +127,23 @@ public class ElementManager {
 		for (int otherIndex = elementIndex + 1; otherIndex < activeElements.size(); otherIndex++) {
 			GameElement otherElement = activeElements.get(otherIndex);
 			if (element.collidesWith(otherElement)) {
-				element.processCollision(otherElement);
-				otherElement.processCollision(element);
+				element.processCollision(getAllDamageAffectedElements(element));
+				otherElement.processCollision(getAllDamageAffectedElements(otherElement));
 				playAudio(element.getCollisionAudio());
 				playAudio(otherElement.getCollisionAudio());
 			}
 		}
 	}
+	
+	private List<GameElement> getAllDamageAffectedElements(GameElement collider) {
+		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(collider);
+		return spriteQueryHandler.
+				getAllElementsWithinRange(collider.getPlayerId(), new Point2D(collider.getX(), collider.getY()), exclusionOfSelf, collider.getBlastRadius());
+	}
 
 	private void handleElementFiring(GameElement element) {
 		Point2D nearestTargetLocation;
-		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
-		exclusionOfSelf.remove(element);
-		GameElement nearestEnemyElement = spriteQueryHandler.getNearestEnemy(
-				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+		GameElement nearestEnemyElement = getNearestEnemyElement(element);
 		if(nearestEnemyElement == null) {
 			nearestTargetLocation = new Point2D(0,0);
 		} else {
@@ -148,11 +151,10 @@ public class ElementManager {
 		}
 		//@ TODO Fix should fire to take in nearest point
 		String elementTemplateName;
-		if (element.shouldFire() && (elementTemplateName = element.fire()) != null) {
-			exclusionOfSelf.remove(element);
+		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) && (elementTemplateName = element.fire()) != null) {
+			
 			// Use player id of firing element rather than projectile? This allows greater flexibility
-			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-					element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(nearestEnemyElement);
 			try {
 				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectile);
@@ -173,6 +175,19 @@ public class ElementManager {
 
 		}
 
+	}
+	
+	private GameElement getNearestEnemyElement(GameElement element) {
+		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(element);
+		return spriteQueryHandler.getNearestEnemy(
+				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+		
+	}
+	
+	private List<GameElement> getListOfElementsExcludingElement(GameElement element){
+		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
+		exclusionOfSelf.remove(element);
+		return exclusionOfSelf;
 	}
 	
 	private void playAudio(String audioUrl) {

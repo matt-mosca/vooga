@@ -22,7 +22,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	public AbstractMovementStrategy(
 			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint) {
 		DoubleProperty xCoordinate = new SimpleDoubleProperty(startPoint.getX());
-		DoubleProperty yCoordinate = new SimpleDoubleProperty(startPoint.getX());
+		DoubleProperty yCoordinate = new SimpleDoubleProperty(startPoint.getY());
 		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
 	}
 

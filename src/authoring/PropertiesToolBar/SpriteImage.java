@@ -32,10 +32,10 @@ public abstract class SpriteImage extends InteractiveObject {
 	
 	private void addDefaultValues() {
 		if (this instanceof TroopImage) {
-			defaultValues.put("Numerical \"team\" association", "2");
+			defaultValues.put("Numerical \"team\" association", 2);
 			defaultValues.put("tabName", "Troops");
 		}else if(this instanceof TowerImage) {
-			defaultValues.put("Numerical \"team\" association", "1");
+			defaultValues.put("Numerical \"team\" association", 1);
 			defaultValues.put("tabName", "Towers");
 		}else if(this instanceof ProjectileImage) {
 			defaultValues.put("tabName", "Projectiles");
@@ -64,7 +64,6 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	public void createInitialProperties(Map<String, Class> newMap) {
-		System.out.println(newMap);
 		if (myPossibleProperties.isEmpty()) {
 			myPossibleProperties.put("Name", myName);
 			for (String s : newMap.keySet()) {
@@ -72,7 +71,10 @@ public abstract class SpriteImage extends InteractiveObject {
 				if(def != null) {
 					myPossibleProperties.put(s, castAsObject(def));
 				}else {
+					System.out.println(s);
 					try {
+						System.out.println("HIT");
+						System.out.println(s);
 						myPossibleProperties.put(s, newMap.get(s).newInstance());
 					} catch (InstantiationException e) {
 						// TODO Auto-generated catch block

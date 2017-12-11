@@ -124,6 +124,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
+		volumeSlider.setLayoutY(7);
+		volumeSlider.setLayoutX(55);
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
@@ -151,7 +153,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		myLeftBar.getChildren().add(levelSelector);
 		rootAdd(myLeftBar);
-		volumeSlider = new Slider(0, 1, .1);;
+		volumeSlider = new Slider(0, 1, .1);
 		rootAdd(volumeSlider);
 		
 	}
@@ -292,7 +294,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	@Override
 	public void listItemClicked(ImageView image) {
-		if(checkFunds(image)) return;
+		if(!checkFunds(image)) return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);

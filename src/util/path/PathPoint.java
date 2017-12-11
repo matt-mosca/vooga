@@ -26,7 +26,7 @@ public class PathPoint extends Circle implements Serializable {
 	private transient Color inactiveColor;
 	private int radius;
 	
-	protected PathPoint(double x, double y, Color color) {
+	public PathPoint(double x, double y, Color color) {
 		linesToPrev = new HashMap<>();
 		linesToNext = new HashMap<>();
 		initializeProperties();

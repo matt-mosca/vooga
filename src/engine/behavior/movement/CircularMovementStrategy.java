@@ -17,17 +17,19 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 	
 	public CircularMovementStrategy(
 			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
-			@ElementProperty(value = "centerX", isTemplateProperty = true) double centerX,
-			@ElementProperty(value = "centerY", isTemplateProperty = true) double centerY,
+			//@ElementProperty(value = "centerX", isTemplateProperty = true) double centerX,
+			//@ElementProperty(value = "centerY", isTemplateProperty = true) double centerY,
 			@ElementProperty(value = "radius", isTemplateProperty = true) double radius,
 			@ElementProperty(value = "initialAngle", isTemplateProperty = true) double initialAngle,
 			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
 		super(startPoint, radius * Math.cos(Math.toRadians(initialAngle)),
 				radius * Math.sin(Math.toRadians(initialAngle)), radius);
+		System.out.println("-------------------------------------------------------------");
+		System.out.println("StartingLocation: ("+startPoint.getX()+","+startPoint.getY()+")");
 		this.radius = radius;
 		this.angle = Math.toRadians(initialAngle);
 		this.angularVelocity = velocity/radius;
-		setInitialLocation();
+		//setInitialLocation();
 	}
 	
 	/**
@@ -38,7 +40,8 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 	public Point2D move() {
 		angle += angularVelocity;
 		setTargetCoordinates(radius * Math.cos(angle),radius * Math.sin(angle));
-		setVelocityComponents(angle);
+		//setVelocityComponents(angle);
+		System.out.println("("+this.getCurrentX()+","+this.getCurrentY()+")");
 		setX(this.getCurrentX()+ getXVelocity());
 		setY(this.getCurrentY()+ getYVelocity());
 		return getCurrentCoordinates();

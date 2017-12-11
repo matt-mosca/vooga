@@ -12,8 +12,8 @@ public class BoomerangMovementStrategy extends CircularMovementStrategy{
 			@ElementProperty(value = "targetY", isTemplateProperty = true) double targetY,
 			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
 		super(startPoint,
-			  startPoint.getX()+((targetX-startPoint.getX())/2),
-			  startPoint.getY()+((targetY-startPoint.getY())/2),
+			 // startPoint.getX()+((targetX-startPoint.getX())/2),
+			  //startPoint.getY()+((targetY-startPoint.getY())/2),
 			  startPoint.distance(targetX, targetY)/2,
 			  startPoint.angle(targetX,targetY),
 			  velocity);
