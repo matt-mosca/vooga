@@ -5,13 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
 import networking.protocol.AuthorClient.AuthoringClientMessage;
 import networking.protocol.AuthorClient.DeleteLevel;
 import networking.protocol.AuthorClient.ExportGame;
+import networking.protocol.AuthorClient.GetAuxiliaryElementConfigurationOptions;
 import networking.protocol.AuthorClient.GetElementBaseConfigurationOptions;
 import networking.protocol.AuthorClient.SetLevel;
+import networking.protocol.AuthorServer.AuthoringServerMessage;
+import networking.protocol.PlayerServer.ServerMessage;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import util.io.SerializationUtils;
 
@@ -19,8 +24,8 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 
 	private final int PORT = 9043;
 
-	public CollaborativeAuthoringClient(SerializationUtils serializationUtils) {
-		super(serializationUtils);
+	public CollaborativeAuthoringClient() {
+		super();
 	}
 
 	@Override
@@ -46,15 +51,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetElementBaseConfig(GetElementBaseConfigurationOptions.getDefaultInstance()).build()
 				.toByteArray());
-		// TODO
-		//handleElementBaseConfigurationOptionsResponse(readServerResponse());
-		return new HashMap<>(); 
+		return handleElementBaseConfigurationOptionsResponse(readAuthoringServerResponse());
 	}
 
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
-		// TODO Auto-generated method stub
-		return null;
+		//writeRequestBytes(AuthoringClientMessage.newBuilder().setGetAuxiliaryElementConfig(GetAuxiliaryElementConfigurationOptions.newBuilder().addAllBaseConfigurationChoices(baseConfigurationChoices.entrySet().map(entry -> Property.newBuilder.))))
+		return new HashMap<>();
 	}
 
 	@Override
@@ -221,5 +224,21 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	protected int getPort() {
 		return PORT;
 	}
-	
+
+	Map<String, List<String>> handleElementBaseConfigurationOptionsResponse(
+			AuthoringServerMessage authoringServerMessage) {
+		Map<String, List<String>> configOptions = new HashMap<>();
+		authoringServerMessage.getElementBaseConfigurationOptionsList()
+				.forEach(upgrade -> configOptions.put(upgrade.getConfigKey(), upgrade.getConfigOptionsList()));
+		return configOptions;
+	}
+
+	private AuthoringServerMessage readAuthoringServerResponse() {
+		try {
+			return AuthoringServerMessage.parseFrom(readResponseBytes());
+		} catch (InvalidProtocolBufferException e) {
+			return AuthoringServerMessage.getDefaultInstance(); // empty message
+		}
+	}
+
 }

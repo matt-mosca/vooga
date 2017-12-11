@@ -98,13 +98,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private ClientMessageUtils clientMessageUtils;
 
-	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
+	public PlayDisplay(int width, int height, Stage stage, PlayModelController myController) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		
 		buttonMaker = new ButtonFactory();
 		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> testOpenMultiplayer(stage));
 		
-		myController = isMultiPlayer ? new MultiPlayerClient(new SerializationUtils()) : new PlayController();
+		this.myController = myController;
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
 		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);

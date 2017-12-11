@@ -52,7 +52,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		lobbiesListBox = new VBox();
 		lobbies = new MultiplayerListBox();
 		players = new MultiplayerListBox();
-		multiClient = new MultiPlayerClient(new SerializationUtils());
+		multiClient = new MultiPlayerClient();
 		setMultiplayerBackground(width, height);
 //		rootAdd(multiplayerLayout);
 		rootAdd(topScreenLabel);
