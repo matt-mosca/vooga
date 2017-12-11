@@ -11,11 +11,7 @@ import display.interfaces.ClickableInterface;
 import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-<<<<<<< HEAD
-import javafx.scene.control.Button;
-=======
 import javafx.scene.control.ChoiceDialog;
->>>>>>> mjm141
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
