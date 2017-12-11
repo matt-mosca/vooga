@@ -1,5 +1,6 @@
 package display.toolbars;
 
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,19 +79,27 @@ public class StaticObjectToolBar extends ToolBar {
 		return tempStatic;
 	}
 
-	public void defineElement(int size, String imageString) {
+	public void defineElement(double size, String imageString) {
 		if(myController.getAllDefinedTemplateProperties().containsKey(imageString)) return;
-		Map<String, String> defaultValues = getDefaultProperties();
-		defaultValues.put("imageWidth", Integer.toString(size));
+		Map<String, Object> defaultValues = getDefaultProperties();
+		defaultValues.put("imageWidth", size);
 		defaultValues.put("imageUrl", imageString);
-		defaultValues.put("imageHeight", Integer.toString(size));
+		defaultValues.put("imageHeight", size);
 		myController.defineElement(imageString, defaultValues);
 	}
 	
-	private Map<String, String> getDefaultProperties() {
-		Map<String, String> values = new HashMap<>();
-		for(String key:defaultProperties.keySet()) {
-			values.put(key, defaultProperties.getString(key));
+	private Map<String, Object> getDefaultProperties() {
+		Map<String, Object> values = new HashMap<>();
+		for(String key : defaultProperties.keySet()) {
+			try {
+				values.put(key, Integer.parseInt(defaultProperties.getString(key)));
+			} catch(NumberFormatException e) {
+				try {
+					values.put(key, Double.parseDouble(defaultProperties.getString(key)));
+				} catch (NumberFormatException ee) {
+					values.put(key, defaultProperties.getString(key));
+				}
+			}
 		}
 		return values;
 	}

@@ -12,22 +12,22 @@ import display.sprites.InteractiveObject;
 public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
 	private AuthoringController controller;
-	private Map<String, String> myPossibleProperties;
+	private Map<String, Object> myPossibleProperties;
 	private Map<String, String> myBaseProperties;
 	private String myName;
 	private ResourceBundle myResourceBundle;
-	private Map<String, String> defaultValues;
-	private Map<String, String> allProperties;
+	private Map<String, Object> defaultValues;
+	private Map<String, Object> allProperties;
 
 	
 	public SpriteImage(ScreenDisplay display) {
 		super(display,null);
 		defaultValues = new HashMap<>();
 		myResourceBundle = ResourceBundle.getBundle("authoring/resources/SpriteProperties");
-		myBaseProperties = new HashMap<String, String>();
-		myPossibleProperties = new HashMap<String, String>();
+		myBaseProperties = new HashMap<>();
+		myPossibleProperties = new HashMap<>();
 		addDefaultValues();
-		allProperties = new HashMap<String, String>();
+		allProperties = new HashMap<>();
 	}
 	
 	private void addDefaultValues() {
@@ -64,13 +64,38 @@ public abstract class SpriteImage extends InteractiveObject {
 	}
 	
 	public void createInitialProperties(Map<String, Class> newMap) {
+		System.out.println(newMap);
 		if (myPossibleProperties.isEmpty()) {
 			myPossibleProperties.put("Name", myName);
 			for (String s : newMap.keySet()) {
 				String def = getDefault(s);
-				if(def != null) myPossibleProperties.put(s, def);
+				if(def != null) {
+					myPossibleProperties.put(s, castAsObject(def));
+				}else {
+					try {
+						myPossibleProperties.put(s, newMap.get(s).newInstance());
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		} 
+	}
+	
+	private Object castAsObject(String def) {
+		try {
+			return Integer.parseInt(def);
+		}catch(NumberFormatException nonInteger) {
+			try {
+				return Double.parseDouble(def);
+			}catch(NumberFormatException | NullPointerException nonDouble) {
+				return def;
+			}
+		}
 	}
 	
 	public void update(String newProperty, String newValue) {
@@ -81,11 +106,11 @@ public abstract class SpriteImage extends InteractiveObject {
 		myPossibleProperties.put("Projectile Type Name", imageName);
 	}
 	
-	public Map<String, String> getMyProperties() {
+	public Map<String, Object> getMyProperties() {
 		return myPossibleProperties;
 	}
 	
-	public void setMyProperties(Map<String, String> newMap) {
+	public void setMyProperties(Map<String, Object> newMap) {
 		myPossibleProperties = newMap;
 	}
 	
@@ -105,7 +130,7 @@ public abstract class SpriteImage extends InteractiveObject {
 	public void createElement() {
 	}
 	
-	public Map<String, String> getAllProperties() {
+	public Map<String, Object> getAllProperties() {
 		allProperties.putAll(myPossibleProperties);
 		allProperties.putAll(myBaseProperties);
 		allProperties.putAll(defaultValues);

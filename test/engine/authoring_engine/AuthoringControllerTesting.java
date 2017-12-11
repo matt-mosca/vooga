@@ -28,7 +28,8 @@ public class AuthoringControllerTesting {
         choices.put("Attack period", "1");
         choices.put("imageHeight", "10.0");
         choices.put("Projectile Type Name", "fake name");
-        authoringController.defineElement("test element", choices);
+        Map<String, Object> cc = new HashMap<>(choices);
+        authoringController.defineElement("test element", cc);
         JFXPanel jfxPanel = new JFXPanel(); // so that ImageView can be made
         // int id = authoringController.placeElement("test element", new Point2D(0, 0));
     }

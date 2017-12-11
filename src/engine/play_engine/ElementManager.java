@@ -151,16 +151,29 @@ public class ElementManager {
 		}
 		//@ TODO Fix should fire to take in nearest point
 		String elementTemplateName;
-		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) && (elementTemplateName = element.fire()) != null) {
+		if (element.shouldFire() && (elementTemplateName = element.fire()) != null) {
+			exclusionOfSelf.remove(element);
+			// Use player id of firing element rather than projectile? This allows greater flexibility
+			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
+					element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+			try {
+				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
+				newElements.add(projectile);
+			} catch (ReflectiveOperationException failedToGenerateProjectileException) {
+				// don't generate the projectile
+				// TODO - throw exception? (prob not)
+			}
 			playAudio(element.getFiringAudio());
 			System.out.println(elementTemplateName);
 			// Use player id of firing element rather than projectile? This allows greater
 			// flexibility
-			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-					nearestEnemyElement);
-			GameElement projectileGameElement = gameElementFactory.generateSprite(elementTemplateName,
-					new Point2D(element.getX(), element.getY()), auxiliaryObjects);
-			newElements.add(projectileGameElement);
+			try {
+				GameElement projectileGameElement = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
+				newElements.add(projectileGameElement);
+			} catch (ReflectiveOperationException e) {
+				// todo
+			}
+
 		}
 
 	}

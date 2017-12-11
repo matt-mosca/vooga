@@ -17,6 +17,9 @@ import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
+import factory.MediaPlayerFactory;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
@@ -25,16 +28,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
+import networking.protocol.PlayerServer;
+import networking.protocol.PlayerServer.NewSprite;
 import player.PlayDisplay;
 import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
@@ -66,6 +73,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	private SpriteTesterButton myTesterButton;
+	private Slider volumeSlider;
+	private MediaPlayerFactory mediaPlayerFactory;
+	private MediaPlayer mediaPlayer;
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -73,9 +83,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.BLACK, stage);
 		controller = new AuthoringController();
 		clientMessageUtils = new ClientMessageUtils();
-		if (loaded) {
-			loadGame();
-		}
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
 		basePropertyMap = new HashMap<>();
@@ -85,12 +92,21 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		createGridToggle();
 		createMovementToggle();
 		createLabel();
-		basePropertyMap = new HashMap<String, String>();
+		basePropertyMap = new HashMap<>();
 		Button saveButton = new Button("Save");
 		saveButton.setLayoutY(600);
 		rootAdd(saveButton);
 		myTesterButton = new SpriteTesterButton(this);
 		rootAdd(myTesterButton);
+		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/110 - pokemon center.mp3");
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaPlayer.play();
+		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+		volumeSlider.setLayoutY(735);
+		volumeSlider.setLayoutX(950);
+		if (loaded) {
+			loadGame();
+		}
 	}
 
 	private void createGridToggle() {
@@ -159,6 +175,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myMenuBar);
 		myBottomToolBar = new LevelToolBar(this, controller, myGameEnvironment);
 		rootAdd(myBottomToolBar);
+		volumeSlider = new Slider(0, 1, .1);
+		rootAdd(volumeSlider);
 	}
 
 	private void addToLeftBar() {
@@ -201,9 +219,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	private void updateObjectSize(StaticObject object) {
-		Map<String, String> newProperties = controller.getTemplateProperties(object.getElementName());
-		newProperties.put("imageWidth", Integer.toString(object.getSize()));
-		newProperties.put("imageHeight", Integer.toString(object.getSize()));
+		Map<String, Object> newProperties = controller.getTemplateProperties(object.getElementName());
+		newProperties.put("imageWidth", object.getSize());
+		newProperties.put("imageHeight", object.getSize());
 		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
 
@@ -215,8 +233,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			newObject = new StaticObject(object.getCellSize(), this, object.getElementName());
 		}
 		myGameArea.addBackObject(newObject);
-		newObject.setElementId(clientMessageUtils
-				.addNewSpriteToDisplay(controller.placeElement(newObject.getElementName(), new Point2D(0, 0))));
+		try {
+			NewSprite newSprite = controller.placeElement(newObject.getElementName(), new Point2D(0, 0));
+			newObject.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
+		} catch (ReflectiveOperationException failedToAddObjectException) {
+
+		}
+
 	}
 
 	@Override
@@ -288,9 +311,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		attackDefenseLabel.setText("Attack");
 	}
 	
-	public void submit(int level, int waves, int amount, ImageView mySprite) {
-//		myBottomToolBar.changeLevel(level);
-//		myBottomToolBar.addToWave(mySprite, waves, amount);
+	public void submit(String levelAndWave, int amount, ImageView mySprite) {
+		myBottomToolBar.addToWave(levelAndWave, amount, mySprite);
 	}
 
 	@Override
@@ -306,6 +328,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		} else {
 			this.save();
 		}
+		mediaPlayer.stop();
 		VBox newProject = new VBox();
 		Scene newScene = new Scene(newProject, 400, 400);
 		Stage myStage = new Stage();
@@ -337,7 +360,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	@Override
-	public void createTesterLevel(Map<String, String> fun, List<String> sprites) {
+	public void createTesterLevel(Map<String, Object> fun, List<String> sprites) {
 		// TODO - Update this method accordingly to determine the isMultiPlayer param
 		// for PlayDisplay constructor
 		PlayDisplay testingScene = new PlayDisplay(1000, 1000, getStage(), false); // TEMP
@@ -346,7 +369,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
 		getStage().setScene(testingScene.getScene());
 		controller.setGameName("testingGame");
-		controller.setWaveProperties(fun, sprites, new Point2D(100,100));
+		try {
+			controller.createWaveProperties(fun, sprites, new Point2D(100, 100));
+		} catch (ReflectiveOperationException failedToGenerateWaveException) {
+			// todo - handle
+		}
 	}
 
 	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {
@@ -360,5 +387,4 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public int getMaxLevel() {
 		return myBottomToolBar.getMaxLevel();
 	}
-
 }

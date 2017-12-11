@@ -4,12 +4,14 @@ import java.io.File;
 
 import authoring.EditDisplay;
 import display.interfaces.ClickableInterface;
+import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -34,10 +36,11 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	
 	private HBox titleBox = new HBox();
 	private Text VoogaTitle;
-	
 	private NewGameButton myNewGameButton;
 	private EditGameButton myEditGameButton;
 	private PlayExistingGameButton myLoadGameButton;
+	private MediaPlayerFactory mediaPlayerFactory;
+	private MediaPlayer mediaPlayer;
 
 
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
@@ -51,7 +54,9 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
-		
+		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/101 - opening.mp3");
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaPlayer.play();
 	}
 
 	private void basicSetup() {
@@ -169,6 +174,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
 		getStage().setScene(myScene.getScene());
+		mediaPlayer.stop();
 	}
 
 	@Override
@@ -182,6 +188,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setScene(myScene.getScene());
 		
 	}
+	
+	
 
 	@Override
 	public void save() {

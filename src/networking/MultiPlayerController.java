@@ -47,6 +47,7 @@ import networking.protocol.PlayerServer.ServerMessage;
 class MultiPlayerController {
 
 	// TODO - Move to resources file
+	public static final String ERROR_UNAUTHORIZED = "You do not belong to any game room";
 	public static final String ERROR_CLIENT_ENGAGED = "You are already in another game room";
 	public static final String ERROR_NONEXISTENT_ROOM = "This game room does not exist";
 	public static final String ERROR_WRONG_ROOM = "You do not belong to this room";
@@ -247,7 +248,8 @@ class MultiPlayerController {
 		}
 	}
 
-	void placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+	void placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
+			throws ReflectiveOperationException {
 		if (clientMessage.hasPlaceElement()) {
 			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to place element without belonging to a
@@ -258,7 +260,8 @@ class MultiPlayerController {
 		}
 	}
 
-	void upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+	void upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) throws
+			ReflectiveOperationException {
 		if (clientMessage.hasUpgradeElement()) {
 			PlayController playController = clientIdsToPlayEngines.get(clientId);
 			// TODO - Handle case where client tries to upgrade element without belonging to
@@ -324,56 +327,39 @@ class MultiPlayerController {
 	void disconnectClient(int clientId) {
 		clientIdsToPlayEngines.remove(clientId);
 		clientIdsToUserNames.remove(clientId);
-		for (String gameRoomName : roomMembers.keySet()) {
-			if (roomMembers.get(gameRoomName).contains(clientId)) {
-				roomMembers.get(gameRoomName).remove(clientId);
+		roomMembers.entrySet().forEach(roomEntry -> {
+			if (roomEntry.getValue().contains(clientId)) {
+				roomEntry.getValue().remove(clientId);
 			}
-		}
+		});
 	}
 
-	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) {
+	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) throws ReflectiveOperationException {
 		System.out.println("ClientId: " + clientId);
-		// Dispatch appropriate method - TODO : Reflection ?
 		try {
 			ServerMessage.Builder serverMessageBuilder = ServerMessage.newBuilder();
 			ClientMessage clientMessage = ClientMessage.parseFrom(inputBytes);
-			// Get available games
 			getAvailableGames(clientMessage, serverMessageBuilder);
-			// Handle game room creation request
-			createGameRoom(clientId, clientMessage, serverMessageBuilder);
-			// Handle game room join request
-			joinGameRoom(clientId, clientMessage, serverMessageBuilder);
-			// Launch game room
-			launchGameRoom(clientId, clientMessage, serverMessageBuilder);
-			// Handle game rooms request
 			getGameRooms(clientMessage, serverMessageBuilder);
-			// Handle player names request
+			createGameRoom(clientId, clientMessage, serverMessageBuilder);
+			joinGameRoom(clientId, clientMessage, serverMessageBuilder);
+			if (!clientIsInAGameRoom(clientId)) {
+				return serverMessageBuilder.setError(ERROR_UNAUTHORIZED).build().toByteArray();
+			}
+			launchGameRoom(clientId, clientMessage, serverMessageBuilder);
 			getPlayerNames(clientId, clientMessage, serverMessageBuilder);
-			// Handle update request
 			handleUpdate(clientId, clientMessage, serverMessageBuilder);
-			// Handle pause request
 			handlePauseGame(clientId, clientMessage, serverMessageBuilder);
-			// Handle resume request
 			handleResumeGame(clientId, clientMessage, serverMessageBuilder);
-			// Get inventory
 			getInventory(clientId, clientMessage, serverMessageBuilder);
-			// Get template properties
 			getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
-			// Get all template properties
 			getAllTemplateProperties(clientId, clientMessage, serverMessageBuilder);
-			// Get element costs for current level
 			getElementCosts(clientId, clientMessage, serverMessageBuilder);
-			// Handle place element request
 			placeElement(clientId, clientMessage, serverMessageBuilder);
-			// Handle upgrade element request
 			upgradeElement(clientId, clientMessage, serverMessageBuilder);
-			// Handle check ready for next level request
 			checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);
-			// Handle load request
 			loadLevel(clientId, clientMessage, serverMessageBuilder);
-			// Get level elements
 			getLevelElements(clientId, clientMessage, serverMessageBuilder);
-			// Get number of levels
 			getNumberOfLevels(clientId, clientMessage, serverMessageBuilder);
 			return serverMessageBuilder.build().toByteArray();
 		} catch (IOException e) {
