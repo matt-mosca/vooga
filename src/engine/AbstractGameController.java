@@ -258,7 +258,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	@Override
 	public Collection<NewSprite> getLevelSprites(int level) {
-		return getServerMessageUtils().packageNewSprites(getFilteredSpriteIdMap(getLevelSprites().get(level)));
+		Collection<NewSprite> levelSprites = getServerMessageUtils().packageNewSprites(getFilteredSpriteIdMap(getLevelSprites().get(level)));
+		return levelSprites;
 	}
 
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)
