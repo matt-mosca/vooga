@@ -18,6 +18,7 @@ import engine.AbstractGameModelController;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerClient.ExitRoom;
 import networking.protocol.PlayerClient.GetAllTemplateProperties;
 import networking.protocol.PlayerClient.GetAvailableGames;
 import networking.protocol.PlayerClient.GetElementCosts;
@@ -72,6 +73,11 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		JoinRoom gameRoomJoinRequest = JoinRoom.newBuilder().setRoomName(roomName).setUserName(userName).build();
 		writeRequestBytes(ClientMessage.newBuilder().setJoinRoom(gameRoomJoinRequest).build().toByteArray());
 		handleGameRoomJoinResponse(readServerResponse());
+	}
+
+	public void exitGameRoom() {
+		writeRequestBytes(ClientMessage.newBuilder().setExitRoom(ExitRoom.newBuilder().getDefaultInstanceForType())
+				.build().toByteArray());
 	}
 
 	public LevelInitialized launchGameRoom() {
