@@ -35,7 +35,6 @@ public class SpriteQueryHandler {
 
 	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(Point2D startCoordinates,GameElement gameElementToTrack) {
 		TrackingPoint targetLocation;
-		System.out.println("Getting Auxiliary Sprite Constructor");
 		if (gameElementToTrack != null)
 			targetLocation = gameElementToTrack.getPositionForTracking();
 		else
@@ -46,9 +45,6 @@ public class SpriteQueryHandler {
 		//auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
 		auxiliarySpriteConstructionObjects.put("targetLocation", targetLocation);
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
-		
-		System.out.println(auxiliarySpriteConstructionObjects.toString());
-		System.out.println("Got Auxillary Sprite Constructor");
 		return auxiliarySpriteConstructionObjects;
 	}
 
@@ -57,7 +53,7 @@ public class SpriteQueryHandler {
 		GameElement nearestGameElement = null;
 		for (GameElement gameElement : levelGameElements) {
 			double distanceToSprite = new Point2D(gameElement.getX(), gameElement.getY()).distance(coordinates);
-			if ((distanceToSprite < nearestDistance )&& gameElement.getPlayerId() != toGenerateId) {
+			if ((distanceToSprite < nearestDistance )&& gameElement.getPlayerId() != toGenerateId ) {
 				nearestDistance = distanceToSprite;
 				nearestGameElement = gameElement;
 			}

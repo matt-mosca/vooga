@@ -56,7 +56,6 @@ public final class GameElement {
 	}
 
 	public String fire() {
-		System.out.println("-----------------------------------FIRE: "+firingStrategy.fire());
 		return firingStrategy.fire();
 	}
 	
@@ -174,4 +173,11 @@ public final class GameElement {
 		return collisionHandler.getBlastRadius();
 	}
 	
+	public boolean shouldExplode() {
+		return collisionHandler.shouldExplode();
+	}
+	
+	public String explode() {
+		return collisionHandler.explode();
+	}
 }
