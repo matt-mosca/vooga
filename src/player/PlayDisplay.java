@@ -325,12 +325,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	private boolean checkFunds(ImageView image) {
+		try {
 		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
 			return false;
 		}
-		return true;
+		return true;}
+		catch(Exception e) {
+			return false;
+		}
 	}
 
 	private void launchInvalidResources() {
