@@ -154,7 +154,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			// Want to load as author to get total number of levels for actual game
 			return getIoController().getNumberOfLevelsForGame(gameName, forOriginalGame);
 		} catch (FileNotFoundException e) {
-			return 0;
+			return DEFAULT_MAX_LEVELS;
 		}
 	}
 

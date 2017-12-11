@@ -49,8 +49,6 @@ public class GamePersistence {
 		Scanner gameStateScanner;
 		if (!gameStateFile.exists()) {
 			throw new FileNotFoundException();
-//			InputStream in = getClass().getClassLoader().getResourceAsStream(fileName);
-//			gameStateScanner = new Scanner(in);
 		} else {
 			gameStateScanner = new Scanner(gameStateFile);
 		}
