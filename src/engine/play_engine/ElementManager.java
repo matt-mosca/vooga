@@ -151,11 +151,11 @@ public class ElementManager {
 		}
 		//@ TODO Fix should fire to take in nearest point
 		String elementTemplateName;
-		if (element.shouldFire() && (elementTemplateName = element.fire()) != null) {
-			exclusionOfSelf.remove(element);
+		if (element.shouldFire(0) && (elementTemplateName = element.fire()) != null) {
+			//exclusionOfSelf.remove(element);
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-					element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+					element.getPlayerId(), new Point2D(element.getX(), element.getY()), new ArrayList<>());
 			try {
 				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectile);
