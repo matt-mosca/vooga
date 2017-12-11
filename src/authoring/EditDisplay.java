@@ -76,6 +76,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Slider volumeSlider;
 	private MediaPlayerFactory mediaPlayerFactory;
 	private MediaPlayer mediaPlayer;
+	private String backgroundSong = "src/MediaTesting/110 - pokemon center.mp3";
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -102,7 +103,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(saveButton);
 		myTesterButton = new SpriteTesterButton(this);
 		rootAdd(myTesterButton);
-		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/110 - pokemon center.mp3");
+		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
