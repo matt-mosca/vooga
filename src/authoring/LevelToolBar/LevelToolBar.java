@@ -111,7 +111,7 @@ public class LevelToolBar extends VBox {
 	private void createProperties() {
 		myProperties = new TreeMap<>();
 		myProperties.put("Collision effects", "Invulnerable to collision damage");
-		myProperties.put("Collided-with effects", "Do nothing to collided objects");
+		myProperties.put("Collided-with effects", "Do nothing to colliding objects");
 		myProperties.put("Move an object", "Object will stay at desired location");
 		myProperties.put("Firing Behavior", "Shoot periodically");
 		myProperties.put("imageHeight", 40);
@@ -119,10 +119,12 @@ public class LevelToolBar extends VBox {
 		myProperties.put("imageUrl", "monkey.png");
 		myProperties.put("Name", "myWave");
 		myProperties.put("tabName", "Troops");
-		myProperties.put("firingRange", 50);
-		myProperties.put("attackPeriod", 100);
-		myProperties.put("firingAudioUrl", "Sounds");
-		myProperties.put("projectileTemplate", "projectile1");
+		myProperties.put("Range of tower", 50);
+		myProperties.put("Attack period", 100);
+		myProperties.put("Firing Sound", "Sounds");
+//		myProperties.put("Projectile Type Name", "projectile1");
+		myProperties.put("Numerical \"team\" association", 0);
+		
 
 	}
 	
