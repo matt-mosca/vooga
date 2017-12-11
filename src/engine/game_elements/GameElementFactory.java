@@ -78,7 +78,6 @@ public final class GameElementFactory {
                 reflectionException.printStackTrace();
             }
         }
-        int a = 5/0;
         try {
             return (GameElement) GameElement.class.getConstructors()[0].newInstance(spriteConstructionArguments);
         } catch (ReflectiveOperationException reflectionException) {
