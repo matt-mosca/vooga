@@ -51,7 +51,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private MuteButton myMuteButton;
 	private MediaPlayerFactory myMediaPlayerFactory;
 	private MediaPlayer myMediaPlayer;
-
+	private String backgroundSong = "src/MediaTesting/101 - opening.mp3";
+ 
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background, currentStage);
 
@@ -63,7 +64,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
-		myMediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/101 - opening.mp3");
+		myMediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		myMediaPlayer = myMediaPlayerFactory.getMediaPlayer();
 		myMediaPlayer.play();
 		myMuteButton = new MuteButton(myMediaPlayer);

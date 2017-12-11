@@ -12,7 +12,7 @@ public class WaveDisplay extends TabPane {
 	}
 
 	public void addTabs(int numberOfWaves) {
-//		this.getTabs().removeAll(this.getTabs());
+		this.getTabs().clear();
 		for (int i = 0; i < numberOfWaves; i++) {
 			Tab tab = new Tab();
 			tab.setText("wave" + String.valueOf(i+1));

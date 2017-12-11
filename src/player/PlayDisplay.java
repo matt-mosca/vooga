@@ -83,6 +83,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private MediaPlayer mediaPlayer;
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
+	private String backgroundSong = "src/MediaTesting/128 - battle (vs gym leader).mp3";
 	
 	private ButtonFactory buttonMaker;
 	private Button testButton;
@@ -125,7 +126,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(volumeSlider);
 		volumeSlider.setLayoutY(7);
 		volumeSlider.setLayoutX(55);
-		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/128 - battle (vs gym leader).mp3");
+		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
@@ -135,6 +136,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
+		System.out.println("Wave stuff");
 	}
 	
 //	private void openSesame(Stage stage) {
