@@ -69,6 +69,7 @@ public final class GameElementFactory {
         Parameter[] spriteConstructionParameters = getSpriteParameters();
         // TODO - check that params are returned in the right order
         Object[] spriteConstructionArguments = new Object[spriteConstructionParameters.length];
+      
         for (int i = 0; i < spriteConstructionArguments.length; i++) {
             Parameter parameter = spriteConstructionParameters[i];
             try {
@@ -104,7 +105,7 @@ public final class GameElementFactory {
     }
 
     private Object generateBehaviorObject(Map<String, ?> properties, String chosenSubclassName)
-            throws ReflectiveOperationException {
+            throws ReflectiveOperationException{
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
