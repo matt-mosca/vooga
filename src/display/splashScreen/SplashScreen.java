@@ -1,12 +1,17 @@
 package display.splashScreen;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import authoring.EditDisplay;
 import display.interfaces.ClickableInterface;
 import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,6 +38,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final String TITLE = "Welcome to VOOGA";
 	private static final double STANDARD_PATH_WIDTH = Main.WIDTH / 15;
 	private static final double STANDARD_PATH_HEIGHT = Main.HEIGHT / 15;
+	private static final String SINGLE_PLAYER = "Single Player";
+	private static final String MULTIPLAYER = "Multiplayer";
 	
 	private HBox titleBox = new HBox();
 	private Text VoogaTitle;
@@ -181,14 +188,29 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	public void playExisting() {
 		// TODO - Update this method accordingly to determine the isMultiPlayer param
 		// for PlayDisplay constructor
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), false); // TEMP
+		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), initializePlayersSetting()); // TEMP
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
 		getStage().setScene(myScene.getScene());
-		
 	}
 	
+	private boolean initializePlayersSetting() {
+		List<String> numPlayers = new ArrayList<String>();
+		String settingChoice = new String();
+		numPlayers.add(SINGLE_PLAYER);
+		numPlayers.add(MULTIPLAYER);
+		ChoiceDialog<String> playerSetting = new ChoiceDialog<>("Players options", numPlayers);
+		playerSetting.setTitle("Players Setting");
+		playerSetting.setHeaderText("Single player or multiplayer?");
+		playerSetting.setContentText(null);
+		
+		Optional<String> result = playerSetting.showAndWait();
+		if (result.isPresent()) {
+			settingChoice = result.get();
+		}
+		return settingChoice.equals(MULTIPLAYER);
+	}
 	
 
 	@Override
