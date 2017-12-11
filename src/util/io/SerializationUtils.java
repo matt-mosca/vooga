@@ -414,9 +414,10 @@ public class SerializationUtils {
 		Map<String, Object> serializedTemplate = new HashMap<>();
 		for (String propertyName : elementTemplate.keySet()) {
 			String[] serializedProperty = elementTemplate.get(propertyName).split(COMMA);
+			String[] splitClass = serializedProperty[CLASS_INDEX].split("\\s+");
 			Class propertyClass;
 			try {
-				propertyClass = Class.forName(serializedProperty[CLASS_INDEX]);
+				propertyClass = Class.forName(splitClass[CLASS_INDEX]);
 			} catch (ClassNotFoundException exception) {
 				propertyClass = String.class;
 			}
