@@ -15,8 +15,9 @@ public class MediaWindow {
 	public static final int STANDARD_TEXT_SIZE = 12;
 	public static final int LARGE_TEXT_SIZE = 20;
 	public static final int WRAPPING_WIDTH = 450;
-	public static final int SCENE_WIDTH = 500;
-	public static final int SCENE_HEIGHT = 200;
+	private double width;
+	private double height;
+	private double centeredX;
 	
 	private MediaPlayer mediaPlayer;
 	private MediaView mediaViewer;
@@ -27,12 +28,18 @@ public class MediaWindow {
 	public MediaWindow(MediaPlayer mediaPlayer) {
 		mediaStage = new Stage();
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		width = primaryScreenBounds.getWidth();
+		height = primaryScreenBounds.getHeight();
 		mediaStage.setX(primaryScreenBounds.getMinX());
 		mediaStage.setY(primaryScreenBounds.getMinY());
-		mediaStage.setWidth(primaryScreenBounds.getWidth());
-		mediaStage.setHeight(primaryScreenBounds.getHeight());
+		mediaStage.setWidth(width);
+		mediaStage.setHeight(height);
 		this.mediaPlayer = mediaPlayer;
 		mediaViewer = new MediaView(this.mediaPlayer);
+		mediaViewer.setFitWidth(width);
+		mediaViewer.setFitHeight(height);
+		centeredX= width/7;
+		mediaViewer.setX(centeredX);
 		skipButton = new Button("skip");
 		skipButton.setOnAction(e->skip());
 	}
@@ -40,11 +47,12 @@ public class MediaWindow {
 	public void play() {
 		root.getChildren().add(mediaViewer);
 		root.getChildren().add(skipButton);
-		Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT, Color.WHITE);
+		Scene scene = new Scene(root, width, height, Color.BLACK);
 		mediaStage.setTitle("Media");
 		mediaStage.setScene(scene);
 		mediaStage.show();
 		mediaPlayer.play();
+		mediaStage.setOnCloseRequest(e->mediaPlayer.stop());
 	}
 	
 	public void skip() {

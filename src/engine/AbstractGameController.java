@@ -130,7 +130,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
-		gameName = saveName;
+		setGameName(saveName);
 		gameElementFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadElementTemplates(gameName));
 		gameElementUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadElementUpgrades(gameName));
 		return packageStateChange(oldGameElements);
