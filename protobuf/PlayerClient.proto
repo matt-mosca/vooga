@@ -34,7 +34,8 @@ message GetAvailableGames {
 }
 
 message CreateGameRoom {
-	required string roomName = 1;
+	required string gameName = 1;
+	required string roomName = 2;
 }
 
 message JoinRoom {
@@ -43,14 +44,12 @@ message JoinRoom {
 }
 
 message LaunchGameRoom {
-	required string roomName = 1;
 }
 
 message GetGameRooms {
 }
 
 message GetPlayerNames {
-	required string roomName = 1;
 }
 
 /*

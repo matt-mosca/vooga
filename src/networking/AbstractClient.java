@@ -75,7 +75,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 
 	public LevelInitialized launchGameRoom(String roomName) {
 		writeRequestBytes(ClientMessage.newBuilder()
-				.setLaunchGameRoom(LaunchGameRoom.newBuilder().setRoomName(roomName).build()).build().toByteArray());
+				.setLaunchGameRoom(LaunchGameRoom.newBuilder().getDefaultInstanceForType()).build().toByteArray());
 		return handleLevelInitializedResponse(readServerResponse());
 	}
 
@@ -87,11 +87,10 @@ public abstract class AbstractClient implements AbstractGameModelController {
 
 	public Set<String> getPlayerNames(String roomName) {
 		writeRequestBytes(ClientMessage.newBuilder()
-				.setGetPlayerNames(GetPlayerNames.newBuilder().setRoomName(roomName).build()).build().toByteArray());
+				.setGetPlayerNames(GetPlayerNames.newBuilder().getDefaultInstanceForType()).build().toByteArray());
 		return handlePlayerNamesResponse(readServerResponse());
 	}
-	
-	
+
 	/**
 	 * Save the current state of the current level a game being played or authored.
 	 *
@@ -128,8 +127,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetTemplateProperties(GetTemplateProperties.newBuilder().setElementName(elementName).build())
 				.build().toByteArray());
-		Map<String, String> serializedTemplate =
-				handleAllTemplatePropertiesResponse(readServerResponse()).values().iterator().next();
+		Map<String, String> serializedTemplate = handleAllTemplatePropertiesResponse(readServerResponse()).values()
+				.iterator().next();
 		return serializationUtils.deserializeElementTemplate(serializedTemplate);
 	}
 
@@ -137,8 +136,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	public Map<String, Map<String, Object>> getAllDefinedTemplateProperties() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetAllTemplateProperties(GetAllTemplateProperties.getDefaultInstance()).build().toByteArray());
-		Map<String, Map<String, String>> serializedTemplates =
-				handleAllTemplatePropertiesResponse(readServerResponse());
+		Map<String, Map<String, String>> serializedTemplates = handleAllTemplatePropertiesResponse(
+				readServerResponse());
 		return serializationUtils.deserializeTemplates(serializedTemplates);
 	}
 
@@ -241,7 +240,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		}
 		return new byte[len];
 	}
-	
+
 	protected SerializationUtils getSerializationUtils() {
 		return serializationUtils;
 	}
@@ -321,7 +320,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 				templateProperty -> templatePropertiesMap.put(templateProperty.getName(), templateProperty.getValue()));
 		return templatePropertiesMap;
 	}
-	
+
 	private Set<String> handleGameRoomsResponse(ServerMessage serverMessage) {
 		if (serverMessage.hasGameRooms()) {
 			return serverMessage.getGameRooms().getRoomNamesList().stream().collect(Collectors.toSet());
@@ -339,7 +338,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		}
 		return new HashSet<>();
 	}
-	
+
 	private String handleGameRoomCreationResponse(ServerMessage serverMessage) {
 		String gameRoomId = "";
 		if (serverMessage.hasGameRoomCreationStatus()) {
@@ -376,7 +375,6 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		return LevelInitialized.getDefaultInstance();
 	}
 
-	
 	private synchronized void setupChatSocketAndStreams() {
 		try {
 			// Make connection and initialize streams
