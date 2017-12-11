@@ -1,5 +1,7 @@
 package engine.behavior.firing;
 
+import javafx.geometry.Point2D;
+
 /**
  * Represents strategy of not firing at all, applies to sprites whose firing is
  * to be disabled
@@ -17,7 +19,7 @@ public class NoopFiringStrategy implements FiringStrategy {
 	}
 
 	@Override
-	public boolean shouldFire() {
+	public boolean shouldFire(double targetLocation) {
 		return false;
 	}
 	

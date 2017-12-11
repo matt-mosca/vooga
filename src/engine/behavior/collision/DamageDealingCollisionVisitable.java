@@ -8,16 +8,19 @@ import engine.behavior.ElementProperty;
  *
  * @author radithya
  */
-public class DamageDealingCollisionVisitable implements CollisionVisitable {
+public abstract class DamageDealingCollisionVisitable implements CollisionVisitable {
 
     private double damageToDeal;
     private String audioUrl;
-
+    private double blastRadius;
+    
     public DamageDealingCollisionVisitable(
             @ElementProperty(value = "damageToDeal", isTemplateProperty = true) double damageToDeal,
-            @ElementProperty(value = "collisonAudioUrl", isTemplateProperty = true) String audioUrl) {
+            @ElementProperty(value = "collisonAudioUrl", isTemplateProperty = true) String audioUrl,
+            @ElementProperty(value = "blastRadius", isTemplateProperty = true) double blastRadius) {
         this.damageToDeal = damageToDeal;
         this.audioUrl = audioUrl;
+        this.blastRadius = blastRadius;
     }
 
     @Override
@@ -25,7 +28,10 @@ public class DamageDealingCollisionVisitable implements CollisionVisitable {
         v.visit(this);
     }
 
-    double getDamageToDeal() {
+    public double getBlastRadius() {
+    	return blastRadius;
+    }
+    public double getDamageToDeal() {
         return damageToDeal;
     }
 

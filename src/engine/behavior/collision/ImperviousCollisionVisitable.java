@@ -22,5 +22,9 @@ public class ImperviousCollisionVisitable implements CollisionVisitable {
 	public String getAudioUrl() {
 		return null;
 	}
+	
+	public double getBlastRadius() {
+		return 0;
+	}
 
 }
