@@ -16,7 +16,7 @@ import javafx.geometry.Point2D;
  * @author Ben Schwennesen
  */
 public class SpriteQueryHandler {
-
+	
 	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(int elementPlayerId, Point2D startCoordinates,
 			List<GameElement> levelGameElements) {
 		GameElement gameElementToTrack = getNearestEnemy(elementPlayerId, startCoordinates, levelGameElements);
