@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Controls the model for a game being authored. Allows the view to modify and
@@ -218,6 +219,16 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
+	public Map<String, Collection<Integer>> getCurrentVictoryConditions() {
+		return getCurrentConditions(VICTORY);
+	}
+
+	@Override
+	public Map<String, Collection<Integer>> getCurrentDefeatConditions() {
+		return getCurrentConditions(DEFEAT);
+	}
+
+	@Override
 	public Map<String, List<Map<String, Object>>> getAllDefinedElementUpgrades() {
 		return getGameElementUpgrader().getSpriteUpgradesForEachTemplate();
 	}
@@ -262,6 +273,24 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	private String getNameForWaveNumber(int level, int num) {
 		return WAVE + WAVE_DELIMITER + Integer.toString(level) + WAVE_DELIMITER + Integer.toString(num);
+	}
+
+	private Map<String, Collection<Integer>> getCurrentConditions(String conditionType) {
+		Map<String, Collection<Integer>> conditionsToLevels = new HashMap<>();
+		List<Map<String, String>> levelConditions = getLevelConditions();
+		List<String> levelSettingsForConditionType = levelConditions.stream()
+				.map(conditionMap -> conditionMap.get(conditionType)).collect(Collectors.toList());
+		for (int level = 1; level <= getLevelsForCurrentGame(); level++) {
+			String condition = levelSettingsForConditionType.get(level);
+			Collection<Integer> levelsWithCondition = conditionsToLevels.getOrDefault(condition, new ArrayList<>());
+			levelsWithCondition.add(level);
+			conditionsToLevels.put(condition, levelsWithCondition);
+		}
+		return conditionsToLevels;
+	}
+	
+	private int getLevelsForCurrentGame() {
+		return getNumLevelsForGame(getGameName(), true);
 	}
 
 	public static void main(String[] args) {
