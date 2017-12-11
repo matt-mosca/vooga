@@ -17,12 +17,14 @@ import javafx.geometry.Point2D;
 
 public class PathList extends LinkedList {
 
+	private static final long serialVersionUID = -7588980448693010399L;
+
 	private PathNode current;
 	private PathNode head;
 	private PathPoint headpoint;
 	private PathNode constructor;
 	private LinkedList<PathPoint> points;
-	
+
 	public PathList(PathPoint start) {
 		points = new LinkedList<>();
 		head = new PathNode(start);
@@ -83,6 +85,8 @@ public class PathList extends LinkedList {
 		private double x;
 		private double y;
 		private PathNode next = null;
+
+		private static final long serializationUID = 1113799434508676095L;
 		
 		private PathNode(PathPoint next) {
 			this.x = next.getCenterX();

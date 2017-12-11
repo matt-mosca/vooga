@@ -119,13 +119,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myInventoryToolBar.initializeInventory();
 		hud.initialize(myController.getResourceEndowments());
 		hud.toFront();
+		volumeSlider = new Slider(0,1,.1);
+		rootAdd(volumeSlider);
+		volumeSlider.setLayoutY(7);
+		volumeSlider.setLayoutX(55);
 		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/128 - battle (vs gym leader).mp3");
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
-		volumeSlider.setLayoutY(7);
-		volumeSlider.setLayoutX(55);
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
@@ -153,8 +155,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		myLeftBar.getChildren().add(levelSelector);
 		rootAdd(myLeftBar);
-		volumeSlider = new Slider(0, 1, .1);;
-		rootAdd(volumeSlider);
 		
 	}
 
