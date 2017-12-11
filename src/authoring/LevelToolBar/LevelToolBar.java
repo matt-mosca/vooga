@@ -94,7 +94,6 @@ public class LevelToolBar extends VBox {
 				e->{ try {
 			myController.setWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
 		} catch (ReflectiveOperationException exc) {
-			//
 		}});
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
@@ -116,14 +115,8 @@ public class LevelToolBar extends VBox {
 		myProperties.put("imageWidth", "40");
 		myProperties.put("imageUrl", "monkey.png");
 		myProperties.put("name", "tower1");
-//		myProperties.put("")
-//		elementsToSpawn = new ArrayList<String>();
-//		elementsToSpawn.add("Tower1");
-//		elementsToSpawn.add("Tower2");
-//		elementsToSpawn.add("Tower3");
-		
-//		System.out.println(myController.getAuxiliaryElementConfigurationOptions(myProperties));
-//		myController.defineElement("tower1", myProperties);
+		elementsToSpawn = new ArrayList<String>();
+		elementsToSpawn.add("Tower1");
 
 	}
 	
