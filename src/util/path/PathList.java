@@ -41,7 +41,6 @@ public class PathList extends LinkedList {
 	
 	public Point2D next() {
 		if(current == null) return null;
-		System.out.println(current.x + "  " + current.y);
 		double x = current.x;
 		double y = current.y;
 		current = current.next;
