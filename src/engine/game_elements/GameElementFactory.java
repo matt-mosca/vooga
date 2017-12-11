@@ -6,7 +6,7 @@ import util.io.SerializationUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
-import java.net.StandardSocketOptions;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +105,13 @@ public final class GameElementFactory {
             throws ReflectiveOperationException {
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
+        System.out.println(chosenSubclassName);
+        System.out.println(chosenParameterSubclass);
+        System.out.println(Arrays.asList(constructorParameters));
+        System.out.println(chosenParameterSubclass.getConstructors()[0].getParameterCount());
+        System.out.println(Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameterTypes()));
+
+
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
     }
 
