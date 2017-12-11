@@ -7,6 +7,7 @@ import display.interfaces.ClickableInterface;
 import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,8 +40,9 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private NewGameButton myNewGameButton;
 	private EditGameButton myEditGameButton;
 	private PlayExistingGameButton myLoadGameButton;
-	private MediaPlayerFactory mediaPlayerFactory;
-	private MediaPlayer mediaPlayer;
+	private MuteButton myMuteButton;
+	private MediaPlayerFactory myMediaPlayerFactory;
+	private MediaPlayer myMediaPlayer;
 
 
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
@@ -54,9 +56,11 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
-		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/101 - opening.mp3");
-		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
-		mediaPlayer.play();
+		myMediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/101 - opening.mp3");
+		myMediaPlayer = myMediaPlayerFactory.getMediaPlayer();
+		myMediaPlayer.play();
+		myMuteButton = new MuteButton(myMediaPlayer);
+		rootAdd(myMuteButton);
 	}
 
 	private void basicSetup() {
@@ -160,6 +164,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
 		getStage().setScene(myScene.getScene());
+		myMediaPlayer.stop();
 	}
 
 	@Override
@@ -174,7 +179,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
 		getStage().setScene(myScene.getScene());
-		mediaPlayer.stop();
+		myMediaPlayer.stop();
 	}
 
 	@Override
@@ -186,6 +191,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
 		getStage().setScene(myScene.getScene());
+		myMediaPlayer.stop();
 		
 	}
 	
