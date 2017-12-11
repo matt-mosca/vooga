@@ -68,6 +68,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private TransitorySplashScreen myTransition;
 	private WinScreen myWinScreen;
 	private GameOverScreen myGameOver;
+	private MultiplayerLobby myMulti;
 	private Scene myTransitionScene;
 	private VBox myLeftBar;
 	private PlayArea myPlayArea;
@@ -83,8 +84,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
 	
-//	private ButtonFactory buttonMaker;
-//	private Button testButton;
+	private ButtonFactory buttonMaker;
+	private Button testButton;
 
 	private int level = 1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
@@ -99,14 +100,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		
-//		buttonMaker = new ButtonFactory();
-//		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> openSesame(stage));
+		buttonMaker = new ButtonFactory();
+		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> testOpenMultiplayer(stage));
 		
 		myController = isMultiPlayer ? new MultiPlayerClient(new SerializationUtils()) : new PlayController();
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
 		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
 		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
+		myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage);
 		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
 		hud = new HUD(width);
@@ -140,6 +142,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		stage.setScene(myWinScreen.getScene());
 //		stage.setScene(myGameOver.getScene());
 //	}
+	
+	private void testOpenMultiplayer(Stage stage) {
+		stage.setScene(myMulti.getScene());
+	}
 
 	public void tester() {
 		for (int i = 0; i < 100; i++) {
@@ -158,7 +164,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(myLeftBar);
 		
 	}
-
+	
 	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		try {
@@ -166,8 +172,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				games.add(title);
 			}
 			Collections.sort(games);
-			ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
+			ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Saved games", games);
 			loadChoices.setTitle("Load Game");
+			loadChoices.setHeaderText("Choose a saved game.");
 			loadChoices.setContentText(null);
 
 			Optional<String> result = loadChoices.showAndWait();
@@ -235,8 +242,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(play);
 		play.setLayoutY(pause.getLayoutY() + 30);
 		
-//		rootAdd(testButton);
-//		testButton.setLayoutY(play.getLayoutY() + 30);
+		rootAdd(testButton);
+		testButton.setLayoutY(play.getLayoutY() + 30);
 	}
 
 	private void step() {
