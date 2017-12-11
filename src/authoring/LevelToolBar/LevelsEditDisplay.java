@@ -28,7 +28,7 @@ public class LevelsEditDisplay {
 		myScene = new Scene(myRoot, SIZE, SIZE);
 		resourceEditor = new ResourceDisplay(controller);
 		gameEnder = new GameEnder(controller, display);
-		recorder = new GameEnderRecorder(gameEnder.getSelectedLevels());
+		recorder = new GameEnderRecorder();
 		gameEnder.setRecorder(recorder);
 		myRoot.setLeft(gameEnder);
 		myRoot.setRight(resourceEditor);
