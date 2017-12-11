@@ -211,24 +211,6 @@ public class LevelToolBar extends VBox {
 					e.printStackTrace();
 				}
 			}
-//			if (waveToId.containsKey(levelDotWave)) {
-////				try {
-////					myController.editWaveProperties(waveToId.get(levelDotWave), 
-////							myProperties, elementsToSpawn, location);
-////				} catch (ReflectiveOperationException e) {
-////					System.out.println("Can't edit wave properties");
-////					e.printStackTrace();
-////				}
-//				waveToImage.get(levelDotWave).addAll(imageList);
-//			} else {
-//				try {
-//					waveToId.put(levelDotWave, myController.createWaveProperties(myProperties, elementsToSpawn, location));
-//				} catch (ReflectiveOperationException e) {
-//					System.out.println("Can't create wave properties");
-//					e.printStackTrace();
-//				}
-//				waveToImage.put(levelDotWave, imageList);
-//			}
 		}
 		updateImages();
 	}
