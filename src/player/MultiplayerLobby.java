@@ -243,7 +243,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	
 	//This method or an external method would be called when "START GAME" is pressed (serves as action for button)
 	private void startGame() {
-		multiClient.launchGameRoom("circularMonkey.voog_1");
+		multiClient.launchGameRoom();
 		getStage().setScene(playDisplay.getScene());
 //		multiClient.launchGameRoom(currentLobby);
 	}
