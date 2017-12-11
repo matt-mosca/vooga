@@ -8,8 +8,10 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -23,14 +25,18 @@ public class PathList extends LinkedList {
 	private PathNode head;
 	private PathPoint headpoint;
 	private PathNode constructor;
-	private LinkedList<PathPoint> points;
+	private Map<PathPoint, PathNode> pointsToNodes;
+	private LinkedList<PathPoint> orderedPoints;
 
 	public PathList(PathPoint start) {
-		points = new LinkedList<>();
+		pointsToNodes = new HashMap<>();
+		orderedPoints = new LinkedList<>();
 		head = new PathNode(start);
 		headpoint = start;
 		current = head;
 		constructor = head;
+		
+		orderedPoints.add(start);
 	}
 	
 	public Point2D next() {
@@ -42,20 +48,23 @@ public class PathList extends LinkedList {
 	}
 	
 	protected boolean add(PathPoint point) {
-		PathNode node = new PathNode(point);
-		constructor.next = node;
-		constructor = constructor.next;
-		if(points.contains(point)) {
+		orderedPoints.add(point);
+		if(pointsToNodes.containsKey(point)) {
+			constructor.next = pointsToNodes.get(point);
+			constructor = constructor.next;
 			return false;
 		}else {
-			points.add(point);
+			PathNode node = new PathNode(point);
+			constructor.next = node;
+			constructor = constructor.next;
+			pointsToNodes.put(point, node);
 			return true;
 		}
 	}
 	
 	public PathList clone() {
 		PathList copy = new PathList(headpoint);
-		for(PathPoint point:points) {
+		for(PathPoint point:orderedPoints) {
 			copy.add(point);
 		}
 		return copy;
@@ -70,7 +79,7 @@ public class PathList extends LinkedList {
 		if(!directory.exists()) {
 			directory.mkdir();
 		}
-		String filePath = PATH_FILE_DIRECTORY + PATH + points.hashCode() + SERIALIZED_EXTENSION;
+		String filePath = PATH_FILE_DIRECTORY + PATH + orderedPoints.hashCode() + SERIALIZED_EXTENSION;
 		File file = new File(RESOURCES_ROOT + filePath);
 		if (!file.exists()) {
 			file.createNewFile();
