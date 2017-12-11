@@ -1,0 +1,60 @@
+syntax = "proto2";
+
+/*
+	Top-Level message
+*/
+
+message AuthoringServerMessage {
+	repeated ElementBaseConfigurationOption elementBaseConfigurationOptions = 1;
+	repeated AuxiliaryElementConfigurationOption auxiliaryElementConfigurationOptions = 2;
+	optional int32 currentLevel = 3;
+	optional SpriteUpdate moveElement = 4;
+	repeated ElementUpgrade allDefinedElementUpgrades = 5;
+	repeated DoubleProperty resourceEndowments = 6;
+	optional int32 createdWaveNumber = 7;
+	repeated StringProperty waveProperties = 8;
+	repeated string possibleVictoryConditions = 9;
+	repeated string possibleDefeatConditions = 10;
+	repeated ConditionAssignment currentVictoryConditions = 11;
+	repeated ConditionAssignment currentDefeatConditions = 12;
+}
+
+message ElementBaseConfigurationOption {
+	required string configKey = 1;
+	repeated string configOptions = 2;
+}
+
+message AuxiliaryElementConfigurationOption {
+	required string configName = 1;
+	required string configClassName = 2;
+}
+
+message SpriteUpdate {
+	required int32 spriteId = 1;
+	required double newX = 2;
+	required double newY = 3;
+}
+
+message ElementUpgrade {
+	required string elementName = 1;
+	repeated StringProperties elementUpgrades = 2;
+}
+
+message DoubleProperty {
+	required string name = 1;
+	required double value = 2;
+}
+
+message StringProperties {
+	repeated StringProperty items = 1;
+}
+
+message StringProperty {
+	required string name = 1;
+	required string value = 2;
+}
+
+message ConditionAssignment {
+	required string conditionName = 1;
+	repeated int32 levelsUsingCondition = 2;
+}

@@ -63,8 +63,12 @@ public class GameEnder extends VBox{
 		for(int i = 0; i<myDisplay.getMaxLevel(); i++) {
 			myController.setLevel(i+1);
 			if (checkBoxes.get(i).isSelected()) {
-			myController.setVictoryCondition(victory.getValue());
-			myController.setDefeatCondition(defeat.getValue());	
+				if(victory.getValue()!=null) {
+					myController.setVictoryCondition(victory.getValue());
+				}
+				if(defeat.getValue()!=null) {
+					myController.setDefeatCondition(defeat.getValue());	
+				}
 			selectedLevels.add(i+1);
 		}
 	}

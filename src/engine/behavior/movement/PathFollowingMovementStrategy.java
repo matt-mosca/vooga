@@ -26,6 +26,7 @@ public class PathFollowingMovementStrategy extends TargetedMovementStrategy {
 			@ElementProperty(value = "pathListFile", isTemplateProperty = true) String pathListFile) {
 		super(new Point2D(0,0),0, 0, velocity);
 		// TODO - deserialize
+		System.out.println(pathListFile);
 		coordinates = deserializePath(pathListFile);
 		Point2D startCoordinates = coordinates.next();
 		setX(startCoordinates.getX());

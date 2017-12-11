@@ -56,6 +56,7 @@ public final class GameElement {
 	}
 
 	public String fire() {
+		System.out.println("-----------------------------------FIRE: "+firingStrategy.fire());
 		return firingStrategy.fire();
 	}
 	
