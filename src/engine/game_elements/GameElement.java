@@ -4,6 +4,7 @@ import engine.behavior.collision.CollisionHandler;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.TrackingPoint;
+import factory.AudioClipFactory;
 import javafx.scene.image.ImageView;
 
 import javafx.geometry.Point2D;
@@ -55,7 +56,7 @@ public final class GameElement {
 	public String fire() {
 		return firingStrategy.fire();
 	}
-
+	
 	/**
 	 * Check for a collision with another sprite.
 	 *
@@ -108,6 +109,14 @@ public final class GameElement {
 	public double getY() {
 		return movementStrategy.getCurrentY();
 	}
+	
+	public String getFiringAudio() {
+		return firingStrategy.getAudioUrl();
+	}
+	
+	public String getCollisionAudio() {
+		return collisionHandler.getAudioUrl();
+	}
 
 	public boolean shouldRemoveUponCompletion() {
 		return movementStrategy.removeUponCompletion();
@@ -119,6 +128,10 @@ public final class GameElement {
 
 	public ImageView getGraphicalRepresentation() {
 		return collisionHandler.getGraphicalRepresentation();
+	}
+	
+	public String getImageUrl() {
+		return collisionHandler.getImageUrl();
 	}
 
 	public void setX(double newX) {

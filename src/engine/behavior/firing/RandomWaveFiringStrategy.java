@@ -1,5 +1,7 @@
 package engine.behavior.firing;
 
+import engine.behavior.ElementProperty;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +18,11 @@ public class RandomWaveFiringStrategy extends AbstractWaveFiringStrategy {
     private List<String> templates;
     private List<Double> probabilities;
 
-    public RandomWaveFiringStrategy(Map<String, Double> fireProbabilities, double attackPeriod, int totalWaves) {
+    public RandomWaveFiringStrategy(
+            @ElementProperty(value = "fireProbabilities", isTemplateProperty = true)
+                    Map<String, Double> fireProbabilities,
+            @ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod,
+            @ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
         super(fireProbabilities.keySet(), attackPeriod, totalWaves);
         templates = new ArrayList<>(fireProbabilities.keySet());
         double cumulativeProbability = 0;
@@ -35,4 +41,10 @@ public class RandomWaveFiringStrategy extends AbstractWaveFiringStrategy {
         int insertionPoint = -1 * Collections.binarySearch(probabilities, movementRand) - 1;
         return templates.get(insertionPoint);
     }
+
+	@Override
+	public String getAudioUrl() {
+		return null;
+	}
+
 }

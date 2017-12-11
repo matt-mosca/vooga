@@ -1,45 +1,57 @@
 package player;
 
-import engine.play_engine.PlayController;
+import networking.protocol.PlayerServer.NewSprite;
+import util.path.Path;
+import util.protocol.ClientMessageUtils;
+import engine.PlayModelController;
 
 import java.util.Map;
 
-import authoring.path.Path;
 import display.interfaces.Droppable;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
 import display.sprites.InteractiveObject;
 
-public class PlayArea extends Pane implements Droppable{
-	private PlayController myController;
+public class PlayArea extends Pane implements Droppable {
+	private PlayModelController myController;
 	private double lastX;
 	private double lastY;
-	
-	public PlayArea(PlayController controller, int width, int height) {
+	private ClientMessageUtils clientMessageUtils;
+
+	public PlayArea(PlayModelController controller, ClientMessageUtils clientMessageUtils, int width, int height) {
 		myController = controller;
+		this.clientMessageUtils = clientMessageUtils;
 		this.setLayoutX(310);
 		this.setLayoutY(10);
-//		this.setLayoutY(50);
+		// this.setLayoutY(50);
 		this.setPrefHeight(width);
 		this.setPrefWidth(height);
 		this.getStylesheets().add("player/resources/playerPanes.css");
 		this.getStyleClass().add("play-area");
-//		this.setStyle("-fx-background-color:white");
+		// this.setStyle("-fx-background-color:white");
 	}
-	
+
 	protected void placeInGrid(InteractiveObject currObject) {
 		lastX = currObject.getX();
 		lastY = currObject.getY();
-		myController.placeElement(currObject.getElementName(), new Point2D(currObject.getX(), currObject.getY()));
+		Point2D startLocation = new Point2D(currObject.getX(), currObject.getY());
+		try {
+			NewSprite newSprite = myController.placeElement(currObject.getElementName(), startLocation);
+			clientMessageUtils.addNewSpriteToDisplay(newSprite);
+		} catch (ReflectiveOperationException failedToPlaceElementException) {
+			// todo - handle
+		}
+
 	}
 
 	@Override
 	public void droppedInto(InteractiveObject interactive) {
-		if(!interactive.intersects(this.getLayoutBounds())) {
+		if (!interactive.intersects(this.getLayoutBounds())) {
 			interactive.setX(lastX);
 			interactive.setY(lastY);
-		}else {
+		} else {
 			placeInGrid(interactive);
 		}
 	}
@@ -52,12 +64,11 @@ public class PlayArea extends Pane implements Droppable{
 	@Override
 	public void freeFromDroppable(InteractiveObject interactive) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Map<Path, Color> getPaths() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -87,7 +87,7 @@ public abstract class ScreenDisplay {
 		droppable = drop;
 	}
 	
-	public abstract void save(File saveFile);
+	public abstract void save();
 	
 	public abstract void listItemClicked(ImageView object);
 

@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import util.Exclude;
@@ -12,9 +12,6 @@ import util.Exclude;
  */
 public class CollisionHandler {
 
-    // TODO - default from prop getter
-    private final String DEFAULT_IMAGE_PATH = "https://users.cs.duke.edu/~rcd/images/rcd.jpg";
-
     private CollisionVisitor collisionVisitor;
     private CollisionVisitable collisionVisitable;
 
@@ -24,9 +21,9 @@ public class CollisionHandler {
     @Exclude private ImageView graphicalRepresentation;
 
     public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
-                            @ParameterName("imageUrl") String imageUrl,
-                            @ParameterName("imageHeight") double imageHeight,
-                            @ParameterName("imageWidth") double imageWidth) {
+                            @ElementProperty(value = "imageUrl", isTemplateProperty = true) String imageUrl,
+                            @ElementProperty(value = "imageHeight", isTemplateProperty = true) double imageHeight,
+                            @ElementProperty(value = "imageWidth", isTemplateProperty = true) double imageWidth) {
         this.collisionVisitor = collisionVisitor;
         this.collisionVisitable = collisionVisitable;
         this.imageUrl = imageUrl;
@@ -88,5 +85,13 @@ public class CollisionHandler {
         	constructGraphicalRepresentation();    		
     	}
         return graphicalRepresentation;
+    }
+    
+    public String getImageUrl() {
+    		return imageUrl;
+    }
+    
+    public String getAudioUrl() {
+    	return collisionVisitable.getAudioUrl();
     }
 }

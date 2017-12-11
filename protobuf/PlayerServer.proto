@@ -5,23 +5,35 @@ syntax="proto2";
 */
 
 message ServerMessage {
-	optional GameRooms gameRooms = 1;
+	optional Games availableGames = 1;
 	optional GameRoomCreationStatus gameRoomCreationStatus = 2;
 	optional GameRoomJoinStatus gameRoomJoinStatus = 3;
 	optional GameRoomLaunchStatus gameRoomLaunchStatus = 4;
-	optional PlayerNames playerNames = 5;
-	optional LevelInitialized levelInitialized = 6;
-	optional Update update = 7;
-	optional Inventory inventory = 8;
-	optional TemplateProperties templateProperties = 9;
+	optional GameRooms gameRooms = 5;
+	optional PlayerNames playerNames = 6;
+	optional ReadyForNextLevel readyForNextLevel = 7;
+	optional LevelInitialized levelInitialized = 8;
+	optional Update update = 9;
+	optional Inventory inventory = 10;
+	repeated TemplateProperties templateProperties = 11;
+	repeated ElementCost elementCosts = 12;
+	optional NewSprite elementPlaced = 13;
+	repeated NewSprite levelSprites = 14;
+	optional NumberOfLevels numLevels = 15;
+	optional string error = 16;
 }
 
 /*
 	Pre-Game messages
 */
 
-message GameRooms {
-	repeated string roomNames = 1;
+message Games {
+	repeated Game games = 1;
+}
+
+message Game {
+	required string name = 1;
+	required string description = 2;
 }
 
 message GameRoomCreationStatus {
@@ -38,14 +50,23 @@ message GameRoomJoinStatus {
 	TODO : Send over static files (images) with custom message type to ensure all images are available to client with specified URL?
 	OR : Client can use Server URL to fetch images remotely? Separate (HTTP?) endpoint for that?
 */
+
 message GameRoomLaunchStatus {
-	optional Update initialState = 1;
-	optional string error = 2;
+	optional LevelInitialized initialState = 1;
+	optional string error = 2; // remove?
+}
+
+message GameRooms {
+	repeated string roomNames = 1;
 }
 
 message PlayerNames {
 	repeated string userNames = 1;
 	optional string error = 2;
+}
+
+message ReadyForNextLevel {
+	required bool isReady = 1;
 }
 
 
@@ -54,8 +75,10 @@ message PlayerNames {
 */
 
 message LevelInitialized {
-	required Inventory inventory = 1;
-	required Update spritesAndStatus = 2;
+	optional Inventory inventory = 1;
+	optional Update spritesAndStatus = 2;
+	optional int32 numLevels = 3;
+	optional string error = 4;
 }
 
 message Update {
@@ -73,6 +96,7 @@ message NewSprite {
 	required double imageWidth = 4;
 	required double spawnX = 5;
 	required double spawnY = 6;
+	optional string error = 7;
 }
 
 message SpriteUpdate {
@@ -90,7 +114,7 @@ message StatusUpdate {
 	required bool isWon = 2;
 	required bool isLost = 3;
 	required bool inPlay = 4;
-	required bool isPaused = 5;
+	required int32 currentLevel = 5;
 }
 
 message ResourceUpdate {
@@ -99,16 +123,24 @@ message ResourceUpdate {
 
 message Inventory {
 	repeated string templates = 1;
-}
-
-message Resource {
-	required string name = 1;
-	required double amount = 2;
+	optional string error = 2;
 }
 
 message TemplateProperties {
 	required string elementName = 1;
 	repeated TemplateProperty property = 2;
+	optional string error = 3;
+}
+
+message ElementCost {
+	required string elementName = 1;
+	repeated Resource costs = 2;
+	optional string error = 3;
+}
+
+message NumberOfLevels {
+	required int32 numLevels = 1;
+	optional string error = 2;
 }
 
 message TemplateProperty {
@@ -116,3 +148,8 @@ message TemplateProperty {
 	required string value = 2;
 }
 
+
+message Resource {
+	required string name = 1;
+	required double amount = 2;
+}

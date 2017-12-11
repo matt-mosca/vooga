@@ -28,4 +28,7 @@ public interface FiringStrategy {
 	 * @return
 	 */
 	boolean isExpended();
+	
+	String getAudioUrl();
+	
 }

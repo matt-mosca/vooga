@@ -12,8 +12,8 @@ import java.util.Map;
  */
 public class Bank {
 
-	private Map<String, Double> resourceEndowments;
-	private Map<String, Map<String, Double>> unitCosts;
+	private Map<String, Double> resourceEndowments = new HashMap<>();
+	private Map<String, Map<String, Double>> unitCosts = new HashMap<>();
 
 	public Bank fromBank() {
 		Bank bankCopy = new Bank();
@@ -27,7 +27,7 @@ public class Bank {
 	}
 	
 	public void setResourceEndowments(Map<String, Double> resourceEndowments) {
-		this.resourceEndowments = resourceEndowments;
+		this.resourceEndowments = new HashMap<>(resourceEndowments);
 	}
 
 	public void setUnitCost(String unitName, Map<String, Double> costsForUnitName) {
@@ -60,6 +60,10 @@ public class Bank {
 	public Map<String, Map<String, Double>> getUnitCosts() {
 		return unitCosts;
 	}
+	
+	public Map<String, Double> getCostsForUnit(String unitName) {
+		return unitCosts.get(unitName);
+	}
 
 	/**
 	 * Purchase the given quantity of the unit if it can be afforded, update bank
@@ -74,9 +78,10 @@ public class Bank {
 	 */
 	public boolean purchase(String unitName, int quantity) {
 		Map<String, Double> resourcesAfterPurchase = new HashMap<>(resourceEndowments);
-		for (String resourceName : resourcesAfterPurchase.keySet()) {
+		Map<String, Double> costsForUnit = getCostsForUnit(unitName);
+		for (String resourceName : costsForUnit.keySet()) {
 			double newQuantity = resourcesAfterPurchase.get(resourceName)
-					- unitCosts.get(unitName).get(resourceName) * quantity;
+					- costsForUnit.getOrDefault(resourceName, 0.0) * quantity;
 			if (newQuantity <= 0) {
 				return false;
 			}
@@ -87,6 +92,6 @@ public class Bank {
 	}
 	
 	private void setUnitCosts(Map<String, Map<String, Double>> unitCosts) {
-		this.unitCosts = unitCosts;
+		this.unitCosts = new HashMap<>(unitCosts);
 	}
 }

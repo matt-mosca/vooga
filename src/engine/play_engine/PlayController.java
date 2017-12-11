@@ -4,6 +4,9 @@ import engine.AbstractGameController;
 import engine.PlayModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.Update;
 import util.GameConditionsReader;
 
 import java.io.FileNotFoundException;
@@ -37,23 +40,27 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private Method defeatConditionMethod;
 	private int maxLevels = DEFAULT_MAX_LEVELS;
 	private List<Set<Entry<Integer, GameElement>>> savedList;
+	private Update latestUpdate;
 
 	public PlayController() {
 		super();
-		savedList = new ArrayList<Set<Entry<Integer, GameElement>>>();
+		savedList = new ArrayList<>();
 		elementManager = new ElementManager(getGameElementFactory(), getSpriteQueryHandler());
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
+		latestUpdate = Update.getDefaultInstance();
 	}
 
 	@Override
-	public void loadOriginalGameState(String saveName, int level) throws IOException {
-		super.loadOriginalGameState(saveName, level);
+	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
+		LevelInitialized levelData = super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
+		return levelData;
 	}
 
 	@Override
-	public void loadSavedPlayState(String savePlayStateName) throws FileNotFoundException {
+	public LevelInitialized loadSavedPlayState(String savePlayStateName) throws FileNotFoundException {
+		Collection<GameElement> oldGameElements = getLevelSprites().get(getCurrentLevel());
 		// Get number of levels in play state
 		int lastLevelPlayed = getNumLevelsForGame(savePlayStateName, false);
 		// Load levels up to that level, as played (not original)
@@ -62,44 +69,38 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			loadLevelData(savePlayStateName, level, false);
 		}
 		updateForLevelChange(savePlayStateName, lastLevelPlayed);
-	}
-
-	private void updateForLevelChange(String saveName, int level) {
-		setLevel(level);
-		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
-		elementManager.setCurrentElements(getLevelSprites().get(level));
-		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
-		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
+		return packageStateChange(oldGameElements);
 	}
 
 	@Override
-	public void update() {
+	public Update update() {
 		if (inPlay) {
 			/*
-<<<<<<< HEAD
-			if (checkLevelClearanceCondition()) {
-				if (checkVictoryCondition()) {
-					registerVictory();
-				} else {
-					registerLevelCleared();
-				}
-			} else if (checkDefeatCondition()) {
-				registerDefeat();
-			} else {
-				// Move elements, check and handle collisions
-				elementManager.update();
-			}
-			*/
+			 * Uncomment when front end is ready to set wave properties fully (team & no. of
+			 * attacks of wave) if (checkLevelClearanceCondition()) { if
+			 * (checkVictoryCondition()) { registerVictory(); } else {
+			 * registerLevelCleared(); } } else if (checkDefeatCondition()) {
+			 * registerDefeat(); } else { // Move elements, check and handle collisions
+			 * elementManager.update(); }
+			 */
 			savedList.add(getSpriteIdMap().entrySet());
 			elementManager.update();
+			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
+			List<GameElement> updatedElements = elementManager.getUpdatedElements();
 			List<GameElement> deadElements = elementManager.getDeadElements();
-			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
-			for (GameElement s : elementManager.getNewlyGeneratedElements()) {
-				cacheAndCreateIdentifier(s);
+			for (GameElement element : newlyGeneratedElements) {
+				cacheAndCreateIdentifier(element);
 			}
+			// Package these changes into an Update message
+			latestUpdate = packageSpriteUpdates(newlyGeneratedElements, updatedElements, deadElements);
+			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
+			elementManager.clearUpdatedElements();
+			return latestUpdate;
 		}
+		// If not in play, only one of the status properties could have changed, yes?
+		return packageStatusUpdate();
 	}
 
 	@Override
@@ -123,15 +124,18 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public Collection<Integer> getLevelSprites(int level) throws IllegalArgumentException {
-		assertValidLevel(level);
+	public Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException {
+		/*assertValidLevel(level);
 		Collection<GameElement> levelGameElements = elementManager.getCurrentElements();
-		return getIdsCollectionFromSpriteCollection(levelGameElements);
+		return getIdsCollectionFromSpriteCollection(levelGameElements);*/
+		return null;
 	}
 
 	@Override
-	public int placeElement(String elementTemplateName, Point2D startCoordinates) {
+	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) throws ReflectiveOperationException{
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
+			// TODO - keep track of the resources that were changed in this cycle, and only
+			// send them to client?
 			return super.placeElement(elementTemplateName, startCoordinates);
 		}
 		// TODO - Custom Exception ?
@@ -139,18 +143,32 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public void upgradeElement(int elementId) throws IllegalArgumentException {
+	public void upgradeElement(int elementId) throws IllegalArgumentException, ReflectiveOperationException {
 		if (!getSpriteIdMap().containsKey(elementId)) {
 			throw new IllegalArgumentException();
 		}
 		GameElement gameElement = getSpriteIdMap().get(elementId);
 		gameElement = getGameElementUpgrader().upgradeSprite(gameElement);
 		getSpriteIdMap().put(elementId, gameElement);
-		// I think this will update the reference in the element manager but might need to manually
+		// I think this will update the reference in the element manager but might need
+		// to manually
 	}
 
 	public boolean isLevelCleared() {
 		return levelCleared;
+	}
+
+	@Override
+	public boolean isReadyForNextLevel() {
+		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not last level
+	}
+
+	public Update getLatestUpdate() {
+		return latestUpdate;
+	}
+
+	public Update packageStatusUpdate() {
+		return getServerMessageUtils().packageStatusUpdate(levelCleared, isWon, isLost, inPlay, getCurrentLevel());
 	}
 
 	@Override
@@ -159,6 +177,21 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		if (level > getCurrentLevel() + 1) {
 			throw new IllegalArgumentException();
 		}
+	}
+
+	private void updateForLevelChange(String saveName, int level) {
+		setLevel(level);
+		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
+		elementManager.setCurrentElements(getLevelSprites().get(level));
+		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
+		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
+	}
+
+	private Update packageSpriteUpdates(Collection<GameElement> newlyGeneratedElements,
+			Collection<GameElement> updatedElements, Collection<GameElement> deletedElements) {
+		return getServerMessageUtils().packageUpdates(getFilteredSpriteIdMap(newlyGeneratedElements),
+				getFilteredSpriteIdMap(updatedElements), getFilteredSpriteIdMap(deletedElements), levelCleared, isWon,
+				isLost, inPlay, getResourceEndowments(), getCurrentLevel());
 	}
 
 	private boolean checkVictoryCondition() {
@@ -243,20 +276,5 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private boolean enemyReachedTarget() {
 		return elementManager.enemyReachedTarget();
 	}
-
-	/*
-	 * For testing of reflection and streams public static void main(String[] args)
-	 * { PlayController tester = new PlayController();
-	 * tester.setVictoryCondition("kill all enemies");
-	 * tester.setDefeatCondition("lose all allies"); boolean goodResult =
-	 * tester.checkLevelClearanceCondition(); boolean badResult =
-	 * tester.checkDefeatCondition(); System.out.println("Level cleared? " +
-	 * Boolean.toString(goodResult)); System.out.println("Defeated? " +
-	 * Boolean.toString(badResult)); for (String s :
-	 * tester.conditionsReader.getPossibleVictoryConditions()) {
-	 * System.out.println("Victory Condition : " + s); } for (String s :
-	 * tester.conditionsReader.getPossibleDefeatConditions()) {
-	 * System.out.println("Defeat Condition: " + s); } }
-	 */
 
 }

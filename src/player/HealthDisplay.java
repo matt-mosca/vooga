@@ -9,7 +9,6 @@ public class HealthDisplay extends ValueDisplay {
 		super();
 		setStandardDisplayImage(IMAGE);
 		setStandardImageViewSize();
-		setBoxPosition(XPOS, YPOS);
 		addItemsWithImage();
 	}
 }

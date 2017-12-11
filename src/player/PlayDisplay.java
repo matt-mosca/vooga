@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
 import authoring.PlacementGrid;
+import engine.PlayModelController;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.collision.NoopCollisionVisitable;
@@ -19,63 +22,94 @@ import engine.behavior.firing.NoopFiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.StationaryMovementStrategy;
 import engine.play_engine.PlayController;
+import factory.MediaPlayerFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import networking.MultiPlayerClient;
+import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteDeletion;
+import networking.protocol.PlayerServer.SpriteUpdate;
+import networking.protocol.PlayerServer.Update;
+import util.io.SerializationUtils;
+import util.protocol.ClientMessageUtils;
+import display.factory.ButtonFactory;
 import display.splashScreen.ScreenDisplay;
 import display.splashScreen.SplashPlayScreen;
-import engine.game_elements.GameElement;
 import display.sprites.StaticObject;
 import display.toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private final String COST = "Cost";
-	private final String GAME_FILE_KEY = "gameFile";
-	
+	private final String GAME_FILE_KEY = "displayed-game-name";
+
 	private InventoryToolBar myInventoryToolBar;
+	private TransitorySplashScreen myTransition;
+	private WinScreen myWinScreen;
+	private GameOverScreen myGameOver;
+	private Scene myTransitionScene;
 	private VBox myLeftBar;
-	private List<List<GameElement>> levelSpritesCache;
-	private PlacementGrid myMainGrid;
 	private PlayArea myPlayArea;
 	private List<ImageView> currentElements;
-	private PlayController myController;
-	private CoinDisplay myCoinDisplay;
-	private HealthDisplay myHealthDisplay;
-	private PointsDisplay myPointsDisplay;
+	private PlayModelController myController;
 	private Button pause;
 	private Button play;
 	private Timeline animation;
 	private String gameState;
+	private Slider volumeSlider;
+	private MediaPlayerFactory mediaPlayerFactory;
+	private MediaPlayer mediaPlayer;
+	private ChoiceBox<Integer> levelSelector;
+	private HUD hud;
+	
+//	private ButtonFactory buttonMaker;
+//	private Button testButton;
 
 	private int level = 1;
-	private final FiringStrategy testFiring =  new NoopFiringStrategy();
-	private final MovementStrategy testMovement = new StationaryMovementStrategy();
-	private final CollisionHandler testCollision =
-			new CollisionHandler(new ImmortalCollider(1), new NoopCollisionVisitable(),
-					"https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
+	private final FiringStrategy testFiring = new NoopFiringStrategy();
+	private final MovementStrategy testMovement = new StationaryMovementStrategy(new Point2D(0, 0));
+	private final CollisionHandler testCollision = new CollisionHandler(new ImmortalCollider(1),
+			new NoopCollisionVisitable(), "https://pbs.twimg.com/media/CeafUfjUUAA5eKY.png", 10, 10);
 	private boolean selected = false;
 	private StaticObject placeable;
-	
-	public PlayDisplay(int width, int height, Stage stage) {
+
+	private ClientMessageUtils clientMessageUtils;
+
+	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
-		myController = new PlayController();
+		
+//		buttonMaker = new ButtonFactory();
+//		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> openSesame(stage));
+		
+		myController = isMultiPlayer ? new MultiPlayerClient(new SerializationUtils()) : new PlayController();
+		myTransition = new TransitorySplashScreen(myController);
+		myTransitionScene = new Scene(myTransition, width, height);
+		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
+		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
+		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
+		hud = new HUD(width);
 		styleLeftBar();
 		createGameArea(height - 20);
 		addItems();
@@ -83,15 +117,24 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		initializeGameState();
 		initializeButtons();
 		myInventoryToolBar.initializeInventory();
-		
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                e -> step());
+		hud.initialize(myController.getResourceEndowments());
+		hud.toFront();
+		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/128 - battle (vs gym leader).mp3");
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaPlayer.play();
+		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
 	}
+	
+//	private void openSesame(Stage stage) {
+//		stage.setScene(myWinScreen.getScene());
+//		stage.setScene(myGameOver.getScene());
+//	}
 
 	public void tester() {
 		for (int i = 0; i < 100; i++) {
@@ -100,21 +143,23 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void addItems() {
-		myCoinDisplay = new CoinDisplay();
-		rootAdd(myCoinDisplay);
-		myHealthDisplay = new HealthDisplay();
-		rootAdd(myHealthDisplay);
-		myPointsDisplay = new PointsDisplay();
-		rootAdd(myPointsDisplay);
+		rootAdd(hud);
 		myInventoryToolBar = new InventoryToolBar(this, myController);
+		levelSelector = new ChoiceBox<>();
+		levelSelector.getItems().addAll(1,2,3);
+		levelSelector.setOnAction(e->changeLevel(levelSelector.getSelectionModel().getSelectedItem()));
 		myLeftBar.getChildren().add(myInventoryToolBar);
+		myLeftBar.getChildren().add(levelSelector);
 		rootAdd(myLeftBar);
+		volumeSlider = new Slider(0, 1, .1);;
+		rootAdd(volumeSlider);
+		
 	}
-	
+
 	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		try {
-			for(String title:myController.getAvailableGames().keySet()) {
+			for (String title : myController.getAvailableGames().keySet()) {
 				games.add(title);
 			}
 			Collections.sort(games);
@@ -123,11 +168,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			loadChoices.setContentText(null);
 
 			Optional<String> result = loadChoices.showAndWait();
-			if(result.isPresent()) {
+			if (result.isPresent()) {
 				try {
 					gameState = result.get();
-					myController.loadOriginalGameState(gameState, 1);
-					System.out.println(gameState);
+					clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
 				} catch (IOException e) {
 					// TODO Change to alert for the user
 					e.printStackTrace();
@@ -140,48 +184,38 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			try {
 				Properties exportedGameProperties = new Properties();
 				exportedGameProperties.load(in);
-				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY);
-				System.out.println("GN: " + gameName);
-				myController.loadOriginalGameState(gameName, 1);
+				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
+				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
 			} catch (IOException ioException) {
 				// todo
 			}
 		}
 	}
-	
+
 	protected void reloadGame() throws IOException {
-		myController.loadOriginalGameState(gameState, 1);
+		clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
 	}
-	
-	private void initializeInventory() {
-		Map<String, Map<String, String>> templates = myController.getAllDefinedTemplateProperties();
-		for(String s:myController.getInventory()) {
-			ImageView imageView;
-			try {
-				imageView = new ImageView(new Image(templates.get(s).get("imageUrl")));
-				
-			}catch(NullPointerException e) {
-				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s).get("imageUrl"))));
-			}
-			imageView.setFitHeight(70);
-			imageView.setFitWidth(60);
-			imageView.setId(s);
-			imageView.setUserData(templates.get(s).get("imageUrl"));
-//			myInventoryToolBar.addToToolbar(imageView);
-		}
-	}
-	
-	
+
 	private void styleLeftBar() {
 		myLeftBar.setPrefHeight(650);
 		myLeftBar.setLayoutY(25);
 		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
 		myLeftBar.getStyleClass().add("left-bar");
 	}
-	
+
+	// TODO - can make it more efficient?
+	private void loadSprites() {
+		myPlayArea.getChildren().removeAll(currentElements);
+		currentElements.clear();
+		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
+			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
+		}
+		myPlayArea.getChildren().addAll(currentElements);
+	}
+
 	private void initializeButtons() {
 		pause = new Button();
-		pause.setOnAction(e-> {
+		pause.setOnAction(e -> {
 			myController.pause();
 			animation.pause();
 		});
@@ -190,85 +224,113 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
 
 		play = new Button();
-		play.setOnAction(e-> { 
+		play.setOnAction(e -> {
 			myController.resume();
 			animation.play();
 		});
 		play.setText("Play");
 		rootAdd(play);
 		play.setLayoutY(pause.getLayoutY() + 30);
+		
+//		rootAdd(testButton);
+//		testButton.setLayoutY(play.getLayoutY() + 30);
 	}
-	
-	private void loadSprites() {
-		myPlayArea.getChildren().removeAll(currentElements);
-		currentElements.clear();
-		for(Integer id : myController.getLevelSprites(level)) {
-			currentElements.add(myController.getRepresentationFromSpriteId(id));
-		}
-		myPlayArea.getChildren().addAll(currentElements);
-	}
-	
+
 	private void step() {
-		updateStatusBar();
-		myController.update();
-		if(myController.isLevelCleared()) {
-			level++;
-			initializeInventory();
-			//Pause game
-			myInventoryToolBar.initializeInventory();
-		}else if(myController.isLost()) {
-			//launch lost screen
-		}else if(myController.isWon()) {
-			//launch win screen
+		Update latestUpdate = myController.update();
+		if (myController.isReadyForNextLevel()) {
+			hideTransitorySplashScreen();
+			// animation.play();
+			myController.resume();
 		}
+		if (myController.isLevelCleared()) {
+			level++;
+			animation.pause();
+			myController.pause();
+			launchTransitorySplashScreen();
+			hud.initialize(myController.getResourceEndowments());
+		} else if (myController.isLost()) {
+			// launch lost screen
+		} else if (myController.isWon()) {
+			// launch win screen
+		}
+		hud.update(myController.getResourceEndowments());
+		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		loadSprites();
 	}
-	
-	private void updateStatusBar() {
-		myCoinDisplay.increment();
+
+	private void launchTransitorySplashScreen() {
+		this.getStage().setScene(myTransitionScene);
 	}
-	
+
+	private void hideTransitorySplashScreen() {
+		this.getStage().setScene(this.getScene());
+	}
 
 	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(myController, sideLength, sideLength);
-		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e->this.dropElement(e));
+		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
+		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
 		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
 	}
-	
+
 	private void dropElement(MouseEvent e) {
-		if(selected) {
+		if (selected) {
 			selected = false;
 			this.getScene().setCursor(Cursor.DEFAULT);
-			if(e.getButton().equals(MouseButton.PRIMARY)) myController.placeElement(placeable.getElementName(), new Point2D(e.getX(),e.getY()));
-		}
-	}
-	
-	@Override
-	public void listItemClicked(ImageView image) {
-		//double cost = myController.getElementCosts().get(image.getId()).get(COST);
-		double cost = 200;
-		if(cost > myCoinDisplay.getQuantity()) {
-			launchInvalidResources();
-			return;
-		}else {
-			Alert costDialog = new Alert(AlertType.CONFIRMATION);
-			costDialog.setTitle("Purchase Resource");
-			costDialog.setHeaderText(null);
-			costDialog.setContentText("Would you like to purchase this object?");
-			
-			Optional<ButtonType> result = costDialog.showAndWait();
-			if(result.get() == ButtonType.OK) {
-				myCoinDisplay.decreaseByAmount(cost);
-				placeable = new StaticObject(1, this, (String) image.getUserData());
-				placeable.setElementName(image.getId());
-				this.getScene().setCursor(new ImageCursor(image.getImage()));
-				selected = true;
+			if (e.getButton().equals(MouseButton.PRIMARY)) {
+				Point2D startLocation = new Point2D(e.getX(), e.getY());
+				try {
+					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
+					clientMessageUtils.addNewSpriteToDisplay(newSprite);
+				} catch (ReflectiveOperationException failedToPlaceElementException) {
+					// todo - handle
+				}
 			}
 		}
-		
+	}
+
+	@Override
+	public void listItemClicked(ImageView image) {
+		if(!checkFunds(image)) return;
+		Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		costDialog.setTitle("Purchase Resource");
+		costDialog.setHeaderText(null);
+		costDialog.setContentText("Would you like to purchase this object?");
+
+		Optional<ButtonType> result = costDialog.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			placeable = new StaticObject(1, this, (String) image.getUserData());
+			placeable.setElementName(image.getId());
+			this.getScene().setCursor(new ImageCursor(image.getImage()));
+			selected = true;
+		}
 	}
 	
+	//TODO call this on click event of the static objects
+	public void upgradeableClicked(ImageView image) {
+		if(checkFunds(image)) return;
+		Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		costDialog.setTitle("Upgrade Resource");
+		costDialog.setHeaderText(null);
+		costDialog.setContentText("Would you like to upgrade this object?");
+		
+		Optional<ButtonType> result = costDialog.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			//pass in the image id to this, but make sure we're actually setting it
+//			myController.upgradeElement();
+		}
+	}
+	
+	private boolean checkFunds(ImageView image) {
+		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
+		if (!hud.hasSufficientFunds(unitCosts)) {
+			launchInvalidResources();
+			return false;
+		}
+		return true;
+	}
+
 	private void launchInvalidResources() {
 		Alert error = new Alert(AlertType.ERROR);
 		error.setTitle("Resource Error!");
@@ -276,8 +338,21 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.setContentText("You do not have the funds for this item.");
 		error.show();
 	}
-	public void save(File saveName) {
-		myController.saveGameState(saveName);
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+
 	}
 	
+	protected void changeLevel(int newLevel) {
+		level = newLevel;
+		try {
+			clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, newLevel));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

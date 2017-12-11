@@ -25,7 +25,7 @@ public class MultiPlayerServerHandler extends AbstractServerHandler {
 	}
 
 	@Override
-	protected void processMessages() throws IOException {
+	protected void processMessages() throws IOException, ReflectiveOperationException {
 		while (true) {
 			int len = input.readInt();
 			if (len > 0) {

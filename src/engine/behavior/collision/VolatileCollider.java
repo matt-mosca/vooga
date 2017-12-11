@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ParameterName;
+import engine.behavior.ElementProperty;
 
 /**
  * Represents volatile 'explosion' behavior - simply explodes / self-destructs
@@ -12,7 +12,7 @@ import engine.behavior.ParameterName;
 public abstract class VolatileCollider extends GenericCollider {
 	
 	// Can be sub-classed by different kinds of projectiles
-	public VolatileCollider(@ParameterName("playerId") int playerId) {
+	public VolatileCollider(@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId) {
 		super(playerId);
 	}
 

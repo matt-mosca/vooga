@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 
 public class SmartPlayDisplay extends PlayDisplay {
 	
-	public SmartPlayDisplay(int width, int height, Stage stage) {
-		super(width, height, stage);
+	public SmartPlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
+		super(width, height, stage, isMultiPlayer);
 		
 	}
 
