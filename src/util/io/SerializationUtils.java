@@ -370,11 +370,6 @@ public class SerializationUtils {
 			throw new IllegalArgumentException();
 		}
 		String[] serializedSections = serializedLevelData.get(levelString).split(DELIMITER);
-		System.out.println("Number of serialized sections: " + serializedSections.length);
-		Arrays.asList(serializedSections).forEach(section -> {
-			System.out.println("SECTION");
-			System.out.println(section);
-		});
 		if (serializedSections.length < NUM_SERIALIZATION_SECTIONS) {
 			throw new IllegalArgumentException();
 		}

@@ -2,6 +2,7 @@ package engine;
 
 import util.path.PathList;
 import javafx.geometry.Point2D;
+import networking.protocol.AuthorServer;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteUpdate;

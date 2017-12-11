@@ -50,9 +50,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	private Socket socket;
 	private DataInputStream input;
 	private DataOutputStream outputWriter;
-	protected SerializationUtils serializationUtils;
-	// todo make private with getter
-
+	private SerializationUtils serializationUtils;
 
 	public AbstractClient() {
 		setupChatSocketAndStreams();
@@ -242,6 +240,10 @@ public abstract class AbstractClient implements AbstractGameModelController {
 			e.printStackTrace(); // TEMP
 		}
 		return new byte[len];
+	}
+	
+	protected SerializationUtils getSerializationUtils() {
+		return serializationUtils;
 	}
 
 	private LevelInitialized handleLoadOriginalGameStateResponse(ServerMessage serverMessage) {
