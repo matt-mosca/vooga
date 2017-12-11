@@ -93,6 +93,7 @@ public class LevelToolBar extends VBox {
 		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 				e->{ try {
 			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
+			
 		} catch (ReflectiveOperationException exc) {
 			//
 		}});
