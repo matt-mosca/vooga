@@ -13,6 +13,7 @@ public class Properties {
 		myObject = object;
 		myClass = object.getClass();
 		myValue = object.toString();
+		System.out.println(rowName + object.getClass().toString());
 	}
 	
 	
