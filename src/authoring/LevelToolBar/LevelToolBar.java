@@ -198,16 +198,54 @@ public class LevelToolBar extends VBox {
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
 		String[] levelWaveArray = levelAndWave.split("\\s+");
-		elementsToSpawn.add(mySprite.getId());
-		System.out.println(myProperties);
-		System.out.println(Arrays.asList(elementsToSpawn).toString());
-		try {
-			myProperties.put("Projectile Type Name", "myTroop");
-			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(30,60));
-		} catch (ReflectiveOperationException e) {
-			System.out.println("Could not add to wave");
-			e.printStackTrace();
+		elementsToSpawn.clear();
+		for (int i = 0; i < amount; i++) {
+			elementsToSpawn.add(mySprite.getId());
 		}
+		List<ImageView> imageList = new ArrayList<ImageView>();
+		for (int i = 0; i < amount; i++) {
+			imageList.add(mySprite);
+		}
+		Point2D location = new Point2D(30,60);
+		myProperties.put("Projectile Type Name", mySprite.getId());
+		/**
+		 * Eventually we won't need line above, but for shoot periodically firing strategy
+		 * we have to include the projectile name that we're firing as a parameter. At the moment
+		 * the wave will only produce the last projectile that we add to it.
+		 * Also note that shoot periodically happens forever
+		 * Basically the elementsToSpawn is virtually useless with shoot periodically firing
+		 * strategy. Waiting for backend integration of round robin firing strategy
+		 */
+		
+		for (String levelDotWave : levelWaveArray) {
+			int level = Integer.valueOf(levelDotWave.split("\\.+")[0]);
+			myController.setLevel(level);
+			if (waveToId.containsKey(levelDotWave)) {
+//				try {
+//					myController.editWaveProperties(waveToId.get(levelDotWave), 
+//							myProperties, elementsToSpawn, location);
+//				} catch (ReflectiveOperationException e) {
+//					System.out.println("Can't edit wave properties");
+//					e.printStackTrace();
+//				}
+				waveToImage.get(levelDotWave).addAll(imageList);
+			} else {
+				try {
+					waveToId.put(levelDotWave, myController.createWaveProperties(myProperties, elementsToSpawn, location));
+				} catch (ReflectiveOperationException e) {
+					System.out.println("Can't create wave properties");
+					e.printStackTrace();
+				}
+				waveToImage.put(levelDotWave, imageList);
+			}
+		}
+		updateImages();
+		System.out.println("Wave to Image");
+		System.out.println(waveToImage.toString());
+		System.out.println(waveToId.toString());
+		System.out.println(myController.getLevelSprites(1));
+		System.out.println(myController.getLevelSprites(2));
+		System.out.println(myController.getLevelSprites(3));
 //		for (String s : levelWaveArray) {
 //			
 //			for (int i = 0; i < amount; i++) {
