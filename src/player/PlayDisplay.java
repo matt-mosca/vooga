@@ -153,7 +153,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		myLeftBar.getChildren().add(levelSelector);
 		rootAdd(myLeftBar);
-		volumeSlider = new Slider(0, 1, .1);;
+		volumeSlider = new Slider(0, 1, .1);
 		rootAdd(volumeSlider);
 		
 	}
