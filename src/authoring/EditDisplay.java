@@ -83,9 +83,6 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.BLACK, stage);
 		controller = new AuthoringController();
 		clientMessageUtils = new ClientMessageUtils();
-		if (loaded) {
-			loadGame();
-		}
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
 		basePropertyMap = new HashMap<>();
@@ -105,6 +102,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+		volumeSlider.setLayoutY(735);
+		volumeSlider.setLayoutX(950);
+		if (loaded) {
+			loadGame();
+		}
 	}
 
 	private void createGridToggle() {
@@ -385,5 +387,4 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public int getMaxLevel() {
 		return myBottomToolBar.getMaxLevel();
 	}
-
 }

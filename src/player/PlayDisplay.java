@@ -124,6 +124,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
+		volumeSlider.setLayoutY(7);
+		volumeSlider.setLayoutX(55);
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
