@@ -35,7 +35,8 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 		HBox imageBackground = new HBox();
 		imageBackground.setStyle("-fx-background-color: white");
 		imageBackground.getChildren().add(imageView);
-		if (!myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name").toString().isEmpty()) {
+		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null &&
+				!myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name").toString().isEmpty()) {
 			addProjectileImage();
 		}
 		this.getChildren().add(imageBackground);
