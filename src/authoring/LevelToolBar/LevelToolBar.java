@@ -89,20 +89,21 @@ public class LevelToolBar extends VBox {
 			// edited = true;
 			// this.update();
 		});
-		Button waveButton = new Button("Wave");
-		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-				e->{ try {
-					elementsToSpawn = new ArrayList<String>();
-					elementsToSpawn.add(waveToImage.get("1.1").get(0).getId());
-			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
-			
-		} catch (ReflectiveOperationException exc) {
-		}});
+//		Button waveButton = new Button("Wave");
+//		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+//				e->{ try {
+//					elementsToSpawn = new ArrayList<String>();
+//					elementsToSpawn.add(waveToImage.get("1.1").get(0).getId());
+//			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
+//			
+//		} catch (ReflectiveOperationException exc) {
+//		}});
+		elementsToSpawn = new ArrayList<String>();
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
 		this.getChildren().add(newWaveButton);
-		this.getChildren().add(waveButton);
+//		this.getChildren().add(waveButton);
 		loadLevels();
 		created.setGameArea(myGameAreas.get(0));
 		createProperties();
@@ -192,12 +193,6 @@ public class LevelToolBar extends VBox {
 	}
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
-		if (waveToId.containsKey(levelAndWave)) {
-//			myController.editWaveProperties(waveToImage.get(levelAndWave), updatedProperties, newElementNamesToSpawn, newSpawningPoint);
-		} else {
-//			waveToId.put(levelAndWave, 
-//					myController.setWaveProperties(waveProperties, elementNamesToSpawn, spawningPoint));
-		}
 		String[] levelWaveArray = levelAndWave.split("\\s+");
 		for (String s : levelWaveArray) {
 			for (int i = 0; i < amount; i++) {
@@ -211,6 +206,7 @@ public class LevelToolBar extends VBox {
 	
 			}
 		}
+		
 		updateImages();
 	}
 	
