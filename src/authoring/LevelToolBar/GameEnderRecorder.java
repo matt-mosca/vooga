@@ -22,15 +22,26 @@ public class GameEnderRecorder extends VBox{
 	public GameEnderRecorder(AuthoringController controller) {
 //		myCompletedLevels=levels;
 		myController = controller;
-		update();
+		setUp();
 		
 	}
 
-	public void update() {
+	private void setUp() {
 		this.getChildren().clear();
 		makeTables();
 		this.getChildren().addAll(victoryConditions, defeatConditions);
 	}
+	
+	public void update() {
+		victoryConditions.getItems().clear();
+		defeatConditions.getItems().clear();
+		Map<String, Collection<Integer>> victory = myController.getCurrentVictoryConditions();
+		Map<String, Collection<Integer>> defeat = myController.getCurrentDefeatConditions();
+		makeConditions(victory, victoryConditions.getItems());
+		makeConditions(defeat, defeatConditions.getItems());
+		
+	}
+	
 	
 	private void makeTables() {
 		ObservableList<Conditions> vicConditions = FXCollections.observableArrayList();
@@ -41,13 +52,13 @@ public class GameEnderRecorder extends VBox{
 		makeConditions(defeat, lossConditions);
 		victoryConditions = new TableView<Conditions>();
 		defeatConditions = new TableView<Conditions>();
-		fillTable(victoryConditions, vicConditions);
-		fillTable(defeatConditions, lossConditions);
+		fillTable("Victory", victoryConditions, vicConditions);
+		fillTable("Defeat", defeatConditions, lossConditions);
 		
 	}
 
-	private void fillTable(TableView<Conditions> table, ObservableList<Conditions> conditions) {
-		TableColumn<Conditions, String> condColumn = makeColumn("Conditions", "myCondition");
+	private void fillTable(String cond, TableView<Conditions> table, ObservableList<Conditions> conditions) {
+		TableColumn<Conditions, String> condColumn = makeColumn(cond + " Conditions", "myCondition");
 		TableColumn<Conditions, String> levelsColumn = makeColumn("Levels", "myLevels");
 		table.setItems(conditions);
 		table.getColumns().addAll(condColumn, levelsColumn);
@@ -56,7 +67,7 @@ public class GameEnderRecorder extends VBox{
 
 	private TableColumn<Conditions, String> makeColumn(String title, String instanceVar) {
 		TableColumn<Conditions, String> column = new TableColumn<>(title);
-		column.setPrefWidth(100);
+		column.setPrefWidth(130);
 		column.setCellValueFactory(new PropertyValueFactory<>(instanceVar));
 		return column;
 	}
