@@ -197,16 +197,33 @@ public class LevelToolBar extends VBox {
 		for (String s : levelWaveArray) {
 			for (int i = 0; i < amount; i++) {
 				if (waveToImage.get(s) != null) {
+					//Editing a previously defined wave
+//					myController.editWaveProperties(waveId, updatedProperties, newElementNamesToSpawn, newSpawningPoint);
 					waveToImage.get(s).add(mySprite);
 				} else {
+					//New wave you've never seen before
 					ArrayList<ImageView> newImages = new ArrayList<ImageView>();
 					newImages.add(mySprite);
 					waveToImage.put(s, newImages);
+					elementsToSpawn.clear();
+					int level = Integer.valueOf(s.split("\\.+")[0]);
+					changeDisplay(level);
+					for (ImageView imageView : waveToImage.get(s)) {
+						elementsToSpawn.add(imageView.getId());
+					}
+					try {
+						waveToId.put(s, myController.createWaveProperties
+								(myProperties, elementsToSpawn, new Point2D(100,100)));
+						System.out.printf("Created level %s", s);
+						System.out.println(waveToId.get(s));
+					} catch (ReflectiveOperationException e) {
+						System.out.println("Not able to create level");
+						e.printStackTrace();
+					}
 				}
 	
 			}
 		}
-		
 		updateImages();
 	}
 	
