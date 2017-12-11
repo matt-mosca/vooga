@@ -136,6 +136,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
+		System.out.println("Wave stuff");
 	}
 	
 //	private void openSesame(Stage stage) {
