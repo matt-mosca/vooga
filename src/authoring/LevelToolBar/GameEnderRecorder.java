@@ -17,13 +17,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
 public class GameEnderRecorder extends VBox{
-//	Set<Integer >myCompletedLevels;
 	private TableView <Conditions> victoryConditions;
 	private TableView<Conditions> defeatConditions;
-	private TableColumn<Conditions, String> victoryNumbers;
-	private TableColumn<Conditions, String> defeatNumbers;
-	private TableColumn<Conditions, String> myVictory;
-	private TableColumn <Conditions, String> myDefeat;
 	private AuthoringController myController;
 	
 	
