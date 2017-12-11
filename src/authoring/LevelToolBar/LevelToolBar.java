@@ -2,8 +2,7 @@ package authoring.LevelToolBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -12,22 +11,20 @@ import java.util.stream.Collectors;
 import authoring.EditDisplay;
 import authoring.GameArea;
 import authoring.ScrollableArea;
-import authoring.PropertiesToolBar.SpriteImage;
 import engine.authoring_engine.AuthoringController;
 import display.factory.TabFactory;
-import display.interfaces.CreationInterface;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import util.protocol.ClientMessageUtils;
 import display.sprites.InteractiveObject;
 
 public class LevelToolBar extends VBox {
-	private final int CELL_SIZE = 40;
+	private static final int SIZE = 400;
+	private static final int WIDTH = 100;
 
 	private AuthoringController myController;
 	private TabPane myTabPane;
@@ -46,15 +43,13 @@ public class LevelToolBar extends VBox {
 	private SpriteDisplayer mySpriteDisplay;
 	private LevelsEditDisplay myLevelDisplayer;
 	private Map<Integer, Integer> wavesPerLevel;
-	private Map<String, List<ImageView>> waveToImage;
 	private Map<String, Object> myProperties;
 	private List<String> elementsToSpawn;
-	private Map<String, Integer> waveToId;
+	private Map<String, Data> waveToData;
 
 	private ClientMessageUtils clientMessageUtils;
 
 	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
-		
 		myScrollableArea = area;
 		currentDisplay = 1;
 		myCreated = created;
@@ -63,15 +58,14 @@ public class LevelToolBar extends VBox {
 		myGameAreas = new ArrayList<>();
 		this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
-		this.setWidth(400);
+		this.setWidth(SIZE);
 		myLevels = new ArrayList<>();
 		mySprites = new ArrayList<>();
 		mySprites.add(new ArrayList<>());
 		newLevel = new Button("New Level");
 		Button newWaveButton = new Button("New Wave");
 		wavesPerLevel = new TreeMap<Integer, Integer>();
-		waveToId = new TreeMap<String, Integer>();
-		waveToImage = new TreeMap<String, List<ImageView>>();
+		waveToData = new TreeMap<String, Data>();
 		newLevel.setOnAction(e -> addLevel());
 		newWaveButton.setOnAction(e->newWaveButtonPressed());
 		myTabPane = new TabPane();
@@ -80,31 +74,17 @@ public class LevelToolBar extends VBox {
 		myWaveDisplay = new WaveDisplay(this);
 		this.getChildren().add(myWaveDisplay);
 		this.getChildren().add(mySpriteDisplay);
-		myTabPane.setMaxSize(400, 100);
-		myTabPane.setPrefSize(400, 100);
+		myTabPane.setMaxSize(SIZE, WIDTH);
+		myTabPane.setPrefSize(SIZE, WIDTH);
 		editLevel = new Button("Edit Level");
-		// Need to put the button somewhere first.
 		editLevel.setOnAction(e -> {
-//			myLevels.get(currentDisplay - 1).openLevelDisplay();
 			openLevelDisplay();
-			// edited = true;
-			// this.update();
 		});
-//		Button waveButton = new Button("Wave");
-//		waveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-//				e->{ try {
-//					elementsToSpawn = new ArrayList<String>();
-//					elementsToSpawn.add(waveToImage.get("1.1").get(0).getId());
-//			myController.createWaveProperties(myProperties, elementsToSpawn, new Point2D(100, 100));
-//			
-//		} catch (ReflectiveOperationException exc) {
-//		}});
 		elementsToSpawn = new ArrayList<String>();
 		this.getChildren().add(myTabPane);
 		this.getChildren().add(newLevel);
 		this.getChildren().add(editLevel);
 		this.getChildren().add(newWaveButton);
-//		this.getChildren().add(waveButton);
 		loadLevels();
 		created.setGameArea(myGameAreas.get(0));
 		createProperties();
@@ -187,7 +167,6 @@ public class LevelToolBar extends VBox {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(myController.getLevelSprites(level));
 		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
@@ -198,14 +177,8 @@ public class LevelToolBar extends VBox {
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
 		String[] levelWaveArray = levelAndWave.split("\\s+");
-		elementsToSpawn.clear();
-		for (int i = 0; i < amount; i++) {
-			elementsToSpawn.add(mySprite.getId());
-		}
-		List<ImageView> imageList = new ArrayList<ImageView>();
-		for (int i = 0; i < amount; i++) {
-			imageList.add(mySprite);
-		}
+		List<ImageView> imageList = Collections.nCopies(amount, mySprite);
+		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
 		Point2D location = new Point2D(30,60);
 		myProperties.put("Projectile Type Name", mySprite.getId());
 		/**
@@ -220,7 +193,7 @@ public class LevelToolBar extends VBox {
 		for (String levelDotWave : levelWaveArray) {
 			int level = Integer.valueOf(levelDotWave.split("\\.+")[0]);
 			myController.setLevel(level);
-			if (waveToId.containsKey(levelDotWave)) {
+			if (waveToData.containsKey(levelDotWave)) {
 //				try {
 //					myController.editWaveProperties(waveToId.get(levelDotWave), 
 //							myProperties, elementsToSpawn, location);
@@ -228,56 +201,36 @@ public class LevelToolBar extends VBox {
 //					System.out.println("Can't edit wave properties");
 //					e.printStackTrace();
 //				}
-				waveToImage.get(levelDotWave).addAll(imageList);
+				waveToData.get(levelDotWave).spriteNames.addAll(imageList);
 			} else {
 				try {
-					waveToId.put(levelDotWave, myController.createWaveProperties(myProperties, elementsToSpawn, location));
+					waveToData.put(levelDotWave, new Data(imageList,
+							myController.createWaveProperties(myProperties, elementsToSpawn, location)));
 				} catch (ReflectiveOperationException e) {
 					System.out.println("Can't create wave properties");
 					e.printStackTrace();
 				}
-				waveToImage.put(levelDotWave, imageList);
 			}
+//			if (waveToId.containsKey(levelDotWave)) {
+////				try {
+////					myController.editWaveProperties(waveToId.get(levelDotWave), 
+////							myProperties, elementsToSpawn, location);
+////				} catch (ReflectiveOperationException e) {
+////					System.out.println("Can't edit wave properties");
+////					e.printStackTrace();
+////				}
+//				waveToImage.get(levelDotWave).addAll(imageList);
+//			} else {
+//				try {
+//					waveToId.put(levelDotWave, myController.createWaveProperties(myProperties, elementsToSpawn, location));
+//				} catch (ReflectiveOperationException e) {
+//					System.out.println("Can't create wave properties");
+//					e.printStackTrace();
+//				}
+//				waveToImage.put(levelDotWave, imageList);
+//			}
 		}
 		updateImages();
-		System.out.println("Wave to Image");
-		System.out.println(waveToImage.toString());
-		System.out.println(waveToId.toString());
-		System.out.println(myController.getLevelSprites(1));
-		System.out.println(myController.getLevelSprites(2));
-		System.out.println(myController.getLevelSprites(3));
-//		for (String s : levelWaveArray) {
-//			
-//			for (int i = 0; i < amount; i++) {
-//				if (waveToImage.get(s) != null) {
-//					//Editing a previously defined wave
-////					myController.editWaveProperties(waveId, updatedProperties, newElementNamesToSpawn, newSpawningPoint);
-//					waveToImage.get(s).add(mySprite);
-//				} else {
-//					//New wave you've never seen before
-//					ArrayList<ImageView> newImages = new ArrayList<ImageView>();
-//					newImages.add(mySprite);
-//					waveToImage.put(s, newImages);
-//					elementsToSpawn.clear();
-//					int level = Integer.valueOf(s.split("\\.+")[0]);
-//					changeDisplay(level);
-//					for (ImageView imageView : waveToImage.get(s)) {
-//						elementsToSpawn.add(imageView.getId());
-//					}
-//					try {
-//						waveToId.put(s, myController.createWaveProperties
-//								(myProperties, elementsToSpawn, new Point2D(100,100)));
-//						System.out.printf("Created level %s", s);
-//						System.out.println(waveToId.get(s));
-//					} catch (ReflectiveOperationException e) {
-//						System.out.println("Not able to create level");
-//						e.printStackTrace();
-//					}
-//				}
-//	
-//			}
-//		}
-//		updateImages();
 	}
 	
 	public void changeDisplay(int i) {
@@ -286,15 +239,14 @@ public class LevelToolBar extends VBox {
 		myCreated.setDroppable(myGameAreas.get(i - 1));
 		myController.setLevel(i);
 		myCreated.setGameArea(myGameAreas.get(i - 1));
-//		updateSpriteDisplay(i);
 		updateWaveDisplay();
 		updateImages();
 	}
 	
 	public void updateImages() {
 		mySpriteDisplay.clear();
-		if (waveToImage.get(currentDisplay + "." + myWaveDisplay.getCurrTab()) != null) {
-			mySpriteDisplay.addToScroll(waveToImage.get(currentDisplay + "." + myWaveDisplay.getCurrTab()));
+		if (waveToData.get(currentDisplay + "." + myWaveDisplay.getCurrTab()) != null) {
+			mySpriteDisplay.addToScroll(waveToData.get(currentDisplay + "." + myWaveDisplay.getCurrTab()).spriteNames);
 		}
 	}
 
@@ -306,7 +258,6 @@ public class LevelToolBar extends VBox {
 			myLevels.get(i).decrementLevel();
 			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i + 1));
 		}
-
 	}
 
 	public int getMaxLevel() {
@@ -318,3 +269,12 @@ public class LevelToolBar extends VBox {
 
 	}
 }
+
+class Data{   
+    List<ImageView> spriteNames;  
+    Integer waveId;  
+    Data(List<ImageView> spriteNames, Integer waveId) {
+        this.spriteNames = spriteNames; 
+        this.waveId = waveId; 
+    }  
+} 
