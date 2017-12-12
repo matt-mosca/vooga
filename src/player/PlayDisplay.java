@@ -75,6 +75,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlayModelController myController;
 	private Button pause;
 	private Button play;
+	private ChangeSpeedToggles speedControl;
 	private Timeline animation;
 	private String gameState;
 	private Slider volumeSlider;
@@ -113,7 +114,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar = new VBox();
 		idToTemplate = new HashMap<>();
 		hud = new HUD(width);
-		
+		speedControl = new ChangeSpeedToggles();
 		styleLeftBar();
 		createGameArea(height - 20);
 		addItems();
@@ -227,26 +228,47 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void initializeButtons() {
-		pause = new Button();
-		pause.setOnAction(e -> {
-			myController.pause();
-			animation.pause();
-		});
-		pause.setText("Pause");
-		rootAdd(pause);
-		pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
-
-		play = new Button();
-		play.setOnAction(e -> {
-			myController.resume();
-			animation.play();
-		});
-		play.setText("Play");
-		rootAdd(play);
-		play.setLayoutY(pause.getLayoutY() + 30);
+//		pause = new Button();
+//		pause.setOnAction(e -> {
+//			myController.pause();
+//			animation.pause();
+//		});
+//		pause.setText("Pause");
+//		rootAdd(pause);
+//		pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
+//
+//		play = new Button();
+//		play.setOnAction(e -> {
+//			myController.resume();
+//			animation.play();
+//		});
+//		play.setText("Play");
+//		rootAdd(play);
+//		play.setLayoutY(pause.getLayoutY() + 30);
+		
+		rootAdd(speedControl.getPlay());
+		speedControl.getPlay().setLayoutY(myInventoryToolBar.getLayoutY() + 450);
+		rootAdd(speedControl.getPause());
+		speedControl.getPause().setLayoutY(speedControl.getPlay().getLayoutY());
+		speedControl.getPause().setLayoutX(50);
+		speedControl.setPlayMouseEvent(e -> getPlayAction());
+		speedControl.setPauseMouseEvent(e -> getPauseAction());
+		
 		
 //		rootAdd(testButton);
 //		testButton.setLayoutY(play.getLayoutY() + 30);
+	}
+	
+	private void getPlayAction() {
+		myController.resume();
+		animation.play();
+		speedControl.orchestratePlay();
+	}
+	
+	private void getPauseAction() {
+		myController.pause();
+		animation.pause();
+		speedControl.orchestratePause();
 	}
 
 	private void step() {
