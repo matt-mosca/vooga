@@ -67,8 +67,9 @@ public class SpriteQueryHandler {
 		ArrayList<GameElement> targetElements = new ArrayList<>();
 		
 		for(GameElement gameElement : levelGameElements) {
-			if(getDistance(coordinates,new Point2D(gameElement.getX(),gameElement.getY()))<rangeRadius
-												&& gameElement.getPlayerId() != toGenerateId) {
+			double distance = getDistance(coordinates, new Point2D(gameElement.getX(), gameElement.getY()));
+			if(distance < rangeRadius && gameElement.getPlayerId() != toGenerateId &&
+					gameElement.getPlayerId() != GameElement.Team.NEUTRAL.ordinal()) {
 				targetElements.add(gameElement);
 			}
 		}
