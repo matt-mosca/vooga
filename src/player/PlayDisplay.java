@@ -105,8 +105,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> testOpenMultiplayer(stage));
 		
 		this.myController = myController;
-//		myTransition = new TransitorySplashScreen(myController);
-//		myTransitionScene = new Scene(myTransition, width, height);
+		myTransition = new TransitorySplashScreen(myController);
+		myTransitionScene = new Scene(myTransition, width, height);
 		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
 		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
 //		myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage, this);
