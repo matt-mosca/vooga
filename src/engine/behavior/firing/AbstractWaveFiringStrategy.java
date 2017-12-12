@@ -28,7 +28,7 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 		elementsRemaining = numberToSpawn;
 	}
 
-	protected Collection<String> getTemplatesToFire() {
+	protected List<String> getTemplatesToFire() {
 		return templatesToFire;
 	}
 

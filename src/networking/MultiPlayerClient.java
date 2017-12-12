@@ -2,6 +2,7 @@ package networking;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import engine.PlayModelController;
 import networking.protocol.PlayerClient.CheckReadyForNextLevel;
@@ -26,14 +27,12 @@ import networking.protocol.PlayerServer.Update;
  */
 public class MultiPlayerClient extends AbstractClient implements PlayModelController { // Is this weird?
 
-	private Update latestUpdate;
 	private final int PORT = 9041;
 
 	// Game client state (keeping track of which multi-player game it is in, etc)
 
 	public MultiPlayerClient() {
 		super();
-		latestUpdate = Update.getDefaultInstance();
 	}
 
 	// Since saving is not allowed, this won't be allowed either
@@ -94,6 +93,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 
 	@Override
 	public Map<String, Double> getResourceEndowments() {
+		Update latestUpdate = getLatestUpdate();
 		ResourceUpdate resourceUpdate = latestUpdate.hasResourceUpdates() ? latestUpdate.getResourceUpdates()
 				: ResourceUpdate.getDefaultInstance();
 		Map<String, Double> resourcesMap = new HashMap<>();
@@ -115,8 +115,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	}
 
 	private Update handleUpdateResponse(ServerMessage serverMessage) {
-		latestUpdate = getUpdate(serverMessage);
-		return latestUpdate;
+		return getUpdate(serverMessage);
 	}
 
 	private boolean handleCheckReadyResponse(ServerMessage serverMessage) {
@@ -134,14 +133,31 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	}
 
 	private StatusUpdate getLatestStatusUpdate() {
+		Update latestUpdate = getLatestUpdate();
 		return latestUpdate.hasStatusUpdates() ? latestUpdate.getStatusUpdates() : StatusUpdate.getDefaultInstance();
 	}
 
 	// Test client-server integration
 	public static void main(String[] args) {
 		MultiPlayerClient testClient = new MultiPlayerClient();
-		testClient.getAvailableGames();
-		System.out.println(testClient.createGameRoom("NewThing.voog", "adi_game"));
+		Map<String, String> availableGames = testClient.getAvailableGames();
+		for (String gameName : availableGames.keySet()) {
+			System.out.println("Game name: " + gameName);
+		}
+		String gameRoom = testClient.createGameRoom("NewThing.voog", "adi_game");
+		System.out.println("Joined " + gameRoom);
+		testClient.joinGameRoom(gameRoom, "adi");
+		testClient.launchGameRoom();
+		System.out.println("Player names: ");
+		Set<String> playerNames = testClient.getPlayerNames();
+		for (String playerName : playerNames) {
+			System.out.println("Player: " + playerName);
+		}
+		System.out.println("Current level: " + testClient.getCurrentLevel());
+		Set<String> inventory = testClient.getInventory();
+		for (String item : inventory) {
+			System.out.println("Item: " + item);
+		}
 	}
 
 }

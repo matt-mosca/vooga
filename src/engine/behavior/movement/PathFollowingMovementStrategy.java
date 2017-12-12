@@ -6,6 +6,8 @@ import engine.behavior.ElementProperty;
 import javafx.geometry.Point2D;
 import util.path.PathPoint;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -39,9 +41,13 @@ public class PathFollowingMovementStrategy extends TargetedMovementStrategy {
 		try {
 			ObjectInputStream deserializer = new ObjectInputStream(in);
 			return (PathList) deserializer.readObject();
-		} catch (IOException | ClassNotFoundException | NullPointerException failedToLoadException) {
-			failedToLoadException.printStackTrace();
-			return new PathList(new PathPoint(0,0, Color.BLACK));
+		} catch (IOException | ClassNotFoundException | NullPointerException failedToLoadStreamException) {
+			try {
+				ObjectInputStream deserializer = new ObjectInputStream(new FileInputStream(pathListFile));
+				return (PathList) deserializer.readObject();
+			} catch (IOException | ClassNotFoundException failedToLoadFileException) {
+				return new PathList(new PathPoint(0,0, Color.BLACK));
+			}
 		}
 	}
 
