@@ -27,6 +27,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
 import networking.MultiPlayerClient;
+import player.MultiplayerLobby;
 import player.PlayDisplay;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
@@ -196,13 +197,20 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	public void playExisting() {
 		// TODO - Update this method accordingly to determine the isMultiPlayer param
 		// for PlayDisplay constructor
+		boolean isMultiplayer = initializePlayersSetting();
 		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(),
-				initializePlayersSetting() ? new MultiPlayerClient() : new PlayController()); // TEMP
+				isMultiplayer ? new MultiPlayerClient() : new PlayController()); // TEMP
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
-		getStage().setScene(myScene.getScene());
 		myMediaPlayer.stop();
+		if(!isMultiplayer)
+			getStage().setScene(myScene.getScene());
+		else {
+			MultiplayerLobby multi = new MultiplayerLobby(PLAYWIDTH, PLAYHEIGHT, Color.WHITE, getStage(), myScene);
+			getStage().setScene(multi.getScene());
+			multi.promptForUsername();
+		}
 	}
 
 	private boolean initializePlayersSetting() {

@@ -1,8 +1,8 @@
 package engine.behavior.firing;
 
 import engine.behavior.ElementProperty;
-import javafx.geometry.Point2D;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -12,22 +12,22 @@ import java.util.Set;
  */
 public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringStrategy {
 
-	private Set<String> templatesToFire;
-	private int wavesLeft;
+	private Collection<String> templatesToFire;
+	private int elementsRemaining;
 
 	public AbstractWaveFiringStrategy(
-			@ElementProperty(value = "templateToFire", isTemplateProperty = true) Set<String> templatesToFire,
+			@ElementProperty(value = "templateToFire", isTemplateProperty = true) Collection<String> templatesToFire,
 			@ElementProperty(value = "spawnPeriod", isTemplateProperty = true) double spawnPeriod,
-			@ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
+			@ElementProperty(value = "numberToSpawn", isTemplateProperty = true) int numberToSpawn) {
 		super(spawnPeriod,Double.POSITIVE_INFINITY);
 		if (templatesToFire.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
 		this.templatesToFire = templatesToFire;
-		wavesLeft = totalWaves;
+		elementsRemaining = numberToSpawn;
 	}
 
-	protected Set<String> getTemplatesToFire() {
+	protected Collection<String> getTemplatesToFire() {
 		return templatesToFire;
 	}
 
@@ -45,16 +45,16 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 	
 	@Override
 	public boolean isExpended() {
-		return wavesLeft <= 0;
+		return elementsRemaining <= 0;
 	}
 
 	protected abstract String chooseElementToSpawn();
 	
-	protected int getWavesLeft() {
-		return wavesLeft;
+	protected int getElementsRemaining() {
+		return elementsRemaining;
 	}
 
 	protected void decrementWavesLeft() {
-		wavesLeft--;
+		elementsRemaining--;
 	}
 }

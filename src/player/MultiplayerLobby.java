@@ -1,12 +1,16 @@
 package player;
 
+import java.util.Optional;
+
 import display.factory.ButtonFactory;
 import display.splashScreen.ScreenDisplay;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
@@ -17,13 +21,17 @@ public class MultiplayerLobby extends ScreenDisplay {
 //	private static final String BACKGROUND_IMAGE = "grass_large.png";
 	private static final String BACKGROUND_IMAGE = "space_background.jpeg";
 	
+	private PlayDisplay playDisplay;
 	private BorderPane multiplayerLayout;
 	private Label topScreenLabel;
 	private Label lobbyPlayersLabel;
 	private Label lobbiesLabel;
+	private Label usernameLabel;
 	private VBox buttonBox;
 	private VBox playersBox;
 	private VBox lobbiesListBox;
+	private VBox rightBox;
+	private HBox usernameBox;
 	private ButtonFactory buttonFactory;
 	private Button createGameLobby;
 	private Button joinGameLobby;
@@ -35,33 +43,61 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private MultiplayerListBox lobbies;
 	private MultiplayerListBox players;
 	private MultiPlayerClient multiClient;
+	private String username;
+	private String gameName;
+	private String currentLobby;
 
 	//Add a way to select a lobby in the list and then press "Join Selected Lobby" to join it
 	//To do this, make an EventHandler- upon clicking, reset an instance variable
 	//Clicking Join Selected Lobby button will then join the lobby specified by that variable
 	
-	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage) {
+	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, PlayDisplay play) {
 		super(width, height, background, currentStage);
 //		multiplayerLayout = new BorderPane();
+		playDisplay = play;
 		topScreenLabel = new Label();
 		lobbyPlayersLabel = new Label();
 		lobbiesLabel = new Label();
+		usernameLabel = new Label();
 		buttonFactory = new ButtonFactory();
 		buttonBox = new VBox();
 		playersBox = new VBox();
 		lobbiesListBox = new VBox();
+		rightBox = new VBox();
+		usernameBox = new HBox();
 		lobbies = new MultiplayerListBox();
 		players = new MultiplayerListBox();
 		multiClient = new MultiPlayerClient();
+		username = new String();
+		gameName = new String();
+		currentLobby = new String();
 		setMultiplayerBackground(width, height);
 //		rootAdd(multiplayerLayout);
 		rootAdd(topScreenLabel);
 		createButtons();
 		setUpButtonBox();
-		setUpPlayersBox();
+		setUpRightBox();
 		setUpLobbiesListBox();
 		initializeMultiplayerHomeScreen();
 		setStyleAndLayout(width, height);
+	}
+	
+	public void promptForUsername() {
+		TextInputDialog dialog = new TextInputDialog("Matthew");
+		dialog.setTitle("Name Selection");
+		dialog.setHeaderText("Enter a username.");
+		dialog.setContentText("Username:");
+
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+		    username = result.get();
+		}
+		setUsername();
+	}
+	
+	private void setUsername() {
+		usernameLabel.setText(username);
+		usernameBox.getChildren().add(usernameLabel);
 	}
 	
 	private void setStyleAndLayout(int width, int height) {
@@ -70,9 +106,6 @@ public class MultiplayerLobby extends ScreenDisplay {
 		buttonBox.setLayoutX(width / 2 - 100);
 		buttonBox.setLayoutY(400);
 		buttonBox.setSpacing(20);
-//		buttonBox.getStyleClass().add("borders");
-		playersBox.setLayoutX(width - 300);
-		playersBox.setLayoutY(50);
 		playersBox.setMinWidth(300);
 		playersBox.setMinHeight(300);
 		playersBox.getStyleClass().add("borders");
@@ -91,6 +124,13 @@ public class MultiplayerLobby extends ScreenDisplay {
 		returnToLobbies.setLayoutY(height - 80);
 		joinSelectedLobby.setLayoutX(width - 300);
 		joinSelectedLobby.setLayoutY(height - 80);
+		rightBox.setLayoutX(width - 300);
+		rightBox.setLayoutY(20);
+		rightBox.setSpacing(40);
+		usernameBox.getStyleClass().add("borders");
+		usernameBox.setMinWidth(300);
+		usernameBox.setSpacing(10);
+		lobbiesListBox.getStyleClass().add("borders");
 	}
 	
 	private void setMultiplayerBackground(int width, int height) {
@@ -174,7 +214,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 	
 	private void createLobby() {
-		multiClient.createGameRoom("circularMonkey.voog");
+		multiClient.createGameRoom("circularMonkey.voog", "mosca_dope_game");
 		changeHomeToLobby();
 		promptForLobbyName();
 		//createLobby + set lobby name
@@ -203,7 +243,9 @@ public class MultiplayerLobby extends ScreenDisplay {
 	
 	//This method or an external method would be called when "START GAME" is pressed (serves as action for button)
 	private void startGame() {
-		
+		multiClient.launchGameRoom();
+		getStage().setScene(playDisplay.getScene());
+//		multiClient.launchGameRoom(currentLobby);
 	}
 	
 	private void setTopLabelForLobby() {
@@ -229,10 +271,19 @@ public class MultiplayerLobby extends ScreenDisplay {
 		buttonBox.getChildren().add(joinGameLobby);
 	}
 	
-	private void setUpPlayersBox() {
+	private void setUpRightBox() {
+		String imageName = "person_silhouette.png";
+		Image personImage = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+		ImageView person = new ImageView(personImage);
+		person.setFitWidth(30);
+		person.setFitHeight(30);
+		usernameBox.getChildren().add(person);
+		usernameBox.getStyleClass().add("borders");
+		rightBox.getChildren().add(usernameBox);
 		lobbyPlayersLabel.setText("Players");
 		playersBox.getChildren().add(lobbyPlayersLabel);
 		players.attach(playersBox);
+		rootAdd(rightBox);
 	}
 	
 	private void setUpLobbiesListBox() {
@@ -252,13 +303,13 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	private void addPlayersBox() {
-//		rightBox.getChildren().add(playersBox);
-		rootAdd(playersBox);
+		rightBox.getChildren().add(playersBox);
+//		rootAdd(playersBox);
 	}
 	
 	private void removePlayersBox() {
-//		rightBox.getChildren().remove(playersBox);
-		rootRemove(playersBox);
+		rightBox.getChildren().remove(playersBox);
+//		rootRemove(playersBox);
 	}
 	
 	private void addStartGame() {
