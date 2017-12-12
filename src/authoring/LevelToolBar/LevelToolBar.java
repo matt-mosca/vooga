@@ -107,11 +107,11 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myProperties.put("Name", "myWave");
 		myProperties.put("tabName", "Troops");
 		myProperties.put("Range of tower", 50000);
-		myProperties.put("Attack period", 10);
+		myProperties.put("Attack period", 120);
 		myProperties.put("Firing Sound", "Sounds");
 		myProperties.put("Numerical \"team\" association", 1);
 		myProperties.put("period", 60);
-		myProperties.put("totalWaves", 100);
+		myProperties.put("Number of troops to spawn", 100);
 		//Note: Templates to fire is set when the troop is selected
 		
 	}
@@ -180,8 +180,10 @@ public class LevelToolBar extends VBox implements TabInterface {
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
 		String[] levelWaveArray = levelAndWave.split("\\s+");
+		String mySpriteId = mySprite.getId();
 		List<ImageView> imageList = Collections.nCopies(amount, mySprite);
-		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
+		elementsToSpawn = Collections.nCopies(amount, mySpriteId);
+//		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
 		Point2D location = new Point2D(30,60);
 		myProperties.put("templatesToFire", elementsToSpawn);
 		myProperties.put("Projectile Type Name", mySprite.getId());

@@ -105,8 +105,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> testOpenMultiplayer(stage));
 		
 		this.myController = myController;
-		myTransition = new TransitorySplashScreen(myController);
-		myTransitionScene = new Scene(myTransition, width, height);
+//		myTransition = new TransitorySplashScreen(myController);
+//		myTransitionScene = new Scene(myTransition, width, height);
 		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
 		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
 //		myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage, this);
@@ -135,8 +135,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
-		tester();
-		System.out.println("Wave stuff");
 	}
 	
 //	private void openSesame(Stage stage) {
@@ -147,12 +145,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //	private void testOpenMultiplayer(Stage stage) {
 //		stage.setScene(myMulti.getScene());
 //	}
-
-	public void tester() {
-		for (int i = 0; i < 100; i++) {
-			step();
-		}
-	}
 
 	private void addItems() {
 		rootAdd(hud);
@@ -170,6 +162,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	public void initializeGameState() {
+		System.out.println("initialize");
 		List<String> games = new ArrayList<>();
 		try {
 			for (String title : myController.getAvailableGames().keySet()) {
