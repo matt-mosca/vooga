@@ -82,6 +82,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	public void exitGameRoom() {
 		writeRequestBytes(ClientMessage.newBuilder().setExitRoom(ExitRoom.newBuilder().getDefaultInstanceForType())
 				.build().toByteArray());
+		readServerResponse(); // Drain out from socket
 	}
 
 	public LevelInitialized launchGameRoom() {
