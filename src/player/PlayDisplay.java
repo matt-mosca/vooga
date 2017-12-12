@@ -380,6 +380,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.setContentText("You do not have the funds for this item.");
 		error.show();
 	}
+	
+	public String getGameState() {
+		return gameState;
+	}
 
 	@Override
 	public void save() {
