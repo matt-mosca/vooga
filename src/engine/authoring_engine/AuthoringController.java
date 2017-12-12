@@ -270,7 +270,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	private String getNameForWave() {
-		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.incrementAndGet());
+		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.getAndIncrement());
 	}
 
 	private String getNameForWaveNumber(int level, int num) {
