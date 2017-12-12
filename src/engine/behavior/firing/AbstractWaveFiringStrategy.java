@@ -39,8 +39,7 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 	
 	@Override
 	public boolean shouldFire(double targetLocation) {
-		return !isExpended() ;
-//				&& super.shouldFire(targetLocation);
+		return !isExpended() && super.shouldFire(targetLocation);
 	}
 	
 	@Override
