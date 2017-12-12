@@ -14,14 +14,17 @@ public class MortalCollider extends GenericCollider {
 	private double healthPoints;
 
 	public MortalCollider(@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId,
-		                  @ElementProperty(value = "healthPoints", isTemplateProperty = true) double healthPoints) {
-		super(playerId);
+		                  @ElementProperty(value = "healthPoints", isTemplateProperty = true) double healthPoints,
+		                  @ElementProperty(value = "explosionTemplate", isTemplateProperty = true) String explosionTemplate) {
+		super(playerId,explosionTemplate);
 		this.healthPoints = healthPoints;
 	}
 
 	@Override
 	public void visit(DamageDealingCollisionVisitable visitable) {
+		System.out.println("BeforeCollision: "+healthPoints);
 		setHealthPoints(getHealthPoints() - visitable.getDamageToDeal());
+		System.out.println("AfterCollision: "+healthPoints);
 	}
 
 	@Override
@@ -35,5 +38,10 @@ public class MortalCollider extends GenericCollider {
 
 	private void setHealthPoints(double newHitPoints) {
 		healthPoints = newHitPoints;
+	}
+
+	@Override
+	public String explode() {
+		return "";
 	}
 }

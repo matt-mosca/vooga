@@ -68,6 +68,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private TransitorySplashScreen myTransition;
 	private WinScreen myWinScreen;
 	private GameOverScreen myGameOver;
+	private MultiplayerLobby myMulti;
 	private Scene myTransitionScene;
 	private VBox myLeftBar;
 	private PlayArea myPlayArea;
@@ -82,6 +83,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private MediaPlayer mediaPlayer;
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
+	private String backgroundSong = "src/MediaTesting/128 - battle (vs gym leader).mp3";
 	
 //	private ButtonFactory buttonMaker;
 //	private Button testButton;
@@ -96,17 +98,18 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private ClientMessageUtils clientMessageUtils;
 
-	public PlayDisplay(int width, int height, Stage stage, boolean isMultiPlayer) {
+	public PlayDisplay(int width, int height, Stage stage, PlayModelController myController) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
 		
 //		buttonMaker = new ButtonFactory();
-//		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> openSesame(stage));
+//		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> testOpenMultiplayer(stage));
 		
-		myController = isMultiPlayer ? new MultiPlayerClient(new SerializationUtils()) : new PlayController();
+		this.myController = myController;
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
 		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
 		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
+//		myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage, this);
 		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
 		hud = new HUD(width);
@@ -119,23 +122,30 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myInventoryToolBar.initializeInventory();
 		hud.initialize(myController.getResourceEndowments());
 		hud.toFront();
-		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/128 - battle (vs gym leader).mp3");
+		volumeSlider = new Slider(0,1,.1);
+		rootAdd(volumeSlider);
+		volumeSlider.setLayoutY(7);
+		volumeSlider.setLayoutX(55);
+		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
-		volumeSlider.setLayoutY(7);
-		volumeSlider.setLayoutX(55);
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
 		tester();
+		System.out.println("Wave stuff");
 	}
 	
 //	private void openSesame(Stage stage) {
 //		stage.setScene(myWinScreen.getScene());
 //		stage.setScene(myGameOver.getScene());
+//	}
+	
+//	private void testOpenMultiplayer(Stage stage) {
+//		stage.setScene(myMulti.getScene());
 //	}
 
 	public void tester() {
@@ -148,16 +158,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(hud);
 		myInventoryToolBar = new InventoryToolBar(this, myController);
 		levelSelector = new ChoiceBox<>();
-		levelSelector.getItems().addAll(1,2,3);
-		levelSelector.setOnAction(e->changeLevel(levelSelector.getSelectionModel().getSelectedItem()));
+		levelSelector.getItems().addAll(1,2,3,4);
+		levelSelector.setOnAction(e->{
+			changeLevel(levelSelector.getSelectionModel().getSelectedItem());
+			//Maybe clear the screen here?? myPlayArea.getChildren().clear() didn't work.
+		});
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		myLeftBar.getChildren().add(levelSelector);
 		rootAdd(myLeftBar);
-		volumeSlider = new Slider(0, 1, .1);
-		rootAdd(volumeSlider);
 		
 	}
-
+	
 	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		try {
@@ -165,8 +176,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				games.add(title);
 			}
 			Collections.sort(games);
-			ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
+			ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Saved games", games);
 			loadChoices.setTitle("Load Game");
+			loadChoices.setHeaderText("Choose a saved game.");
 			loadChoices.setContentText(null);
 
 			Optional<String> result = loadChoices.showAndWait();

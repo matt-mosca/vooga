@@ -4,7 +4,6 @@ import engine.AbstractGameController;
 import engine.AuthoringModelController;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
-import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import exporting.Packager;
 import exporting.Publisher;
@@ -179,6 +178,9 @@ public class AuthoringController extends AbstractGameController implements Autho
 			Point2D spawningPoint) throws ReflectiveOperationException {
 		String waveName = getNameForWave();
 		defineElement(waveName, waveProperties);
+		System.out.println(waveName);
+		System.out.println(waveProperties.toString());
+		System.out.println(elementNamesToSpawn);
 		int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
 		// save this to level waves
 		getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
@@ -284,6 +286,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 			String condition = levelSettingsForConditionType.get(level);
 			Collection<Integer> levelsWithCondition = conditionsToLevels.getOrDefault(condition, new ArrayList<>());
 			levelsWithCondition.add(level);
+			System.out.println("Level: " + level + "; " + condition);
 			conditionsToLevels.put(condition, levelsWithCondition);
 		}
 		return conditionsToLevels;
@@ -293,17 +296,4 @@ public class AuthoringController extends AbstractGameController implements Autho
 		return getNumLevelsForGame(getGameName(), true);
 	}
 
-	public static void main(String[] args) {
-		AuthoringController tester = new AuthoringController();
-		Map<String, Object> propMap = new HashMap<>();
-		// Just test that serialization works
-		propMap.put("hi", "1");
-		propMap.put("attacks", new Double(2));
-		propMap.put("hello", 3.0);
-		try {
-			tester.createWaveProperties(propMap, new ArrayList<>(), new Point2D(0, 0));
-		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
-		}
-	}
 }

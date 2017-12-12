@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import engine.behavior.movement.TrackingPoint;
 import engine.game_elements.GameElement;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -31,7 +33,7 @@ public class SpriteQueryHandler {
 		return auxiliarySpriteConstructionObjects;
 	}
 
-	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(GameElement gameElementToTrack) {
+	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(Point2D startCoordinates,GameElement gameElementToTrack) {
 		TrackingPoint targetLocation;
 		if (gameElementToTrack != null)
 			targetLocation = gameElementToTrack.getPositionForTracking();
@@ -39,8 +41,10 @@ public class SpriteQueryHandler {
 			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
 		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
-		auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
-		auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
+		//auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);
+		//auxiliarySpriteConstructionObjects.put(targetPoint.getClass().getName(), targetPoint);
+		auxiliarySpriteConstructionObjects.put("targetLocation", targetLocation);
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
 		return auxiliarySpriteConstructionObjects;
 	}
 
@@ -49,7 +53,7 @@ public class SpriteQueryHandler {
 		GameElement nearestGameElement = null;
 		for (GameElement gameElement : levelGameElements) {
 			double distanceToSprite = new Point2D(gameElement.getX(), gameElement.getY()).distance(coordinates);
-			if ((distanceToSprite < nearestDistance )&& gameElement.getPlayerId() != toGenerateId) {
+			if ((distanceToSprite < nearestDistance )&& gameElement.getPlayerId() != toGenerateId ) {
 				nearestDistance = distanceToSprite;
 				nearestGameElement = gameElement;
 			}

@@ -150,12 +150,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		try {
-			// Want to load as author to get total number of levels for actual game
-			return getIoController().getNumberOfLevelsForGame(gameName, forOriginalGame);
-		} catch (FileNotFoundException e) {
-			return 0;
-		}
+		return getLevelSprites().size() - 1; // Account for 0-indexing vs 1-indexing
 	}
 
 	@Override
@@ -267,7 +262,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
+		System.out.println("Auxiliary");
+		System.out.println(auxiliarySpriteConstructionObjects.toString());
+		System.out.println(auxiliaryArgs);
 		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
+			System.out.println(auxiliaryArg);
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);

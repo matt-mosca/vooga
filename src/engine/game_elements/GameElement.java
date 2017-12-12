@@ -169,4 +169,11 @@ public final class GameElement {
 		return collisionHandler.getBlastRadius();
 	}
 	
+	public boolean shouldExplode() {
+		return collisionHandler.shouldExplode();
+	}
+	
+	public String explode() {
+		return collisionHandler.explode();
+	}
 }

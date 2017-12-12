@@ -17,19 +17,29 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import engine.AbstractGameModelController;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
+import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerClient.ExitRoom;
 import networking.protocol.PlayerClient.GetAllTemplateProperties;
 import networking.protocol.PlayerClient.GetAvailableGames;
 import networking.protocol.PlayerClient.GetElementCosts;
+import networking.protocol.PlayerClient.GetGameRooms;
 import networking.protocol.PlayerClient.GetInventory;
 import networking.protocol.PlayerClient.GetLevelElements;
 import networking.protocol.PlayerClient.GetNumberOfLevels;
+import networking.protocol.PlayerClient.GetPlayerNames;
 import networking.protocol.PlayerClient.GetTemplateProperties;
+import networking.protocol.PlayerClient.JoinRoom;
+import networking.protocol.PlayerClient.LaunchGameRoom;
 import networking.protocol.PlayerClient.LoadLevel;
 import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.ElementCost;
+import networking.protocol.PlayerServer.GameRoomCreationStatus;
+import networking.protocol.PlayerServer.GameRoomJoinStatus;
+import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ServerMessage;
 import networking.protocol.PlayerServer.TemplateProperties;
 import util.io.SerializationUtils;
@@ -41,16 +51,52 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	private Socket socket;
 	private DataInputStream input;
 	private DataOutputStream outputWriter;
-	protected SerializationUtils serializationUtils;
-	// todo make private with getter
+	private SerializationUtils serializationUtils;
 
-
-	public AbstractClient(SerializationUtils serializationUtils) {
-		this.serializationUtils = serializationUtils;
+	public AbstractClient() {
 		setupChatSocketAndStreams();
+		serializationUtils = new SerializationUtils();
+		System.out.println("Set up chat socket and streams");
 	}
 
 	protected abstract int getPort();
+
+	public String createGameRoom(String gameName, String roomName) {
+		ClientMessage.Builder clientMessageBuilder = ClientMessage.newBuilder();
+		CreateGameRoom gameRoomCreationRequest = CreateGameRoom.newBuilder().setGameName(gameName).setRoomName(gameName)
+				.build();
+		writeRequestBytes(clientMessageBuilder.setCreateGameRoom(gameRoomCreationRequest).build().toByteArray());
+		return handleGameRoomCreationResponse(readServerResponse());
+	}
+
+	public void joinGameRoom(String roomName, String userName) {
+		JoinRoom gameRoomJoinRequest = JoinRoom.newBuilder().setRoomName(roomName).setUserName(userName).build();
+		writeRequestBytes(ClientMessage.newBuilder().setJoinRoom(gameRoomJoinRequest).build().toByteArray());
+		handleGameRoomJoinResponse(readServerResponse());
+	}
+
+	public void exitGameRoom() {
+		writeRequestBytes(ClientMessage.newBuilder().setExitRoom(ExitRoom.newBuilder().getDefaultInstanceForType())
+				.build().toByteArray());
+	}
+
+	public LevelInitialized launchGameRoom() {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setLaunchGameRoom(LaunchGameRoom.newBuilder().getDefaultInstanceForType()).build().toByteArray());
+		return handleLevelInitializedResponse(readServerResponse());
+	}
+
+	public Set<String> getGameRooms() {
+		writeRequestBytes(
+				ClientMessage.newBuilder().setGetGameRooms(GetGameRooms.getDefaultInstance()).build().toByteArray());
+		return handleGameRoomsResponse(readServerResponse());
+	}
+
+	public Set<String> getPlayerNames() {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setGetPlayerNames(GetPlayerNames.newBuilder().getDefaultInstanceForType()).build().toByteArray());
+		return handlePlayerNamesResponse(readServerResponse());
+	}
 
 	/**
 	 * Save the current state of the current level a game being played or authored.
@@ -88,8 +134,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetTemplateProperties(GetTemplateProperties.newBuilder().setElementName(elementName).build())
 				.build().toByteArray());
-		Map<String, String> serializedTemplate =
-				handleAllTemplatePropertiesResponse(readServerResponse()).values().iterator().next();
+		Map<String, String> serializedTemplate = handleAllTemplatePropertiesResponse(readServerResponse()).values()
+				.iterator().next();
 		return serializationUtils.deserializeElementTemplate(serializedTemplate);
 	}
 
@@ -97,8 +143,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	public Map<String, Map<String, Object>> getAllDefinedTemplateProperties() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetAllTemplateProperties(GetAllTemplateProperties.getDefaultInstance()).build().toByteArray());
-		Map<String, Map<String, String>> serializedTemplates =
-				handleAllTemplatePropertiesResponse(readServerResponse());
+		Map<String, Map<String, String>> serializedTemplates = handleAllTemplatePropertiesResponse(
+				readServerResponse());
 		return serializationUtils.deserializeTemplates(serializedTemplates);
 	}
 
@@ -202,6 +248,10 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		return new byte[len];
 	}
 
+	protected SerializationUtils getSerializationUtils() {
+		return serializationUtils;
+	}
+
 	private LevelInitialized handleLoadOriginalGameStateResponse(ServerMessage serverMessage) {
 		if (serverMessage.hasLevelInitialized()) {
 			LevelInitialized levelInitialized = serverMessage.getLevelInitialized();
@@ -277,7 +327,61 @@ public abstract class AbstractClient implements AbstractGameModelController {
 				templateProperty -> templatePropertiesMap.put(templateProperty.getName(), templateProperty.getValue()));
 		return templatePropertiesMap;
 	}
-	
+
+	private Set<String> handleGameRoomsResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasGameRooms()) {
+			return serverMessage.getGameRooms().getRoomNamesList().stream().collect(Collectors.toSet());
+		}
+		return new HashSet<>();
+	}
+
+	private Set<String> handlePlayerNamesResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasPlayerNames()) {
+			PlayerNames playerNames = serverMessage.getPlayerNames();
+			if (playerNames.hasError()) {
+				throw new IllegalArgumentException(playerNames.getError());
+			}
+			return serverMessage.getPlayerNames().getUserNamesList().stream().collect(Collectors.toSet());
+		}
+		return new HashSet<>();
+	}
+
+	private String handleGameRoomCreationResponse(ServerMessage serverMessage) {
+		String gameRoomId = "";
+		if (serverMessage.hasGameRoomCreationStatus()) {
+			GameRoomCreationStatus gameRoomCreationStatus = serverMessage.getGameRoomCreationStatus();
+			if (!gameRoomCreationStatus.hasError()) {
+				gameRoomId = gameRoomCreationStatus.getRoomId();
+			} else {
+				// TODO - throw exception to be handled by front end?
+				throw new IllegalArgumentException(gameRoomCreationStatus.getError());
+			}
+		}
+		return gameRoomId;
+	}
+
+	private void handleGameRoomJoinResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasGameRoomJoinStatus()) {
+			GameRoomJoinStatus gameRoomJoinStatus = serverMessage.getGameRoomJoinStatus();
+			if (gameRoomJoinStatus.hasError()) {
+				// TODO - throw exception to be handled by front end?
+				throw new IllegalArgumentException(gameRoomJoinStatus.getError());
+			}
+		}
+	}
+
+	private LevelInitialized handleLevelInitializedResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasGameRoomLaunchStatus()) {
+			GameRoomLaunchStatus gameRoomLaunchStatus = serverMessage.getGameRoomLaunchStatus();
+			if (gameRoomLaunchStatus.hasError()) {
+				// TODO - throw exception to be handled by front end?
+				throw new IllegalArgumentException(gameRoomLaunchStatus.getError());
+			}
+			return gameRoomLaunchStatus.getInitialState();
+		}
+		return LevelInitialized.getDefaultInstance();
+	}
+
 	private synchronized void setupChatSocketAndStreams() {
 		try {
 			// Make connection and initialize streams
