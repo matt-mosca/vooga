@@ -181,8 +181,8 @@ public class LevelToolBar extends VBox implements TabInterface {
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
 		String[] levelWaveArray = levelAndWave.split("\\s+");
 		String mySpriteId = mySprite.getId();
-		List<ImageView> imageList = Collections.nCopies(amount, mySprite);
-		elementsToSpawn = Collections.nCopies(amount, mySpriteId);
+		List<ImageView> imageList = new ArrayList<>(Collections.nCopies(amount, mySprite));
+		elementsToSpawn = new ArrayList<>(Collections.nCopies(amount, mySpriteId));
 //		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
 		Point2D location = new Point2D(30,60);
 		myProperties.put("templatesToFire", elementsToSpawn);
