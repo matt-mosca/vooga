@@ -31,7 +31,6 @@ public abstract class ScreenDisplay {
 	 */
 
 	public ScreenDisplay(int width, int height, Paint background, Stage currentStage) {
-		init();
 		stage = currentStage;
 		setMyScene(new Scene(root, width, height, background));
 
@@ -97,5 +96,9 @@ public abstract class ScreenDisplay {
 	
 	public void setMyScene(Scene myScene) {
 		this.myScene = myScene;
+	}
+
+	public void startDisplay() {
+		animation.play();
 	}
 }
