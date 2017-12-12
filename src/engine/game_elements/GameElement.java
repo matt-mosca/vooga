@@ -126,10 +126,6 @@ public final class GameElement {
 		return movementStrategy.removeUponCompletion();
 	}
 
-	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
-		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
-	}
-
 	public ImageView getGraphicalRepresentation() {
 		return collisionHandler.getGraphicalRepresentation();
 	}

@@ -2,11 +2,7 @@ package authoring.LevelToolBar;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
-import com.sun.j3d.utils.scenegraph.io.retained.Controller;
-
-import authoring.PropertiesToolBar.Properties;
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
