@@ -21,10 +21,23 @@ public class WaveDisplay extends TabPane {
 				tab.setText("wave" + String.valueOf(i+1));
 				this.getTabs().add(tab);
 				tab.setOnSelectionChanged(e -> tabInterface.updateImages());
+				if (i == 0) {
+					tab.setClosable(false);
+				} else {
+					tab.setOnClosed(e -> deleteWave(tab));
+				}
 			}
 		}
 	}
-	
+
+	private void deleteWave(Tab tab) {
+		tabInterface.waveDeleted(this.getTabs().indexOf(tab));
+		this.getTabs().remove(tab);
+		for (int i = 0; i < this.getTabs().size(); i++) {
+			this.getTabs().get(i).setText("wave" + String.valueOf(i+1));
+		}
+	}
+
 	public int getCurrTab() {
 		return this.getSelectionModel().getSelectedIndex() + 1;
 	}
