@@ -259,7 +259,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private Method getMethodFromMethodName(String methodName) throws IllegalArgumentException {
 		try {
-			System.out.println("method name: " + methodName);
 			return this.getClass().getDeclaredMethod(methodName, CONDITION_METHODS_PARAMETER_CLASSES);
 		} catch (NoSuchMethodException e) {
 			// TODO - custom exception?
@@ -276,7 +275,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean allWavesDead() {
-		return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> !wave.isAlive()).count() == 0;
+		return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> wave.isAlive()).count() == 0;
 	}
 
 	// TODO - Boolean defeat conditions
