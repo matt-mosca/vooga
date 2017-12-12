@@ -3,6 +3,7 @@ package engine.behavior.firing;
 import engine.behavior.ElementProperty;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,11 +13,11 @@ import java.util.Set;
  */
 public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringStrategy {
 
-	private Collection<String> templatesToFire;
+	private List<String> templatesToFire;
 	private int elementsRemaining;
 
 	public AbstractWaveFiringStrategy(
-			@ElementProperty(value = "templateToFire", isTemplateProperty = true) Collection<String> templatesToFire,
+			@ElementProperty(value = "templateToFire", isTemplateProperty = true) List<String> templatesToFire,
 			@ElementProperty(value = "spawnPeriod", isTemplateProperty = true) double spawnPeriod,
 			@ElementProperty(value = "numberToSpawn", isTemplateProperty = true) int numberToSpawn) {
 		super(spawnPeriod,Double.POSITIVE_INFINITY);
@@ -39,8 +40,7 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 	
 	@Override
 	public boolean shouldFire(double targetLocation) {
-		return !isExpended() ;
-//				&& super.shouldFire(targetLocation);
+		return !isExpended() && super.shouldFire(targetLocation);
 	}
 	
 	@Override

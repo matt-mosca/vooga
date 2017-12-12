@@ -152,12 +152,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		stage.setScene(myMulti.getScene());
 //	}
 
-	public void tester() {
-		for (int i = 0; i < 100; i++) {
-			step();
-		}
-	}
-
 	private void addItems() {
 		rootAdd(hud);
 		myInventoryToolBar = new InventoryToolBar(this, myController);
@@ -174,6 +168,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	public void initializeGameState() {
+		System.out.println("initialize");
 		List<String> games = new ArrayList<>();
 		try {
 			for (String title : myController.getAvailableGames().keySet()) {
@@ -379,6 +374,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.setHeaderText(null);
 		error.setContentText("You do not have the funds for this item.");
 		error.show();
+	}
+	
+	public String getGameState() {
+		return gameState;
 	}
 
 	@Override

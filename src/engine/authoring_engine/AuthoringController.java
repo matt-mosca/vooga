@@ -10,6 +10,7 @@ import exporting.Publisher;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -264,13 +265,17 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	private void deleteOutdatedWave(int waveId) {
+		System.out.println(getCurrentLevel());
+		System.out.println(waveId);
+		System.out.println(getLevelWaves().get(getCurrentLevel()).toString());
+		System.out.println(getLevelWaves().get(getCurrentLevel()).get(waveId));
 		GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
 		// Remove the old placed wave
 		getSpriteIdMap().remove(getIdFromSprite(oldWave));
 	}
 
 	private String getNameForWave() {
-		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.incrementAndGet());
+		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.getAndIncrement());
 	}
 
 	private String getNameForWaveNumber(int level, int num) {

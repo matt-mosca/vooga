@@ -34,5 +34,7 @@ public class MultiplayerListBox extends ScrollPane {
 		namesList.setItems(namesObservable);
 	}
 	
-	
+	public ListView<String> getListView() {
+		return namesList;
+	}
 }
