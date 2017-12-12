@@ -34,6 +34,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private VBox playersBox;
 	private VBox lobbiesListBox;
 	private VBox rightBox;
+	private VBox activityBox;
 	private HBox usernameBox;
 	private ButtonFactory buttonFactory;
 	private Button createGameLobby;
@@ -45,6 +46,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private Button joinSelectedLobby;
 	private MultiplayerListBox lobbies;
 	private MultiplayerListBox players;
+	private ActivityListBox activityList;
 	private MultiPlayerClient multiClient;
 	private String username;
 	private String gameName;
@@ -70,9 +72,11 @@ public class MultiplayerLobby extends ScreenDisplay {
 		playersBox = new VBox();
 		lobbiesListBox = new VBox();
 		rightBox = new VBox();
+		activityBox = new VBox();
 		usernameBox = new HBox();
 		lobbies = new MultiplayerListBox();
 		players = new MultiplayerListBox();
+		activityList = new ActivityListBox();
 		multiClient = multiPlayerClient;
 		username = new String();
 		gameName = new String();
@@ -85,6 +89,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		setUpButtonBox();
 		setUpRightBox();
 		setUpLobbiesListBox();
+		setUpActivityBox();
 		initializeMultiplayerHomeScreen();
 		createGameStateLabel(width, height);
 		setStyleAndLayout(width, height);
@@ -149,6 +154,10 @@ public class MultiplayerLobby extends ScreenDisplay {
 		usernameBox.setMinWidth(300);
 		usernameBox.setSpacing(10);
 		lobbiesListBox.getStyleClass().add("borders");
+		activityBox.setLayoutY(100);
+		activityBox.setMinWidth(300);
+		activityBox.setMinHeight(300);
+		activityBox.getStyleClass().add("borders");
 	}
 	
 	private void setMultiplayerBackground(int width, int height) {
@@ -163,6 +172,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void initializeMultiplayerHomeScreen() {
 		setTopLabelForMultiplayerHomeScreen();
 		addButtonBox();
+		addActivityBox();
+		activityList.setNames(multiClient);
 	}
 	
 	private void initializeLobbiesList() {
@@ -186,6 +197,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	
 	private void clearMultiplayerHomeScreen() {
 		removeButtonBox();
+		removeActivityBox();
 	}
 	
 	private void clearLobbiesList() {
@@ -330,6 +342,13 @@ public class MultiplayerLobby extends ScreenDisplay {
 		rootAdd(rightBox);
 	}
 	
+	private void setUpActivityBox() {
+		Label activityLabel = new Label("Active Players");
+		activityBox.getChildren().add(activityLabel);
+		activityList.attach(activityBox);
+		activityList.setNames(multiClient);
+	}
+	
 	private void setUpLobbiesListBox() {
 		lobbiesLabel.setText("Lobbies");
 		lobbiesListBox.getChildren().add(lobbiesLabel);
@@ -410,6 +429,14 @@ public class MultiplayerLobby extends ScreenDisplay {
 	
 	private void removeJoinSelectedLobby() {
 		rootRemove(joinSelectedLobby);
+	}
+	
+	private void addActivityBox() {
+		rootAdd(activityBox);
+	}
+	
+	private void removeActivityBox() {
+		rootRemove(activityBox);
 	}
 	
 	@Override
