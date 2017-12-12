@@ -6,20 +6,17 @@ import com.google.gson.stream.JsonReader;
 import engine.Bank;
 import engine.behavior.collision.CollisionVisitable;
 import engine.behavior.collision.CollisionVisitor;
-import engine.behavior.collision.DamageDealingCollisionVisitable;
-import engine.behavior.collision.ImmortalCollider;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.game_elements.GameElement;
-import engine.game_elements.GameElementFactory;
 import util.AnnotationExclusionStrategy;
 import util.InterfaceAdapter;
 
 import java.io.StringReader;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +33,7 @@ public class SerializationUtils {
 	public static final String INVENTORY = "inventory";
 	public static final String WAVE = "wave";
 	public static final String DELIMITER = "\n";
+	public static final String COMMA = ",";
 	// Description, Status, Sprites
 	public static final int NUM_SERIALIZATION_SECTIONS = 7;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
@@ -373,11 +371,6 @@ public class SerializationUtils {
 			throw new IllegalArgumentException();
 		}
 		String[] serializedSections = serializedLevelData.get(levelString).split(DELIMITER);
-		System.out.println("Number of serialized sections: " + serializedSections.length);
-		Arrays.asList(serializedSections).forEach(section -> {
-			System.out.println("SECTION");
-			System.out.println(section);
-		});
 		if (serializedSections.length < NUM_SERIALIZATION_SECTIONS) {
 			throw new IllegalArgumentException();
 		}
@@ -389,6 +382,13 @@ public class SerializationUtils {
 	}
 
 	public Object deserializeElementProperty(String propertySerialization, Class propertyClass) {
+		try {
+			if (propertyClass == Class.forName("java.util.Collections$CopiesList")) {
+				return gsonBuilder.create().fromJson(propertySerialization, propertyClass);
+			}
+		} catch (ClassNotFoundException e) {
+			// fuck off
+		}
 		if (propertyClass != String.class) {
 			return gsonBuilder.create().fromJson(propertySerialization, propertyClass);
 		} else {
@@ -396,7 +396,7 @@ public class SerializationUtils {
 		}
 	}
 
-	private final String COMMA = ",";
+	private final String SEMICOLON = ";";
 	private final int VALUE_INDEX = 0, CLASS_INDEX = 1;
 
 	public Map<String, String> serializeElementTemplate(Map<String, ?> elementTemplate) {
@@ -404,7 +404,7 @@ public class SerializationUtils {
 		Map<String, String> serializedTemplate = new HashMap<>();
 		for (String propertyName : elementTemplate.keySet()) {
 			Class propertyClass = elementTemplate.get(propertyName).getClass();
-			String serializedProperty = elementTemplate.get(propertyName) + COMMA + propertyClass.toString();
+			String serializedProperty = elementTemplate.get(propertyName) + SEMICOLON + propertyClass.toString();
 			serializedTemplate.put(propertyName, serializedProperty);
 		}
 		return serializedTemplate;
@@ -413,10 +413,11 @@ public class SerializationUtils {
 	public Map<String, Object> deserializeElementTemplate(Map<String, String> elementTemplate) {
 		Map<String, Object> serializedTemplate = new HashMap<>();
 		for (String propertyName : elementTemplate.keySet()) {
-			String[] serializedProperty = elementTemplate.get(propertyName).split(COMMA);
+			String[] serializedProperty = elementTemplate.get(propertyName).split(SEMICOLON);
+			String[] splitClass = serializedProperty[CLASS_INDEX].split("\\s+");
 			Class propertyClass;
 			try {
-				propertyClass = Class.forName(serializedProperty[CLASS_INDEX]);
+				propertyClass = Class.forName(splitClass[CLASS_INDEX]);
 			} catch (ClassNotFoundException exception) {
 				propertyClass = String.class;
 			}

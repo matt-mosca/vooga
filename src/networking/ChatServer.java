@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
+import javafx.stage.Stage;
+
 /**
  * Manages chat connections and distributes messages.
  *

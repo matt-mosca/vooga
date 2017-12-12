@@ -85,6 +85,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
 		spriteTemplateIoHandler = new SpriteTemplateIoHandler(serializationUtils);
 		spriteQueryHandler = new SpriteQueryHandler();
+		currentLevel = 1;
 	}
 
 	/**
@@ -130,7 +131,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
 			loadLevelData(saveName, levelToLoad, true);
 		}
-		gameName = saveName;
+		setGameName(saveName);
 		gameElementFactory.loadSpriteTemplates(spriteTemplateIoHandler.loadElementTemplates(gameName));
 		gameElementUpgrader.loadSpriteUpgrades(spriteTemplateIoHandler.loadElementUpgrades(gameName));
 		return packageStateChange(oldGameElements);
@@ -150,12 +151,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		try {
-			// Want to load as author to get total number of levels for actual game
-			return getIoController().getNumberOfLevelsForGame(gameName, forOriginalGame);
-		} catch (FileNotFoundException e) {
-			return 0;
-		}
+		return getLevelSprites().size() - 1; // Account for 0-indexing vs 1-indexing
 	}
 
 	@Override
@@ -258,7 +254,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	@Override
 	public Collection<NewSprite> getLevelSprites(int level) {
-		return getServerMessageUtils().packageNewSprites(getFilteredSpriteIdMap(getLevelSprites().get(level)));
+		Collection<NewSprite> levelSprites = getServerMessageUtils().packageNewSprites(getFilteredSpriteIdMap(getLevelSprites().get(level)));
+		return levelSprites;
 	}
 
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)

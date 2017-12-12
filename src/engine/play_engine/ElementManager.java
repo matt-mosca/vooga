@@ -69,6 +69,16 @@ public class ElementManager {
 		}
 		activeElements.forEach(element -> {
 			if (!element.isAlive()) {
+				if(element.shouldExplode()) {
+					Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
+					try {
+						GameElement explosionElement = gameElementFactory.generateElement(element.explode(), auxiliaryObjects);
+						updatedElements.add(explosionElement);
+					} catch (ReflectiveOperationException failedToGenerateProjectileException) {
+						// don't generate the projectile
+						// TODO - throw exception? (prob not)
+					}					
+				}
 				deadElements.add(element);
 			} else {
 				updatedElements.add(element);
@@ -111,7 +121,7 @@ public class ElementManager {
 	}
 
 	boolean enemyReachedTarget() {
-		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
+		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
 	}
 
 	boolean allElementsFulfillCondition(Predicate<GameElement> condition) {
@@ -127,32 +137,39 @@ public class ElementManager {
 		for (int otherIndex = elementIndex + 1; otherIndex < activeElements.size(); otherIndex++) {
 			GameElement otherElement = activeElements.get(otherIndex);
 			if (element.collidesWith(otherElement)) {
-				element.processCollision(otherElement);
-				otherElement.processCollision(element);
+				element.processCollision(getAllDamageAffectedElements(element,otherElement));
+				otherElement.processCollision(getAllDamageAffectedElements(otherElement,element));
 				playAudio(element.getCollisionAudio());
 				playAudio(otherElement.getCollisionAudio());
 			}
 		}
 	}
+	
+	private List<GameElement> getAllDamageAffectedElements(GameElement collider, GameElement collidee) {
+		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(collider);
+		List<GameElement> allAffectedElements = spriteQueryHandler.
+				getAllElementsWithinRange(collider.getPlayerId(), new Point2D(collider.getX(), collider.getY()), exclusionOfSelf, collider.getBlastRadius());
+		if(!allAffectedElements.contains(collidee)) {
+			allAffectedElements.add(collidee);
+		}
+		//System.out.println("Affected Enemies="+ ""+allAffectedElements);
+		return allAffectedElements;
+	}
 
 	private void handleElementFiring(GameElement element) {
 		Point2D nearestTargetLocation;
-		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
-		exclusionOfSelf.remove(element);
-		GameElement nearestEnemyElement = spriteQueryHandler.getNearestEnemy(
-				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+		GameElement nearestEnemyElement = getNearestEnemyElement(element);
 		if(nearestEnemyElement == null) {
-			nearestTargetLocation = new Point2D(0,0);
+			nearestTargetLocation = new Point2D(500,500);
 		} else {
 			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
 		}
 		//@ TODO Fix should fire to take in nearest point
 		String elementTemplateName;
-		if (element.shouldFire() && (elementTemplateName = element.fire()) != null) {
-			exclusionOfSelf.remove(element);
+		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) && (elementTemplateName = element.fire()) != null) {
+			
 			// Use player id of firing element rather than projectile? This allows greater flexibility
-			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-					element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
 			try {
 				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectile);
@@ -161,7 +178,6 @@ public class ElementManager {
 				// TODO - throw exception? (prob not)
 			}
 			playAudio(element.getFiringAudio());
-			System.out.println(elementTemplateName);
 			// Use player id of firing element rather than projectile? This allows greater
 			// flexibility
 			try {
@@ -173,6 +189,19 @@ public class ElementManager {
 
 		}
 
+	}
+	
+	private GameElement getNearestEnemyElement(GameElement element) {
+		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(element);
+		return spriteQueryHandler.getNearestEnemy(
+				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+		
+	}
+	
+	private List<GameElement> getListOfElementsExcludingElement(GameElement element){
+		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
+		exclusionOfSelf.remove(element);
+		return exclusionOfSelf;
 	}
 	
 	private void playAudio(String audioUrl) {

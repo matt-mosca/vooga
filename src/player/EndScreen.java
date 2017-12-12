@@ -4,6 +4,7 @@ import display.splashScreen.ScreenDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import main.Main;
@@ -60,7 +61,7 @@ public abstract class EndScreen extends ScreenDisplay {
 	}
 
 	@Override
-	public void listItemClicked(ImageView object) {
+	public void listItemClicked(MouseEvent e, ImageView object) {
 		// TODO Auto-generated method stub
 		
 	}

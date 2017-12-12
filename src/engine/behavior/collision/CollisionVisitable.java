@@ -19,5 +19,6 @@ public interface CollisionVisitable {
 	public void accept(CollisionVisitor v);
 	
 	public String getAudioUrl();
-
+	
+	public double getBlastRadius();
 }

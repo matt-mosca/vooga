@@ -1,25 +1,67 @@
 package authoring.LevelToolBar;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.Map;
 
-import javafx.scene.control.Label;
+import engine.authoring_engine.AuthoringController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
 public class GameEnderRecorder extends VBox{
-	Set<Integer >myCompletedLevels;
+	private TableView <Conditions> victoryConditions;
+	private TableView<Conditions> defeatConditions;
+	private AuthoringController myController;
 	
-	public GameEnderRecorder(Set<Integer> levels) {
-		myCompletedLevels=levels;
-		update();
+	
+	public GameEnderRecorder(AuthoringController controller) {
+//		myCompletedLevels=levels;
+		myController = controller;
+//		update();
+		
 	}
 
 	public void update() {
-		this.getChildren().clear();
-		Label completed = new Label("Levels for which you have set a victory condition:");
-		this.getChildren().add(completed);
-		for (int i : myCompletedLevels) {
-			Label l = new Label(Integer.toString(i));
-			this.getChildren().add(l);
+		makeTables();
+		this.getChildren().addAll(victoryConditions, defeatConditions);
+	}
+	
+	private void makeTables() {
+		ObservableList<Conditions> vicConditions = FXCollections.observableArrayList();
+		ObservableList<Conditions> lossConditions = FXCollections.observableArrayList();
+		Map<String, Collection<Integer>> victory = myController.getCurrentVictoryConditions();
+		Map<String, Collection<Integer>> defeat = myController.getCurrentDefeatConditions();
+		makeConditions(victory, vicConditions);
+		makeConditions(defeat, lossConditions);
+		victoryConditions = new TableView<Conditions>();
+		defeatConditions = new TableView<Conditions>();
+		fillTable(victoryConditions, vicConditions);
+		fillTable(defeatConditions, lossConditions);
+		
+	}
+
+	private void fillTable(TableView<Conditions> table, ObservableList<Conditions> conditions) {
+		TableColumn<Conditions, String> condColumn = makeColumn("Conditions", "myCondition");
+		TableColumn<Conditions, String> levelsColumn = makeColumn("Levels", "myLevels");
+		table.setItems(conditions);
+		table.getColumns().addAll(condColumn, levelsColumn);
+		
+	}
+
+	private TableColumn<Conditions, String> makeColumn(String title, String instanceVar) {
+		TableColumn<Conditions, String> column = new TableColumn<>(title);
+		column.setPrefWidth(100);
+		column.setCellValueFactory(new PropertyValueFactory<>(instanceVar));
+		return column;
+	}
+
+	private void makeConditions(Map<String, Collection<Integer>> list, ObservableList<Conditions> conditions) {
+		for(String s : list.keySet()) {
+			Conditions c = new Conditions(s, list.get(s));
+			conditions.add(c);
 		}
 	}
 }
