@@ -109,7 +109,6 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myProperties.put("Range of tower", 50000);
 		myProperties.put("Attack period", 10);
 		myProperties.put("Firing Sound", "Sounds");
-		
 		myProperties.put("Numerical \"team\" association", 1);
 		myProperties.put("period", 60);
 		myProperties.put("totalWaves", 100);
