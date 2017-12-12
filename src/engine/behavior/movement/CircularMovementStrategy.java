@@ -24,8 +24,6 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
 		super(startPoint, radius * Math.cos(Math.toRadians(initialAngle)),
 				radius * Math.sin(Math.toRadians(initialAngle)), radius);
-		System.out.println("-------------------------------------------------------------");
-		System.out.println("StartingLocation: ("+startPoint.getX()+","+startPoint.getY()+")");
 		this.radius = radius;
 		this.angle = Math.toRadians(initialAngle);
 		this.angularVelocity = velocity/radius;

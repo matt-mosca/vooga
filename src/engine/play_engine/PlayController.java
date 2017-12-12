@@ -77,27 +77,33 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		if (inPlay) {
 			/*
 			 * Uncomment when front end is ready to set wave properties fully (team & no. of
-			 * attacks of wave) if (checkLevelClearanceCondition()) { if
-			 * (checkVictoryCondition()) { registerVictory(); } else {
-			 * registerLevelCleared(); } } else if (checkDefeatCondition()) {
-			 * registerDefeat(); } else { // Move elements, check and handle collisions
-			 * elementManager.update(); }
-			 */
-			savedList.add(getSpriteIdMap().entrySet());
-			elementManager.update();
-			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
-			List<GameElement> updatedElements = elementManager.getUpdatedElements();
-			List<GameElement> deadElements = elementManager.getDeadElements();
-			for (GameElement element : newlyGeneratedElements) {
-				cacheAndCreateIdentifier(element);
-			}
-			// Package these changes into an Update message
-			latestUpdate = packageSpriteUpdates(newlyGeneratedElements, updatedElements, deadElements);
-			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
-			elementManager.clearDeadElements();
-			elementManager.clearNewElements();
-			elementManager.clearUpdatedElements();
-			return latestUpdate;
+			 * attacks of wave) */
+			List<List<GameElement>> lw = getLevelWaves();
+			 if (checkLevelClearanceCondition()) {
+			 	if (checkVictoryCondition()) {
+			 		registerVictory();
+			 	} else {
+			 		registerLevelCleared();
+			 	}
+			 } else if (checkDefeatCondition()) {
+				 registerDefeat();
+			 } else { // Move elements, check and handle collisions
+				 savedList.add(getSpriteIdMap().entrySet());
+				 elementManager.update();
+				 List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
+				 List<GameElement> updatedElements = elementManager.getUpdatedElements();
+				 List<GameElement> deadElements = elementManager.getDeadElements();
+				 for (GameElement element : newlyGeneratedElements) {
+					 cacheAndCreateIdentifier(element);
+				 }
+				 // Package these changes into an Update message
+				 latestUpdate = packageSpriteUpdates(newlyGeneratedElements, updatedElements, deadElements);
+				 getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
+				 elementManager.clearDeadElements();
+				 elementManager.clearNewElements();
+				 elementManager.clearUpdatedElements();
+				 return latestUpdate;
+			 }
 		}
 		// If not in play, only one of the status properties could have changed, yes?
 		return packageStatusUpdate();
@@ -211,6 +217,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private boolean dispatchBooleanMethod(Method chosenBooleanMethod) {
 		try {
+			System.out.println(chosenBooleanMethod);
 			return (boolean) chosenBooleanMethod.invoke(this, new Object[] {});
 		} catch (ReflectiveOperationException e) {
 			return false;
@@ -272,7 +279,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean allWavesDead() {
-		return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> !wave.isAlive()).count() == 0;
+		boolean wtf = getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> wave.isAlive()).count() == 0;
+		return wtf;
 	}
 
 	// TODO - Boolean defeat conditions
@@ -281,7 +289,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean enemyReachedTarget() {
-		return elementManager.enemyReachedTarget();
+		boolean reached = elementManager.enemyReachedTarget();
+		return reached;
 	}
 
 }

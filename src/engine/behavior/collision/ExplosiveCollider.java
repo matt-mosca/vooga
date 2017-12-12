@@ -18,7 +18,6 @@ public class ExplosiveCollider extends VolatileCollider {
 	}
 	
 	protected void handleCollision() {
-		System.out.println("HANDLED_COLLISION");
 		collided = true;
 	}
 }

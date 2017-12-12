@@ -22,9 +22,7 @@ public class MortalCollider extends GenericCollider {
 
 	@Override
 	public void visit(DamageDealingCollisionVisitable visitable) {
-		System.out.println("BeforeCollision: "+healthPoints);
 		setHealthPoints(getHealthPoints() - visitable.getDamageToDeal());
-		System.out.println("AfterCollision: "+healthPoints);
 	}
 
 	@Override

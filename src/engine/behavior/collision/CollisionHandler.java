@@ -105,7 +105,6 @@ public class CollisionHandler {
     }
     
     public boolean shouldExplode() {
-    	System.out.println("explode="+collisionVisitor.explode());
     	return !collisionVisitor.explode().equals(DEFAULT_EXPLOSION);
     }
     
