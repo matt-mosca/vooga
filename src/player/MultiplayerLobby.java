@@ -222,17 +222,25 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void createLobby() {
 		promptForLobbyName();
 		multiClient.createGameRoom(gameName, currentLobby);
-//		multiClient.joinGameRoom(currentLobby, username);
+		System.out.println(currentLobby);
+		multiClient.joinGameRoom(currentLobby, username);
 //		multiClient.joinGameRoom("mosca_dope_game", username);
 //		multiClient.joinGameRoom("circularMonkey.voog_2", username);
 		changeHomeToLobby();
 	}
 	
 	private void joinLobby() {
-//		multiClient.joinGameRoom(currentLobby, username);
+		String selectedLobby = getSelectedLobby();
+		if(selectedLobby != null)
+			currentLobby = selectedLobby;
+		multiClient.joinGameRoom(currentLobby, username);
 		changeHomeToLobbiesList();
 	}
 	//getSelectionModel.getSelectedItem
+	
+	private String getSelectedLobby() {
+		return lobbies.getListView().getSelectionModel().getSelectedItem();
+	}
 	
 	//Call this method when user wants to create new lobby- to name the lobby
 	//This method should pull up prompt box
@@ -245,6 +253,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()){
 		    currentLobby = result.get();
+		    System.out.println(currentLobby);
 		}
 	}
 	
@@ -252,6 +261,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void startGame() {
 		multiClient.launchGameRoom();
 		getStage().setScene(playDisplay.getScene());
+		playDisplay.startDisplay();
 //		multiClient.launchGameRoom(currentLobby);
 	}
 	
@@ -274,8 +284,14 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 	
 	private void createGameStateLabel(int width, int height) {
-		gameStateLabel.setText(gameName);
+//		VBox gameStateBox = new VBox();
+//		gameStateBox.getStyleClass().add("borders");
+//		gameLabel
+//		gameStateBox.getChildren().add(gameStateLabel);
+//		gameStateBox.setLayoutY(height - 80);
+		gameStateLabel.setText("Game:  " + gameName);
 		gameStateLabel.setLayoutY(height - 40);
+		rootAdd(gameStateLabel);
 	}
 	
 	private void setUpButtonBox() {
