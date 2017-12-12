@@ -81,11 +81,11 @@ public final class AuthorServer {
     /**
      * <code>optional .SpriteUpdate moveElement = 4;</code>
      */
-    AuthorServer.SpriteUpdate getMoveElement();
+    PlayerServer.SpriteUpdate getMoveElement();
     /**
      * <code>optional .SpriteUpdate moveElement = 4;</code>
      */
-    AuthorServer.SpriteUpdateOrBuilder getMoveElementOrBuilder();
+    PlayerServer.SpriteUpdateOrBuilder getMoveElementOrBuilder();
 
     /**
      * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
@@ -253,6 +253,20 @@ public final class AuthorServer {
      */
     AuthorServer.ConditionAssignmentOrBuilder getCurrentDefeatConditionsOrBuilder(
         int index);
+
+    /**
+     * <code>optional string error = 13;</code>
+     */
+    boolean hasError();
+    /**
+     * <code>optional string error = 13;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>optional string error = 13;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * Protobuf type {@code AuthoringServerMessage}
@@ -277,6 +291,7 @@ public final class AuthorServer {
       possibleDefeatConditions_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       currentVictoryConditions_ = java.util.Collections.emptyList();
       currentDefeatConditions_ = java.util.Collections.emptyList();
+      error_ = "";
     }
 
     @java.lang.Override
@@ -331,11 +346,11 @@ public final class AuthorServer {
               break;
             }
             case 34: {
-              AuthorServer.SpriteUpdate.Builder subBuilder = null;
+              PlayerServer.SpriteUpdate.Builder subBuilder = null;
               if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 subBuilder = moveElement_.toBuilder();
               }
-              moveElement_ = input.readMessage(AuthorServer.SpriteUpdate.PARSER, extensionRegistry);
+              moveElement_ = input.readMessage(PlayerServer.SpriteUpdate.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(moveElement_);
                 moveElement_ = subBuilder.buildPartial();
@@ -409,6 +424,12 @@ public final class AuthorServer {
               }
               currentDefeatConditions_.add(
                   input.readMessage(AuthorServer.ConditionAssignment.PARSER, extensionRegistry));
+              break;
+            }
+            case 106: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              error_ = bs;
               break;
             }
           }
@@ -549,7 +570,7 @@ public final class AuthorServer {
     }
 
     public static final int MOVEELEMENT_FIELD_NUMBER = 4;
-    private AuthorServer.SpriteUpdate moveElement_;
+    private PlayerServer.SpriteUpdate moveElement_;
     /**
      * <code>optional .SpriteUpdate moveElement = 4;</code>
      */
@@ -559,14 +580,14 @@ public final class AuthorServer {
     /**
      * <code>optional .SpriteUpdate moveElement = 4;</code>
      */
-    public AuthorServer.SpriteUpdate getMoveElement() {
-      return moveElement_ == null ? AuthorServer.SpriteUpdate.getDefaultInstance() : moveElement_;
+    public PlayerServer.SpriteUpdate getMoveElement() {
+      return moveElement_ == null ? PlayerServer.SpriteUpdate.getDefaultInstance() : moveElement_;
     }
     /**
      * <code>optional .SpriteUpdate moveElement = 4;</code>
      */
-    public AuthorServer.SpriteUpdateOrBuilder getMoveElementOrBuilder() {
-      return moveElement_ == null ? AuthorServer.SpriteUpdate.getDefaultInstance() : moveElement_;
+    public PlayerServer.SpriteUpdateOrBuilder getMoveElementOrBuilder() {
+      return moveElement_ == null ? PlayerServer.SpriteUpdate.getDefaultInstance() : moveElement_;
     }
 
     public static final int ALLDEFINEDELEMENTUPGRADES_FIELD_NUMBER = 5;
@@ -817,6 +838,48 @@ public final class AuthorServer {
       return currentDefeatConditions_.get(index);
     }
 
+    public static final int ERROR_FIELD_NUMBER = 13;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 13;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string error = 13;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          error_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string error = 13;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -913,6 +976,9 @@ public final class AuthorServer {
       for (int i = 0; i < currentDefeatConditions_.size(); i++) {
         output.writeMessage(12, currentDefeatConditions_.get(i));
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, error_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -977,6 +1043,9 @@ public final class AuthorServer {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(12, currentDefeatConditions_.get(i));
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, error_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1027,6 +1096,11 @@ public final class AuthorServer {
           .equals(other.getCurrentVictoryConditionsList());
       result = result && getCurrentDefeatConditionsList()
           .equals(other.getCurrentDefeatConditionsList());
+      result = result && (hasError() == other.hasError());
+      if (hasError()) {
+        result = result && getError()
+            .equals(other.getError());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1085,6 +1159,10 @@ public final class AuthorServer {
       if (getCurrentDefeatConditionsCount() > 0) {
         hash = (37 * hash) + CURRENTDEFEATCONDITIONS_FIELD_NUMBER;
         hash = (53 * hash) + getCurrentDefeatConditionsList().hashCode();
+      }
+      if (hasError()) {
+        hash = (37 * hash) + ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getError().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1268,6 +1346,8 @@ public final class AuthorServer {
         } else {
           currentDefeatConditionsBuilder_.clear();
         }
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00001000);
         return this;
       }
 
@@ -1381,6 +1461,10 @@ public final class AuthorServer {
         } else {
           result.currentDefeatConditions_ = currentDefeatConditionsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.error_ = error_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1633,6 +1717,11 @@ public final class AuthorServer {
               currentDefeatConditionsBuilder_.addAllMessages(other.currentDefeatConditions_);
             }
           }
+        }
+        if (other.hasError()) {
+          bitField0_ |= 0x00001000;
+          error_ = other.error_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2214,9 +2303,9 @@ public final class AuthorServer {
         return this;
       }
 
-      private AuthorServer.SpriteUpdate moveElement_ = null;
+      private PlayerServer.SpriteUpdate moveElement_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          AuthorServer.SpriteUpdate, AuthorServer.SpriteUpdate.Builder, AuthorServer.SpriteUpdateOrBuilder> moveElementBuilder_;
+          PlayerServer.SpriteUpdate, PlayerServer.SpriteUpdate.Builder, PlayerServer.SpriteUpdateOrBuilder> moveElementBuilder_;
       /**
        * <code>optional .SpriteUpdate moveElement = 4;</code>
        */
@@ -2226,9 +2315,9 @@ public final class AuthorServer {
       /**
        * <code>optional .SpriteUpdate moveElement = 4;</code>
        */
-      public AuthorServer.SpriteUpdate getMoveElement() {
+      public PlayerServer.SpriteUpdate getMoveElement() {
         if (moveElementBuilder_ == null) {
-          return moveElement_ == null ? AuthorServer.SpriteUpdate.getDefaultInstance() : moveElement_;
+          return moveElement_ == null ? PlayerServer.SpriteUpdate.getDefaultInstance() : moveElement_;
         } else {
           return moveElementBuilder_.getMessage();
         }
@@ -2236,7 +2325,7 @@ public final class AuthorServer {
       /**
        * <code>optional .SpriteUpdate moveElement = 4;</code>
        */
-      public Builder setMoveElement(AuthorServer.SpriteUpdate value) {
+      public Builder setMoveElement(PlayerServer.SpriteUpdate value) {
         if (moveElementBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2253,7 +2342,7 @@ public final class AuthorServer {
        * <code>optional .SpriteUpdate moveElement = 4;</code>
        */
       public Builder setMoveElement(
-          AuthorServer.SpriteUpdate.Builder builderForValue) {
+          PlayerServer.SpriteUpdate.Builder builderForValue) {
         if (moveElementBuilder_ == null) {
           moveElement_ = builderForValue.build();
           onChanged();
@@ -2266,13 +2355,13 @@ public final class AuthorServer {
       /**
        * <code>optional .SpriteUpdate moveElement = 4;</code>
        */
-      public Builder mergeMoveElement(AuthorServer.SpriteUpdate value) {
+      public Builder mergeMoveElement(PlayerServer.SpriteUpdate value) {
         if (moveElementBuilder_ == null) {
           if (((bitField0_ & 0x00000008) == 0x00000008) &&
               moveElement_ != null &&
-              moveElement_ != AuthorServer.SpriteUpdate.getDefaultInstance()) {
+              moveElement_ != PlayerServer.SpriteUpdate.getDefaultInstance()) {
             moveElement_ =
-              AuthorServer.SpriteUpdate.newBuilder(moveElement_).mergeFrom(value).buildPartial();
+              PlayerServer.SpriteUpdate.newBuilder(moveElement_).mergeFrom(value).buildPartial();
           } else {
             moveElement_ = value;
           }
@@ -2299,7 +2388,7 @@ public final class AuthorServer {
       /**
        * <code>optional .SpriteUpdate moveElement = 4;</code>
        */
-      public AuthorServer.SpriteUpdate.Builder getMoveElementBuilder() {
+      public PlayerServer.SpriteUpdate.Builder getMoveElementBuilder() {
         bitField0_ |= 0x00000008;
         onChanged();
         return getMoveElementFieldBuilder().getBuilder();
@@ -2307,23 +2396,23 @@ public final class AuthorServer {
       /**
        * <code>optional .SpriteUpdate moveElement = 4;</code>
        */
-      public AuthorServer.SpriteUpdateOrBuilder getMoveElementOrBuilder() {
+      public PlayerServer.SpriteUpdateOrBuilder getMoveElementOrBuilder() {
         if (moveElementBuilder_ != null) {
           return moveElementBuilder_.getMessageOrBuilder();
         } else {
           return moveElement_ == null ?
-              AuthorServer.SpriteUpdate.getDefaultInstance() : moveElement_;
+              PlayerServer.SpriteUpdate.getDefaultInstance() : moveElement_;
         }
       }
       /**
        * <code>optional .SpriteUpdate moveElement = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          AuthorServer.SpriteUpdate, AuthorServer.SpriteUpdate.Builder, AuthorServer.SpriteUpdateOrBuilder> 
+          PlayerServer.SpriteUpdate, PlayerServer.SpriteUpdate.Builder, PlayerServer.SpriteUpdateOrBuilder> 
           getMoveElementFieldBuilder() {
         if (moveElementBuilder_ == null) {
           moveElementBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              AuthorServer.SpriteUpdate, AuthorServer.SpriteUpdate.Builder, AuthorServer.SpriteUpdateOrBuilder>(
+              PlayerServer.SpriteUpdate, PlayerServer.SpriteUpdate.Builder, PlayerServer.SpriteUpdateOrBuilder>(
                   getMoveElement(),
                   getParentForChildren(),
                   isClean());
@@ -3748,6 +3837,82 @@ public final class AuthorServer {
           currentDefeatConditions_ = null;
         }
         return currentDefeatConditionsBuilder_;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 13;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional string error = 13;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            error_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 13;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string error = 13;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00001000;
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 13;</code>
+       */
+      public Builder clearError() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string error = 13;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00001000;
+        error_ = value;
+        onChanged();
+        return this;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -5255,673 +5420,6 @@ public final class AuthorServer {
     }
 
     public AuthorServer.AuxiliaryElementConfigurationOption getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface SpriteUpdateOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:SpriteUpdate)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required int32 spriteId = 1;</code>
-     */
-    boolean hasSpriteId();
-    /**
-     * <code>required int32 spriteId = 1;</code>
-     */
-    int getSpriteId();
-
-    /**
-     * <code>required double newX = 2;</code>
-     */
-    boolean hasNewX();
-    /**
-     * <code>required double newX = 2;</code>
-     */
-    double getNewX();
-
-    /**
-     * <code>required double newY = 3;</code>
-     */
-    boolean hasNewY();
-    /**
-     * <code>required double newY = 3;</code>
-     */
-    double getNewY();
-  }
-  /**
-   * Protobuf type {@code SpriteUpdate}
-   */
-  public  static final class SpriteUpdate extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:SpriteUpdate)
-      SpriteUpdateOrBuilder {
-    // Use SpriteUpdate.newBuilder() to construct.
-    private SpriteUpdate(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private SpriteUpdate() {
-      spriteId_ = 0;
-      newX_ = 0D;
-      newY_ = 0D;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private SpriteUpdate(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              spriteId_ = input.readInt32();
-              break;
-            }
-            case 17: {
-              bitField0_ |= 0x00000002;
-              newX_ = input.readDouble();
-              break;
-            }
-            case 25: {
-              bitField0_ |= 0x00000004;
-              newY_ = input.readDouble();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return AuthorServer.internal_static_SpriteUpdate_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return AuthorServer.internal_static_SpriteUpdate_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              AuthorServer.SpriteUpdate.class, AuthorServer.SpriteUpdate.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int SPRITEID_FIELD_NUMBER = 1;
-    private int spriteId_;
-    /**
-     * <code>required int32 spriteId = 1;</code>
-     */
-    public boolean hasSpriteId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required int32 spriteId = 1;</code>
-     */
-    public int getSpriteId() {
-      return spriteId_;
-    }
-
-    public static final int NEWX_FIELD_NUMBER = 2;
-    private double newX_;
-    /**
-     * <code>required double newX = 2;</code>
-     */
-    public boolean hasNewX() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required double newX = 2;</code>
-     */
-    public double getNewX() {
-      return newX_;
-    }
-
-    public static final int NEWY_FIELD_NUMBER = 3;
-    private double newY_;
-    /**
-     * <code>required double newY = 3;</code>
-     */
-    public boolean hasNewY() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required double newY = 3;</code>
-     */
-    public double getNewY() {
-      return newY_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasSpriteId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasNewX()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasNewY()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, spriteId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeDouble(2, newX_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeDouble(3, newY_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, spriteId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(2, newX_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(3, newY_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof AuthorServer.SpriteUpdate)) {
-        return super.equals(obj);
-      }
-      AuthorServer.SpriteUpdate other = (AuthorServer.SpriteUpdate) obj;
-
-      boolean result = true;
-      result = result && (hasSpriteId() == other.hasSpriteId());
-      if (hasSpriteId()) {
-        result = result && (getSpriteId()
-            == other.getSpriteId());
-      }
-      result = result && (hasNewX() == other.hasNewX());
-      if (hasNewX()) {
-        result = result && (
-            java.lang.Double.doubleToLongBits(getNewX())
-            == java.lang.Double.doubleToLongBits(
-                other.getNewX()));
-      }
-      result = result && (hasNewY() == other.hasNewY());
-      if (hasNewY()) {
-        result = result && (
-            java.lang.Double.doubleToLongBits(getNewY())
-            == java.lang.Double.doubleToLongBits(
-                other.getNewY()));
-      }
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasSpriteId()) {
-        hash = (37 * hash) + SPRITEID_FIELD_NUMBER;
-        hash = (53 * hash) + getSpriteId();
-      }
-      if (hasNewX()) {
-        hash = (37 * hash) + NEWX_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getNewX()));
-      }
-      if (hasNewY()) {
-        hash = (37 * hash) + NEWY_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getNewY()));
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static AuthorServer.SpriteUpdate parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static AuthorServer.SpriteUpdate parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static AuthorServer.SpriteUpdate parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static AuthorServer.SpriteUpdate parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static AuthorServer.SpriteUpdate parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static AuthorServer.SpriteUpdate parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static AuthorServer.SpriteUpdate parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static AuthorServer.SpriteUpdate parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static AuthorServer.SpriteUpdate parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static AuthorServer.SpriteUpdate parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(AuthorServer.SpriteUpdate prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code SpriteUpdate}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:SpriteUpdate)
-        AuthorServer.SpriteUpdateOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return AuthorServer.internal_static_SpriteUpdate_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return AuthorServer.internal_static_SpriteUpdate_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                AuthorServer.SpriteUpdate.class, AuthorServer.SpriteUpdate.Builder.class);
-      }
-
-      // Construct using AuthorServer.SpriteUpdate.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        spriteId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        newX_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        newY_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return AuthorServer.internal_static_SpriteUpdate_descriptor;
-      }
-
-      public AuthorServer.SpriteUpdate getDefaultInstanceForType() {
-        return AuthorServer.SpriteUpdate.getDefaultInstance();
-      }
-
-      public AuthorServer.SpriteUpdate build() {
-        AuthorServer.SpriteUpdate result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public AuthorServer.SpriteUpdate buildPartial() {
-        AuthorServer.SpriteUpdate result = new AuthorServer.SpriteUpdate(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.spriteId_ = spriteId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.newX_ = newX_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.newY_ = newY_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof AuthorServer.SpriteUpdate) {
-          return mergeFrom((AuthorServer.SpriteUpdate)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(AuthorServer.SpriteUpdate other) {
-        if (other == AuthorServer.SpriteUpdate.getDefaultInstance()) return this;
-        if (other.hasSpriteId()) {
-          setSpriteId(other.getSpriteId());
-        }
-        if (other.hasNewX()) {
-          setNewX(other.getNewX());
-        }
-        if (other.hasNewY()) {
-          setNewY(other.getNewY());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasSpriteId()) {
-          return false;
-        }
-        if (!hasNewX()) {
-          return false;
-        }
-        if (!hasNewY()) {
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        AuthorServer.SpriteUpdate parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (AuthorServer.SpriteUpdate) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private int spriteId_ ;
-      /**
-       * <code>required int32 spriteId = 1;</code>
-       */
-      public boolean hasSpriteId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required int32 spriteId = 1;</code>
-       */
-      public int getSpriteId() {
-        return spriteId_;
-      }
-      /**
-       * <code>required int32 spriteId = 1;</code>
-       */
-      public Builder setSpriteId(int value) {
-        bitField0_ |= 0x00000001;
-        spriteId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 spriteId = 1;</code>
-       */
-      public Builder clearSpriteId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        spriteId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private double newX_ ;
-      /**
-       * <code>required double newX = 2;</code>
-       */
-      public boolean hasNewX() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required double newX = 2;</code>
-       */
-      public double getNewX() {
-        return newX_;
-      }
-      /**
-       * <code>required double newX = 2;</code>
-       */
-      public Builder setNewX(double value) {
-        bitField0_ |= 0x00000002;
-        newX_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required double newX = 2;</code>
-       */
-      public Builder clearNewX() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        newX_ = 0D;
-        onChanged();
-        return this;
-      }
-
-      private double newY_ ;
-      /**
-       * <code>required double newY = 3;</code>
-       */
-      public boolean hasNewY() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required double newY = 3;</code>
-       */
-      public double getNewY() {
-        return newY_;
-      }
-      /**
-       * <code>required double newY = 3;</code>
-       */
-      public Builder setNewY(double value) {
-        bitField0_ |= 0x00000004;
-        newY_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required double newY = 3;</code>
-       */
-      public Builder clearNewY() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        newY_ = 0D;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:SpriteUpdate)
-    }
-
-    // @@protoc_insertion_point(class_scope:SpriteUpdate)
-    private static final AuthorServer.SpriteUpdate DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new AuthorServer.SpriteUpdate();
-    }
-
-    public static AuthorServer.SpriteUpdate getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<SpriteUpdate>
-        PARSER = new com.google.protobuf.AbstractParser<SpriteUpdate>() {
-      public SpriteUpdate parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SpriteUpdate(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<SpriteUpdate> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<SpriteUpdate> getParserForType() {
-      return PARSER;
-    }
-
-    public AuthorServer.SpriteUpdate getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -9709,11 +9207,6 @@ public final class AuthorServer {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_AuxiliaryElementConfigurationOption_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_SpriteUpdate_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_SpriteUpdate_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ElementUpgrade_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -9747,35 +9240,34 @@ public final class AuthorServer {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022AuthorServer.proto\"\311\004\n\026AuthoringServer" +
-      "Message\022H\n\037elementBaseConfigurationOptio" +
-      "ns\030\001 \003(\0132\037.ElementBaseConfigurationOptio" +
-      "n\022R\n$auxiliaryElementConfigurationOption" +
-      "s\030\002 \003(\0132$.AuxiliaryElementConfigurationO" +
-      "ption\022\024\n\014currentLevel\030\003 \001(\005\022\"\n\013moveEleme" +
-      "nt\030\004 \001(\0132\r.SpriteUpdate\0222\n\031allDefinedEle" +
-      "mentUpgrades\030\005 \003(\0132\017.ElementUpgrade\022+\n\022r" +
-      "esourceEndowments\030\006 \003(\0132\017.DoubleProperty" +
-      "\022\031\n\021createdWaveNumber\030\007 \001(\005\022\'\n\016wavePrope",
-      "rties\030\010 \003(\0132\017.StringProperty\022!\n\031possible" +
-      "VictoryConditions\030\t \003(\t\022 \n\030possibleDefea" +
-      "tConditions\030\n \003(\t\0226\n\030currentVictoryCondi" +
-      "tions\030\013 \003(\0132\024.ConditionAssignment\0225\n\027cur" +
-      "rentDefeatConditions\030\014 \003(\0132\024.ConditionAs" +
-      "signment\"J\n\036ElementBaseConfigurationOpti" +
-      "on\022\021\n\tconfigKey\030\001 \002(\t\022\025\n\rconfigOptions\030\002" +
-      " \003(\t\"R\n#AuxiliaryElementConfigurationOpt" +
-      "ion\022\022\n\nconfigName\030\001 \002(\t\022\027\n\017configClassNa" +
-      "me\030\002 \002(\t\"<\n\014SpriteUpdate\022\020\n\010spriteId\030\001 \002",
-      "(\005\022\014\n\004newX\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"Q\n\016Elemen" +
-      "tUpgrade\022\023\n\013elementName\030\001 \002(\t\022*\n\017element" +
-      "Upgrades\030\002 \003(\0132\021.StringProperties\"-\n\016Dou" +
-      "bleProperty\022\014\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\001" +
-      "\"2\n\020StringProperties\022\036\n\005items\030\001 \003(\0132\017.St" +
-      "ringProperty\"-\n\016StringProperty\022\014\n\004name\030\001" +
-      " \002(\t\022\r\n\005value\030\002 \002(\t\"J\n\023ConditionAssignme" +
-      "nt\022\025\n\rconditionName\030\001 \002(\t\022\034\n\024levelsUsing" +
-      "Condition\030\002 \003(\005"
+      "\n\022AuthorServer.proto\032\022PlayerServer.proto" +
+      "\"\330\004\n\026AuthoringServerMessage\022H\n\037elementBa" +
+      "seConfigurationOptions\030\001 \003(\0132\037.ElementBa" +
+      "seConfigurationOption\022R\n$auxiliaryElemen" +
+      "tConfigurationOptions\030\002 \003(\0132$.AuxiliaryE" +
+      "lementConfigurationOption\022\024\n\014currentLeve" +
+      "l\030\003 \001(\005\022\"\n\013moveElement\030\004 \001(\0132\r.SpriteUpd" +
+      "ate\0222\n\031allDefinedElementUpgrades\030\005 \003(\0132\017" +
+      ".ElementUpgrade\022+\n\022resourceEndowments\030\006 " +
+      "\003(\0132\017.DoubleProperty\022\031\n\021createdWaveNumbe",
+      "r\030\007 \001(\005\022\'\n\016waveProperties\030\010 \003(\0132\017.String" +
+      "Property\022!\n\031possibleVictoryConditions\030\t " +
+      "\003(\t\022 \n\030possibleDefeatConditions\030\n \003(\t\0226\n" +
+      "\030currentVictoryConditions\030\013 \003(\0132\024.Condit" +
+      "ionAssignment\0225\n\027currentDefeatConditions" +
+      "\030\014 \003(\0132\024.ConditionAssignment\022\r\n\005error\030\r " +
+      "\001(\t\"J\n\036ElementBaseConfigurationOption\022\021\n" +
+      "\tconfigKey\030\001 \002(\t\022\025\n\rconfigOptions\030\002 \003(\t\"" +
+      "R\n#AuxiliaryElementConfigurationOption\022\022" +
+      "\n\nconfigName\030\001 \002(\t\022\027\n\017configClassName\030\002 ",
+      "\002(\t\"Q\n\016ElementUpgrade\022\023\n\013elementName\030\001 \002" +
+      "(\t\022*\n\017elementUpgrades\030\002 \003(\0132\021.StringProp" +
+      "erties\"-\n\016DoubleProperty\022\014\n\004name\030\001 \002(\t\022\r" +
+      "\n\005value\030\002 \002(\001\"2\n\020StringProperties\022\036\n\005ite" +
+      "ms\030\001 \003(\0132\017.StringProperty\"-\n\016StringPrope" +
+      "rty\022\014\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"J\n\023Cond" +
+      "itionAssignment\022\025\n\rconditionName\030\001 \002(\t\022\034" +
+      "\n\024levelsUsingCondition\030\002 \003(\005"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9788,13 +9280,14 @@ public final class AuthorServer {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          PlayerServer.getDescriptor(),
         }, assigner);
     internal_static_AuthoringServerMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_AuthoringServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuthoringServerMessage_descriptor,
-        new java.lang.String[] { "ElementBaseConfigurationOptions", "AuxiliaryElementConfigurationOptions", "CurrentLevel", "MoveElement", "AllDefinedElementUpgrades", "ResourceEndowments", "CreatedWaveNumber", "WaveProperties", "PossibleVictoryConditions", "PossibleDefeatConditions", "CurrentVictoryConditions", "CurrentDefeatConditions", });
+        new java.lang.String[] { "ElementBaseConfigurationOptions", "AuxiliaryElementConfigurationOptions", "CurrentLevel", "MoveElement", "AllDefinedElementUpgrades", "ResourceEndowments", "CreatedWaveNumber", "WaveProperties", "PossibleVictoryConditions", "PossibleDefeatConditions", "CurrentVictoryConditions", "CurrentDefeatConditions", "Error", });
     internal_static_ElementBaseConfigurationOption_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ElementBaseConfigurationOption_fieldAccessorTable = new
@@ -9807,42 +9300,37 @@ public final class AuthorServer {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuxiliaryElementConfigurationOption_descriptor,
         new java.lang.String[] { "ConfigName", "ConfigClassName", });
-    internal_static_SpriteUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_SpriteUpdate_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_SpriteUpdate_descriptor,
-        new java.lang.String[] { "SpriteId", "NewX", "NewY", });
     internal_static_ElementUpgrade_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_ElementUpgrade_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ElementUpgrade_descriptor,
         new java.lang.String[] { "ElementName", "ElementUpgrades", });
     internal_static_DoubleProperty_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_DoubleProperty_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_DoubleProperty_descriptor,
         new java.lang.String[] { "Name", "Value", });
     internal_static_StringProperties_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_StringProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StringProperties_descriptor,
         new java.lang.String[] { "Items", });
     internal_static_StringProperty_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_StringProperty_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StringProperty_descriptor,
         new java.lang.String[] { "Name", "Value", });
     internal_static_ConditionAssignment_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_ConditionAssignment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ConditionAssignment_descriptor,
         new java.lang.String[] { "ConditionName", "LevelsUsingCondition", });
+    PlayerServer.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

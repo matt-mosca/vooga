@@ -56,7 +56,6 @@ public final class GameElement {
 	}
 
 	public String fire() {
-		System.out.println("-----------------------------------FIRE: "+firingStrategy.fire());
 		return firingStrategy.fire();
 	}
 	
@@ -127,10 +126,6 @@ public final class GameElement {
 		return movementStrategy.removeUponCompletion();
 	}
 
-	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
-		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
-	}
-
 	public ImageView getGraphicalRepresentation() {
 		return collisionHandler.getGraphicalRepresentation();
 	}
@@ -174,4 +169,11 @@ public final class GameElement {
 		return collisionHandler.getBlastRadius();
 	}
 	
+	public boolean shouldExplode() {
+		return collisionHandler.shouldExplode();
+	}
+	
+	public String explode() {
+		return collisionHandler.explode();
+	}
 }

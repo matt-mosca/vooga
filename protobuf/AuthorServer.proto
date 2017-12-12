@@ -1,5 +1,7 @@
 syntax = "proto2";
 
+import "PlayerServer.proto";
+
 /*
 	Top-Level message
 */
@@ -17,6 +19,7 @@ message AuthoringServerMessage {
 	repeated string possibleDefeatConditions = 10;
 	repeated ConditionAssignment currentVictoryConditions = 11;
 	repeated ConditionAssignment currentDefeatConditions = 12;
+	optional string error = 13;
 }
 
 message ElementBaseConfigurationOption {
@@ -27,12 +30,6 @@ message ElementBaseConfigurationOption {
 message AuxiliaryElementConfigurationOption {
 	required string configName = 1;
 	required string configClassName = 2;
-}
-
-message SpriteUpdate {
-	required int32 spriteId = 1;
-	required double newX = 2;
-	required double newY = 3;
 }
 
 message ElementUpgrade {

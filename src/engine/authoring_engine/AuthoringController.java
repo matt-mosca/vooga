@@ -178,6 +178,9 @@ public class AuthoringController extends AbstractGameController implements Autho
 			Point2D spawningPoint) throws ReflectiveOperationException {
 		String waveName = getNameForWave();
 		defineElement(waveName, waveProperties);
+		System.out.println(waveName);
+		System.out.println(waveProperties.toString());
+		System.out.println(elementNamesToSpawn);
 		int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
 		// save this to level waves
 		getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));

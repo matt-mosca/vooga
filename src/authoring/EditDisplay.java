@@ -17,6 +17,7 @@ import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
+import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -76,6 +77,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Slider volumeSlider;
 	private MediaPlayerFactory mediaPlayerFactory;
 	private MediaPlayer mediaPlayer;
+	private String backgroundSong = "src/MediaTesting/110 - pokemon center.mp3";
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -86,7 +88,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		if (loaded) {
 			loadGame();
 		}
-		
+
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
 		basePropertyMap = new HashMap<>();
@@ -102,7 +104,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(saveButton);
 		myTesterButton = new SpriteTesterButton(this);
 		rootAdd(myTesterButton);
-		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/110 - pokemon center.mp3");
+		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
@@ -311,7 +313,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void defense() {
 		attackDefenseLabel.setText("Attack");
 	}
-	
+
 	public void submit(String levelAndWave, int amount, ImageView mySprite) {
 		myBottomToolBar.addToWave(levelAndWave, amount, mySprite);
 	}
@@ -364,7 +366,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void createTesterLevel(Map<String, Object> fun, List<String> sprites) {
 		// TODO - Update this method accordingly to determine the isMultiPlayer param
 		// for PlayDisplay constructor
-		PlayDisplay testingScene = new PlayDisplay(1000, 1000, getStage(), false); // TEMP
+		PlayDisplay testingScene = new PlayDisplay(1000, 1000, getStage(), new PlayController()); // TEMP
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - 1000 / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
@@ -378,13 +380,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {
-		if (kind==1) {
-//			myBottomToolBar.addToWave(currSprite, level, 3);
+		if (kind == 1) {
+			// myBottomToolBar.addToWave(currSprite, level, 3);
 		}
 		if (kind == 2) {
 			myBottomToolBar.addLevelProperties(currSprite, level);
 		}
 	}
+
 	public int getMaxLevel() {
 		return myBottomToolBar.getMaxLevel();
 	}

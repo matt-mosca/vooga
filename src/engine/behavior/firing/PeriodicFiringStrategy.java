@@ -28,6 +28,7 @@ public class PeriodicFiringStrategy extends AbstractPeriodicFiringStrategy {
 
 	@Override
 	public String fire() {
+		System.out.println("FIRED");
 		return projectileTemplate;
 	}
 
