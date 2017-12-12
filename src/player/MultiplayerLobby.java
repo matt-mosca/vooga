@@ -224,7 +224,6 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void createLobby() {
 		promptForLobbyName();
 		multiClient.createGameRoom(gameName, currentLobby);
-		System.out.println(currentLobby);
 		multiClient.joinGameRoom(currentLobby, username);
 //		multiClient.joinGameRoom("mosca_dope_game", username);
 //		multiClient.joinGameRoom("circularMonkey.voog_2", username);
@@ -255,7 +254,6 @@ public class MultiplayerLobby extends ScreenDisplay {
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()){
 		    currentLobby = result.get();
-		    System.out.println(currentLobby);
 		}
 	}
 	

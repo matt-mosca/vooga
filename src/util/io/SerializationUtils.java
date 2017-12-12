@@ -404,9 +404,6 @@ public class SerializationUtils {
 		Map<String, String> serializedTemplate = new HashMap<>();
 		for (String propertyName : elementTemplate.keySet()) {
 			Class propertyClass = elementTemplate.get(propertyName).getClass();
-			if (propertyClass.toString().equals("class java.util.Collections$CopiesList")) {
-				System.out.println(propertyClass.getName() + " " + elementTemplate);
-			}
 			String serializedProperty = elementTemplate.get(propertyName) + SEMICOLON + propertyClass.toString();
 			serializedTemplate.put(propertyName, serializedProperty);
 		}

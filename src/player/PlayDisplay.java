@@ -147,7 +147,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	public void startDisplay(LevelInitialized newLevelData) {
-		System.out.println("New level data: " + newLevelData.toString());
 		clientMessageUtils.initializeLoadedLevel(newLevelData);
 		startDisplay();
 	}
@@ -178,7 +177,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	public void initializeGameState() {
-		System.out.println("initialize");
 		List<String> games = new ArrayList<>();
 		try {
 			for (String title : myController.getAvailableGames().keySet()) {
@@ -231,7 +229,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myPlayArea.getChildren().removeAll(currentElements);
 		currentElements.clear();
 		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
-			System.out.println("Sprite id: " + id);
 			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
 		}
 		myPlayArea.getChildren().addAll(currentElements);
@@ -295,6 +292,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			hud.initialize(myController.getResourceEndowments());
 		} else if (myController.isLost()) {
 			// launch lost screen
+			this.getStage().close();
 		} else if (myController.isWon()) {
 			// launch win screen
 		}
@@ -338,10 +336,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void attachEventHandlers(ImageView imageView, int id) {
-		System.out.println("ATTACHED");
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
-				System.out.println("Clicked");
 				deleteClicked(imageView);
 			} else {
 				upgradeClicked(id);

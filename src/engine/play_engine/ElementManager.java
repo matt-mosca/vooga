@@ -69,7 +69,6 @@ public class ElementManager {
 		}
 		activeElements.forEach(element -> {
 			if (!element.isAlive()) {
-				System.out.println("Exploded="+element.explode());
 				if(element.shouldExplode()) {
 					Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
 					try {
@@ -80,7 +79,6 @@ public class ElementManager {
 						// TODO - throw exception? (prob not)
 					}					
 				}
-				System.out.println("Added to dead elements "+element.getImageUrl());
 				deadElements.add(element);
 			} else {
 				updatedElements.add(element);
@@ -123,7 +121,7 @@ public class ElementManager {
 	}
 
 	boolean enemyReachedTarget() {
-		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
+		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
 	}
 
 	boolean allElementsFulfillCondition(Predicate<GameElement> condition) {
