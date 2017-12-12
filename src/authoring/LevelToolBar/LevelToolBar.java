@@ -107,12 +107,12 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myProperties.put("Name", "myWave");
 		myProperties.put("tabName", "Troops");
 		myProperties.put("Range of tower", 50000);
-		myProperties.put("Attack period", 60);
+		myProperties.put("Attack period", 10);
 		myProperties.put("Firing Sound", "Sounds");
 		
 		myProperties.put("Numerical \"team\" association", 1);
-		myProperties.put("period", 10000);
-		myProperties.put("totalWaves", 1);
+		myProperties.put("period", 60);
+		myProperties.put("totalWaves", 100);
 		//Note: Templates to fire is set when the troop is selected
 		
 	}
@@ -184,7 +184,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		List<ImageView> imageList = Collections.nCopies(amount, mySprite);
 		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
 		Point2D location = new Point2D(30,60);
-		myProperties.put("templatesToFire", imageList);
+		myProperties.put("templatesToFire", elementsToSpawn);
 		myProperties.put("Projectile Type Name", mySprite.getId());
 		/**
 		 * Eventually we won't need line above, but for shoot periodically firing strategy
@@ -200,7 +200,10 @@ public class LevelToolBar extends VBox implements TabInterface {
 			myController.setLevel(level);
 			if (waveToData.containsKey(levelDotWave)) {
 //				try {
-//					myController.editWaveProperties(waveToId.get(levelDotWave), 
+//					List<String> currTroops = (List<String>)myProperties.get("templatesToFire");
+//					currTroops.addAll(elementsToSpawn);
+//					myProperties.put("templatesToFire", currTroops);
+//					myController.editWaveProperties(waveToData.get(levelDotWave).waveId, 
 //							myProperties, elementsToSpawn, location);
 //				} catch (ReflectiveOperationException e) {
 //					System.out.println("Can't edit wave properties");
