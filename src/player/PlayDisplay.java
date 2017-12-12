@@ -130,13 +130,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+		
+	}
+	
+	@Override
+	public void startDisplay() {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
-		tester();
-		System.out.println("Wave stuff");
 	}
 	
 //	private void openSesame(Stage stage) {

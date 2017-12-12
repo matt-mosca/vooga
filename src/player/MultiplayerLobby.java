@@ -51,6 +51,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 	//To do this, make an EventHandler- upon clicking, reset an instance variable
 	//Clicking Join Selected Lobby button will then join the lobby specified by that variable
 	
+	//TODO need to start the play display at some point when you are ready!
+	
 	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, PlayDisplay play) {
 		super(width, height, background, currentStage);
 //		multiplayerLayout = new BorderPane();

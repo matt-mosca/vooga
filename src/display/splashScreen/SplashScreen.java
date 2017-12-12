@@ -204,9 +204,10 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
 		myMediaPlayer.stop();
-		if(!isMultiplayer)
+		if(!isMultiplayer) {
 			getStage().setScene(myScene.getScene());
-		else {
+			myScene.startDisplay();
+		}else {
 			MultiplayerLobby multi = new MultiplayerLobby(PLAYWIDTH, PLAYHEIGHT, Color.WHITE, getStage(), myScene);
 			getStage().setScene(multi.getScene());
 			multi.promptForUsername();
