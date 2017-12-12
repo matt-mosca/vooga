@@ -203,13 +203,17 @@ public class LevelToolBar extends VBox implements TabInterface {
 				try {
 					elementsToSpawn = waveToData.get(levelDotWave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
 					myProperties.put("templatesToFire", elementsToSpawn);
-					myController.editWaveProperties(waveToData.get(levelDotWave).waveId, 
+					myController.editWaveProperties(waveToData.get(levelDotWave).waveId-1, 
 							myProperties, elementsToSpawn, location);
 				} catch (ReflectiveOperationException e) {
 					System.out.println("Can't edit wave properties");
 					e.printStackTrace();
 				}
-				waveToData.get(levelDotWave).spriteNames.addAll(imageList);
+				//TODO: Refactor code below for changing map
+				List<ImageView> tempArray = new ArrayList<ImageView>();
+				tempArray.addAll(imageList);
+				tempArray.addAll(waveToData.get(levelDotWave).spriteNames);
+				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
 			} else {
 				try {
 					waveToData.put(levelDotWave, new Data(imageList,

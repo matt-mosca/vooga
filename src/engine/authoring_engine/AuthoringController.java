@@ -265,6 +265,10 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	private void deleteOutdatedWave(int waveId) {
+		System.out.println(getCurrentLevel());
+		System.out.println(waveId);
+		System.out.println(getLevelWaves().get(getCurrentLevel()).toString());
+		System.out.println(getLevelWaves().get(getCurrentLevel()).get(waveId));
 		GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
 		// Remove the old placed wave
 		getSpriteIdMap().remove(getIdFromSprite(oldWave));
