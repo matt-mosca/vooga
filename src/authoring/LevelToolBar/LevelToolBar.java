@@ -100,7 +100,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myProperties.put("Collision effects", "Invulnerable to collision damage");
 		myProperties.put("Collided-with effects", "Do nothing to colliding objects");
 		myProperties.put("Move an object", "Object will stay at desired location");
-		myProperties.put("Firing Behavior", "Shoot a series of various projectile types");
+		myProperties.put("Firing Behavior", "Shoot various element types in a sequence");
 		myProperties.put("imageHeight", 40);
 		myProperties.put("imageWidth", 40);
 		myProperties.put("imageUrl", "monkey.png");
