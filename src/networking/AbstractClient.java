@@ -42,6 +42,7 @@ import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ServerMessage;
 import networking.protocol.PlayerServer.TemplateProperties;
+import networking.protocol.PlayerServer.Update;
 import util.io.SerializationUtils;
 
 public abstract class AbstractClient implements AbstractGameModelController {
@@ -53,17 +54,20 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	private DataOutputStream outputWriter;
 	private SerializationUtils serializationUtils;
 
+	private Update latestUpdate;
+	
 	public AbstractClient() {
 		setupChatSocketAndStreams();
 		serializationUtils = new SerializationUtils();
 		System.out.println("Set up chat socket and streams");
+		latestUpdate = Update.getDefaultInstance();
 	}
 
 	protected abstract int getPort();
 
 	public String createGameRoom(String gameName, String roomName) {
 		ClientMessage.Builder clientMessageBuilder = ClientMessage.newBuilder();
-		CreateGameRoom gameRoomCreationRequest = CreateGameRoom.newBuilder().setGameName(gameName).setRoomName(gameName)
+		CreateGameRoom gameRoomCreationRequest = CreateGameRoom.newBuilder().setGameName(gameName).setRoomName(roomName)
 				.build();
 		writeRequestBytes(clientMessageBuilder.setCreateGameRoom(gameRoomCreationRequest).build().toByteArray());
 		return handleGameRoomCreationResponse(readServerResponse());
@@ -252,6 +256,10 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		return serializationUtils;
 	}
 
+	protected Update getLatestUpdate() {
+		return latestUpdate;
+	}
+	
 	private LevelInitialized handleLoadOriginalGameStateResponse(ServerMessage serverMessage) {
 		if (serverMessage.hasLevelInitialized()) {
 			LevelInitialized levelInitialized = serverMessage.getLevelInitialized();
@@ -377,6 +385,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 				// TODO - throw exception to be handled by front end?
 				throw new IllegalArgumentException(gameRoomLaunchStatus.getError());
 			}
+			latestUpdate = gameRoomLaunchStatus.getInitialState().getSpritesAndStatus();
 			return gameRoomLaunchStatus.getInitialState();
 		}
 		return LevelInitialized.getDefaultInstance();
