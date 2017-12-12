@@ -75,14 +75,17 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public Update update() {
 		if (inPlay) {
-			/*
-			 * Uncomment when front end is ready to set wave properties fully (team & no. of
-			 * attacks of wave) if (checkLevelClearanceCondition()) { if
-			 * (checkVictoryCondition()) { registerVictory(); } else {
-			 * registerLevelCleared(); } } else if (checkDefeatCondition()) {
-			 * registerDefeat(); } else { // Move elements, check and handle collisions
-			 * elementManager.update(); }
-			 */
+			if (checkLevelClearanceCondition()) {
+				if (checkVictoryCondition()) {
+					registerVictory();
+				} else {
+					registerLevelCleared();
+				}
+			} else if (checkDefeatCondition()) {
+				registerDefeat();
+			} else { // Move elements, check and handle collisions
+				elementManager.update();
+			}
 			savedList.add(getSpriteIdMap().entrySet());
 			elementManager.update();
 			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
@@ -272,7 +275,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean allWavesDead() {
-		return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> !wave.isAlive()).count() == 0;
+		return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> wave.isAlive()).count() == 0;
 	}
 
 	// TODO - Boolean defeat conditions
