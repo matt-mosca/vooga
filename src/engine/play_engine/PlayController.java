@@ -279,8 +279,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean allWavesDead() {
-		boolean wtf = getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> wave.isAlive()).count() == 0;
-		return wtf;
+		return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> wave.isAlive()).count() == 0;
 	}
 
 	// TODO - Boolean defeat conditions
