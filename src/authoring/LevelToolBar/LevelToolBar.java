@@ -111,7 +111,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myProperties.put("Firing Sound", "Sounds");
 		myProperties.put("Numerical \"team\" association", 1);
 		myProperties.put("period", 60);
-		myProperties.put("Number of troops to spawn", 100);
+		myProperties.put("Number of troops to spawn", 10);
 		//Note: Templates to fire is set when the troop is selected
 		
 	}
@@ -201,7 +201,6 @@ public class LevelToolBar extends VBox implements TabInterface {
 			myController.setLevel(level);
 			if (waveToData.containsKey(levelDotWave)) {
 				try {
-					
 					elementsToSpawn = waveToData.get(levelDotWave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
 					myProperties.put("templatesToFire", elementsToSpawn);
 					myController.editWaveProperties(waveToData.get(levelDotWave).waveId, 
