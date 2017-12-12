@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
-import authoring.PlacementGrid;
 import engine.PlayModelController;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
@@ -61,9 +60,9 @@ import display.toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
-	private final String COST = "Cost";
 	private final String GAME_FILE_KEY = "displayed-game-name";
 
+	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
 	private TransitorySplashScreen myTransition;
 	private WinScreen myWinScreen;
@@ -112,7 +111,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //		myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage, this);
 		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
+		idToTemplate = new HashMap<>();
 		hud = new HUD(width);
+		
 		styleLeftBar();
 		createGameArea(height - 20);
 		addItems();
@@ -226,7 +227,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		currentElements.clear();
 		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
 			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
-			attachEventHandlers(clientMessageUtils.getRepresentationFromSpriteId(id), id);
 		}
 		myPlayArea.getChildren().addAll(currentElements);
 	}
@@ -302,9 +302,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
 					int id = clientMessageUtils.addNewSpriteToDisplay(newSprite);
 					ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
+					idToTemplate.put(id, placeable.getElementName());
 					attachEventHandlers(imageView, id);
-					System.out.println(id);
-					System.out.println("HIT");
 				} catch (ReflectiveOperationException failedToPlaceElementException) {
 					// todo - handle
 				}
@@ -315,17 +314,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void attachEventHandlers(ImageView imageView, int id) {
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			if(e.getButton() == MouseButton.SECONDARY) {
-				System.out.println("MESSAGE");
 				deleteClicked(imageView);
 			}else {
-				upgradeClicked(imageView, id);
+				upgradeClicked(id);
 			}
 		});
 	}
 
 	@Override
 	public void listItemClicked(ImageView image) {
-		if(!checkFunds(image)) return;
+		if(!checkFunds(image.getId())) return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);
@@ -341,8 +339,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	//TODO call this on click event of the static objects
-	private void upgradeClicked(ImageView image, int id) {
-		if(!checkFunds(image)) return;
+	private void upgradeClicked(int id) {
+		if(!checkFunds(idToTemplate.get(id))) return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Upgrade Resource");
 		costDialog.setHeaderText(null);
@@ -364,8 +362,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 	}
 	
-	private boolean checkFunds(ImageView image) {
-		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
+	private boolean checkFunds(String elementName) {
+		Map<String, Double> unitCosts = myController.getElementCosts().get(elementName);
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
 			return false;
