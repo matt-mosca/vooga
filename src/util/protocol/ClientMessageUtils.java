@@ -39,6 +39,7 @@ public class ClientMessageUtils {
 		update.getNewSpritesList().forEach(newSprite -> addNewSpriteToDisplay(newSprite));
 		update.getSpriteUpdatesList().forEach(updatedSprite -> updateSpriteDisplay(updatedSprite));
 		update.getSpriteDeletionsList().forEach(deletedSprite -> removeDeadSpriteFromDisplay(deletedSprite));
+		System.out.println("Size of image map: " + idsToImageViews.keySet().size());
 	}
 	
 	public ImageView getRepresentationFromSpriteId(int id) {
