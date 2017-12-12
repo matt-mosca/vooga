@@ -312,8 +312,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	private void attachEventHandlers(ImageView imageView, int id) {
+		System.out.println("ATTACHED");
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
 			if(e.getButton() == MouseButton.SECONDARY) {
+				System.out.println("Clicked");
 				deleteClicked(imageView);
 			}else {
 				upgradeClicked(id);
