@@ -130,13 +130,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+		
+	}
+	
+	@Override
+	public void startDisplay() {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
-		tester();
-		System.out.println("Wave stuff");
 	}
 	
 //	private void openSesame(Stage stage) {
@@ -223,6 +226,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		currentElements.clear();
 		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
 			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
+			attachEventHandlers(clientMessageUtils.getRepresentationFromSpriteId(id), id);
 		}
 		myPlayArea.getChildren().addAll(currentElements);
 	}
@@ -296,12 +300,27 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				Point2D startLocation = new Point2D(e.getX(), e.getY());
 				try {
 					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
-					clientMessageUtils.addNewSpriteToDisplay(newSprite);
+					int id = clientMessageUtils.addNewSpriteToDisplay(newSprite);
+					ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
+					attachEventHandlers(imageView, id);
+					System.out.println(id);
+					System.out.println("HIT");
 				} catch (ReflectiveOperationException failedToPlaceElementException) {
 					// todo - handle
 				}
 			}
 		}
+	}
+	
+	private void attachEventHandlers(ImageView imageView, int id) {
+		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+			if(e.getButton() == MouseButton.SECONDARY) {
+				System.out.println("MESSAGE");
+				deleteClicked(imageView);
+			}else {
+				upgradeClicked(imageView, id);
+			}
+		});
 	}
 
 	@Override
@@ -322,8 +341,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 	
 	//TODO call this on click event of the static objects
-	public void upgradeableClicked(ImageView image) {
-		if(checkFunds(image)) return;
+	private void upgradeClicked(ImageView image, int id) {
+		if(!checkFunds(image)) return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Upgrade Resource");
 		costDialog.setHeaderText(null);
@@ -331,9 +350,18 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		
 		Optional<ButtonType> result = costDialog.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			//pass in the image id to this, but make sure we're actually setting it
-//			myController.upgradeElement();
+			try {
+				myController.upgradeElement(id);
+			} catch (IllegalArgumentException | ReflectiveOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+	}
+	
+	//TODO allow towers to be sold or deleted?
+	private void deleteClicked(ImageView image) {
+		
 	}
 	
 	private boolean checkFunds(ImageView image) {
