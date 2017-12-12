@@ -9,12 +9,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import networking.MultiPlayerClient;
+import networking.protocol.PlayerServer.LevelInitialized;
 import util.io.SerializationUtils;
 
 public class MultiplayerLobby extends ScreenDisplay {
@@ -54,7 +56,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	
 	//TODO need to start the play display at some point when you are ready!
 	
-	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, PlayDisplay play) {
+	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, PlayDisplay play, MultiPlayerClient multiPlayerClient) {
 		super(width, height, background, currentStage);
 //		multiplayerLayout = new BorderPane();
 		playDisplay = play;
@@ -71,7 +73,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		usernameBox = new HBox();
 		lobbies = new MultiplayerListBox();
 		players = new MultiplayerListBox();
-		multiClient = new MultiPlayerClient();
+		multiClient = multiPlayerClient;
 		username = new String();
 		gameName = new String();
 		currentLobby = new String();
@@ -167,7 +169,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		addStartGame();
 		addReturn();
 		addReturnToLobbies();
-//		players.setNames(multiClient.getPlayerNames("Wow"));
+		players.setNames(multiClient.getPlayerNames());
 	}
 	
 	private void clearMultiplayerHomeScreen() {
@@ -222,17 +224,24 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void createLobby() {
 		promptForLobbyName();
 		multiClient.createGameRoom(gameName, currentLobby);
-//		multiClient.joinGameRoom(currentLobby, username);
+		multiClient.joinGameRoom(currentLobby, username);
 //		multiClient.joinGameRoom("mosca_dope_game", username);
 //		multiClient.joinGameRoom("circularMonkey.voog_2", username);
 		changeHomeToLobby();
 	}
 	
 	private void joinLobby() {
-//		multiClient.joinGameRoom(currentLobby, username);
+		String selectedLobby = getSelectedLobby();
+		if(selectedLobby != null)
+			currentLobby = selectedLobby;
+		multiClient.joinGameRoom(currentLobby, username);
 		changeHomeToLobbiesList();
 	}
 	//getSelectionModel.getSelectedItem
+	
+	private String getSelectedLobby() {
+		return lobbies.getListView().getSelectionModel().getSelectedItem();
+	}
 	
 	//Call this method when user wants to create new lobby- to name the lobby
 	//This method should pull up prompt box
@@ -250,8 +259,9 @@ public class MultiplayerLobby extends ScreenDisplay {
 	
 	//This method or an external method would be called when "START GAME" is pressed (serves as action for button)
 	private void startGame() {
-		multiClient.launchGameRoom();
+		LevelInitialized newLevelData = multiClient.launchGameRoom();
 		getStage().setScene(playDisplay.getScene());
+		playDisplay.startDisplay(newLevelData);
 //		multiClient.launchGameRoom(currentLobby);
 	}
 	
@@ -274,8 +284,14 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 	
 	private void createGameStateLabel(int width, int height) {
-		gameStateLabel.setText(gameName);
+//		VBox gameStateBox = new VBox();
+//		gameStateBox.getStyleClass().add("borders");
+//		gameLabel
+//		gameStateBox.getChildren().add(gameStateLabel);
+//		gameStateBox.setLayoutY(height - 80);
+		gameStateLabel.setText("Game:  " + gameName);
 		gameStateLabel.setLayoutY(height - 40);
+		rootAdd(gameStateLabel);
 	}
 	
 	private void setUpButtonBox() {
@@ -387,7 +403,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	@Override
-	public void listItemClicked(ImageView object) {
+	public void listItemClicked(MouseEvent e, ImageView object) {
 		// TODO Auto-generated method stub
 		
 	}

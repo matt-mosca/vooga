@@ -179,9 +179,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 			Point2D spawningPoint) throws ReflectiveOperationException {
 		String waveName = getNameForWave();
 		defineElement(waveName, waveProperties);
-		System.out.println(waveName);
-		System.out.println(waveProperties.toString());
-		System.out.println(elementNamesToSpawn);
 		int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
 		// save this to level waves
 		getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
@@ -265,10 +262,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	private void deleteOutdatedWave(int waveId) {
-		System.out.println(getCurrentLevel());
-		System.out.println(waveId);
-		System.out.println(getLevelWaves().get(getCurrentLevel()).toString());
-		System.out.println(getLevelWaves().get(getCurrentLevel()).get(waveId));
 		GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
 		// Remove the old placed wave
 		getSpriteIdMap().remove(getIdFromSprite(oldWave));
@@ -291,7 +284,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 			String condition = levelSettingsForConditionType.get(level);
 			Collection<Integer> levelsWithCondition = conditionsToLevels.getOrDefault(condition, new ArrayList<>());
 			levelsWithCondition.add(level);
-			System.out.println("Level: " + level + "; " + condition);
 			conditionsToLevels.put(condition, levelsWithCondition);
 		}
 		return conditionsToLevels;

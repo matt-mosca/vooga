@@ -27,6 +27,4 @@ public class StationaryMovementStrategy extends AbstractMovementStrategy {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }

@@ -67,13 +67,11 @@ public abstract class SpriteImage extends InteractiveObject {
 		if (myPossibleProperties.isEmpty()) {
 			myPossibleProperties.put("Name", myName);
 			for (String s : newMap.keySet()) {
-				System.out.println(s);
 				String def = getDefault(s);
 				if(def != null) {
 					myPossibleProperties.put(s, castAsObject(def));
 				}else {
 					try {
-						System.out.println("HIT");
 						myPossibleProperties.put(s, newMap.get(s).newInstance());
 					} catch (InstantiationException e) {
 						myPossibleProperties.put(s,"");

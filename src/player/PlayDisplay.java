@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
-import authoring.PlacementGrid;
 import engine.PlayModelController;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.collision.ImmortalCollider;
@@ -61,9 +60,9 @@ import display.toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
-	private final String COST = "Cost";
 	private final String GAME_FILE_KEY = "displayed-game-name";
 
+	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
 	private TransitorySplashScreen myTransition;
 	private WinScreen myWinScreen;
@@ -76,6 +75,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private PlayModelController myController;
 	private Button pause;
 	private Button play;
+	private ChangeSpeedToggles speedControl;
 	private Timeline animation;
 	private String gameState;
 	private Slider volumeSlider;
@@ -84,9 +84,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
 	private String backgroundSong = "src/MediaTesting/128 - battle (vs gym leader).mp3";
-	
-//	private ButtonFactory buttonMaker;
-//	private Button testButton;
+
+	// private ButtonFactory buttonMaker;
+	// private Button testButton;
 
 	private int level = 1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
@@ -100,29 +100,32 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	public PlayDisplay(int width, int height, Stage stage, PlayModelController myController) {
 		super(width, height, Color.rgb(20, 20, 20), stage);
-		
-//		buttonMaker = new ButtonFactory();
-//		testButton = buttonMaker.buildDefaultTextButton("Test scene", e -> testOpenMultiplayer(stage));
-		
+
+		// buttonMaker = new ButtonFactory();
+		// testButton = buttonMaker.buildDefaultTextButton("Test scene", e ->
+		// testOpenMultiplayer(stage));
+
 		this.myController = myController;
 		myTransition = new TransitorySplashScreen(myController);
 		myTransitionScene = new Scene(myTransition, width, height);
 		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
 		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
-//		myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage, this);
+		// myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage,
+		// this);
 		clientMessageUtils = new ClientMessageUtils();
 		myLeftBar = new VBox();
+		idToTemplate = new HashMap<>();
 		hud = new HUD(width);
+		speedControl = new ChangeSpeedToggles();
 		styleLeftBar();
 		createGameArea(height - 20);
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
 		initializeButtons();
-		myInventoryToolBar.initializeInventory();
 		hud.initialize(myController.getResourceEndowments());
 		hud.toFront();
-		volumeSlider = new Slider(0,1,.1);
+		volumeSlider = new Slider(0, 1, .1);
 		rootAdd(volumeSlider);
 		volumeSlider.setLayoutY(7);
 		volumeSlider.setLayoutX(55);
@@ -130,44 +133,50 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
-		
+
 	}
-	
+
 	@Override
 	public void startDisplay() {
+		myInventoryToolBar.initializeInventory();
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
 	}
-	
-//	private void openSesame(Stage stage) {
-//		stage.setScene(myWinScreen.getScene());
-//		stage.setScene(myGameOver.getScene());
-//	}
-	
-//	private void testOpenMultiplayer(Stage stage) {
-//		stage.setScene(myMulti.getScene());
-//	}
+
+	public void startDisplay(LevelInitialized newLevelData) {
+		clientMessageUtils.initializeLoadedLevel(newLevelData);
+		startDisplay();
+	}
+
+	// private void openSesame(Stage stage) {
+	// stage.setScene(myWinScreen.getScene());
+	// stage.setScene(myGameOver.getScene());
+	// }
+
+	// private void testOpenMultiplayer(Stage stage) {
+	// stage.setScene(myMulti.getScene());
+	// }
 
 	private void addItems() {
 		rootAdd(hud);
 		myInventoryToolBar = new InventoryToolBar(this, myController);
 		levelSelector = new ChoiceBox<>();
-		levelSelector.getItems().addAll(1,2,3,4);
-		levelSelector.setOnAction(e->{
+		levelSelector.getItems().addAll(1, 2, 3, 4);
+		levelSelector.setOnAction(e -> {
 			changeLevel(levelSelector.getSelectionModel().getSelectedItem());
-			//Maybe clear the screen here?? myPlayArea.getChildren().clear() didn't work.
+			// Maybe clear the screen here?? myPlayArea.getChildren().clear()
+			// didn't work.
 		});
 		myLeftBar.getChildren().add(myInventoryToolBar);
 		myLeftBar.getChildren().add(levelSelector);
 		rootAdd(myLeftBar);
-		
+
 	}
-	
+
 	public void initializeGameState() {
-		System.out.println("initialize");
 		List<String> games = new ArrayList<>();
 		try {
 			for (String title : myController.getAvailableGames().keySet()) {
@@ -221,32 +230,51 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		currentElements.clear();
 		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
 			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
-			attachEventHandlers(clientMessageUtils.getRepresentationFromSpriteId(id), id);
 		}
 		myPlayArea.getChildren().addAll(currentElements);
 	}
 
 	private void initializeButtons() {
-		pause = new Button();
-		pause.setOnAction(e -> {
-			myController.pause();
-			animation.pause();
-		});
-		pause.setText("Pause");
-		rootAdd(pause);
-		pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
+		// pause = new Button();
+		// pause.setOnAction(e -> {
+		// myController.pause();
+		// animation.pause();
+		// });
+		// pause.setText("Pause");
+		// rootAdd(pause);
+		// pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
+		//
+		// play = new Button();
+		// play.setOnAction(e -> {
+		// myController.resume();
+		// animation.play();
+		// });
+		// play.setText("Play");
+		// rootAdd(play);
+		// play.setLayoutY(pause.getLayoutY() + 30);
 
-		play = new Button();
-		play.setOnAction(e -> {
-			myController.resume();
-			animation.play();
-		});
-		play.setText("Play");
-		rootAdd(play);
-		play.setLayoutY(pause.getLayoutY() + 30);
-		
-//		rootAdd(testButton);
-//		testButton.setLayoutY(play.getLayoutY() + 30);
+		rootAdd(speedControl.getPlay());
+		speedControl.getPlay().setLayoutY(myInventoryToolBar.getLayoutY() + 450);
+		rootAdd(speedControl.getPause());
+		speedControl.getPause().setLayoutY(speedControl.getPlay().getLayoutY());
+		speedControl.getPause().setLayoutX(50);
+		speedControl.setPlayMouseEvent(e -> getPlayAction());
+		speedControl.setPauseMouseEvent(e -> getPauseAction());
+
+		// rootAdd(testButton);
+		// testButton.setLayoutY(play.getLayoutY() + 30);
+	}
+
+	private void getPlayAction() {
+		myController.resume();
+		animation.play();
+		speedControl.orchestratePlay();
+	}
+
+	private void getPauseAction() {
+		myController.pause();
+		animation.pause();
+		speedControl.orchestratePause();
 	}
 
 	private void step() {
@@ -264,6 +292,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			hud.initialize(myController.getResourceEndowments());
 		} else if (myController.isLost()) {
 			// launch lost screen
+			this.getStage().close();
 		} else if (myController.isWon()) {
 			// launch win screen
 		}
@@ -297,30 +326,28 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
 					int id = clientMessageUtils.addNewSpriteToDisplay(newSprite);
 					ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
+					idToTemplate.put(id, placeable.getElementName());
 					attachEventHandlers(imageView, id);
-					System.out.println(id);
-					System.out.println("HIT");
 				} catch (ReflectiveOperationException failedToPlaceElementException) {
 					// todo - handle
 				}
 			}
 		}
 	}
-	
+
 	private void attachEventHandlers(ImageView imageView, int id) {
-		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
-			if(e.getButton() == MouseButton.SECONDARY) {
-				System.out.println("MESSAGE");
+		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+			if (e.getButton() == MouseButton.SECONDARY) {
 				deleteClicked(imageView);
-			}else {
-				upgradeClicked(imageView, id);
+			} else {
+				upgradeClicked(id);
 			}
 		});
 	}
 
 	@Override
-	public void listItemClicked(ImageView image) {
-		if(!checkFunds(image)) return;
+	public void listItemClicked(MouseEvent e, ImageView image) {
+		if(!checkFunds(image.getId())) return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);
@@ -334,15 +361,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			selected = true;
 		}
 	}
-	
-	//TODO call this on click event of the static objects
-	private void upgradeClicked(ImageView image, int id) {
-		if(!checkFunds(image)) return;
+
+	private void upgradeClicked(int id) {
+		if (!checkFunds(idToTemplate.get(id)))
+			return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Upgrade Resource");
 		costDialog.setHeaderText(null);
 		costDialog.setContentText("Would you like to upgrade this object?");
-		
+
 		Optional<ButtonType> result = costDialog.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			try {
@@ -353,14 +380,14 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			}
 		}
 	}
-	
-	//TODO allow towers to be sold or deleted?
+
+	// TODO allow towers to be sold or deleted?
 	private void deleteClicked(ImageView image) {
-		
+
 	}
-	
-	private boolean checkFunds(ImageView image) {
-		Map<String, Double> unitCosts = myController.getElementCosts().get(image.getId());
+
+	private boolean checkFunds(String elementName) {
+		Map<String, Double> unitCosts = myController.getElementCosts().get(elementName);
 		if (!hud.hasSufficientFunds(unitCosts)) {
 			launchInvalidResources();
 			return false;
@@ -375,7 +402,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		error.setContentText("You do not have the funds for this item.");
 		error.show();
 	}
-	
+
 	public String getGameState() {
 		return gameState;
 	}
@@ -385,7 +412,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	protected void changeLevel(int newLevel) {
 		level = newLevel;
 		try {

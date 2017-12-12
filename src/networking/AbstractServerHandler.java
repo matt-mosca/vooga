@@ -25,7 +25,7 @@ public abstract class AbstractServerHandler extends Thread {
 			processMessages();
 			return;
 		} catch (IOException | ReflectiveOperationException e) {
-			// todo - handle
+			// TODO - handle
 		} finally {
 			closeClient();
 		}

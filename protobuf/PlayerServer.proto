@@ -8,19 +8,21 @@ message ServerMessage {
 	optional Games availableGames = 1;
 	optional GameRoomCreationStatus gameRoomCreationStatus = 2;
 	optional GameRoomJoinStatus gameRoomJoinStatus = 3;
-	optional GameRoomLaunchStatus gameRoomLaunchStatus = 4;
-	optional GameRooms gameRooms = 5;
-	optional PlayerNames playerNames = 6;
-	optional ReadyForNextLevel readyForNextLevel = 7;
-	optional LevelInitialized levelInitialized = 8;
-	optional Update update = 9;
-	optional Inventory inventory = 10;
-	repeated TemplateProperties templateProperties = 11;
-	repeated ElementCost elementCosts = 12;
-	optional NewSprite elementPlaced = 13;
-	repeated NewSprite levelSprites = 14;
-	optional NumberOfLevels numLevels = 15;
-	optional string error = 16;
+	optional PlayerJoined playerJoined = 4;
+	optional PlayerExited playerExited = 5;
+	optional GameRoomLaunchStatus gameRoomLaunchStatus = 6;
+	optional GameRooms gameRooms = 7;
+	optional PlayerNames playerNames = 8;
+	optional ReadyForNextLevel readyForNextLevel = 9;
+	optional LevelInitialized levelInitialized = 10;
+	optional Update update = 11;
+	optional Inventory inventory = 12;
+	repeated TemplateProperties templateProperties = 13;
+	repeated ElementCost elementCosts = 14;
+	optional NewSprite elementPlaced = 15;
+	repeated NewSprite levelSprites = 16;
+	optional NumberOfLevels numLevels = 17;
+	optional string error = 18;
 }
 
 /*
@@ -44,6 +46,16 @@ message GameRoomCreationStatus {
 message GameRoomJoinStatus {
 	required bool success = 1;
 	optional string error = 2;
+}
+
+// Consider batching?
+message PlayerJoined {
+	required string userName = 1;
+}
+
+// Consider batching?
+message PlayerExited {
+	required string userName = 1;
 }
 
 /*

@@ -23,7 +23,7 @@ public class RandomWaveFiringStrategy extends AbstractWaveFiringStrategy {
                     Map<String, String> troopProbabilities,
             @ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod,
             @ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
-        super(troopProbabilities.keySet(), attackPeriod, totalWaves);
+        super(new ArrayList<>(troopProbabilities.keySet()), attackPeriod, totalWaves);
         templates = new ArrayList<>(troopProbabilities.keySet());
         double cumulativeProbability = 0;
         probabilities = new ArrayList<>();

@@ -157,7 +157,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable {
 			interactive.setY(newLocation.getY());
 			if (frontObjects.getChildren().contains(interactive))
 				return;
-			for (Node node : backObjects.getChildren()) {
+			for (Node node : objectList) {
 				if (!(node instanceof BackgroundObject))
 					node.toFront();
 			}

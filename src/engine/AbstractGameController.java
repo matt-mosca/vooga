@@ -85,6 +85,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
 		spriteTemplateIoHandler = new SpriteTemplateIoHandler(serializationUtils);
 		spriteQueryHandler = new SpriteQueryHandler();
+		currentLevel = 1;
 	}
 
 	/**
@@ -262,11 +263,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
-		System.out.println("Auxiliary");
-		System.out.println(auxiliarySpriteConstructionObjects.toString());
-		System.out.println(auxiliaryArgs);
 		for (Collection<?> auxiliaryArg : auxiliaryArgs) {
-			System.out.println(auxiliaryArg);
 			auxiliarySpriteConstructionObjects.put(auxiliaryArg.getClass().getName(), auxiliaryArg);
 		}
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);

@@ -16,6 +16,7 @@ import java.io.StringReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -381,6 +382,13 @@ public class SerializationUtils {
 	}
 
 	public Object deserializeElementProperty(String propertySerialization, Class propertyClass) {
+		try {
+			if (propertyClass == Class.forName("java.util.Collections$CopiesList")) {
+				return gsonBuilder.create().fromJson(propertySerialization, propertyClass);
+			}
+		} catch (ClassNotFoundException e) {
+			// fuck off
+		}
 		if (propertyClass != String.class) {
 			return gsonBuilder.create().fromJson(propertySerialization, propertyClass);
 		} else {
