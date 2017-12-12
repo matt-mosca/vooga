@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -88,7 +89,7 @@ public abstract class ScreenDisplay {
 	
 	public abstract void save();
 	
-	public abstract void listItemClicked(ImageView object);
+	public abstract void listItemClicked(MouseEvent e, ImageView object);
 
 	public Scene getScene() {
 		return myScene;

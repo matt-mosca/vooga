@@ -109,7 +109,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myProperties.put("Range of tower", 50000);
 		myProperties.put("Attack period", 120);
 		myProperties.put("Firing Sound", "Sounds");
-		myProperties.put("Numerical \"team\" association", 1);
+		myProperties.put("Numerical \"team\" association", 0);
 		myProperties.put("period", 60);
 		myProperties.put("Number of troops to spawn", 10);
 		//Note: Templates to fire is set when the troop is selected
@@ -173,6 +173,8 @@ public class LevelToolBar extends VBox implements TabInterface {
 		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
+			savedObject.setX(imageView.getX());
+			savedObject.setY(imageView.getY());
 			savedObject.setImageView(imageView);
 			myGameAreas.get(level - 1).addBackObject(savedObject);
 		}
@@ -201,10 +203,11 @@ public class LevelToolBar extends VBox implements TabInterface {
 			myController.setLevel(level);
 			if (waveToData.containsKey(levelDotWave)) {
 				try {
-					elementsToSpawn = waveToData.get(levelDotWave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
+					List<String> waveElements = waveToData.get(levelDotWave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
+					waveElements.addAll(elementsToSpawn);
 					myProperties.put("templatesToFire", elementsToSpawn);
 					myController.editWaveProperties(waveToData.get(levelDotWave).waveId-1, 
-							myProperties, elementsToSpawn, location);
+							myProperties, waveElements, location);
 				} catch (ReflectiveOperationException e) {
 					System.out.println("Can't edit wave properties");
 					e.printStackTrace();
