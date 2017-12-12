@@ -100,9 +100,6 @@ public final class GameElementFactory {
 
     private Object generateBehaviorObject(Map<String, ?> properties, String chosenSubclassName)
             throws ReflectiveOperationException {
-    	System.out.println("GenerateBehaviour");
-    	System.out.println(properties.toString());
-    	System.out.println(chosenSubclassName);
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
         System.out.println(Arrays.toString(chosenParameterSubclass.getTypeParameters()));

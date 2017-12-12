@@ -107,9 +107,8 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myProperties.put("Name", "myWave");
 		myProperties.put("tabName", "Troops");
 		myProperties.put("Range of tower", 50000);
-		myProperties.put("Attack period", 60);
+		myProperties.put("Attack period", 120);
 		myProperties.put("Firing Sound", "Sounds");
-		
 		myProperties.put("Numerical \"team\" association", 1);
 		myProperties.put("period", 60);
 		myProperties.put("Number of troops to spawn", 10);
@@ -181,8 +180,10 @@ public class LevelToolBar extends VBox implements TabInterface {
 	
 	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
 		String[] levelWaveArray = levelAndWave.split("\\s+");
+		String mySpriteId = mySprite.getId();
 		List<ImageView> imageList = Collections.nCopies(amount, mySprite);
-		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
+		elementsToSpawn = Collections.nCopies(amount, mySpriteId);
+//		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
 		Point2D location = new Point2D(30,60);
 		myProperties.put("templatesToFire", elementsToSpawn);
 		myProperties.put("Projectile Type Name", mySprite.getId());
@@ -199,14 +200,20 @@ public class LevelToolBar extends VBox implements TabInterface {
 			int level = Integer.valueOf(levelDotWave.split("\\.+")[0]);
 			myController.setLevel(level);
 			if (waveToData.containsKey(levelDotWave)) {
-//				try {
-//					myController.editWaveProperties(waveToId.get(levelDotWave), 
-//							myProperties, elementsToSpawn, location);
-//				} catch (ReflectiveOperationException e) {
-//					System.out.println("Can't edit wave properties");
-//					e.printStackTrace();
-//				}
-				waveToData.get(levelDotWave).spriteNames.addAll(imageList);
+				try {
+					elementsToSpawn = waveToData.get(levelDotWave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
+					myProperties.put("templatesToFire", elementsToSpawn);
+					myController.editWaveProperties(waveToData.get(levelDotWave).waveId-1, 
+							myProperties, elementsToSpawn, location);
+				} catch (ReflectiveOperationException e) {
+					System.out.println("Can't edit wave properties");
+					e.printStackTrace();
+				}
+				//TODO: Refactor code below for changing map
+				List<ImageView> tempArray = new ArrayList<ImageView>();
+				tempArray.addAll(imageList);
+				tempArray.addAll(waveToData.get(levelDotWave).spriteNames);
+				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
 			} else {
 				try {
 					waveToData.put(levelDotWave, new Data(imageList,
