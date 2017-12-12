@@ -366,7 +366,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 	}
 
-	// TODO call this on click event of the static objects
 	private void upgradeClicked(int id) {
 		if (!checkFunds(idToTemplate.get(id)))
 			return;

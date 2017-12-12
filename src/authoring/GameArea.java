@@ -111,7 +111,6 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable {
 	public void addBackObject(InteractiveObject newObject) {
 		backObjects.getChildren().add(newObject);
 		objectList.add(newObject);
-		droppedInto(newObject);
 		newObject.setLocked(!moveableEnabled);
 	}
 

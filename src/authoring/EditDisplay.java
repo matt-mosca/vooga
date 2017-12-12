@@ -269,6 +269,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			objectToPlace.setX(e.getX() - objectToPlace.getFitWidth()/2 - myGameEnvironment.getLayoutX());
 			objectToPlace.setY(e.getY() - objectToPlace.getFitHeight()/2 - myGameEnvironment.getLayoutY());
 			myGameArea.addBackObject(objectToPlace);
+			myGameArea.droppedInto(objectToPlace);
 			addingObject = false;
 			
 			this.getScene().setCursor(ImageCursor.DEFAULT);
