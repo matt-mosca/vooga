@@ -350,9 +350,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	@Override
-	public void listItemClicked(ImageView image) {
-		if (!checkFunds(image.getId()))
-			return;
+	public void listItemClicked(MouseEvent e, ImageView image) {
+		if(!checkFunds(image.getId())) return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);
