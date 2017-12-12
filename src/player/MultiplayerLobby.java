@@ -27,6 +27,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private Label lobbyPlayersLabel;
 	private Label lobbiesLabel;
 	private Label usernameLabel;
+	private Label gameStateLabel;
 	private VBox buttonBox;
 	private VBox playersBox;
 	private VBox lobbiesListBox;
@@ -51,6 +52,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 	//To do this, make an EventHandler- upon clicking, reset an instance variable
 	//Clicking Join Selected Lobby button will then join the lobby specified by that variable
 	
+	//TODO need to start the play display at some point when you are ready!
+	
 	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, PlayDisplay play) {
 		super(width, height, background, currentStage);
 //		multiplayerLayout = new BorderPane();
@@ -59,6 +62,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		lobbyPlayersLabel = new Label();
 		lobbiesLabel = new Label();
 		usernameLabel = new Label();
+		gameStateLabel = new Label();
 		buttonFactory = new ButtonFactory();
 		buttonBox = new VBox();
 		playersBox = new VBox();
@@ -71,6 +75,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		username = new String();
 		gameName = new String();
 		currentLobby = new String();
+		gameName = playDisplay.getGameState();
 		setMultiplayerBackground(width, height);
 //		rootAdd(multiplayerLayout);
 		rootAdd(topScreenLabel);
@@ -79,6 +84,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		setUpRightBox();
 		setUpLobbiesListBox();
 		initializeMultiplayerHomeScreen();
+		createGameStateLabel(width, height);
 		setStyleAndLayout(width, height);
 	}
 	
@@ -204,47 +210,58 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void changeLobbyToHome() {
 		clearLobby();
 		initializeMultiplayerHomeScreen();
-		//Exit lobby
+		multiClient.exitGameRoom();
 	}
 	
 	private void changeLobbyToLobbiesList() {
 		clearLobby();
 		initializeLobbiesList();
-		//Exit lobby
+		multiClient.exitGameRoom();
 	}
 	
 	private void createLobby() {
-		multiClient.createGameRoom("circularMonkey.voog", "mosca_dope_game");
-		changeHomeToLobby();
 		promptForLobbyName();
-		//createLobby + set lobby name
-		//joinLobby
-		//Add player name to lobby
+		multiClient.createGameRoom(gameName, currentLobby);
+		System.out.println(currentLobby);
+		multiClient.joinGameRoom(currentLobby, username);
+//		multiClient.joinGameRoom("mosca_dope_game", username);
+//		multiClient.joinGameRoom("circularMonkey.voog_2", username);
+		changeHomeToLobby();
 	}
 	
 	private void joinLobby() {
+		String selectedLobby = getSelectedLobby();
+		if(selectedLobby != null)
+			currentLobby = selectedLobby;
+		multiClient.joinGameRoom(currentLobby, username);
 		changeHomeToLobbiesList();
-		promptForPlayerName();
-		//joinLobby
-		//Add player name to lobby
+	}
+	//getSelectionModel.getSelectedItem
+	
+	private String getSelectedLobby() {
+		return lobbies.getListView().getSelectionModel().getSelectedItem();
 	}
 	
 	//Call this method when user wants to create new lobby- to name the lobby
 	//This method should pull up prompt box
 	private void promptForLobbyName() {
-		promptForPlayerName();
-	}
-	
-	//Call this method when user wants to create or join lobby- to create name for other players to see
-	//This method should pull up prompt box
-	private void promptForPlayerName() {
-		
+		TextInputDialog dialog = new TextInputDialog("Cool lobby");
+		dialog.setTitle("Lobby Name");
+		dialog.setHeaderText("Enter a lobby name.");
+		dialog.setContentText("Lobby name:");
+
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+		    currentLobby = result.get();
+		    System.out.println(currentLobby);
+		}
 	}
 	
 	//This method or an external method would be called when "START GAME" is pressed (serves as action for button)
 	private void startGame() {
 		multiClient.launchGameRoom();
 		getStage().setScene(playDisplay.getScene());
+		playDisplay.startDisplay();
 //		multiClient.launchGameRoom(currentLobby);
 	}
 	
@@ -264,6 +281,17 @@ public class MultiplayerLobby extends ScreenDisplay {
 		backHome = buttonFactory.buildDefaultTextButton("Back", e -> changeLobbiesListToHome());
 		returnToLobbies = buttonFactory.buildDefaultTextButton("View Open Lobbies", e -> changeLobbyToLobbiesList());
 		joinSelectedLobby = buttonFactory.buildDefaultTextButton("Join Selected Lobby", e -> changeLobbiesListToLobby());
+	}
+	
+	private void createGameStateLabel(int width, int height) {
+//		VBox gameStateBox = new VBox();
+//		gameStateBox.getStyleClass().add("borders");
+//		gameLabel
+//		gameStateBox.getChildren().add(gameStateLabel);
+//		gameStateBox.setLayoutY(height - 80);
+		gameStateLabel.setText("Game:  " + gameName);
+		gameStateLabel.setLayoutY(height - 40);
+		rootAdd(gameStateLabel);
 	}
 	
 	private void setUpButtonBox() {

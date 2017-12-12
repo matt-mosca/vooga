@@ -1,9 +1,10 @@
 package engine.behavior.firing;
 
 import engine.behavior.ElementProperty;
+import util.Exclude;
 
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 /**
  * 
@@ -12,18 +13,23 @@ import java.util.Set;
  */
 public class RoundRobinWaveFiringStrategy extends AbstractWaveFiringStrategy {
 
-	Iterator<String> elementChooser;
+	@Exclude private Iterator<String> elementChooser;
+	private List<String> elementsToFire;
 
 	public RoundRobinWaveFiringStrategy(
-			@ElementProperty(value = "templatesToFire", isTemplateProperty = true) Set<String> templatesToFire,
+			@ElementProperty(value = "templatesToFire", isTemplateProperty = true) List<String> templatesToFire,
 			@ElementProperty(value = "period", isTemplateProperty = true) double period,
-			@ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
-		super(templatesToFire, period, totalWaves);
+			@ElementProperty(value = "numberToSpawn", isTemplateProperty = true) int numberToSpawn) {
+		super(templatesToFire, period, numberToSpawn);
 		elementChooser = templatesToFire.iterator();
+		elementsToFire = templatesToFire;
 	}
 
 	@Override
 	protected String chooseElementToSpawn() {
+		if (elementChooser == null) {
+			elementChooser = elementsToFire.iterator();
+		}
 		if (!elementChooser.hasNext()) {
 			elementChooser = getTemplatesToFire().iterator();
 		}
