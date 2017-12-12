@@ -109,13 +109,12 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myProperties.put("Range of tower", 50000);
 		myProperties.put("Attack period", 60);
 		myProperties.put("Firing Sound", "Sounds");
-//		myProperties.put("Projectile Type Name", "projectile1");
-		List<String> myTroops = new ArrayList<String>();
-		myTroops.add("myTroop");
+		
 		myProperties.put("Numerical \"team\" association", 1);
 		myProperties.put("period", 10000);
 		myProperties.put("totalWaves", 1);
-		myProperties.put("templatesToFire", myTroops);
+		//Note: Templates to fire is set when the troop is selected
+		
 	}
 	
 	private void newWaveButtonPressed() {
@@ -185,6 +184,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		List<ImageView> imageList = Collections.nCopies(amount, mySprite);
 		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
 		Point2D location = new Point2D(30,60);
+		myProperties.put("templatesToFire", imageList);
 		myProperties.put("Projectile Type Name", mySprite.getId());
 		/**
 		 * Eventually we won't need line above, but for shoot periodically firing strategy
