@@ -34,6 +34,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private VBox playersBox;
 	private VBox lobbiesListBox;
 	private VBox rightBox;
+	private VBox activityBox;
 	private HBox usernameBox;
 	private ButtonFactory buttonFactory;
 	private Button createGameLobby;
@@ -45,6 +46,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private Button joinSelectedLobby;
 	private MultiplayerListBox lobbies;
 	private MultiplayerListBox players;
+	private ActivityListBox activityList;
 	private MultiPlayerClient multiClient;
 	private String username;
 	private String gameName;
@@ -70,9 +72,11 @@ public class MultiplayerLobby extends ScreenDisplay {
 		playersBox = new VBox();
 		lobbiesListBox = new VBox();
 		rightBox = new VBox();
+		activityBox = new VBox();
 		usernameBox = new HBox();
 		lobbies = new MultiplayerListBox();
 		players = new MultiplayerListBox();
+		activityList = new ActivityListBox();
 		multiClient = multiPlayerClient;
 		username = new String();
 		gameName = new String();
@@ -85,9 +89,20 @@ public class MultiplayerLobby extends ScreenDisplay {
 		setUpButtonBox();
 		setUpRightBox();
 		setUpLobbiesListBox();
+		setUpActivityBox();
 		initializeMultiplayerHomeScreen();
 		createGameStateLabel(width, height);
 		setStyleAndLayout(width, height);
+//		
+//		multiClient.createGameRoom("circularMonkey.voog", "Noooo");
+//		multiClient.joinGameRoom("Noooo", "Matt");
+//		System.out.println(multiClient.getPlayerNames());
+//		System.out.println(multiClient.getGameRooms());
+//		multiClient.exitGameRoom();
+//		System.out.println(multiClient.getGameRooms());
+//		multiClient.joinGameRoom("Noooo", "Matt");
+//		System.out.println(multiClient.getPlayerNames());
+//		System.out.println(multiClient.getGameRooms());
 	}
 	
 	public void promptForUsername() {
@@ -139,6 +154,10 @@ public class MultiplayerLobby extends ScreenDisplay {
 		usernameBox.setMinWidth(300);
 		usernameBox.setSpacing(10);
 		lobbiesListBox.getStyleClass().add("borders");
+		activityBox.setLayoutY(100);
+		activityBox.setMinWidth(300);
+		activityBox.setMinHeight(300);
+		activityBox.getStyleClass().add("borders");
 	}
 	
 	private void setMultiplayerBackground(int width, int height) {
@@ -153,27 +172,32 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void initializeMultiplayerHomeScreen() {
 		setTopLabelForMultiplayerHomeScreen();
 		addButtonBox();
+		addActivityBox();
+		activityList.setNames(multiClient);
 	}
 	
 	private void initializeLobbiesList() {
 		addLobbiesListBox();
 		addBack();
 		addJoinSelectedLobby();
+		System.out.println(multiClient.getGameRooms());
 		lobbies.setNames(multiClient.getGameRooms());
 	}
 	
-	//Eventually should take in parameter of lobby name
 	private void initializeLobby() {
 		setTopLabelForLobby();
 		addPlayersBox();
 		addStartGame();
 		addReturn();
 		addReturnToLobbies();
+		System.out.println(multiClient.getPlayerNames());
+		System.out.println(multiClient.getGameRooms());
 		players.setNames(multiClient.getPlayerNames());
 	}
 	
 	private void clearMultiplayerHomeScreen() {
 		removeButtonBox();
+		removeActivityBox();
 	}
 	
 	private void clearLobbiesList() {
@@ -211,32 +235,36 @@ public class MultiplayerLobby extends ScreenDisplay {
 	
 	private void changeLobbyToHome() {
 		clearLobby();
-		initializeMultiplayerHomeScreen();
 		multiClient.exitGameRoom();
+		initializeMultiplayerHomeScreen();
 	}
 	
 	private void changeLobbyToLobbiesList() {
 		clearLobby();
-		initializeLobbiesList();
 		multiClient.exitGameRoom();
+		initializeLobbiesList();
 	}
 	
 	private void createLobby() {
 		promptForLobbyName();
 		multiClient.createGameRoom(gameName, currentLobby);
 		multiClient.joinGameRoom(currentLobby, username);
-//		multiClient.joinGameRoom("mosca_dope_game", username);
-//		multiClient.joinGameRoom("circularMonkey.voog_2", username);
 		changeHomeToLobby();
 	}
 	
 	private void joinLobby() {
+		changeHomeToLobbiesList();
+	}
+	
+	private void joinSelectedLobby() {
 		String selectedLobby = getSelectedLobby();
+		System.out.println(selectedLobby);
 		if(selectedLobby != null)
 			currentLobby = selectedLobby;
 		multiClient.joinGameRoom(currentLobby, username);
-		changeHomeToLobbiesList();
+		changeLobbiesListToLobby();
 	}
+	
 	//getSelectionModel.getSelectedItem
 	
 	private String getSelectedLobby() {
@@ -280,7 +308,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		returnHome = buttonFactory.buildDefaultTextButton("Return to Multiplayer Home", e -> changeLobbyToHome());
 		backHome = buttonFactory.buildDefaultTextButton("Back", e -> changeLobbiesListToHome());
 		returnToLobbies = buttonFactory.buildDefaultTextButton("View Open Lobbies", e -> changeLobbyToLobbiesList());
-		joinSelectedLobby = buttonFactory.buildDefaultTextButton("Join Selected Lobby", e -> changeLobbiesListToLobby());
+		joinSelectedLobby = buttonFactory.buildDefaultTextButton("Join Selected Lobby", e -> joinSelectedLobby());
 	}
 	
 	private void createGameStateLabel(int width, int height) {
@@ -312,6 +340,13 @@ public class MultiplayerLobby extends ScreenDisplay {
 		playersBox.getChildren().add(lobbyPlayersLabel);
 		players.attach(playersBox);
 		rootAdd(rightBox);
+	}
+	
+	private void setUpActivityBox() {
+		Label activityLabel = new Label("Active Players");
+		activityBox.getChildren().add(activityLabel);
+		activityList.attach(activityBox);
+		activityList.setNames(multiClient);
 	}
 	
 	private void setUpLobbiesListBox() {
@@ -394,6 +429,14 @@ public class MultiplayerLobby extends ScreenDisplay {
 	
 	private void removeJoinSelectedLobby() {
 		rootRemove(joinSelectedLobby);
+	}
+	
+	private void addActivityBox() {
+		rootAdd(activityBox);
+	}
+	
+	private void removeActivityBox() {
+		rootRemove(activityBox);
 	}
 	
 	@Override
