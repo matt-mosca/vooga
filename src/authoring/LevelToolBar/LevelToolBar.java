@@ -173,6 +173,8 @@ public class LevelToolBar extends VBox implements TabInterface {
 		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
+			savedObject.setX(imageView.getX());
+			savedObject.setY(imageView.getY());
 			savedObject.setImageView(imageView);
 			myGameAreas.get(level - 1).addBackObject(savedObject);
 		}
