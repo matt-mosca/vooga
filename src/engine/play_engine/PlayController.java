@@ -125,14 +125,17 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	@Override
 	public Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException {
-		/*assertValidLevel(level);
-		Collection<GameElement> levelGameElements = elementManager.getCurrentElements();
-		return getIdsCollectionFromSpriteCollection(levelGameElements);*/
+		/*
+		 * assertValidLevel(level); Collection<GameElement> levelGameElements =
+		 * elementManager.getCurrentElements(); return
+		 * getIdsCollectionFromSpriteCollection(levelGameElements);
+		 */
 		return null;
 	}
 
 	@Override
-	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) throws ReflectiveOperationException{
+	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates)
+			throws ReflectiveOperationException {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
 			// TODO - keep track of the resources that were changed in this cycle, and only
 			// send them to client?
@@ -266,6 +269,10 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	// and call for every playing playerId in game loop
 	private boolean allEnemiesDead() {
 		return elementManager.allEnemiesDead();
+	}
+
+	private boolean allWavesDead() {
+		return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> !wave.isAlive()).count() == 0;
 	}
 
 	// TODO - Boolean defeat conditions
