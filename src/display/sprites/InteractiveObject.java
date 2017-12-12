@@ -35,7 +35,7 @@ public class InteractiveObject extends ImageView implements ClickableInterface{
 
 	@Override
 	public void dropped(MouseEvent e) {
-		if(!locked) {
+		if(!locked && e.getButton() != MouseButton.SECONDARY) {
 			droppable.droppedInto(this);
 		}
 	}
