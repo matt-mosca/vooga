@@ -22,9 +22,11 @@ import javafx.scene.layout.VBox;
 import util.protocol.ClientMessageUtils;
 import display.sprites.InteractiveObject;
 
-public class LevelToolBar extends VBox {
+public class LevelToolBar extends VBox implements TabInterface {
 	private static final int SIZE = 400;
 	private static final int WIDTH = 100;
+	private static final int X_LAYOUT = 260;
+	private static final int Y_LAYOUT = 470;
 
 	private AuthoringController myController;
 	private TabPane myTabPane;
@@ -34,11 +36,9 @@ public class LevelToolBar extends VBox {
 	private ScrollableArea myScrollableArea;
 	private WaveDisplay myWaveDisplay;
 	private TabFactory tabMaker;
-	private final int X_LAYOUT = 260;
-	private final int Y_LAYOUT = 470;
 	private Button newLevel;
 	private Button editLevel;
-	private int currentDisplay;
+	private int currentLevel;
 	private EditDisplay myCreated;
 	private SpriteDisplayer mySpriteDisplay;
 	private LevelsEditDisplay myLevelDisplayer;
@@ -51,7 +51,8 @@ public class LevelToolBar extends VBox {
 
 	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
-		currentDisplay = 1;
+		
+		currentLevel = 1;
 		myCreated = created;
 		myController = controller;
 		clientMessageUtils = new ClientMessageUtils();
@@ -91,11 +92,15 @@ public class LevelToolBar extends VBox {
 	}
 
 	private void createProperties() {
+		/**
+		 * Just a way of hardcoding waves. Will eventually be put into properties file.
+		 * Should be able to set attack period, everything else should be given (image invisible)
+		 */
 		myProperties = new TreeMap<>();
 		myProperties.put("Collision effects", "Invulnerable to collision damage");
 		myProperties.put("Collided-with effects", "Do nothing to colliding objects");
 		myProperties.put("Move an object", "Object will stay at desired location");
-		myProperties.put("Firing Behavior", "Shoot periodically");
+		myProperties.put("Firing Behavior", "Shoot a series of various projectile types");
 		myProperties.put("imageHeight", 40);
 		myProperties.put("imageWidth", 40);
 		myProperties.put("imageUrl", "monkey.png");
@@ -105,16 +110,16 @@ public class LevelToolBar extends VBox {
 		myProperties.put("Attack period", 60);
 		myProperties.put("Firing Sound", "Sounds");
 //		myProperties.put("Projectile Type Name", "projectile1");
+		List<String> myTroops = new ArrayList<String>();
+		myTroops.add("myTroop");
 		myProperties.put("Numerical \"team\" association", 1);
-//		myProperties.put("period", 10000);
-//		myProperties.put("totalWaves", 1);
-//		myProperties.put("templatesToFire", "myTroop");
-		
-
+		myProperties.put("period", 10000);
+		myProperties.put("totalWaves", 1);
+		myProperties.put("templatesToFire", myTroops);
 	}
 	
 	private void newWaveButtonPressed() {
-		wavesPerLevel.put(currentDisplay, wavesPerLevel.get(currentDisplay)+1);
+		wavesPerLevel.put(currentLevel, wavesPerLevel.get(currentLevel)+1);
 		updateWaveDisplay();
 	}
 
@@ -124,7 +129,7 @@ public class LevelToolBar extends VBox {
 	}
 	
 	private void updateWaveDisplay() {
-		myWaveDisplay.addTabs(wavesPerLevel.get(currentDisplay));
+		myWaveDisplay.addTabs(wavesPerLevel.get(currentLevel));
 		updateImages();
 	}
 
@@ -216,7 +221,7 @@ public class LevelToolBar extends VBox {
 	}
 	
 	public void changeDisplay(int i) {
-		currentDisplay = i;
+		currentLevel = i;
 		myScrollableArea.changeLevel(myGameAreas.get(i - 1));
 		myCreated.setDroppable(myGameAreas.get(i - 1));
 		myController.setLevel(i);
@@ -227,8 +232,8 @@ public class LevelToolBar extends VBox {
 	
 	public void updateImages() {
 		mySpriteDisplay.clear();
-		if (waveToData.get(currentDisplay + "." + myWaveDisplay.getCurrTab()) != null) {
-			mySpriteDisplay.addToScroll(waveToData.get(currentDisplay + "." + myWaveDisplay.getCurrTab()).spriteNames);
+		if (waveToData.get(currentLevel + "." + myWaveDisplay.getCurrTab()) != null) {
+			mySpriteDisplay.addToScroll(waveToData.get(currentLevel + "." + myWaveDisplay.getCurrTab()).spriteNames);
 		}
 	}
 
@@ -240,6 +245,21 @@ public class LevelToolBar extends VBox {
 			myLevels.get(i).decrementLevel();
 			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i + 1));
 		}
+		updateDataMap(lvNumber);
+	}
+
+	private void updateDataMap(int levelRemoved) {
+		Map<String, Data> tempMap = new TreeMap<String, Data>();
+		for (String waveKey : waveToData.keySet()) {
+			int level = Integer.valueOf(waveKey.split("\\.+")[0]);
+			int wave = Integer.valueOf(waveKey.split("\\.+")[1]);
+			if (level < levelRemoved) tempMap.put(waveKey, waveToData.get(waveKey));
+			if (level > levelRemoved) {
+				tempMap.put(String.valueOf(level-1) + "." + String.valueOf(wave), 
+						waveToData.get(waveKey));
+			}
+		}
+		waveToData = tempMap;
 	}
 
 	public int getMaxLevel() {
