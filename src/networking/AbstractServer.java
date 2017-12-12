@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javafx.application.Application;
+
 /**
  * Abstracts common server functionality for Multi-Player game server and chat
  * server
