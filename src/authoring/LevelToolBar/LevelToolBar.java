@@ -112,7 +112,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		
 		myProperties.put("Numerical \"team\" association", 1);
 		myProperties.put("period", 60);
-		myProperties.put("totalWaves", 1);
+		myProperties.put("Number of troops to spawn", 10000);
 		//Note: Templates to fire is set when the troop is selected
 		
 	}
