@@ -14,8 +14,6 @@ import javafx.stage.Stage;
  */
 public class MultiPlayerServer extends AbstractServer {
 
-	public static final int PORT = 9041;
-
 	private MultiPlayerController multiPlayerController = new MultiPlayerController();
 	// Keep track of handlers for broadcasting
 	private Collection<MultiPlayerServerHandler> handlers = new HashSet<>();
@@ -32,7 +30,7 @@ public class MultiPlayerServer extends AbstractServer {
 
 	@Override
 	public int getPort() {
-		return PORT;
+		return Constants.MULTIPLAYER_SERVER_PORT;
 	}
 
 	void pushNotification(byte[] notificationBytes) {

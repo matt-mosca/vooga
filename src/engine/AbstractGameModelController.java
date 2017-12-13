@@ -56,6 +56,8 @@ public interface AbstractGameModelController {
 	
 	int getCurrentLevel();
 	
+	int getLevelHealth(int level);
+	
 	Set<String> getInventory();
 
 	/**
@@ -89,5 +91,5 @@ public interface AbstractGameModelController {
 	 * @return map where keys are game names and values are game descriptions
 	 */
 	Map<String, String> getAvailableGames() throws IllegalStateException;
-
+	
 }

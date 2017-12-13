@@ -175,6 +175,10 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 */
 	int getCurrentLevel();
 
+	int getLevelHealth(int level);
+
+	void setLevelHealth(int level, int health);
+	
 	/**
 	 * Retrieve the inventory for the current level
 	 *

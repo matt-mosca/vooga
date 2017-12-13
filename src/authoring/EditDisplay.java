@@ -17,7 +17,6 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
-import com.sun.javaws.progress.Progress;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
