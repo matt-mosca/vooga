@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
 /**
  * Represents mortal collider behavior - takes damage or explodes upon collision

@@ -1,6 +1,6 @@
 package engine.behavior.firing;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 import util.Exclude;
 
 import java.util.Iterator;

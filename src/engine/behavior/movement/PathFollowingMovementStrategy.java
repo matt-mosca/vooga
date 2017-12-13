@@ -2,12 +2,11 @@ package engine.behavior.movement;
 
 import javafx.scene.paint.Color;
 import util.path.PathList;
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 import javafx.geometry.Point2D;
 import util.path.PathPoint;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;

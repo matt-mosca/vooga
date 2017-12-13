@@ -1,17 +1,13 @@
 package engine.game_elements;
 
-import engine.behavior.ElementProperty;
 import util.ElementOptionsGetter;
 import util.io.SerializationUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
-import java.net.StandardSocketOptions;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.

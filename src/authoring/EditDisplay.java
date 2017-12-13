@@ -468,11 +468,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
 		getStage().setScene(testingScene.getScene());
 		controller.setGameName("testingGame");
-		try {
+		//try {
 			controller.createWaveProperties(fun, sprites, new Point2D(100, 100));
-		} catch (ReflectiveOperationException failedToGenerateWaveException) {
+		/*} catch (ReflectiveOperationException failedToGenerateWaveException) {
 			// todo - handle
-		}
+		}*/
 	}
 
 	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {

@@ -217,12 +217,12 @@ public class LevelToolBar extends VBox implements TabInterface {
 				tempArray.addAll(waveToData.get(levelDotWave).spriteNames);
 				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
 			} else {
-				try {
+				//try {
 					waveToData.put(levelDotWave, new Data(imageList,
 							myController.createWaveProperties(myProperties, elementsToSpawn, location)));
-				} catch (ReflectiveOperationException e) {
+				/*} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
-				}
+				}*/
 			}
 		}
 		updateImages();

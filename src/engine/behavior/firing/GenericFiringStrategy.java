@@ -1,6 +1,6 @@
 package engine.behavior.firing;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
 /**
  * Captures whatever is common across all implementations of FiringStrategy
