@@ -225,10 +225,21 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getStyleClass().add("left-bar");
 	}
 
-	private void loadSprites() {
+	private void updateSprites() {
 		myPlayArea.getChildren().addAll(clientMessageUtils.getNewImageViews());
-		myPlayArea.getChildren().removeAll(clientMessageUtils.getDeletedImageViews());
+		removeEliminatedSprite();
 		clientMessageUtils.clearChanges();
+	}
+
+	private void removeEliminatedSprite() {
+		for(ImageView spriteImage:clientMessageUtils.getDeletedImageViews()) {
+			myPlayArea.getChildren().remove(spriteImage);
+//			Map<String, Double> resourcesForUnit = myController.getUnitCostsFromId(spriteImage.getId());
+//			hud.updatePointCount(resourcesForUnit);
+//			hud.resourcesEarned(resourcesForUnit);
+		}
+		
+		myPlayArea.getChildren().removeAll(clientMessageUtils.getDeletedImageViews());
 	}
 
 	private void initializeButtons() {
@@ -298,7 +309,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		*/
 		hud.update(myController.getResourceEndowments());
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
-		loadSprites();
+		updateSprites();
 	}
 
 	private void launchTransitorySplashScreen() {
