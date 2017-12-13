@@ -1,6 +1,6 @@
 package util;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 import engine.game_elements.GameElement;
 
 import java.io.IOException;

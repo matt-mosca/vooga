@@ -1,5 +1,7 @@
 package util;
 
+import java.util.List;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -46,10 +48,10 @@ public class GameConditionsReader {
 		return DEFEAT_CONDITIONS_PROPERTIES.getProperty(condition.replaceAll(READABLE_REGEX, WRITABLE_REGEX));
 	}
 
-	private Collection<String> getReadablePropertiesFromRawProperties(Properties properties) {
+	private List<String> getReadablePropertiesFromRawProperties(Properties properties) {
 		return properties.stringPropertyNames().parallelStream()
 				.map(rawPropertyName -> rawPropertyName.replaceAll(WRITABLE_REGEX, READABLE_REGEX))
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 
 }

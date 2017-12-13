@@ -30,9 +30,20 @@ public class MultiplayerListBox extends ScrollPane {
 		names.clear();
 		for(String name : content)
 			names.add(name);
-		namesObservable = FXCollections.observableArrayList(names);
-		namesList.setItems(namesObservable);
+		namesObservable.clear();
+		namesObservable.addAll(names);
 	}
 	
+	protected void setNames(List<String> newNames) {
+		names.clear();
+//		names = newNames;
+		for(String name : newNames)
+			names.add(name);
+		namesObservable.clear();
+		namesObservable.addAll(names);
+	}
 	
+	public ListView<String> getListView() {
+		return namesList;
+	}
 }

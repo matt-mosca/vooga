@@ -1,17 +1,13 @@
 package engine.game_elements;
 
-import engine.behavior.ElementProperty;
 import util.ElementOptionsGetter;
 import util.io.SerializationUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
-import java.net.StandardSocketOptions;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.
@@ -30,19 +26,13 @@ public final class GameElementFactory {
     }
 
     /**
-     * Define a new template with specified properties. The template should not use an identical name as an existing
-     * template; updating a template is achieved with updateElementDefinition().
+     * Define a new template with specified properties. This will redefine the template if the name has already been
+     * used.
      *
      * @param spriteTemplateName the name of the sprite template
      * @param properties         a map of properties for sprites using this template
-     * @throws IllegalArgumentException if the template already exists
      */
-    public void defineElement(String spriteTemplateName, Map<String, Object> properties)
-            throws IllegalArgumentException {
-        if (spriteTemplates.containsKey(spriteTemplateName)) {
-            // TODO - custom exception?
-            throw new IllegalArgumentException();
-        }
+    public void defineElement(String spriteTemplateName, Map<String, Object> properties) {
         spriteTemplates.put(spriteTemplateName, properties);
     }
 
@@ -106,9 +96,6 @@ public final class GameElementFactory {
 
     private Object generateBehaviorObject(Map<String, ?> properties, String chosenSubclassName)
             throws ReflectiveOperationException {
-    	System.out.println("GenerateBehaviour");
-    	System.out.println(properties.toString());
-    	System.out.println(chosenSubclassName);
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);

@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
 public class ExplosiveCollider extends VolatileCollider {
 
@@ -18,7 +18,6 @@ public class ExplosiveCollider extends VolatileCollider {
 	}
 	
 	protected void handleCollision() {
-		System.out.println("HANDLED_COLLISION");
 		collided = true;
 	}
 }

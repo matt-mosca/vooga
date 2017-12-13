@@ -47,7 +47,6 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	private void addProjectileImage() {
 		String projectileName = myController.getAllDefinedTemplateProperties().get(myImageView.getId()).get
 				("Projectile Type Name").toString();
-		System.out.println(projectileName);
 		String url = myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl").toString();
 		ImageView projectile = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(url)));
 		resize(projectileSlot.getPrefHeight(), projectile);

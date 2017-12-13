@@ -8,22 +8,25 @@ message ClientMessage {
 	optional GetAvailableGames getAvailableGames = 1;
 	optional CreateGameRoom createGameRoom = 2;
 	optional JoinRoom joinRoom = 3;
-	optional LaunchGameRoom launchGameRoom = 4;
-	optional GetGameRooms getGameRooms = 5;
-	optional GetPlayerNames getPlayerNames = 6;
-	optional PerformUpdate performUpdate = 7; // Add one for passively requesting latest update?
-	optional PauseGame pauseGame = 8;
-	optional ResumeGame resumeGame = 9;
-	optional GetInventory getInventory = 10;
-	optional GetTemplateProperties getTemplateProperties = 11;
-	optional GetAllTemplateProperties getAllTemplateProperties = 12; // Should deprecate from PlayModelController interface?
-	optional GetElementCosts getElementCosts = 13;
-	optional PlaceElement placeElement = 14;
-	optional UpgradeElement upgradeElement = 15; // Has no corresponding response? Client doesn't check if upgrade succeeded
-	optional CheckReadyForNextLevel checkReadyForNextLevel = 16;
-	optional LoadLevel loadLevel = 17;
-	optional GetLevelElements getLevelElements = 18;
-	optional GetNumberOfLevels getNumLevels = 19;
+	optional ExitRoom exitRoom = 4;
+	optional LaunchGameRoom launchGameRoom = 5;
+	optional GetGameRooms getGameRooms = 6;
+	optional GetPlayerNames getPlayerNames = 7;
+	optional PerformUpdate performUpdate = 8; // Add one for passively requesting latest update?
+	optional PauseGame pauseGame = 9;
+	optional ResumeGame resumeGame = 10;
+	optional GetInventory getInventory = 11;
+	optional GetTemplateProperties getTemplateProperties = 12;
+	optional GetAllTemplateProperties getAllTemplateProperties = 13; // Should deprecate from PlayModelController interface?
+	optional GetElementCosts getElementCosts = 14;
+	optional PlaceElement placeElement = 15;
+	optional MoveElement moveElement = 16;
+	optional DeleteElement deleteElement = 17;
+	optional UpgradeElement upgradeElement = 18; // Has no corresponding response? Client doesn't check if upgrade succeeded
+	optional CheckReadyForNextLevel checkReadyForNextLevel = 19;
+	optional LoadLevel loadLevel = 20;
+	optional GetLevelElements getLevelElements = 21;
+	optional GetNumberOfLevels getNumLevels = 22;
 }
 
 /*
@@ -34,7 +37,8 @@ message GetAvailableGames {
 }
 
 message CreateGameRoom {
-	required string roomName = 1;
+	required string gameName = 1;
+	required string roomName = 2;
 }
 
 message JoinRoom {
@@ -42,15 +46,16 @@ message JoinRoom {
 	required string userName = 2;
 }
 
+message ExitRoom {
+}
+
 message LaunchGameRoom {
-	required string roomName = 1;
 }
 
 message GetGameRooms {
 }
 
 message GetPlayerNames {
-	required string roomName = 1;
 }
 
 /*
@@ -84,6 +89,16 @@ message PlaceElement {
 	required string elementName = 1;
 	required double xCoord = 2;
 	required double yCoord = 3;
+}
+
+message MoveElement {
+	required int32 elementId = 1;
+	required double newXCoord = 2;
+	required double newYCoord = 3;
+}
+
+message DeleteElement {
+	required int32 elementId = 1;
 }
 
 message UpgradeElement {

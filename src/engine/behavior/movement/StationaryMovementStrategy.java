@@ -1,6 +1,6 @@
 package engine.behavior.movement;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 import javafx.geometry.Point2D;
 
 /**
@@ -27,6 +27,4 @@ public class StationaryMovementStrategy extends AbstractMovementStrategy {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }

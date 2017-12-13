@@ -5,19 +5,25 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-
 import engine.AbstractGameModelController;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerClient.DeleteElement;
+import networking.protocol.PlayerClient.ExitRoom;
 import networking.protocol.PlayerClient.GetAllTemplateProperties;
 import networking.protocol.PlayerClient.GetAvailableGames;
 import networking.protocol.PlayerClient.GetElementCosts;
@@ -30,6 +36,7 @@ import networking.protocol.PlayerClient.GetTemplateProperties;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.LaunchGameRoom;
 import networking.protocol.PlayerClient.LoadLevel;
+import networking.protocol.PlayerClient.MoveElement;
 import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
@@ -38,9 +45,13 @@ import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.Notification;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.SpriteDeletion;
+import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.TemplateProperties;
+import networking.protocol.PlayerServer.Update;
 import util.io.SerializationUtils;
 
 public abstract class AbstractClient implements AbstractGameModelController {
@@ -50,50 +61,72 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	private Socket socket;
 	private DataInputStream input;
 	private DataOutputStream outputWriter;
-	protected SerializationUtils serializationUtils;
-	// todo make private with getter
+	private SerializationUtils serializationUtils;
 
+	private final int POLLING_FREQUENCY = 50;
+
+	private Update latestUpdate;
+
+	private ObservableList<Notification> notificationQueue = FXCollections.observableArrayList();
+	private Queue<ServerMessage> messageQueue;
 
 	public AbstractClient() {
+		messageQueue = new ArrayDeque<>();
 		setupChatSocketAndStreams();
 		serializationUtils = new SerializationUtils();
 		System.out.println("Set up chat socket and streams");
+		latestUpdate = Update.getDefaultInstance();
 	}
 
 	protected abstract int getPort();
 
-	public String createGameRoom(String gameName) {
+	public void launchNotificationListener() {
+		new Thread(() -> pollForServerMessages()).start();
+	}
+
+	public void registerNotificationListener(ListChangeListener<? super Notification> listener) {
+		notificationQueue.addListener(listener);
+		System.out.println("Registered listener!");
+	}
+
+	public String createGameRoom(String gameName, String roomName) {
 		ClientMessage.Builder clientMessageBuilder = ClientMessage.newBuilder();
-		CreateGameRoom gameRoomCreationRequest = CreateGameRoom.newBuilder().setRoomName(gameName).build();
+		CreateGameRoom gameRoomCreationRequest = CreateGameRoom.newBuilder().setGameName(gameName).setRoomName(roomName)
+				.build();
 		writeRequestBytes(clientMessageBuilder.setCreateGameRoom(gameRoomCreationRequest).build().toByteArray());
-		return handleGameRoomCreationResponse(readServerResponse());
+		return handleGameRoomCreationResponse(pollFromMessageQueue());
 	}
 
 	public void joinGameRoom(String roomName, String userName) {
 		JoinRoom gameRoomJoinRequest = JoinRoom.newBuilder().setRoomName(roomName).setUserName(userName).build();
 		writeRequestBytes(ClientMessage.newBuilder().setJoinRoom(gameRoomJoinRequest).build().toByteArray());
-		handleGameRoomJoinResponse(readServerResponse());
+		handleGameRoomJoinResponse(pollFromMessageQueue());
 	}
 
-	public LevelInitialized launchGameRoom(String roomName) {
+	public void exitGameRoom() {
+		writeRequestBytes(ClientMessage.newBuilder().setExitRoom(ExitRoom.newBuilder().getDefaultInstanceForType())
+				.build().toByteArray());
+		pollFromMessageQueue(); // Drain out from socket
+	}
+
+	public LevelInitialized launchGameRoom() {
 		writeRequestBytes(ClientMessage.newBuilder()
-				.setLaunchGameRoom(LaunchGameRoom.newBuilder().setRoomName(roomName).build()).build().toByteArray());
-		return handleLevelInitializedResponse(readServerResponse());
+				.setLaunchGameRoom(LaunchGameRoom.newBuilder().getDefaultInstanceForType()).build().toByteArray());
+		return handleLevelInitializedResponse(pollFromMessageQueue());
 	}
 
 	public Set<String> getGameRooms() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setGetGameRooms(GetGameRooms.getDefaultInstance()).build().toByteArray());
-		return handleGameRoomsResponse(readServerResponse());
+		return handleGameRoomsResponse(pollFromMessageQueue());
 	}
 
-	public Set<String> getPlayerNames(String roomName) {
+	public Set<String> getPlayerNames() {
 		writeRequestBytes(ClientMessage.newBuilder()
-				.setGetPlayerNames(GetPlayerNames.newBuilder().setRoomName(roomName).build()).build().toByteArray());
-		return handlePlayerNamesResponse(readServerResponse());
+				.setGetPlayerNames(GetPlayerNames.newBuilder().getDefaultInstanceForType()).build().toByteArray());
+		return handlePlayerNamesResponse(pollFromMessageQueue());
 	}
-	
-	
+
 	/**
 	 * Save the current state of the current level a game being played or authored.
 	 *
@@ -122,7 +155,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setLoadLevel(LoadLevel.newBuilder().setGameName(saveName).setLevel(level)).build().toByteArray());
-		return handleLoadOriginalGameStateResponse(readServerResponse());
+		return handleLoadOriginalGameStateResponse(pollFromMessageQueue());
 	}
 
 	@Override
@@ -130,8 +163,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetTemplateProperties(GetTemplateProperties.newBuilder().setElementName(elementName).build())
 				.build().toByteArray());
-		Map<String, String> serializedTemplate =
-				handleAllTemplatePropertiesResponse(readServerResponse()).values().iterator().next();
+		Map<String, String> serializedTemplate = handleAllTemplatePropertiesResponse(pollFromMessageQueue()).values()
+				.iterator().next();
 		return serializationUtils.deserializeElementTemplate(serializedTemplate);
 	}
 
@@ -139,8 +172,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	public Map<String, Map<String, Object>> getAllDefinedTemplateProperties() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetAllTemplateProperties(GetAllTemplateProperties.getDefaultInstance()).build().toByteArray());
-		Map<String, Map<String, String>> serializedTemplates =
-				handleAllTemplatePropertiesResponse(readServerResponse());
+		Map<String, Map<String, String>> serializedTemplates = handleAllTemplatePropertiesResponse(
+				pollFromMessageQueue());
 		return serializationUtils.deserializeTemplates(serializedTemplates);
 	}
 
@@ -150,7 +183,21 @@ public abstract class AbstractClient implements AbstractGameModelController {
 				.setPlaceElement(PlaceElement.newBuilder().setElementName(elementName)
 						.setXCoord(startCoordinates.getX()).setYCoord(startCoordinates.getY()).build())
 				.build().toByteArray());
-		return handlePlaceElementResponse(readServerResponse());
+		return handlePlaceElementResponse(pollFromMessageQueue());
+	}
+
+	@Override
+	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate) {
+		writeRequestBytes(ClientMessage.newBuilder().setMoveElement(MoveElement.newBuilder().setElementId(elementId)
+				.setNewXCoord(xCoordinate).setNewYCoord(yCoordinate).build()).build().toByteArray());
+		return handleMoveElementResponse(pollFromMessageQueue());
+	}
+
+	@Override
+	public SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setDeleteElement(DeleteElement.newBuilder().setElementId(elementId).build()).build().toByteArray());
+		return handleDeleteElementResponse(pollFromMessageQueue());
 	}
 
 	@Override
@@ -158,14 +205,14 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetNumLevels(GetNumberOfLevels.newBuilder().setGameName(gameName).setOriginalGame(originalGame))
 				.build().toByteArray());
-		return handleNumLevelsForGameResponse(readServerResponse());
+		return handleNumLevelsForGameResponse(pollFromMessageQueue());
 	}
 
 	@Override
 	public Set<String> getInventory() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setGetInventory(GetInventory.getDefaultInstance()).build().toByteArray());
-		return handleInventoryResponse(readServerResponse());
+		return handleInventoryResponse(pollFromMessageQueue());
 	}
 
 	// TODO - Deprecate? Doesn't seem to be used anywhere?
@@ -179,7 +226,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	public Map<String, Map<String, Double>> getElementCosts() {
 		writeRequestBytes(ClientMessage.newBuilder().setGetElementCosts(GetElementCosts.getDefaultInstance()).build()
 				.toByteArray());
-		return handleElementCostsResponse(readServerResponse());
+		return handleElementCostsResponse(pollFromMessageQueue());
 	}
 
 	/**
@@ -197,7 +244,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	public Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetLevelElements(GetLevelElements.newBuilder().setLevel(level).build()).build().toByteArray());
-		return handleLevelSpritesResponse(readServerResponse());
+		return handleLevelSpritesResponse(pollFromMessageQueue());
 	}
 
 	/**
@@ -209,7 +256,13 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		ClientMessage.Builder clientMessageBuilder = ClientMessage.newBuilder();
 		writeRequestBytes(clientMessageBuilder.setGetAvailableGames(GetAvailableGames.newBuilder().build()).build()
 				.toByteArray());
-		return handleAvailableGamesResponse(readServerResponse());
+		return handleAvailableGamesResponse(pollFromMessageQueue());
+	}
+
+	@Override
+	public int getLevelHealth(int level) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	protected void writeRequestBytes(byte[] requestBytes) {
@@ -221,27 +274,87 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		}
 	}
 
-	protected ServerMessage readServerResponse() {
+	protected synchronized byte[] readResponseBytes() {
+		int len = 0;
 		try {
-			return ServerMessage.parseFrom(readResponseBytes());
-		} catch (InvalidProtocolBufferException e) {
-			return ServerMessage.getDefaultInstance(); // empty message
+			len = input.readInt();
+			byte[] readBytes = new byte[len];
+			input.readFully(readBytes);
+			return readBytes;
+		} catch (IOException e) {
+		}
+		return new byte[len];
+	}
+
+	protected SerializationUtils getSerializationUtils() {
+		return serializationUtils;
+	}
+
+	protected Update getLatestUpdate() {
+		return latestUpdate;
+	}
+
+	protected DataInputStream getInput() {
+		return input;
+	}
+
+	protected DataOutputStream getOutput() {
+		return outputWriter;
+	}
+
+	protected ServerMessage pollFromMessageQueue() {
+		synchronized (messageQueue) {
+			try {
+				while (messageQueue.isEmpty()) {
+					messageQueue.wait();
+				}
+				return messageQueue.poll();
+			} catch (InterruptedException e) {
+				return ServerMessage.getDefaultInstance();
+			}
 		}
 	}
 
-	protected byte[] readResponseBytes() {
-		int len = 0;
-		try {
-			if (!socket.isClosed()) {
-				len = input.readInt();
-				byte[] readBytes = new byte[len];
-				input.readFully(readBytes);
-				return readBytes;
-			}
-		} catch (IOException e) {
-			e.printStackTrace(); // TEMP
+	private void appendMessageToAppropriateQueue(ServerMessage serverMessage) {
+		if (serverMessage.hasNotification()) {
+			appendNotificationToQueue(serverMessage.getNotification());
+		} else {
+			appendMessageToQueue(serverMessage);
 		}
-		return new byte[len];
+	}
+
+	private void appendNotificationToQueue(Notification notification) {
+		// System.out.println("NOTIFICATION MESSAGE: ");
+		// System.out.println(notification.toString());
+		notificationQueue.add(notification);
+	}
+
+	private void appendMessageToQueue(ServerMessage serverMessage) {
+		// System.out.println("NORMAL MESSAGE: ");
+		// System.out.println(serverMessage.toString());
+		synchronized (messageQueue) {
+			messageQueue.add(serverMessage);
+			messageQueue.notify();
+		}
+	}
+
+	private synchronized void pollForServerMessages() {
+		while (true) {
+			int len = 0;
+			try {
+				try {
+					DataInputStream input = getInput();
+					len = getInput().readInt();
+					byte[] readBytes = new byte[len];
+					input.readFully(readBytes);
+					appendMessageToAppropriateQueue(ServerMessage.parseFrom(readBytes));
+				} catch (SocketTimeoutException timeOutException) {
+					this.wait(1000);
+				}
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace(); // TEMP
+			}
+		}
 	}
 
 	private LevelInitialized handleLoadOriginalGameStateResponse(ServerMessage serverMessage) {
@@ -278,6 +391,20 @@ public abstract class AbstractClient implements AbstractGameModelController {
 			return serverMessage.getElementPlaced();
 		}
 		return NewSprite.getDefaultInstance(); // Should be careful not to interpret as having spriteId = 0
+	}
+
+	private SpriteUpdate handleMoveElementResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasElementMoved()) {
+			return serverMessage.getElementMoved();
+		}
+		return SpriteUpdate.getDefaultInstance();
+	}
+	
+	private SpriteDeletion handleDeleteElementResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasElementDeleted()) {
+			return serverMessage.getElementDeleted();
+		}
+		return SpriteDeletion.getDefaultInstance();
 	}
 
 	private int handleNumLevelsForGameResponse(ServerMessage serverMessage) {
@@ -319,7 +446,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 				templateProperty -> templatePropertiesMap.put(templateProperty.getName(), templateProperty.getValue()));
 		return templatePropertiesMap;
 	}
-	
+
 	private Set<String> handleGameRoomsResponse(ServerMessage serverMessage) {
 		if (serverMessage.hasGameRooms()) {
 			return serverMessage.getGameRooms().getRoomNamesList().stream().collect(Collectors.toSet());
@@ -337,7 +464,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		}
 		return new HashSet<>();
 	}
-	
+
 	private String handleGameRoomCreationResponse(ServerMessage serverMessage) {
 		String gameRoomId = "";
 		if (serverMessage.hasGameRoomCreationStatus()) {
@@ -369,19 +496,21 @@ public abstract class AbstractClient implements AbstractGameModelController {
 				// TODO - throw exception to be handled by front end?
 				throw new IllegalArgumentException(gameRoomLaunchStatus.getError());
 			}
+			latestUpdate = gameRoomLaunchStatus.getInitialState().getSpritesAndStatus();
 			return gameRoomLaunchStatus.getInitialState();
 		}
 		return LevelInitialized.getDefaultInstance();
 	}
 
-	
 	private synchronized void setupChatSocketAndStreams() {
 		try {
 			// Make connection and initialize streams
 			socket = new Socket(SERVER_ADDRESS, getPort());
+			socket.setSoTimeout(POLLING_FREQUENCY);
 			outputWriter = new DataOutputStream(socket.getOutputStream());
 			input = new DataInputStream(socket.getInputStream());
 		} catch (IOException socketException) {
+			System.out.println("Unable to connect");
 			socketException.printStackTrace();
 		}
 	}

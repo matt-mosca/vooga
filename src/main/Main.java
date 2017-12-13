@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import display.splashScreen.ScreenDisplay;
 import display.splashScreen.SplashScreen;
@@ -17,7 +18,7 @@ public class Main extends Application {
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	public static final Paint BACKGROUND = Color.WHITE;
-	public static final int FRAMES_PER_SECOND = 60;
+	public static final int FRAMES_PER_SECOND = 10;
 	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -37,6 +38,12 @@ public class Main extends Application {
 	 * Start the program.
 	 */
 	public static void main(String[] args) {
+//		List<String> myList = new ArrayList<String>();
+//		myList.add("a");
+//		myList.add("ab");
+//		myList.add("abc");
+//		List<String> upper = myList.stream().map(String::toUpperCase).collect(Collectors.toList());
+//		System.out.println(upper);
 		launch(args);
 	}
 }

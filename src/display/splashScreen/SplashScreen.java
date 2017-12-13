@@ -16,6 +16,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -27,6 +28,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
 import networking.MultiPlayerClient;
+import player.MultiplayerLobby;
 import player.PlayDisplay;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
@@ -52,7 +54,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private MediaPlayerFactory myMediaPlayerFactory;
 	private MediaPlayer myMediaPlayer;
 	private String backgroundSong = "src/MediaTesting/101 - opening.mp3";
- 
+
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background, currentStage);
 
@@ -141,7 +143,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		}
 		// Next two for symmetric style
 		// for(int i = 0; i < 3; i++) {
-		// createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i + 1) *
+		// createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i +
+		// 1) *
 		// STANDARD_PATH_HEIGHT);
 		// }
 		// for(int i = 10; i < 15; i++) {
@@ -194,15 +197,31 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	@Override
 	public void playExisting() {
-		// TODO - Update this method accordingly to determine the isMultiPlayer param
+		// TODO - Update this method accordingly to determine the isMultiPlayer
+		// param
 		// for PlayDisplay constructor
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(),
-				initializePlayersSetting() ? new MultiPlayerClient() : new PlayController()); // TEMP
+		boolean isMultiplayer = initializePlayersSetting();
+		PlayDisplay myScene;
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
-		getStage().setScene(myScene.getScene());
 		myMediaPlayer.stop();
+		if (!isMultiplayer) {
+			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController()); 
+			getStage().setScene(myScene.getScene());
+			myScene.startDisplay();
+			System.out.println("Initialized play display");
+		} else {
+			MultiPlayerClient multiPlayerClient = new MultiPlayerClient();
+			multiPlayerClient.launchNotificationListener();
+			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), multiPlayerClient);
+			System.out.println("Initializing multiplayer lobby");
+			MultiplayerLobby multi = new MultiplayerLobby(PLAYWIDTH, PLAYHEIGHT, Color.WHITE, getStage(), myScene,
+					multiPlayerClient);
+			System.out.println("Initialized multiplayer lobby");
+			getStage().setScene(multi.getScene());
+			multi.promptForUsername();
+		}
 	}
 
 	private boolean initializePlayersSetting() {
@@ -229,7 +248,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	@Override
-	public void listItemClicked(ImageView object) {
+	public void listItemClicked(MouseEvent e, ImageView object) {
 		// TODO Auto-generated method stub
 
 	}

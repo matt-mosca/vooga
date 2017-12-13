@@ -2,6 +2,7 @@ package engine;
 
 import util.path.PathList;
 import javafx.geometry.Point2D;
+import networking.protocol.AuthorServer;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteUpdate;
@@ -44,9 +45,12 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException;
 
 	/**
-	 * Export a fully authored game, including all levels, into an executable file.
+	 * Export a fully authored game, including all levels, into an executable file, published to Google Drive.
+	 *
+	 * @return a URL to access the exported game
+	 * @throws IOException if the game cannot be fully exported or publishing fails
 	 */
-	void exportGame();
+	String exportGame() throws IOException;
 
 	/**
 	 * Set level for the game being authored. Saves the state of the current level
@@ -171,6 +175,10 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 */
 	int getCurrentLevel();
 
+	int getLevelHealth(int level);
+
+	void setLevelHealth(int level, int health);
+	
 	/**
 	 * Retrieve the inventory for the current level
 	 *
@@ -228,14 +236,6 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *            a map containing the new properties of the element
 	 */
 	void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate);
-
-	/**
-	 * Delete a previously created game element.
-	 *
-	 * @param elementId
-	 *            the unique identifier for the element
-	 */
-	void deleteElement(int elementId);
 
 	/**
 	 * Fetch all available game names and their corresponding descriptions

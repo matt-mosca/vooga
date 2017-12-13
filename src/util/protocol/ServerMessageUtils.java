@@ -27,15 +27,18 @@ public class ServerMessageUtils {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LevelInitialized packageState(Map<Integer, GameElement> levelSprites, Collection<String> inventory, Map<String, Double> resourceEndowments, int currentLevel) {
-		return LevelInitialized.newBuilder()
-				.setSpritesAndStatus(packageUpdates(levelSprites, new HashMap<>(),
-						new HashMap<>(), false, false, false, false, resourceEndowments, currentLevel))
+	public LevelInitialized packageState(Map<Integer, GameElement> levelSprites, Collection<String> inventory,
+			Map<String, Double> resourceEndowments, int currentLevel) {
+		return LevelInitialized
+				.newBuilder().setSpritesAndStatus(packageUpdates(levelSprites, new HashMap<>(), new HashMap<>(), false,
+						false, false, false, resourceEndowments, currentLevel))
 				.setInventory(packageInventory(inventory)).build();
 	}
 
-	public Update packageStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay, int currentLevel) {
-		return Update.newBuilder().setStatusUpdates(getStatusUpdate(levelCleared, isWon, isLost, inPlay, currentLevel)).build();
+	public Update packageStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay,
+			int currentLevel) {
+		return Update.newBuilder().setStatusUpdates(getStatusUpdate(levelCleared, isWon, isLost, inPlay, currentLevel))
+				.build();
 	}
 
 	public Inventory packageInventory(Collection<String> inventory) {
@@ -65,8 +68,10 @@ public class ServerMessageUtils {
 			Map<String, String> templatePropertiesMap) {
 		TemplateProperties.Builder templatePropertiesBuilder = TemplateProperties.newBuilder();
 		templatePropertiesMap.keySet()
-				.forEach(templateProperty -> templatePropertiesBuilder.addProperty(TemplateProperty.newBuilder()
-						.setName(templateProperty).setValue(templatePropertiesMap.get(templateProperty)).build()));
+				.forEach(templateProperty -> templatePropertiesBuilder
+						.addProperty(TemplateProperty.newBuilder().setName(templateProperty)
+								.setValue(templatePropertiesMap.get(templateProperty)).build())
+						.setElementName(templateName));
 		return templatePropertiesBuilder.build();
 	}
 
@@ -100,7 +105,7 @@ public class ServerMessageUtils {
 	public Collection<NewSprite> packageNewSprites(Map<Integer, GameElement> newSprites) {
 		return packageSprites(newSprites, (newSprite, newSpriteId) -> packageNewSprite(newSprite, newSpriteId));
 	}
-	
+
 	public NewSprite packageNewSprite(GameElement newSprite, int spriteId) {
 		return NewSprite.newBuilder().setSpriteId(spriteId).setImageURL(newSprite.getImageUrl())
 				.setImageHeight(newSprite.getGraphicalRepresentation().getFitHeight())
@@ -113,7 +118,12 @@ public class ServerMessageUtils {
 				.setNewY(spriteToUpdate.getY()).build();
 	}
 
-	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay, int currentLevel) {
+	public SpriteDeletion packageDeletedSprite(GameElement spriteToDelete, int spriteId) {
+		return SpriteDeletion.newBuilder().setSpriteId(spriteId).build();
+	}
+	
+	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay,
+			int currentLevel) {
 		// Just always send status update for now
 		return StatusUpdate.newBuilder().setLevelCleared(levelCleared).setIsWon(isWon).setIsLost(isLost)
 				.setInPlay(inPlay).setCurrentLevel(currentLevel).build();
@@ -136,8 +146,5 @@ public class ServerMessageUtils {
 				.collect(Collectors.toList());
 	}
 
-	private SpriteDeletion packageDeletedSprite(GameElement spriteToDelete, int spriteId) {
-		return SpriteDeletion.newBuilder().setSpriteId(spriteId).build();
-	}
 
 }
