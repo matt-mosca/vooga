@@ -50,10 +50,10 @@ public class IOController {
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
 			Map<String, String> levelConditions, Bank levelBank, List<GameElement> levelGameElements,
-			Set<String> levelInventories, List<GameElement> levelWaves, Map<String, Double> status, boolean forAuthoring) {
+			Set<String> levelInventories, List<GameElement> levelWaves, int levelHealth, Map<String, Double> status, boolean forAuthoring) {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
-				currentLevel, status, levelGameElements, levelInventories, levelWaves);
+				currentLevel, status, levelGameElements, levelInventories, levelWaves, levelHealth);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -154,6 +154,11 @@ public class IOController {
 		return serializationUtils.deserializeGameWaves(serializedGameData, level);
 	}
 
+	public int loadGameHealth(String savedGameName, int level, boolean forAuthoring) throws FileNotFoundException {
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
+		return serializationUtils.deserializeGameHealth(serializedGameData, level);
+	}
+	
 	/**
 	 * Get the number of levels for this game
 	 * 
@@ -278,9 +283,9 @@ public class IOController {
 	 */
 	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
 			Bank levelBank, Map<String, Double> levelStatus, List<GameElement> levelGameElements,
-			Set<String> levelInventories, List<GameElement> levelWaves) {
+			Set<String> levelInventories, List<GameElement> levelWaves, int levelHealth) {
 		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelBank, levelStatus,
-				levelGameElements, levelInventories, levelWaves, level);
+				levelGameElements, levelInventories, levelWaves, levelHealth, level);
 	}
 
 	public Map<String, String> getWaveSerialization(Map<String, ?> waveProperties) {

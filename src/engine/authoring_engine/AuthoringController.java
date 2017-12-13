@@ -38,6 +38,7 @@ public class AuthoringController extends AbstractGameController implements Autho
     private final String PLAYER_ID = "playerId";
 
     private Map<String, Set<Integer>> templateToIdMap;
+    private Map<Integer, String> waveIdMap;
     private AtomicInteger gameWaveCounter;
 
     public AuthoringController() {
@@ -49,7 +50,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
     @Override
     public String exportGame() throws IOException {
-        getSpriteTemplateIoHandler().exportSpriteTemplates(getGameName(),
+        getGameElementIoHandler().exportElementTemplates(getGameName(),
                 getGameElementFactory().getAllDefinedTemplateProperties());
         if (publisher == null) {
             publisher = new Publisher();
@@ -152,6 +153,11 @@ public class AuthoringController extends AbstractGameController implements Autho
     public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
         getLevelBanks().get(getCurrentLevel()).setUnitCost(elementName, unitCosts);
     }
+    
+	@Override
+	public void setLevelHealth(int level, int health) {
+		getLevelHealths().set(level, health);
+	}
 
     @Override
     public void deleteLevel(int level) throws IllegalArgumentException {
@@ -168,12 +174,14 @@ public class AuthoringController extends AbstractGameController implements Autho
 
     @Override
     public int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
-                                    Point2D spawningPoint) throws ReflectiveOperationException {
+                                    Point2D spawningPoint) {
         String waveName = getNameForWave();
         defineElement(waveName, waveProperties);
-        int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
-        // save this to level waves
-        getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
+        getLevelWaveTemplates().get(getCurrentLevel()).put(waveName, spawningPoint);
+        //waveIdMap.put(gameWaveCounter.getAndIncrement(), waveName);
+        //int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
+        //save this to level waves
+        //getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
         return gameWaveCounter.get();
     }
 
@@ -183,11 +191,11 @@ public class AuthoringController extends AbstractGameController implements Autho
         String waveName = getNameForWaveNumber(getCurrentLevel(), waveId);
         // Overwrite the template
         defineElement(waveName, updatedProperties);
-        deleteOutdatedWave(waveId);
+        // deleteOutdatedWave(waveId);
         // Place the new wave
-        int newSpriteId = placeElement(waveName, newSpawningPoint, newElementNamesToSpawn);
-        GameElement newWave = getSpriteIdMap().get(newSpriteId);
-        getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
+        // int newSpriteId = placeElement(waveName, newSpawningPoint, newElementNamesToSpawn);
+        // GameElement newWave = getSpriteIdMap().get(newSpriteId);
+        // getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
     }
 
     @Override
@@ -254,9 +262,9 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
 
     private void deleteOutdatedWave(int waveId) {
-        GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
+        //GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
         // Remove the old placed wave
-        getSpriteIdMap().remove(getIdFromSprite(oldWave));
+        //getSpriteIdMap().remove(getIdFromSprite(oldWave));
     }
 
     private String getNameForWave() {
@@ -284,5 +292,6 @@ public class AuthoringController extends AbstractGameController implements Autho
     private int getLevelsForCurrentGame() {
         return getNumLevelsForGame(getGameName(), true);
     }
+
 
 }

@@ -2,6 +2,7 @@ package engine.play_engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -27,6 +28,9 @@ public class ElementManager {
 	private List<GameElement> newElements;
 	private List<GameElement> updatedElements;
 	private List<GameElement> deadElements;
+	private Iterator<GameElement> waves;
+	private GameElement currentWave;
+
 	
 	private AudioClipFactory audioClipFactory;
 
@@ -60,6 +64,11 @@ public class ElementManager {
 		activeElements = newElements;
 	}
 
+	void setCurrentWaves(List<GameElement> waves) {
+		this.waves = waves.iterator();
+		currentWave = this.waves.next();
+	}
+
 	void update() {
 		for (int elementIndex = 0; elementIndex < activeElements.size(); elementIndex++) {
 			GameElement element = activeElements.get(elementIndex);
@@ -67,25 +76,34 @@ public class ElementManager {
 			handleElementFiring(element);
 			processAllCollisionsForElement(elementIndex, element);
 		}
-		activeElements.forEach(element -> {
-			if (!element.isAlive()) {
-				if(element.shouldExplode()) {
-					Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
-					try {
-						GameElement explosionElement = gameElementFactory.generateElement(element.explode(), auxiliaryObjects);
-						updatedElements.add(explosionElement);
-					} catch (ReflectiveOperationException failedToGenerateProjectileException) {
-						// don't generate the projectile
-						// TODO - throw exception? (prob not)
-					}					
-				}
-				deadElements.add(element);
-			} else {
-				updatedElements.add(element);
+		if (currentWave != null) {
+			processStepForElement(currentWave);
+			if (!currentWave.isAlive()) {
+				currentWave = waves.next();
 			}
-		});
+		}
+		activeElements.forEach(this::processStepForElement);
 		activeElements.removeAll(deadElements);
 		activeElements.addAll(newElements);
+
+	}
+
+	private void processStepForElement(GameElement element) {
+		if (!element.isAlive()) {
+			if(element.shouldExplode()) {
+				Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
+				try {
+					GameElement explosionElement = gameElementFactory.generateElement(element.explode(), auxiliaryObjects);
+					updatedElements.add(explosionElement);
+				} catch (ReflectiveOperationException failedToGenerateProjectileException) {
+					// don't generate the projectile
+					// TODO - throw exception? (prob not)
+				}
+			}
+			deadElements.add(element);
+		} else {
+			updatedElements.add(element);
+		}
 	}
 
 	List<GameElement> getNewlyGeneratedElements() {
@@ -119,6 +137,8 @@ public class ElementManager {
 	boolean allAlliesDead() {
 		return allElementsFulfillCondition(element -> !element.isAlly() || !element.isAlive());
 	}
+
+	boolean allWavesComplete() { return currentWave == null; }
 
 	boolean enemyReachedTarget() {
 		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
@@ -173,6 +193,8 @@ public class ElementManager {
 			try {
 				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectile);
+				// can add to templateToIdMap here
+				
 			} catch (ReflectiveOperationException failedToGenerateProjectileException) {
 				// don't generate the projectile
 				// TODO - throw exception? (prob not)

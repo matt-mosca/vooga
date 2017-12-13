@@ -17,7 +17,6 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
-import com.sun.javaws.progress.Progress;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
@@ -468,11 +467,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
 		getStage().setScene(testingScene.getScene());
 		controller.setGameName("testingGame");
-		try {
+		//try {
 			controller.createWaveProperties(fun, sprites, new Point2D(100, 100));
-		} catch (ReflectiveOperationException failedToGenerateWaveException) {
+		/*} catch (ReflectiveOperationException failedToGenerateWaveException) {
 			// todo - handle
-		}
+		}*/
 	}
 
 	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {
