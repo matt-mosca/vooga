@@ -40,21 +40,23 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	}
 
 	@Override
-	public synchronized Update update() {
+	public Update update() {
+		System.out.println("Requesting update");
 		writeRequestBytes(
 				ClientMessage.newBuilder().setPerformUpdate(PerformUpdate.getDefaultInstance()).build().toByteArray());
+		System.out.println("Made update request!");
 		return handleUpdateResponse(pollFromMessageQueue());
 	}
 
 	@Override
-	public synchronized void pause() {
+	public void pause() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setPauseGame(PauseGame.getDefaultInstance()).build().toByteArray());
 		handleUpdateResponse(pollFromMessageQueue());
 	}
 
 	@Override
-	public synchronized void resume() {
+	public void resume() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setResumeGame(ResumeGame.getDefaultInstance()).build().toByteArray());
 		handleUpdateResponse(pollFromMessageQueue());
@@ -71,7 +73,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	}
 
 	@Override
-	public synchronized boolean isReadyForNextLevel() {
+	public boolean isReadyForNextLevel() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setCheckReadyForNextLevel(CheckReadyForNextLevel.getDefaultInstance()).build().toByteArray());
 		return handleCheckReadyResponse(pollFromMessageQueue());
@@ -99,7 +101,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	}
 
 	@Override
-	public synchronized void upgradeElement(int elementId) throws IllegalArgumentException {
+	public void upgradeElement(int elementId) throws IllegalArgumentException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setUpgradeElement(UpgradeElement.newBuilder().setSpriteId(elementId).build()).build().toByteArray());
 		pollFromMessageQueue();

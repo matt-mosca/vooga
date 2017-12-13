@@ -26,6 +26,7 @@ import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.GameRooms;
 import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Notification;
 import networking.protocol.PlayerServer.NumberOfLevels;
 import networking.protocol.PlayerServer.PlayerExited;
@@ -242,10 +243,12 @@ class MultiPlayerController {
 			throws ReflectiveOperationException {
 		PlayController playController = getPlayEngineForClient(clientId);
 		PlaceElement placeElementRequest = clientMessage.getPlaceElement();
-		return serverMessageBuilder
-				.setElementPlaced(playController.placeElement(placeElementRequest.getElementName(),
-						new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord())))
-				.build().toByteArray();
+		NewSprite placedElement = playController.placeElement(placeElementRequest.getElementName(),
+				new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord()));
+		// Broadcast
+		messageQueue.add(ServerMessage.newBuilder()
+				.setNotification(Notification.newBuilder().setElementPlaced(placedElement).build()).build());
+		return serverMessageBuilder.setElementPlaced(placedElement).build().toByteArray();
 	}
 
 	byte[] upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)

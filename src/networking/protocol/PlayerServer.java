@@ -8046,6 +8046,19 @@ public final class PlayerServer {
      * <code>optional .LevelInitialized levelInitialized = 3;</code>
      */
     PlayerServer.LevelInitializedOrBuilder getLevelInitializedOrBuilder();
+
+    /**
+     * <code>optional .NewSprite elementPlaced = 4;</code>
+     */
+    boolean hasElementPlaced();
+    /**
+     * <code>optional .NewSprite elementPlaced = 4;</code>
+     */
+    PlayerServer.NewSprite getElementPlaced();
+    /**
+     * <code>optional .NewSprite elementPlaced = 4;</code>
+     */
+    PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder();
   }
   /**
    * Protobuf type {@code Notification}
@@ -8126,6 +8139,19 @@ public final class PlayerServer {
                 levelInitialized_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000004;
+              break;
+            }
+            case 34: {
+              PlayerServer.NewSprite.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                subBuilder = elementPlaced_.toBuilder();
+              }
+              elementPlaced_ = input.readMessage(PlayerServer.NewSprite.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(elementPlaced_);
+                elementPlaced_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000008;
               break;
             }
           }
@@ -8216,6 +8242,27 @@ public final class PlayerServer {
       return levelInitialized_ == null ? PlayerServer.LevelInitialized.getDefaultInstance() : levelInitialized_;
     }
 
+    public static final int ELEMENTPLACED_FIELD_NUMBER = 4;
+    private PlayerServer.NewSprite elementPlaced_;
+    /**
+     * <code>optional .NewSprite elementPlaced = 4;</code>
+     */
+    public boolean hasElementPlaced() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .NewSprite elementPlaced = 4;</code>
+     */
+    public PlayerServer.NewSprite getElementPlaced() {
+      return elementPlaced_ == null ? PlayerServer.NewSprite.getDefaultInstance() : elementPlaced_;
+    }
+    /**
+     * <code>optional .NewSprite elementPlaced = 4;</code>
+     */
+    public PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder() {
+      return elementPlaced_ == null ? PlayerServer.NewSprite.getDefaultInstance() : elementPlaced_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -8240,6 +8287,12 @@ public final class PlayerServer {
           return false;
         }
       }
+      if (hasElementPlaced()) {
+        if (!getElementPlaced().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -8254,6 +8307,9 @@ public final class PlayerServer {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeMessage(3, getLevelInitialized());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(4, getElementPlaced());
       }
       unknownFields.writeTo(output);
     }
@@ -8274,6 +8330,10 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, getLevelInitialized());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getElementPlaced());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8307,6 +8367,11 @@ public final class PlayerServer {
         result = result && getLevelInitialized()
             .equals(other.getLevelInitialized());
       }
+      result = result && (hasElementPlaced() == other.hasElementPlaced());
+      if (hasElementPlaced()) {
+        result = result && getElementPlaced()
+            .equals(other.getElementPlaced());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -8329,6 +8394,10 @@ public final class PlayerServer {
       if (hasLevelInitialized()) {
         hash = (37 * hash) + LEVELINITIALIZED_FIELD_NUMBER;
         hash = (53 * hash) + getLevelInitialized().hashCode();
+      }
+      if (hasElementPlaced()) {
+        hash = (37 * hash) + ELEMENTPLACED_FIELD_NUMBER;
+        hash = (53 * hash) + getElementPlaced().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -8447,6 +8516,7 @@ public final class PlayerServer {
           getPlayerJoinedFieldBuilder();
           getPlayerExitedFieldBuilder();
           getLevelInitializedFieldBuilder();
+          getElementPlacedFieldBuilder();
         }
       }
       public Builder clear() {
@@ -8469,6 +8539,12 @@ public final class PlayerServer {
           levelInitializedBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000004);
+        if (elementPlacedBuilder_ == null) {
+          elementPlaced_ = null;
+        } else {
+          elementPlacedBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -8516,6 +8592,14 @@ public final class PlayerServer {
           result.levelInitialized_ = levelInitialized_;
         } else {
           result.levelInitialized_ = levelInitializedBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        if (elementPlacedBuilder_ == null) {
+          result.elementPlaced_ = elementPlaced_;
+        } else {
+          result.elementPlaced_ = elementPlacedBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -8568,6 +8652,9 @@ public final class PlayerServer {
         if (other.hasLevelInitialized()) {
           mergeLevelInitialized(other.getLevelInitialized());
         }
+        if (other.hasElementPlaced()) {
+          mergeElementPlaced(other.getElementPlaced());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -8586,6 +8673,11 @@ public final class PlayerServer {
         }
         if (hasLevelInitialized()) {
           if (!getLevelInitialized().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasElementPlaced()) {
+          if (!getElementPlaced().isInitialized()) {
             return false;
           }
         }
@@ -8963,6 +9055,124 @@ public final class PlayerServer {
           levelInitialized_ = null;
         }
         return levelInitializedBuilder_;
+      }
+
+      private PlayerServer.NewSprite elementPlaced_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.NewSprite, PlayerServer.NewSprite.Builder, PlayerServer.NewSpriteOrBuilder> elementPlacedBuilder_;
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      public boolean hasElementPlaced() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      public PlayerServer.NewSprite getElementPlaced() {
+        if (elementPlacedBuilder_ == null) {
+          return elementPlaced_ == null ? PlayerServer.NewSprite.getDefaultInstance() : elementPlaced_;
+        } else {
+          return elementPlacedBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      public Builder setElementPlaced(PlayerServer.NewSprite value) {
+        if (elementPlacedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          elementPlaced_ = value;
+          onChanged();
+        } else {
+          elementPlacedBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      public Builder setElementPlaced(
+          PlayerServer.NewSprite.Builder builderForValue) {
+        if (elementPlacedBuilder_ == null) {
+          elementPlaced_ = builderForValue.build();
+          onChanged();
+        } else {
+          elementPlacedBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      public Builder mergeElementPlaced(PlayerServer.NewSprite value) {
+        if (elementPlacedBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              elementPlaced_ != null &&
+              elementPlaced_ != PlayerServer.NewSprite.getDefaultInstance()) {
+            elementPlaced_ =
+              PlayerServer.NewSprite.newBuilder(elementPlaced_).mergeFrom(value).buildPartial();
+          } else {
+            elementPlaced_ = value;
+          }
+          onChanged();
+        } else {
+          elementPlacedBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      public Builder clearElementPlaced() {
+        if (elementPlacedBuilder_ == null) {
+          elementPlaced_ = null;
+          onChanged();
+        } else {
+          elementPlacedBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      public PlayerServer.NewSprite.Builder getElementPlacedBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getElementPlacedFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      public PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder() {
+        if (elementPlacedBuilder_ != null) {
+          return elementPlacedBuilder_.getMessageOrBuilder();
+        } else {
+          return elementPlaced_ == null ?
+              PlayerServer.NewSprite.getDefaultInstance() : elementPlaced_;
+        }
+      }
+      /**
+       * <code>optional .NewSprite elementPlaced = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.NewSprite, PlayerServer.NewSprite.Builder, PlayerServer.NewSpriteOrBuilder> 
+          getElementPlacedFieldBuilder() {
+        if (elementPlacedBuilder_ == null) {
+          elementPlacedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.NewSprite, PlayerServer.NewSprite.Builder, PlayerServer.NewSpriteOrBuilder>(
+                  getElementPlaced(),
+                  getParentForChildren(),
+                  isClean());
+          elementPlaced_ = null;
+        }
+        return elementPlacedBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -23905,42 +24115,43 @@ public final class PlayerServer {
       "\t\022\r\n\005error\030\002 \001(\t\"4\n\022GameRoomJoinStatus\022\017" +
       "\n\007success\030\001 \002(\010\022\r\n\005error\030\002 \001(\t\"N\n\024GameRo" +
       "omLaunchStatus\022\'\n\014initialState\030\001 \001(\0132\021.L" +
-      "evelInitialized\022\r\n\005error\030\002 \001(\t\"\205\001\n\014Notif" +
+      "evelInitialized\022\r\n\005error\030\002 \001(\t\"\250\001\n\014Notif" +
       "ication\022#\n\014playerJoined\030\001 \001(\0132\r.PlayerJo" +
       "ined\022#\n\014playerExited\030\002 \001(\0132\r.PlayerExite" +
       "d\022+\n\020levelInitialized\030\003 \001(\0132\021.LevelIniti" +
-      "alized\" \n\014PlayerJoined\022\020\n\010userName\030\001 \002(\t" +
-      "\" \n\014PlayerExited\022\020\n\010userName\030\001 \002(\t\"\036\n\tGa" +
-      "meRooms\022\021\n\troomNames\030\001 \003(\t\"/\n\013PlayerName",
-      "s\022\021\n\tuserNames\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"$\n\021R" +
-      "eadyForNextLevel\022\017\n\007isReady\030\001 \002(\010\"v\n\020Lev" +
-      "elInitialized\022\035\n\tinventory\030\001 \001(\0132\n.Inven" +
-      "tory\022!\n\020spritesAndStatus\030\002 \001(\0132\007.Update\022" +
-      "\021\n\tnumLevels\030\003 \001(\005\022\r\n\005error\030\004 \001(\t\"\310\001\n\006Up" +
-      "date\022\036\n\nnewSprites\030\001 \003(\0132\n.NewSprite\022$\n\r" +
-      "spriteUpdates\030\002 \003(\0132\r.SpriteUpdate\022(\n\017sp" +
-      "riteDeletions\030\003 \003(\0132\017.SpriteDeletion\022$\n\r" +
-      "statusUpdates\030\004 \001(\0132\r.StatusUpdate\022(\n\017re" +
-      "sourceUpdates\030\005 \001(\0132\017.ResourceUpdate\"\207\001\n",
-      "\tNewSprite\022\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL" +
-      "\030\002 \002(\t\022\023\n\013imageHeight\030\003 \002(\001\022\022\n\nimageWidt" +
-      "h\030\004 \002(\001\022\016\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\022" +
-      "\r\n\005error\030\007 \001(\t\"<\n\014SpriteUpdate\022\020\n\010sprite" +
-      "Id\030\001 \002(\005\022\014\n\004newX\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016" +
-      "SpriteDeletion\022\020\n\010spriteId\030\001 \002(\005\"i\n\014Stat" +
-      "usUpdate\022\024\n\014levelCleared\030\001 \002(\010\022\r\n\005isWon\030" +
-      "\002 \002(\010\022\016\n\006isLost\030\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010\022\024\n" +
-      "\014currentLevel\030\005 \002(\005\".\n\016ResourceUpdate\022\034\n" +
-      "\tresources\030\001 \003(\0132\t.Resource\"-\n\tInventory",
-      "\022\021\n\ttemplates\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"]\n\022Te" +
-      "mplateProperties\022\023\n\013elementName\030\001 \002(\t\022#\n" +
-      "\010property\030\002 \003(\0132\021.TemplateProperty\022\r\n\005er" +
-      "ror\030\003 \001(\t\"K\n\013ElementCost\022\023\n\013elementName\030" +
-      "\001 \002(\t\022\030\n\005costs\030\002 \003(\0132\t.Resource\022\r\n\005error" +
-      "\030\003 \001(\t\"2\n\016NumberOfLevels\022\021\n\tnumLevels\030\001 " +
-      "\002(\005\022\r\n\005error\030\002 \001(\t\"/\n\020TemplateProperty\022\014" +
-      "\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"(\n\010Resource\022" +
-      "\014\n\004name\030\001 \002(\t\022\016\n\006amount\030\002 \002(\001"
+      "alized\022!\n\relementPlaced\030\004 \001(\0132\n.NewSprit" +
+      "e\" \n\014PlayerJoined\022\020\n\010userName\030\001 \002(\t\" \n\014P" +
+      "layerExited\022\020\n\010userName\030\001 \002(\t\"\036\n\tGameRoo",
+      "ms\022\021\n\troomNames\030\001 \003(\t\"/\n\013PlayerNames\022\021\n\t" +
+      "userNames\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"$\n\021ReadyF" +
+      "orNextLevel\022\017\n\007isReady\030\001 \002(\010\"v\n\020LevelIni" +
+      "tialized\022\035\n\tinventory\030\001 \001(\0132\n.Inventory\022" +
+      "!\n\020spritesAndStatus\030\002 \001(\0132\007.Update\022\021\n\tnu" +
+      "mLevels\030\003 \001(\005\022\r\n\005error\030\004 \001(\t\"\310\001\n\006Update\022" +
+      "\036\n\nnewSprites\030\001 \003(\0132\n.NewSprite\022$\n\rsprit" +
+      "eUpdates\030\002 \003(\0132\r.SpriteUpdate\022(\n\017spriteD" +
+      "eletions\030\003 \003(\0132\017.SpriteDeletion\022$\n\rstatu" +
+      "sUpdates\030\004 \001(\0132\r.StatusUpdate\022(\n\017resourc",
+      "eUpdates\030\005 \001(\0132\017.ResourceUpdate\"\207\001\n\tNewS" +
+      "prite\022\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030\002 \002(" +
+      "\t\022\023\n\013imageHeight\030\003 \002(\001\022\022\n\nimageWidth\030\004 \002" +
+      "(\001\022\016\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\022\r\n\005er" +
+      "ror\030\007 \001(\t\"<\n\014SpriteUpdate\022\020\n\010spriteId\030\001 " +
+      "\002(\005\022\014\n\004newX\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016Sprit" +
+      "eDeletion\022\020\n\010spriteId\030\001 \002(\005\"i\n\014StatusUpd" +
+      "ate\022\024\n\014levelCleared\030\001 \002(\010\022\r\n\005isWon\030\002 \002(\010" +
+      "\022\016\n\006isLost\030\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010\022\024\n\014curr" +
+      "entLevel\030\005 \002(\005\".\n\016ResourceUpdate\022\034\n\treso",
+      "urces\030\001 \003(\0132\t.Resource\"-\n\tInventory\022\021\n\tt" +
+      "emplates\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"]\n\022Templat" +
+      "eProperties\022\023\n\013elementName\030\001 \002(\t\022#\n\010prop" +
+      "erty\030\002 \003(\0132\021.TemplateProperty\022\r\n\005error\030\003" +
+      " \001(\t\"K\n\013ElementCost\022\023\n\013elementName\030\001 \002(\t" +
+      "\022\030\n\005costs\030\002 \003(\0132\t.Resource\022\r\n\005error\030\003 \001(" +
+      "\t\"2\n\016NumberOfLevels\022\021\n\tnumLevels\030\001 \002(\005\022\r" +
+      "\n\005error\030\002 \001(\t\"/\n\020TemplateProperty\022\014\n\004nam" +
+      "e\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"(\n\010Resource\022\014\n\004na" +
+      "me\030\001 \002(\t\022\016\n\006amount\030\002 \002(\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -23995,7 +24206,7 @@ public final class PlayerServer {
     internal_static_Notification_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Notification_descriptor,
-        new java.lang.String[] { "PlayerJoined", "PlayerExited", "LevelInitialized", });
+        new java.lang.String[] { "PlayerJoined", "PlayerExited", "LevelInitialized", "ElementPlaced", });
     internal_static_PlayerJoined_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_PlayerJoined_fieldAccessorTable = new

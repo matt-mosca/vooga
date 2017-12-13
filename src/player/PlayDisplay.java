@@ -141,6 +141,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	@Override
 	public void startDisplay() {
 		myInventoryToolBar.initializeInventory();
+		System.out.println("Sucessfully initialized inventory");
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
@@ -218,6 +219,15 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 	}
 
+	// Has to be at least package-friendly as it is called by notification handler
+	void receivePlacedElement(NewSprite placedElement) {
+		int id = clientMessageUtils.addNewSpriteToDisplay(placedElement);
+		ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
+		myPlayArea.getChildren().add(imageView);
+		idToTemplate.put(id, placeable.getElementName());
+		attachEventHandlers(imageView, id);
+	}
+	
 	protected void reloadGame() throws IOException {
 		clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
 	}
@@ -358,11 +368,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				try {
 					System.out.println("Placing element");
 					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
-					int id = clientMessageUtils.addNewSpriteToDisplay(newSprite);
-					ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
-					myPlayArea.getChildren().add(imageView);
-					idToTemplate.put(id, placeable.getElementName());
-					attachEventHandlers(imageView, id);
+					receivePlacedElement(newSprite);
 				} catch (ReflectiveOperationException failedToPlaceElementException) {
 					// todo - handle
 				}
