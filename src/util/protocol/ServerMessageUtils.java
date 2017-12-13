@@ -118,6 +118,10 @@ public class ServerMessageUtils {
 				.setNewY(spriteToUpdate.getY()).build();
 	}
 
+	public SpriteDeletion packageDeletedSprite(GameElement spriteToDelete, int spriteId) {
+		return SpriteDeletion.newBuilder().setSpriteId(spriteId).build();
+	}
+	
 	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay,
 			int currentLevel) {
 		// Just always send status update for now
@@ -142,8 +146,5 @@ public class ServerMessageUtils {
 				.collect(Collectors.toList());
 	}
 
-	private SpriteDeletion packageDeletedSprite(GameElement spriteToDelete, int spriteId) {
-		return SpriteDeletion.newBuilder().setSpriteId(spriteId).build();
-	}
 
 }

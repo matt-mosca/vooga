@@ -20,9 +20,10 @@ message ServerMessage {
 	repeated ElementCost elementCosts = 13;
 	optional NewSprite elementPlaced = 14;
 	optional SpriteUpdate elementMoved = 15;
-	repeated NewSprite levelSprites = 16;
-	optional NumberOfLevels numLevels = 17;
-	optional string error = 18;
+	optional SpriteDeletion elementDeleted = 16;
+	repeated NewSprite levelSprites = 17;
+	optional NumberOfLevels numLevels = 18;
+	optional string error = 19;
 }
 
 /*
@@ -58,12 +59,15 @@ message GameRoomLaunchStatus {
 	optional string error = 2; // remove?
 }
 
+// Consider batching?
 message Notification {
 	optional PlayerJoined playerJoined = 1;
 	optional PlayerExited playerExited = 2;
 	optional LevelInitialized levelInitialized = 3;
+	// Could have batched the following 3 by using Update instead ...
 	optional NewSprite elementPlaced = 4;
 	optional SpriteUpdate elementMoved = 5;
+	optional SpriteDeletion elementDeleted = 6;
 }
 
 // Consider batching?

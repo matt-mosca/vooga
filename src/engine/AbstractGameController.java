@@ -8,6 +8,7 @@ import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.Inventory;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.TemplateProperties;
 import engine.game_elements.GameElementUpgrader;
@@ -209,6 +210,15 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getServerMessageUtils().packageUpdatedSprite(gameElement, elementId);
 	}
 
+    @Override
+    public SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException {
+        GameElement removedGameElement = getSpriteIdMap().remove(elementId);
+        if (removedGameElement == null) {
+        		throw new IllegalArgumentException();
+        }
+        getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
+        return getServerMessageUtils().packageDeletedSprite(removedGameElement, elementId);
+    }
 
 	@Override
 	public int getCurrentLevel() {
@@ -296,6 +306,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	public int getLevelHealth(int level) {
 		return getLevelHealths().get(level);
 	}
+	
+	
 
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)
 			throws ReflectiveOperationException {

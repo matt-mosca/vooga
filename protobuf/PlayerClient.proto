@@ -21,11 +21,12 @@ message ClientMessage {
 	optional GetElementCosts getElementCosts = 14;
 	optional PlaceElement placeElement = 15;
 	optional MoveElement moveElement = 16;
-	optional UpgradeElement upgradeElement = 17; // Has no corresponding response? Client doesn't check if upgrade succeeded
-	optional CheckReadyForNextLevel checkReadyForNextLevel = 18;
-	optional LoadLevel loadLevel = 19;
-	optional GetLevelElements getLevelElements = 20;
-	optional GetNumberOfLevels getNumLevels = 21;
+	optional DeleteElement deleteElement = 17;
+	optional UpgradeElement upgradeElement = 18; // Has no corresponding response? Client doesn't check if upgrade succeeded
+	optional CheckReadyForNextLevel checkReadyForNextLevel = 19;
+	optional LoadLevel loadLevel = 20;
+	optional GetLevelElements getLevelElements = 21;
+	optional GetNumberOfLevels getNumLevels = 22;
 }
 
 /*
@@ -94,6 +95,10 @@ message MoveElement {
 	required int32 elementId = 1;
 	required double newXCoord = 2;
 	required double newYCoord = 3;
+}
+
+message DeleteElement {
+	required int32 elementId = 1;
 }
 
 message UpgradeElement {

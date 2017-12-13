@@ -235,52 +235,65 @@ public final class PlayerServer {
     PlayerServer.SpriteUpdateOrBuilder getElementMovedOrBuilder();
 
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+     */
+    boolean hasElementDeleted();
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+     */
+    PlayerServer.SpriteDeletion getElementDeleted();
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+     */
+    PlayerServer.SpriteDeletionOrBuilder getElementDeletedOrBuilder();
+
+    /**
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     java.util.List<PlayerServer.NewSprite> 
         getLevelSpritesList();
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     PlayerServer.NewSprite getLevelSprites(int index);
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     int getLevelSpritesCount();
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     java.util.List<? extends PlayerServer.NewSpriteOrBuilder> 
         getLevelSpritesOrBuilderList();
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     PlayerServer.NewSpriteOrBuilder getLevelSpritesOrBuilder(
         int index);
 
     /**
-     * <code>optional .NumberOfLevels numLevels = 17;</code>
+     * <code>optional .NumberOfLevels numLevels = 18;</code>
      */
     boolean hasNumLevels();
     /**
-     * <code>optional .NumberOfLevels numLevels = 17;</code>
+     * <code>optional .NumberOfLevels numLevels = 18;</code>
      */
     PlayerServer.NumberOfLevels getNumLevels();
     /**
-     * <code>optional .NumberOfLevels numLevels = 17;</code>
+     * <code>optional .NumberOfLevels numLevels = 18;</code>
      */
     PlayerServer.NumberOfLevelsOrBuilder getNumLevelsOrBuilder();
 
     /**
-     * <code>optional string error = 18;</code>
+     * <code>optional string error = 19;</code>
      */
     boolean hasError();
     /**
-     * <code>optional string error = 18;</code>
+     * <code>optional string error = 19;</code>
      */
     java.lang.String getError();
     /**
-     * <code>optional string error = 18;</code>
+     * <code>optional string error = 19;</code>
      */
     com.google.protobuf.ByteString
         getErrorBytes();
@@ -519,17 +532,30 @@ public final class PlayerServer {
               break;
             }
             case 130: {
-              if (!((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
+              PlayerServer.SpriteDeletion.Builder subBuilder = null;
+              if (((bitField0_ & 0x00002000) == 0x00002000)) {
+                subBuilder = elementDeleted_.toBuilder();
+              }
+              elementDeleted_ = input.readMessage(PlayerServer.SpriteDeletion.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(elementDeleted_);
+                elementDeleted_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00002000;
+              break;
+            }
+            case 138: {
+              if (!((mutable_bitField0_ & 0x00010000) == 0x00010000)) {
                 levelSprites_ = new java.util.ArrayList<PlayerServer.NewSprite>();
-                mutable_bitField0_ |= 0x00008000;
+                mutable_bitField0_ |= 0x00010000;
               }
               levelSprites_.add(
                   input.readMessage(PlayerServer.NewSprite.PARSER, extensionRegistry));
               break;
             }
-            case 138: {
+            case 146: {
               PlayerServer.NumberOfLevels.Builder subBuilder = null;
-              if (((bitField0_ & 0x00002000) == 0x00002000)) {
+              if (((bitField0_ & 0x00004000) == 0x00004000)) {
                 subBuilder = numLevels_.toBuilder();
               }
               numLevels_ = input.readMessage(PlayerServer.NumberOfLevels.PARSER, extensionRegistry);
@@ -537,12 +563,12 @@ public final class PlayerServer {
                 subBuilder.mergeFrom(numLevels_);
                 numLevels_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00002000;
+              bitField0_ |= 0x00004000;
               break;
             }
-            case 146: {
+            case 154: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00004000;
+              bitField0_ |= 0x00008000;
               error_ = bs;
               break;
             }
@@ -560,7 +586,7 @@ public final class PlayerServer {
         if (((mutable_bitField0_ & 0x00001000) == 0x00001000)) {
           elementCosts_ = java.util.Collections.unmodifiableList(elementCosts_);
         }
-        if (((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
+        if (((mutable_bitField0_ & 0x00010000) == 0x00010000)) {
           levelSprites_ = java.util.Collections.unmodifiableList(levelSprites_);
         }
         this.unknownFields = unknownFields.build();
@@ -923,72 +949,93 @@ public final class PlayerServer {
       return elementMoved_ == null ? PlayerServer.SpriteUpdate.getDefaultInstance() : elementMoved_;
     }
 
-    public static final int LEVELSPRITES_FIELD_NUMBER = 16;
+    public static final int ELEMENTDELETED_FIELD_NUMBER = 16;
+    private PlayerServer.SpriteDeletion elementDeleted_;
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+     */
+    public boolean hasElementDeleted() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+     */
+    public PlayerServer.SpriteDeletion getElementDeleted() {
+      return elementDeleted_ == null ? PlayerServer.SpriteDeletion.getDefaultInstance() : elementDeleted_;
+    }
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+     */
+    public PlayerServer.SpriteDeletionOrBuilder getElementDeletedOrBuilder() {
+      return elementDeleted_ == null ? PlayerServer.SpriteDeletion.getDefaultInstance() : elementDeleted_;
+    }
+
+    public static final int LEVELSPRITES_FIELD_NUMBER = 17;
     private java.util.List<PlayerServer.NewSprite> levelSprites_;
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     public java.util.List<PlayerServer.NewSprite> getLevelSpritesList() {
       return levelSprites_;
     }
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     public java.util.List<? extends PlayerServer.NewSpriteOrBuilder> 
         getLevelSpritesOrBuilderList() {
       return levelSprites_;
     }
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     public int getLevelSpritesCount() {
       return levelSprites_.size();
     }
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     public PlayerServer.NewSprite getLevelSprites(int index) {
       return levelSprites_.get(index);
     }
     /**
-     * <code>repeated .NewSprite levelSprites = 16;</code>
+     * <code>repeated .NewSprite levelSprites = 17;</code>
      */
     public PlayerServer.NewSpriteOrBuilder getLevelSpritesOrBuilder(
         int index) {
       return levelSprites_.get(index);
     }
 
-    public static final int NUMLEVELS_FIELD_NUMBER = 17;
+    public static final int NUMLEVELS_FIELD_NUMBER = 18;
     private PlayerServer.NumberOfLevels numLevels_;
     /**
-     * <code>optional .NumberOfLevels numLevels = 17;</code>
+     * <code>optional .NumberOfLevels numLevels = 18;</code>
      */
     public boolean hasNumLevels() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
+      return ((bitField0_ & 0x00004000) == 0x00004000);
     }
     /**
-     * <code>optional .NumberOfLevels numLevels = 17;</code>
+     * <code>optional .NumberOfLevels numLevels = 18;</code>
      */
     public PlayerServer.NumberOfLevels getNumLevels() {
       return numLevels_ == null ? PlayerServer.NumberOfLevels.getDefaultInstance() : numLevels_;
     }
     /**
-     * <code>optional .NumberOfLevels numLevels = 17;</code>
+     * <code>optional .NumberOfLevels numLevels = 18;</code>
      */
     public PlayerServer.NumberOfLevelsOrBuilder getNumLevelsOrBuilder() {
       return numLevels_ == null ? PlayerServer.NumberOfLevels.getDefaultInstance() : numLevels_;
     }
 
-    public static final int ERROR_FIELD_NUMBER = 18;
+    public static final int ERROR_FIELD_NUMBER = 19;
     private volatile java.lang.Object error_;
     /**
-     * <code>optional string error = 18;</code>
+     * <code>optional string error = 19;</code>
      */
     public boolean hasError() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
+      return ((bitField0_ & 0x00008000) == 0x00008000);
     }
     /**
-     * <code>optional string error = 18;</code>
+     * <code>optional string error = 19;</code>
      */
     public java.lang.String getError() {
       java.lang.Object ref = error_;
@@ -1005,7 +1052,7 @@ public final class PlayerServer {
       }
     }
     /**
-     * <code>optional string error = 18;</code>
+     * <code>optional string error = 19;</code>
      */
     public com.google.protobuf.ByteString
         getErrorBytes() {
@@ -1093,6 +1140,12 @@ public final class PlayerServer {
           return false;
         }
       }
+      if (hasElementDeleted()) {
+        if (!getElementDeleted().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       for (int i = 0; i < getLevelSpritesCount(); i++) {
         if (!getLevelSprites(i).isInitialized()) {
           memoizedIsInitialized = 0;
@@ -1156,14 +1209,17 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         output.writeMessage(15, getElementMoved());
       }
-      for (int i = 0; i < levelSprites_.size(); i++) {
-        output.writeMessage(16, levelSprites_.get(i));
-      }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeMessage(17, getNumLevels());
+        output.writeMessage(16, getElementDeleted());
+      }
+      for (int i = 0; i < levelSprites_.size(); i++) {
+        output.writeMessage(17, levelSprites_.get(i));
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 18, error_);
+        output.writeMessage(18, getNumLevels());
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 19, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -1233,16 +1289,20 @@ public final class PlayerServer {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(15, getElementMoved());
       }
-      for (int i = 0; i < levelSprites_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(16, levelSprites_.get(i));
-      }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(17, getNumLevels());
+          .computeMessageSize(16, getElementDeleted());
+      }
+      for (int i = 0; i < levelSprites_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(17, levelSprites_.get(i));
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, error_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(18, getNumLevels());
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1330,6 +1390,11 @@ public final class PlayerServer {
         result = result && getElementMoved()
             .equals(other.getElementMoved());
       }
+      result = result && (hasElementDeleted() == other.hasElementDeleted());
+      if (hasElementDeleted()) {
+        result = result && getElementDeleted()
+            .equals(other.getElementDeleted());
+      }
       result = result && getLevelSpritesList()
           .equals(other.getLevelSpritesList());
       result = result && (hasNumLevels() == other.hasNumLevels());
@@ -1412,6 +1477,10 @@ public final class PlayerServer {
       if (hasElementMoved()) {
         hash = (37 * hash) + ELEMENTMOVED_FIELD_NUMBER;
         hash = (53 * hash) + getElementMoved().hashCode();
+      }
+      if (hasElementDeleted()) {
+        hash = (37 * hash) + ELEMENTDELETED_FIELD_NUMBER;
+        hash = (53 * hash) + getElementDeleted().hashCode();
       }
       if (getLevelSpritesCount() > 0) {
         hash = (37 * hash) + LEVELSPRITES_FIELD_NUMBER;
@@ -1554,6 +1623,7 @@ public final class PlayerServer {
           getElementCostsFieldBuilder();
           getElementPlacedFieldBuilder();
           getElementMovedFieldBuilder();
+          getElementDeletedFieldBuilder();
           getLevelSpritesFieldBuilder();
           getNumLevelsFieldBuilder();
         }
@@ -1650,9 +1720,15 @@ public final class PlayerServer {
           elementMovedBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00004000);
+        if (elementDeletedBuilder_ == null) {
+          elementDeleted_ = null;
+        } else {
+          elementDeletedBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00008000);
         if (levelSpritesBuilder_ == null) {
           levelSprites_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00008000);
+          bitField0_ = (bitField0_ & ~0x00010000);
         } else {
           levelSpritesBuilder_.clear();
         }
@@ -1661,9 +1737,9 @@ public final class PlayerServer {
         } else {
           numLevelsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00010000);
-        error_ = "";
         bitField0_ = (bitField0_ & ~0x00020000);
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00040000);
         return this;
       }
 
@@ -1810,25 +1886,33 @@ public final class PlayerServer {
         } else {
           result.elementMoved_ = elementMovedBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        if (elementDeletedBuilder_ == null) {
+          result.elementDeleted_ = elementDeleted_;
+        } else {
+          result.elementDeleted_ = elementDeletedBuilder_.build();
+        }
         if (levelSpritesBuilder_ == null) {
-          if (((bitField0_ & 0x00008000) == 0x00008000)) {
+          if (((bitField0_ & 0x00010000) == 0x00010000)) {
             levelSprites_ = java.util.Collections.unmodifiableList(levelSprites_);
-            bitField0_ = (bitField0_ & ~0x00008000);
+            bitField0_ = (bitField0_ & ~0x00010000);
           }
           result.levelSprites_ = levelSprites_;
         } else {
           result.levelSprites_ = levelSpritesBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
-          to_bitField0_ |= 0x00002000;
+        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+          to_bitField0_ |= 0x00004000;
         }
         if (numLevelsBuilder_ == null) {
           result.numLevels_ = numLevels_;
         } else {
           result.numLevels_ = numLevelsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
-          to_bitField0_ |= 0x00004000;
+        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+          to_bitField0_ |= 0x00008000;
         }
         result.error_ = error_;
         result.bitField0_ = to_bitField0_;
@@ -1964,11 +2048,14 @@ public final class PlayerServer {
         if (other.hasElementMoved()) {
           mergeElementMoved(other.getElementMoved());
         }
+        if (other.hasElementDeleted()) {
+          mergeElementDeleted(other.getElementDeleted());
+        }
         if (levelSpritesBuilder_ == null) {
           if (!other.levelSprites_.isEmpty()) {
             if (levelSprites_.isEmpty()) {
               levelSprites_ = other.levelSprites_;
-              bitField0_ = (bitField0_ & ~0x00008000);
+              bitField0_ = (bitField0_ & ~0x00010000);
             } else {
               ensureLevelSpritesIsMutable();
               levelSprites_.addAll(other.levelSprites_);
@@ -1981,7 +2068,7 @@ public final class PlayerServer {
               levelSpritesBuilder_.dispose();
               levelSpritesBuilder_ = null;
               levelSprites_ = other.levelSprites_;
-              bitField0_ = (bitField0_ & ~0x00008000);
+              bitField0_ = (bitField0_ & ~0x00010000);
               levelSpritesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getLevelSpritesFieldBuilder() : null;
@@ -1994,7 +2081,7 @@ public final class PlayerServer {
           mergeNumLevels(other.getNumLevels());
         }
         if (other.hasError()) {
-          bitField0_ |= 0x00020000;
+          bitField0_ |= 0x00040000;
           error_ = other.error_;
           onChanged();
         }
@@ -2056,6 +2143,11 @@ public final class PlayerServer {
         }
         if (hasElementMoved()) {
           if (!getElementMoved().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasElementDeleted()) {
+          if (!getElementDeleted().isInitialized()) {
             return false;
           }
         }
@@ -4105,12 +4197,130 @@ public final class PlayerServer {
         return elementMovedBuilder_;
       }
 
+      private PlayerServer.SpriteDeletion elementDeleted_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.SpriteDeletion, PlayerServer.SpriteDeletion.Builder, PlayerServer.SpriteDeletionOrBuilder> elementDeletedBuilder_;
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      public boolean hasElementDeleted() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      public PlayerServer.SpriteDeletion getElementDeleted() {
+        if (elementDeletedBuilder_ == null) {
+          return elementDeleted_ == null ? PlayerServer.SpriteDeletion.getDefaultInstance() : elementDeleted_;
+        } else {
+          return elementDeletedBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      public Builder setElementDeleted(PlayerServer.SpriteDeletion value) {
+        if (elementDeletedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          elementDeleted_ = value;
+          onChanged();
+        } else {
+          elementDeletedBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      public Builder setElementDeleted(
+          PlayerServer.SpriteDeletion.Builder builderForValue) {
+        if (elementDeletedBuilder_ == null) {
+          elementDeleted_ = builderForValue.build();
+          onChanged();
+        } else {
+          elementDeletedBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      public Builder mergeElementDeleted(PlayerServer.SpriteDeletion value) {
+        if (elementDeletedBuilder_ == null) {
+          if (((bitField0_ & 0x00008000) == 0x00008000) &&
+              elementDeleted_ != null &&
+              elementDeleted_ != PlayerServer.SpriteDeletion.getDefaultInstance()) {
+            elementDeleted_ =
+              PlayerServer.SpriteDeletion.newBuilder(elementDeleted_).mergeFrom(value).buildPartial();
+          } else {
+            elementDeleted_ = value;
+          }
+          onChanged();
+        } else {
+          elementDeletedBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      public Builder clearElementDeleted() {
+        if (elementDeletedBuilder_ == null) {
+          elementDeleted_ = null;
+          onChanged();
+        } else {
+          elementDeletedBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00008000);
+        return this;
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      public PlayerServer.SpriteDeletion.Builder getElementDeletedBuilder() {
+        bitField0_ |= 0x00008000;
+        onChanged();
+        return getElementDeletedFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      public PlayerServer.SpriteDeletionOrBuilder getElementDeletedOrBuilder() {
+        if (elementDeletedBuilder_ != null) {
+          return elementDeletedBuilder_.getMessageOrBuilder();
+        } else {
+          return elementDeleted_ == null ?
+              PlayerServer.SpriteDeletion.getDefaultInstance() : elementDeleted_;
+        }
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 16;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.SpriteDeletion, PlayerServer.SpriteDeletion.Builder, PlayerServer.SpriteDeletionOrBuilder> 
+          getElementDeletedFieldBuilder() {
+        if (elementDeletedBuilder_ == null) {
+          elementDeletedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.SpriteDeletion, PlayerServer.SpriteDeletion.Builder, PlayerServer.SpriteDeletionOrBuilder>(
+                  getElementDeleted(),
+                  getParentForChildren(),
+                  isClean());
+          elementDeleted_ = null;
+        }
+        return elementDeletedBuilder_;
+      }
+
       private java.util.List<PlayerServer.NewSprite> levelSprites_ =
         java.util.Collections.emptyList();
       private void ensureLevelSpritesIsMutable() {
-        if (!((bitField0_ & 0x00008000) == 0x00008000)) {
+        if (!((bitField0_ & 0x00010000) == 0x00010000)) {
           levelSprites_ = new java.util.ArrayList<PlayerServer.NewSprite>(levelSprites_);
-          bitField0_ |= 0x00008000;
+          bitField0_ |= 0x00010000;
          }
       }
 
@@ -4118,7 +4328,7 @@ public final class PlayerServer {
           PlayerServer.NewSprite, PlayerServer.NewSprite.Builder, PlayerServer.NewSpriteOrBuilder> levelSpritesBuilder_;
 
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public java.util.List<PlayerServer.NewSprite> getLevelSpritesList() {
         if (levelSpritesBuilder_ == null) {
@@ -4128,7 +4338,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public int getLevelSpritesCount() {
         if (levelSpritesBuilder_ == null) {
@@ -4138,7 +4348,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public PlayerServer.NewSprite getLevelSprites(int index) {
         if (levelSpritesBuilder_ == null) {
@@ -4148,7 +4358,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder setLevelSprites(
           int index, PlayerServer.NewSprite value) {
@@ -4165,7 +4375,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder setLevelSprites(
           int index, PlayerServer.NewSprite.Builder builderForValue) {
@@ -4179,7 +4389,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder addLevelSprites(PlayerServer.NewSprite value) {
         if (levelSpritesBuilder_ == null) {
@@ -4195,7 +4405,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder addLevelSprites(
           int index, PlayerServer.NewSprite value) {
@@ -4212,7 +4422,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder addLevelSprites(
           PlayerServer.NewSprite.Builder builderForValue) {
@@ -4226,7 +4436,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder addLevelSprites(
           int index, PlayerServer.NewSprite.Builder builderForValue) {
@@ -4240,7 +4450,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder addAllLevelSprites(
           java.lang.Iterable<? extends PlayerServer.NewSprite> values) {
@@ -4255,12 +4465,12 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder clearLevelSprites() {
         if (levelSpritesBuilder_ == null) {
           levelSprites_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00008000);
+          bitField0_ = (bitField0_ & ~0x00010000);
           onChanged();
         } else {
           levelSpritesBuilder_.clear();
@@ -4268,7 +4478,7 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public Builder removeLevelSprites(int index) {
         if (levelSpritesBuilder_ == null) {
@@ -4281,14 +4491,14 @@ public final class PlayerServer {
         return this;
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public PlayerServer.NewSprite.Builder getLevelSpritesBuilder(
           int index) {
         return getLevelSpritesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public PlayerServer.NewSpriteOrBuilder getLevelSpritesOrBuilder(
           int index) {
@@ -4298,7 +4508,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public java.util.List<? extends PlayerServer.NewSpriteOrBuilder> 
            getLevelSpritesOrBuilderList() {
@@ -4309,14 +4519,14 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public PlayerServer.NewSprite.Builder addLevelSpritesBuilder() {
         return getLevelSpritesFieldBuilder().addBuilder(
             PlayerServer.NewSprite.getDefaultInstance());
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public PlayerServer.NewSprite.Builder addLevelSpritesBuilder(
           int index) {
@@ -4324,7 +4534,7 @@ public final class PlayerServer {
             index, PlayerServer.NewSprite.getDefaultInstance());
       }
       /**
-       * <code>repeated .NewSprite levelSprites = 16;</code>
+       * <code>repeated .NewSprite levelSprites = 17;</code>
        */
       public java.util.List<PlayerServer.NewSprite.Builder> 
            getLevelSpritesBuilderList() {
@@ -4337,7 +4547,7 @@ public final class PlayerServer {
           levelSpritesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               PlayerServer.NewSprite, PlayerServer.NewSprite.Builder, PlayerServer.NewSpriteOrBuilder>(
                   levelSprites_,
-                  ((bitField0_ & 0x00008000) == 0x00008000),
+                  ((bitField0_ & 0x00010000) == 0x00010000),
                   getParentForChildren(),
                   isClean());
           levelSprites_ = null;
@@ -4349,13 +4559,13 @@ public final class PlayerServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.NumberOfLevels, PlayerServer.NumberOfLevels.Builder, PlayerServer.NumberOfLevelsOrBuilder> numLevelsBuilder_;
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       public boolean hasNumLevels() {
-        return ((bitField0_ & 0x00010000) == 0x00010000);
+        return ((bitField0_ & 0x00020000) == 0x00020000);
       }
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       public PlayerServer.NumberOfLevels getNumLevels() {
         if (numLevelsBuilder_ == null) {
@@ -4365,7 +4575,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       public Builder setNumLevels(PlayerServer.NumberOfLevels value) {
         if (numLevelsBuilder_ == null) {
@@ -4377,11 +4587,11 @@ public final class PlayerServer {
         } else {
           numLevelsBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         return this;
       }
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       public Builder setNumLevels(
           PlayerServer.NumberOfLevels.Builder builderForValue) {
@@ -4391,15 +4601,15 @@ public final class PlayerServer {
         } else {
           numLevelsBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         return this;
       }
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       public Builder mergeNumLevels(PlayerServer.NumberOfLevels value) {
         if (numLevelsBuilder_ == null) {
-          if (((bitField0_ & 0x00010000) == 0x00010000) &&
+          if (((bitField0_ & 0x00020000) == 0x00020000) &&
               numLevels_ != null &&
               numLevels_ != PlayerServer.NumberOfLevels.getDefaultInstance()) {
             numLevels_ =
@@ -4411,11 +4621,11 @@ public final class PlayerServer {
         } else {
           numLevelsBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         return this;
       }
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       public Builder clearNumLevels() {
         if (numLevelsBuilder_ == null) {
@@ -4424,19 +4634,19 @@ public final class PlayerServer {
         } else {
           numLevelsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00010000);
+        bitField0_ = (bitField0_ & ~0x00020000);
         return this;
       }
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       public PlayerServer.NumberOfLevels.Builder getNumLevelsBuilder() {
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         onChanged();
         return getNumLevelsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       public PlayerServer.NumberOfLevelsOrBuilder getNumLevelsOrBuilder() {
         if (numLevelsBuilder_ != null) {
@@ -4447,7 +4657,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional .NumberOfLevels numLevels = 17;</code>
+       * <code>optional .NumberOfLevels numLevels = 18;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.NumberOfLevels, PlayerServer.NumberOfLevels.Builder, PlayerServer.NumberOfLevelsOrBuilder> 
@@ -4465,13 +4675,13 @@ public final class PlayerServer {
 
       private java.lang.Object error_ = "";
       /**
-       * <code>optional string error = 18;</code>
+       * <code>optional string error = 19;</code>
        */
       public boolean hasError() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
+        return ((bitField0_ & 0x00040000) == 0x00040000);
       }
       /**
-       * <code>optional string error = 18;</code>
+       * <code>optional string error = 19;</code>
        */
       public java.lang.String getError() {
         java.lang.Object ref = error_;
@@ -4488,7 +4698,7 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional string error = 18;</code>
+       * <code>optional string error = 19;</code>
        */
       public com.google.protobuf.ByteString
           getErrorBytes() {
@@ -4504,36 +4714,36 @@ public final class PlayerServer {
         }
       }
       /**
-       * <code>optional string error = 18;</code>
+       * <code>optional string error = 19;</code>
        */
       public Builder setError(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00020000;
+  bitField0_ |= 0x00040000;
         error_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string error = 18;</code>
+       * <code>optional string error = 19;</code>
        */
       public Builder clearError() {
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00040000);
         error_ = getDefaultInstance().getError();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string error = 18;</code>
+       * <code>optional string error = 19;</code>
        */
       public Builder setErrorBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00020000;
+  bitField0_ |= 0x00040000;
         error_ = value;
         onChanged();
         return this;
@@ -8258,14 +8468,26 @@ public final class PlayerServer {
     PlayerServer.LevelInitializedOrBuilder getLevelInitializedOrBuilder();
 
     /**
+     * <pre>
+     * Could have batched the following 3 by using Update instead ...
+     * </pre>
+     *
      * <code>optional .NewSprite elementPlaced = 4;</code>
      */
     boolean hasElementPlaced();
     /**
+     * <pre>
+     * Could have batched the following 3 by using Update instead ...
+     * </pre>
+     *
      * <code>optional .NewSprite elementPlaced = 4;</code>
      */
     PlayerServer.NewSprite getElementPlaced();
     /**
+     * <pre>
+     * Could have batched the following 3 by using Update instead ...
+     * </pre>
+     *
      * <code>optional .NewSprite elementPlaced = 4;</code>
      */
     PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder();
@@ -8282,8 +8504,25 @@ public final class PlayerServer {
      * <code>optional .SpriteUpdate elementMoved = 5;</code>
      */
     PlayerServer.SpriteUpdateOrBuilder getElementMovedOrBuilder();
+
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+     */
+    boolean hasElementDeleted();
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+     */
+    PlayerServer.SpriteDeletion getElementDeleted();
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+     */
+    PlayerServer.SpriteDeletionOrBuilder getElementDeletedOrBuilder();
   }
   /**
+   * <pre>
+   * Consider batching?
+   * </pre>
+   *
    * Protobuf type {@code Notification}
    */
   public  static final class Notification extends
@@ -8390,6 +8629,19 @@ public final class PlayerServer {
               bitField0_ |= 0x00000010;
               break;
             }
+            case 50: {
+              PlayerServer.SpriteDeletion.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                subBuilder = elementDeleted_.toBuilder();
+              }
+              elementDeleted_ = input.readMessage(PlayerServer.SpriteDeletion.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(elementDeleted_);
+                elementDeleted_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000020;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -8481,18 +8733,30 @@ public final class PlayerServer {
     public static final int ELEMENTPLACED_FIELD_NUMBER = 4;
     private PlayerServer.NewSprite elementPlaced_;
     /**
+     * <pre>
+     * Could have batched the following 3 by using Update instead ...
+     * </pre>
+     *
      * <code>optional .NewSprite elementPlaced = 4;</code>
      */
     public boolean hasElementPlaced() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
+     * <pre>
+     * Could have batched the following 3 by using Update instead ...
+     * </pre>
+     *
      * <code>optional .NewSprite elementPlaced = 4;</code>
      */
     public PlayerServer.NewSprite getElementPlaced() {
       return elementPlaced_ == null ? PlayerServer.NewSprite.getDefaultInstance() : elementPlaced_;
     }
     /**
+     * <pre>
+     * Could have batched the following 3 by using Update instead ...
+     * </pre>
+     *
      * <code>optional .NewSprite elementPlaced = 4;</code>
      */
     public PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder() {
@@ -8518,6 +8782,27 @@ public final class PlayerServer {
      */
     public PlayerServer.SpriteUpdateOrBuilder getElementMovedOrBuilder() {
       return elementMoved_ == null ? PlayerServer.SpriteUpdate.getDefaultInstance() : elementMoved_;
+    }
+
+    public static final int ELEMENTDELETED_FIELD_NUMBER = 6;
+    private PlayerServer.SpriteDeletion elementDeleted_;
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+     */
+    public boolean hasElementDeleted() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+     */
+    public PlayerServer.SpriteDeletion getElementDeleted() {
+      return elementDeleted_ == null ? PlayerServer.SpriteDeletion.getDefaultInstance() : elementDeleted_;
+    }
+    /**
+     * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+     */
+    public PlayerServer.SpriteDeletionOrBuilder getElementDeletedOrBuilder() {
+      return elementDeleted_ == null ? PlayerServer.SpriteDeletion.getDefaultInstance() : elementDeleted_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -8556,6 +8841,12 @@ public final class PlayerServer {
           return false;
         }
       }
+      if (hasElementDeleted()) {
+        if (!getElementDeleted().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -8576,6 +8867,9 @@ public final class PlayerServer {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeMessage(5, getElementMoved());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(6, getElementDeleted());
       }
       unknownFields.writeTo(output);
     }
@@ -8604,6 +8898,10 @@ public final class PlayerServer {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, getElementMoved());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, getElementDeleted());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8647,6 +8945,11 @@ public final class PlayerServer {
         result = result && getElementMoved()
             .equals(other.getElementMoved());
       }
+      result = result && (hasElementDeleted() == other.hasElementDeleted());
+      if (hasElementDeleted()) {
+        result = result && getElementDeleted()
+            .equals(other.getElementDeleted());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -8677,6 +8980,10 @@ public final class PlayerServer {
       if (hasElementMoved()) {
         hash = (37 * hash) + ELEMENTMOVED_FIELD_NUMBER;
         hash = (53 * hash) + getElementMoved().hashCode();
+      }
+      if (hasElementDeleted()) {
+        hash = (37 * hash) + ELEMENTDELETED_FIELD_NUMBER;
+        hash = (53 * hash) + getElementDeleted().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -8761,6 +9068,10 @@ public final class PlayerServer {
       return builder;
     }
     /**
+     * <pre>
+     * Consider batching?
+     * </pre>
+     *
      * Protobuf type {@code Notification}
      */
     public static final class Builder extends
@@ -8797,6 +9108,7 @@ public final class PlayerServer {
           getLevelInitializedFieldBuilder();
           getElementPlacedFieldBuilder();
           getElementMovedFieldBuilder();
+          getElementDeletedFieldBuilder();
         }
       }
       public Builder clear() {
@@ -8831,6 +9143,12 @@ public final class PlayerServer {
           elementMovedBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000010);
+        if (elementDeletedBuilder_ == null) {
+          elementDeleted_ = null;
+        } else {
+          elementDeletedBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -8895,6 +9213,14 @@ public final class PlayerServer {
         } else {
           result.elementMoved_ = elementMovedBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        if (elementDeletedBuilder_ == null) {
+          result.elementDeleted_ = elementDeleted_;
+        } else {
+          result.elementDeleted_ = elementDeletedBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -8952,6 +9278,9 @@ public final class PlayerServer {
         if (other.hasElementMoved()) {
           mergeElementMoved(other.getElementMoved());
         }
+        if (other.hasElementDeleted()) {
+          mergeElementDeleted(other.getElementDeleted());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -8980,6 +9309,11 @@ public final class PlayerServer {
         }
         if (hasElementMoved()) {
           if (!getElementMoved().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasElementDeleted()) {
+          if (!getElementDeleted().isInitialized()) {
             return false;
           }
         }
@@ -9363,12 +9697,20 @@ public final class PlayerServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.NewSprite, PlayerServer.NewSprite.Builder, PlayerServer.NewSpriteOrBuilder> elementPlacedBuilder_;
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       public boolean hasElementPlaced() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       public PlayerServer.NewSprite getElementPlaced() {
@@ -9379,6 +9721,10 @@ public final class PlayerServer {
         }
       }
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       public Builder setElementPlaced(PlayerServer.NewSprite value) {
@@ -9395,6 +9741,10 @@ public final class PlayerServer {
         return this;
       }
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       public Builder setElementPlaced(
@@ -9409,6 +9759,10 @@ public final class PlayerServer {
         return this;
       }
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       public Builder mergeElementPlaced(PlayerServer.NewSprite value) {
@@ -9429,6 +9783,10 @@ public final class PlayerServer {
         return this;
       }
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       public Builder clearElementPlaced() {
@@ -9442,6 +9800,10 @@ public final class PlayerServer {
         return this;
       }
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       public PlayerServer.NewSprite.Builder getElementPlacedBuilder() {
@@ -9450,6 +9812,10 @@ public final class PlayerServer {
         return getElementPlacedFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       public PlayerServer.NewSpriteOrBuilder getElementPlacedOrBuilder() {
@@ -9461,6 +9827,10 @@ public final class PlayerServer {
         }
       }
       /**
+       * <pre>
+       * Could have batched the following 3 by using Update instead ...
+       * </pre>
+       *
        * <code>optional .NewSprite elementPlaced = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -9593,6 +9963,124 @@ public final class PlayerServer {
           elementMoved_ = null;
         }
         return elementMovedBuilder_;
+      }
+
+      private PlayerServer.SpriteDeletion elementDeleted_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.SpriteDeletion, PlayerServer.SpriteDeletion.Builder, PlayerServer.SpriteDeletionOrBuilder> elementDeletedBuilder_;
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      public boolean hasElementDeleted() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      public PlayerServer.SpriteDeletion getElementDeleted() {
+        if (elementDeletedBuilder_ == null) {
+          return elementDeleted_ == null ? PlayerServer.SpriteDeletion.getDefaultInstance() : elementDeleted_;
+        } else {
+          return elementDeletedBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      public Builder setElementDeleted(PlayerServer.SpriteDeletion value) {
+        if (elementDeletedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          elementDeleted_ = value;
+          onChanged();
+        } else {
+          elementDeletedBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      public Builder setElementDeleted(
+          PlayerServer.SpriteDeletion.Builder builderForValue) {
+        if (elementDeletedBuilder_ == null) {
+          elementDeleted_ = builderForValue.build();
+          onChanged();
+        } else {
+          elementDeletedBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      public Builder mergeElementDeleted(PlayerServer.SpriteDeletion value) {
+        if (elementDeletedBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              elementDeleted_ != null &&
+              elementDeleted_ != PlayerServer.SpriteDeletion.getDefaultInstance()) {
+            elementDeleted_ =
+              PlayerServer.SpriteDeletion.newBuilder(elementDeleted_).mergeFrom(value).buildPartial();
+          } else {
+            elementDeleted_ = value;
+          }
+          onChanged();
+        } else {
+          elementDeletedBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      public Builder clearElementDeleted() {
+        if (elementDeletedBuilder_ == null) {
+          elementDeleted_ = null;
+          onChanged();
+        } else {
+          elementDeletedBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      public PlayerServer.SpriteDeletion.Builder getElementDeletedBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getElementDeletedFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      public PlayerServer.SpriteDeletionOrBuilder getElementDeletedOrBuilder() {
+        if (elementDeletedBuilder_ != null) {
+          return elementDeletedBuilder_.getMessageOrBuilder();
+        } else {
+          return elementDeleted_ == null ?
+              PlayerServer.SpriteDeletion.getDefaultInstance() : elementDeleted_;
+        }
+      }
+      /**
+       * <code>optional .SpriteDeletion elementDeleted = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.SpriteDeletion, PlayerServer.SpriteDeletion.Builder, PlayerServer.SpriteDeletionOrBuilder> 
+          getElementDeletedFieldBuilder() {
+        if (elementDeletedBuilder_ == null) {
+          elementDeletedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.SpriteDeletion, PlayerServer.SpriteDeletion.Builder, PlayerServer.SpriteDeletionOrBuilder>(
+                  getElementDeleted(),
+                  getParentForChildren(),
+                  isClean());
+          elementDeleted_ = null;
+        }
+        return elementDeletedBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -24512,7 +25000,7 @@ public final class PlayerServer {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022PlayerServer.proto\"\273\005\n\rServerMessage\022\036" +
+      "\n\022PlayerServer.proto\"\344\005\n\rServerMessage\022\036" +
       "\n\016availableGames\030\001 \001(\0132\006.Games\0227\n\026gameRo" +
       "omCreationStatus\030\002 \001(\0132\027.GameRoomCreatio" +
       "nStatus\022/\n\022gameRoomJoinStatus\030\003 \001(\0132\023.Ga" +
@@ -24527,53 +25015,55 @@ public final class PlayerServer {
       "\022/\n\022templateProperties\030\014 \003(\0132\023.TemplateP" +
       "roperties\022\"\n\014elementCosts\030\r \003(\0132\014.Elemen" +
       "tCost\022!\n\relementPlaced\030\016 \001(\0132\n.NewSprite" +
-      "\022#\n\014elementMoved\030\017 \001(\0132\r.SpriteUpdate\022 \n" +
-      "\014levelSprites\030\020 \003(\0132\n.NewSprite\022\"\n\tnumLe" +
-      "vels\030\021 \001(\0132\017.NumberOfLevels\022\r\n\005error\030\022 \001" +
-      "(\t\"\035\n\005Games\022\024\n\005games\030\001 \003(\0132\005.Game\")\n\004Gam" +
-      "e\022\014\n\004name\030\001 \002(\t\022\023\n\013description\030\002 \002(\t\"7\n\026",
-      "GameRoomCreationStatus\022\016\n\006roomId\030\001 \001(\t\022\r" +
-      "\n\005error\030\002 \001(\t\"4\n\022GameRoomJoinStatus\022\017\n\007s" +
-      "uccess\030\001 \002(\010\022\r\n\005error\030\002 \001(\t\"N\n\024GameRoomL" +
-      "aunchStatus\022\'\n\014initialState\030\001 \001(\0132\021.Leve" +
-      "lInitialized\022\r\n\005error\030\002 \001(\t\"\315\001\n\014Notifica" +
-      "tion\022#\n\014playerJoined\030\001 \001(\0132\r.PlayerJoine" +
-      "d\022#\n\014playerExited\030\002 \001(\0132\r.PlayerExited\022+" +
-      "\n\020levelInitialized\030\003 \001(\0132\021.LevelInitiali" +
-      "zed\022!\n\relementPlaced\030\004 \001(\0132\n.NewSprite\022#" +
-      "\n\014elementMoved\030\005 \001(\0132\r.SpriteUpdate\" \n\014P",
-      "layerJoined\022\020\n\010userName\030\001 \002(\t\" \n\014PlayerE" +
-      "xited\022\020\n\010userName\030\001 \002(\t\"\036\n\tGameRooms\022\021\n\t" +
-      "roomNames\030\001 \003(\t\"/\n\013PlayerNames\022\021\n\tuserNa" +
-      "mes\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"$\n\021ReadyForNext" +
-      "Level\022\017\n\007isReady\030\001 \002(\010\"v\n\020LevelInitializ" +
-      "ed\022\035\n\tinventory\030\001 \001(\0132\n.Inventory\022!\n\020spr" +
-      "itesAndStatus\030\002 \001(\0132\007.Update\022\021\n\tnumLevel" +
-      "s\030\003 \001(\005\022\r\n\005error\030\004 \001(\t\"\310\001\n\006Update\022\036\n\nnew" +
-      "Sprites\030\001 \003(\0132\n.NewSprite\022$\n\rspriteUpdat" +
-      "es\030\002 \003(\0132\r.SpriteUpdate\022(\n\017spriteDeletio",
-      "ns\030\003 \003(\0132\017.SpriteDeletion\022$\n\rstatusUpdat" +
-      "es\030\004 \001(\0132\r.StatusUpdate\022(\n\017resourceUpdat" +
-      "es\030\005 \001(\0132\017.ResourceUpdate\"\207\001\n\tNewSprite\022" +
-      "\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030\002 \002(\t\022\023\n\013i" +
-      "mageHeight\030\003 \002(\001\022\022\n\nimageWidth\030\004 \002(\001\022\016\n\006" +
-      "spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\022\r\n\005error\030\007 " +
-      "\001(\t\"<\n\014SpriteUpdate\022\020\n\010spriteId\030\001 \002(\005\022\014\n" +
-      "\004newX\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016SpriteDelet" +
-      "ion\022\020\n\010spriteId\030\001 \002(\005\"i\n\014StatusUpdate\022\024\n" +
-      "\014levelCleared\030\001 \002(\010\022\r\n\005isWon\030\002 \002(\010\022\016\n\006is",
-      "Lost\030\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010\022\024\n\014currentLev" +
-      "el\030\005 \002(\005\".\n\016ResourceUpdate\022\034\n\tresources\030" +
-      "\001 \003(\0132\t.Resource\"-\n\tInventory\022\021\n\ttemplat" +
-      "es\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"]\n\022TemplatePrope" +
-      "rties\022\023\n\013elementName\030\001 \002(\t\022#\n\010property\030\002" +
-      " \003(\0132\021.TemplateProperty\022\r\n\005error\030\003 \001(\t\"K" +
-      "\n\013ElementCost\022\023\n\013elementName\030\001 \002(\t\022\030\n\005co" +
-      "sts\030\002 \003(\0132\t.Resource\022\r\n\005error\030\003 \001(\t\"2\n\016N" +
-      "umberOfLevels\022\021\n\tnumLevels\030\001 \002(\005\022\r\n\005erro" +
-      "r\030\002 \001(\t\"/\n\020TemplateProperty\022\014\n\004name\030\001 \002(",
-      "\t\022\r\n\005value\030\002 \002(\t\"(\n\010Resource\022\014\n\004name\030\001 \002" +
-      "(\t\022\016\n\006amount\030\002 \002(\001"
+      "\022#\n\014elementMoved\030\017 \001(\0132\r.SpriteUpdate\022\'\n" +
+      "\016elementDeleted\030\020 \001(\0132\017.SpriteDeletion\022 " +
+      "\n\014levelSprites\030\021 \003(\0132\n.NewSprite\022\"\n\tnumL" +
+      "evels\030\022 \001(\0132\017.NumberOfLevels\022\r\n\005error\030\023 " +
+      "\001(\t\"\035\n\005Games\022\024\n\005games\030\001 \003(\0132\005.Game\")\n\004Ga",
+      "me\022\014\n\004name\030\001 \002(\t\022\023\n\013description\030\002 \002(\t\"7\n" +
+      "\026GameRoomCreationStatus\022\016\n\006roomId\030\001 \001(\t\022" +
+      "\r\n\005error\030\002 \001(\t\"4\n\022GameRoomJoinStatus\022\017\n\007" +
+      "success\030\001 \002(\010\022\r\n\005error\030\002 \001(\t\"N\n\024GameRoom" +
+      "LaunchStatus\022\'\n\014initialState\030\001 \001(\0132\021.Lev" +
+      "elInitialized\022\r\n\005error\030\002 \001(\t\"\366\001\n\014Notific" +
+      "ation\022#\n\014playerJoined\030\001 \001(\0132\r.PlayerJoin" +
+      "ed\022#\n\014playerExited\030\002 \001(\0132\r.PlayerExited\022" +
+      "+\n\020levelInitialized\030\003 \001(\0132\021.LevelInitial" +
+      "ized\022!\n\relementPlaced\030\004 \001(\0132\n.NewSprite\022",
+      "#\n\014elementMoved\030\005 \001(\0132\r.SpriteUpdate\022\'\n\016" +
+      "elementDeleted\030\006 \001(\0132\017.SpriteDeletion\" \n" +
+      "\014PlayerJoined\022\020\n\010userName\030\001 \002(\t\" \n\014Playe" +
+      "rExited\022\020\n\010userName\030\001 \002(\t\"\036\n\tGameRooms\022\021" +
+      "\n\troomNames\030\001 \003(\t\"/\n\013PlayerNames\022\021\n\tuser" +
+      "Names\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"$\n\021ReadyForNe" +
+      "xtLevel\022\017\n\007isReady\030\001 \002(\010\"v\n\020LevelInitial" +
+      "ized\022\035\n\tinventory\030\001 \001(\0132\n.Inventory\022!\n\020s" +
+      "pritesAndStatus\030\002 \001(\0132\007.Update\022\021\n\tnumLev" +
+      "els\030\003 \001(\005\022\r\n\005error\030\004 \001(\t\"\310\001\n\006Update\022\036\n\nn",
+      "ewSprites\030\001 \003(\0132\n.NewSprite\022$\n\rspriteUpd" +
+      "ates\030\002 \003(\0132\r.SpriteUpdate\022(\n\017spriteDelet" +
+      "ions\030\003 \003(\0132\017.SpriteDeletion\022$\n\rstatusUpd" +
+      "ates\030\004 \001(\0132\r.StatusUpdate\022(\n\017resourceUpd" +
+      "ates\030\005 \001(\0132\017.ResourceUpdate\"\207\001\n\tNewSprit" +
+      "e\022\020\n\010spriteId\030\001 \002(\005\022\020\n\010imageURL\030\002 \002(\t\022\023\n" +
+      "\013imageHeight\030\003 \002(\001\022\022\n\nimageWidth\030\004 \002(\001\022\016" +
+      "\n\006spawnX\030\005 \002(\001\022\016\n\006spawnY\030\006 \002(\001\022\r\n\005error\030" +
+      "\007 \001(\t\"<\n\014SpriteUpdate\022\020\n\010spriteId\030\001 \002(\005\022" +
+      "\014\n\004newX\030\002 \002(\001\022\014\n\004newY\030\003 \002(\001\"\"\n\016SpriteDel",
+      "etion\022\020\n\010spriteId\030\001 \002(\005\"i\n\014StatusUpdate\022" +
+      "\024\n\014levelCleared\030\001 \002(\010\022\r\n\005isWon\030\002 \002(\010\022\016\n\006" +
+      "isLost\030\003 \002(\010\022\016\n\006inPlay\030\004 \002(\010\022\024\n\014currentL" +
+      "evel\030\005 \002(\005\".\n\016ResourceUpdate\022\034\n\tresource" +
+      "s\030\001 \003(\0132\t.Resource\"-\n\tInventory\022\021\n\ttempl" +
+      "ates\030\001 \003(\t\022\r\n\005error\030\002 \001(\t\"]\n\022TemplatePro" +
+      "perties\022\023\n\013elementName\030\001 \002(\t\022#\n\010property" +
+      "\030\002 \003(\0132\021.TemplateProperty\022\r\n\005error\030\003 \001(\t" +
+      "\"K\n\013ElementCost\022\023\n\013elementName\030\001 \002(\t\022\030\n\005" +
+      "costs\030\002 \003(\0132\t.Resource\022\r\n\005error\030\003 \001(\t\"2\n",
+      "\016NumberOfLevels\022\021\n\tnumLevels\030\001 \002(\005\022\r\n\005er" +
+      "ror\030\002 \001(\t\"/\n\020TemplateProperty\022\014\n\004name\030\001 " +
+      "\002(\t\022\r\n\005value\030\002 \002(\t\"(\n\010Resource\022\014\n\004name\030\001" +
+      " \002(\t\022\016\n\006amount\030\002 \002(\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -24592,7 +25082,7 @@ public final class PlayerServer {
     internal_static_ServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ServerMessage_descriptor,
-        new java.lang.String[] { "AvailableGames", "GameRoomCreationStatus", "GameRoomJoinStatus", "GameRoomLaunchStatus", "Notification", "GameRooms", "PlayerNames", "ReadyForNextLevel", "LevelInitialized", "Update", "Inventory", "TemplateProperties", "ElementCosts", "ElementPlaced", "ElementMoved", "LevelSprites", "NumLevels", "Error", });
+        new java.lang.String[] { "AvailableGames", "GameRoomCreationStatus", "GameRoomJoinStatus", "GameRoomLaunchStatus", "Notification", "GameRooms", "PlayerNames", "ReadyForNextLevel", "LevelInitialized", "Update", "Inventory", "TemplateProperties", "ElementCosts", "ElementPlaced", "ElementMoved", "ElementDeleted", "LevelSprites", "NumLevels", "Error", });
     internal_static_Games_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_Games_fieldAccessorTable = new
@@ -24628,7 +25118,7 @@ public final class PlayerServer {
     internal_static_Notification_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Notification_descriptor,
-        new java.lang.String[] { "PlayerJoined", "PlayerExited", "LevelInitialized", "ElementPlaced", "ElementMoved", });
+        new java.lang.String[] { "PlayerJoined", "PlayerExited", "LevelInitialized", "ElementPlaced", "ElementMoved", "ElementDeleted", });
     internal_static_PlayerJoined_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_PlayerJoined_fieldAccessorTable = new
