@@ -19,6 +19,7 @@ import engine.AbstractGameModelController;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
@@ -54,6 +55,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 
 	// get from some properties file
 	private final String SERVER_ADDRESS = "127.0.0.1"; // Change to "152.3.53.39" once uploaded to VM
+	private final int POLL_PERIOD_MILLISECONDS = 100;
 	private Socket socket;
 	private DataInputStream input;
 	private DataOutputStream outputWriter;
@@ -75,8 +77,18 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	protected abstract int getPort();
 
 	public void launchNotificationListener() {
-		new Thread(() -> pollForServerMessages()).start();
+		Thread worker = new Thread(() -> pollForServerMessages());
+		worker.setDaemon(true);
+		worker.start();
 	}
+
+	Task<Void> requestTask = new Task<Void>() {
+		@Override
+		protected Void call() throws Exception {
+			System.out.println("Background thread started...");
+			return pollForServerMessages();
+		}
+	};
 
 	public void registerNotificationListener(ListChangeListener<? super Notification> listener) {
 		notificationQueue.addListener(listener);
@@ -298,21 +310,17 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	private void appendNotificationToQueue(Notification notification) {
-		System.out.println("NOTIFICATION MESSAGE: ");
-		System.out.println(notification.toString());
 		notificationQueue.add(notification);
 	}
 
 	private void appendMessageToQueue(ServerMessage serverMessage) {
-		System.out.println("NORMAL MESSAGE: ");
-		System.out.println(serverMessage.toString());
 		synchronized (messageQueue) {
 			messageQueue.add(serverMessage);
 			messageQueue.notify();
 		}
 	}
 
-	private synchronized void pollForServerMessages() {
+	private synchronized Void pollForServerMessages() {
 		while (true) {
 			int len = 0;
 			try {
@@ -323,7 +331,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 					input.readFully(readBytes);
 					appendMessageToAppropriateQueue(ServerMessage.parseFrom(readBytes));
 				} catch (SocketTimeoutException timeOutException) {
-					this.wait(1000);
+					this.wait(POLL_PERIOD_MILLISECONDS);
 				}
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace(); // TEMP

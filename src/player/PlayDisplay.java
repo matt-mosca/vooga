@@ -113,6 +113,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		// myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage,
 		// this);
 		clientMessageUtils = new ClientMessageUtils();
+		System.out.println("Initialized clientMessageUtils");
 		myLeftBar = new VBox();
 		idToTemplate = new HashMap<>();
 		hud = new HUD(width);
@@ -179,6 +180,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		try {
+			System.out.println("Getting available games from controller");
 			for (String title : myController.getAvailableGames().keySet()) {
 				games.add(title);
 			}
