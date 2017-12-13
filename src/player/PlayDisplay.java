@@ -329,7 +329,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			// launch win screen
 		}
 		*/
-		hud.update(myController.getResourceEndowments());
+		//TODO Adi, uncomment this when you're ready to test health 
+		//hud.update(myController.getResourceEndowments(), myController.getLevelHealth());
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		updateSprites();
 	}
