@@ -191,7 +191,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		setLevel(level);
 		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
 		elementManager.setCurrentElements(getLevelSprites().get(level));
-		elementManager.setCurrentWaves(getLevelWaves().get(getCurrentLevel()));
+		//elementManager.setCurrentWaves(getLevelWaves().get(getCurrentLevel()));
 		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
 		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
 	}
