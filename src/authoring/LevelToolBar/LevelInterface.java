@@ -2,7 +2,7 @@ package authoring.LevelToolBar;
 
 public interface LevelInterface {
 
-	void newWaveButtonPressed();
+	void makeNewWave();
 	
 	
 

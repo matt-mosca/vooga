@@ -8,7 +8,7 @@ public class NewWaveButton extends Button {
 	
 	public NewWaveButton(LevelInterface level) {
 		this.setText(LABEL);
-		this.setOnAction(e->level.newWaveButtonPressed());
+		this.setOnAction(e->level.makeNewWave());
 	}
 
 }

@@ -17,7 +17,6 @@ import javafx.stage.Stage;
  */
 public class ChatServer extends AbstractServer {
 
-	public static final int PORT = 9042;
 	private Set<PrintWriter> clientPrintWriters = new HashSet<>();
 
 	public ChatServer() {
@@ -26,7 +25,7 @@ public class ChatServer extends AbstractServer {
 
 	@Override
 	public int getPort() {
-		return PORT;
+		return Constants.CHAT_SERVER_PORT;
 	}
 
 	@Override

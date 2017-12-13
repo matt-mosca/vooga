@@ -119,7 +119,7 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 	}
 	
 	@Override
-	public void newWaveButtonPressed() {
+	public void makeNewWave() {
 		wavesPerLevel.put(currentLevel, wavesPerLevel.get(currentLevel)+1);
 		updateWaveDisplay();
 	}
@@ -146,7 +146,7 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 		}
 	}
 	
-	private void addLevel() {
+	public void addLevel() {
 		mySprites.add(new ArrayList<>());
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size() + 1), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);

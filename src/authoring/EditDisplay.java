@@ -46,6 +46,7 @@ import main.Main;
 import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.NewSprite;
 import player.PlayDisplay;
+import util.DropdownFactory;
 import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
 import display.sprites.BackgroundObject;
@@ -85,6 +86,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private EventHandler<MouseEvent> cursorDrag;
 	private boolean addingObject = false;
 
+	private DropdownFactory dropdownFactory = new DropdownFactory();
+
 	private ClientMessageUtils clientMessageUtils;
 
 	public EditDisplay(int width, int height, Stage stage, boolean loaded) {
@@ -118,6 +121,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		volumeSlider.setLayoutX(950);
 		
 		this.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, e -> addStaticObject(e));
+
+		myMenuBar.getMenus().clear();
+		myMenuBar.getMenus().addAll(dropdownFactory.generateMenuDropdowns(this));
 	}
 
 	private void createGridToggle() {
@@ -301,6 +307,21 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			myGameArea.savePath();
 		}
 	}
+
+	// I'm adding this to do reflective generation of dropdown menu (I am Ben S)
+	private void export() {
+		controller.exportGame();
+	}
+	private void rename() {
+		myMenuBar.renameGame();
+	}
+	private void addWave() {
+		myBottomToolBar.makeNewWave();
+	}
+	private void addLevel() {
+		myBottomToolBar.addLevel();
+	}
+	// end
 
 	private void loadGame() {
 		List<String> games = new ArrayList<>();

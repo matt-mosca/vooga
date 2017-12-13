@@ -279,23 +279,23 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private void step() {
 		Update latestUpdate = myController.update();
-//		if (myController.isReadyForNextLevel()) {
-//			hideTransitorySplashScreen();
-//			// animation.play();
-//			myController.resume();
-//		}
-//		if (myController.isLevelCleared()) {
-//			level++;
-//			animation.pause();
-//			myController.pause();
-//			launchTransitorySplashScreen();
-//			hud.initialize(myController.getResourceEndowments());
-//		} else if (myController.isLost()) {
-//			// launch lost screen
-//			this.getStage().close();
-//		} else if (myController.isWon()) {
-//			// launch win screen
-//		}
+		if (myController.isReadyForNextLevel()) {
+			hideTransitorySplashScreen();
+			// animation.play();
+			myController.resume();
+		}
+		if (myController.isLevelCleared()) {
+			level++;
+			animation.pause();
+			myController.pause();
+			launchTransitorySplashScreen();
+			hud.initialize(myController.getResourceEndowments());
+		} else if (myController.isLost()) {
+			// launch lost screen
+			this.getStage().close();
+		} else if (myController.isWon()) {
+			// launch win screen
+		}
 		hud.update(myController.getResourceEndowments());
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		loadSprites();
