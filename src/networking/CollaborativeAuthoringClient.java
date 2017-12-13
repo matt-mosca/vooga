@@ -31,7 +31,6 @@ import networking.protocol.AuthorClient.GetPossibleDefeatConditions;
 import networking.protocol.AuthorClient.GetPossibleVictoryConditions;
 import networking.protocol.AuthorClient.GetResourceEndowments;
 import networking.protocol.AuthorClient.GetWaveProperties;
-import networking.protocol.AuthorClient.MoveElement;
 import networking.protocol.AuthorClient.SetLevel;
 import networking.protocol.AuthorClient.SetStatusProperty;
 import networking.protocol.AuthorClient.SetUnitCost;
@@ -44,6 +43,7 @@ import networking.protocol.AuthorClient.SetDefeatCondition;
 import networking.protocol.AuthorClient.SetGameDescription;
 import networking.protocol.AuthorClient.SetGameName;
 import networking.protocol.AuthorServer.AuthoringServerMessage;
+import networking.protocol.PlayerClient.MoveElement;
 import networking.protocol.PlayerServer.SpriteUpdate;
 
 public class CollaborativeAuthoringClient extends AbstractClient implements AuthoringModelController {
@@ -149,7 +149,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	@Override
 	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder().setMoveElement(
-				MoveElement.newBuilder().setElementId(elementId).setXCoord(xCoordinate).setYCoord(yCoordinate).build())
+				MoveElement.newBuilder().setElementId(elementId).setNewXCoord(xCoordinate).setNewYCoord(yCoordinate).build())
 				.build().toByteArray());
 		return handleMoveElement(readAuthoringServerResponse());
 	}

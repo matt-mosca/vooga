@@ -9,6 +9,7 @@ import java.util.Set;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteUpdate;
 
 /**
  * Represents the common back-end methods available across play and authoring
@@ -52,6 +53,19 @@ public interface AbstractGameModelController {
 	 */
 	NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) throws ReflectiveOperationException;
 
+	
+	/**
+	 * Move a previously created game element to a new location.
+	 *
+	 * @param elementId
+	 *            elementId the unique identifier for the element
+	 * @param xCoordinate
+	 *            the new horizontal position of the element within the game
+	 * @param yCoordinate
+	 *            the new vertical position of the element within the game
+	 */
+	SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate);
+	
 	int getNumLevelsForGame(String gameName, boolean forOriginalGame);
 	
 	int getCurrentLevel();
