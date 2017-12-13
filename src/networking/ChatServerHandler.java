@@ -35,7 +35,6 @@ public class ChatServerHandler extends AbstractServerHandler {
 			}
 			synchronized (clientPrintWriters) {
 				for (PrintWriter writer : clientPrintWriters) {
-					System.out.println("Writing message " + message);
 					writer.println(message);
 				}
 			}
