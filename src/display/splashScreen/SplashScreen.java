@@ -207,7 +207,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
 		myMediaPlayer.stop();
 		if (!isMultiplayer) {
-			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController());
+			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController()); 
 			getStage().setScene(myScene.getScene());
 			myScene.startDisplay();
 			System.out.println("Initialized play display");
