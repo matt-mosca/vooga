@@ -17,14 +17,17 @@ public class MediaPlayerFactory {
 	}
 	
 	public MediaPlayerFactory(String mediaName) {
-		media = new Media(composeResourceStringUrl(mediaName));
-		mediaPlayer = new MediaPlayer(media);
+		mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(mediaName)));
 		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
 		mediaPlayer.setMute(true);
 	}
 	
 	public MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
+	}
+	
+	public void changeMediaPlayer(String newMediaName) {
+		mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(newMediaName)));
 	}
 	
 	private String composeResourceStringUrl(String url) {
