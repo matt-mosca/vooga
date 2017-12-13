@@ -4,8 +4,6 @@ import javafx.scene.image.Image;
 import display.splashScreen.ScreenDisplay;
 
 public class StaticObject extends InteractiveObject{
-	
-	private static final int CELL_SIZE = 40;
 	private int objectSize;
 	private int realSize;
 	
@@ -24,7 +22,7 @@ public class StaticObject extends InteractiveObject{
 	}
 
 	private void setSize(int size) {
-		realSize = size * CELL_SIZE;
+		realSize = size * sizeOfCell();
 		this.setFitWidth(realSize);
 		this.setFitHeight(realSize);
 	}

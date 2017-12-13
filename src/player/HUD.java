@@ -21,6 +21,9 @@ public class HUD extends HBox{
 		this.getChildren().add(leftFiller);
 		HBox.setHgrow(leftFiller, Priority.ALWAYS);
 		
+		addHealthDisplay();
+		addPointsDisplay();
+		
 		displays = new HashMap<>();
 	}
 
@@ -34,8 +37,6 @@ public class HUD extends HBox{
 	
 	public void initialize(Map<String, Double> values) {
 		clearDisplays();
-		addHealthDisplay();
-		addPointsDisplay();
 		
 		for(String resource : values.keySet()) {
 			addResourceDisplay(resource, values.get(resource));

@@ -1,5 +1,7 @@
 package display.sprites;
 
+import java.util.ResourceBundle;
+
 import display.interfaces.ClickableInterface;
 import display.interfaces.Droppable;
 import javafx.geometry.Point2D;
@@ -9,8 +11,13 @@ import javafx.scene.input.MouseEvent;
 import display.splashScreen.ScreenDisplay;
 
 public class InteractiveObject extends ImageView implements ClickableInterface{
+	private final String HEIGHT = "Game_Area_Height";
+	private final String ROW_PERCENTAGE = "Grid_Row_Percentage";
+	
+	private ResourceBundle gameProperties;
 	private boolean locked;
 	private int id;
+	private int cellSize;
 	private Droppable droppable;
 	private ScreenDisplay myDisplay;
 	private String elementName;
@@ -20,9 +27,21 @@ public class InteractiveObject extends ImageView implements ClickableInterface{
 		myDisplay = display; 
 		droppable = myDisplay.getDroppable();
 		elementName = name;
+		gameProperties = ResourceBundle.getBundle("authoring/resources/GameArea");
+		initializeCellSize();
 		this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e->dragged(e));
 		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e->dropped(e));
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e->pressed(e));
+	}
+	
+	private void initializeCellSize() {
+		double height = Double.parseDouble(gameProperties.getString(HEIGHT));
+		double rowPercentage = Double.parseDouble(gameProperties.getString(ROW_PERCENTAGE));
+		cellSize = (int) (height*(rowPercentage/100));
+	}
+	
+	protected int sizeOfCell() {
+		return cellSize;
 	}
 	
 	@Override
