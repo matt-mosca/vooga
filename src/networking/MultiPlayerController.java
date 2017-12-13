@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerClient.DeleteElement;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.GetNumberOfLevels;
@@ -35,6 +36,7 @@ import networking.protocol.PlayerServer.PlayerJoined;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ReadyForNextLevel;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 
 /**
@@ -264,6 +266,19 @@ class MultiPlayerController {
 		return serverMessageBuilder.setElementMoved(updatedSprite).build().toByteArray();
 	}
 
+	byte[] deleteElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getPlayEngineForClient(clientId);
+		DeleteElement deleteElementRequest = clientMessage.getDeleteElement();
+		try {
+			SpriteDeletion deletedElement = playController.deleteElement(deleteElementRequest.getElementId());
+			messageQueue.add(ServerMessage.newBuilder()
+					.setNotification(Notification.newBuilder().setElementDeleted(deletedElement).build()).build());
+			return serverMessageBuilder.setElementDeleted(deletedElement).build().toByteArray();
+		} catch (IllegalArgumentException e) {
+			return serverMessageBuilder.setError(e.getMessage()).build().toByteArray();
+		}
+	}
+
 	byte[] upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
 			throws ReflectiveOperationException {
 		PlayController playController = getPlayEngineForClient(clientId);
@@ -414,6 +429,9 @@ class MultiPlayerController {
 		}
 		if (clientMessage.hasUpgradeElement()) {
 			return upgradeElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasDeleteElement()) {
+			return deleteElement(clientId, clientMessage, serverMessageBuilder);
 		}
 		if (clientMessage.hasCheckReadyForNextLevel()) {
 			return checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);

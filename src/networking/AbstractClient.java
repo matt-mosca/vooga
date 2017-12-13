@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerClient.DeleteElement;
 import networking.protocol.PlayerClient.ExitRoom;
 import networking.protocol.PlayerClient.GetAllTemplateProperties;
 import networking.protocol.PlayerClient.GetAvailableGames;
@@ -47,6 +48,7 @@ import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Notification;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.TemplateProperties;
 import networking.protocol.PlayerServer.Update;
@@ -192,6 +194,13 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	@Override
+	public SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException {
+		writeRequestBytes(ClientMessage.newBuilder()
+				.setDeleteElement(DeleteElement.newBuilder().setElementId(elementId).build()).build().toByteArray());
+		return handleDeleteElementResponse(pollFromMessageQueue());
+	}
+
+	@Override
 	public int getNumLevelsForGame(String gameName, boolean originalGame) {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetNumLevels(GetNumberOfLevels.newBuilder().setGameName(gameName).setOriginalGame(originalGame))
@@ -248,6 +257,12 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		writeRequestBytes(clientMessageBuilder.setGetAvailableGames(GetAvailableGames.newBuilder().build()).build()
 				.toByteArray());
 		return handleAvailableGamesResponse(pollFromMessageQueue());
+	}
+
+	@Override
+	public int getLevelHealth(int level) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	protected void writeRequestBytes(byte[] requestBytes) {
@@ -377,12 +392,19 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		}
 		return NewSprite.getDefaultInstance(); // Should be careful not to interpret as having spriteId = 0
 	}
-	
+
 	private SpriteUpdate handleMoveElementResponse(ServerMessage serverMessage) {
 		if (serverMessage.hasElementMoved()) {
 			return serverMessage.getElementMoved();
 		}
 		return SpriteUpdate.getDefaultInstance();
+	}
+	
+	private SpriteDeletion handleDeleteElementResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasElementDeleted()) {
+			return serverMessage.getElementDeleted();
+		}
+		return SpriteDeletion.getDefaultInstance();
 	}
 
 	private int handleNumLevelsForGameResponse(ServerMessage serverMessage) {

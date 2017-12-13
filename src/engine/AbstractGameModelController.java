@@ -9,6 +9,7 @@ import java.util.Set;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 
 /**
@@ -47,13 +48,16 @@ public interface AbstractGameModelController {
 	/**
 	 * Place a game element into the game area.
 	 *
-	 * @param elementTemplateName the name of the element template to use for the instance being places
-	 * @param startCoordinates    the desired starting location of the element
-	 * @return a message containing the necessary information for the frontend to keep track of the element
+	 * @param elementTemplateName
+	 *            the name of the element template to use for the instance being
+	 *            places
+	 * @param startCoordinates
+	 *            the desired starting location of the element
+	 * @return a message containing the necessary information for the frontend to
+	 *         keep track of the element
 	 */
 	NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) throws ReflectiveOperationException;
 
-	
 	/**
 	 * Move a previously created game element to a new location.
 	 *
@@ -65,13 +69,24 @@ public interface AbstractGameModelController {
 	 *            the new vertical position of the element within the game
 	 */
 	SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate);
-	
+
+	/**
+	 * Remove the sprite of the given id from the map (applicable to both player and
+	 * authoring)
+	 * 
+	 * @param elementId
+	 *            id of sprite to delete
+	 * @return SpriteDeletion message containing id of deleted sprite, to inform all
+	 *         users of deletion
+	 */
+	SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException;
+
 	int getNumLevelsForGame(String gameName, boolean forOriginalGame);
-	
+
 	int getCurrentLevel();
-	
+
 	int getLevelHealth(int level);
-	
+
 	Set<String> getInventory();
 
 	/**
@@ -85,7 +100,7 @@ public interface AbstractGameModelController {
 	Map<String, Double> getResourceEndowments();
 
 	Map<String, Map<String, Double>> getElementCosts();
-	
+
 	/**
 	 * Get the elements of a game (represented as sprites) for a particular level.
 	 *
@@ -105,5 +120,5 @@ public interface AbstractGameModelController {
 	 * @return map where keys are game names and values are game descriptions
 	 */
 	Map<String, String> getAvailableGames() throws IllegalStateException;
-	
+
 }

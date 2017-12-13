@@ -108,12 +108,6 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
 
     @Override
-    public void deleteElement(int elementId) throws IllegalArgumentException {
-        GameElement removedGameElement = getSpriteIdMap().remove(elementId);
-        getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
-    }
-
-    @Override
     public void addElementToInventory(String elementName) {
         getLevelInventories().get(getCurrentLevel()).add(elementName);
     }

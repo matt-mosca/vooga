@@ -238,14 +238,6 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate);
 
 	/**
-	 * Delete a previously created game element.
-	 *
-	 * @param elementId
-	 *            the unique identifier for the element
-	 */
-	void deleteElement(int elementId);
-
-	/**
 	 * Fetch all available game names and their corresponding descriptions
 	 *
 	 * @return map where keys are game names and values are game descriptions

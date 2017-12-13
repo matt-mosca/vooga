@@ -14,6 +14,7 @@ import networking.protocol.PlayerClient.UpgradeElement;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.ResourceUpdate;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.StatusUpdate;
 import networking.protocol.PlayerServer.Update;
@@ -162,12 +163,5 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 		}
 		testClient.exitGameRoom();
 	}
-
-	@Override
-	public int getLevelHealth(int level) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 
 }
