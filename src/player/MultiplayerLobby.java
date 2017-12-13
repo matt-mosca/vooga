@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import display.factory.ButtonFactory;
 import display.splashScreen.ScreenDisplay;
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener.Change;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
@@ -78,6 +80,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 		players = new MultiplayerListBox();
 		activityList = new ActivityListBox();
 		multiClient = multiPlayerClient;
+		System.out.println("Registering notification listener");
+		registerNotificationListener();
 		username = new String();
 		gameName = new String();
 		currentLobby = new String();
@@ -430,7 +434,50 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void removeJoinSelectedLobby() {
 		rootRemove(joinSelectedLobby);
 	}
-	
+
+	private void registerNotificationListener() {
+		multiClient.registerNotificationListener(notification -> processNotification(notification));
+	}
+
+	private void processNotification(Change<? extends Notification> notification) {
+		Platform.runLater(() -> {
+			System.out.println("Processing notification in lobby!");
+			while (notification.next()) {
+				notification.getAddedSubList().stream().forEach(message -> {
+					if (message.hasPlayerJoined()) {
+						String nameOfJoinedPlayer = message.getPlayerJoined().getUserName();
+						handleUserJoinedRoom(nameOfJoinedPlayer);
+					}
+					if (message.hasPlayerExited()) {
+						String nameOfExitedPlayer = message.getPlayerExited().getUserName();
+						handleUserExitedRoom(nameOfExitedPlayer);
+					}
+					if (message.hasLevelInitialized() && !launched) {
+						LevelInitialized levelData = message.getLevelInitialized();
+						handleGameLaunched(levelData);
+					}
+				});
+			}
+		});
+	}
+
+	// TODO - Mosca : add user to display and add some message?
+	private void handleUserJoinedRoom(String userName) {
+		System.out.println("User " + userName + " joined!");
+	}
+
+	// TODO - Mosca : remove user from display and add some message?
+	private void handleUserExitedRoom(String userName) {
+		System.out.println("User " + userName + "exited!");
+	}
+
+	// TODO - Mosca (Check if correct)
+	private void handleGameLaunched(LevelInitialized levelData) {
+		launched = true;
+		getStage().setScene(playDisplay.getScene());
+		playDisplay.startDisplay(levelData);
+	}
+
 	private void addActivityBox() {
 		rootAdd(activityBox);
 	}
