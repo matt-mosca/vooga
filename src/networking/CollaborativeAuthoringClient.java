@@ -431,7 +431,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	@Override
-	public void setLevelHealth(int health) {
+	public void setLevelHealth(int level, int health) {
 		// TODO Auto-generated method stub
 		
 	}
