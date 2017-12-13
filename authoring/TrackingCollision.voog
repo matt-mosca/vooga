@@ -1,1 +1,0 @@
-{"1":"{\"description\":\"\"}\n{\"conditions\":{\"defeat\":\"enemy reached target\",\"victory\":\"kill all enemies\"}}\n{\"bank\":{\"resourceEndowments\":{},\"unitCosts\":{\"ActualTroop\":{},\"troop\":{},\"fireball\":{},\"tower\":{}}}}\n{}\n{\"gameElements\":[]}\n{\"inventory\":[\"ActualTroop\",\"troop\",\"fireball\",\"tower\"]}\n{\"wave\":[]}"}
