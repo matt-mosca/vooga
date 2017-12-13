@@ -19,23 +19,24 @@ message AuthoringClientMessage {
 	optional AddElementToInventory addElementToInventory = 10;
 	optional GetCurrentLevel getCurrentLevel = 11;
 	optional MoveElement moveElement = 12;
-	optional UpdateElementProperties updateElementProperties = 13;
-	optional GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;
-	optional GetResourceEndowments getResourceEndowments = 15;
-	optional SetGameName setGameName = 16;
-	optional SetGameDescription setGameDescription = 17;
-	optional SetVictoryCondition setVictoryCondition = 18;
-	optional SetDefeatCondition setDefeatCondition = 19;
-	optional SetStatusProperty setStatusProperty = 20;
-	repeated ResourceEndowment setResourceEndowments = 21;
-	optional SetUnitCost setUnitCost = 22;
-	optional CreateWaveProperties createWaveProperties = 23;
-	optional EditWaveProperties editWaveProperties = 24;
-	optional GetWaveProperties getWaveProperties = 25;
-	optional GetPossibleVictoryConditions getPossibleVictoryConditions = 26;
-	optional GetPossibleDefeatConditions getPossibleDefeatConditions = 27;
-	optional GetCurrentVictoryConditions getCurrentVictoryConditions = 28;
-	optional GetCurrentDefeatConditions getCurrentDefeatConditions = 29;
+	optional DeleteElement deleteElement = 13;
+	optional UpdateElementProperties updateElementProperties = 14;
+	optional GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;
+	optional GetResourceEndowments getResourceEndowments = 16;
+	optional SetGameName setGameName = 17;
+	optional SetGameDescription setGameDescription = 18;
+	optional SetVictoryCondition setVictoryCondition = 19;
+	optional SetDefeatCondition setDefeatCondition = 20;
+	optional SetStatusProperty setStatusProperty = 21;
+	repeated ResourceEndowment setResourceEndowments = 22;
+	optional SetUnitCost setUnitCost = 23;
+	optional CreateWaveProperties createWaveProperties = 24;
+	optional EditWaveProperties editWaveProperties = 25;
+	optional GetWaveProperties getWaveProperties = 26;
+	optional GetPossibleVictoryConditions getPossibleVictoryConditions = 27;
+	optional GetPossibleDefeatConditions getPossibleDefeatConditions = 28;
+	optional GetCurrentVictoryConditions getCurrentVictoryConditions = 29;
+	optional GetCurrentDefeatConditions getCurrentDefeatConditions = 30;
 }
 
 message ExportGame {

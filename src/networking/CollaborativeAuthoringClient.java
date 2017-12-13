@@ -16,7 +16,6 @@ import networking.protocol.AuthorClient.AuthoringClientMessage;
 import networking.protocol.AuthorClient.CreateWaveProperties;
 import networking.protocol.AuthorClient.DefineElement;
 import networking.protocol.AuthorClient.DefineElementUpgrade;
-import networking.protocol.AuthorClient.DeleteElement;
 import networking.protocol.AuthorClient.DeleteElementDefinition;
 import networking.protocol.AuthorClient.DeleteLevel;
 import networking.protocol.AuthorClient.EditWaveProperties;
@@ -43,8 +42,6 @@ import networking.protocol.AuthorClient.SetDefeatCondition;
 import networking.protocol.AuthorClient.SetGameDescription;
 import networking.protocol.AuthorClient.SetGameName;
 import networking.protocol.AuthorServer.AuthoringServerMessage;
-import networking.protocol.PlayerClient.MoveElement;
-import networking.protocol.PlayerServer.SpriteUpdate;
 
 public class CollaborativeAuthoringClient extends AbstractClient implements AuthoringModelController {
 
@@ -147,25 +144,11 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	@Override
-	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate) {
-		writeRequestBytes(AuthoringClientMessage.newBuilder().setMoveElement(
-				MoveElement.newBuilder().setElementId(elementId).setNewXCoord(xCoordinate).setNewYCoord(yCoordinate).build())
-				.build().toByteArray());
-		return handleMoveElement(readAuthoringServerResponse());
-	}
-
-	@Override
 	public void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setUpdateElementProperties(UpdateElementProperties.newBuilder().setElementId(elementId)
 						.addAllProperties(getPropertiesFromObjectMap(propertiesToUpdate)).build())
 				.build().toByteArray());
-	}
-
-	@Override
-	public void deleteElement(int elementId) {
-		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setDeleteElement(DeleteElement.newBuilder().setElementId(elementId).build()).build().toByteArray());
 	}
 
 	@Override
@@ -335,13 +318,6 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 			return authoringServerMessage.getCurrentLevel();
 		}
 		return 0;
-	}
-
-	private SpriteUpdate handleMoveElement(AuthoringServerMessage authoringServerMessage) {
-		if (authoringServerMessage.hasMoveElement()) {
-			return authoringServerMessage.getMoveElement();
-		}
-		return SpriteUpdate.getDefaultInstance();
 	}
 
 	private Map<String, List<Map<String, Object>>> handleAllDefinedElementUpgradesResponse(
