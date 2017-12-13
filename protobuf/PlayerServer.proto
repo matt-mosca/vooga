@@ -61,6 +61,7 @@ message Notification {
 	optional PlayerJoined playerJoined = 1;
 	optional PlayerExited playerExited = 2;
 	optional LevelInitialized levelInitialized = 3;
+	optional NewSprite elementPlaced = 4;
 }
 
 // Consider batching?
