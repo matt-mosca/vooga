@@ -1,8 +1,11 @@
 package authoring.LevelToolBar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import display.factory.TabFactory;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,23 +14,43 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class ResourceDisplay extends VBox{
+	private TabPane resourceTabs;
+	private List<ResourceTab> resources;
 	private Map<String, Double> resourceEndowments;
 	private AuthoringController myController;
 	private Button editResources;
+	private TabFactory tabMaker;
 	
 	public ResourceDisplay(AuthoringController controller){
 		myController = controller;
 		resourceEndowments = new HashMap<>();
+		
 		editResources = new Button("Edit or add a resource.");
+		resourceTabs = new TabPane();
+		resources = new ArrayList<ResourceTab>();
 		editResources.setOnAction(e->changeResourceVal());
 		
 		this.getChildren().add(editResources);
+		this.getChildren().add(resourceTabs);
+		createResourceTabs();
 		update();
+	}
+
+	private void createResourceTabs() {
+//		for (int i=0; i<myController.getNumLevelsForGame()) {
+//			Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myController.getCurrentLevel()), null, resourceTabs);
+//			
+//			ResourceTab newLv = new ResourceTab(myController.getCurrentLevel(), myController);
+//			newLv.attach(newTab);
+//		}
+		
 	}
 
 	private void changeResourceVal() {

@@ -71,7 +71,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Scene myTransitionScene;
 	private VBox myLeftBar;
 	private PlayArea myPlayArea;
-	private List<ImageView> currentElements;
 	private PlayModelController myController;
 	private Button pause;
 	private Button play;
@@ -113,6 +112,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		// myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage,
 		// this);
 		clientMessageUtils = new ClientMessageUtils();
+		System.out.println("Initialized clientMessageUtils");
 		myLeftBar = new VBox();
 		idToTemplate = new HashMap<>();
 		hud = new HUD(width);
@@ -179,6 +179,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		try {
+			System.out.println("Getting available games from controller");
 			for (String title : myController.getAvailableGames().keySet()) {
 				games.add(title);
 			}
@@ -224,14 +225,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getStyleClass().add("left-bar");
 	}
 
-	// TODO - can make it more efficient?
 	private void loadSprites() {
-		myPlayArea.getChildren().removeAll(currentElements);
-		currentElements.clear();
-		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
-			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
-		}
-		myPlayArea.getChildren().addAll(currentElements);
+		myPlayArea.getChildren().addAll(clientMessageUtils.getNewImageViews());
+		myPlayArea.getChildren().removeAll(clientMessageUtils.getDeletedImageViews());
+		clientMessageUtils.clearChanges();
 	}
 
 	private void initializeButtons() {
@@ -279,11 +276,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private void step() {
 		Update latestUpdate = myController.update();
-//		if (myController.isReadyForNextLevel()) {
-//			hideTransitorySplashScreen();
-//			// animation.play();
-//			myController.resume();
-//		}
+		/*
+		if (myController.isReadyForNextLevel()) {
+			hideTransitorySplashScreen();
+			// animation.play();
+			myController.resume();
+		}
+
 		if (myController.isLevelCleared()) {
 			level++;
 			animation.pause();
@@ -296,6 +295,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		} else if (myController.isWon()) {
 			// launch win screen
 		}
+		*/
 		hud.update(myController.getResourceEndowments());
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		loadSprites();
@@ -312,7 +312,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void createGameArea() {
 		myPlayArea = new PlayArea(myController, clientMessageUtils);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
-		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
 	}
 
@@ -323,9 +322,11 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			if (e.getButton().equals(MouseButton.PRIMARY)) {
 				Point2D startLocation = new Point2D(e.getX(), e.getY());
 				try {
+					System.out.println("Placing element");
 					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
 					int id = clientMessageUtils.addNewSpriteToDisplay(newSprite);
 					ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
+					myPlayArea.getChildren().add(imageView);
 					idToTemplate.put(id, placeable.getElementName());
 					attachEventHandlers(imageView, id);
 				} catch (ReflectiveOperationException failedToPlaceElementException) {
@@ -347,7 +348,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	@Override
 	public void listItemClicked(MouseEvent e, ImageView image) {
-		if(!checkFunds(image.getId())) return;
+		if (!checkFunds(image.getId()))
+			return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);

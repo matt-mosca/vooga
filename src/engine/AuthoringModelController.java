@@ -45,9 +45,12 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException;
 
 	/**
-	 * Export a fully authored game, including all levels, into an executable file.
+	 * Export a fully authored game, including all levels, into an executable file, published to Google Drive.
+	 *
+	 * @return a URL to access the exported game
+	 * @throws IOException if the game cannot be fully exported or publishing fails
 	 */
-	void exportGame();
+	String exportGame() throws IOException;
 
 	/**
 	 * Set level for the game being authored. Saves the state of the current level
