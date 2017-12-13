@@ -47,6 +47,8 @@ import networking.protocol.PlayerServer.SpriteUpdate;
 
 public class CollaborativeAuthoringClient extends AbstractClient implements AuthoringModelController {
 
+	private final int PORT = 9043;
+
 	public CollaborativeAuthoringClient() {
 		super();
 	}
@@ -301,7 +303,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 
 	@Override
 	protected int getPort() {
-		return Constants.COLLABORATIVE_AUTHORING_SERVER_PORT;
+		return PORT;
 	}
 
 	private Map<String, List<String>> handleElementBaseConfigurationOptionsResponse(

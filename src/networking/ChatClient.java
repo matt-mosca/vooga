@@ -30,6 +30,7 @@ public class ChatClient {
 
     // get from some properties file
     private final String SERVER_ADDRESS = "152.3.53.39";
+    private final int PORT = 9042;
 
     private final String USER_NAME_PROMPT = "Enter user name above";
     // todo - make sure no duplicate user names
@@ -92,7 +93,7 @@ public class ChatClient {
     private void setupChatSocket() {
         try {
             // Make connection and initialize streams
-            socket = new Socket(SERVER_ADDRESS, Constants.CHAT_SERVER_PORT);
+            socket = new Socket(SERVER_ADDRESS, PORT);
             outputWriter = new PrintWriter(socket.getOutputStream(), true);
             Thread t = new ChatThread(socket, chatItems);
             t.start();
