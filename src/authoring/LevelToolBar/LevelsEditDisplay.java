@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import authoring.EditDisplay;
 import engine.authoring_engine.AuthoringController;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -19,6 +20,7 @@ public class LevelsEditDisplay {
 	private GameEnder gameEnder;
 	private EditDisplay myDisplay;
 	private GameEnderRecorder recorder;
+	private HealthSelector health;
 	
 	public LevelsEditDisplay(AuthoringController controller, EditDisplay display) {
 //		myDisplay = display;
@@ -29,7 +31,9 @@ public class LevelsEditDisplay {
 		resourceEditor = new ResourceDisplay(controller);
 		gameEnder = new GameEnder(controller, display);
 		recorder = new GameEnderRecorder(controller);
+		health = new HealthSelector(controller);
 		gameEnder.setRecorder(recorder);
+		myRoot.setBottom(health);
 		myRoot.setLeft(gameEnder);
 		myRoot.setRight(resourceEditor);
 		myRoot.setCenter(recorder);

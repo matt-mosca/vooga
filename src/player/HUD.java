@@ -27,12 +27,13 @@ public class HUD extends HBox{
 		displays = new HashMap<>();
 	}
 
-	public void update(Map<String, Double> values) {
+	public void update(Map<String, Double> values, int health) {
 		for(String value:values.keySet()) {
 			if(displays.containsKey(value)) {
 				displays.get(value).setValue(values.get(value));
 			}
 		}
+		myHealthDisplay.setValue(health);
 	}
 	
 	public void initialize(Map<String, Double> values) {

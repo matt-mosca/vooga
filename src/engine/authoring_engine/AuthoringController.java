@@ -177,12 +177,15 @@ public class AuthoringController extends AbstractGameController implements Autho
                                     Point2D spawningPoint) {
         String waveName = getNameForWave();
         defineElement(waveName, waveProperties);
+        if (getLevelWaveTemplates().size() == getCurrentLevel()) {
+            getLevelWaveTemplates().add(new HashMap<>());
+        }
         getLevelWaveTemplates().get(getCurrentLevel()).put(waveName, spawningPoint);
         //waveIdMap.put(gameWaveCounter.getAndIncrement(), waveName);
         //int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
         //save this to level waves
         //getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
-        return gameWaveCounter.get();
+        return gameWaveCounter.getAndIncrement();
     }
 
     @Override
@@ -191,6 +194,10 @@ public class AuthoringController extends AbstractGameController implements Autho
         String waveName = getNameForWaveNumber(getCurrentLevel(), waveId);
         // Overwrite the template
         defineElement(waveName, updatedProperties);
+        if (getLevelWaveTemplates().size() == getCurrentLevel()) {
+            getLevelWaveTemplates().add(new HashMap<>());
+        }
+        getLevelWaveTemplates().get(getCurrentLevel()).put(waveName, newSpawningPoint);
         // deleteOutdatedWave(waveId);
         // Place the new wave
         // int newSpriteId = placeElement(waveName, newSpawningPoint, newElementNamesToSpawn);

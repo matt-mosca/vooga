@@ -251,9 +251,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void updateSprites() {
-		myPlayArea.getChildren().addAll(clientMessageUtils.getNewImageViews());
+		addLoadedSprites();
 		removeEliminatedSprite();
 		clientMessageUtils.clearChanges();
+	}
+
+	private void addLoadedSprites() {
+		for(ImageView spriteImage:clientMessageUtils.getNewImageViews()) {
+			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
+				//TODO add method here that let's you mark the object via the controller if we want to play whack-a-mole
+			});
+		}
 	}
 
 	private void removeEliminatedSprite() {
@@ -331,7 +339,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			// launch win screen
 		}
 		*/
-		hud.update(myController.getResourceEndowments());
+		//TODO Adi, uncomment this when you're ready to test health 
+		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		updateSprites();
 	}
