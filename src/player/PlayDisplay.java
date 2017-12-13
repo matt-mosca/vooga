@@ -118,7 +118,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		hud = new HUD(width);
 		speedControl = new ChangeSpeedToggles();
 		styleLeftBar();
-		createGameArea(height - 20);
+		createGameArea();
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
@@ -279,16 +279,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private void step() {
 		Update latestUpdate = myController.update();
-		if (myController.isReadyForNextLevel()) {
-			hideTransitorySplashScreen();
-			// animation.play();
-			myController.resume();
-		}
+//		if (myController.isReadyForNextLevel()) {
+//			hideTransitorySplashScreen();
+//			// animation.play();
+//			myController.resume();
+//		}
 		if (myController.isLevelCleared()) {
 			level++;
 			animation.pause();
 			myController.pause();
-			launchTransitorySplashScreen();
+//			launchTransitorySplashScreen();
 			hud.initialize(myController.getResourceEndowments());
 		} else if (myController.isLost()) {
 			// launch lost screen
@@ -309,8 +309,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		this.getStage().setScene(this.getScene());
 	}
 
-	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
+	private void createGameArea() {
+		myPlayArea = new PlayArea(myController, clientMessageUtils);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
 		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
