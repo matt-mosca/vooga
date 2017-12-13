@@ -300,14 +300,14 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	private void appendNotificationToQueue(Notification notification) {
-		System.out.println("NOTIFICATION MESSAGE: ");
-		System.out.println(notification.toString());
+		//System.out.println("NOTIFICATION MESSAGE: ");
+		//System.out.println(notification.toString());
 		notificationQueue.add(notification);
 	}
 
 	private void appendMessageToQueue(ServerMessage serverMessage) {
-		System.out.println("NORMAL MESSAGE: ");
-		System.out.println(serverMessage.toString());
+		//System.out.println("NORMAL MESSAGE: ");
+		//System.out.println(serverMessage.toString());
 		synchronized (messageQueue) {
 			messageQueue.add(serverMessage);
 			messageQueue.notify();
