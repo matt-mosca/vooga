@@ -158,7 +158,7 @@ public class AuthoringController extends AbstractGameController implements Autho
         if (getLevelWaveTemplates().size() == getCurrentLevel()) {
             getLevelWaveTemplates().add(new HashMap<>());
         }
-        getLevelWaveTemplates().get(getCurrentLevel()).put(waveName, spawningPoint);
+        getLevelWaveTemplates().get(getCurrentLevel()-1).put(waveName, spawningPoint);
         //waveIdMap.put(gameWaveCounter.getAndIncrement(), waveName);
         //int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
         //save this to level waves

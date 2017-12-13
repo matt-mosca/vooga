@@ -129,6 +129,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(volumeSlider);
 		volumeSlider.setLayoutY(7);
 		volumeSlider.setLayoutX(55);
+		//backgroundSong = myController.getAudioClip();
 		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();

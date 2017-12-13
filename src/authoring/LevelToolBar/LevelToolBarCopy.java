@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class LevelToolBar extends VBox implements TabInterface, ButtonInterface {
+public class LevelToolBarCopy extends VBox implements TabInterface, ButtonInterface {
 	private static final int SIZE = 400;
 	private static final int WIDTH = 100;
 	private static final int X_LAYOUT = 260;
@@ -63,7 +63,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
     private ClientMessageUtils clientMessageUtils;
 
-	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
+	public LevelToolBarCopy(EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
 		currentLevel = STARTING_LEVEL;
 		myCreated = created;
@@ -325,11 +325,11 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
     }
 }
 
-class Data {
+class Data0 {
     List<ImageView> spriteNames;
     Integer waveId;
-
-    Data(List<ImageView> spriteNames, Integer waveId) {
+    
+    Data0(List<ImageView> spriteNames, Integer waveId) {
         this.spriteNames = spriteNames;
         this.waveId = waveId;
     }
@@ -337,10 +337,10 @@ class Data {
 
 
 
-class LevelData {
+class LevelData0 {
 	Map<Integer, List<ImageView>> waveInfo;
 	
-	LevelData() {
+	LevelData0() {
 		waveInfo.put(1, new ArrayList<ImageView>());
 	}
 	
