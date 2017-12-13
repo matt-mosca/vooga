@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class HealthSelector extends HBox{
-	private final double HEALTH_DEFAULT = 100;
+	private final int HEALTH_DEFAULT = 100;
 	
 	private AuthoringController myController;
 
@@ -25,7 +25,7 @@ public class HealthSelector extends HBox{
 		level.valueProperty().addListener(new ChangeListener<Integer>() {
 			@Override
 			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-//				amount.setText(Integer.parseInt(myController.getLevelHealth(newValue)));
+				amount.setText(Integer.toString(myController.getLevelHealth(newValue)));
 			}
 		});
 		
@@ -34,9 +34,9 @@ public class HealthSelector extends HBox{
 		update.addEventHandler(MouseEvent.MOUSE_CLICKED, event->{
 			try{
 				int health = Integer.parseInt(amount.getText());
-//				myController.setLevelHealth(health, level.getSelectionModel().getSelectedItem());
+				myController.setLevelHealth(level.getSelectionModel().getSelectedItem(), health);
 			}catch(NumberFormatException e) {
-//				myController.setLevelHealth(100, level.getSelectionModel().getSelectedItem());
+				myController.setLevelHealth(level.getSelectionModel().getSelectedItem(), HEALTH_DEFAULT);
 			}
 		});
 		
