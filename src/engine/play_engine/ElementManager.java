@@ -31,6 +31,9 @@ public class ElementManager {
 	private Iterator<GameElement> waves;
 	private GameElement currentWave;
 
+	private final int FRAMES_BETWEEN_WAVES = 180;
+	private int waveGapCountdown;
+
 	
 	private AudioClipFactory audioClipFactory;
 
@@ -76,16 +79,22 @@ public class ElementManager {
 			handleElementFiring(element);
 			processAllCollisionsForElement(elementIndex, element);
 		}
-		if (currentWave != null) {
-			processStepForElement(currentWave);
-			if (!currentWave.isAlive()) {
-				currentWave = waves.next();
-			}
-		}
+		processWaveUpdate();
 		activeElements.forEach(this::processStepForElement);
 		activeElements.removeAll(deadElements);
 		activeElements.addAll(newElements);
+	}
 
+	private void processWaveUpdate() {
+		if (currentWave != null && waveGapCountdown <= 0) {
+			processStepForElement(currentWave);
+			if (!currentWave.isAlive()) {
+				waveGapCountdown = FRAMES_BETWEEN_WAVES;
+				currentWave = waves.next();
+			}
+		} else {
+			waveGapCountdown--;
+		}
 	}
 
 	private void processStepForElement(GameElement element) {
