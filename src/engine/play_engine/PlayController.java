@@ -292,5 +292,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		boolean reached = elementManager.enemyReachedTarget();
 		return reached;
 	}
+	
+	private boolean zeroHealth() {
+		return getLevelHealths().get(getCurrentLevel()) <= 0;
+	}
 
 }
