@@ -19,9 +19,10 @@ message ServerMessage {
 	repeated TemplateProperties templateProperties = 12;
 	repeated ElementCost elementCosts = 13;
 	optional NewSprite elementPlaced = 14;
-	repeated NewSprite levelSprites = 15;
-	optional NumberOfLevels numLevels = 16;
-	optional string error = 17;
+	optional SpriteUpdate elementMoved = 15;
+	repeated NewSprite levelSprites = 16;
+	optional NumberOfLevels numLevels = 17;
+	optional string error = 18;
 }
 
 /*
@@ -62,6 +63,7 @@ message Notification {
 	optional PlayerExited playerExited = 2;
 	optional LevelInitialized levelInitialized = 3;
 	optional NewSprite elementPlaced = 4;
+	optional SpriteUpdate elementMoved = 5;
 }
 
 // Consider batching?

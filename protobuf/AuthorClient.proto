@@ -1,5 +1,7 @@
 syntax = "proto2";
 
+import "PlayerClient.proto";
+
 /*
 	Top-Level message
 */
@@ -81,12 +83,6 @@ message AddElementToInventory {
 }
 
 message GetCurrentLevel {
-}
-
-message MoveElement {
-	required int32 elementId = 1;
-	required double xCoord = 2;
-	required double yCoord = 3;
 }
 
 message UpdateElementProperties {
