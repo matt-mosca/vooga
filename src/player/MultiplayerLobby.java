@@ -172,6 +172,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		activityBox.setMinWidth(300);
 		activityBox.setMinHeight(300);
 		activityBox.getStyleClass().add("borders");
+		notificationBox.setLayoutX(350);
 		rootAdd(notificationBox);
 	}
 
@@ -481,18 +482,21 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	private void handleUserJoinedRoom(String userName) {
-//		notificationBar.setText("User " + userName + " joined!");
-//		notificationBar.show();
+		notificationBar.setText("User " + userName + " joined!");
+		if(!username.equals("bot"));
+			notificationBar.show();
 		System.out.println("User " + userName + " joined!");
+		players.setNames(multiClient.getPlayerNames());
 	}
 
 	private void handleUserExitedRoom(String userName) {
-//		notificationBar.setText("User " + userName + " exited!");
-//		notificationBar.show();
+		notificationBar.setText("User " + userName + " exited!");
+		if(!username.equals("bot"));
+			notificationBar.show();
 		System.out.println("User " + userName + "exited!");
+		players.setNames(multiClient.getPlayerNames());
 	}
 
-	// TODO - Mosca (Check if correct)
 	private void handleGameLaunched(LevelInitialized levelData) {
 		launched = true;
 		getStage().setScene(playDisplay.getScene());
