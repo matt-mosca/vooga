@@ -18,6 +18,7 @@ import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.GetNumberOfLevels;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.LoadLevel;
+import networking.protocol.PlayerClient.MoveElement;
 import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.Game;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
@@ -34,6 +35,7 @@ import networking.protocol.PlayerServer.PlayerJoined;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ReadyForNextLevel;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.SpriteUpdate;
 
 /**
  * Gateway of multi-player player clients to server back end. Can handle
@@ -251,6 +253,17 @@ class MultiPlayerController {
 		return serverMessageBuilder.setElementPlaced(placedElement).build().toByteArray();
 	}
 
+	byte[] moveElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getPlayEngineForClient(clientId);
+		MoveElement moveElementRequest = clientMessage.getMoveElement();
+		SpriteUpdate updatedSprite = playController.moveElement(moveElementRequest.getElementId(),
+				moveElementRequest.getNewXCoord(), moveElementRequest.getNewYCoord());
+		// Broadcast
+		messageQueue.add(ServerMessage.newBuilder()
+				.setNotification(Notification.newBuilder().setElementMoved(updatedSprite).build()).build());
+		return serverMessageBuilder.setElementMoved(updatedSprite).build().toByteArray();
+	}
+
 	byte[] upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
 			throws ReflectiveOperationException {
 		PlayController playController = getPlayEngineForClient(clientId);
@@ -395,6 +408,9 @@ class MultiPlayerController {
 			ServerMessage.Builder serverMessageBuilder) throws ReflectiveOperationException {
 		if (clientMessage.hasPlaceElement()) {
 			return placeElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasMoveElement()) {
+			return moveElement(clientId, clientMessage, serverMessageBuilder);
 		}
 		if (clientMessage.hasUpgradeElement()) {
 			return upgradeElement(clientId, clientMessage, serverMessageBuilder);

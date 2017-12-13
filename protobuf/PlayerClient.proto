@@ -20,11 +20,12 @@ message ClientMessage {
 	optional GetAllTemplateProperties getAllTemplateProperties = 13; // Should deprecate from PlayModelController interface?
 	optional GetElementCosts getElementCosts = 14;
 	optional PlaceElement placeElement = 15;
-	optional UpgradeElement upgradeElement = 16; // Has no corresponding response? Client doesn't check if upgrade succeeded
-	optional CheckReadyForNextLevel checkReadyForNextLevel = 17;
-	optional LoadLevel loadLevel = 18;
-	optional GetLevelElements getLevelElements = 19;
-	optional GetNumberOfLevels getNumLevels = 20;
+	optional MoveElement moveElement = 16;
+	optional UpgradeElement upgradeElement = 17; // Has no corresponding response? Client doesn't check if upgrade succeeded
+	optional CheckReadyForNextLevel checkReadyForNextLevel = 18;
+	optional LoadLevel loadLevel = 19;
+	optional GetLevelElements getLevelElements = 20;
+	optional GetNumberOfLevels getNumLevels = 21;
 }
 
 /*
@@ -87,6 +88,12 @@ message PlaceElement {
 	required string elementName = 1;
 	required double xCoord = 2;
 	required double yCoord = 3;
+}
+
+message MoveElement {
+	required int32 elementId = 1;
+	required double newXCoord = 2;
+	required double newYCoord = 3;
 }
 
 message UpgradeElement {

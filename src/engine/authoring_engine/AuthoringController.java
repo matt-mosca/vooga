@@ -102,15 +102,6 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
 
     @Override
-    public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate)
-            throws IllegalArgumentException {
-        GameElement gameElement = getElement(elementId);
-        gameElement.setX(xCoordinate);
-        gameElement.setY(yCoordinate);
-        return getServerMessageUtils().packageUpdatedSprite(gameElement, elementId);
-    }
-
-    @Override
     public void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate)
             throws IllegalArgumentException {
         updateElementPropertiesById(elementId, propertiesToUpdate);
@@ -125,13 +116,6 @@ public class AuthoringController extends AbstractGameController implements Autho
     @Override
     public void addElementToInventory(String elementName) {
         getLevelInventories().get(getCurrentLevel()).add(elementName);
-    }
-
-    private GameElement getElement(int elementId) throws IllegalArgumentException {
-        if (!getSpriteIdMap().containsKey(elementId)) {
-            throw new IllegalArgumentException();
-        }
-        return getSpriteIdMap().get(elementId);
     }
 
     @Override

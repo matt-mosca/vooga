@@ -8,6 +8,7 @@ import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.Inventory;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.TemplateProperties;
 import engine.game_elements.GameElementUpgrader;
 import util.GameConditionsReader;
@@ -199,16 +200,15 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return serverMessageUtils.packageNewSprite(gameElement, spriteId);
 	}
 
-	private GameElement generatePlacedElement(String elementTemplateName, Point2D startCoordinates)
-			throws ReflectiveOperationException {
-		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
-				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
-						levelSpritesCache.get(currentLevel));
-		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
-		GameElement element = gameElementFactory.generateElement(elementTemplateName,
-				auxiliarySpriteConstructionObjects);
-		return element;
+	@Override
+	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate)
+			throws IllegalArgumentException {
+		GameElement gameElement = getElement(elementId);
+		gameElement.setX(xCoordinate);
+		gameElement.setY(yCoordinate);
+		return getServerMessageUtils().packageUpdatedSprite(gameElement, elementId);
 	}
+
 
 	@Override
 	public int getCurrentLevel() {
@@ -423,6 +423,24 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	protected abstract void assertValidLevel(int level) throws IllegalArgumentException;
 
+	private GameElement getElement(int elementId) throws IllegalArgumentException {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			throw new IllegalArgumentException();
+		}
+		return getSpriteIdMap().get(elementId);
+	}
+
+	private GameElement generatePlacedElement(String elementTemplateName, Point2D startCoordinates)
+			throws ReflectiveOperationException {
+		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
+				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
+						levelSpritesCache.get(currentLevel));
+		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
+		GameElement element = gameElementFactory.generateElement(elementTemplateName,
+				auxiliarySpriteConstructionObjects);
+		return element;
+	}
+	
 	private Collection<GameElement> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);

@@ -35,6 +35,7 @@ import networking.protocol.PlayerClient.GetTemplateProperties;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.LaunchGameRoom;
 import networking.protocol.PlayerClient.LoadLevel;
+import networking.protocol.PlayerClient.MoveElement;
 import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
@@ -46,6 +47,7 @@ import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Notification;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.TemplateProperties;
 import networking.protocol.PlayerServer.Update;
 import util.io.SerializationUtils;
@@ -59,8 +61,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	private DataOutputStream outputWriter;
 	private SerializationUtils serializationUtils;
 
-	private final int POLLING_FREQUENCY = 50; 
-	
+	private final int POLLING_FREQUENCY = 50;
+
 	private Update latestUpdate;
 
 	private ObservableList<Notification> notificationQueue = FXCollections.observableArrayList();
@@ -183,6 +185,13 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	@Override
+	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate) {
+		writeRequestBytes(ClientMessage.newBuilder().setMoveElement(MoveElement.newBuilder().setElementId(elementId)
+				.setNewXCoord(xCoordinate).setNewYCoord(yCoordinate).build()).build().toByteArray());
+		return handleMoveElementResponse(pollFromMessageQueue());
+	}
+
+	@Override
 	public int getNumLevelsForGame(String gameName, boolean originalGame) {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetNumLevels(GetNumberOfLevels.newBuilder().setGameName(gameName).setOriginalGame(originalGame))
@@ -300,14 +309,14 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	private void appendNotificationToQueue(Notification notification) {
-		//System.out.println("NOTIFICATION MESSAGE: ");
-		//System.out.println(notification.toString());
+		// System.out.println("NOTIFICATION MESSAGE: ");
+		// System.out.println(notification.toString());
 		notificationQueue.add(notification);
 	}
 
 	private void appendMessageToQueue(ServerMessage serverMessage) {
-		//System.out.println("NORMAL MESSAGE: ");
-		//System.out.println(serverMessage.toString());
+		// System.out.println("NORMAL MESSAGE: ");
+		// System.out.println(serverMessage.toString());
 		synchronized (messageQueue) {
 			messageQueue.add(serverMessage);
 			messageQueue.notify();
@@ -367,6 +376,13 @@ public abstract class AbstractClient implements AbstractGameModelController {
 			return serverMessage.getElementPlaced();
 		}
 		return NewSprite.getDefaultInstance(); // Should be careful not to interpret as having spriteId = 0
+	}
+	
+	private SpriteUpdate handleMoveElementResponse(ServerMessage serverMessage) {
+		if (serverMessage.hasElementMoved()) {
+			return serverMessage.getElementMoved();
+		}
+		return SpriteUpdate.getDefaultInstance();
 	}
 
 	private int handleNumLevelsForGameResponse(ServerMessage serverMessage) {
