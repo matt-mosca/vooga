@@ -19,6 +19,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import networking.MultiPlayerClient;
 import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.Notification;
 import util.io.SerializationUtils;
 
 public class MultiplayerLobby extends ScreenDisplay {
@@ -53,6 +54,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private String username;
 	private String gameName;
 	private String currentLobby;
+	
+	private boolean launched = false;
 
 	//Add a way to select a lobby in the list and then press "Join Selected Lobby" to join it
 	//To do this, make an EventHandler- upon clicking, reset an instance variable
@@ -292,6 +295,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	//This method or an external method would be called when "START GAME" is pressed (serves as action for button)
 	private void startGame() {
 		LevelInitialized newLevelData = multiClient.launchGameRoom();
+		launched = true;
 		getStage().setScene(playDisplay.getScene());
 		playDisplay.startDisplay(newLevelData);
 //		multiClient.launchGameRoom(currentLobby);
