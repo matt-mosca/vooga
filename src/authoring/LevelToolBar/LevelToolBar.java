@@ -289,7 +289,7 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 			int wave = Integer.valueOf(waveKey.split("\\.+")[1]);
 			//Check this logic
 			if (level != levelRemoved || wave < levelRemoved) tempMap.put(waveKey, waveToData.get(waveKey));
-			if (wave > levelRemoved) {
+			else if (wave > levelRemoved) {
 				tempMap.put(waveAndLevel(level, wave-1), waveToData.get(waveKey));
 			}
 		});
