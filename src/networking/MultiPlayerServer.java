@@ -5,16 +5,12 @@ import java.net.Socket;
 import java.util.Collection;
 import java.util.HashSet;
 
-import javafx.stage.Stage;
-
 /**
  * Handles requests from multi-player clients over the network
  * 
  * @author radithya
  */
 public class MultiPlayerServer extends AbstractServer {
-
-	public static final int PORT = 9041;
 
 	private MultiPlayerController multiPlayerController = new MultiPlayerController();
 	// Keep track of handlers for broadcasting
@@ -25,14 +21,14 @@ public class MultiPlayerServer extends AbstractServer {
 		// Register binding / observable on controller for push notifications
 		multiPlayerController.registerNotificationStreamListener(e -> {
 			while (e.next()) {
-				e.getAddedSubList().stream().forEach(addedMessage -> pushNotification(addedMessage.toByteArray()));				
+				e.getAddedSubList().stream().forEach(addedMessage -> pushNotification(addedMessage.toByteArray()));
 			}
 		});
 	}
 
 	@Override
 	public int getPort() {
-		return PORT;
+		return Constants.MULTIPLAYER_SERVER_PORT;
 	}
 
 	void pushNotification(byte[] notificationBytes) {
@@ -54,7 +50,6 @@ public class MultiPlayerServer extends AbstractServer {
 	}
 
 	public static void main(String[] args) {
-		//launch(args);
 		MultiPlayerServer multiPlayerServer = new MultiPlayerServer();
 		multiPlayerServer.startServer();
 	}

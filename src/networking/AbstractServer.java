@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import javafx.application.Application;
-
 /**
  * Abstracts common server functionality for Multi-Player game server and chat
  * server
@@ -21,7 +19,7 @@ public abstract class AbstractServer {
 		try {
 			listener = new ServerSocket(getPort());
 		} catch (IOException e) {
-			// todo - handle
+			System.out.println("Unable to set up server");
 		}
 	}
 
