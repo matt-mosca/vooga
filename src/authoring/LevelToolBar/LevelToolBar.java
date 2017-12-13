@@ -209,6 +209,7 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 		 * Basically the elementsToSpawn is virtually useless with shoot periodically firing
 		 * strategy. Waiting for backend integration of round robin firing strategy
 		 */
+        
 		
 		for (String levelDotWave : levelWaveArray) {
 			int level = Integer.valueOf(levelDotWave.split("\\.+")[LEVEL_INDEX]);
@@ -225,12 +226,12 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 				}
 				//TODO: Refactor code below for changing map
 				List<ImageView> tempArray = new ArrayList<ImageView>();
-				tempArray.addAll(waveToData.get(levelDotWave).spriteNames);
 				tempArray.addAll(imageList);
+				tempArray.addAll(waveToData.get(levelDotWave).spriteNames);
 				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
 			} else {
-					waveToData.put(levelDotWave, new Data(imageList,
-							myController.createWaveProperties(waveProperties, elementsToSpawn, location)));
+					waveToData.put(levelAndWave, new Data(imageList,
+							myController.createWaveProperties(myProperties, elementsToSpawn, location)));
 			}
 		}
 		updateImages();

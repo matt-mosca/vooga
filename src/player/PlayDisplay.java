@@ -309,7 +309,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
+//		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
+		myPlayArea = new PlayArea(myController, clientMessageUtils);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
 		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
