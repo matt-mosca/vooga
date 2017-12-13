@@ -58,7 +58,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private List<String> levelDescriptions = new ArrayList<>();
 	private List<Bank> levelBanks = new ArrayList<>();
 	private List<Set<String>> levelInventories = new ArrayList<>();
-	private List<List<GameElement>> levelWaves = new ArrayList<>(); // may be removed
+	private List<List<GameElement>> levelWaves = new ArrayList<>();
 	private List<Integer> levelHealths = new ArrayList<>();
 
 	private List<Map<String, Point2D>> levelWaveTemplates = new ArrayList<>();
@@ -108,7 +108,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			serializedLevelsData.put(level,
 					getIoController().getLevelSerialization(level, getLevelDescriptions().get(level),
 							getLevelConditions().get(level), getLevelBanks().get(level), getLevelStatuses().get(level),
-							levelSpritesCache.get(level), levelInventories.get(level), levelWaves.get(level),
+							levelSpritesCache.get(level), levelInventories.get(level), new ArrayList<>(),
 							levelHealths.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
@@ -148,6 +148,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void buildWaves() throws IOException {
 		// ordering should be correct because of loading process
 		for (Map<String, Point2D> wavesInLevel : levelWaveTemplates) {
+			System.out.println("wtf mayne");
 			List<GameElement> waves = new ArrayList<>();
 			List<String> sortedWaveNames = new ArrayList<>(wavesInLevel.keySet());
 			Collections.sort(sortedWaveNames);
@@ -204,7 +205,9 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
-		return gameElementFactory.generateElement(elementTemplateName, auxiliarySpriteConstructionObjects);
+		GameElement element = gameElementFactory.generateElement(elementTemplateName,
+				auxiliarySpriteConstructionObjects);
+		return element;
 	}
 
 	@Override
@@ -502,18 +505,19 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void initialize() {
 		// To adjust for 1-indexing
 		initializeLevel();
+		getLevelWaves().add(new ArrayList<>());
+		getLevelWaveTemplates().add(new HashMap<>());
 		setLevel(1);
 	}
 
 	private void initializeLevel() {
+		System.out.println("wtf");
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
 		getLevelInventories().add(new HashSet<>());
 		getLevelDescriptions().add(new String());
 		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
-		getLevelWaves().add(new ArrayList<>());
 		getLevelHealths().add(0);
-		levelWaveTemplates.add(new HashMap<>());
 		initializeLevelConditions();
 	}
 
