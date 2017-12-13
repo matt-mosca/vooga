@@ -174,234 +174,247 @@ public final class AuthorClient {
     PlayerClient.MoveElementOrBuilder getMoveElementOrBuilder();
 
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .DeleteElement deleteElement = 13;</code>
+     */
+    boolean hasDeleteElement();
+    /**
+     * <code>optional .DeleteElement deleteElement = 13;</code>
+     */
+    PlayerClient.DeleteElement getDeleteElement();
+    /**
+     * <code>optional .DeleteElement deleteElement = 13;</code>
+     */
+    PlayerClient.DeleteElementOrBuilder getDeleteElementOrBuilder();
+
+    /**
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
      */
     boolean hasUpdateElementProperties();
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
      */
     AuthorClient.UpdateElementProperties getUpdateElementProperties();
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
      */
     AuthorClient.UpdateElementPropertiesOrBuilder getUpdateElementPropertiesOrBuilder();
 
     /**
-     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
      */
     boolean hasGetAllDefinedElementUpgrades();
     /**
-     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
      */
     AuthorClient.GetAllDefinedElementUpgrades getGetAllDefinedElementUpgrades();
     /**
-     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
      */
     AuthorClient.GetAllDefinedElementUpgradesOrBuilder getGetAllDefinedElementUpgradesOrBuilder();
 
     /**
-     * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+     * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
      */
     boolean hasGetResourceEndowments();
     /**
-     * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+     * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
      */
     AuthorClient.GetResourceEndowments getGetResourceEndowments();
     /**
-     * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+     * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
      */
     AuthorClient.GetResourceEndowmentsOrBuilder getGetResourceEndowmentsOrBuilder();
 
     /**
-     * <code>optional .SetGameName setGameName = 16;</code>
+     * <code>optional .SetGameName setGameName = 17;</code>
      */
     boolean hasSetGameName();
     /**
-     * <code>optional .SetGameName setGameName = 16;</code>
+     * <code>optional .SetGameName setGameName = 17;</code>
      */
     AuthorClient.SetGameName getSetGameName();
     /**
-     * <code>optional .SetGameName setGameName = 16;</code>
+     * <code>optional .SetGameName setGameName = 17;</code>
      */
     AuthorClient.SetGameNameOrBuilder getSetGameNameOrBuilder();
 
     /**
-     * <code>optional .SetGameDescription setGameDescription = 17;</code>
+     * <code>optional .SetGameDescription setGameDescription = 18;</code>
      */
     boolean hasSetGameDescription();
     /**
-     * <code>optional .SetGameDescription setGameDescription = 17;</code>
+     * <code>optional .SetGameDescription setGameDescription = 18;</code>
      */
     AuthorClient.SetGameDescription getSetGameDescription();
     /**
-     * <code>optional .SetGameDescription setGameDescription = 17;</code>
+     * <code>optional .SetGameDescription setGameDescription = 18;</code>
      */
     AuthorClient.SetGameDescriptionOrBuilder getSetGameDescriptionOrBuilder();
 
     /**
-     * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+     * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
      */
     boolean hasSetVictoryCondition();
     /**
-     * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+     * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
      */
     AuthorClient.SetVictoryCondition getSetVictoryCondition();
     /**
-     * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+     * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
      */
     AuthorClient.SetVictoryConditionOrBuilder getSetVictoryConditionOrBuilder();
 
     /**
-     * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+     * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
      */
     boolean hasSetDefeatCondition();
     /**
-     * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+     * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
      */
     AuthorClient.SetDefeatCondition getSetDefeatCondition();
     /**
-     * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+     * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
      */
     AuthorClient.SetDefeatConditionOrBuilder getSetDefeatConditionOrBuilder();
 
     /**
-     * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+     * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
      */
     boolean hasSetStatusProperty();
     /**
-     * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+     * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
      */
     AuthorClient.SetStatusProperty getSetStatusProperty();
     /**
-     * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+     * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
      */
     AuthorClient.SetStatusPropertyOrBuilder getSetStatusPropertyOrBuilder();
 
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     java.util.List<AuthorClient.ResourceEndowment> 
         getSetResourceEndowmentsList();
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     AuthorClient.ResourceEndowment getSetResourceEndowments(int index);
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     int getSetResourceEndowmentsCount();
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     java.util.List<? extends AuthorClient.ResourceEndowmentOrBuilder> 
         getSetResourceEndowmentsOrBuilderList();
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     AuthorClient.ResourceEndowmentOrBuilder getSetResourceEndowmentsOrBuilder(
         int index);
 
     /**
-     * <code>optional .SetUnitCost setUnitCost = 22;</code>
+     * <code>optional .SetUnitCost setUnitCost = 23;</code>
      */
     boolean hasSetUnitCost();
     /**
-     * <code>optional .SetUnitCost setUnitCost = 22;</code>
+     * <code>optional .SetUnitCost setUnitCost = 23;</code>
      */
     AuthorClient.SetUnitCost getSetUnitCost();
     /**
-     * <code>optional .SetUnitCost setUnitCost = 22;</code>
+     * <code>optional .SetUnitCost setUnitCost = 23;</code>
      */
     AuthorClient.SetUnitCostOrBuilder getSetUnitCostOrBuilder();
 
     /**
-     * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+     * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
      */
     boolean hasCreateWaveProperties();
     /**
-     * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+     * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
      */
     AuthorClient.CreateWaveProperties getCreateWaveProperties();
     /**
-     * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+     * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
      */
     AuthorClient.CreateWavePropertiesOrBuilder getCreateWavePropertiesOrBuilder();
 
     /**
-     * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+     * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
      */
     boolean hasEditWaveProperties();
     /**
-     * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+     * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
      */
     AuthorClient.EditWaveProperties getEditWaveProperties();
     /**
-     * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+     * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
      */
     AuthorClient.EditWavePropertiesOrBuilder getEditWavePropertiesOrBuilder();
 
     /**
-     * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+     * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
      */
     boolean hasGetWaveProperties();
     /**
-     * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+     * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
      */
     AuthorClient.GetWaveProperties getGetWaveProperties();
     /**
-     * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+     * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
      */
     AuthorClient.GetWavePropertiesOrBuilder getGetWavePropertiesOrBuilder();
 
     /**
-     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
      */
     boolean hasGetPossibleVictoryConditions();
     /**
-     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
      */
     AuthorClient.GetPossibleVictoryConditions getGetPossibleVictoryConditions();
     /**
-     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
      */
     AuthorClient.GetPossibleVictoryConditionsOrBuilder getGetPossibleVictoryConditionsOrBuilder();
 
     /**
-     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
      */
     boolean hasGetPossibleDefeatConditions();
     /**
-     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
      */
     AuthorClient.GetPossibleDefeatConditions getGetPossibleDefeatConditions();
     /**
-     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
      */
     AuthorClient.GetPossibleDefeatConditionsOrBuilder getGetPossibleDefeatConditionsOrBuilder();
 
     /**
-     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
      */
     boolean hasGetCurrentVictoryConditions();
     /**
-     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
      */
     AuthorClient.GetCurrentVictoryConditions getGetCurrentVictoryConditions();
     /**
-     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
      */
     AuthorClient.GetCurrentVictoryConditionsOrBuilder getGetCurrentVictoryConditionsOrBuilder();
 
     /**
-     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
      */
     boolean hasGetCurrentDefeatConditions();
     /**
-     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
      */
     AuthorClient.GetCurrentDefeatConditions getGetCurrentDefeatConditions();
     /**
-     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
      */
     AuthorClient.GetCurrentDefeatConditionsOrBuilder getGetCurrentDefeatConditionsOrBuilder();
   }
@@ -605,8 +618,21 @@ public final class AuthorClient {
               break;
             }
             case 106: {
-              AuthorClient.UpdateElementProperties.Builder subBuilder = null;
+              PlayerClient.DeleteElement.Builder subBuilder = null;
               if (((bitField0_ & 0x00001000) == 0x00001000)) {
+                subBuilder = deleteElement_.toBuilder();
+              }
+              deleteElement_ = input.readMessage(PlayerClient.DeleteElement.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(deleteElement_);
+                deleteElement_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00001000;
+              break;
+            }
+            case 114: {
+              AuthorClient.UpdateElementProperties.Builder subBuilder = null;
+              if (((bitField0_ & 0x00002000) == 0x00002000)) {
                 subBuilder = updateElementProperties_.toBuilder();
               }
               updateElementProperties_ = input.readMessage(AuthorClient.UpdateElementProperties.PARSER, extensionRegistry);
@@ -614,12 +640,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(updateElementProperties_);
                 updateElementProperties_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00001000;
+              bitField0_ |= 0x00002000;
               break;
             }
-            case 114: {
+            case 122: {
               AuthorClient.GetAllDefinedElementUpgrades.Builder subBuilder = null;
-              if (((bitField0_ & 0x00002000) == 0x00002000)) {
+              if (((bitField0_ & 0x00004000) == 0x00004000)) {
                 subBuilder = getAllDefinedElementUpgrades_.toBuilder();
               }
               getAllDefinedElementUpgrades_ = input.readMessage(AuthorClient.GetAllDefinedElementUpgrades.PARSER, extensionRegistry);
@@ -627,12 +653,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(getAllDefinedElementUpgrades_);
                 getAllDefinedElementUpgrades_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00002000;
+              bitField0_ |= 0x00004000;
               break;
             }
-            case 122: {
+            case 130: {
               AuthorClient.GetResourceEndowments.Builder subBuilder = null;
-              if (((bitField0_ & 0x00004000) == 0x00004000)) {
+              if (((bitField0_ & 0x00008000) == 0x00008000)) {
                 subBuilder = getResourceEndowments_.toBuilder();
               }
               getResourceEndowments_ = input.readMessage(AuthorClient.GetResourceEndowments.PARSER, extensionRegistry);
@@ -640,12 +666,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(getResourceEndowments_);
                 getResourceEndowments_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00004000;
+              bitField0_ |= 0x00008000;
               break;
             }
-            case 130: {
+            case 138: {
               AuthorClient.SetGameName.Builder subBuilder = null;
-              if (((bitField0_ & 0x00008000) == 0x00008000)) {
+              if (((bitField0_ & 0x00010000) == 0x00010000)) {
                 subBuilder = setGameName_.toBuilder();
               }
               setGameName_ = input.readMessage(AuthorClient.SetGameName.PARSER, extensionRegistry);
@@ -653,12 +679,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(setGameName_);
                 setGameName_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00008000;
+              bitField0_ |= 0x00010000;
               break;
             }
-            case 138: {
+            case 146: {
               AuthorClient.SetGameDescription.Builder subBuilder = null;
-              if (((bitField0_ & 0x00010000) == 0x00010000)) {
+              if (((bitField0_ & 0x00020000) == 0x00020000)) {
                 subBuilder = setGameDescription_.toBuilder();
               }
               setGameDescription_ = input.readMessage(AuthorClient.SetGameDescription.PARSER, extensionRegistry);
@@ -666,12 +692,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(setGameDescription_);
                 setGameDescription_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00010000;
+              bitField0_ |= 0x00020000;
               break;
             }
-            case 146: {
+            case 154: {
               AuthorClient.SetVictoryCondition.Builder subBuilder = null;
-              if (((bitField0_ & 0x00020000) == 0x00020000)) {
+              if (((bitField0_ & 0x00040000) == 0x00040000)) {
                 subBuilder = setVictoryCondition_.toBuilder();
               }
               setVictoryCondition_ = input.readMessage(AuthorClient.SetVictoryCondition.PARSER, extensionRegistry);
@@ -679,12 +705,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(setVictoryCondition_);
                 setVictoryCondition_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00020000;
+              bitField0_ |= 0x00040000;
               break;
             }
-            case 154: {
+            case 162: {
               AuthorClient.SetDefeatCondition.Builder subBuilder = null;
-              if (((bitField0_ & 0x00040000) == 0x00040000)) {
+              if (((bitField0_ & 0x00080000) == 0x00080000)) {
                 subBuilder = setDefeatCondition_.toBuilder();
               }
               setDefeatCondition_ = input.readMessage(AuthorClient.SetDefeatCondition.PARSER, extensionRegistry);
@@ -692,12 +718,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(setDefeatCondition_);
                 setDefeatCondition_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00040000;
+              bitField0_ |= 0x00080000;
               break;
             }
-            case 162: {
+            case 170: {
               AuthorClient.SetStatusProperty.Builder subBuilder = null;
-              if (((bitField0_ & 0x00080000) == 0x00080000)) {
+              if (((bitField0_ & 0x00100000) == 0x00100000)) {
                 subBuilder = setStatusProperty_.toBuilder();
               }
               setStatusProperty_ = input.readMessage(AuthorClient.SetStatusProperty.PARSER, extensionRegistry);
@@ -705,21 +731,21 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(setStatusProperty_);
                 setStatusProperty_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00080000;
+              bitField0_ |= 0x00100000;
               break;
             }
-            case 170: {
-              if (!((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+            case 178: {
+              if (!((mutable_bitField0_ & 0x00200000) == 0x00200000)) {
                 setResourceEndowments_ = new java.util.ArrayList<AuthorClient.ResourceEndowment>();
-                mutable_bitField0_ |= 0x00100000;
+                mutable_bitField0_ |= 0x00200000;
               }
               setResourceEndowments_.add(
                   input.readMessage(AuthorClient.ResourceEndowment.PARSER, extensionRegistry));
               break;
             }
-            case 178: {
+            case 186: {
               AuthorClient.SetUnitCost.Builder subBuilder = null;
-              if (((bitField0_ & 0x00100000) == 0x00100000)) {
+              if (((bitField0_ & 0x00200000) == 0x00200000)) {
                 subBuilder = setUnitCost_.toBuilder();
               }
               setUnitCost_ = input.readMessage(AuthorClient.SetUnitCost.PARSER, extensionRegistry);
@@ -727,12 +753,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(setUnitCost_);
                 setUnitCost_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00100000;
+              bitField0_ |= 0x00200000;
               break;
             }
-            case 186: {
+            case 194: {
               AuthorClient.CreateWaveProperties.Builder subBuilder = null;
-              if (((bitField0_ & 0x00200000) == 0x00200000)) {
+              if (((bitField0_ & 0x00400000) == 0x00400000)) {
                 subBuilder = createWaveProperties_.toBuilder();
               }
               createWaveProperties_ = input.readMessage(AuthorClient.CreateWaveProperties.PARSER, extensionRegistry);
@@ -740,12 +766,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(createWaveProperties_);
                 createWaveProperties_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00200000;
+              bitField0_ |= 0x00400000;
               break;
             }
-            case 194: {
+            case 202: {
               AuthorClient.EditWaveProperties.Builder subBuilder = null;
-              if (((bitField0_ & 0x00400000) == 0x00400000)) {
+              if (((bitField0_ & 0x00800000) == 0x00800000)) {
                 subBuilder = editWaveProperties_.toBuilder();
               }
               editWaveProperties_ = input.readMessage(AuthorClient.EditWaveProperties.PARSER, extensionRegistry);
@@ -753,12 +779,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(editWaveProperties_);
                 editWaveProperties_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00400000;
+              bitField0_ |= 0x00800000;
               break;
             }
-            case 202: {
+            case 210: {
               AuthorClient.GetWaveProperties.Builder subBuilder = null;
-              if (((bitField0_ & 0x00800000) == 0x00800000)) {
+              if (((bitField0_ & 0x01000000) == 0x01000000)) {
                 subBuilder = getWaveProperties_.toBuilder();
               }
               getWaveProperties_ = input.readMessage(AuthorClient.GetWaveProperties.PARSER, extensionRegistry);
@@ -766,12 +792,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(getWaveProperties_);
                 getWaveProperties_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00800000;
+              bitField0_ |= 0x01000000;
               break;
             }
-            case 210: {
+            case 218: {
               AuthorClient.GetPossibleVictoryConditions.Builder subBuilder = null;
-              if (((bitField0_ & 0x01000000) == 0x01000000)) {
+              if (((bitField0_ & 0x02000000) == 0x02000000)) {
                 subBuilder = getPossibleVictoryConditions_.toBuilder();
               }
               getPossibleVictoryConditions_ = input.readMessage(AuthorClient.GetPossibleVictoryConditions.PARSER, extensionRegistry);
@@ -779,12 +805,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(getPossibleVictoryConditions_);
                 getPossibleVictoryConditions_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x01000000;
+              bitField0_ |= 0x02000000;
               break;
             }
-            case 218: {
+            case 226: {
               AuthorClient.GetPossibleDefeatConditions.Builder subBuilder = null;
-              if (((bitField0_ & 0x02000000) == 0x02000000)) {
+              if (((bitField0_ & 0x04000000) == 0x04000000)) {
                 subBuilder = getPossibleDefeatConditions_.toBuilder();
               }
               getPossibleDefeatConditions_ = input.readMessage(AuthorClient.GetPossibleDefeatConditions.PARSER, extensionRegistry);
@@ -792,12 +818,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(getPossibleDefeatConditions_);
                 getPossibleDefeatConditions_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x02000000;
+              bitField0_ |= 0x04000000;
               break;
             }
-            case 226: {
+            case 234: {
               AuthorClient.GetCurrentVictoryConditions.Builder subBuilder = null;
-              if (((bitField0_ & 0x04000000) == 0x04000000)) {
+              if (((bitField0_ & 0x08000000) == 0x08000000)) {
                 subBuilder = getCurrentVictoryConditions_.toBuilder();
               }
               getCurrentVictoryConditions_ = input.readMessage(AuthorClient.GetCurrentVictoryConditions.PARSER, extensionRegistry);
@@ -805,12 +831,12 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(getCurrentVictoryConditions_);
                 getCurrentVictoryConditions_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x04000000;
+              bitField0_ |= 0x08000000;
               break;
             }
-            case 234: {
+            case 242: {
               AuthorClient.GetCurrentDefeatConditions.Builder subBuilder = null;
-              if (((bitField0_ & 0x08000000) == 0x08000000)) {
+              if (((bitField0_ & 0x10000000) == 0x10000000)) {
                 subBuilder = getCurrentDefeatConditions_.toBuilder();
               }
               getCurrentDefeatConditions_ = input.readMessage(AuthorClient.GetCurrentDefeatConditions.PARSER, extensionRegistry);
@@ -818,7 +844,7 @@ public final class AuthorClient {
                 subBuilder.mergeFrom(getCurrentDefeatConditions_);
                 getCurrentDefeatConditions_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x08000000;
+              bitField0_ |= 0x10000000;
               break;
             }
           }
@@ -829,7 +855,7 @@ public final class AuthorClient {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+        if (((mutable_bitField0_ & 0x00200000) == 0x00200000)) {
           setResourceEndowments_ = java.util.Collections.unmodifiableList(setResourceEndowments_);
         }
         this.unknownFields = unknownFields.build();
@@ -1101,372 +1127,393 @@ public final class AuthorClient {
       return moveElement_ == null ? PlayerClient.MoveElement.getDefaultInstance() : moveElement_;
     }
 
-    public static final int UPDATEELEMENTPROPERTIES_FIELD_NUMBER = 13;
-    private AuthorClient.UpdateElementProperties updateElementProperties_;
+    public static final int DELETEELEMENT_FIELD_NUMBER = 13;
+    private PlayerClient.DeleteElement deleteElement_;
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .DeleteElement deleteElement = 13;</code>
      */
-    public boolean hasUpdateElementProperties() {
+    public boolean hasDeleteElement() {
       return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .DeleteElement deleteElement = 13;</code>
+     */
+    public PlayerClient.DeleteElement getDeleteElement() {
+      return deleteElement_ == null ? PlayerClient.DeleteElement.getDefaultInstance() : deleteElement_;
+    }
+    /**
+     * <code>optional .DeleteElement deleteElement = 13;</code>
+     */
+    public PlayerClient.DeleteElementOrBuilder getDeleteElementOrBuilder() {
+      return deleteElement_ == null ? PlayerClient.DeleteElement.getDefaultInstance() : deleteElement_;
+    }
+
+    public static final int UPDATEELEMENTPROPERTIES_FIELD_NUMBER = 14;
+    private AuthorClient.UpdateElementProperties updateElementProperties_;
+    /**
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
+     */
+    public boolean hasUpdateElementProperties() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
      */
     public AuthorClient.UpdateElementProperties getUpdateElementProperties() {
       return updateElementProperties_ == null ? AuthorClient.UpdateElementProperties.getDefaultInstance() : updateElementProperties_;
     }
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
      */
     public AuthorClient.UpdateElementPropertiesOrBuilder getUpdateElementPropertiesOrBuilder() {
       return updateElementProperties_ == null ? AuthorClient.UpdateElementProperties.getDefaultInstance() : updateElementProperties_;
     }
 
-    public static final int GETALLDEFINEDELEMENTUPGRADES_FIELD_NUMBER = 14;
+    public static final int GETALLDEFINEDELEMENTUPGRADES_FIELD_NUMBER = 15;
     private AuthorClient.GetAllDefinedElementUpgrades getAllDefinedElementUpgrades_;
     /**
-     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
      */
     public boolean hasGetAllDefinedElementUpgrades() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
+      return ((bitField0_ & 0x00004000) == 0x00004000);
     }
     /**
-     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
      */
     public AuthorClient.GetAllDefinedElementUpgrades getGetAllDefinedElementUpgrades() {
       return getAllDefinedElementUpgrades_ == null ? AuthorClient.GetAllDefinedElementUpgrades.getDefaultInstance() : getAllDefinedElementUpgrades_;
     }
     /**
-     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+     * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
      */
     public AuthorClient.GetAllDefinedElementUpgradesOrBuilder getGetAllDefinedElementUpgradesOrBuilder() {
       return getAllDefinedElementUpgrades_ == null ? AuthorClient.GetAllDefinedElementUpgrades.getDefaultInstance() : getAllDefinedElementUpgrades_;
     }
 
-    public static final int GETRESOURCEENDOWMENTS_FIELD_NUMBER = 15;
+    public static final int GETRESOURCEENDOWMENTS_FIELD_NUMBER = 16;
     private AuthorClient.GetResourceEndowments getResourceEndowments_;
     /**
-     * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+     * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
      */
     public boolean hasGetResourceEndowments() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
+      return ((bitField0_ & 0x00008000) == 0x00008000);
     }
     /**
-     * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+     * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
      */
     public AuthorClient.GetResourceEndowments getGetResourceEndowments() {
       return getResourceEndowments_ == null ? AuthorClient.GetResourceEndowments.getDefaultInstance() : getResourceEndowments_;
     }
     /**
-     * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+     * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
      */
     public AuthorClient.GetResourceEndowmentsOrBuilder getGetResourceEndowmentsOrBuilder() {
       return getResourceEndowments_ == null ? AuthorClient.GetResourceEndowments.getDefaultInstance() : getResourceEndowments_;
     }
 
-    public static final int SETGAMENAME_FIELD_NUMBER = 16;
+    public static final int SETGAMENAME_FIELD_NUMBER = 17;
     private AuthorClient.SetGameName setGameName_;
     /**
-     * <code>optional .SetGameName setGameName = 16;</code>
+     * <code>optional .SetGameName setGameName = 17;</code>
      */
     public boolean hasSetGameName() {
-      return ((bitField0_ & 0x00008000) == 0x00008000);
+      return ((bitField0_ & 0x00010000) == 0x00010000);
     }
     /**
-     * <code>optional .SetGameName setGameName = 16;</code>
+     * <code>optional .SetGameName setGameName = 17;</code>
      */
     public AuthorClient.SetGameName getSetGameName() {
       return setGameName_ == null ? AuthorClient.SetGameName.getDefaultInstance() : setGameName_;
     }
     /**
-     * <code>optional .SetGameName setGameName = 16;</code>
+     * <code>optional .SetGameName setGameName = 17;</code>
      */
     public AuthorClient.SetGameNameOrBuilder getSetGameNameOrBuilder() {
       return setGameName_ == null ? AuthorClient.SetGameName.getDefaultInstance() : setGameName_;
     }
 
-    public static final int SETGAMEDESCRIPTION_FIELD_NUMBER = 17;
+    public static final int SETGAMEDESCRIPTION_FIELD_NUMBER = 18;
     private AuthorClient.SetGameDescription setGameDescription_;
     /**
-     * <code>optional .SetGameDescription setGameDescription = 17;</code>
+     * <code>optional .SetGameDescription setGameDescription = 18;</code>
      */
     public boolean hasSetGameDescription() {
-      return ((bitField0_ & 0x00010000) == 0x00010000);
+      return ((bitField0_ & 0x00020000) == 0x00020000);
     }
     /**
-     * <code>optional .SetGameDescription setGameDescription = 17;</code>
+     * <code>optional .SetGameDescription setGameDescription = 18;</code>
      */
     public AuthorClient.SetGameDescription getSetGameDescription() {
       return setGameDescription_ == null ? AuthorClient.SetGameDescription.getDefaultInstance() : setGameDescription_;
     }
     /**
-     * <code>optional .SetGameDescription setGameDescription = 17;</code>
+     * <code>optional .SetGameDescription setGameDescription = 18;</code>
      */
     public AuthorClient.SetGameDescriptionOrBuilder getSetGameDescriptionOrBuilder() {
       return setGameDescription_ == null ? AuthorClient.SetGameDescription.getDefaultInstance() : setGameDescription_;
     }
 
-    public static final int SETVICTORYCONDITION_FIELD_NUMBER = 18;
+    public static final int SETVICTORYCONDITION_FIELD_NUMBER = 19;
     private AuthorClient.SetVictoryCondition setVictoryCondition_;
     /**
-     * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+     * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
      */
     public boolean hasSetVictoryCondition() {
-      return ((bitField0_ & 0x00020000) == 0x00020000);
+      return ((bitField0_ & 0x00040000) == 0x00040000);
     }
     /**
-     * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+     * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
      */
     public AuthorClient.SetVictoryCondition getSetVictoryCondition() {
       return setVictoryCondition_ == null ? AuthorClient.SetVictoryCondition.getDefaultInstance() : setVictoryCondition_;
     }
     /**
-     * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+     * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
      */
     public AuthorClient.SetVictoryConditionOrBuilder getSetVictoryConditionOrBuilder() {
       return setVictoryCondition_ == null ? AuthorClient.SetVictoryCondition.getDefaultInstance() : setVictoryCondition_;
     }
 
-    public static final int SETDEFEATCONDITION_FIELD_NUMBER = 19;
+    public static final int SETDEFEATCONDITION_FIELD_NUMBER = 20;
     private AuthorClient.SetDefeatCondition setDefeatCondition_;
     /**
-     * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+     * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
      */
     public boolean hasSetDefeatCondition() {
-      return ((bitField0_ & 0x00040000) == 0x00040000);
+      return ((bitField0_ & 0x00080000) == 0x00080000);
     }
     /**
-     * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+     * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
      */
     public AuthorClient.SetDefeatCondition getSetDefeatCondition() {
       return setDefeatCondition_ == null ? AuthorClient.SetDefeatCondition.getDefaultInstance() : setDefeatCondition_;
     }
     /**
-     * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+     * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
      */
     public AuthorClient.SetDefeatConditionOrBuilder getSetDefeatConditionOrBuilder() {
       return setDefeatCondition_ == null ? AuthorClient.SetDefeatCondition.getDefaultInstance() : setDefeatCondition_;
     }
 
-    public static final int SETSTATUSPROPERTY_FIELD_NUMBER = 20;
+    public static final int SETSTATUSPROPERTY_FIELD_NUMBER = 21;
     private AuthorClient.SetStatusProperty setStatusProperty_;
     /**
-     * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+     * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
      */
     public boolean hasSetStatusProperty() {
-      return ((bitField0_ & 0x00080000) == 0x00080000);
+      return ((bitField0_ & 0x00100000) == 0x00100000);
     }
     /**
-     * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+     * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
      */
     public AuthorClient.SetStatusProperty getSetStatusProperty() {
       return setStatusProperty_ == null ? AuthorClient.SetStatusProperty.getDefaultInstance() : setStatusProperty_;
     }
     /**
-     * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+     * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
      */
     public AuthorClient.SetStatusPropertyOrBuilder getSetStatusPropertyOrBuilder() {
       return setStatusProperty_ == null ? AuthorClient.SetStatusProperty.getDefaultInstance() : setStatusProperty_;
     }
 
-    public static final int SETRESOURCEENDOWMENTS_FIELD_NUMBER = 21;
+    public static final int SETRESOURCEENDOWMENTS_FIELD_NUMBER = 22;
     private java.util.List<AuthorClient.ResourceEndowment> setResourceEndowments_;
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     public java.util.List<AuthorClient.ResourceEndowment> getSetResourceEndowmentsList() {
       return setResourceEndowments_;
     }
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     public java.util.List<? extends AuthorClient.ResourceEndowmentOrBuilder> 
         getSetResourceEndowmentsOrBuilderList() {
       return setResourceEndowments_;
     }
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     public int getSetResourceEndowmentsCount() {
       return setResourceEndowments_.size();
     }
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     public AuthorClient.ResourceEndowment getSetResourceEndowments(int index) {
       return setResourceEndowments_.get(index);
     }
     /**
-     * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+     * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
      */
     public AuthorClient.ResourceEndowmentOrBuilder getSetResourceEndowmentsOrBuilder(
         int index) {
       return setResourceEndowments_.get(index);
     }
 
-    public static final int SETUNITCOST_FIELD_NUMBER = 22;
+    public static final int SETUNITCOST_FIELD_NUMBER = 23;
     private AuthorClient.SetUnitCost setUnitCost_;
     /**
-     * <code>optional .SetUnitCost setUnitCost = 22;</code>
+     * <code>optional .SetUnitCost setUnitCost = 23;</code>
      */
     public boolean hasSetUnitCost() {
-      return ((bitField0_ & 0x00100000) == 0x00100000);
+      return ((bitField0_ & 0x00200000) == 0x00200000);
     }
     /**
-     * <code>optional .SetUnitCost setUnitCost = 22;</code>
+     * <code>optional .SetUnitCost setUnitCost = 23;</code>
      */
     public AuthorClient.SetUnitCost getSetUnitCost() {
       return setUnitCost_ == null ? AuthorClient.SetUnitCost.getDefaultInstance() : setUnitCost_;
     }
     /**
-     * <code>optional .SetUnitCost setUnitCost = 22;</code>
+     * <code>optional .SetUnitCost setUnitCost = 23;</code>
      */
     public AuthorClient.SetUnitCostOrBuilder getSetUnitCostOrBuilder() {
       return setUnitCost_ == null ? AuthorClient.SetUnitCost.getDefaultInstance() : setUnitCost_;
     }
 
-    public static final int CREATEWAVEPROPERTIES_FIELD_NUMBER = 23;
+    public static final int CREATEWAVEPROPERTIES_FIELD_NUMBER = 24;
     private AuthorClient.CreateWaveProperties createWaveProperties_;
     /**
-     * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+     * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
      */
     public boolean hasCreateWaveProperties() {
-      return ((bitField0_ & 0x00200000) == 0x00200000);
+      return ((bitField0_ & 0x00400000) == 0x00400000);
     }
     /**
-     * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+     * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
      */
     public AuthorClient.CreateWaveProperties getCreateWaveProperties() {
       return createWaveProperties_ == null ? AuthorClient.CreateWaveProperties.getDefaultInstance() : createWaveProperties_;
     }
     /**
-     * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+     * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
      */
     public AuthorClient.CreateWavePropertiesOrBuilder getCreateWavePropertiesOrBuilder() {
       return createWaveProperties_ == null ? AuthorClient.CreateWaveProperties.getDefaultInstance() : createWaveProperties_;
     }
 
-    public static final int EDITWAVEPROPERTIES_FIELD_NUMBER = 24;
+    public static final int EDITWAVEPROPERTIES_FIELD_NUMBER = 25;
     private AuthorClient.EditWaveProperties editWaveProperties_;
     /**
-     * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+     * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
      */
     public boolean hasEditWaveProperties() {
-      return ((bitField0_ & 0x00400000) == 0x00400000);
+      return ((bitField0_ & 0x00800000) == 0x00800000);
     }
     /**
-     * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+     * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
      */
     public AuthorClient.EditWaveProperties getEditWaveProperties() {
       return editWaveProperties_ == null ? AuthorClient.EditWaveProperties.getDefaultInstance() : editWaveProperties_;
     }
     /**
-     * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+     * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
      */
     public AuthorClient.EditWavePropertiesOrBuilder getEditWavePropertiesOrBuilder() {
       return editWaveProperties_ == null ? AuthorClient.EditWaveProperties.getDefaultInstance() : editWaveProperties_;
     }
 
-    public static final int GETWAVEPROPERTIES_FIELD_NUMBER = 25;
+    public static final int GETWAVEPROPERTIES_FIELD_NUMBER = 26;
     private AuthorClient.GetWaveProperties getWaveProperties_;
     /**
-     * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+     * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
      */
     public boolean hasGetWaveProperties() {
-      return ((bitField0_ & 0x00800000) == 0x00800000);
+      return ((bitField0_ & 0x01000000) == 0x01000000);
     }
     /**
-     * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+     * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
      */
     public AuthorClient.GetWaveProperties getGetWaveProperties() {
       return getWaveProperties_ == null ? AuthorClient.GetWaveProperties.getDefaultInstance() : getWaveProperties_;
     }
     /**
-     * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+     * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
      */
     public AuthorClient.GetWavePropertiesOrBuilder getGetWavePropertiesOrBuilder() {
       return getWaveProperties_ == null ? AuthorClient.GetWaveProperties.getDefaultInstance() : getWaveProperties_;
     }
 
-    public static final int GETPOSSIBLEVICTORYCONDITIONS_FIELD_NUMBER = 26;
+    public static final int GETPOSSIBLEVICTORYCONDITIONS_FIELD_NUMBER = 27;
     private AuthorClient.GetPossibleVictoryConditions getPossibleVictoryConditions_;
     /**
-     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
      */
     public boolean hasGetPossibleVictoryConditions() {
-      return ((bitField0_ & 0x01000000) == 0x01000000);
+      return ((bitField0_ & 0x02000000) == 0x02000000);
     }
     /**
-     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
      */
     public AuthorClient.GetPossibleVictoryConditions getGetPossibleVictoryConditions() {
       return getPossibleVictoryConditions_ == null ? AuthorClient.GetPossibleVictoryConditions.getDefaultInstance() : getPossibleVictoryConditions_;
     }
     /**
-     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+     * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
      */
     public AuthorClient.GetPossibleVictoryConditionsOrBuilder getGetPossibleVictoryConditionsOrBuilder() {
       return getPossibleVictoryConditions_ == null ? AuthorClient.GetPossibleVictoryConditions.getDefaultInstance() : getPossibleVictoryConditions_;
     }
 
-    public static final int GETPOSSIBLEDEFEATCONDITIONS_FIELD_NUMBER = 27;
+    public static final int GETPOSSIBLEDEFEATCONDITIONS_FIELD_NUMBER = 28;
     private AuthorClient.GetPossibleDefeatConditions getPossibleDefeatConditions_;
     /**
-     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
      */
     public boolean hasGetPossibleDefeatConditions() {
-      return ((bitField0_ & 0x02000000) == 0x02000000);
+      return ((bitField0_ & 0x04000000) == 0x04000000);
     }
     /**
-     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
      */
     public AuthorClient.GetPossibleDefeatConditions getGetPossibleDefeatConditions() {
       return getPossibleDefeatConditions_ == null ? AuthorClient.GetPossibleDefeatConditions.getDefaultInstance() : getPossibleDefeatConditions_;
     }
     /**
-     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+     * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
      */
     public AuthorClient.GetPossibleDefeatConditionsOrBuilder getGetPossibleDefeatConditionsOrBuilder() {
       return getPossibleDefeatConditions_ == null ? AuthorClient.GetPossibleDefeatConditions.getDefaultInstance() : getPossibleDefeatConditions_;
     }
 
-    public static final int GETCURRENTVICTORYCONDITIONS_FIELD_NUMBER = 28;
+    public static final int GETCURRENTVICTORYCONDITIONS_FIELD_NUMBER = 29;
     private AuthorClient.GetCurrentVictoryConditions getCurrentVictoryConditions_;
     /**
-     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
      */
     public boolean hasGetCurrentVictoryConditions() {
-      return ((bitField0_ & 0x04000000) == 0x04000000);
+      return ((bitField0_ & 0x08000000) == 0x08000000);
     }
     /**
-     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
      */
     public AuthorClient.GetCurrentVictoryConditions getGetCurrentVictoryConditions() {
       return getCurrentVictoryConditions_ == null ? AuthorClient.GetCurrentVictoryConditions.getDefaultInstance() : getCurrentVictoryConditions_;
     }
     /**
-     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+     * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
      */
     public AuthorClient.GetCurrentVictoryConditionsOrBuilder getGetCurrentVictoryConditionsOrBuilder() {
       return getCurrentVictoryConditions_ == null ? AuthorClient.GetCurrentVictoryConditions.getDefaultInstance() : getCurrentVictoryConditions_;
     }
 
-    public static final int GETCURRENTDEFEATCONDITIONS_FIELD_NUMBER = 29;
+    public static final int GETCURRENTDEFEATCONDITIONS_FIELD_NUMBER = 30;
     private AuthorClient.GetCurrentDefeatConditions getCurrentDefeatConditions_;
     /**
-     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
      */
     public boolean hasGetCurrentDefeatConditions() {
-      return ((bitField0_ & 0x08000000) == 0x08000000);
+      return ((bitField0_ & 0x10000000) == 0x10000000);
     }
     /**
-     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
      */
     public AuthorClient.GetCurrentDefeatConditions getGetCurrentDefeatConditions() {
       return getCurrentDefeatConditions_ == null ? AuthorClient.GetCurrentDefeatConditions.getDefaultInstance() : getCurrentDefeatConditions_;
     }
     /**
-     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+     * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
      */
     public AuthorClient.GetCurrentDefeatConditionsOrBuilder getGetCurrentDefeatConditionsOrBuilder() {
       return getCurrentDefeatConditions_ == null ? AuthorClient.GetCurrentDefeatConditions.getDefaultInstance() : getCurrentDefeatConditions_;
@@ -1528,6 +1575,12 @@ public final class AuthorClient {
       }
       if (hasMoveElement()) {
         if (!getMoveElement().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasDeleteElement()) {
+        if (!getDeleteElement().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -1641,55 +1694,58 @@ public final class AuthorClient {
         output.writeMessage(12, getMoveElement());
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeMessage(13, getUpdateElementProperties());
+        output.writeMessage(13, getDeleteElement());
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeMessage(14, getGetAllDefinedElementUpgrades());
+        output.writeMessage(14, getUpdateElementProperties());
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeMessage(15, getGetResourceEndowments());
+        output.writeMessage(15, getGetAllDefinedElementUpgrades());
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        output.writeMessage(16, getSetGameName());
+        output.writeMessage(16, getGetResourceEndowments());
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        output.writeMessage(17, getSetGameDescription());
+        output.writeMessage(17, getSetGameName());
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
-        output.writeMessage(18, getSetVictoryCondition());
+        output.writeMessage(18, getSetGameDescription());
       }
       if (((bitField0_ & 0x00040000) == 0x00040000)) {
-        output.writeMessage(19, getSetDefeatCondition());
+        output.writeMessage(19, getSetVictoryCondition());
       }
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
-        output.writeMessage(20, getSetStatusProperty());
-      }
-      for (int i = 0; i < setResourceEndowments_.size(); i++) {
-        output.writeMessage(21, setResourceEndowments_.get(i));
+        output.writeMessage(20, getSetDefeatCondition());
       }
       if (((bitField0_ & 0x00100000) == 0x00100000)) {
-        output.writeMessage(22, getSetUnitCost());
+        output.writeMessage(21, getSetStatusProperty());
+      }
+      for (int i = 0; i < setResourceEndowments_.size(); i++) {
+        output.writeMessage(22, setResourceEndowments_.get(i));
       }
       if (((bitField0_ & 0x00200000) == 0x00200000)) {
-        output.writeMessage(23, getCreateWaveProperties());
+        output.writeMessage(23, getSetUnitCost());
       }
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
-        output.writeMessage(24, getEditWaveProperties());
+        output.writeMessage(24, getCreateWaveProperties());
       }
       if (((bitField0_ & 0x00800000) == 0x00800000)) {
-        output.writeMessage(25, getGetWaveProperties());
+        output.writeMessage(25, getEditWaveProperties());
       }
       if (((bitField0_ & 0x01000000) == 0x01000000)) {
-        output.writeMessage(26, getGetPossibleVictoryConditions());
+        output.writeMessage(26, getGetWaveProperties());
       }
       if (((bitField0_ & 0x02000000) == 0x02000000)) {
-        output.writeMessage(27, getGetPossibleDefeatConditions());
+        output.writeMessage(27, getGetPossibleVictoryConditions());
       }
       if (((bitField0_ & 0x04000000) == 0x04000000)) {
-        output.writeMessage(28, getGetCurrentVictoryConditions());
+        output.writeMessage(28, getGetPossibleDefeatConditions());
       }
       if (((bitField0_ & 0x08000000) == 0x08000000)) {
-        output.writeMessage(29, getGetCurrentDefeatConditions());
+        output.writeMessage(29, getGetCurrentVictoryConditions());
+      }
+      if (((bitField0_ & 0x10000000) == 0x10000000)) {
+        output.writeMessage(30, getGetCurrentDefeatConditions());
       }
       unknownFields.writeTo(output);
     }
@@ -1749,71 +1805,75 @@ public final class AuthorClient {
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(13, getUpdateElementProperties());
+          .computeMessageSize(13, getDeleteElement());
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(14, getGetAllDefinedElementUpgrades());
+          .computeMessageSize(14, getUpdateElementProperties());
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(15, getGetResourceEndowments());
+          .computeMessageSize(15, getGetAllDefinedElementUpgrades());
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(16, getSetGameName());
+          .computeMessageSize(16, getGetResourceEndowments());
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(17, getSetGameDescription());
+          .computeMessageSize(17, getSetGameName());
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(18, getSetVictoryCondition());
+          .computeMessageSize(18, getSetGameDescription());
       }
       if (((bitField0_ & 0x00040000) == 0x00040000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(19, getSetDefeatCondition());
+          .computeMessageSize(19, getSetVictoryCondition());
       }
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(20, getSetStatusProperty());
-      }
-      for (int i = 0; i < setResourceEndowments_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(21, setResourceEndowments_.get(i));
+          .computeMessageSize(20, getSetDefeatCondition());
       }
       if (((bitField0_ & 0x00100000) == 0x00100000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(22, getSetUnitCost());
+          .computeMessageSize(21, getSetStatusProperty());
+      }
+      for (int i = 0; i < setResourceEndowments_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(22, setResourceEndowments_.get(i));
       }
       if (((bitField0_ & 0x00200000) == 0x00200000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(23, getCreateWaveProperties());
+          .computeMessageSize(23, getSetUnitCost());
       }
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(24, getEditWaveProperties());
+          .computeMessageSize(24, getCreateWaveProperties());
       }
       if (((bitField0_ & 0x00800000) == 0x00800000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(25, getGetWaveProperties());
+          .computeMessageSize(25, getEditWaveProperties());
       }
       if (((bitField0_ & 0x01000000) == 0x01000000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(26, getGetPossibleVictoryConditions());
+          .computeMessageSize(26, getGetWaveProperties());
       }
       if (((bitField0_ & 0x02000000) == 0x02000000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(27, getGetPossibleDefeatConditions());
+          .computeMessageSize(27, getGetPossibleVictoryConditions());
       }
       if (((bitField0_ & 0x04000000) == 0x04000000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(28, getGetCurrentVictoryConditions());
+          .computeMessageSize(28, getGetPossibleDefeatConditions());
       }
       if (((bitField0_ & 0x08000000) == 0x08000000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(29, getGetCurrentDefeatConditions());
+          .computeMessageSize(29, getGetCurrentVictoryConditions());
+      }
+      if (((bitField0_ & 0x10000000) == 0x10000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(30, getGetCurrentDefeatConditions());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1891,6 +1951,11 @@ public final class AuthorClient {
       if (hasMoveElement()) {
         result = result && getMoveElement()
             .equals(other.getMoveElement());
+      }
+      result = result && (hasDeleteElement() == other.hasDeleteElement());
+      if (hasDeleteElement()) {
+        result = result && getDeleteElement()
+            .equals(other.getDeleteElement());
       }
       result = result && (hasUpdateElementProperties() == other.hasUpdateElementProperties());
       if (hasUpdateElementProperties()) {
@@ -2032,6 +2097,10 @@ public final class AuthorClient {
       if (hasMoveElement()) {
         hash = (37 * hash) + MOVEELEMENT_FIELD_NUMBER;
         hash = (53 * hash) + getMoveElement().hashCode();
+      }
+      if (hasDeleteElement()) {
+        hash = (37 * hash) + DELETEELEMENT_FIELD_NUMBER;
+        hash = (53 * hash) + getDeleteElement().hashCode();
       }
       if (hasUpdateElementProperties()) {
         hash = (37 * hash) + UPDATEELEMENTPROPERTIES_FIELD_NUMBER;
@@ -2227,6 +2296,7 @@ public final class AuthorClient {
           getAddElementToInventoryFieldBuilder();
           getGetCurrentLevelFieldBuilder();
           getMoveElementFieldBuilder();
+          getDeleteElementFieldBuilder();
           getUpdateElementPropertiesFieldBuilder();
           getGetAllDefinedElementUpgradesFieldBuilder();
           getGetResourceEndowmentsFieldBuilder();
@@ -2320,57 +2390,63 @@ public final class AuthorClient {
           moveElementBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000800);
+        if (deleteElementBuilder_ == null) {
+          deleteElement_ = null;
+        } else {
+          deleteElementBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00001000);
         if (updateElementPropertiesBuilder_ == null) {
           updateElementProperties_ = null;
         } else {
           updateElementPropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         if (getAllDefinedElementUpgradesBuilder_ == null) {
           getAllDefinedElementUpgrades_ = null;
         } else {
           getAllDefinedElementUpgradesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00002000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         if (getResourceEndowmentsBuilder_ == null) {
           getResourceEndowments_ = null;
         } else {
           getResourceEndowmentsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00004000);
+        bitField0_ = (bitField0_ & ~0x00008000);
         if (setGameNameBuilder_ == null) {
           setGameName_ = null;
         } else {
           setGameNameBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00008000);
+        bitField0_ = (bitField0_ & ~0x00010000);
         if (setGameDescriptionBuilder_ == null) {
           setGameDescription_ = null;
         } else {
           setGameDescriptionBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00010000);
+        bitField0_ = (bitField0_ & ~0x00020000);
         if (setVictoryConditionBuilder_ == null) {
           setVictoryCondition_ = null;
         } else {
           setVictoryConditionBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00040000);
         if (setDefeatConditionBuilder_ == null) {
           setDefeatCondition_ = null;
         } else {
           setDefeatConditionBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00040000);
+        bitField0_ = (bitField0_ & ~0x00080000);
         if (setStatusPropertyBuilder_ == null) {
           setStatusProperty_ = null;
         } else {
           setStatusPropertyBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00080000);
+        bitField0_ = (bitField0_ & ~0x00100000);
         if (setResourceEndowmentsBuilder_ == null) {
           setResourceEndowments_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x00200000);
         } else {
           setResourceEndowmentsBuilder_.clear();
         }
@@ -2379,49 +2455,49 @@ public final class AuthorClient {
         } else {
           setUnitCostBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00200000);
+        bitField0_ = (bitField0_ & ~0x00400000);
         if (createWavePropertiesBuilder_ == null) {
           createWaveProperties_ = null;
         } else {
           createWavePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00400000);
+        bitField0_ = (bitField0_ & ~0x00800000);
         if (editWavePropertiesBuilder_ == null) {
           editWaveProperties_ = null;
         } else {
           editWavePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00800000);
+        bitField0_ = (bitField0_ & ~0x01000000);
         if (getWavePropertiesBuilder_ == null) {
           getWaveProperties_ = null;
         } else {
           getWavePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x01000000);
+        bitField0_ = (bitField0_ & ~0x02000000);
         if (getPossibleVictoryConditionsBuilder_ == null) {
           getPossibleVictoryConditions_ = null;
         } else {
           getPossibleVictoryConditionsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x02000000);
+        bitField0_ = (bitField0_ & ~0x04000000);
         if (getPossibleDefeatConditionsBuilder_ == null) {
           getPossibleDefeatConditions_ = null;
         } else {
           getPossibleDefeatConditionsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x04000000);
+        bitField0_ = (bitField0_ & ~0x08000000);
         if (getCurrentVictoryConditionsBuilder_ == null) {
           getCurrentVictoryConditions_ = null;
         } else {
           getCurrentVictoryConditionsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x08000000);
+        bitField0_ = (bitField0_ & ~0x10000000);
         if (getCurrentDefeatConditionsBuilder_ == null) {
           getCurrentDefeatConditions_ = null;
         } else {
           getCurrentDefeatConditionsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x10000000);
+        bitField0_ = (bitField0_ & ~0x20000000);
         return this;
       }
 
@@ -2545,61 +2621,69 @@ public final class AuthorClient {
         if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
           to_bitField0_ |= 0x00001000;
         }
+        if (deleteElementBuilder_ == null) {
+          result.deleteElement_ = deleteElement_;
+        } else {
+          result.deleteElement_ = deleteElementBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
         if (updateElementPropertiesBuilder_ == null) {
           result.updateElementProperties_ = updateElementProperties_;
         } else {
           result.updateElementProperties_ = updateElementPropertiesBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
-          to_bitField0_ |= 0x00002000;
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00004000;
         }
         if (getAllDefinedElementUpgradesBuilder_ == null) {
           result.getAllDefinedElementUpgrades_ = getAllDefinedElementUpgrades_;
         } else {
           result.getAllDefinedElementUpgrades_ = getAllDefinedElementUpgradesBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
-          to_bitField0_ |= 0x00004000;
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00008000;
         }
         if (getResourceEndowmentsBuilder_ == null) {
           result.getResourceEndowments_ = getResourceEndowments_;
         } else {
           result.getResourceEndowments_ = getResourceEndowmentsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
-          to_bitField0_ |= 0x00008000;
+        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+          to_bitField0_ |= 0x00010000;
         }
         if (setGameNameBuilder_ == null) {
           result.setGameName_ = setGameName_;
         } else {
           result.setGameName_ = setGameNameBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
-          to_bitField0_ |= 0x00010000;
+        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+          to_bitField0_ |= 0x00020000;
         }
         if (setGameDescriptionBuilder_ == null) {
           result.setGameDescription_ = setGameDescription_;
         } else {
           result.setGameDescription_ = setGameDescriptionBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
-          to_bitField0_ |= 0x00020000;
+        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+          to_bitField0_ |= 0x00040000;
         }
         if (setVictoryConditionBuilder_ == null) {
           result.setVictoryCondition_ = setVictoryCondition_;
         } else {
           result.setVictoryCondition_ = setVictoryConditionBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
-          to_bitField0_ |= 0x00040000;
+        if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
+          to_bitField0_ |= 0x00080000;
         }
         if (setDefeatConditionBuilder_ == null) {
           result.setDefeatCondition_ = setDefeatCondition_;
         } else {
           result.setDefeatCondition_ = setDefeatConditionBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
-          to_bitField0_ |= 0x00080000;
+        if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
+          to_bitField0_ |= 0x00100000;
         }
         if (setStatusPropertyBuilder_ == null) {
           result.setStatusProperty_ = setStatusProperty_;
@@ -2607,72 +2691,72 @@ public final class AuthorClient {
           result.setStatusProperty_ = setStatusPropertyBuilder_.build();
         }
         if (setResourceEndowmentsBuilder_ == null) {
-          if (((bitField0_ & 0x00100000) == 0x00100000)) {
+          if (((bitField0_ & 0x00200000) == 0x00200000)) {
             setResourceEndowments_ = java.util.Collections.unmodifiableList(setResourceEndowments_);
-            bitField0_ = (bitField0_ & ~0x00100000);
+            bitField0_ = (bitField0_ & ~0x00200000);
           }
           result.setResourceEndowments_ = setResourceEndowments_;
         } else {
           result.setResourceEndowments_ = setResourceEndowmentsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
-          to_bitField0_ |= 0x00100000;
+        if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
+          to_bitField0_ |= 0x00200000;
         }
         if (setUnitCostBuilder_ == null) {
           result.setUnitCost_ = setUnitCost_;
         } else {
           result.setUnitCost_ = setUnitCostBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
-          to_bitField0_ |= 0x00200000;
+        if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
+          to_bitField0_ |= 0x00400000;
         }
         if (createWavePropertiesBuilder_ == null) {
           result.createWaveProperties_ = createWaveProperties_;
         } else {
           result.createWaveProperties_ = createWavePropertiesBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
-          to_bitField0_ |= 0x00400000;
+        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
+          to_bitField0_ |= 0x00800000;
         }
         if (editWavePropertiesBuilder_ == null) {
           result.editWaveProperties_ = editWaveProperties_;
         } else {
           result.editWaveProperties_ = editWavePropertiesBuilder_.build();
         }
-        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
-          to_bitField0_ |= 0x00800000;
+        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
+          to_bitField0_ |= 0x01000000;
         }
         if (getWavePropertiesBuilder_ == null) {
           result.getWaveProperties_ = getWaveProperties_;
         } else {
           result.getWaveProperties_ = getWavePropertiesBuilder_.build();
         }
-        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
-          to_bitField0_ |= 0x01000000;
+        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+          to_bitField0_ |= 0x02000000;
         }
         if (getPossibleVictoryConditionsBuilder_ == null) {
           result.getPossibleVictoryConditions_ = getPossibleVictoryConditions_;
         } else {
           result.getPossibleVictoryConditions_ = getPossibleVictoryConditionsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
-          to_bitField0_ |= 0x02000000;
+        if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
+          to_bitField0_ |= 0x04000000;
         }
         if (getPossibleDefeatConditionsBuilder_ == null) {
           result.getPossibleDefeatConditions_ = getPossibleDefeatConditions_;
         } else {
           result.getPossibleDefeatConditions_ = getPossibleDefeatConditionsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
-          to_bitField0_ |= 0x04000000;
+        if (((from_bitField0_ & 0x10000000) == 0x10000000)) {
+          to_bitField0_ |= 0x08000000;
         }
         if (getCurrentVictoryConditionsBuilder_ == null) {
           result.getCurrentVictoryConditions_ = getCurrentVictoryConditions_;
         } else {
           result.getCurrentVictoryConditions_ = getCurrentVictoryConditionsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x10000000) == 0x10000000)) {
-          to_bitField0_ |= 0x08000000;
+        if (((from_bitField0_ & 0x20000000) == 0x20000000)) {
+          to_bitField0_ |= 0x10000000;
         }
         if (getCurrentDefeatConditionsBuilder_ == null) {
           result.getCurrentDefeatConditions_ = getCurrentDefeatConditions_;
@@ -2757,6 +2841,9 @@ public final class AuthorClient {
         if (other.hasMoveElement()) {
           mergeMoveElement(other.getMoveElement());
         }
+        if (other.hasDeleteElement()) {
+          mergeDeleteElement(other.getDeleteElement());
+        }
         if (other.hasUpdateElementProperties()) {
           mergeUpdateElementProperties(other.getUpdateElementProperties());
         }
@@ -2785,7 +2872,7 @@ public final class AuthorClient {
           if (!other.setResourceEndowments_.isEmpty()) {
             if (setResourceEndowments_.isEmpty()) {
               setResourceEndowments_ = other.setResourceEndowments_;
-              bitField0_ = (bitField0_ & ~0x00100000);
+              bitField0_ = (bitField0_ & ~0x00200000);
             } else {
               ensureSetResourceEndowmentsIsMutable();
               setResourceEndowments_.addAll(other.setResourceEndowments_);
@@ -2798,7 +2885,7 @@ public final class AuthorClient {
               setResourceEndowmentsBuilder_.dispose();
               setResourceEndowmentsBuilder_ = null;
               setResourceEndowments_ = other.setResourceEndowments_;
-              bitField0_ = (bitField0_ & ~0x00100000);
+              bitField0_ = (bitField0_ & ~0x00200000);
               setResourceEndowmentsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getSetResourceEndowmentsFieldBuilder() : null;
@@ -2879,6 +2966,11 @@ public final class AuthorClient {
         }
         if (hasMoveElement()) {
           if (!getMoveElement().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasDeleteElement()) {
+          if (!getDeleteElement().isInitialized()) {
             return false;
           }
         }
@@ -4375,17 +4467,135 @@ public final class AuthorClient {
         return moveElementBuilder_;
       }
 
+      private PlayerClient.DeleteElement deleteElement_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerClient.DeleteElement, PlayerClient.DeleteElement.Builder, PlayerClient.DeleteElementOrBuilder> deleteElementBuilder_;
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public boolean hasDeleteElement() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public PlayerClient.DeleteElement getDeleteElement() {
+        if (deleteElementBuilder_ == null) {
+          return deleteElement_ == null ? PlayerClient.DeleteElement.getDefaultInstance() : deleteElement_;
+        } else {
+          return deleteElementBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public Builder setDeleteElement(PlayerClient.DeleteElement value) {
+        if (deleteElementBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          deleteElement_ = value;
+          onChanged();
+        } else {
+          deleteElementBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public Builder setDeleteElement(
+          PlayerClient.DeleteElement.Builder builderForValue) {
+        if (deleteElementBuilder_ == null) {
+          deleteElement_ = builderForValue.build();
+          onChanged();
+        } else {
+          deleteElementBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public Builder mergeDeleteElement(PlayerClient.DeleteElement value) {
+        if (deleteElementBuilder_ == null) {
+          if (((bitField0_ & 0x00001000) == 0x00001000) &&
+              deleteElement_ != null &&
+              deleteElement_ != PlayerClient.DeleteElement.getDefaultInstance()) {
+            deleteElement_ =
+              PlayerClient.DeleteElement.newBuilder(deleteElement_).mergeFrom(value).buildPartial();
+          } else {
+            deleteElement_ = value;
+          }
+          onChanged();
+        } else {
+          deleteElementBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public Builder clearDeleteElement() {
+        if (deleteElementBuilder_ == null) {
+          deleteElement_ = null;
+          onChanged();
+        } else {
+          deleteElementBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00001000);
+        return this;
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public PlayerClient.DeleteElement.Builder getDeleteElementBuilder() {
+        bitField0_ |= 0x00001000;
+        onChanged();
+        return getDeleteElementFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public PlayerClient.DeleteElementOrBuilder getDeleteElementOrBuilder() {
+        if (deleteElementBuilder_ != null) {
+          return deleteElementBuilder_.getMessageOrBuilder();
+        } else {
+          return deleteElement_ == null ?
+              PlayerClient.DeleteElement.getDefaultInstance() : deleteElement_;
+        }
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerClient.DeleteElement, PlayerClient.DeleteElement.Builder, PlayerClient.DeleteElementOrBuilder> 
+          getDeleteElementFieldBuilder() {
+        if (deleteElementBuilder_ == null) {
+          deleteElementBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerClient.DeleteElement, PlayerClient.DeleteElement.Builder, PlayerClient.DeleteElementOrBuilder>(
+                  getDeleteElement(),
+                  getParentForChildren(),
+                  isClean());
+          deleteElement_ = null;
+        }
+        return deleteElementBuilder_;
+      }
+
       private AuthorClient.UpdateElementProperties updateElementProperties_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.UpdateElementProperties, AuthorClient.UpdateElementProperties.Builder, AuthorClient.UpdateElementPropertiesOrBuilder> updateElementPropertiesBuilder_;
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public boolean hasUpdateElementProperties() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
+        return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public AuthorClient.UpdateElementProperties getUpdateElementProperties() {
         if (updateElementPropertiesBuilder_ == null) {
@@ -4395,7 +4605,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public Builder setUpdateElementProperties(AuthorClient.UpdateElementProperties value) {
         if (updateElementPropertiesBuilder_ == null) {
@@ -4407,11 +4617,11 @@ public final class AuthorClient {
         } else {
           updateElementPropertiesBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public Builder setUpdateElementProperties(
           AuthorClient.UpdateElementProperties.Builder builderForValue) {
@@ -4421,15 +4631,15 @@ public final class AuthorClient {
         } else {
           updateElementPropertiesBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public Builder mergeUpdateElementProperties(AuthorClient.UpdateElementProperties value) {
         if (updateElementPropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00001000) == 0x00001000) &&
+          if (((bitField0_ & 0x00002000) == 0x00002000) &&
               updateElementProperties_ != null &&
               updateElementProperties_ != AuthorClient.UpdateElementProperties.getDefaultInstance()) {
             updateElementProperties_ =
@@ -4441,11 +4651,11 @@ public final class AuthorClient {
         } else {
           updateElementPropertiesBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public Builder clearUpdateElementProperties() {
         if (updateElementPropertiesBuilder_ == null) {
@@ -4454,19 +4664,19 @@ public final class AuthorClient {
         } else {
           updateElementPropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public AuthorClient.UpdateElementProperties.Builder getUpdateElementPropertiesBuilder() {
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         onChanged();
         return getUpdateElementPropertiesFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public AuthorClient.UpdateElementPropertiesOrBuilder getUpdateElementPropertiesOrBuilder() {
         if (updateElementPropertiesBuilder_ != null) {
@@ -4477,7 +4687,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.UpdateElementProperties, AuthorClient.UpdateElementProperties.Builder, AuthorClient.UpdateElementPropertiesOrBuilder> 
@@ -4497,13 +4707,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetAllDefinedElementUpgrades, AuthorClient.GetAllDefinedElementUpgrades.Builder, AuthorClient.GetAllDefinedElementUpgradesOrBuilder> getAllDefinedElementUpgradesBuilder_;
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       public boolean hasGetAllDefinedElementUpgrades() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
+        return ((bitField0_ & 0x00004000) == 0x00004000);
       }
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       public AuthorClient.GetAllDefinedElementUpgrades getGetAllDefinedElementUpgrades() {
         if (getAllDefinedElementUpgradesBuilder_ == null) {
@@ -4513,7 +4723,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       public Builder setGetAllDefinedElementUpgrades(AuthorClient.GetAllDefinedElementUpgrades value) {
         if (getAllDefinedElementUpgradesBuilder_ == null) {
@@ -4525,11 +4735,11 @@ public final class AuthorClient {
         } else {
           getAllDefinedElementUpgradesBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         return this;
       }
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       public Builder setGetAllDefinedElementUpgrades(
           AuthorClient.GetAllDefinedElementUpgrades.Builder builderForValue) {
@@ -4539,15 +4749,15 @@ public final class AuthorClient {
         } else {
           getAllDefinedElementUpgradesBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         return this;
       }
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       public Builder mergeGetAllDefinedElementUpgrades(AuthorClient.GetAllDefinedElementUpgrades value) {
         if (getAllDefinedElementUpgradesBuilder_ == null) {
-          if (((bitField0_ & 0x00002000) == 0x00002000) &&
+          if (((bitField0_ & 0x00004000) == 0x00004000) &&
               getAllDefinedElementUpgrades_ != null &&
               getAllDefinedElementUpgrades_ != AuthorClient.GetAllDefinedElementUpgrades.getDefaultInstance()) {
             getAllDefinedElementUpgrades_ =
@@ -4559,11 +4769,11 @@ public final class AuthorClient {
         } else {
           getAllDefinedElementUpgradesBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         return this;
       }
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       public Builder clearGetAllDefinedElementUpgrades() {
         if (getAllDefinedElementUpgradesBuilder_ == null) {
@@ -4572,19 +4782,19 @@ public final class AuthorClient {
         } else {
           getAllDefinedElementUpgradesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00002000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       public AuthorClient.GetAllDefinedElementUpgrades.Builder getGetAllDefinedElementUpgradesBuilder() {
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         onChanged();
         return getGetAllDefinedElementUpgradesFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       public AuthorClient.GetAllDefinedElementUpgradesOrBuilder getGetAllDefinedElementUpgradesOrBuilder() {
         if (getAllDefinedElementUpgradesBuilder_ != null) {
@@ -4595,7 +4805,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 14;</code>
+       * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetAllDefinedElementUpgrades, AuthorClient.GetAllDefinedElementUpgrades.Builder, AuthorClient.GetAllDefinedElementUpgradesOrBuilder> 
@@ -4615,13 +4825,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetResourceEndowments, AuthorClient.GetResourceEndowments.Builder, AuthorClient.GetResourceEndowmentsOrBuilder> getResourceEndowmentsBuilder_;
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       public boolean hasGetResourceEndowments() {
-        return ((bitField0_ & 0x00004000) == 0x00004000);
+        return ((bitField0_ & 0x00008000) == 0x00008000);
       }
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       public AuthorClient.GetResourceEndowments getGetResourceEndowments() {
         if (getResourceEndowmentsBuilder_ == null) {
@@ -4631,7 +4841,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       public Builder setGetResourceEndowments(AuthorClient.GetResourceEndowments value) {
         if (getResourceEndowmentsBuilder_ == null) {
@@ -4643,11 +4853,11 @@ public final class AuthorClient {
         } else {
           getResourceEndowmentsBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         return this;
       }
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       public Builder setGetResourceEndowments(
           AuthorClient.GetResourceEndowments.Builder builderForValue) {
@@ -4657,15 +4867,15 @@ public final class AuthorClient {
         } else {
           getResourceEndowmentsBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         return this;
       }
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       public Builder mergeGetResourceEndowments(AuthorClient.GetResourceEndowments value) {
         if (getResourceEndowmentsBuilder_ == null) {
-          if (((bitField0_ & 0x00004000) == 0x00004000) &&
+          if (((bitField0_ & 0x00008000) == 0x00008000) &&
               getResourceEndowments_ != null &&
               getResourceEndowments_ != AuthorClient.GetResourceEndowments.getDefaultInstance()) {
             getResourceEndowments_ =
@@ -4677,11 +4887,11 @@ public final class AuthorClient {
         } else {
           getResourceEndowmentsBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         return this;
       }
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       public Builder clearGetResourceEndowments() {
         if (getResourceEndowmentsBuilder_ == null) {
@@ -4690,19 +4900,19 @@ public final class AuthorClient {
         } else {
           getResourceEndowmentsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00004000);
+        bitField0_ = (bitField0_ & ~0x00008000);
         return this;
       }
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       public AuthorClient.GetResourceEndowments.Builder getGetResourceEndowmentsBuilder() {
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         onChanged();
         return getGetResourceEndowmentsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       public AuthorClient.GetResourceEndowmentsOrBuilder getGetResourceEndowmentsOrBuilder() {
         if (getResourceEndowmentsBuilder_ != null) {
@@ -4713,7 +4923,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetResourceEndowments getResourceEndowments = 15;</code>
+       * <code>optional .GetResourceEndowments getResourceEndowments = 16;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetResourceEndowments, AuthorClient.GetResourceEndowments.Builder, AuthorClient.GetResourceEndowmentsOrBuilder> 
@@ -4733,13 +4943,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetGameName, AuthorClient.SetGameName.Builder, AuthorClient.SetGameNameOrBuilder> setGameNameBuilder_;
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       public boolean hasSetGameName() {
-        return ((bitField0_ & 0x00008000) == 0x00008000);
+        return ((bitField0_ & 0x00010000) == 0x00010000);
       }
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       public AuthorClient.SetGameName getSetGameName() {
         if (setGameNameBuilder_ == null) {
@@ -4749,7 +4959,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       public Builder setSetGameName(AuthorClient.SetGameName value) {
         if (setGameNameBuilder_ == null) {
@@ -4761,11 +4971,11 @@ public final class AuthorClient {
         } else {
           setGameNameBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         return this;
       }
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       public Builder setSetGameName(
           AuthorClient.SetGameName.Builder builderForValue) {
@@ -4775,15 +4985,15 @@ public final class AuthorClient {
         } else {
           setGameNameBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         return this;
       }
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       public Builder mergeSetGameName(AuthorClient.SetGameName value) {
         if (setGameNameBuilder_ == null) {
-          if (((bitField0_ & 0x00008000) == 0x00008000) &&
+          if (((bitField0_ & 0x00010000) == 0x00010000) &&
               setGameName_ != null &&
               setGameName_ != AuthorClient.SetGameName.getDefaultInstance()) {
             setGameName_ =
@@ -4795,11 +5005,11 @@ public final class AuthorClient {
         } else {
           setGameNameBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         return this;
       }
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       public Builder clearSetGameName() {
         if (setGameNameBuilder_ == null) {
@@ -4808,19 +5018,19 @@ public final class AuthorClient {
         } else {
           setGameNameBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00008000);
+        bitField0_ = (bitField0_ & ~0x00010000);
         return this;
       }
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       public AuthorClient.SetGameName.Builder getSetGameNameBuilder() {
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         onChanged();
         return getSetGameNameFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       public AuthorClient.SetGameNameOrBuilder getSetGameNameOrBuilder() {
         if (setGameNameBuilder_ != null) {
@@ -4831,7 +5041,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetGameName setGameName = 16;</code>
+       * <code>optional .SetGameName setGameName = 17;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetGameName, AuthorClient.SetGameName.Builder, AuthorClient.SetGameNameOrBuilder> 
@@ -4851,13 +5061,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetGameDescription, AuthorClient.SetGameDescription.Builder, AuthorClient.SetGameDescriptionOrBuilder> setGameDescriptionBuilder_;
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       public boolean hasSetGameDescription() {
-        return ((bitField0_ & 0x00010000) == 0x00010000);
+        return ((bitField0_ & 0x00020000) == 0x00020000);
       }
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       public AuthorClient.SetGameDescription getSetGameDescription() {
         if (setGameDescriptionBuilder_ == null) {
@@ -4867,7 +5077,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       public Builder setSetGameDescription(AuthorClient.SetGameDescription value) {
         if (setGameDescriptionBuilder_ == null) {
@@ -4879,11 +5089,11 @@ public final class AuthorClient {
         } else {
           setGameDescriptionBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         return this;
       }
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       public Builder setSetGameDescription(
           AuthorClient.SetGameDescription.Builder builderForValue) {
@@ -4893,15 +5103,15 @@ public final class AuthorClient {
         } else {
           setGameDescriptionBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         return this;
       }
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       public Builder mergeSetGameDescription(AuthorClient.SetGameDescription value) {
         if (setGameDescriptionBuilder_ == null) {
-          if (((bitField0_ & 0x00010000) == 0x00010000) &&
+          if (((bitField0_ & 0x00020000) == 0x00020000) &&
               setGameDescription_ != null &&
               setGameDescription_ != AuthorClient.SetGameDescription.getDefaultInstance()) {
             setGameDescription_ =
@@ -4913,11 +5123,11 @@ public final class AuthorClient {
         } else {
           setGameDescriptionBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         return this;
       }
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       public Builder clearSetGameDescription() {
         if (setGameDescriptionBuilder_ == null) {
@@ -4926,19 +5136,19 @@ public final class AuthorClient {
         } else {
           setGameDescriptionBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00010000);
+        bitField0_ = (bitField0_ & ~0x00020000);
         return this;
       }
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       public AuthorClient.SetGameDescription.Builder getSetGameDescriptionBuilder() {
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         onChanged();
         return getSetGameDescriptionFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       public AuthorClient.SetGameDescriptionOrBuilder getSetGameDescriptionOrBuilder() {
         if (setGameDescriptionBuilder_ != null) {
@@ -4949,7 +5159,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetGameDescription setGameDescription = 17;</code>
+       * <code>optional .SetGameDescription setGameDescription = 18;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetGameDescription, AuthorClient.SetGameDescription.Builder, AuthorClient.SetGameDescriptionOrBuilder> 
@@ -4969,13 +5179,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetVictoryCondition, AuthorClient.SetVictoryCondition.Builder, AuthorClient.SetVictoryConditionOrBuilder> setVictoryConditionBuilder_;
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       public boolean hasSetVictoryCondition() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
+        return ((bitField0_ & 0x00040000) == 0x00040000);
       }
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       public AuthorClient.SetVictoryCondition getSetVictoryCondition() {
         if (setVictoryConditionBuilder_ == null) {
@@ -4985,7 +5195,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       public Builder setSetVictoryCondition(AuthorClient.SetVictoryCondition value) {
         if (setVictoryConditionBuilder_ == null) {
@@ -4997,11 +5207,11 @@ public final class AuthorClient {
         } else {
           setVictoryConditionBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00040000;
         return this;
       }
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       public Builder setSetVictoryCondition(
           AuthorClient.SetVictoryCondition.Builder builderForValue) {
@@ -5011,15 +5221,15 @@ public final class AuthorClient {
         } else {
           setVictoryConditionBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00040000;
         return this;
       }
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       public Builder mergeSetVictoryCondition(AuthorClient.SetVictoryCondition value) {
         if (setVictoryConditionBuilder_ == null) {
-          if (((bitField0_ & 0x00020000) == 0x00020000) &&
+          if (((bitField0_ & 0x00040000) == 0x00040000) &&
               setVictoryCondition_ != null &&
               setVictoryCondition_ != AuthorClient.SetVictoryCondition.getDefaultInstance()) {
             setVictoryCondition_ =
@@ -5031,11 +5241,11 @@ public final class AuthorClient {
         } else {
           setVictoryConditionBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00040000;
         return this;
       }
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       public Builder clearSetVictoryCondition() {
         if (setVictoryConditionBuilder_ == null) {
@@ -5044,19 +5254,19 @@ public final class AuthorClient {
         } else {
           setVictoryConditionBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00040000);
         return this;
       }
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       public AuthorClient.SetVictoryCondition.Builder getSetVictoryConditionBuilder() {
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00040000;
         onChanged();
         return getSetVictoryConditionFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       public AuthorClient.SetVictoryConditionOrBuilder getSetVictoryConditionOrBuilder() {
         if (setVictoryConditionBuilder_ != null) {
@@ -5067,7 +5277,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetVictoryCondition setVictoryCondition = 18;</code>
+       * <code>optional .SetVictoryCondition setVictoryCondition = 19;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetVictoryCondition, AuthorClient.SetVictoryCondition.Builder, AuthorClient.SetVictoryConditionOrBuilder> 
@@ -5087,13 +5297,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetDefeatCondition, AuthorClient.SetDefeatCondition.Builder, AuthorClient.SetDefeatConditionOrBuilder> setDefeatConditionBuilder_;
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       public boolean hasSetDefeatCondition() {
-        return ((bitField0_ & 0x00040000) == 0x00040000);
+        return ((bitField0_ & 0x00080000) == 0x00080000);
       }
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       public AuthorClient.SetDefeatCondition getSetDefeatCondition() {
         if (setDefeatConditionBuilder_ == null) {
@@ -5103,7 +5313,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       public Builder setSetDefeatCondition(AuthorClient.SetDefeatCondition value) {
         if (setDefeatConditionBuilder_ == null) {
@@ -5115,11 +5325,11 @@ public final class AuthorClient {
         } else {
           setDefeatConditionBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00040000;
+        bitField0_ |= 0x00080000;
         return this;
       }
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       public Builder setSetDefeatCondition(
           AuthorClient.SetDefeatCondition.Builder builderForValue) {
@@ -5129,15 +5339,15 @@ public final class AuthorClient {
         } else {
           setDefeatConditionBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00040000;
+        bitField0_ |= 0x00080000;
         return this;
       }
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       public Builder mergeSetDefeatCondition(AuthorClient.SetDefeatCondition value) {
         if (setDefeatConditionBuilder_ == null) {
-          if (((bitField0_ & 0x00040000) == 0x00040000) &&
+          if (((bitField0_ & 0x00080000) == 0x00080000) &&
               setDefeatCondition_ != null &&
               setDefeatCondition_ != AuthorClient.SetDefeatCondition.getDefaultInstance()) {
             setDefeatCondition_ =
@@ -5149,11 +5359,11 @@ public final class AuthorClient {
         } else {
           setDefeatConditionBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00040000;
+        bitField0_ |= 0x00080000;
         return this;
       }
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       public Builder clearSetDefeatCondition() {
         if (setDefeatConditionBuilder_ == null) {
@@ -5162,19 +5372,19 @@ public final class AuthorClient {
         } else {
           setDefeatConditionBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00040000);
+        bitField0_ = (bitField0_ & ~0x00080000);
         return this;
       }
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       public AuthorClient.SetDefeatCondition.Builder getSetDefeatConditionBuilder() {
-        bitField0_ |= 0x00040000;
+        bitField0_ |= 0x00080000;
         onChanged();
         return getSetDefeatConditionFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       public AuthorClient.SetDefeatConditionOrBuilder getSetDefeatConditionOrBuilder() {
         if (setDefeatConditionBuilder_ != null) {
@@ -5185,7 +5395,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetDefeatCondition setDefeatCondition = 19;</code>
+       * <code>optional .SetDefeatCondition setDefeatCondition = 20;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetDefeatCondition, AuthorClient.SetDefeatCondition.Builder, AuthorClient.SetDefeatConditionOrBuilder> 
@@ -5205,13 +5415,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetStatusProperty, AuthorClient.SetStatusProperty.Builder, AuthorClient.SetStatusPropertyOrBuilder> setStatusPropertyBuilder_;
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       public boolean hasSetStatusProperty() {
-        return ((bitField0_ & 0x00080000) == 0x00080000);
+        return ((bitField0_ & 0x00100000) == 0x00100000);
       }
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       public AuthorClient.SetStatusProperty getSetStatusProperty() {
         if (setStatusPropertyBuilder_ == null) {
@@ -5221,7 +5431,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       public Builder setSetStatusProperty(AuthorClient.SetStatusProperty value) {
         if (setStatusPropertyBuilder_ == null) {
@@ -5233,11 +5443,11 @@ public final class AuthorClient {
         } else {
           setStatusPropertyBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00080000;
+        bitField0_ |= 0x00100000;
         return this;
       }
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       public Builder setSetStatusProperty(
           AuthorClient.SetStatusProperty.Builder builderForValue) {
@@ -5247,15 +5457,15 @@ public final class AuthorClient {
         } else {
           setStatusPropertyBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00080000;
+        bitField0_ |= 0x00100000;
         return this;
       }
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       public Builder mergeSetStatusProperty(AuthorClient.SetStatusProperty value) {
         if (setStatusPropertyBuilder_ == null) {
-          if (((bitField0_ & 0x00080000) == 0x00080000) &&
+          if (((bitField0_ & 0x00100000) == 0x00100000) &&
               setStatusProperty_ != null &&
               setStatusProperty_ != AuthorClient.SetStatusProperty.getDefaultInstance()) {
             setStatusProperty_ =
@@ -5267,11 +5477,11 @@ public final class AuthorClient {
         } else {
           setStatusPropertyBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00080000;
+        bitField0_ |= 0x00100000;
         return this;
       }
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       public Builder clearSetStatusProperty() {
         if (setStatusPropertyBuilder_ == null) {
@@ -5280,19 +5490,19 @@ public final class AuthorClient {
         } else {
           setStatusPropertyBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00080000);
+        bitField0_ = (bitField0_ & ~0x00100000);
         return this;
       }
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       public AuthorClient.SetStatusProperty.Builder getSetStatusPropertyBuilder() {
-        bitField0_ |= 0x00080000;
+        bitField0_ |= 0x00100000;
         onChanged();
         return getSetStatusPropertyFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       public AuthorClient.SetStatusPropertyOrBuilder getSetStatusPropertyOrBuilder() {
         if (setStatusPropertyBuilder_ != null) {
@@ -5303,7 +5513,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetStatusProperty setStatusProperty = 20;</code>
+       * <code>optional .SetStatusProperty setStatusProperty = 21;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetStatusProperty, AuthorClient.SetStatusProperty.Builder, AuthorClient.SetStatusPropertyOrBuilder> 
@@ -5322,9 +5532,9 @@ public final class AuthorClient {
       private java.util.List<AuthorClient.ResourceEndowment> setResourceEndowments_ =
         java.util.Collections.emptyList();
       private void ensureSetResourceEndowmentsIsMutable() {
-        if (!((bitField0_ & 0x00100000) == 0x00100000)) {
+        if (!((bitField0_ & 0x00200000) == 0x00200000)) {
           setResourceEndowments_ = new java.util.ArrayList<AuthorClient.ResourceEndowment>(setResourceEndowments_);
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x00200000;
          }
       }
 
@@ -5332,7 +5542,7 @@ public final class AuthorClient {
           AuthorClient.ResourceEndowment, AuthorClient.ResourceEndowment.Builder, AuthorClient.ResourceEndowmentOrBuilder> setResourceEndowmentsBuilder_;
 
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public java.util.List<AuthorClient.ResourceEndowment> getSetResourceEndowmentsList() {
         if (setResourceEndowmentsBuilder_ == null) {
@@ -5342,7 +5552,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public int getSetResourceEndowmentsCount() {
         if (setResourceEndowmentsBuilder_ == null) {
@@ -5352,7 +5562,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public AuthorClient.ResourceEndowment getSetResourceEndowments(int index) {
         if (setResourceEndowmentsBuilder_ == null) {
@@ -5362,7 +5572,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder setSetResourceEndowments(
           int index, AuthorClient.ResourceEndowment value) {
@@ -5379,7 +5589,7 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder setSetResourceEndowments(
           int index, AuthorClient.ResourceEndowment.Builder builderForValue) {
@@ -5393,7 +5603,7 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder addSetResourceEndowments(AuthorClient.ResourceEndowment value) {
         if (setResourceEndowmentsBuilder_ == null) {
@@ -5409,7 +5619,7 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder addSetResourceEndowments(
           int index, AuthorClient.ResourceEndowment value) {
@@ -5426,7 +5636,7 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder addSetResourceEndowments(
           AuthorClient.ResourceEndowment.Builder builderForValue) {
@@ -5440,7 +5650,7 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder addSetResourceEndowments(
           int index, AuthorClient.ResourceEndowment.Builder builderForValue) {
@@ -5454,7 +5664,7 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder addAllSetResourceEndowments(
           java.lang.Iterable<? extends AuthorClient.ResourceEndowment> values) {
@@ -5469,12 +5679,12 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder clearSetResourceEndowments() {
         if (setResourceEndowmentsBuilder_ == null) {
           setResourceEndowments_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x00200000);
           onChanged();
         } else {
           setResourceEndowmentsBuilder_.clear();
@@ -5482,7 +5692,7 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public Builder removeSetResourceEndowments(int index) {
         if (setResourceEndowmentsBuilder_ == null) {
@@ -5495,14 +5705,14 @@ public final class AuthorClient {
         return this;
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public AuthorClient.ResourceEndowment.Builder getSetResourceEndowmentsBuilder(
           int index) {
         return getSetResourceEndowmentsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public AuthorClient.ResourceEndowmentOrBuilder getSetResourceEndowmentsOrBuilder(
           int index) {
@@ -5512,7 +5722,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public java.util.List<? extends AuthorClient.ResourceEndowmentOrBuilder> 
            getSetResourceEndowmentsOrBuilderList() {
@@ -5523,14 +5733,14 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public AuthorClient.ResourceEndowment.Builder addSetResourceEndowmentsBuilder() {
         return getSetResourceEndowmentsFieldBuilder().addBuilder(
             AuthorClient.ResourceEndowment.getDefaultInstance());
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public AuthorClient.ResourceEndowment.Builder addSetResourceEndowmentsBuilder(
           int index) {
@@ -5538,7 +5748,7 @@ public final class AuthorClient {
             index, AuthorClient.ResourceEndowment.getDefaultInstance());
       }
       /**
-       * <code>repeated .ResourceEndowment setResourceEndowments = 21;</code>
+       * <code>repeated .ResourceEndowment setResourceEndowments = 22;</code>
        */
       public java.util.List<AuthorClient.ResourceEndowment.Builder> 
            getSetResourceEndowmentsBuilderList() {
@@ -5551,7 +5761,7 @@ public final class AuthorClient {
           setResourceEndowmentsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AuthorClient.ResourceEndowment, AuthorClient.ResourceEndowment.Builder, AuthorClient.ResourceEndowmentOrBuilder>(
                   setResourceEndowments_,
-                  ((bitField0_ & 0x00100000) == 0x00100000),
+                  ((bitField0_ & 0x00200000) == 0x00200000),
                   getParentForChildren(),
                   isClean());
           setResourceEndowments_ = null;
@@ -5563,13 +5773,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetUnitCost, AuthorClient.SetUnitCost.Builder, AuthorClient.SetUnitCostOrBuilder> setUnitCostBuilder_;
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       public boolean hasSetUnitCost() {
-        return ((bitField0_ & 0x00200000) == 0x00200000);
+        return ((bitField0_ & 0x00400000) == 0x00400000);
       }
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       public AuthorClient.SetUnitCost getSetUnitCost() {
         if (setUnitCostBuilder_ == null) {
@@ -5579,7 +5789,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       public Builder setSetUnitCost(AuthorClient.SetUnitCost value) {
         if (setUnitCostBuilder_ == null) {
@@ -5591,11 +5801,11 @@ public final class AuthorClient {
         } else {
           setUnitCostBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00200000;
+        bitField0_ |= 0x00400000;
         return this;
       }
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       public Builder setSetUnitCost(
           AuthorClient.SetUnitCost.Builder builderForValue) {
@@ -5605,15 +5815,15 @@ public final class AuthorClient {
         } else {
           setUnitCostBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00200000;
+        bitField0_ |= 0x00400000;
         return this;
       }
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       public Builder mergeSetUnitCost(AuthorClient.SetUnitCost value) {
         if (setUnitCostBuilder_ == null) {
-          if (((bitField0_ & 0x00200000) == 0x00200000) &&
+          if (((bitField0_ & 0x00400000) == 0x00400000) &&
               setUnitCost_ != null &&
               setUnitCost_ != AuthorClient.SetUnitCost.getDefaultInstance()) {
             setUnitCost_ =
@@ -5625,11 +5835,11 @@ public final class AuthorClient {
         } else {
           setUnitCostBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00200000;
+        bitField0_ |= 0x00400000;
         return this;
       }
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       public Builder clearSetUnitCost() {
         if (setUnitCostBuilder_ == null) {
@@ -5638,19 +5848,19 @@ public final class AuthorClient {
         } else {
           setUnitCostBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00200000);
+        bitField0_ = (bitField0_ & ~0x00400000);
         return this;
       }
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       public AuthorClient.SetUnitCost.Builder getSetUnitCostBuilder() {
-        bitField0_ |= 0x00200000;
+        bitField0_ |= 0x00400000;
         onChanged();
         return getSetUnitCostFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       public AuthorClient.SetUnitCostOrBuilder getSetUnitCostOrBuilder() {
         if (setUnitCostBuilder_ != null) {
@@ -5661,7 +5871,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .SetUnitCost setUnitCost = 22;</code>
+       * <code>optional .SetUnitCost setUnitCost = 23;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.SetUnitCost, AuthorClient.SetUnitCost.Builder, AuthorClient.SetUnitCostOrBuilder> 
@@ -5681,13 +5891,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.CreateWaveProperties, AuthorClient.CreateWaveProperties.Builder, AuthorClient.CreateWavePropertiesOrBuilder> createWavePropertiesBuilder_;
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       public boolean hasCreateWaveProperties() {
-        return ((bitField0_ & 0x00400000) == 0x00400000);
+        return ((bitField0_ & 0x00800000) == 0x00800000);
       }
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       public AuthorClient.CreateWaveProperties getCreateWaveProperties() {
         if (createWavePropertiesBuilder_ == null) {
@@ -5697,7 +5907,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       public Builder setCreateWaveProperties(AuthorClient.CreateWaveProperties value) {
         if (createWavePropertiesBuilder_ == null) {
@@ -5709,11 +5919,11 @@ public final class AuthorClient {
         } else {
           createWavePropertiesBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00400000;
+        bitField0_ |= 0x00800000;
         return this;
       }
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       public Builder setCreateWaveProperties(
           AuthorClient.CreateWaveProperties.Builder builderForValue) {
@@ -5723,15 +5933,15 @@ public final class AuthorClient {
         } else {
           createWavePropertiesBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00400000;
+        bitField0_ |= 0x00800000;
         return this;
       }
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       public Builder mergeCreateWaveProperties(AuthorClient.CreateWaveProperties value) {
         if (createWavePropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00400000) == 0x00400000) &&
+          if (((bitField0_ & 0x00800000) == 0x00800000) &&
               createWaveProperties_ != null &&
               createWaveProperties_ != AuthorClient.CreateWaveProperties.getDefaultInstance()) {
             createWaveProperties_ =
@@ -5743,11 +5953,11 @@ public final class AuthorClient {
         } else {
           createWavePropertiesBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00400000;
+        bitField0_ |= 0x00800000;
         return this;
       }
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       public Builder clearCreateWaveProperties() {
         if (createWavePropertiesBuilder_ == null) {
@@ -5756,19 +5966,19 @@ public final class AuthorClient {
         } else {
           createWavePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00400000);
+        bitField0_ = (bitField0_ & ~0x00800000);
         return this;
       }
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       public AuthorClient.CreateWaveProperties.Builder getCreateWavePropertiesBuilder() {
-        bitField0_ |= 0x00400000;
+        bitField0_ |= 0x00800000;
         onChanged();
         return getCreateWavePropertiesFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       public AuthorClient.CreateWavePropertiesOrBuilder getCreateWavePropertiesOrBuilder() {
         if (createWavePropertiesBuilder_ != null) {
@@ -5779,7 +5989,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .CreateWaveProperties createWaveProperties = 23;</code>
+       * <code>optional .CreateWaveProperties createWaveProperties = 24;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.CreateWaveProperties, AuthorClient.CreateWaveProperties.Builder, AuthorClient.CreateWavePropertiesOrBuilder> 
@@ -5799,13 +6009,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.EditWaveProperties, AuthorClient.EditWaveProperties.Builder, AuthorClient.EditWavePropertiesOrBuilder> editWavePropertiesBuilder_;
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       public boolean hasEditWaveProperties() {
-        return ((bitField0_ & 0x00800000) == 0x00800000);
+        return ((bitField0_ & 0x01000000) == 0x01000000);
       }
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       public AuthorClient.EditWaveProperties getEditWaveProperties() {
         if (editWavePropertiesBuilder_ == null) {
@@ -5815,7 +6025,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       public Builder setEditWaveProperties(AuthorClient.EditWaveProperties value) {
         if (editWavePropertiesBuilder_ == null) {
@@ -5827,11 +6037,11 @@ public final class AuthorClient {
         } else {
           editWavePropertiesBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00800000;
+        bitField0_ |= 0x01000000;
         return this;
       }
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       public Builder setEditWaveProperties(
           AuthorClient.EditWaveProperties.Builder builderForValue) {
@@ -5841,15 +6051,15 @@ public final class AuthorClient {
         } else {
           editWavePropertiesBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00800000;
+        bitField0_ |= 0x01000000;
         return this;
       }
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       public Builder mergeEditWaveProperties(AuthorClient.EditWaveProperties value) {
         if (editWavePropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00800000) == 0x00800000) &&
+          if (((bitField0_ & 0x01000000) == 0x01000000) &&
               editWaveProperties_ != null &&
               editWaveProperties_ != AuthorClient.EditWaveProperties.getDefaultInstance()) {
             editWaveProperties_ =
@@ -5861,11 +6071,11 @@ public final class AuthorClient {
         } else {
           editWavePropertiesBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00800000;
+        bitField0_ |= 0x01000000;
         return this;
       }
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       public Builder clearEditWaveProperties() {
         if (editWavePropertiesBuilder_ == null) {
@@ -5874,19 +6084,19 @@ public final class AuthorClient {
         } else {
           editWavePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00800000);
+        bitField0_ = (bitField0_ & ~0x01000000);
         return this;
       }
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       public AuthorClient.EditWaveProperties.Builder getEditWavePropertiesBuilder() {
-        bitField0_ |= 0x00800000;
+        bitField0_ |= 0x01000000;
         onChanged();
         return getEditWavePropertiesFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       public AuthorClient.EditWavePropertiesOrBuilder getEditWavePropertiesOrBuilder() {
         if (editWavePropertiesBuilder_ != null) {
@@ -5897,7 +6107,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .EditWaveProperties editWaveProperties = 24;</code>
+       * <code>optional .EditWaveProperties editWaveProperties = 25;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.EditWaveProperties, AuthorClient.EditWaveProperties.Builder, AuthorClient.EditWavePropertiesOrBuilder> 
@@ -5917,13 +6127,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetWaveProperties, AuthorClient.GetWaveProperties.Builder, AuthorClient.GetWavePropertiesOrBuilder> getWavePropertiesBuilder_;
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       public boolean hasGetWaveProperties() {
-        return ((bitField0_ & 0x01000000) == 0x01000000);
+        return ((bitField0_ & 0x02000000) == 0x02000000);
       }
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       public AuthorClient.GetWaveProperties getGetWaveProperties() {
         if (getWavePropertiesBuilder_ == null) {
@@ -5933,7 +6143,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       public Builder setGetWaveProperties(AuthorClient.GetWaveProperties value) {
         if (getWavePropertiesBuilder_ == null) {
@@ -5945,11 +6155,11 @@ public final class AuthorClient {
         } else {
           getWavePropertiesBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x01000000;
+        bitField0_ |= 0x02000000;
         return this;
       }
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       public Builder setGetWaveProperties(
           AuthorClient.GetWaveProperties.Builder builderForValue) {
@@ -5959,15 +6169,15 @@ public final class AuthorClient {
         } else {
           getWavePropertiesBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x01000000;
+        bitField0_ |= 0x02000000;
         return this;
       }
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       public Builder mergeGetWaveProperties(AuthorClient.GetWaveProperties value) {
         if (getWavePropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x01000000) == 0x01000000) &&
+          if (((bitField0_ & 0x02000000) == 0x02000000) &&
               getWaveProperties_ != null &&
               getWaveProperties_ != AuthorClient.GetWaveProperties.getDefaultInstance()) {
             getWaveProperties_ =
@@ -5979,11 +6189,11 @@ public final class AuthorClient {
         } else {
           getWavePropertiesBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x01000000;
+        bitField0_ |= 0x02000000;
         return this;
       }
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       public Builder clearGetWaveProperties() {
         if (getWavePropertiesBuilder_ == null) {
@@ -5992,19 +6202,19 @@ public final class AuthorClient {
         } else {
           getWavePropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x01000000);
+        bitField0_ = (bitField0_ & ~0x02000000);
         return this;
       }
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       public AuthorClient.GetWaveProperties.Builder getGetWavePropertiesBuilder() {
-        bitField0_ |= 0x01000000;
+        bitField0_ |= 0x02000000;
         onChanged();
         return getGetWavePropertiesFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       public AuthorClient.GetWavePropertiesOrBuilder getGetWavePropertiesOrBuilder() {
         if (getWavePropertiesBuilder_ != null) {
@@ -6015,7 +6225,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetWaveProperties getWaveProperties = 25;</code>
+       * <code>optional .GetWaveProperties getWaveProperties = 26;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetWaveProperties, AuthorClient.GetWaveProperties.Builder, AuthorClient.GetWavePropertiesOrBuilder> 
@@ -6035,13 +6245,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetPossibleVictoryConditions, AuthorClient.GetPossibleVictoryConditions.Builder, AuthorClient.GetPossibleVictoryConditionsOrBuilder> getPossibleVictoryConditionsBuilder_;
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       public boolean hasGetPossibleVictoryConditions() {
-        return ((bitField0_ & 0x02000000) == 0x02000000);
+        return ((bitField0_ & 0x04000000) == 0x04000000);
       }
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       public AuthorClient.GetPossibleVictoryConditions getGetPossibleVictoryConditions() {
         if (getPossibleVictoryConditionsBuilder_ == null) {
@@ -6051,7 +6261,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       public Builder setGetPossibleVictoryConditions(AuthorClient.GetPossibleVictoryConditions value) {
         if (getPossibleVictoryConditionsBuilder_ == null) {
@@ -6063,11 +6273,11 @@ public final class AuthorClient {
         } else {
           getPossibleVictoryConditionsBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x02000000;
+        bitField0_ |= 0x04000000;
         return this;
       }
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       public Builder setGetPossibleVictoryConditions(
           AuthorClient.GetPossibleVictoryConditions.Builder builderForValue) {
@@ -6077,15 +6287,15 @@ public final class AuthorClient {
         } else {
           getPossibleVictoryConditionsBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x02000000;
+        bitField0_ |= 0x04000000;
         return this;
       }
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       public Builder mergeGetPossibleVictoryConditions(AuthorClient.GetPossibleVictoryConditions value) {
         if (getPossibleVictoryConditionsBuilder_ == null) {
-          if (((bitField0_ & 0x02000000) == 0x02000000) &&
+          if (((bitField0_ & 0x04000000) == 0x04000000) &&
               getPossibleVictoryConditions_ != null &&
               getPossibleVictoryConditions_ != AuthorClient.GetPossibleVictoryConditions.getDefaultInstance()) {
             getPossibleVictoryConditions_ =
@@ -6097,11 +6307,11 @@ public final class AuthorClient {
         } else {
           getPossibleVictoryConditionsBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x02000000;
+        bitField0_ |= 0x04000000;
         return this;
       }
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       public Builder clearGetPossibleVictoryConditions() {
         if (getPossibleVictoryConditionsBuilder_ == null) {
@@ -6110,19 +6320,19 @@ public final class AuthorClient {
         } else {
           getPossibleVictoryConditionsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x02000000);
+        bitField0_ = (bitField0_ & ~0x04000000);
         return this;
       }
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       public AuthorClient.GetPossibleVictoryConditions.Builder getGetPossibleVictoryConditionsBuilder() {
-        bitField0_ |= 0x02000000;
+        bitField0_ |= 0x04000000;
         onChanged();
         return getGetPossibleVictoryConditionsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       public AuthorClient.GetPossibleVictoryConditionsOrBuilder getGetPossibleVictoryConditionsOrBuilder() {
         if (getPossibleVictoryConditionsBuilder_ != null) {
@@ -6133,7 +6343,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 26;</code>
+       * <code>optional .GetPossibleVictoryConditions getPossibleVictoryConditions = 27;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetPossibleVictoryConditions, AuthorClient.GetPossibleVictoryConditions.Builder, AuthorClient.GetPossibleVictoryConditionsOrBuilder> 
@@ -6153,13 +6363,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetPossibleDefeatConditions, AuthorClient.GetPossibleDefeatConditions.Builder, AuthorClient.GetPossibleDefeatConditionsOrBuilder> getPossibleDefeatConditionsBuilder_;
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       public boolean hasGetPossibleDefeatConditions() {
-        return ((bitField0_ & 0x04000000) == 0x04000000);
+        return ((bitField0_ & 0x08000000) == 0x08000000);
       }
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       public AuthorClient.GetPossibleDefeatConditions getGetPossibleDefeatConditions() {
         if (getPossibleDefeatConditionsBuilder_ == null) {
@@ -6169,7 +6379,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       public Builder setGetPossibleDefeatConditions(AuthorClient.GetPossibleDefeatConditions value) {
         if (getPossibleDefeatConditionsBuilder_ == null) {
@@ -6181,11 +6391,11 @@ public final class AuthorClient {
         } else {
           getPossibleDefeatConditionsBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x04000000;
+        bitField0_ |= 0x08000000;
         return this;
       }
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       public Builder setGetPossibleDefeatConditions(
           AuthorClient.GetPossibleDefeatConditions.Builder builderForValue) {
@@ -6195,15 +6405,15 @@ public final class AuthorClient {
         } else {
           getPossibleDefeatConditionsBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x04000000;
+        bitField0_ |= 0x08000000;
         return this;
       }
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       public Builder mergeGetPossibleDefeatConditions(AuthorClient.GetPossibleDefeatConditions value) {
         if (getPossibleDefeatConditionsBuilder_ == null) {
-          if (((bitField0_ & 0x04000000) == 0x04000000) &&
+          if (((bitField0_ & 0x08000000) == 0x08000000) &&
               getPossibleDefeatConditions_ != null &&
               getPossibleDefeatConditions_ != AuthorClient.GetPossibleDefeatConditions.getDefaultInstance()) {
             getPossibleDefeatConditions_ =
@@ -6215,11 +6425,11 @@ public final class AuthorClient {
         } else {
           getPossibleDefeatConditionsBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x04000000;
+        bitField0_ |= 0x08000000;
         return this;
       }
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       public Builder clearGetPossibleDefeatConditions() {
         if (getPossibleDefeatConditionsBuilder_ == null) {
@@ -6228,19 +6438,19 @@ public final class AuthorClient {
         } else {
           getPossibleDefeatConditionsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x04000000);
+        bitField0_ = (bitField0_ & ~0x08000000);
         return this;
       }
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       public AuthorClient.GetPossibleDefeatConditions.Builder getGetPossibleDefeatConditionsBuilder() {
-        bitField0_ |= 0x04000000;
+        bitField0_ |= 0x08000000;
         onChanged();
         return getGetPossibleDefeatConditionsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       public AuthorClient.GetPossibleDefeatConditionsOrBuilder getGetPossibleDefeatConditionsOrBuilder() {
         if (getPossibleDefeatConditionsBuilder_ != null) {
@@ -6251,7 +6461,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 27;</code>
+       * <code>optional .GetPossibleDefeatConditions getPossibleDefeatConditions = 28;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetPossibleDefeatConditions, AuthorClient.GetPossibleDefeatConditions.Builder, AuthorClient.GetPossibleDefeatConditionsOrBuilder> 
@@ -6271,13 +6481,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetCurrentVictoryConditions, AuthorClient.GetCurrentVictoryConditions.Builder, AuthorClient.GetCurrentVictoryConditionsOrBuilder> getCurrentVictoryConditionsBuilder_;
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       public boolean hasGetCurrentVictoryConditions() {
-        return ((bitField0_ & 0x08000000) == 0x08000000);
+        return ((bitField0_ & 0x10000000) == 0x10000000);
       }
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       public AuthorClient.GetCurrentVictoryConditions getGetCurrentVictoryConditions() {
         if (getCurrentVictoryConditionsBuilder_ == null) {
@@ -6287,7 +6497,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       public Builder setGetCurrentVictoryConditions(AuthorClient.GetCurrentVictoryConditions value) {
         if (getCurrentVictoryConditionsBuilder_ == null) {
@@ -6299,11 +6509,11 @@ public final class AuthorClient {
         } else {
           getCurrentVictoryConditionsBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x08000000;
+        bitField0_ |= 0x10000000;
         return this;
       }
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       public Builder setGetCurrentVictoryConditions(
           AuthorClient.GetCurrentVictoryConditions.Builder builderForValue) {
@@ -6313,15 +6523,15 @@ public final class AuthorClient {
         } else {
           getCurrentVictoryConditionsBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x08000000;
+        bitField0_ |= 0x10000000;
         return this;
       }
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       public Builder mergeGetCurrentVictoryConditions(AuthorClient.GetCurrentVictoryConditions value) {
         if (getCurrentVictoryConditionsBuilder_ == null) {
-          if (((bitField0_ & 0x08000000) == 0x08000000) &&
+          if (((bitField0_ & 0x10000000) == 0x10000000) &&
               getCurrentVictoryConditions_ != null &&
               getCurrentVictoryConditions_ != AuthorClient.GetCurrentVictoryConditions.getDefaultInstance()) {
             getCurrentVictoryConditions_ =
@@ -6333,11 +6543,11 @@ public final class AuthorClient {
         } else {
           getCurrentVictoryConditionsBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x08000000;
+        bitField0_ |= 0x10000000;
         return this;
       }
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       public Builder clearGetCurrentVictoryConditions() {
         if (getCurrentVictoryConditionsBuilder_ == null) {
@@ -6346,19 +6556,19 @@ public final class AuthorClient {
         } else {
           getCurrentVictoryConditionsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x08000000);
+        bitField0_ = (bitField0_ & ~0x10000000);
         return this;
       }
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       public AuthorClient.GetCurrentVictoryConditions.Builder getGetCurrentVictoryConditionsBuilder() {
-        bitField0_ |= 0x08000000;
+        bitField0_ |= 0x10000000;
         onChanged();
         return getGetCurrentVictoryConditionsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       public AuthorClient.GetCurrentVictoryConditionsOrBuilder getGetCurrentVictoryConditionsOrBuilder() {
         if (getCurrentVictoryConditionsBuilder_ != null) {
@@ -6369,7 +6579,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 28;</code>
+       * <code>optional .GetCurrentVictoryConditions getCurrentVictoryConditions = 29;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetCurrentVictoryConditions, AuthorClient.GetCurrentVictoryConditions.Builder, AuthorClient.GetCurrentVictoryConditionsOrBuilder> 
@@ -6389,13 +6599,13 @@ public final class AuthorClient {
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetCurrentDefeatConditions, AuthorClient.GetCurrentDefeatConditions.Builder, AuthorClient.GetCurrentDefeatConditionsOrBuilder> getCurrentDefeatConditionsBuilder_;
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       public boolean hasGetCurrentDefeatConditions() {
-        return ((bitField0_ & 0x10000000) == 0x10000000);
+        return ((bitField0_ & 0x20000000) == 0x20000000);
       }
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       public AuthorClient.GetCurrentDefeatConditions getGetCurrentDefeatConditions() {
         if (getCurrentDefeatConditionsBuilder_ == null) {
@@ -6405,7 +6615,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       public Builder setGetCurrentDefeatConditions(AuthorClient.GetCurrentDefeatConditions value) {
         if (getCurrentDefeatConditionsBuilder_ == null) {
@@ -6417,11 +6627,11 @@ public final class AuthorClient {
         } else {
           getCurrentDefeatConditionsBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x10000000;
+        bitField0_ |= 0x20000000;
         return this;
       }
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       public Builder setGetCurrentDefeatConditions(
           AuthorClient.GetCurrentDefeatConditions.Builder builderForValue) {
@@ -6431,15 +6641,15 @@ public final class AuthorClient {
         } else {
           getCurrentDefeatConditionsBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x10000000;
+        bitField0_ |= 0x20000000;
         return this;
       }
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       public Builder mergeGetCurrentDefeatConditions(AuthorClient.GetCurrentDefeatConditions value) {
         if (getCurrentDefeatConditionsBuilder_ == null) {
-          if (((bitField0_ & 0x10000000) == 0x10000000) &&
+          if (((bitField0_ & 0x20000000) == 0x20000000) &&
               getCurrentDefeatConditions_ != null &&
               getCurrentDefeatConditions_ != AuthorClient.GetCurrentDefeatConditions.getDefaultInstance()) {
             getCurrentDefeatConditions_ =
@@ -6451,11 +6661,11 @@ public final class AuthorClient {
         } else {
           getCurrentDefeatConditionsBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x10000000;
+        bitField0_ |= 0x20000000;
         return this;
       }
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       public Builder clearGetCurrentDefeatConditions() {
         if (getCurrentDefeatConditionsBuilder_ == null) {
@@ -6464,19 +6674,19 @@ public final class AuthorClient {
         } else {
           getCurrentDefeatConditionsBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x10000000);
+        bitField0_ = (bitField0_ & ~0x20000000);
         return this;
       }
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       public AuthorClient.GetCurrentDefeatConditions.Builder getGetCurrentDefeatConditionsBuilder() {
-        bitField0_ |= 0x10000000;
+        bitField0_ |= 0x20000000;
         onChanged();
         return getGetCurrentDefeatConditionsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       public AuthorClient.GetCurrentDefeatConditionsOrBuilder getGetCurrentDefeatConditionsOrBuilder() {
         if (getCurrentDefeatConditionsBuilder_ != null) {
@@ -6487,7 +6697,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 29;</code>
+       * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.GetCurrentDefeatConditions, AuthorClient.GetCurrentDefeatConditions.Builder, AuthorClient.GetCurrentDefeatConditionsOrBuilder> 
@@ -24744,7 +24954,7 @@ public final class AuthorClient {
   static {
     java.lang.String[] descriptorData = {
       "\n\022AuthorClient.proto\032\022PlayerClient.proto" +
-      "\"\365\013\n\026AuthoringClientMessage\022\037\n\nexportGam" +
+      "\"\234\014\n\026AuthoringClientMessage\022\037\n\nexportGam" +
       "e\030\001 \001(\0132\013.ExportGame\022\033\n\010setLevel\030\002 \001(\0132\t" +
       ".SetLevel\022!\n\013deleteLevel\030\003 \001(\0132\014.DeleteL" +
       "evel\022A\n\024getElementBaseConfig\030\004 \001(\0132#.Get" +
@@ -24759,68 +24969,69 @@ public final class AuthorClient {
       "\n\025addElementToInventory\030\n \001(\0132\026.AddEleme" +
       "ntToInventory\022)\n\017getCurrentLevel\030\013 \001(\0132\020" +
       ".GetCurrentLevel\022!\n\013moveElement\030\014 \001(\0132\014." +
-      "MoveElement\0229\n\027updateElementProperties\030\r" +
-      " \001(\0132\030.UpdateElementProperties\022C\n\034getAll" +
-      "DefinedElementUpgrades\030\016 \001(\0132\035.GetAllDef" +
-      "inedElementUpgrades\0225\n\025getResourceEndowm",
-      "ents\030\017 \001(\0132\026.GetResourceEndowments\022!\n\013se" +
-      "tGameName\030\020 \001(\0132\014.SetGameName\022/\n\022setGame" +
-      "Description\030\021 \001(\0132\023.SetGameDescription\0221" +
-      "\n\023setVictoryCondition\030\022 \001(\0132\024.SetVictory" +
-      "Condition\022/\n\022setDefeatCondition\030\023 \001(\0132\023." +
-      "SetDefeatCondition\022-\n\021setStatusProperty\030" +
-      "\024 \001(\0132\022.SetStatusProperty\0221\n\025setResource" +
-      "Endowments\030\025 \003(\0132\022.ResourceEndowment\022!\n\013" +
-      "setUnitCost\030\026 \001(\0132\014.SetUnitCost\0223\n\024creat" +
-      "eWaveProperties\030\027 \001(\0132\025.CreateWaveProper",
-      "ties\022/\n\022editWaveProperties\030\030 \001(\0132\023.EditW" +
-      "aveProperties\022-\n\021getWaveProperties\030\031 \001(\013" +
-      "2\022.GetWaveProperties\022C\n\034getPossibleVicto" +
-      "ryConditions\030\032 \001(\0132\035.GetPossibleVictoryC" +
-      "onditions\022A\n\033getPossibleDefeatConditions" +
-      "\030\033 \001(\0132\034.GetPossibleDefeatConditions\022A\n\033" +
-      "getCurrentVictoryConditions\030\034 \001(\0132\034.GetC" +
-      "urrentVictoryConditions\022?\n\032getCurrentDef" +
-      "eatConditions\030\035 \001(\0132\033.GetCurrentDefeatCo" +
-      "nditions\"\014\n\nExportGame\"\031\n\010SetLevel\022\r\n\005le",
-      "vel\030\001 \002(\005\"\034\n\013DeleteLevel\022\r\n\005level\030\001 \002(\005\"" +
-      "$\n\"GetElementBaseConfigurationOptions\"V\n" +
-      "\'GetAuxiliaryElementConfigurationOptions" +
-      "\022+\n\030baseConfigurationChoices\030\001 \003(\0132\t.Pro" +
-      "perty\"C\n\rDefineElement\022\023\n\013elementName\030\001 " +
-      "\002(\t\022\035\n\nproperties\030\002 \003(\0132\t.Property\"`\n\024De" +
-      "fineElementUpgrade\022\023\n\013elementName\030\001 \002(\t\022" +
-      "\024\n\014upgradeLevel\030\002 \002(\005\022\035\n\nproperties\030\003 \003(" +
-      "\0132\t.Property\"b\n\027UpdateElementDefinition\022" +
-      "\023\n\013elementName\030\001 \002(\t\022\035\n\nproperties\030\002 \003(\013",
-      "2\t.Property\022\023\n\013retroactive\030\003 \002(\010\".\n\027Dele" +
-      "teElementDefinition\022\023\n\013elementName\030\001 \002(\t" +
-      "\",\n\025AddElementToInventory\022\023\n\013elementName" +
-      "\030\001 \002(\t\"\021\n\017GetCurrentLevel\"K\n\027UpdateEleme" +
-      "ntProperties\022\021\n\telementId\030\001 \002(\005\022\035\n\nprope" +
-      "rties\030\002 \003(\0132\t.Property\"\036\n\034GetAllDefinedE" +
-      "lementUpgrades\"\027\n\025GetResourceEndowments\"" +
-      "\037\n\013SetGameName\022\020\n\010gameName\030\001 \002(\t\"-\n\022SetG" +
-      "ameDescription\022\027\n\017gameDescription\030\001 \002(\t\"" +
-      "2\n\023SetVictoryCondition\022\033\n\023conditionIdent",
-      "ifier\030\001 \002(\t\"1\n\022SetDefeatCondition\022\033\n\023con" +
-      "ditionIdentifier\030\001 \002(\t\"@\n\021SetStatusPrope" +
-      "rty\022\024\n\014propertyName\030\001 \002(\t\022\025\n\rpropertyVal" +
-      "ue\030\002 \002(\001\"1\n\021ResourceEndowment\022\014\n\004name\030\001 " +
-      "\002(\t\022\016\n\006amount\030\002 \002(\001\"L\n\013SetUnitCost\022\023\n\013el" +
-      "ementName\030\001 \002(\t\022(\n\014elementCosts\030\002 \003(\0132\022." +
-      "ResourceEndowment\"u\n\024CreateWavePropertie" +
-      "s\022!\n\016waveProperties\030\001 \003(\0132\t.Property\022\033\n\023" +
-      "elementNamesToSpawn\030\002 \003(\t\022\035\n\rspawningPoi" +
-      "nt\030\003 \002(\0132\006.Point\"T\n\022EditWaveProperties\022\017",
-      "\n\007waveNum\030\001 \002(\005\022-\n\016editProperties\030\002 \002(\0132" +
-      "\025.CreateWaveProperties\"$\n\021GetWavePropert" +
-      "ies\022\017\n\007waveNum\030\001 \002(\005\"\036\n\034GetPossibleVicto" +
-      "ryConditions\"\035\n\033GetPossibleDefeatConditi" +
-      "ons\"\035\n\033GetCurrentVictoryConditions\"\034\n\032Ge" +
-      "tCurrentDefeatConditions\"\'\n\010Property\022\014\n\004" +
-      "name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"\035\n\005Point\022\t\n\001x\030" +
-      "\001 \002(\001\022\t\n\001y\030\002 \002(\001"
+      "MoveElement\022%\n\rdeleteElement\030\r \001(\0132\016.Del" +
+      "eteElement\0229\n\027updateElementProperties\030\016 " +
+      "\001(\0132\030.UpdateElementProperties\022C\n\034getAllD" +
+      "efinedElementUpgrades\030\017 \001(\0132\035.GetAllDefi",
+      "nedElementUpgrades\0225\n\025getResourceEndowme" +
+      "nts\030\020 \001(\0132\026.GetResourceEndowments\022!\n\013set" +
+      "GameName\030\021 \001(\0132\014.SetGameName\022/\n\022setGameD" +
+      "escription\030\022 \001(\0132\023.SetGameDescription\0221\n" +
+      "\023setVictoryCondition\030\023 \001(\0132\024.SetVictoryC" +
+      "ondition\022/\n\022setDefeatCondition\030\024 \001(\0132\023.S" +
+      "etDefeatCondition\022-\n\021setStatusProperty\030\025" +
+      " \001(\0132\022.SetStatusProperty\0221\n\025setResourceE" +
+      "ndowments\030\026 \003(\0132\022.ResourceEndowment\022!\n\013s" +
+      "etUnitCost\030\027 \001(\0132\014.SetUnitCost\0223\n\024create",
+      "WaveProperties\030\030 \001(\0132\025.CreateWavePropert" +
+      "ies\022/\n\022editWaveProperties\030\031 \001(\0132\023.EditWa" +
+      "veProperties\022-\n\021getWaveProperties\030\032 \001(\0132" +
+      "\022.GetWaveProperties\022C\n\034getPossibleVictor" +
+      "yConditions\030\033 \001(\0132\035.GetPossibleVictoryCo" +
+      "nditions\022A\n\033getPossibleDefeatConditions\030" +
+      "\034 \001(\0132\034.GetPossibleDefeatConditions\022A\n\033g" +
+      "etCurrentVictoryConditions\030\035 \001(\0132\034.GetCu" +
+      "rrentVictoryConditions\022?\n\032getCurrentDefe" +
+      "atConditions\030\036 \001(\0132\033.GetCurrentDefeatCon",
+      "ditions\"\014\n\nExportGame\"\031\n\010SetLevel\022\r\n\005lev" +
+      "el\030\001 \002(\005\"\034\n\013DeleteLevel\022\r\n\005level\030\001 \002(\005\"$" +
+      "\n\"GetElementBaseConfigurationOptions\"V\n\'" +
+      "GetAuxiliaryElementConfigurationOptions\022" +
+      "+\n\030baseConfigurationChoices\030\001 \003(\0132\t.Prop" +
+      "erty\"C\n\rDefineElement\022\023\n\013elementName\030\001 \002" +
+      "(\t\022\035\n\nproperties\030\002 \003(\0132\t.Property\"`\n\024Def" +
+      "ineElementUpgrade\022\023\n\013elementName\030\001 \002(\t\022\024" +
+      "\n\014upgradeLevel\030\002 \002(\005\022\035\n\nproperties\030\003 \003(\013" +
+      "2\t.Property\"b\n\027UpdateElementDefinition\022\023",
+      "\n\013elementName\030\001 \002(\t\022\035\n\nproperties\030\002 \003(\0132" +
+      "\t.Property\022\023\n\013retroactive\030\003 \002(\010\".\n\027Delet" +
+      "eElementDefinition\022\023\n\013elementName\030\001 \002(\t\"" +
+      ",\n\025AddElementToInventory\022\023\n\013elementName\030" +
+      "\001 \002(\t\"\021\n\017GetCurrentLevel\"K\n\027UpdateElemen" +
+      "tProperties\022\021\n\telementId\030\001 \002(\005\022\035\n\nproper" +
+      "ties\030\002 \003(\0132\t.Property\"\036\n\034GetAllDefinedEl" +
+      "ementUpgrades\"\027\n\025GetResourceEndowments\"\037" +
+      "\n\013SetGameName\022\020\n\010gameName\030\001 \002(\t\"-\n\022SetGa" +
+      "meDescription\022\027\n\017gameDescription\030\001 \002(\t\"2",
+      "\n\023SetVictoryCondition\022\033\n\023conditionIdenti" +
+      "fier\030\001 \002(\t\"1\n\022SetDefeatCondition\022\033\n\023cond" +
+      "itionIdentifier\030\001 \002(\t\"@\n\021SetStatusProper" +
+      "ty\022\024\n\014propertyName\030\001 \002(\t\022\025\n\rpropertyValu" +
+      "e\030\002 \002(\001\"1\n\021ResourceEndowment\022\014\n\004name\030\001 \002" +
+      "(\t\022\016\n\006amount\030\002 \002(\001\"L\n\013SetUnitCost\022\023\n\013ele" +
+      "mentName\030\001 \002(\t\022(\n\014elementCosts\030\002 \003(\0132\022.R" +
+      "esourceEndowment\"u\n\024CreateWaveProperties" +
+      "\022!\n\016waveProperties\030\001 \003(\0132\t.Property\022\033\n\023e" +
+      "lementNamesToSpawn\030\002 \003(\t\022\035\n\rspawningPoin",
+      "t\030\003 \002(\0132\006.Point\"T\n\022EditWaveProperties\022\017\n" +
+      "\007waveNum\030\001 \002(\005\022-\n\016editProperties\030\002 \002(\0132\025" +
+      ".CreateWaveProperties\"$\n\021GetWaveProperti" +
+      "es\022\017\n\007waveNum\030\001 \002(\005\"\036\n\034GetPossibleVictor" +
+      "yConditions\"\035\n\033GetPossibleDefeatConditio" +
+      "ns\"\035\n\033GetCurrentVictoryConditions\"\034\n\032Get" +
+      "CurrentDefeatConditions\"\'\n\010Property\022\014\n\004n" +
+      "ame\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"\035\n\005Point\022\t\n\001x\030\001" +
+      " \002(\001\022\t\n\001y\030\002 \002(\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -24840,7 +25051,7 @@ public final class AuthorClient {
     internal_static_AuthoringClientMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuthoringClientMessage_descriptor,
-        new java.lang.String[] { "ExportGame", "SetLevel", "DeleteLevel", "GetElementBaseConfig", "GetAuxiliaryElementConfig", "DefineElement", "DefineElementUpgrade", "UpdateElementDefinition", "DeleteElementDefinition", "AddElementToInventory", "GetCurrentLevel", "MoveElement", "UpdateElementProperties", "GetAllDefinedElementUpgrades", "GetResourceEndowments", "SetGameName", "SetGameDescription", "SetVictoryCondition", "SetDefeatCondition", "SetStatusProperty", "SetResourceEndowments", "SetUnitCost", "CreateWaveProperties", "EditWaveProperties", "GetWaveProperties", "GetPossibleVictoryConditions", "GetPossibleDefeatConditions", "GetCurrentVictoryConditions", "GetCurrentDefeatConditions", });
+        new java.lang.String[] { "ExportGame", "SetLevel", "DeleteLevel", "GetElementBaseConfig", "GetAuxiliaryElementConfig", "DefineElement", "DefineElementUpgrade", "UpdateElementDefinition", "DeleteElementDefinition", "AddElementToInventory", "GetCurrentLevel", "MoveElement", "DeleteElement", "UpdateElementProperties", "GetAllDefinedElementUpgrades", "GetResourceEndowments", "SetGameName", "SetGameDescription", "SetVictoryCondition", "SetDefeatCondition", "SetStatusProperty", "SetResourceEndowments", "SetUnitCost", "CreateWaveProperties", "EditWaveProperties", "GetWaveProperties", "GetPossibleVictoryConditions", "GetPossibleDefeatConditions", "GetCurrentVictoryConditions", "GetCurrentDefeatConditions", });
     internal_static_ExportGame_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ExportGame_fieldAccessorTable = new
