@@ -32,10 +32,11 @@ public class SerializationUtils {
 	public static final String SPRITES = "gameElements";
 	public static final String INVENTORY = "inventory";
 	public static final String WAVE = "wave";
+	public static final String HEALTH = "health";
 	public static final String DELIMITER = "\n";
 	public static final String COMMA = ",";
 	// Description, Status, Sprites
-	public static final int NUM_SERIALIZATION_SECTIONS = 7;
+	public static final int NUM_SERIALIZATION_SECTIONS = 8;
 	public static final int DESCRIPTION_SERIALIZATION_INDEX = 0;
 	public static final int CONDITIONS_SERIALIZATION_INDEX = 1;
 	public static final int BANK_SERIALIZATION_INDEX = 2;
@@ -43,6 +44,7 @@ public class SerializationUtils {
 	public static final int SPRITES_SERIALIZATION_INDEX = 4;
 	public static final int INVENTORY_SERIALIZATION_INDEX = 5;
 	public static final int WAVE_SERIALIZATION_INDEX = 6;
+	public static final int HEALTH_SERIALIZATION_INDEX = 7;
 	private GsonBuilder gsonBuilder;
 
 	public SerializationUtils() {
@@ -81,10 +83,10 @@ public class SerializationUtils {
 	 */
 	public String serializeGameData(String gameDescription, Map<String, String> gameConditions, Bank gameBank,
 									int level, Map<String, Double> status, List<GameElement> levelGameElements,
-									Set<String> levelInventories, List<GameElement> levelWaves) {
+									Set<String> levelInventories, List<GameElement> levelWaves, int levelHealth) {
 		Map<String, String> serializedLevelData = new HashMap<>();
 		serializedLevelData.put(Integer.toString(level), serializeLevelData(gameDescription, gameConditions, gameBank,
-				status, levelGameElements, levelInventories, levelWaves, level));
+				status, levelGameElements, levelInventories, levelWaves, levelHealth, level));
 		return gsonBuilder.create().toJson(serializedLevelData);
 	}
 
@@ -124,7 +126,7 @@ public class SerializationUtils {
 	 */
 	public String serializeLevelData(String gameDescription, Map<String, String> levelConditions, Bank bank,
 			Map<String, Double> status, List<GameElement> levelGameElements, Set<String> levelInventories,
-			List<GameElement> levelWaves, int level) {
+			List<GameElement> levelWaves, int levelHealth, int level) {
 		StringBuilder gameDataStringBuilder = new StringBuilder();
 		gameDataStringBuilder.append(serializeGameDescription(gameDescription));
 		gameDataStringBuilder.append(DELIMITER);
@@ -139,6 +141,9 @@ public class SerializationUtils {
 		gameDataStringBuilder.append(serializeInventories(levelInventories, level));
 		gameDataStringBuilder.append(DELIMITER);
 		gameDataStringBuilder.append(serializeWaves(levelWaves, level));
+		gameDataStringBuilder.append(DELIMITER);
+		gameDataStringBuilder.append(serializeHealth(levelHealth, level));
+		gameDataStringBuilder.append(DELIMITER);
 		return gameDataStringBuilder.toString();
 
 	}
@@ -243,6 +248,11 @@ public class SerializationUtils {
 		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
 		return deserializeWaves(serializedSections[WAVE_SERIALIZATION_INDEX]);
 	}
+	
+	public int deserializeGameHealth(String serializedGameData, int level) throws IllegalArgumentException {
+		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
+		return deserializeHealth(serializedSections[HEALTH_SERIALIZATION_INDEX]);
+	}
 
 	/**
 	 * The number of levels that exist in this game currently, as set by the
@@ -310,6 +320,12 @@ public class SerializationUtils {
 		wavesMap.put(WAVE, levelWaves);
 		return gsonBuilder.create().toJson(wavesMap);
 	}
+	
+	private String serializeHealth(int levelHealth, int level) {
+		Map<String, Integer> healthsMap = new HashMap<>();
+		healthsMap.put(HEALTH, levelHealth);
+		return gsonBuilder.create().toJson(healthsMap);
+	}
 
 	private String deserializeDescription(String serializedDescription) {
 		Type mapType = new TypeToken<Map<String, String>>() {
@@ -360,6 +376,12 @@ public class SerializationUtils {
 		}.getType();
 		Map<String, List<GameElement>> wavesMap = gsonBuilder.create().fromJson(serializedWaves, mapType);
 		return wavesMap != null ? wavesMap.get(WAVE) : new ArrayList<>();
+	}
+	
+	private int deserializeHealth(String serializedHealth) {
+		Type mapType = new TypeToken<Map<String, Integer>>() {}.getType();
+		Map<String, Integer> healthMap = gsonBuilder.create().fromJson(serializedHealth, mapType);
+		return healthMap != null ? healthMap.get(HEALTH) : 0;
 	}
 
 	private String[] retrieveSerializedSectionsForLevel(String serializedGameData, int level)

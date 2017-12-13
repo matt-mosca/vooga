@@ -153,6 +153,11 @@ public class AuthoringController extends AbstractGameController implements Autho
     public void setUnitCost(String elementName, Map<String, Double> unitCosts) {
         getLevelBanks().get(getCurrentLevel()).setUnitCost(elementName, unitCosts);
     }
+    
+	@Override
+	public void setLevelHealth(int level, int health) {
+		getLevelHealths().set(level, health);
+	}
 
     @Override
     public void deleteLevel(int level) throws IllegalArgumentException {
@@ -287,5 +292,6 @@ public class AuthoringController extends AbstractGameController implements Autho
     private int getLevelsForCurrentGame() {
         return getNumLevelsForGame(getGameName(), true);
     }
+
 
 }

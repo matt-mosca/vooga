@@ -59,6 +59,8 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	private DataOutputStream outputWriter;
 	private SerializationUtils serializationUtils;
 
+	private final int POLLING_FREQUENCY = 50; 
+	
 	private Update latestUpdate;
 
 	private ObservableList<Notification> notificationQueue = FXCollections.observableArrayList();
@@ -466,10 +468,11 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		try {
 			// Make connection and initialize streams
 			socket = new Socket(SERVER_ADDRESS, getPort());
-			socket.setSoTimeout(1000);
+			socket.setSoTimeout(POLLING_FREQUENCY);
 			outputWriter = new DataOutputStream(socket.getOutputStream());
 			input = new DataInputStream(socket.getInputStream());
 		} catch (IOException socketException) {
+			System.out.println("Unable to connect");
 			socketException.printStackTrace();
 		}
 	}

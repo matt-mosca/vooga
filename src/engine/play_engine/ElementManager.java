@@ -193,6 +193,8 @@ public class ElementManager {
 			try {
 				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectile);
+				// can add to templateToIdMap here
+				
 			} catch (ReflectiveOperationException failedToGenerateProjectileException) {
 				// don't generate the projectile
 				// TODO - throw exception? (prob not)
