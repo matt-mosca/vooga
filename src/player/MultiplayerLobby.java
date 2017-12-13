@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import display.factory.ButtonFactory;
 import display.splashScreen.ScreenDisplay;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener.Change;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -446,23 +447,25 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	private void processNotification(Change<? extends Notification> notification) {
-		System.out.println("Processing notification in lobby!");
-		while (notification.next()) {
-			notification.getAddedSubList().stream().forEach(message -> {
-				if (message.hasPlayerJoined()) {
-					String nameOfJoinedPlayer = message.getPlayerJoined().getUserName();
-					handleUserJoinedRoom(nameOfJoinedPlayer);
-				}
-				if (message.hasPlayerExited()) {
-					String nameOfExitedPlayer = message.getPlayerExited().getUserName();
-					handleUserExitedRoom(nameOfExitedPlayer);
-				}
-				if (message.hasLevelInitialized() && !launched) {
-					LevelInitialized levelData = message.getLevelInitialized();
-					handleGameLaunched(levelData);
-				}
-			});
-		}
+		Platform.runLater(() -> {
+			System.out.println("Processing notification in lobby!");
+			while (notification.next()) {
+				notification.getAddedSubList().stream().forEach(message -> {
+					if (message.hasPlayerJoined()) {
+						String nameOfJoinedPlayer = message.getPlayerJoined().getUserName();
+						handleUserJoinedRoom(nameOfJoinedPlayer);
+					}
+					if (message.hasPlayerExited()) {
+						String nameOfExitedPlayer = message.getPlayerExited().getUserName();
+						handleUserExitedRoom(nameOfExitedPlayer);
+					}
+					if (message.hasLevelInitialized() && !launched) {
+						LevelInitialized levelData = message.getLevelInitialized();
+						handleGameLaunched(levelData);
+					}
+				});
+			}
+		});
 	}
 
 	// TODO - Mosca : add user to display and add some message?
