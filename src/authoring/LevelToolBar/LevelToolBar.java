@@ -173,6 +173,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
+			savedObject.setElementId(id);
 			savedObject.setX(imageView.getX());
 			savedObject.setY(imageView.getY());
 			savedObject.setImageView(imageView);
@@ -217,12 +218,12 @@ public class LevelToolBar extends VBox implements TabInterface {
 				tempArray.addAll(waveToData.get(levelDotWave).spriteNames);
 				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
 			} else {
-				try {
+				//try {
 					waveToData.put(levelDotWave, new Data(imageList,
 							myController.createWaveProperties(myProperties, elementsToSpawn, location)));
-				} catch (ReflectiveOperationException e) {
+				/*} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
-				}
+				}*/
 			}
 		}
 		updateImages();

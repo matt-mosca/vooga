@@ -1,8 +1,10 @@
 package authoring;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import display.tabs.SaveDialog;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Menu;
@@ -59,9 +61,13 @@ public class MainMenuBar extends MenuBar{
 	private void saveGame() {
 		myDisplay.save();
 	}
-	
+
 	private void exportGame() {
-		myController.exportGame();
+		try {
+			myController.exportGame();
+		} catch (IOException e) {
+			// todo - get rid of this method, now called in EditDisplay
+		}
 	}
 	
 	public void renameGame() {

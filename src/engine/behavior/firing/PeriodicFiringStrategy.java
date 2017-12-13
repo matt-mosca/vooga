@@ -1,6 +1,6 @@
 package engine.behavior.firing;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
 /**
  * Shoots periodically (once every x number of cycles, where x is any positive

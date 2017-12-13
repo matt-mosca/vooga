@@ -24,9 +24,11 @@ import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
@@ -118,7 +120,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		hud = new HUD(width);
 		speedControl = new ChangeSpeedToggles();
 		styleLeftBar();
-		createGameArea(height - 20);
+		createGameArea();
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
@@ -194,6 +196,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				try {
 					gameState = result.get();
 					clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
+					initializeLevelSprites();
 				} catch (IOException e) {
 					// TODO Change to alert for the user
 					e.printStackTrace();
@@ -208,6 +211,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				exportedGameProperties.load(in);
 				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
 				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
+				initializeLevelSprites();
 			} catch (IOException ioException) {
 				// todo
 			}
@@ -224,11 +228,31 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
 		myLeftBar.getStyleClass().add("left-bar");
 	}
+	
+	private void initializeLevelSprites() {
+		updateSprites();
+		for(Node sprite:myPlayArea.getChildren()) {
+			Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    sprite.toBack();
+                }
+            });
+		}
+	}
 
-	private void loadSprites() {
+	private void updateSprites() {
 		myPlayArea.getChildren().addAll(clientMessageUtils.getNewImageViews());
-		myPlayArea.getChildren().removeAll(clientMessageUtils.getDeletedImageViews());
+		removeEliminatedSprite();
 		clientMessageUtils.clearChanges();
+	}
+
+	private void removeEliminatedSprite() {
+		for(ImageView spriteImage:clientMessageUtils.getDeletedImageViews()) {
+			myPlayArea.getChildren().remove(spriteImage);
+//			Map<String, Double> resourcesForUnit = myController.getUnitCostsFromId(spriteImage.getId());
+//			hud.updatePointCount(resourcesForUnit);
+//			hud.resourcesEarned(resourcesForUnit);
+		}
 	}
 
 	private void initializeButtons() {
@@ -279,14 +303,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		/*
 		if (myController.isReadyForNextLevel()) {
 			hideTransitorySplashScreen();
+			initializeLevelSprites();
 			// animation.play();
 			myController.resume();
 		}
+
 		if (myController.isLevelCleared()) {
 			level++;
 			animation.pause();
 			myController.pause();
-			launchTransitorySplashScreen();
+//			launchTransitorySplashScreen();
 			hud.initialize(myController.getResourceEndowments());
 		} else if (myController.isLost()) {
 			// launch lost screen
@@ -297,7 +323,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		*/
 		hud.update(myController.getResourceEndowments());
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
-		loadSprites();
+		updateSprites();
 	}
 
 	private void launchTransitorySplashScreen() {
@@ -308,8 +334,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		this.getStage().setScene(this.getScene());
 	}
 
-	private void createGameArea(int sideLength) {
-		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
+	private void createGameArea() {
+		myPlayArea = new PlayArea(myController, clientMessageUtils);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
 		rootAdd(myPlayArea);
 	}

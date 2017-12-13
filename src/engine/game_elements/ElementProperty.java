@@ -1,4 +1,4 @@
-package engine.behavior;
+package engine.game_elements;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

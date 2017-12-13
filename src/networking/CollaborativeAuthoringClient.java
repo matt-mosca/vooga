@@ -1,5 +1,6 @@
 package networking;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -54,9 +55,11 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	@Override
-	public void exportGame() {
+	public String exportGame() throws IOException {
 		writeRequestBytes(AuthoringClientMessage.newBuilder().setExportGame(ExportGame.getDefaultInstance()).build()
 				.toByteArray());
+		// todo - get message
+		return "";
 	}
 
 	@Override

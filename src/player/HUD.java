@@ -21,6 +21,9 @@ public class HUD extends HBox{
 		this.getChildren().add(leftFiller);
 		HBox.setHgrow(leftFiller, Priority.ALWAYS);
 		
+		addHealthDisplay();
+		addPointsDisplay();
+		
 		displays = new HashMap<>();
 	}
 
@@ -34,8 +37,6 @@ public class HUD extends HBox{
 	
 	public void initialize(Map<String, Double> values) {
 		clearDisplays();
-		addHealthDisplay();
-		addPointsDisplay();
 		
 		for(String resource : values.keySet()) {
 			addResourceDisplay(resource, values.get(resource));
@@ -58,6 +59,13 @@ public class HUD extends HBox{
 		myPointsDisplay = new PointsDisplay();
 		this.getChildren().add(myPointsDisplay);
 	}
+	
+	protected void updatePointDisplay(Map<String, Double> pointsEarned) {
+		//this can be improved to associate point multipliers with certain resource types
+		double totalPoints = 0;
+		for(double val:pointsEarned.values()) { totalPoints += val; }
+		myPointsDisplay.increaseByAmount(totalPoints);
+	}
 
 	private void addResourceDisplay(String resource, Double amount) {
 		ValueDisplay display = new ValueDisplay();
@@ -66,6 +74,16 @@ public class HUD extends HBox{
 		display.setValue(amount);
 		display.addItemsWithLabel();
 		this.getChildren().add(display);
+	}
+	
+	protected void resourcesEarned(Map<String, Double> resources) {
+		for(String resource:resources.keySet()) {
+			if(displays.containsKey(resource)) {
+				displays.get(resource).increaseByAmount(resources.get(resource));
+			}else {
+				addResourceDisplay(resource, resources.get(resource));
+			}
+		}
 	}
 	
 	protected boolean hasSufficientFunds(Map<String, Double> costs) {

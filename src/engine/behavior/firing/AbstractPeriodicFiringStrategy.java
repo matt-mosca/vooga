@@ -1,7 +1,6 @@
 package engine.behavior.firing;
 
-import engine.behavior.ElementProperty;
-import javafx.geometry.Point2D;
+import engine.game_elements.ElementProperty;
 
 /**
  * Periodically fires projectiles.
