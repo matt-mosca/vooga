@@ -1,6 +1,6 @@
 package engine.behavior.movement;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
