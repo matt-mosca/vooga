@@ -39,6 +39,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private VBox rightBox;
 	private VBox activityBox;
 	private HBox usernameBox;
+	private HBox notificationBox;
+	private NotificationBar notificationBar;
 	private ButtonFactory buttonFactory;
 	private Button createGameLobby;
 	private Button joinGameLobby;
@@ -82,6 +84,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 		rightBox = new VBox();
 		activityBox = new VBox();
 		usernameBox = new HBox();
+		notificationBox = new HBox();
+		notificationBar = new NotificationBar(notificationBox, "");
 		lobbies = new MultiplayerListBox();
 		players = new MultiplayerListBox();
 		activityList = new ActivityListBox();
@@ -168,6 +172,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 		activityBox.setMinWidth(300);
 		activityBox.setMinHeight(300);
 		activityBox.getStyleClass().add("borders");
+		rootAdd(notificationBox);
 	}
 
 	private void setMultiplayerBackground(int width, int height) {
@@ -475,13 +480,15 @@ public class MultiplayerLobby extends ScreenDisplay {
 		});
 	}
 
-	// TODO - Mosca : add user to display and add some message?
 	private void handleUserJoinedRoom(String userName) {
+//		notificationBar.setText("User " + userName + " joined!");
+//		notificationBar.show();
 		System.out.println("User " + userName + " joined!");
 	}
 
-	// TODO - Mosca : remove user from display and add some message?
 	private void handleUserExitedRoom(String userName) {
+//		notificationBar.setText("User " + userName + " exited!");
+//		notificationBar.show();
 		System.out.println("User " + userName + "exited!");
 	}
 
