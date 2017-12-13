@@ -58,8 +58,6 @@ public interface AbstractGameModelController {
 	
 	int getLevelHealth(int level);
 	
-	void setLevelHealth(int health);
-	
 	Set<String> getInventory();
 
 	/**

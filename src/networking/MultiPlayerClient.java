@@ -166,12 +166,6 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 		return 0;
 	}
 
-	@Override
-	public void setLevelHealth(int health) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 
 }
