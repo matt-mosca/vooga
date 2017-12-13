@@ -133,7 +133,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
-
 	}
 
 	@Override

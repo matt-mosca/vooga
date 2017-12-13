@@ -20,6 +20,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import networking.protocol.PlayerServer.NewSprite;
 import util.protocol.ClientMessageUtils;
 import display.sprites.InteractiveObject;
 
@@ -173,7 +174,7 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for (Integer id : myController.getLevelSprites(level).stream().map(levelSprite -> levelSprite.getSpriteId()).collect(Collectors.toList())) {
+		for (Integer id : myController.getLevelSprites(level).stream().map(NewSprite::getSpriteId).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
 			savedObject.setX(imageView.getX());
@@ -244,12 +245,12 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 	
 	public void updateImages() {
 		mySpriteDisplay.clear();
-		if (waveToData.get(currLocation()) != null) {
-			mySpriteDisplay.addToScroll(waveToData.get(currLocation()).spriteNames);
+		if (waveToData.get(levelAndWave()) != null) {
+			mySpriteDisplay.addToScroll(waveToData.get(levelAndWave()).spriteNames);
 		}
 	}
 	
-	private String currLocation() {
+	private String levelAndWave() {
 		return waveAndLevel(currentLevel, myWaveDisplay.getCurrTab());
 	}
 	
@@ -293,6 +294,7 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 				tempMap.put(waveAndLevel(level, wave-1), waveToData.get(waveKey));
 			}
 		});
+		wavesPerLevel.put(levelRemoved, wavesPerLevel.get(levelRemoved)-1);
 		return tempMap;
 	}
 
