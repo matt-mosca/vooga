@@ -117,7 +117,13 @@ public final class JarPropertiesGetter {
      * @param gameName the name of the particular authored game
      */
     public void setDisplayedGameName(String gameName) {
-        properties.setProperty(DISPLAYED_GAME_NAME_KEY, gameName.substring(0, gameName.indexOf(VOOG_EXTENSION)));
+        if (gameName.contains(VOOG_EXTENSION)) {
+            properties.setProperty(DISPLAYED_GAME_NAME_KEY, gameName.substring(0, gameName.indexOf(VOOG_EXTENSION)));
+
+        } else {
+            properties.setProperty(DISPLAYED_GAME_NAME_KEY, gameName);
+
+        }
         try {
             properties.store(PROPERTIES_OUTPUT, "");
         } catch (IOException failedToExportProperties) {
