@@ -24,9 +24,11 @@ import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
@@ -194,6 +196,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				try {
 					gameState = result.get();
 					clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
+					initializeLevelSprites();
 				} catch (IOException e) {
 					// TODO Change to alert for the user
 					e.printStackTrace();
@@ -208,6 +211,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				exportedGameProperties.load(in);
 				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
 				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
+				initializeLevelSprites();
 			} catch (IOException ioException) {
 				// todo
 			}
@@ -224,6 +228,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
 		myLeftBar.getStyleClass().add("left-bar");
 	}
+	
+	private void initializeLevelSprites() {
+		updateSprites();
+		for(Node sprite:myPlayArea.getChildren()) {
+			Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    sprite.toBack();
+                }
+            });
+		}
+	}
 
 	private void updateSprites() {
 		myPlayArea.getChildren().addAll(clientMessageUtils.getNewImageViews());
@@ -238,8 +253,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 //			hud.updatePointCount(resourcesForUnit);
 //			hud.resourcesEarned(resourcesForUnit);
 		}
-		
-		myPlayArea.getChildren().removeAll(clientMessageUtils.getDeletedImageViews());
 	}
 
 	private void initializeButtons() {
@@ -290,6 +303,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		/*
 		if (myController.isReadyForNextLevel()) {
 			hideTransitorySplashScreen();
+			initializeLevelSprites();
 			// animation.play();
 			myController.resume();
 		}
