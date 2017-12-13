@@ -68,7 +68,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		wavesPerLevel = new TreeMap<Integer, Integer>();
 		waveToData = new TreeMap<String, Data>();
 		newLevel.setOnAction(e -> addLevel());
-		newWaveButton.setOnAction(e->newWaveButtonPressed());
+		newWaveButton.setOnAction(e-> makeNewWave());
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
 		mySpriteDisplay = new SpriteDisplayer();
@@ -116,7 +116,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		
 	}
 	
-	private void newWaveButtonPressed() {
+	public void makeNewWave() {
 		wavesPerLevel.put(currentLevel, wavesPerLevel.get(currentLevel)+1);
 		updateWaveDisplay();
 	}
@@ -143,7 +143,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		}
 	}
 	
-	private void addLevel() {
+	public void addLevel() {
 		mySprites.add(new ArrayList<>());
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size() + 1), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);
