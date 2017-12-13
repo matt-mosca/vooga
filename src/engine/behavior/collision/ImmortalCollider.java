@@ -13,7 +13,7 @@ public class ImmortalCollider extends GenericCollider {
 
 	public ImmortalCollider(
 			@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId) {
-		super(playerId);
+		super(playerId,"");
 	}
 	
 	// Immortal colliders don't take any damage

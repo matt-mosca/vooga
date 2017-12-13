@@ -1,16 +1,22 @@
 package display.splashScreen;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import authoring.EditDisplay;
 import display.interfaces.ClickableInterface;
+import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -21,6 +27,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
+import networking.MultiPlayerClient;
+import player.MultiplayerLobby;
 import player.PlayDisplay;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
@@ -34,7 +42,9 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final String TITLE = "Welcome to VOOGA";
 	private static final double STANDARD_PATH_WIDTH = Main.WIDTH / 15;
 	private static final double STANDARD_PATH_HEIGHT = Main.HEIGHT / 15;
-	
+	private static final String SINGLE_PLAYER = "Single Player";
+	private static final String MULTIPLAYER = "Multiplayer";
+
 	private HBox titleBox = new HBox();
 	private Text VoogaTitle;
 	private NewGameButton myNewGameButton;
@@ -43,11 +53,11 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private MuteButton myMuteButton;
 	private MediaPlayerFactory myMediaPlayerFactory;
 	private MediaPlayer myMediaPlayer;
-
+	private String backgroundSong = "src/MediaTesting/101 - opening.mp3";
 
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background, currentStage);
-		
+
 		getStage().setResizable(false);
 		basicSetup();
 		myNewGameButton = new NewGameButton(this);
@@ -56,7 +66,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
-		myMediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/101 - opening.mp3");
+		myMediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		myMediaPlayer = myMediaPlayerFactory.getMediaPlayer();
 		myMediaPlayer.play();
 		myMuteButton = new MuteButton(myMediaPlayer);
@@ -64,7 +74,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	private void basicSetup() {
-//		createTitle();
+		// createTitle();
 		setSplashBackground();
 		createPathTitle();
 		createSubtitle();
@@ -75,15 +85,15 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		VoogaTitle = new Text(10, 20, TITLE);
 		VoogaTitle.setFont(Font.font(TITLEFONT, FontPosture.ITALIC, 30));
 		VoogaTitle.setFill(Color.DARKBLUE);
-//		VoogaTitle.setFill(Color.GOLD);
-//		VoogaTitle.setFill(Color.SILVER);
+		// VoogaTitle.setFill(Color.GOLD);
+		// VoogaTitle.setFill(Color.SILVER);
 		titleBox = new HBox();
 		titleBox.setAlignment(Pos.CENTER);
 		titleBox.getChildren().add(VoogaTitle);
 		titleBox.setPrefSize(PREFSIZE, PREFSIZE);
 		rootAdd(titleBox);
 	}
-	
+
 	private void setSplashBackground() {
 		String backgroundName = "grass_large.png";
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(backgroundName));
@@ -92,7 +102,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		splashBackground.setFitHeight(Main.HEIGHT);
 		rootAdd(splashBackground);
 	}
-	
+
 	private void createPathTitle() {
 		String titleName = "VOOGA_Words.png";
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(titleName));
@@ -104,7 +114,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		voogaTitle.setFitHeight(height / ratio);
 		rootAdd(voogaTitle);
 	}
-	
+
 	private void createSubtitle() {
 		Label subtitle = new Label("TOWER DEFENSE GAME AUTHORING & PLAYING ENVIRONMENT");
 		subtitle.setFont(new Font("American Typewriter", Main.WIDTH / 40));
@@ -113,40 +123,43 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		subtitle.setLayoutY(Main.HEIGHT / 3);
 		rootAdd(subtitle);
 	}
-	
+
 	private void addPath() {
-		for(int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) {
 			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2);
 		}
-		for(int i = 0; i < 3; i++) {
+		for (int i = 0; i < 3; i++) {
 			createStandardPath(STANDARD_PATH_WIDTH * 4, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
 		}
-		for(int i = 4; i < 11; i++) {
+		for (int i = 4; i < 11; i++) {
 			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 4 * STANDARD_PATH_HEIGHT);
 		}
-		//Next two for asymmetric style
-		for(int i = 2; i < 3; i++) {
+		// Next two for asymmetric style
+		for (int i = 2; i < 3; i++) {
 			createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
 		}
-		for(int i = 10; i < 15; i++) {
+		for (int i = 10; i < 15; i++) {
 			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 2 * STANDARD_PATH_HEIGHT);
 		}
-		//Next two for symmetric style
-//		for(int i = 0; i < 3; i++) {
-//			createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i + 1) * STANDARD_PATH_HEIGHT);
-//		}
-//		for(int i = 10; i < 15; i++) {
-//			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2);
-//		}
-		//First two plus next one for third path style
-//		for(int i = 4; i < 15; i++) {
-//			createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 4 * STANDARD_PATH_HEIGHT);
-//		}
+		// Next two for symmetric style
+		// for(int i = 0; i < 3; i++) {
+		// createStandardPath(STANDARD_PATH_WIDTH * 10, Main.HEIGHT / 2 + (i +
+		// 1) *
+		// STANDARD_PATH_HEIGHT);
+		// }
+		// for(int i = 10; i < 15; i++) {
+		// createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2);
+		// }
+		// First two plus next one for third path style
+		// for(int i = 4; i < 15; i++) {
+		// createStandardPath(STANDARD_PATH_WIDTH * i, Main.HEIGHT / 2 + 4 *
+		// STANDARD_PATH_HEIGHT);
+		// }
 	}
-	
+
 	private ImageView createStandardPath(double xPos, double yPos) {
 		String pathName = "brick_path.png";
-//		String pathName = "stone_path2.png";
+		// String pathName = "stone_path2.png";
 		Image pathImage = new Image(getClass().getClassLoader().getResourceAsStream(pathName));
 		ImageView path = new ImageView(pathImage);
 		path.setFitWidth(STANDARD_PATH_WIDTH);
@@ -171,7 +184,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	public void newGameButtonPressed() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void switchScreen() {
 		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage(), false);
@@ -184,31 +197,56 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	@Override
 	public void playExisting() {
-		// TODO - Update this method accordingly to determine the isMultiPlayer param
+		// TODO - Update this method accordingly to determine the isMultiPlayer
+		// param
 		// for PlayDisplay constructor
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), false); // TEMP
+		boolean isMultiplayer = initializePlayersSetting();
+		MultiPlayerClient multiPlayerClient = new MultiPlayerClient();
+		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(),
+				isMultiplayer ? multiPlayerClient : new PlayController()); // TEMP
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
-		getStage().setScene(myScene.getScene());
 		myMediaPlayer.stop();
-		
+		if (!isMultiplayer) {
+
+			getStage().setScene(myScene.getScene());
+			myScene.startDisplay();
+		} else {
+			MultiplayerLobby multi = new MultiplayerLobby(PLAYWIDTH, PLAYHEIGHT, Color.WHITE, getStage(), myScene,
+					multiPlayerClient);
+			getStage().setScene(multi.getScene());
+			multi.promptForUsername();
+		}
 	}
-	
-	
+
+	private boolean initializePlayersSetting() {
+		List<String> numPlayers = new ArrayList<String>();
+		String settingChoice = new String();
+		numPlayers.add(SINGLE_PLAYER);
+		numPlayers.add(MULTIPLAYER);
+		ChoiceDialog<String> playerSetting = new ChoiceDialog<>("Players options", numPlayers);
+		playerSetting.setTitle("Players Setting");
+		playerSetting.setHeaderText("Single player or multiplayer?");
+		playerSetting.setContentText(null);
+
+		Optional<String> result = playerSetting.showAndWait();
+		if (result.isPresent()) {
+			settingChoice = result.get();
+		}
+		return settingChoice.equals(MULTIPLAYER);
+	}
 
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-@Override
-public void listItemClicked(ImageView object) {
-	// TODO Auto-generated method stub
-	
-}
+	@Override
+	public void listItemClicked(MouseEvent e, ImageView object) {
+		// TODO Auto-generated method stub
 
-
+	}
 
 }

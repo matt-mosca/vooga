@@ -107,11 +107,12 @@ public class SpriteTemplateIoHandler {
         Map<String, List<Map<String, Object>>> spriteUpgrades = new HashMap<>();
         for (String upgradeTemplateName : serializedTemplates.keySet()) {
             String templateName = upgradeTemplateName.substring(0, upgradeTemplateName.indexOf(UPGRADE_INDICATOR));
-            List<Map<String, Object>> templateUpgrades = spriteUpgrades.getOrDefault(templateName, new ArrayList<>());
             Map<String, Object> upgradeTemplate =
                     serializationUtils.deserializeElementTemplate(serializedTemplates.get(upgradeTemplateName));
             // TreeMap ensures correct ordering
-            templateUpgrades.add(upgradeTemplate);
+            List<Map<String, Object>> upgrades = spriteUpgrades.getOrDefault(templateName, new ArrayList<>());
+            upgrades.add(upgradeTemplate);
+            spriteUpgrades.put(templateName, upgrades);
         }
         return spriteUpgrades;
     }

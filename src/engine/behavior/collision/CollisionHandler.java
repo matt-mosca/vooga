@@ -20,6 +20,7 @@ public class CollisionHandler {
     private String imageUrl;
     private double imageHeight;
     private double imageWidth;
+    private final String DEFAULT_EXPLOSION = "";
     @Exclude private ImageView graphicalRepresentation;
 
     public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
@@ -54,7 +55,9 @@ public class CollisionHandler {
     }
 
     public void processCollision(CollisionHandler other) {
-    	other.collisionVisitable.accept(collisionVisitor);
+    	if(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0) {
+    		other.collisionVisitable.accept(collisionVisitor);
+    	}
     }
 
     public boolean isBlocked() {
@@ -99,5 +102,13 @@ public class CollisionHandler {
     
     public double getBlastRadius() {
     	return collisionVisitable.getBlastRadius();
+    }
+    
+    public boolean shouldExplode() {
+    	return !collisionVisitor.explode().equals(DEFAULT_EXPLOSION);
+    }
+    
+    public String explode() {
+    	return collisionVisitor.explode();
     }
 }

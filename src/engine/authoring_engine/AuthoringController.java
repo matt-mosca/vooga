@@ -10,6 +10,7 @@ import exporting.Publisher;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -267,7 +268,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	private String getNameForWave() {
-		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.incrementAndGet());
+		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.getAndIncrement());
 	}
 
 	private String getNameForWaveNumber(int level, int num) {
@@ -283,7 +284,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 			String condition = levelSettingsForConditionType.get(level);
 			Collection<Integer> levelsWithCondition = conditionsToLevels.getOrDefault(condition, new ArrayList<>());
 			levelsWithCondition.add(level);
-			System.out.println("Level: " + level + "; " + condition);
 			conditionsToLevels.put(condition, levelsWithCondition);
 		}
 		return conditionsToLevels;

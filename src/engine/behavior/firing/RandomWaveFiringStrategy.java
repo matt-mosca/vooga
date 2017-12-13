@@ -19,16 +19,21 @@ public class RandomWaveFiringStrategy extends AbstractWaveFiringStrategy {
     private List<Double> probabilities;
 
     public RandomWaveFiringStrategy(
-            @ElementProperty(value = "fireProbabilities", isTemplateProperty = true)
-                    Map<String, Double> fireProbabilities,
+            @ElementProperty(value = "troopProbabilities", isTemplateProperty = true)
+                    Map<String, String> troopProbabilities,
             @ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod,
             @ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
-        super(fireProbabilities.keySet(), attackPeriod, totalWaves);
-        templates = new ArrayList<>(fireProbabilities.keySet());
+        super(new ArrayList<>(troopProbabilities.keySet()), attackPeriod, totalWaves);
+        templates = new ArrayList<>(troopProbabilities.keySet());
         double cumulativeProbability = 0;
         probabilities = new ArrayList<>();
-        for (String templateName : fireProbabilities.keySet()) {
-            double directionProbability = fireProbabilities.get(templateName);
+        for (String templateName : troopProbabilities.keySet()) {
+            double directionProbability;
+            try {
+                directionProbability = Double.parseDouble(troopProbabilities.get(templateName));
+            } catch (NumberFormatException nonDouble) {
+                directionProbability = 1.0 / troopProbabilities.size();
+            }
             cumulativeProbability += directionProbability;
             probabilities.add(cumulativeProbability);
         }

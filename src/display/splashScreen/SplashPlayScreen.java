@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 import authoring.EditDisplay;
+import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -209,7 +211,7 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 	public void playExisting() {
 		// TODO - Update this method accordingly to determine the isMultiPlayer param
 		// for PlayDisplay constructor
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), false); // TEMP
+		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController()); // TEMP
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
@@ -224,7 +226,7 @@ public class SplashPlayScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 @Override
-public void listItemClicked(ImageView object) {
+public void listItemClicked(MouseEvent e, ImageView object) {
 	// TODO Auto-generated method stub
 	
 }

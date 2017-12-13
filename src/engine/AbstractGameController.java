@@ -85,6 +85,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
 		spriteTemplateIoHandler = new SpriteTemplateIoHandler(serializationUtils);
 		spriteQueryHandler = new SpriteQueryHandler();
+		currentLevel = 1;
 	}
 
 	/**

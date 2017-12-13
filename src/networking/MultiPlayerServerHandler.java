@@ -24,18 +24,21 @@ public class MultiPlayerServerHandler extends AbstractServerHandler {
 		this.multiPlayerController = multiPlayerController;
 	}
 
+	void writeBytes(byte[] bytes) throws IOException {
+		byteWriter.writeInt(bytes.length);
+		byteWriter.write(bytes, 0, bytes.length);
+	}
+	
 	@Override
 	protected void processMessages() throws IOException, ReflectiveOperationException {
 		while (true) {
 			int len = input.readInt();
 			if (len > 0) {
 				byte[] readBytes = new byte[len];
-				System.out.println("Server waiting for input");
 				input.readFully(readBytes);
 				byte[] response = multiPlayerController
 						.handleRequestAndSerializeResponse(getSocket().getRemoteSocketAddress().hashCode(), readBytes);
-				byteWriter.writeInt(response.length);
-				byteWriter.write(response, 0, response.length);
+				writeBytes(response);
 			}
 		}
 	}
@@ -52,5 +55,6 @@ public class MultiPlayerServerHandler extends AbstractServerHandler {
 		super.closeClient();
 		multiPlayerController.disconnectClient(getSocket().getRemoteSocketAddress().hashCode());
 	}
+	
 
 }

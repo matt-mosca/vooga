@@ -17,9 +17,11 @@ import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
 import engine.authoring_engine.AuthoringController;
+import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
@@ -32,6 +34,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
@@ -43,6 +46,7 @@ import main.Main;
 import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.NewSprite;
 import player.PlayDisplay;
+import util.DropdownFactory;
 import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
 import display.sprites.BackgroundObject;
@@ -56,6 +60,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_X_LOCATION = 620;
 	private static final double GRID_Y_LOCATION = 20;
 	private final String PATH_DIRECTORY_NAME = "authoring/";
+	
 	private AuthoringController controller;
 	private StaticObjectToolBar myLeftToolBar;
 	private GameArea myGameArea;
@@ -76,6 +81,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Slider volumeSlider;
 	private MediaPlayerFactory mediaPlayerFactory;
 	private MediaPlayer mediaPlayer;
+	private String backgroundSong = "src/MediaTesting/110 - pokemon center.mp3";
+	private InteractiveObject objectToPlace;
+	private EventHandler<MouseEvent> cursorDrag;
+	private boolean addingObject = false;
+
+	private DropdownFactory dropdownFactory = new DropdownFactory();
 
 	private ClientMessageUtils clientMessageUtils;
 
@@ -83,6 +94,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		super(width, height, Color.BLACK, stage);
 		controller = new AuthoringController();
 		clientMessageUtils = new ClientMessageUtils();
+		if (loaded) {
+			loadGame();
+		}
+
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
 		basePropertyMap = new HashMap<>();
@@ -98,15 +113,17 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(saveButton);
 		myTesterButton = new SpriteTesterButton(this);
 		rootAdd(myTesterButton);
-		mediaPlayerFactory = new MediaPlayerFactory("src/MediaTesting/110 - pokemon center.mp3");
+		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		volumeSlider.setLayoutY(735);
 		volumeSlider.setLayoutX(950);
-		if (loaded) {
-			loadGame();
-		}
+		
+		this.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, e -> addStaticObject(e));
+
+		myMenuBar.getMenus().clear();
+		myMenuBar.getMenus().addAll(dropdownFactory.generateMenuDropdowns(this));
 	}
 
 	private void createGridToggle() {
@@ -194,28 +211,47 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	@Override
-	public void listItemClicked(ImageView clickable) {
+	public void listItemClicked(MouseEvent e, ImageView clickable) {
 		StaticObject object = (StaticObject) clickable;
-		Button addNewButton = new Button("New");
-		Button incrementButton = new Button("+");
-		Button decrementButton = new Button("-");
-		addNewButton.setLayoutY(20);
-		incrementButton.setLayoutY(20);
-		decrementButton.setLayoutY(20);
-		incrementButton.setLayoutX(50);
-		decrementButton.setLayoutX(85);
-		addNewButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addObject(object));
-		incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-			object.incrementSize();
-			updateObjectSize(object);
-		});
-		decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-			object.decrementSize();
-			updateObjectSize(object);
-		});
-		rootAdd(addNewButton);
-		rootAdd(incrementButton);
-		rootAdd(decrementButton);
+		if(e.getButton() == MouseButton.SECONDARY) {
+			Button incrementButton = new Button("+");
+			Button decrementButton = new Button("-");
+			incrementButton.setLayoutY(20);
+			decrementButton.setLayoutY(20);
+			incrementButton.setLayoutX(50);
+			decrementButton.setLayoutX(85);
+			incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+				object.incrementSize();
+				updateObjectSize(object);
+			});
+			decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+				object.decrementSize();
+				updateObjectSize(object);
+			});
+			rootAdd(incrementButton);
+			rootAdd(decrementButton);
+		}else {
+			if (object instanceof BackgroundObject) {
+				objectToPlace = new BackgroundObject(object.getCellSize(), this, object.getElementName());
+			} else {
+				objectToPlace = new StaticObject(object.getCellSize(), this, object.getElementName());
+			}
+			rootAdd(objectToPlace);
+			objectToPlace.toFront();
+			cursorDrag = new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					e.consume();
+					objectToPlace.setX(event.getX() - objectToPlace.getFitWidth()/2);
+					objectToPlace.setY(event.getY()- objectToPlace.getFitHeight()/2);
+				}
+			};
+			this.getScene().addEventHandler(MouseEvent.ANY, cursorDrag);
+			this.getScene().setCursor(ImageCursor.NONE);
+			addingObject = true;
+		}
+		
+
 	}
 
 	private void updateObjectSize(StaticObject object) {
@@ -224,22 +260,26 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		newProperties.put("imageHeight", object.getSize());
 		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
+	
+	private void addStaticObject(MouseEvent e) {
+		if(addingObject) {
+			e.consume();
+			this.getScene().removeEventHandler(MouseEvent.ANY, cursorDrag);
+			rootRemove(objectToPlace);
+			try {
+				NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(), new Point2D(0, 0));
+				objectToPlace.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
+			} catch (ReflectiveOperationException failedToAddObjectException) {
 
-	private void addObject(InteractiveObject object) {
-		InteractiveObject newObject;
-		if (object instanceof BackgroundObject) {
-			newObject = new BackgroundObject(object.getCellSize(), this, object.getElementName());
-		} else {
-			newObject = new StaticObject(object.getCellSize(), this, object.getElementName());
+			}
+			objectToPlace.setX(e.getX() - objectToPlace.getFitWidth()/2 - myGameEnvironment.getLayoutX());
+			objectToPlace.setY(e.getY() - objectToPlace.getFitHeight()/2 - myGameEnvironment.getLayoutY());
+			myGameArea.addBackObject(objectToPlace);
+			myGameArea.droppedInto(objectToPlace);
+			addingObject = false;
+			
+			this.getScene().setCursor(ImageCursor.DEFAULT);
 		}
-		myGameArea.addBackObject(newObject);
-		try {
-			NewSprite newSprite = controller.placeElement(newObject.getElementName(), new Point2D(0, 0));
-			newObject.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
-		} catch (ReflectiveOperationException failedToAddObjectException) {
-
-		}
-
 	}
 
 	@Override
@@ -267,6 +307,21 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			myGameArea.savePath();
 		}
 	}
+
+	// I'm adding this to do reflective generation of dropdown menu (I am Ben S)
+	private void export() {
+		controller.exportGame();
+	}
+	private void rename() {
+		myMenuBar.renameGame();
+	}
+	private void addWave() {
+		myBottomToolBar.makeNewWave();
+	}
+	private void addLevel() {
+		myBottomToolBar.addLevel();
+	}
+	// end
 
 	private void loadGame() {
 		List<String> games = new ArrayList<>();
@@ -310,7 +365,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void defense() {
 		attackDefenseLabel.setText("Attack");
 	}
-	
+
 	public void submit(String levelAndWave, int amount, ImageView mySprite) {
 		myBottomToolBar.addToWave(levelAndWave, amount, mySprite);
 	}
@@ -363,7 +418,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void createTesterLevel(Map<String, Object> fun, List<String> sprites) {
 		// TODO - Update this method accordingly to determine the isMultiPlayer param
 		// for PlayDisplay constructor
-		PlayDisplay testingScene = new PlayDisplay(1000, 1000, getStage(), false); // TEMP
+		PlayDisplay testingScene = new PlayDisplay(1000, 1000, getStage(), new PlayController()); // TEMP
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - 1000 / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
@@ -377,13 +432,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void addToBottomToolBar(int level, ImageView currSprite, int kind) {
-		if (kind==1) {
-//			myBottomToolBar.addToWave(currSprite, level, 3);
+		if (kind == 1) {
+			// myBottomToolBar.addToWave(currSprite, level, 3);
 		}
 		if (kind == 2) {
 			myBottomToolBar.addLevelProperties(currSprite, level);
 		}
 	}
+
 	public int getMaxLevel() {
 		return myBottomToolBar.getMaxLevel();
 	}

@@ -64,7 +64,7 @@ public class MainMenuBar extends MenuBar{
 		myController.exportGame();
 	}
 	
-	private void renameGame() {
+	public void renameGame() {
 		Optional<String> newName = launchInput(RENAME);
 		if(newName.isPresent()) {
 			myController.setGameName(newName.get());

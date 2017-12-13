@@ -3,8 +3,6 @@ package authoring.LevelToolBar;
 import java.util.Collection;
 import java.util.Map;
 
-
-
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,8 +27,10 @@ public class GameEnderRecorder extends VBox{
 	private void setUp() {
 		this.getChildren().clear();
 		makeTables();
-		this.getChildren().addAll(victoryConditions, defeatConditions);
+		update();
+		
 	}
+
 	
 	public void update() {
 		victoryConditions.getItems().clear();
@@ -54,6 +54,7 @@ public class GameEnderRecorder extends VBox{
 		defeatConditions = new TableView<Conditions>();
 		fillTable("Victory", victoryConditions, vicConditions);
 		fillTable("Defeat", defeatConditions, lossConditions);
+		this.getChildren().addAll(victoryConditions, defeatConditions);
 		
 	}
 
