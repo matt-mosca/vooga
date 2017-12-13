@@ -8,12 +8,10 @@ import javafx.scene.media.MediaPlayer;
 public class MediaPlayerFactory {
 	
 	private final String DEFAULT_MEDIA_NAME = "src/MediaTesting/497632384.mp4";
-	private Media media;
 	private MediaPlayer mediaPlayer;
 	
 	public MediaPlayerFactory() {
-		media = new Media(composeResourceStringUrl(DEFAULT_MEDIA_NAME));
-		mediaPlayer = new MediaPlayer(media);
+		mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(DEFAULT_MEDIA_NAME)));
 	}
 	
 	public MediaPlayerFactory(String mediaName) {
