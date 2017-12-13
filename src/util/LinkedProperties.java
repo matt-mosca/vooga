@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Extends functionality of Properties to use keys in insertion order.
@@ -17,22 +18,16 @@ import java.util.Set;
  */
 public class LinkedProperties extends Properties {
 
-    private final HashSet<Object> keys = new LinkedHashSet<>();
+    private final Set<Object> keys = new LinkedHashSet<>();
 
     @Override
     public Set<String> stringPropertyNames() {
-        Set<String> set = new LinkedHashSet<String>();
-
-        for (Object key : this.keys) {
-            set.add((String)key);
-        }
-
-        return set;
+        return keys.stream().map(Object::toString).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
     public Enumeration<Object> keys() {
-        return Collections.<Object>enumeration(keys);
+        return Collections.enumeration(keys);
     }
 
     @Override

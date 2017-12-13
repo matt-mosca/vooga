@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-
 import authoring.EditDisplay;
 import authoring.GameArea;
 import authoring.ScrollableArea;
-import engine.authoring_engine.AuthoringController;
 import display.factory.TabFactory;
+import display.sprites.InteractiveObject;
+import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -22,7 +22,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import networking.protocol.PlayerServer.NewSprite;
 import util.protocol.ClientMessageUtils;
-import display.sprites.InteractiveObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 	private static final int SIZE = 400;
@@ -53,7 +61,7 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 	private NewWaveButton myNewWaveButton;
 	private int startingLevels;
 
-	private ClientMessageUtils clientMessageUtils;
+    private ClientMessageUtils clientMessageUtils;
 
 	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
@@ -125,15 +133,10 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 		updateWaveDisplay();
 	}
 
-	private void openLevelDisplay() {
-		myLevelDisplayer = new LevelsEditDisplay(myController, myCreated);
-		myLevelDisplayer.open();
-	}
-	
-	private void updateWaveDisplay() {
-		myWaveDisplay.addTabs(wavesPerLevel.get(currentLevel));
-		updateImages();
-	}
+    private void openLevelDisplay() {
+        myLevelDisplayer = new LevelsEditDisplay(myController, myCreated);
+        myLevelDisplayer.open();
+    }
 
 	private void loadLevels() {
 		startingLevels = myController.getNumLevelsForGame(myController.getGameName(), true);
@@ -177,6 +180,7 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 		for (Integer id : myController.getLevelSprites(level).stream().map(NewSprite::getSpriteId).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
+			savedObject.setElementId(id);
 			savedObject.setX(imageView.getX());
 			savedObject.setY(imageView.getY());
 			savedObject.setImageView(imageView);
@@ -184,15 +188,19 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 		}
 	}
 	
-	public void addToWave (String levelAndWave, int amount, ImageView mySprite) {
+	public void addToWave(String levelAndWave, int amount, ImageView mySprite) {
 		String[] levelWaveArray = levelAndWave.split("\\s+");
 		String mySpriteId = mySprite.getId();
 		List<ImageView> imageList = new ArrayList<>(Collections.nCopies(amount, mySprite));
 		elementsToSpawn = new ArrayList<>(Collections.nCopies(amount, mySpriteId));
 //		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
 		Point2D location = new Point2D(30,60);
-		myProperties.put("templatesToFire", elementsToSpawn);
-		myProperties.put("Projectile Type Name", mySprite.getId());
+//		myProperties.put("templatesToFire", elementsToSpawn);
+//		myProperties.put("Projectile Type Name", mySprite.getId());
+		Map<String, Object> waveProperties = new HashMap<>();
+        waveProperties.putAll(myProperties);
+        waveProperties.put("templatesToFire", elementsToSpawn);
+        waveProperties.put("Projectile Type Name", mySpriteId);
 		/**
 		 * Eventually we won't need line above, but for shoot periodically firing strategy
 		 * we have to include the projectile name that we're firing as a parameter. At the moment
@@ -209,10 +217,9 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 				try {
 					List<String> waveElements = waveToData.get(levelDotWave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
 					waveElements.addAll(elementsToSpawn);
-					myProperties.put("templatesToFire", waveElements);
+					waveProperties.put("templatesToFire", waveElements);
 					myController.editWaveProperties(waveToData.get(levelDotWave).waveId-1, 
-							myProperties, waveElements, location);
-					System.out.println(waveElements.toString());
+							waveProperties, waveElements, location);
 				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
@@ -222,32 +229,11 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 				tempArray.addAll(imageList);
 				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
 			} else {
-				try {
 					waveToData.put(levelDotWave, new Data(imageList,
-							myController.createWaveProperties(myProperties, elementsToSpawn, location)));
-				} catch (ReflectiveOperationException e) {
-					e.printStackTrace();
-				}
+							myController.createWaveProperties(waveProperties, elementsToSpawn, location)));
 			}
 		}
 		updateImages();
-	}
-	
-	public void changeDisplay(int i) {
-		currentLevel = i;
-		myScrollableArea.changeLevel(myGameAreas.get(i - 1));
-		myCreated.setDroppable(myGameAreas.get(i - 1));
-		myController.setLevel(i);
-		myCreated.setGameArea(myGameAreas.get(i - 1));
-		updateWaveDisplay();
-		updateImages();
-	}
-	
-	public void updateImages() {
-		mySpriteDisplay.clear();
-		if (waveToData.get(levelAndWave()) != null) {
-			mySpriteDisplay.addToScroll(waveToData.get(levelAndWave()).spriteNames);
-		}
 	}
 	
 	private String levelAndWave() {
@@ -298,27 +284,51 @@ public class LevelToolBar extends VBox implements TabInterface, LevelInterface {
 		return tempMap;
 	}
 
-	public int getMaxLevel() {
-		return myLevels.size();
-	}
 
-	public void addLevelProperties(ImageView currSprite, int level) {
-		myLevels.get(level - 1).update(currSprite);
+	private void updateWaveDisplay() {
+        myWaveDisplay.addTabs(wavesPerLevel.get(currentLevel));
+        updateImages();
+    }
 
-	}
+    public void changeDisplay(int i) {
+        currentLevel = i;
+        myScrollableArea.changeLevel(myGameAreas.get(i - 1));
+        myCreated.setDroppable(myGameAreas.get(i - 1));
+        myController.setLevel(i);
+        myCreated.setGameArea(myGameAreas.get(i - 1));
+        updateWaveDisplay();
+        updateImages();
+    }
+
+    public void updateImages() {
+        mySpriteDisplay.clear();
+        if (waveToData.get(currentLevel + "." + myWaveDisplay.getCurrTab()) != null) {
+            mySpriteDisplay.addToScroll(waveToData.get(currentLevel + "." + myWaveDisplay.getCurrTab()).spriteNames);
+        }
+    }
 
 	@Override
 	public void waveDeleted(int waveNumber) {
 		waveToData = updateDataMap(currentLevel, waveNumber);
 		
 	}
+
+	public int getMaxLevel() {
+        return myLevels.size();
+    }
+
+    public void addLevelProperties(ImageView currSprite, int level) {
+        myLevels.get(level - 1).update(currSprite);
+
+    }
 }
 
-class Data{   
-    List<ImageView> spriteNames;  
-    Integer waveId;  
+class Data {
+    List<ImageView> spriteNames;
+    Integer waveId;
+
     Data(List<ImageView> spriteNames, Integer waveId) {
-        this.spriteNames = spriteNames; 
-        this.waveId = waveId; 
-    }  
+        this.spriteNames = spriteNames;
+        this.waveId = waveId;
+    }
 } 

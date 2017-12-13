@@ -1,10 +1,8 @@
 package engine.behavior.firing;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Ben Schwennesen
@@ -34,13 +32,17 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 
 	@Override
 	public String fire() {
+		int left = elementsRemaining;
+		if (left == 1) {
+			System.out.println("last one");
+		}
 		decrementWavesLeft();
 		return chooseElementToSpawn();
 	}
 	
 	@Override
 	public boolean shouldFire(double targetLocation) {
-		return !isExpended() && super.shouldFire(targetLocation);
+		return !this.isExpended() && super.shouldFire(targetLocation);
 	}
 	
 	@Override

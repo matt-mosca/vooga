@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
 /**
  * Captures general collision behaviors of most colliders. Specific collision

@@ -1,8 +1,6 @@
 package engine.behavior.collision;
 
-import java.util.List;
-
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import util.Exclude;

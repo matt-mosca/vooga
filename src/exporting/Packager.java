@@ -65,6 +65,7 @@ public final class Packager {
             addResourcesAndData();
             target.close();
         } catch (IOException failedToGenerateJarException) {
+            failedToGenerateJarException.printStackTrace();
             throw new IOException(ERROR_MESSAGE);
         }
         return exportJarOutputPath;

@@ -201,20 +201,24 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		// param
 		// for PlayDisplay constructor
 		boolean isMultiplayer = initializePlayersSetting();
-		MultiPlayerClient multiPlayerClient = new MultiPlayerClient();
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(),
-				isMultiplayer ? multiPlayerClient : new PlayController()); // TEMP
+		PlayDisplay myScene;
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
 		myMediaPlayer.stop();
 		if (!isMultiplayer) {
-
+			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController()); 
 			getStage().setScene(myScene.getScene());
 			myScene.startDisplay();
+			System.out.println("Initialized play display");
 		} else {
+			MultiPlayerClient multiPlayerClient = new MultiPlayerClient();
+			multiPlayerClient.launchNotificationListener();
+			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), multiPlayerClient);
+			System.out.println("Initializing multiplayer lobby");
 			MultiplayerLobby multi = new MultiplayerLobby(PLAYWIDTH, PLAYHEIGHT, Color.WHITE, getStage(), myScene,
 					multiPlayerClient);
+			System.out.println("Initialized multiplayer lobby");
 			getStage().setScene(multi.getScene());
 			multi.promptForUsername();
 		}

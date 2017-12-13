@@ -78,8 +78,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			/*
 			 * Uncomment when front end is ready to set wave properties fully (team & no. of
 			 * attacks of wave) */
-			List<List<GameElement>> lw = getLevelWaves();
-			 if (checkLevelClearanceCondition()) {
+			 /*if (checkLevelClearanceCondition()) {
 			 	if (checkVictoryCondition()) {
 			 		registerVictory();
 			 	} else {
@@ -87,7 +86,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			 	}
 			 } else if (checkDefeatCondition()) {
 				 registerDefeat();
-			 } else { // Move elements, check and handle collisions
+			 } else {*/ // Move elements, check and handle collisions
 				 savedList.add(getSpriteIdMap().entrySet());
 				 elementManager.update();
 				 List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
@@ -103,7 +102,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				 elementManager.clearNewElements();
 				 elementManager.clearUpdatedElements();
 				 return latestUpdate;
-			 }
+			 //}
 		}
 		// If not in play, only one of the status properties could have changed, yes?
 		return packageStatusUpdate();
@@ -192,6 +191,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		setLevel(level);
 		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
 		elementManager.setCurrentElements(getLevelSprites().get(level));
+		List<GameElement> levelWaves = getLevelWaves().get(getCurrentLevel());
+		elementManager.setCurrentWaves(levelWaves);
 		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
 		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
 	}
@@ -279,7 +280,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean allWavesDead() {
-		return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> wave.isAlive()).count() == 0;
+		//return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> wave.isAlive()).count() == 0;
+		return elementManager.allWavesComplete();
 	}
 
 	// TODO - Boolean defeat conditions
@@ -290,6 +292,10 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private boolean enemyReachedTarget() {
 		boolean reached = elementManager.enemyReachedTarget();
 		return reached;
+	}
+	
+	private boolean zeroHealth() {
+		return getLevelHealths().get(getCurrentLevel()) <= 0;
 	}
 
 }

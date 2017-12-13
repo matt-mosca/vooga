@@ -167,37 +167,37 @@ public final class AuthorClient {
     /**
      * <code>optional .MoveElement moveElement = 12;</code>
      */
-    AuthorClient.MoveElement getMoveElement();
+    PlayerClient.MoveElement getMoveElement();
     /**
      * <code>optional .MoveElement moveElement = 12;</code>
      */
-    AuthorClient.MoveElementOrBuilder getMoveElementOrBuilder();
+    PlayerClient.MoveElementOrBuilder getMoveElementOrBuilder();
 
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
-     */
-    boolean hasUpdateElementProperties();
-    /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
-     */
-    AuthorClient.UpdateElementProperties getUpdateElementProperties();
-    /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
-     */
-    AuthorClient.UpdateElementPropertiesOrBuilder getUpdateElementPropertiesOrBuilder();
-
-    /**
-     * <code>optional .DeleteElement deleteElement = 14;</code>
+     * <code>optional .DeleteElement deleteElement = 13;</code>
      */
     boolean hasDeleteElement();
     /**
-     * <code>optional .DeleteElement deleteElement = 14;</code>
+     * <code>optional .DeleteElement deleteElement = 13;</code>
      */
-    AuthorClient.DeleteElement getDeleteElement();
+    PlayerClient.DeleteElement getDeleteElement();
     /**
-     * <code>optional .DeleteElement deleteElement = 14;</code>
+     * <code>optional .DeleteElement deleteElement = 13;</code>
      */
-    AuthorClient.DeleteElementOrBuilder getDeleteElementOrBuilder();
+    PlayerClient.DeleteElementOrBuilder getDeleteElementOrBuilder();
+
+    /**
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
+     */
+    boolean hasUpdateElementProperties();
+    /**
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
+     */
+    AuthorClient.UpdateElementProperties getUpdateElementProperties();
+    /**
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
+     */
+    AuthorClient.UpdateElementPropertiesOrBuilder getUpdateElementPropertiesOrBuilder();
 
     /**
      * <code>optional .GetAllDefinedElementUpgrades getAllDefinedElementUpgrades = 15;</code>
@@ -605,11 +605,11 @@ public final class AuthorClient {
               break;
             }
             case 98: {
-              AuthorClient.MoveElement.Builder subBuilder = null;
+              PlayerClient.MoveElement.Builder subBuilder = null;
               if (((bitField0_ & 0x00000800) == 0x00000800)) {
                 subBuilder = moveElement_.toBuilder();
               }
-              moveElement_ = input.readMessage(AuthorClient.MoveElement.PARSER, extensionRegistry);
+              moveElement_ = input.readMessage(PlayerClient.MoveElement.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(moveElement_);
                 moveElement_ = subBuilder.buildPartial();
@@ -618,27 +618,27 @@ public final class AuthorClient {
               break;
             }
             case 106: {
-              AuthorClient.UpdateElementProperties.Builder subBuilder = null;
+              PlayerClient.DeleteElement.Builder subBuilder = null;
               if (((bitField0_ & 0x00001000) == 0x00001000)) {
+                subBuilder = deleteElement_.toBuilder();
+              }
+              deleteElement_ = input.readMessage(PlayerClient.DeleteElement.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(deleteElement_);
+                deleteElement_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00001000;
+              break;
+            }
+            case 114: {
+              AuthorClient.UpdateElementProperties.Builder subBuilder = null;
+              if (((bitField0_ & 0x00002000) == 0x00002000)) {
                 subBuilder = updateElementProperties_.toBuilder();
               }
               updateElementProperties_ = input.readMessage(AuthorClient.UpdateElementProperties.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(updateElementProperties_);
                 updateElementProperties_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00001000;
-              break;
-            }
-            case 114: {
-              AuthorClient.DeleteElement.Builder subBuilder = null;
-              if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                subBuilder = deleteElement_.toBuilder();
-              }
-              deleteElement_ = input.readMessage(AuthorClient.DeleteElement.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(deleteElement_);
-                deleteElement_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00002000;
               break;
@@ -1107,7 +1107,7 @@ public final class AuthorClient {
     }
 
     public static final int MOVEELEMENT_FIELD_NUMBER = 12;
-    private AuthorClient.MoveElement moveElement_;
+    private PlayerClient.MoveElement moveElement_;
     /**
      * <code>optional .MoveElement moveElement = 12;</code>
      */
@@ -1117,56 +1117,56 @@ public final class AuthorClient {
     /**
      * <code>optional .MoveElement moveElement = 12;</code>
      */
-    public AuthorClient.MoveElement getMoveElement() {
-      return moveElement_ == null ? AuthorClient.MoveElement.getDefaultInstance() : moveElement_;
+    public PlayerClient.MoveElement getMoveElement() {
+      return moveElement_ == null ? PlayerClient.MoveElement.getDefaultInstance() : moveElement_;
     }
     /**
      * <code>optional .MoveElement moveElement = 12;</code>
      */
-    public AuthorClient.MoveElementOrBuilder getMoveElementOrBuilder() {
-      return moveElement_ == null ? AuthorClient.MoveElement.getDefaultInstance() : moveElement_;
+    public PlayerClient.MoveElementOrBuilder getMoveElementOrBuilder() {
+      return moveElement_ == null ? PlayerClient.MoveElement.getDefaultInstance() : moveElement_;
     }
 
-    public static final int UPDATEELEMENTPROPERTIES_FIELD_NUMBER = 13;
-    private AuthorClient.UpdateElementProperties updateElementProperties_;
+    public static final int DELETEELEMENT_FIELD_NUMBER = 13;
+    private PlayerClient.DeleteElement deleteElement_;
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .DeleteElement deleteElement = 13;</code>
      */
-    public boolean hasUpdateElementProperties() {
+    public boolean hasDeleteElement() {
       return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .DeleteElement deleteElement = 13;</code>
+     */
+    public PlayerClient.DeleteElement getDeleteElement() {
+      return deleteElement_ == null ? PlayerClient.DeleteElement.getDefaultInstance() : deleteElement_;
+    }
+    /**
+     * <code>optional .DeleteElement deleteElement = 13;</code>
+     */
+    public PlayerClient.DeleteElementOrBuilder getDeleteElementOrBuilder() {
+      return deleteElement_ == null ? PlayerClient.DeleteElement.getDefaultInstance() : deleteElement_;
+    }
+
+    public static final int UPDATEELEMENTPROPERTIES_FIELD_NUMBER = 14;
+    private AuthorClient.UpdateElementProperties updateElementProperties_;
+    /**
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
+     */
+    public boolean hasUpdateElementProperties() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
      */
     public AuthorClient.UpdateElementProperties getUpdateElementProperties() {
       return updateElementProperties_ == null ? AuthorClient.UpdateElementProperties.getDefaultInstance() : updateElementProperties_;
     }
     /**
-     * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+     * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
      */
     public AuthorClient.UpdateElementPropertiesOrBuilder getUpdateElementPropertiesOrBuilder() {
       return updateElementProperties_ == null ? AuthorClient.UpdateElementProperties.getDefaultInstance() : updateElementProperties_;
-    }
-
-    public static final int DELETEELEMENT_FIELD_NUMBER = 14;
-    private AuthorClient.DeleteElement deleteElement_;
-    /**
-     * <code>optional .DeleteElement deleteElement = 14;</code>
-     */
-    public boolean hasDeleteElement() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
-    }
-    /**
-     * <code>optional .DeleteElement deleteElement = 14;</code>
-     */
-    public AuthorClient.DeleteElement getDeleteElement() {
-      return deleteElement_ == null ? AuthorClient.DeleteElement.getDefaultInstance() : deleteElement_;
-    }
-    /**
-     * <code>optional .DeleteElement deleteElement = 14;</code>
-     */
-    public AuthorClient.DeleteElementOrBuilder getDeleteElementOrBuilder() {
-      return deleteElement_ == null ? AuthorClient.DeleteElement.getDefaultInstance() : deleteElement_;
     }
 
     public static final int GETALLDEFINEDELEMENTUPGRADES_FIELD_NUMBER = 15;
@@ -1579,14 +1579,14 @@ public final class AuthorClient {
           return false;
         }
       }
-      if (hasUpdateElementProperties()) {
-        if (!getUpdateElementProperties().isInitialized()) {
+      if (hasDeleteElement()) {
+        if (!getDeleteElement().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
       }
-      if (hasDeleteElement()) {
-        if (!getDeleteElement().isInitialized()) {
+      if (hasUpdateElementProperties()) {
+        if (!getUpdateElementProperties().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -1694,10 +1694,10 @@ public final class AuthorClient {
         output.writeMessage(12, getMoveElement());
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeMessage(13, getUpdateElementProperties());
+        output.writeMessage(13, getDeleteElement());
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeMessage(14, getDeleteElement());
+        output.writeMessage(14, getUpdateElementProperties());
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         output.writeMessage(15, getGetAllDefinedElementUpgrades());
@@ -1805,11 +1805,11 @@ public final class AuthorClient {
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(13, getUpdateElementProperties());
+          .computeMessageSize(13, getDeleteElement());
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(14, getDeleteElement());
+          .computeMessageSize(14, getUpdateElementProperties());
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1952,15 +1952,15 @@ public final class AuthorClient {
         result = result && getMoveElement()
             .equals(other.getMoveElement());
       }
-      result = result && (hasUpdateElementProperties() == other.hasUpdateElementProperties());
-      if (hasUpdateElementProperties()) {
-        result = result && getUpdateElementProperties()
-            .equals(other.getUpdateElementProperties());
-      }
       result = result && (hasDeleteElement() == other.hasDeleteElement());
       if (hasDeleteElement()) {
         result = result && getDeleteElement()
             .equals(other.getDeleteElement());
+      }
+      result = result && (hasUpdateElementProperties() == other.hasUpdateElementProperties());
+      if (hasUpdateElementProperties()) {
+        result = result && getUpdateElementProperties()
+            .equals(other.getUpdateElementProperties());
       }
       result = result && (hasGetAllDefinedElementUpgrades() == other.hasGetAllDefinedElementUpgrades());
       if (hasGetAllDefinedElementUpgrades()) {
@@ -2098,13 +2098,13 @@ public final class AuthorClient {
         hash = (37 * hash) + MOVEELEMENT_FIELD_NUMBER;
         hash = (53 * hash) + getMoveElement().hashCode();
       }
-      if (hasUpdateElementProperties()) {
-        hash = (37 * hash) + UPDATEELEMENTPROPERTIES_FIELD_NUMBER;
-        hash = (53 * hash) + getUpdateElementProperties().hashCode();
-      }
       if (hasDeleteElement()) {
         hash = (37 * hash) + DELETEELEMENT_FIELD_NUMBER;
         hash = (53 * hash) + getDeleteElement().hashCode();
+      }
+      if (hasUpdateElementProperties()) {
+        hash = (37 * hash) + UPDATEELEMENTPROPERTIES_FIELD_NUMBER;
+        hash = (53 * hash) + getUpdateElementProperties().hashCode();
       }
       if (hasGetAllDefinedElementUpgrades()) {
         hash = (37 * hash) + GETALLDEFINEDELEMENTUPGRADES_FIELD_NUMBER;
@@ -2296,8 +2296,8 @@ public final class AuthorClient {
           getAddElementToInventoryFieldBuilder();
           getGetCurrentLevelFieldBuilder();
           getMoveElementFieldBuilder();
-          getUpdateElementPropertiesFieldBuilder();
           getDeleteElementFieldBuilder();
+          getUpdateElementPropertiesFieldBuilder();
           getGetAllDefinedElementUpgradesFieldBuilder();
           getGetResourceEndowmentsFieldBuilder();
           getSetGameNameFieldBuilder();
@@ -2390,16 +2390,16 @@ public final class AuthorClient {
           moveElementBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000800);
-        if (updateElementPropertiesBuilder_ == null) {
-          updateElementProperties_ = null;
-        } else {
-          updateElementPropertiesBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00001000);
         if (deleteElementBuilder_ == null) {
           deleteElement_ = null;
         } else {
           deleteElementBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00001000);
+        if (updateElementPropertiesBuilder_ == null) {
+          updateElementProperties_ = null;
+        } else {
+          updateElementPropertiesBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00002000);
         if (getAllDefinedElementUpgradesBuilder_ == null) {
@@ -2621,18 +2621,18 @@ public final class AuthorClient {
         if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
           to_bitField0_ |= 0x00001000;
         }
-        if (updateElementPropertiesBuilder_ == null) {
-          result.updateElementProperties_ = updateElementProperties_;
-        } else {
-          result.updateElementProperties_ = updateElementPropertiesBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
-          to_bitField0_ |= 0x00002000;
-        }
         if (deleteElementBuilder_ == null) {
           result.deleteElement_ = deleteElement_;
         } else {
           result.deleteElement_ = deleteElementBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        if (updateElementPropertiesBuilder_ == null) {
+          result.updateElementProperties_ = updateElementProperties_;
+        } else {
+          result.updateElementProperties_ = updateElementPropertiesBuilder_.build();
         }
         if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
           to_bitField0_ |= 0x00004000;
@@ -2841,11 +2841,11 @@ public final class AuthorClient {
         if (other.hasMoveElement()) {
           mergeMoveElement(other.getMoveElement());
         }
-        if (other.hasUpdateElementProperties()) {
-          mergeUpdateElementProperties(other.getUpdateElementProperties());
-        }
         if (other.hasDeleteElement()) {
           mergeDeleteElement(other.getDeleteElement());
+        }
+        if (other.hasUpdateElementProperties()) {
+          mergeUpdateElementProperties(other.getUpdateElementProperties());
         }
         if (other.hasGetAllDefinedElementUpgrades()) {
           mergeGetAllDefinedElementUpgrades(other.getGetAllDefinedElementUpgrades());
@@ -2969,13 +2969,13 @@ public final class AuthorClient {
             return false;
           }
         }
-        if (hasUpdateElementProperties()) {
-          if (!getUpdateElementProperties().isInitialized()) {
+        if (hasDeleteElement()) {
+          if (!getDeleteElement().isInitialized()) {
             return false;
           }
         }
-        if (hasDeleteElement()) {
-          if (!getDeleteElement().isInitialized()) {
+        if (hasUpdateElementProperties()) {
+          if (!getUpdateElementProperties().isInitialized()) {
             return false;
           }
         }
@@ -4349,9 +4349,9 @@ public final class AuthorClient {
         return getCurrentLevelBuilder_;
       }
 
-      private AuthorClient.MoveElement moveElement_ = null;
+      private PlayerClient.MoveElement moveElement_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          AuthorClient.MoveElement, AuthorClient.MoveElement.Builder, AuthorClient.MoveElementOrBuilder> moveElementBuilder_;
+          PlayerClient.MoveElement, PlayerClient.MoveElement.Builder, PlayerClient.MoveElementOrBuilder> moveElementBuilder_;
       /**
        * <code>optional .MoveElement moveElement = 12;</code>
        */
@@ -4361,9 +4361,9 @@ public final class AuthorClient {
       /**
        * <code>optional .MoveElement moveElement = 12;</code>
        */
-      public AuthorClient.MoveElement getMoveElement() {
+      public PlayerClient.MoveElement getMoveElement() {
         if (moveElementBuilder_ == null) {
-          return moveElement_ == null ? AuthorClient.MoveElement.getDefaultInstance() : moveElement_;
+          return moveElement_ == null ? PlayerClient.MoveElement.getDefaultInstance() : moveElement_;
         } else {
           return moveElementBuilder_.getMessage();
         }
@@ -4371,7 +4371,7 @@ public final class AuthorClient {
       /**
        * <code>optional .MoveElement moveElement = 12;</code>
        */
-      public Builder setMoveElement(AuthorClient.MoveElement value) {
+      public Builder setMoveElement(PlayerClient.MoveElement value) {
         if (moveElementBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4388,7 +4388,7 @@ public final class AuthorClient {
        * <code>optional .MoveElement moveElement = 12;</code>
        */
       public Builder setMoveElement(
-          AuthorClient.MoveElement.Builder builderForValue) {
+          PlayerClient.MoveElement.Builder builderForValue) {
         if (moveElementBuilder_ == null) {
           moveElement_ = builderForValue.build();
           onChanged();
@@ -4401,13 +4401,13 @@ public final class AuthorClient {
       /**
        * <code>optional .MoveElement moveElement = 12;</code>
        */
-      public Builder mergeMoveElement(AuthorClient.MoveElement value) {
+      public Builder mergeMoveElement(PlayerClient.MoveElement value) {
         if (moveElementBuilder_ == null) {
           if (((bitField0_ & 0x00000800) == 0x00000800) &&
               moveElement_ != null &&
-              moveElement_ != AuthorClient.MoveElement.getDefaultInstance()) {
+              moveElement_ != PlayerClient.MoveElement.getDefaultInstance()) {
             moveElement_ =
-              AuthorClient.MoveElement.newBuilder(moveElement_).mergeFrom(value).buildPartial();
+              PlayerClient.MoveElement.newBuilder(moveElement_).mergeFrom(value).buildPartial();
           } else {
             moveElement_ = value;
           }
@@ -4434,7 +4434,7 @@ public final class AuthorClient {
       /**
        * <code>optional .MoveElement moveElement = 12;</code>
        */
-      public AuthorClient.MoveElement.Builder getMoveElementBuilder() {
+      public PlayerClient.MoveElement.Builder getMoveElementBuilder() {
         bitField0_ |= 0x00000800;
         onChanged();
         return getMoveElementFieldBuilder().getBuilder();
@@ -4442,23 +4442,23 @@ public final class AuthorClient {
       /**
        * <code>optional .MoveElement moveElement = 12;</code>
        */
-      public AuthorClient.MoveElementOrBuilder getMoveElementOrBuilder() {
+      public PlayerClient.MoveElementOrBuilder getMoveElementOrBuilder() {
         if (moveElementBuilder_ != null) {
           return moveElementBuilder_.getMessageOrBuilder();
         } else {
           return moveElement_ == null ?
-              AuthorClient.MoveElement.getDefaultInstance() : moveElement_;
+              PlayerClient.MoveElement.getDefaultInstance() : moveElement_;
         }
       }
       /**
        * <code>optional .MoveElement moveElement = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          AuthorClient.MoveElement, AuthorClient.MoveElement.Builder, AuthorClient.MoveElementOrBuilder> 
+          PlayerClient.MoveElement, PlayerClient.MoveElement.Builder, PlayerClient.MoveElementOrBuilder> 
           getMoveElementFieldBuilder() {
         if (moveElementBuilder_ == null) {
           moveElementBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              AuthorClient.MoveElement, AuthorClient.MoveElement.Builder, AuthorClient.MoveElementOrBuilder>(
+              PlayerClient.MoveElement, PlayerClient.MoveElement.Builder, PlayerClient.MoveElementOrBuilder>(
                   getMoveElement(),
                   getParentForChildren(),
                   isClean());
@@ -4467,17 +4467,135 @@ public final class AuthorClient {
         return moveElementBuilder_;
       }
 
+      private PlayerClient.DeleteElement deleteElement_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerClient.DeleteElement, PlayerClient.DeleteElement.Builder, PlayerClient.DeleteElementOrBuilder> deleteElementBuilder_;
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public boolean hasDeleteElement() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public PlayerClient.DeleteElement getDeleteElement() {
+        if (deleteElementBuilder_ == null) {
+          return deleteElement_ == null ? PlayerClient.DeleteElement.getDefaultInstance() : deleteElement_;
+        } else {
+          return deleteElementBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public Builder setDeleteElement(PlayerClient.DeleteElement value) {
+        if (deleteElementBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          deleteElement_ = value;
+          onChanged();
+        } else {
+          deleteElementBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public Builder setDeleteElement(
+          PlayerClient.DeleteElement.Builder builderForValue) {
+        if (deleteElementBuilder_ == null) {
+          deleteElement_ = builderForValue.build();
+          onChanged();
+        } else {
+          deleteElementBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public Builder mergeDeleteElement(PlayerClient.DeleteElement value) {
+        if (deleteElementBuilder_ == null) {
+          if (((bitField0_ & 0x00001000) == 0x00001000) &&
+              deleteElement_ != null &&
+              deleteElement_ != PlayerClient.DeleteElement.getDefaultInstance()) {
+            deleteElement_ =
+              PlayerClient.DeleteElement.newBuilder(deleteElement_).mergeFrom(value).buildPartial();
+          } else {
+            deleteElement_ = value;
+          }
+          onChanged();
+        } else {
+          deleteElementBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00001000;
+        return this;
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public Builder clearDeleteElement() {
+        if (deleteElementBuilder_ == null) {
+          deleteElement_ = null;
+          onChanged();
+        } else {
+          deleteElementBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00001000);
+        return this;
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public PlayerClient.DeleteElement.Builder getDeleteElementBuilder() {
+        bitField0_ |= 0x00001000;
+        onChanged();
+        return getDeleteElementFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      public PlayerClient.DeleteElementOrBuilder getDeleteElementOrBuilder() {
+        if (deleteElementBuilder_ != null) {
+          return deleteElementBuilder_.getMessageOrBuilder();
+        } else {
+          return deleteElement_ == null ?
+              PlayerClient.DeleteElement.getDefaultInstance() : deleteElement_;
+        }
+      }
+      /**
+       * <code>optional .DeleteElement deleteElement = 13;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerClient.DeleteElement, PlayerClient.DeleteElement.Builder, PlayerClient.DeleteElementOrBuilder> 
+          getDeleteElementFieldBuilder() {
+        if (deleteElementBuilder_ == null) {
+          deleteElementBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerClient.DeleteElement, PlayerClient.DeleteElement.Builder, PlayerClient.DeleteElementOrBuilder>(
+                  getDeleteElement(),
+                  getParentForChildren(),
+                  isClean());
+          deleteElement_ = null;
+        }
+        return deleteElementBuilder_;
+      }
+
       private AuthorClient.UpdateElementProperties updateElementProperties_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.UpdateElementProperties, AuthorClient.UpdateElementProperties.Builder, AuthorClient.UpdateElementPropertiesOrBuilder> updateElementPropertiesBuilder_;
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public boolean hasUpdateElementProperties() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
+        return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public AuthorClient.UpdateElementProperties getUpdateElementProperties() {
         if (updateElementPropertiesBuilder_ == null) {
@@ -4487,7 +4605,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public Builder setUpdateElementProperties(AuthorClient.UpdateElementProperties value) {
         if (updateElementPropertiesBuilder_ == null) {
@@ -4499,11 +4617,11 @@ public final class AuthorClient {
         } else {
           updateElementPropertiesBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public Builder setUpdateElementProperties(
           AuthorClient.UpdateElementProperties.Builder builderForValue) {
@@ -4513,15 +4631,15 @@ public final class AuthorClient {
         } else {
           updateElementPropertiesBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public Builder mergeUpdateElementProperties(AuthorClient.UpdateElementProperties value) {
         if (updateElementPropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00001000) == 0x00001000) &&
+          if (((bitField0_ & 0x00002000) == 0x00002000) &&
               updateElementProperties_ != null &&
               updateElementProperties_ != AuthorClient.UpdateElementProperties.getDefaultInstance()) {
             updateElementProperties_ =
@@ -4533,11 +4651,11 @@ public final class AuthorClient {
         } else {
           updateElementPropertiesBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         return this;
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public Builder clearUpdateElementProperties() {
         if (updateElementPropertiesBuilder_ == null) {
@@ -4546,19 +4664,19 @@ public final class AuthorClient {
         } else {
           updateElementPropertiesBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         return this;
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public AuthorClient.UpdateElementProperties.Builder getUpdateElementPropertiesBuilder() {
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         onChanged();
         return getUpdateElementPropertiesFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       public AuthorClient.UpdateElementPropertiesOrBuilder getUpdateElementPropertiesOrBuilder() {
         if (updateElementPropertiesBuilder_ != null) {
@@ -4569,7 +4687,7 @@ public final class AuthorClient {
         }
       }
       /**
-       * <code>optional .UpdateElementProperties updateElementProperties = 13;</code>
+       * <code>optional .UpdateElementProperties updateElementProperties = 14;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           AuthorClient.UpdateElementProperties, AuthorClient.UpdateElementProperties.Builder, AuthorClient.UpdateElementPropertiesOrBuilder> 
@@ -4583,124 +4701,6 @@ public final class AuthorClient {
           updateElementProperties_ = null;
         }
         return updateElementPropertiesBuilder_;
-      }
-
-      private AuthorClient.DeleteElement deleteElement_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          AuthorClient.DeleteElement, AuthorClient.DeleteElement.Builder, AuthorClient.DeleteElementOrBuilder> deleteElementBuilder_;
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      public boolean hasDeleteElement() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
-      }
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      public AuthorClient.DeleteElement getDeleteElement() {
-        if (deleteElementBuilder_ == null) {
-          return deleteElement_ == null ? AuthorClient.DeleteElement.getDefaultInstance() : deleteElement_;
-        } else {
-          return deleteElementBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      public Builder setDeleteElement(AuthorClient.DeleteElement value) {
-        if (deleteElementBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          deleteElement_ = value;
-          onChanged();
-        } else {
-          deleteElementBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00002000;
-        return this;
-      }
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      public Builder setDeleteElement(
-          AuthorClient.DeleteElement.Builder builderForValue) {
-        if (deleteElementBuilder_ == null) {
-          deleteElement_ = builderForValue.build();
-          onChanged();
-        } else {
-          deleteElementBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00002000;
-        return this;
-      }
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      public Builder mergeDeleteElement(AuthorClient.DeleteElement value) {
-        if (deleteElementBuilder_ == null) {
-          if (((bitField0_ & 0x00002000) == 0x00002000) &&
-              deleteElement_ != null &&
-              deleteElement_ != AuthorClient.DeleteElement.getDefaultInstance()) {
-            deleteElement_ =
-              AuthorClient.DeleteElement.newBuilder(deleteElement_).mergeFrom(value).buildPartial();
-          } else {
-            deleteElement_ = value;
-          }
-          onChanged();
-        } else {
-          deleteElementBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00002000;
-        return this;
-      }
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      public Builder clearDeleteElement() {
-        if (deleteElementBuilder_ == null) {
-          deleteElement_ = null;
-          onChanged();
-        } else {
-          deleteElementBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00002000);
-        return this;
-      }
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      public AuthorClient.DeleteElement.Builder getDeleteElementBuilder() {
-        bitField0_ |= 0x00002000;
-        onChanged();
-        return getDeleteElementFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      public AuthorClient.DeleteElementOrBuilder getDeleteElementOrBuilder() {
-        if (deleteElementBuilder_ != null) {
-          return deleteElementBuilder_.getMessageOrBuilder();
-        } else {
-          return deleteElement_ == null ?
-              AuthorClient.DeleteElement.getDefaultInstance() : deleteElement_;
-        }
-      }
-      /**
-       * <code>optional .DeleteElement deleteElement = 14;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          AuthorClient.DeleteElement, AuthorClient.DeleteElement.Builder, AuthorClient.DeleteElementOrBuilder> 
-          getDeleteElementFieldBuilder() {
-        if (deleteElementBuilder_ == null) {
-          deleteElementBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              AuthorClient.DeleteElement, AuthorClient.DeleteElement.Builder, AuthorClient.DeleteElementOrBuilder>(
-                  getDeleteElement(),
-                  getParentForChildren(),
-                  isClean());
-          deleteElement_ = null;
-        }
-        return deleteElementBuilder_;
       }
 
       private AuthorClient.GetAllDefinedElementUpgrades getAllDefinedElementUpgrades_ = null;
@@ -13658,673 +13658,6 @@ public final class AuthorClient {
 
   }
 
-  public interface MoveElementOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:MoveElement)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required int32 elementId = 1;</code>
-     */
-    boolean hasElementId();
-    /**
-     * <code>required int32 elementId = 1;</code>
-     */
-    int getElementId();
-
-    /**
-     * <code>required double xCoord = 2;</code>
-     */
-    boolean hasXCoord();
-    /**
-     * <code>required double xCoord = 2;</code>
-     */
-    double getXCoord();
-
-    /**
-     * <code>required double yCoord = 3;</code>
-     */
-    boolean hasYCoord();
-    /**
-     * <code>required double yCoord = 3;</code>
-     */
-    double getYCoord();
-  }
-  /**
-   * Protobuf type {@code MoveElement}
-   */
-  public  static final class MoveElement extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:MoveElement)
-      MoveElementOrBuilder {
-    // Use MoveElement.newBuilder() to construct.
-    private MoveElement(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private MoveElement() {
-      elementId_ = 0;
-      xCoord_ = 0D;
-      yCoord_ = 0D;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private MoveElement(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              elementId_ = input.readInt32();
-              break;
-            }
-            case 17: {
-              bitField0_ |= 0x00000002;
-              xCoord_ = input.readDouble();
-              break;
-            }
-            case 25: {
-              bitField0_ |= 0x00000004;
-              yCoord_ = input.readDouble();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return AuthorClient.internal_static_MoveElement_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return AuthorClient.internal_static_MoveElement_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              AuthorClient.MoveElement.class, AuthorClient.MoveElement.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int ELEMENTID_FIELD_NUMBER = 1;
-    private int elementId_;
-    /**
-     * <code>required int32 elementId = 1;</code>
-     */
-    public boolean hasElementId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required int32 elementId = 1;</code>
-     */
-    public int getElementId() {
-      return elementId_;
-    }
-
-    public static final int XCOORD_FIELD_NUMBER = 2;
-    private double xCoord_;
-    /**
-     * <code>required double xCoord = 2;</code>
-     */
-    public boolean hasXCoord() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required double xCoord = 2;</code>
-     */
-    public double getXCoord() {
-      return xCoord_;
-    }
-
-    public static final int YCOORD_FIELD_NUMBER = 3;
-    private double yCoord_;
-    /**
-     * <code>required double yCoord = 3;</code>
-     */
-    public boolean hasYCoord() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required double yCoord = 3;</code>
-     */
-    public double getYCoord() {
-      return yCoord_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasElementId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasXCoord()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasYCoord()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, elementId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeDouble(2, xCoord_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeDouble(3, yCoord_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, elementId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(2, xCoord_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(3, yCoord_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof AuthorClient.MoveElement)) {
-        return super.equals(obj);
-      }
-      AuthorClient.MoveElement other = (AuthorClient.MoveElement) obj;
-
-      boolean result = true;
-      result = result && (hasElementId() == other.hasElementId());
-      if (hasElementId()) {
-        result = result && (getElementId()
-            == other.getElementId());
-      }
-      result = result && (hasXCoord() == other.hasXCoord());
-      if (hasXCoord()) {
-        result = result && (
-            java.lang.Double.doubleToLongBits(getXCoord())
-            == java.lang.Double.doubleToLongBits(
-                other.getXCoord()));
-      }
-      result = result && (hasYCoord() == other.hasYCoord());
-      if (hasYCoord()) {
-        result = result && (
-            java.lang.Double.doubleToLongBits(getYCoord())
-            == java.lang.Double.doubleToLongBits(
-                other.getYCoord()));
-      }
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasElementId()) {
-        hash = (37 * hash) + ELEMENTID_FIELD_NUMBER;
-        hash = (53 * hash) + getElementId();
-      }
-      if (hasXCoord()) {
-        hash = (37 * hash) + XCOORD_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getXCoord()));
-      }
-      if (hasYCoord()) {
-        hash = (37 * hash) + YCOORD_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getYCoord()));
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static AuthorClient.MoveElement parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static AuthorClient.MoveElement parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static AuthorClient.MoveElement parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static AuthorClient.MoveElement parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static AuthorClient.MoveElement parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static AuthorClient.MoveElement parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static AuthorClient.MoveElement parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static AuthorClient.MoveElement parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static AuthorClient.MoveElement parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static AuthorClient.MoveElement parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(AuthorClient.MoveElement prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code MoveElement}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:MoveElement)
-        AuthorClient.MoveElementOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return AuthorClient.internal_static_MoveElement_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return AuthorClient.internal_static_MoveElement_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                AuthorClient.MoveElement.class, AuthorClient.MoveElement.Builder.class);
-      }
-
-      // Construct using AuthorClient.MoveElement.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        elementId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        xCoord_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        yCoord_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return AuthorClient.internal_static_MoveElement_descriptor;
-      }
-
-      public AuthorClient.MoveElement getDefaultInstanceForType() {
-        return AuthorClient.MoveElement.getDefaultInstance();
-      }
-
-      public AuthorClient.MoveElement build() {
-        AuthorClient.MoveElement result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public AuthorClient.MoveElement buildPartial() {
-        AuthorClient.MoveElement result = new AuthorClient.MoveElement(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.elementId_ = elementId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.xCoord_ = xCoord_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.yCoord_ = yCoord_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof AuthorClient.MoveElement) {
-          return mergeFrom((AuthorClient.MoveElement)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(AuthorClient.MoveElement other) {
-        if (other == AuthorClient.MoveElement.getDefaultInstance()) return this;
-        if (other.hasElementId()) {
-          setElementId(other.getElementId());
-        }
-        if (other.hasXCoord()) {
-          setXCoord(other.getXCoord());
-        }
-        if (other.hasYCoord()) {
-          setYCoord(other.getYCoord());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasElementId()) {
-          return false;
-        }
-        if (!hasXCoord()) {
-          return false;
-        }
-        if (!hasYCoord()) {
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        AuthorClient.MoveElement parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (AuthorClient.MoveElement) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private int elementId_ ;
-      /**
-       * <code>required int32 elementId = 1;</code>
-       */
-      public boolean hasElementId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required int32 elementId = 1;</code>
-       */
-      public int getElementId() {
-        return elementId_;
-      }
-      /**
-       * <code>required int32 elementId = 1;</code>
-       */
-      public Builder setElementId(int value) {
-        bitField0_ |= 0x00000001;
-        elementId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 elementId = 1;</code>
-       */
-      public Builder clearElementId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        elementId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private double xCoord_ ;
-      /**
-       * <code>required double xCoord = 2;</code>
-       */
-      public boolean hasXCoord() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required double xCoord = 2;</code>
-       */
-      public double getXCoord() {
-        return xCoord_;
-      }
-      /**
-       * <code>required double xCoord = 2;</code>
-       */
-      public Builder setXCoord(double value) {
-        bitField0_ |= 0x00000002;
-        xCoord_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required double xCoord = 2;</code>
-       */
-      public Builder clearXCoord() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        xCoord_ = 0D;
-        onChanged();
-        return this;
-      }
-
-      private double yCoord_ ;
-      /**
-       * <code>required double yCoord = 3;</code>
-       */
-      public boolean hasYCoord() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required double yCoord = 3;</code>
-       */
-      public double getYCoord() {
-        return yCoord_;
-      }
-      /**
-       * <code>required double yCoord = 3;</code>
-       */
-      public Builder setYCoord(double value) {
-        bitField0_ |= 0x00000004;
-        yCoord_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required double yCoord = 3;</code>
-       */
-      public Builder clearYCoord() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        yCoord_ = 0D;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:MoveElement)
-    }
-
-    // @@protoc_insertion_point(class_scope:MoveElement)
-    private static final AuthorClient.MoveElement DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new AuthorClient.MoveElement();
-    }
-
-    public static AuthorClient.MoveElement getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<MoveElement>
-        PARSER = new com.google.protobuf.AbstractParser<MoveElement>() {
-      public MoveElement parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new MoveElement(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<MoveElement> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MoveElement> getParserForType() {
-      return PARSER;
-    }
-
-    public AuthorClient.MoveElement getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface UpdateElementPropertiesOrBuilder extends
       // @@protoc_insertion_point(interface_extends:UpdateElementProperties)
       com.google.protobuf.MessageOrBuilder {
@@ -15171,479 +14504,6 @@ public final class AuthorClient {
     }
 
     public AuthorClient.UpdateElementProperties getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface DeleteElementOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:DeleteElement)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required int32 elementId = 1;</code>
-     */
-    boolean hasElementId();
-    /**
-     * <code>required int32 elementId = 1;</code>
-     */
-    int getElementId();
-  }
-  /**
-   * Protobuf type {@code DeleteElement}
-   */
-  public  static final class DeleteElement extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:DeleteElement)
-      DeleteElementOrBuilder {
-    // Use DeleteElement.newBuilder() to construct.
-    private DeleteElement(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private DeleteElement() {
-      elementId_ = 0;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private DeleteElement(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              elementId_ = input.readInt32();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return AuthorClient.internal_static_DeleteElement_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return AuthorClient.internal_static_DeleteElement_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              AuthorClient.DeleteElement.class, AuthorClient.DeleteElement.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int ELEMENTID_FIELD_NUMBER = 1;
-    private int elementId_;
-    /**
-     * <code>required int32 elementId = 1;</code>
-     */
-    public boolean hasElementId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required int32 elementId = 1;</code>
-     */
-    public int getElementId() {
-      return elementId_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasElementId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, elementId_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, elementId_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof AuthorClient.DeleteElement)) {
-        return super.equals(obj);
-      }
-      AuthorClient.DeleteElement other = (AuthorClient.DeleteElement) obj;
-
-      boolean result = true;
-      result = result && (hasElementId() == other.hasElementId());
-      if (hasElementId()) {
-        result = result && (getElementId()
-            == other.getElementId());
-      }
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasElementId()) {
-        hash = (37 * hash) + ELEMENTID_FIELD_NUMBER;
-        hash = (53 * hash) + getElementId();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static AuthorClient.DeleteElement parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static AuthorClient.DeleteElement parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static AuthorClient.DeleteElement parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static AuthorClient.DeleteElement parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static AuthorClient.DeleteElement parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static AuthorClient.DeleteElement parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static AuthorClient.DeleteElement parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static AuthorClient.DeleteElement parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static AuthorClient.DeleteElement parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static AuthorClient.DeleteElement parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(AuthorClient.DeleteElement prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code DeleteElement}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:DeleteElement)
-        AuthorClient.DeleteElementOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return AuthorClient.internal_static_DeleteElement_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return AuthorClient.internal_static_DeleteElement_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                AuthorClient.DeleteElement.class, AuthorClient.DeleteElement.Builder.class);
-      }
-
-      // Construct using AuthorClient.DeleteElement.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        elementId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return AuthorClient.internal_static_DeleteElement_descriptor;
-      }
-
-      public AuthorClient.DeleteElement getDefaultInstanceForType() {
-        return AuthorClient.DeleteElement.getDefaultInstance();
-      }
-
-      public AuthorClient.DeleteElement build() {
-        AuthorClient.DeleteElement result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public AuthorClient.DeleteElement buildPartial() {
-        AuthorClient.DeleteElement result = new AuthorClient.DeleteElement(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.elementId_ = elementId_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof AuthorClient.DeleteElement) {
-          return mergeFrom((AuthorClient.DeleteElement)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(AuthorClient.DeleteElement other) {
-        if (other == AuthorClient.DeleteElement.getDefaultInstance()) return this;
-        if (other.hasElementId()) {
-          setElementId(other.getElementId());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasElementId()) {
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        AuthorClient.DeleteElement parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (AuthorClient.DeleteElement) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private int elementId_ ;
-      /**
-       * <code>required int32 elementId = 1;</code>
-       */
-      public boolean hasElementId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required int32 elementId = 1;</code>
-       */
-      public int getElementId() {
-        return elementId_;
-      }
-      /**
-       * <code>required int32 elementId = 1;</code>
-       */
-      public Builder setElementId(int value) {
-        bitField0_ |= 0x00000001;
-        elementId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 elementId = 1;</code>
-       */
-      public Builder clearElementId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        elementId_ = 0;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:DeleteElement)
-    }
-
-    // @@protoc_insertion_point(class_scope:DeleteElement)
-    private static final AuthorClient.DeleteElement DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new AuthorClient.DeleteElement();
-    }
-
-    public static AuthorClient.DeleteElement getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<DeleteElement>
-        PARSER = new com.google.protobuf.AbstractParser<DeleteElement>() {
-      public DeleteElement parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new DeleteElement(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<DeleteElement> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<DeleteElement> getParserForType() {
-      return PARSER;
-    }
-
-    public AuthorClient.DeleteElement getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -25990,20 +24850,10 @@ public final class AuthorClient {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_GetCurrentLevel_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_MoveElement_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_MoveElement_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_UpdateElementProperties_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_UpdateElementProperties_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_DeleteElement_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_DeleteElement_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetAllDefinedElementUpgrades_descriptor;
   private static final 
@@ -26103,87 +24953,85 @@ public final class AuthorClient {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022AuthorClient.proto\"\234\014\n\026AuthoringClient" +
-      "Message\022\037\n\nexportGame\030\001 \001(\0132\013.ExportGame" +
-      "\022\033\n\010setLevel\030\002 \001(\0132\t.SetLevel\022!\n\013deleteL" +
-      "evel\030\003 \001(\0132\014.DeleteLevel\022A\n\024getElementBa" +
-      "seConfig\030\004 \001(\0132#.GetElementBaseConfigura" +
-      "tionOptions\022K\n\031getAuxiliaryElementConfig" +
-      "\030\005 \001(\0132(.GetAuxiliaryElementConfiguratio" +
-      "nOptions\022%\n\rdefineElement\030\006 \001(\0132\016.Define" +
-      "Element\0223\n\024defineElementUpgrade\030\007 \001(\0132\025." +
-      "DefineElementUpgrade\0229\n\027updateElementDef",
-      "inition\030\010 \001(\0132\030.UpdateElementDefinition\022" +
-      "9\n\027deleteElementDefinition\030\t \001(\0132\030.Delet" +
-      "eElementDefinition\0225\n\025addElementToInvent" +
-      "ory\030\n \001(\0132\026.AddElementToInventory\022)\n\017get" +
-      "CurrentLevel\030\013 \001(\0132\020.GetCurrentLevel\022!\n\013" +
-      "moveElement\030\014 \001(\0132\014.MoveElement\0229\n\027updat" +
-      "eElementProperties\030\r \001(\0132\030.UpdateElement" +
-      "Properties\022%\n\rdeleteElement\030\016 \001(\0132\016.Dele" +
-      "teElement\022C\n\034getAllDefinedElementUpgrade" +
-      "s\030\017 \001(\0132\035.GetAllDefinedElementUpgrades\0225",
-      "\n\025getResourceEndowments\030\020 \001(\0132\026.GetResou" +
-      "rceEndowments\022!\n\013setGameName\030\021 \001(\0132\014.Set" +
-      "GameName\022/\n\022setGameDescription\030\022 \001(\0132\023.S" +
-      "etGameDescription\0221\n\023setVictoryCondition" +
-      "\030\023 \001(\0132\024.SetVictoryCondition\022/\n\022setDefea" +
-      "tCondition\030\024 \001(\0132\023.SetDefeatCondition\022-\n" +
-      "\021setStatusProperty\030\025 \001(\0132\022.SetStatusProp" +
-      "erty\0221\n\025setResourceEndowments\030\026 \003(\0132\022.Re" +
-      "sourceEndowment\022!\n\013setUnitCost\030\027 \001(\0132\014.S" +
-      "etUnitCost\0223\n\024createWaveProperties\030\030 \001(\013",
-      "2\025.CreateWaveProperties\022/\n\022editWavePrope" +
-      "rties\030\031 \001(\0132\023.EditWaveProperties\022-\n\021getW" +
-      "aveProperties\030\032 \001(\0132\022.GetWaveProperties\022" +
-      "C\n\034getPossibleVictoryConditions\030\033 \001(\0132\035." +
-      "GetPossibleVictoryConditions\022A\n\033getPossi" +
-      "bleDefeatConditions\030\034 \001(\0132\034.GetPossibleD" +
-      "efeatConditions\022A\n\033getCurrentVictoryCond" +
-      "itions\030\035 \001(\0132\034.GetCurrentVictoryConditio" +
-      "ns\022?\n\032getCurrentDefeatConditions\030\036 \001(\0132\033" +
-      ".GetCurrentDefeatConditions\"\014\n\nExportGam",
-      "e\"\031\n\010SetLevel\022\r\n\005level\030\001 \002(\005\"\034\n\013DeleteLe" +
-      "vel\022\r\n\005level\030\001 \002(\005\"$\n\"GetElementBaseConf" +
-      "igurationOptions\"V\n\'GetAuxiliaryElementC" +
-      "onfigurationOptions\022+\n\030baseConfiguration" +
-      "Choices\030\001 \003(\0132\t.Property\"C\n\rDefineElemen" +
-      "t\022\023\n\013elementName\030\001 \002(\t\022\035\n\nproperties\030\002 \003" +
-      "(\0132\t.Property\"`\n\024DefineElementUpgrade\022\023\n" +
-      "\013elementName\030\001 \002(\t\022\024\n\014upgradeLevel\030\002 \002(\005" +
-      "\022\035\n\nproperties\030\003 \003(\0132\t.Property\"b\n\027Updat" +
-      "eElementDefinition\022\023\n\013elementName\030\001 \002(\t\022",
-      "\035\n\nproperties\030\002 \003(\0132\t.Property\022\023\n\013retroa" +
-      "ctive\030\003 \002(\010\".\n\027DeleteElementDefinition\022\023" +
-      "\n\013elementName\030\001 \002(\t\",\n\025AddElementToInven" +
-      "tory\022\023\n\013elementName\030\001 \002(\t\"\021\n\017GetCurrentL" +
-      "evel\"@\n\013MoveElement\022\021\n\telementId\030\001 \002(\005\022\016" +
-      "\n\006xCoord\030\002 \002(\001\022\016\n\006yCoord\030\003 \002(\001\"K\n\027Update" +
-      "ElementProperties\022\021\n\telementId\030\001 \002(\005\022\035\n\n" +
-      "properties\030\002 \003(\0132\t.Property\"\"\n\rDeleteEle" +
-      "ment\022\021\n\telementId\030\001 \002(\005\"\036\n\034GetAllDefined" +
-      "ElementUpgrades\"\027\n\025GetResourceEndowments",
-      "\"\037\n\013SetGameName\022\020\n\010gameName\030\001 \002(\t\"-\n\022Set" +
-      "GameDescription\022\027\n\017gameDescription\030\001 \002(\t" +
-      "\"2\n\023SetVictoryCondition\022\033\n\023conditionIden" +
-      "tifier\030\001 \002(\t\"1\n\022SetDefeatCondition\022\033\n\023co" +
-      "nditionIdentifier\030\001 \002(\t\"@\n\021SetStatusProp" +
-      "erty\022\024\n\014propertyName\030\001 \002(\t\022\025\n\rpropertyVa" +
-      "lue\030\002 \002(\001\"1\n\021ResourceEndowment\022\014\n\004name\030\001" +
-      " \002(\t\022\016\n\006amount\030\002 \002(\001\"L\n\013SetUnitCost\022\023\n\013e" +
-      "lementName\030\001 \002(\t\022(\n\014elementCosts\030\002 \003(\0132\022" +
-      ".ResourceEndowment\"u\n\024CreateWaveProperti",
-      "es\022!\n\016waveProperties\030\001 \003(\0132\t.Property\022\033\n" +
-      "\023elementNamesToSpawn\030\002 \003(\t\022\035\n\rspawningPo" +
-      "int\030\003 \002(\0132\006.Point\"T\n\022EditWaveProperties\022" +
-      "\017\n\007waveNum\030\001 \002(\005\022-\n\016editProperties\030\002 \002(\013" +
-      "2\025.CreateWaveProperties\"$\n\021GetWaveProper" +
-      "ties\022\017\n\007waveNum\030\001 \002(\005\"\036\n\034GetPossibleVict" +
-      "oryConditions\"\035\n\033GetPossibleDefeatCondit" +
-      "ions\"\035\n\033GetCurrentVictoryConditions\"\034\n\032G" +
-      "etCurrentDefeatConditions\"\'\n\010Property\022\014\n" +
-      "\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"\035\n\005Point\022\t\n\001x",
-      "\030\001 \002(\001\022\t\n\001y\030\002 \002(\001"
+      "\n\022AuthorClient.proto\032\022PlayerClient.proto" +
+      "\"\234\014\n\026AuthoringClientMessage\022\037\n\nexportGam" +
+      "e\030\001 \001(\0132\013.ExportGame\022\033\n\010setLevel\030\002 \001(\0132\t" +
+      ".SetLevel\022!\n\013deleteLevel\030\003 \001(\0132\014.DeleteL" +
+      "evel\022A\n\024getElementBaseConfig\030\004 \001(\0132#.Get" +
+      "ElementBaseConfigurationOptions\022K\n\031getAu" +
+      "xiliaryElementConfig\030\005 \001(\0132(.GetAuxiliar" +
+      "yElementConfigurationOptions\022%\n\rdefineEl" +
+      "ement\030\006 \001(\0132\016.DefineElement\0223\n\024defineEle" +
+      "mentUpgrade\030\007 \001(\0132\025.DefineElementUpgrade",
+      "\0229\n\027updateElementDefinition\030\010 \001(\0132\030.Upda" +
+      "teElementDefinition\0229\n\027deleteElementDefi" +
+      "nition\030\t \001(\0132\030.DeleteElementDefinition\0225" +
+      "\n\025addElementToInventory\030\n \001(\0132\026.AddEleme" +
+      "ntToInventory\022)\n\017getCurrentLevel\030\013 \001(\0132\020" +
+      ".GetCurrentLevel\022!\n\013moveElement\030\014 \001(\0132\014." +
+      "MoveElement\022%\n\rdeleteElement\030\r \001(\0132\016.Del" +
+      "eteElement\0229\n\027updateElementProperties\030\016 " +
+      "\001(\0132\030.UpdateElementProperties\022C\n\034getAllD" +
+      "efinedElementUpgrades\030\017 \001(\0132\035.GetAllDefi",
+      "nedElementUpgrades\0225\n\025getResourceEndowme" +
+      "nts\030\020 \001(\0132\026.GetResourceEndowments\022!\n\013set" +
+      "GameName\030\021 \001(\0132\014.SetGameName\022/\n\022setGameD" +
+      "escription\030\022 \001(\0132\023.SetGameDescription\0221\n" +
+      "\023setVictoryCondition\030\023 \001(\0132\024.SetVictoryC" +
+      "ondition\022/\n\022setDefeatCondition\030\024 \001(\0132\023.S" +
+      "etDefeatCondition\022-\n\021setStatusProperty\030\025" +
+      " \001(\0132\022.SetStatusProperty\0221\n\025setResourceE" +
+      "ndowments\030\026 \003(\0132\022.ResourceEndowment\022!\n\013s" +
+      "etUnitCost\030\027 \001(\0132\014.SetUnitCost\0223\n\024create",
+      "WaveProperties\030\030 \001(\0132\025.CreateWavePropert" +
+      "ies\022/\n\022editWaveProperties\030\031 \001(\0132\023.EditWa" +
+      "veProperties\022-\n\021getWaveProperties\030\032 \001(\0132" +
+      "\022.GetWaveProperties\022C\n\034getPossibleVictor" +
+      "yConditions\030\033 \001(\0132\035.GetPossibleVictoryCo" +
+      "nditions\022A\n\033getPossibleDefeatConditions\030" +
+      "\034 \001(\0132\034.GetPossibleDefeatConditions\022A\n\033g" +
+      "etCurrentVictoryConditions\030\035 \001(\0132\034.GetCu" +
+      "rrentVictoryConditions\022?\n\032getCurrentDefe" +
+      "atConditions\030\036 \001(\0132\033.GetCurrentDefeatCon",
+      "ditions\"\014\n\nExportGame\"\031\n\010SetLevel\022\r\n\005lev" +
+      "el\030\001 \002(\005\"\034\n\013DeleteLevel\022\r\n\005level\030\001 \002(\005\"$" +
+      "\n\"GetElementBaseConfigurationOptions\"V\n\'" +
+      "GetAuxiliaryElementConfigurationOptions\022" +
+      "+\n\030baseConfigurationChoices\030\001 \003(\0132\t.Prop" +
+      "erty\"C\n\rDefineElement\022\023\n\013elementName\030\001 \002" +
+      "(\t\022\035\n\nproperties\030\002 \003(\0132\t.Property\"`\n\024Def" +
+      "ineElementUpgrade\022\023\n\013elementName\030\001 \002(\t\022\024" +
+      "\n\014upgradeLevel\030\002 \002(\005\022\035\n\nproperties\030\003 \003(\013" +
+      "2\t.Property\"b\n\027UpdateElementDefinition\022\023",
+      "\n\013elementName\030\001 \002(\t\022\035\n\nproperties\030\002 \003(\0132" +
+      "\t.Property\022\023\n\013retroactive\030\003 \002(\010\".\n\027Delet" +
+      "eElementDefinition\022\023\n\013elementName\030\001 \002(\t\"" +
+      ",\n\025AddElementToInventory\022\023\n\013elementName\030" +
+      "\001 \002(\t\"\021\n\017GetCurrentLevel\"K\n\027UpdateElemen" +
+      "tProperties\022\021\n\telementId\030\001 \002(\005\022\035\n\nproper" +
+      "ties\030\002 \003(\0132\t.Property\"\036\n\034GetAllDefinedEl" +
+      "ementUpgrades\"\027\n\025GetResourceEndowments\"\037" +
+      "\n\013SetGameName\022\020\n\010gameName\030\001 \002(\t\"-\n\022SetGa" +
+      "meDescription\022\027\n\017gameDescription\030\001 \002(\t\"2",
+      "\n\023SetVictoryCondition\022\033\n\023conditionIdenti" +
+      "fier\030\001 \002(\t\"1\n\022SetDefeatCondition\022\033\n\023cond" +
+      "itionIdentifier\030\001 \002(\t\"@\n\021SetStatusProper" +
+      "ty\022\024\n\014propertyName\030\001 \002(\t\022\025\n\rpropertyValu" +
+      "e\030\002 \002(\001\"1\n\021ResourceEndowment\022\014\n\004name\030\001 \002" +
+      "(\t\022\016\n\006amount\030\002 \002(\001\"L\n\013SetUnitCost\022\023\n\013ele" +
+      "mentName\030\001 \002(\t\022(\n\014elementCosts\030\002 \003(\0132\022.R" +
+      "esourceEndowment\"u\n\024CreateWaveProperties" +
+      "\022!\n\016waveProperties\030\001 \003(\0132\t.Property\022\033\n\023e" +
+      "lementNamesToSpawn\030\002 \003(\t\022\035\n\rspawningPoin",
+      "t\030\003 \002(\0132\006.Point\"T\n\022EditWaveProperties\022\017\n" +
+      "\007waveNum\030\001 \002(\005\022-\n\016editProperties\030\002 \002(\0132\025" +
+      ".CreateWaveProperties\"$\n\021GetWaveProperti" +
+      "es\022\017\n\007waveNum\030\001 \002(\005\"\036\n\034GetPossibleVictor" +
+      "yConditions\"\035\n\033GetPossibleDefeatConditio" +
+      "ns\"\035\n\033GetCurrentVictoryConditions\"\034\n\032Get" +
+      "CurrentDefeatConditions\"\'\n\010Property\022\014\n\004n" +
+      "ame\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"\035\n\005Point\022\t\n\001x\030\001" +
+      " \002(\001\022\t\n\001y\030\002 \002(\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -26196,13 +25044,14 @@ public final class AuthorClient {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          PlayerClient.getDescriptor(),
         }, assigner);
     internal_static_AuthoringClientMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_AuthoringClientMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuthoringClientMessage_descriptor,
-        new java.lang.String[] { "ExportGame", "SetLevel", "DeleteLevel", "GetElementBaseConfig", "GetAuxiliaryElementConfig", "DefineElement", "DefineElementUpgrade", "UpdateElementDefinition", "DeleteElementDefinition", "AddElementToInventory", "GetCurrentLevel", "MoveElement", "UpdateElementProperties", "DeleteElement", "GetAllDefinedElementUpgrades", "GetResourceEndowments", "SetGameName", "SetGameDescription", "SetVictoryCondition", "SetDefeatCondition", "SetStatusProperty", "SetResourceEndowments", "SetUnitCost", "CreateWaveProperties", "EditWaveProperties", "GetWaveProperties", "GetPossibleVictoryConditions", "GetPossibleDefeatConditions", "GetCurrentVictoryConditions", "GetCurrentDefeatConditions", });
+        new java.lang.String[] { "ExportGame", "SetLevel", "DeleteLevel", "GetElementBaseConfig", "GetAuxiliaryElementConfig", "DefineElement", "DefineElementUpgrade", "UpdateElementDefinition", "DeleteElementDefinition", "AddElementToInventory", "GetCurrentLevel", "MoveElement", "DeleteElement", "UpdateElementProperties", "GetAllDefinedElementUpgrades", "GetResourceEndowments", "SetGameName", "SetGameDescription", "SetVictoryCondition", "SetDefeatCondition", "SetStatusProperty", "SetResourceEndowments", "SetUnitCost", "CreateWaveProperties", "EditWaveProperties", "GetWaveProperties", "GetPossibleVictoryConditions", "GetPossibleDefeatConditions", "GetCurrentVictoryConditions", "GetCurrentDefeatConditions", });
     internal_static_ExportGame_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ExportGame_fieldAccessorTable = new
@@ -26269,132 +25118,121 @@ public final class AuthorClient {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetCurrentLevel_descriptor,
         new java.lang.String[] { });
-    internal_static_MoveElement_descriptor =
-      getDescriptor().getMessageTypes().get(12);
-    internal_static_MoveElement_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_MoveElement_descriptor,
-        new java.lang.String[] { "ElementId", "XCoord", "YCoord", });
     internal_static_UpdateElementProperties_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_UpdateElementProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UpdateElementProperties_descriptor,
         new java.lang.String[] { "ElementId", "Properties", });
-    internal_static_DeleteElement_descriptor =
-      getDescriptor().getMessageTypes().get(14);
-    internal_static_DeleteElement_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_DeleteElement_descriptor,
-        new java.lang.String[] { "ElementId", });
     internal_static_GetAllDefinedElementUpgrades_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_GetAllDefinedElementUpgrades_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetAllDefinedElementUpgrades_descriptor,
         new java.lang.String[] { });
     internal_static_GetResourceEndowments_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_GetResourceEndowments_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetResourceEndowments_descriptor,
         new java.lang.String[] { });
     internal_static_SetGameName_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_SetGameName_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SetGameName_descriptor,
         new java.lang.String[] { "GameName", });
     internal_static_SetGameDescription_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_SetGameDescription_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SetGameDescription_descriptor,
         new java.lang.String[] { "GameDescription", });
     internal_static_SetVictoryCondition_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_SetVictoryCondition_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SetVictoryCondition_descriptor,
         new java.lang.String[] { "ConditionIdentifier", });
     internal_static_SetDefeatCondition_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_SetDefeatCondition_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SetDefeatCondition_descriptor,
         new java.lang.String[] { "ConditionIdentifier", });
     internal_static_SetStatusProperty_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_SetStatusProperty_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SetStatusProperty_descriptor,
         new java.lang.String[] { "PropertyName", "PropertyValue", });
     internal_static_ResourceEndowment_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_ResourceEndowment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ResourceEndowment_descriptor,
         new java.lang.String[] { "Name", "Amount", });
     internal_static_SetUnitCost_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_SetUnitCost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SetUnitCost_descriptor,
         new java.lang.String[] { "ElementName", "ElementCosts", });
     internal_static_CreateWaveProperties_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_CreateWaveProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CreateWaveProperties_descriptor,
         new java.lang.String[] { "WaveProperties", "ElementNamesToSpawn", "SpawningPoint", });
     internal_static_EditWaveProperties_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_EditWaveProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_EditWaveProperties_descriptor,
         new java.lang.String[] { "WaveNum", "EditProperties", });
     internal_static_GetWaveProperties_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_GetWaveProperties_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetWaveProperties_descriptor,
         new java.lang.String[] { "WaveNum", });
     internal_static_GetPossibleVictoryConditions_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_GetPossibleVictoryConditions_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetPossibleVictoryConditions_descriptor,
         new java.lang.String[] { });
     internal_static_GetPossibleDefeatConditions_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_GetPossibleDefeatConditions_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetPossibleDefeatConditions_descriptor,
         new java.lang.String[] { });
     internal_static_GetCurrentVictoryConditions_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_GetCurrentVictoryConditions_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetCurrentVictoryConditions_descriptor,
         new java.lang.String[] { });
     internal_static_GetCurrentDefeatConditions_descriptor =
-      getDescriptor().getMessageTypes().get(30);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_GetCurrentDefeatConditions_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetCurrentDefeatConditions_descriptor,
         new java.lang.String[] { });
     internal_static_Property_descriptor =
-      getDescriptor().getMessageTypes().get(31);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_Property_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Property_descriptor,
         new java.lang.String[] { "Name", "Value", });
     internal_static_Point_descriptor =
-      getDescriptor().getMessageTypes().get(32);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_Point_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Point_descriptor,
         new java.lang.String[] { "X", "Y", });
+    PlayerClient.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

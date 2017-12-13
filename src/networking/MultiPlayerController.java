@@ -13,11 +13,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
+import networking.protocol.PlayerClient.DeleteElement;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.GetNumberOfLevels;
 import networking.protocol.PlayerClient.JoinRoom;
 import networking.protocol.PlayerClient.LoadLevel;
+import networking.protocol.PlayerClient.MoveElement;
 import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.Game;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
@@ -26,11 +28,16 @@ import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.GameRooms;
 import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.Notification;
 import networking.protocol.PlayerServer.NumberOfLevels;
+import networking.protocol.PlayerServer.PlayerExited;
 import networking.protocol.PlayerServer.PlayerJoined;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ReadyForNextLevel;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.SpriteDeletion;
+import networking.protocol.PlayerServer.SpriteUpdate;
 
 /**
  * Gateway of multi-player player clients to server back end. Can handle
@@ -70,236 +77,259 @@ class MultiPlayerController {
 
 	private ObservableList<ServerMessage> messageQueue = FXCollections.observableArrayList();
 
-	void getAvailableGames(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetAvailableGames()) {
-			Games.Builder gamesBuilder = Games.newBuilder();
-			Map<String, String> availableGames = new PlayController().getAvailableGames();
-			availableGames.keySet().forEach(gameName -> gamesBuilder.addGames(
-					Game.newBuilder().setName(gameName).setDescription(availableGames.get(gameName)).build()));
-			serverMessageBuilder.setAvailableGames(gamesBuilder.build());
-		}
+	byte[] getAvailableGames(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		Games.Builder gamesBuilder = Games.newBuilder();
+		Map<String, String> availableGames = new PlayController().getAvailableGames();
+		availableGames.keySet().forEach(gameName -> gamesBuilder
+				.addGames(Game.newBuilder().setName(gameName).setDescription(availableGames.get(gameName)).build()));
+		return serverMessageBuilder.setAvailableGames(gamesBuilder.build()).build().toByteArray();
 	}
 
-	void createGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasCreateGameRoom()) {
-			CreateGameRoom gameRoomCreationRequest = clientMessage.getCreateGameRoom();
-			GameRoomCreationStatus.Builder gameRoomCreationStatusBuilder = GameRoomCreationStatus.newBuilder();
-			// Only allow a given client process to play one game at a time
-			if (clientIdsToUserNames.containsKey(clientId)) {
-				serverMessageBuilder.setGameRoomCreationStatus(
-						gameRoomCreationStatusBuilder.setError(ERROR_CLIENT_ENGAGED).build());
-				return;
-			}
-			String gameName = gameRoomCreationRequest.getGameName();
-			String roomName = generateUniqueRoomName(gameRoomCreationRequest.getRoomName());
-			// Verify that gameName is valid
-			PlayController controllerForGame = new PlayController();
-			if (!controllerForGame.getAvailableGames().containsKey(gameName)) {
-				serverMessageBuilder.setGameRoomCreationStatus(
-						gameRoomCreationStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build());
-				return;
-			}
-			roomNamesToPlayEngines.put(roomName, controllerForGame);
-			roomNamesToGameNames.put(roomName, gameName);
-			roomMembers.put(roomName, new ArrayList<>());
-			clearWaitingRoom(roomName);
-			serverMessageBuilder.setGameRoomCreationStatus(gameRoomCreationStatusBuilder.setRoomId(roomName).build());
+	byte[] createGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		CreateGameRoom gameRoomCreationRequest = clientMessage.getCreateGameRoom();
+		GameRoomCreationStatus.Builder gameRoomCreationStatusBuilder = GameRoomCreationStatus.newBuilder();
+		// Only allow a given client process to play one game at a time
+		if (clientIdsToUserNames.containsKey(clientId)) {
+			return serverMessageBuilder
+					.setGameRoomCreationStatus(gameRoomCreationStatusBuilder.setError(ERROR_CLIENT_ENGAGED).build())
+					.build().toByteArray();
 		}
+		String gameName = gameRoomCreationRequest.getGameName();
+		String roomName = generateUniqueRoomName(gameRoomCreationRequest.getRoomName());
+		// Verify that gameName is valid
+		PlayController controllerForGame = new PlayController();
+		if (!controllerForGame.getAvailableGames().containsKey(gameName)) {
+			return serverMessageBuilder
+					.setGameRoomCreationStatus(
+							gameRoomCreationStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build())
+					.build().toByteArray();
+		}
+		roomNamesToPlayEngines.put(roomName, controllerForGame);
+		roomNamesToGameNames.put(roomName, gameName);
+		roomMembers.put(roomName, new ArrayList<>());
+		clearWaitingRoom(roomName);
+		return serverMessageBuilder.setGameRoomCreationStatus(gameRoomCreationStatusBuilder.setRoomId(roomName).build())
+				.build().toByteArray();
 	}
 
-	void joinGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasJoinRoom()) {
-			JoinRoom joinRoomRequest = clientMessage.getJoinRoom();
-			GameRoomJoinStatus.Builder gameRoomJoinStatusBuilder = GameRoomJoinStatus.newBuilder();
-			// Check if client is already in some other game
-			if (clientIsInAGameRoom(clientId)) {
-				serverMessageBuilder.setGameRoomJoinStatus(
-						gameRoomJoinStatusBuilder.setSuccess(false).setError(ERROR_CLIENT_ENGAGED).build());
-				return;
-			}
-			String roomName = joinRoomRequest.getRoomName();
-			if (!roomMembers.containsKey(roomName)) {
-				serverMessageBuilder.setGameRoomJoinStatus(
-						gameRoomJoinStatusBuilder.setSuccess(false).setError(ERROR_NONEXISTENT_ROOM).build());
-				return;
-			}
-			String userName = joinRoomRequest.getUserName();
-			// Check if username is taken within this room
-			if (userNameExistsInGameRoom(userName, roomName)) {
-				serverMessageBuilder.setGameRoomJoinStatus(gameRoomJoinStatusBuilder.setSuccess(false)
-						.setError(GAME_ROOM_JOIN_ERROR_USERNAME_TAKEN).build());
-				return;
-			}
-			processUserJoinRoom(clientId, roomName, userName);
-			/*
+	byte[] joinGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		JoinRoom joinRoomRequest = clientMessage.getJoinRoom();
+		GameRoomJoinStatus.Builder gameRoomJoinStatusBuilder = GameRoomJoinStatus.newBuilder();
+		// Check if client is already in some other game
+		if (clientIsInAGameRoom(clientId)) {
+			return serverMessageBuilder
+					.setGameRoomJoinStatus(
+							gameRoomJoinStatusBuilder.setSuccess(false).setError(ERROR_CLIENT_ENGAGED).build())
+					.build().toByteArray();
+		}
+		String roomName = joinRoomRequest.getRoomName();
+		if (!roomMembers.containsKey(roomName)) {
+			return serverMessageBuilder
+					.setGameRoomJoinStatus(
+							gameRoomJoinStatusBuilder.setSuccess(false).setError(ERROR_NONEXISTENT_ROOM).build())
+					.build().toByteArray();
+		}
+		String userName = joinRoomRequest.getUserName();
+		// Check if username is taken within this room
+		if (userNameExistsInGameRoom(userName, roomName)) {
+			return serverMessageBuilder.setGameRoomJoinStatus(
+					gameRoomJoinStatusBuilder.setSuccess(false).setError(GAME_ROOM_JOIN_ERROR_USERNAME_TAKEN).build())
+					.build().toByteArray();
+		}
+		processUserJoinRoom(clientId, roomName, userName);
+		// Push message to other clients
+		messageQueue
+				.add(ServerMessage.newBuilder()
+						.setNotification(Notification.newBuilder()
+								.setPlayerJoined(PlayerJoined.newBuilder().setUserName(userName).build()).build())
+						.build());
+		return serverMessageBuilder.setGameRoomJoinStatus(gameRoomJoinStatusBuilder.setSuccess(true).build()).build()
+				.toByteArray();
+	}
+
+	byte[] exitGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		if (clientIsInAGameRoom(clientId)) {
+			String exitingUserName = clientIdsToUserNames.get(clientId);
+			processUserExitRoom(clientId);
 			// Push message to other clients
 			messageQueue.add(ServerMessage.newBuilder()
-					.setPlayerJoined(PlayerJoined.newBuilder().setUserName(userName).build()).build());
-			*/
-			serverMessageBuilder.setGameRoomJoinStatus(gameRoomJoinStatusBuilder.setSuccess(true).build());
+					.setNotification(Notification.newBuilder()
+							.setPlayerExited(PlayerExited.newBuilder().setUserName(exitingUserName).build()).build())
+					.build());
+		}
+		// just ignore if client is not in a game room
+		return serverMessageBuilder.build().toByteArray();
+	}
+
+	byte[] launchGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		GameRoomLaunchStatus.Builder gameRoomLaunchStatusBuilder = GameRoomLaunchStatus.newBuilder();
+		String roomName = getGameRoomNameOfClient(clientId);
+		String gameName = retrieveGameNameFromRoomName(roomName);
+		try {
+			LevelInitialized levelData = roomNamesToPlayEngines.get(roomName).loadOriginalGameState(gameName, 1);
+			serverMessageBuilder
+					.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder.setInitialState(levelData).build());
+			// Push message to other clients
+			messageQueue.add(ServerMessage.newBuilder()
+					.setNotification(Notification.newBuilder().setLevelInitialized(levelData).build()).build());
+			return serverMessageBuilder.build().toByteArray();
+		} catch (IOException e) {
+			return serverMessageBuilder
+					.setGameRoomLaunchStatus(
+							gameRoomLaunchStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build())
+					.build().toByteArray();
 		}
 	}
 
-	void exitGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasExitRoom()) {
-			if (clientIsInAGameRoom(clientId)) {
-				processUserExitRoom(clientId);
-			}
-			// just ignore if client is not in a game room
-		}
+	byte[] getGameRooms(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.setGameRooms(GameRooms.newBuilder().addAllRoomNames(roomMembers.keySet()).build())
+				.build().toByteArray();
 	}
 
-	void launchGameRoom(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasLaunchGameRoom()) {
-			GameRoomLaunchStatus.Builder gameRoomLaunchStatusBuilder = GameRoomLaunchStatus.newBuilder();
-			String roomName = getGameRoomNameOfClient(clientId);
-			String gameName = retrieveGameNameFromRoomName(roomName);
-			try {
-				serverMessageBuilder.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder
-						.setInitialState(roomNamesToPlayEngines.get(roomName).loadOriginalGameState(gameName, 1))
-						.build());
-			} catch (IOException e) {
-				serverMessageBuilder.setGameRoomLaunchStatus(
-						gameRoomLaunchStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build());
-			}
-		}
-	}
-
-	void getGameRooms(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetGameRooms()) {
-			serverMessageBuilder.setGameRooms(GameRooms.newBuilder().addAllRoomNames(roomMembers.keySet()).build());
-		}
-	}
-
-	void getPlayerNames(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetPlayerNames()) {
-			PlayerNames.Builder playerNamesBuilder = PlayerNames.newBuilder();
-			serverMessageBuilder.setPlayerNames(playerNamesBuilder
-					.addAllUserNames(getUserNamesInGameRoom(getGameRoomNameOfClient(clientId))).build());
-		}
+	byte[] getPlayerNames(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayerNames.Builder playerNamesBuilder = PlayerNames.newBuilder();
+		return serverMessageBuilder
+				.setPlayerNames(playerNamesBuilder
+						.addAllUserNames(getUserNamesInGameRoom(getGameRoomNameOfClient(clientId))).build())
+				.build().toByteArray();
 	}
 
 	// TODO - Consider server push instead of client pull? Would be more complicated
 	// but more accurate / realistic, and fewer packets exchanged
-	void handleUpdate(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasPerformUpdate()) {
-			PlayController playController = getPlayEngineForClient(clientId);
-			if (clientIsFirstMemberOfGameRoom(clientId)) {
-				// only do actual update if primary client, simply send state for the rest
-				playController.update();
-			}
-			serverMessageBuilder.setUpdate(playController.getLatestUpdate());
+	byte[] handleUpdate(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getPlayEngineForClient(clientId);
+		if (clientIsFirstMemberOfGameRoom(clientId)) {
+			// only do actual update if primary client, simply send state for the rest
+			playController.update();
 		}
+		return serverMessageBuilder.setUpdate(playController.getLatestUpdate()).build().toByteArray();
 	}
 
-	void handlePauseGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasPauseGame()) {
-			// Verify clientId, retrieve appropriate game room / controller
-			PlayController playController = getPlayEngineForClient(clientId);
-			playController.pause();
-			serverMessageBuilder.setUpdate(playController.packageStatusUpdate());
-		}
+	byte[] handlePauseGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		// Verify clientId, retrieve appropriate game room / controller
+		PlayController playController = getPlayEngineForClient(clientId);
+		playController.pause();
+		return serverMessageBuilder.setUpdate(playController.packageStatusUpdate()).build().toByteArray();
 	}
 
-	void handleResumeGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasResumeGame()) {
-			PlayController playController = getPlayEngineForClient(clientId);
-			playController.resume();
-			serverMessageBuilder.setUpdate(playController.packageStatusUpdate());
-		}
+	byte[] handleResumeGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getPlayEngineForClient(clientId);
+		playController.resume();
+		return serverMessageBuilder.setUpdate(playController.packageStatusUpdate()).build().toByteArray();
 	}
 
-	void getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetInventory()) {
-			serverMessageBuilder.setInventory(getPlayEngineForClient(clientId).packageInventory());
-		}
+	byte[] getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.setInventory(getPlayEngineForClient(clientId).packageInventory()).build()
+				.toByteArray();
 	}
 
-	void getTemplateProperties(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetTemplateProperties()) {
-			serverMessageBuilder.addTemplateProperties(getPlayEngineForClient(clientId)
-					.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()));
-		}
-	}
-
-	void getAllTemplateProperties(int clientId, ClientMessage clientMessage,
+	byte[] getTemplateProperties(int clientId, ClientMessage clientMessage,
 			ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetAllTemplateProperties()) {
-			serverMessageBuilder
-					.addAllTemplateProperties(getPlayEngineForClient(clientId).packageAllTemplateProperties());
-		}
+		return serverMessageBuilder
+				.addTemplateProperties(getPlayEngineForClient(clientId)
+						.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()))
+				.build().toByteArray();
 	}
 
-	void getElementCosts(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetElementCosts()) {
-			serverMessageBuilder.addAllElementCosts(getPlayEngineForClient(clientId).packageAllElementCosts());
-		}
+	byte[] getAllTemplateProperties(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.addAllTemplateProperties(getPlayEngineForClient(clientId).packageAllTemplateProperties()).build()
+				.toByteArray();
 	}
 
-	void placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
+	byte[] getElementCosts(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.addAllElementCosts(getPlayEngineForClient(clientId).packageAllElementCosts())
+				.build().toByteArray();
+	}
+
+	byte[] placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
 			throws ReflectiveOperationException {
-		if (clientMessage.hasPlaceElement()) {
-			PlayController playController = getPlayEngineForClient(clientId);
-			PlaceElement placeElementRequest = clientMessage.getPlaceElement();
-			serverMessageBuilder.setElementPlaced(playController.placeElement(placeElementRequest.getElementName(),
-					new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord())));
+		PlayController playController = getPlayEngineForClient(clientId);
+		PlaceElement placeElementRequest = clientMessage.getPlaceElement();
+		NewSprite placedElement = playController.placeElement(placeElementRequest.getElementName(),
+				new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord()));
+		// Broadcast
+		messageQueue.add(ServerMessage.newBuilder()
+				.setNotification(Notification.newBuilder().setElementPlaced(placedElement).build()).build());
+		return serverMessageBuilder.setElementPlaced(placedElement).build().toByteArray();
+	}
+
+	byte[] moveElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getPlayEngineForClient(clientId);
+		MoveElement moveElementRequest = clientMessage.getMoveElement();
+		SpriteUpdate updatedSprite = playController.moveElement(moveElementRequest.getElementId(),
+				moveElementRequest.getNewXCoord(), moveElementRequest.getNewYCoord());
+		// Broadcast
+		messageQueue.add(ServerMessage.newBuilder()
+				.setNotification(Notification.newBuilder().setElementMoved(updatedSprite).build()).build());
+		return serverMessageBuilder.setElementMoved(updatedSprite).build().toByteArray();
+	}
+
+	byte[] deleteElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getPlayEngineForClient(clientId);
+		DeleteElement deleteElementRequest = clientMessage.getDeleteElement();
+		try {
+			SpriteDeletion deletedElement = playController.deleteElement(deleteElementRequest.getElementId());
+			messageQueue.add(ServerMessage.newBuilder()
+					.setNotification(Notification.newBuilder().setElementDeleted(deletedElement).build()).build());
+			return serverMessageBuilder.setElementDeleted(deletedElement).build().toByteArray();
+		} catch (IllegalArgumentException e) {
+			return serverMessageBuilder.setError(e.getMessage()).build().toByteArray();
 		}
 	}
 
-	void upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
+	byte[] upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
 			throws ReflectiveOperationException {
-		if (clientMessage.hasUpgradeElement()) {
-			PlayController playController = getPlayEngineForClient(clientId);
-			playController.upgradeElement(clientMessage.getUpgradeElement().getSpriteId());
+		PlayController playController = getPlayEngineForClient(clientId);
+		playController.upgradeElement(clientMessage.getUpgradeElement().getSpriteId());
+		return serverMessageBuilder.build().toByteArray();
+	}
+
+	byte[] checkReadyForNextLevel(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.setReadyForNextLevel(ReadyForNextLevel.newBuilder()
+						.setIsReady(joinAndCheckIfWaitingRoomIsFull(getGameRoomNameOfClient(clientId))).build())
+				.build().toByteArray();
+	}
+
+	byte[] loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
+		LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
+		String roomName = getGameRoomNameOfClient(clientId);
+		int levelToLoad = loadLevelRequest.getLevel();
+		if (!checkIfWaitingRoomIsFull(roomName)) {
+			// not ready to load
+			return serverMessageBuilder
+					.setLevelInitialized(levelInitializationBuilder.setError(LOAD_LEVEL_ERROR_NOT_READY).build())
+					.build().toByteArray();
+		}
+		String gameName = retrieveGameNameFromRoomName(roomName);
+		try {
+			return serverMessageBuilder
+					.setLevelInitialized(getPlayEngineForClient(clientId).loadOriginalGameState(gameName, levelToLoad))
+					.build().toByteArray();
+		} catch (IOException e) {
+			return serverMessageBuilder.setLevelInitialized(LevelInitialized.getDefaultInstance()).build()
+					.toByteArray();
 		}
 	}
 
-	void checkReadyForNextLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasCheckReadyForNextLevel()) {
-			serverMessageBuilder.setReadyForNextLevel(ReadyForNextLevel.newBuilder()
-					.setIsReady(joinAndCheckIfWaitingRoomIsFull(getGameRoomNameOfClient(clientId))).build());
-		}
+	byte[] getLevelElements(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.addAllLevelSprites(
+				getPlayEngineForClient(clientId).getLevelSprites(clientMessage.getGetLevelElements().getLevel()))
+				.build().toByteArray();
 	}
 
-	void loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasLoadLevel()) {
-			LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
-			LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
-			String roomName = getGameRoomNameOfClient(clientId);
-			int levelToLoad = loadLevelRequest.getLevel();
-			if (!checkIfWaitingRoomIsFull(roomName)) {
-				// not ready to load
-				serverMessageBuilder
-						.setLevelInitialized(levelInitializationBuilder.setError(LOAD_LEVEL_ERROR_NOT_READY).build());
-				return;
-			}
-			String gameName = retrieveGameNameFromRoomName(roomName);
-			try {
-				serverMessageBuilder.setLevelInitialized(
-						getPlayEngineForClient(clientId).loadOriginalGameState(gameName, levelToLoad));
-			} catch (IOException e) {
-				serverMessageBuilder.setLevelInitialized(LevelInitialized.getDefaultInstance());
-			}
-		}
-	}
-
-	void getLevelElements(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetLevelElements()) {
-			serverMessageBuilder.addAllLevelSprites(getPlayEngineForClient(clientId)
-					.getLevelSprites(clientMessage.getGetLevelElements().getLevel()));
-		}
-	}
-
-	void getNumberOfLevels(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		if (clientMessage.hasGetNumLevels()) {
-			GetNumberOfLevels getNumLevelsRequest = clientMessage.getGetNumLevels();
-			serverMessageBuilder
-					.setNumLevels(
-							NumberOfLevels.newBuilder()
-									.setNumLevels(getPlayEngineForClient(clientId).getNumLevelsForGame(
-											getNumLevelsRequest.getGameName(), getNumLevelsRequest.getOriginalGame()))
-									.build());
-		}
+	byte[] getNumberOfLevels(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		GetNumberOfLevels getNumLevelsRequest = clientMessage.getGetNumLevels();
+		return serverMessageBuilder
+				.setNumLevels(NumberOfLevels.newBuilder()
+						.setNumLevels(getPlayEngineForClient(clientId).getNumLevelsForGame(
+								getNumLevelsRequest.getGameName(), getNumLevelsRequest.getOriginalGame()))
+						.build())
+				.build().toByteArray();
 	}
 
 	void disconnectClient(int clientId) {
@@ -311,42 +341,111 @@ class MultiPlayerController {
 		});
 	}
 
+	void registerNotificationStreamListener(ListChangeListener<? super ServerMessage> listener) {
+		messageQueue.addListener(listener);
+	}
+
+	// Try refactoring / replacing following 4 methods using Reflection instead
+
 	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) throws ReflectiveOperationException {
 		try {
 			ServerMessage.Builder serverMessageBuilder = ServerMessage.newBuilder();
 			ClientMessage clientMessage = ClientMessage.parseFrom(inputBytes);
-			getAvailableGames(clientMessage, serverMessageBuilder);
-			getGameRooms(clientMessage, serverMessageBuilder);
-			createGameRoom(clientId, clientMessage, serverMessageBuilder);
-			joinGameRoom(clientId, clientMessage, serverMessageBuilder);
-			if (!clientIsInAGameRoom(clientId)) {
-				return serverMessageBuilder.setError(ERROR_UNAUTHORIZED).build().toByteArray();
-			}
-			exitGameRoom(clientId, clientMessage, serverMessageBuilder);
-			launchGameRoom(clientId, clientMessage, serverMessageBuilder);
-			getPlayerNames(clientId, clientMessage, serverMessageBuilder);
-			handleUpdate(clientId, clientMessage, serverMessageBuilder);
-			handlePauseGame(clientId, clientMessage, serverMessageBuilder);
-			handleResumeGame(clientId, clientMessage, serverMessageBuilder);
-			getInventory(clientId, clientMessage, serverMessageBuilder);
-			getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
-			getAllTemplateProperties(clientId, clientMessage, serverMessageBuilder);
-			getElementCosts(clientId, clientMessage, serverMessageBuilder);
-			placeElement(clientId, clientMessage, serverMessageBuilder);
-			upgradeElement(clientId, clientMessage, serverMessageBuilder);
-			checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);
-			loadLevel(clientId, clientMessage, serverMessageBuilder);
-			getLevelElements(clientId, clientMessage, serverMessageBuilder);
-			getNumberOfLevels(clientId, clientMessage, serverMessageBuilder);
-			return serverMessageBuilder.build().toByteArray();
+			byte[] preGameResponse = handlePreGameRequestAndSerializeResponse(clientId, clientMessage,
+					serverMessageBuilder);
+			return preGameResponse.length > 0 ? preGameResponse
+					: handleEarlyGameRequestAndSerializeResponse(clientId, clientMessage, serverMessageBuilder);
+
 		} catch (IOException e) {
 			e.printStackTrace(); // TEMP
 			return new byte[] {}; // TEMP - Should create a generic error message
 		}
 	}
 
-	void registerNotificationStreamListener(ListChangeListener<? super ServerMessage> listener) {
-		messageQueue.addListener(listener);
+	private byte[] handlePreGameRequestAndSerializeResponse(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		if (clientMessage.hasGetAvailableGames()) {
+			return getAvailableGames(clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetGameRooms()) {
+			return getGameRooms(clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasCreateGameRoom()) {
+			return createGameRoom(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasJoinRoom()) {
+			return joinGameRoom(clientId, clientMessage, serverMessageBuilder);
+		}
+		// Following requests need user to be in a game room
+		if (!clientIsInAGameRoom(clientId)) {
+			return serverMessageBuilder.setError(ERROR_UNAUTHORIZED).build().toByteArray();
+		}
+
+		if (clientMessage.hasExitRoom()) {
+			return exitGameRoom(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasLaunchGameRoom()) {
+			return launchGameRoom(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetPlayerNames()) {
+			return getPlayerNames(clientId, clientMessage, serverMessageBuilder);
+		}
+		return serverMessageBuilder.getDefaultInstanceForType().toByteArray();
+	}
+
+	private byte[] handleEarlyGameRequestAndSerializeResponse(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) throws ReflectiveOperationException {
+		if (clientMessage.hasPerformUpdate()) {
+			return handleUpdate(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasPauseGame()) {
+			return handlePauseGame(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasResumeGame()) {
+			return handleResumeGame(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetInventory()) {
+			return getInventory(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetTemplateProperties()) {
+			return getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetAllTemplateProperties()) {
+			return getAllTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetElementCosts()) {
+			return getElementCosts(clientId, clientMessage, serverMessageBuilder);
+		}
+		return handleLateGameRequestAndSerializeResponse(clientId, clientMessage, serverMessageBuilder);
+	}
+
+	private byte[] handleLateGameRequestAndSerializeResponse(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) throws ReflectiveOperationException {
+		if (clientMessage.hasPlaceElement()) {
+			return placeElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasMoveElement()) {
+			return moveElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasUpgradeElement()) {
+			return upgradeElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasDeleteElement()) {
+			return deleteElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasCheckReadyForNextLevel()) {
+			return checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasLoadLevel()) {
+			return loadLevel(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetLevelElements()) {
+			return getLevelElements(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetNumLevels()) {
+			return getNumberOfLevels(clientId, clientMessage, serverMessageBuilder);
+		}
+		return ServerMessage.getDefaultInstance().toByteArray();
 	}
 
 	private boolean clientIsInAGameRoom(int clientId) {
@@ -369,6 +468,9 @@ class MultiPlayerController {
 	}
 
 	private boolean clientIsFirstMemberOfGameRoom(int clientId) {
+		if (!clientIsInAGameRoom(clientId)) {
+			return false;
+		}
 		return roomMembers.get(getGameRoomNameOfClient(clientId)).iterator().next().equals(clientId);
 	}
 
@@ -400,7 +502,7 @@ class MultiPlayerController {
 	private boolean checkIfWaitingRoomIsFull(String roomName) {
 		return waitingInRoom.get(roomName) < roomMembers.get(roomName).size();
 	}
-	
+
 	private PlayController getPlayEngineForClient(int clientId) {
 		return roomNamesToPlayEngines.get(getGameRoomNameOfClient(clientId));
 	}
