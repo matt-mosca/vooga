@@ -103,6 +103,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		loadLevels();
 		created.setGameArea(levelToData.get(1).myGameArea);
 		createProperties();
+		myLevelDisplayer = new LevelsEditDisplay(myController);
 	}
 
 	private void createProperties() {
@@ -137,7 +138,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
 	@Override
     public void openLevelDisplay() {
-        myLevelDisplayer = new LevelsEditDisplay(myController, myCreated);
+        myLevelDisplayer = new LevelsEditDisplay(myController);
         myLevelDisplayer.open();
     }
 

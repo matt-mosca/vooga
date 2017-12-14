@@ -70,6 +70,10 @@ public class ClientMessageUtils {
 		idsToImageViews.put(spriteId, imageViewForSprite);
 		return spriteId;
 	}
+	
+	public ImageView removeDeadSpriteFromDisplay(SpriteDeletion spriteDeletion) {
+		return idsToImageViews.remove(spriteDeletion.getSpriteId());
+	}
 
 	private void registerNewlyGeneratedSprites(Update update) {
 		update.getNewSpritesList().forEach(newSprite -> {
@@ -89,8 +93,5 @@ public class ClientMessageUtils {
 		imageViewForSprite.setY(updatedSprite.getNewY());
 	}
 
-	private ImageView removeDeadSpriteFromDisplay(SpriteDeletion spriteDeletion) {
-		return idsToImageViews.remove(spriteDeletion.getSpriteId());
-	}
 
 }

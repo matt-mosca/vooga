@@ -18,22 +18,19 @@ public class LevelsEditDisplay {
 	private BorderPane myRoot;
 	private ResourceDisplay resourceEditor;
 	private GameEnder gameEnder;
-	private EditDisplay myDisplay;
 	private GameEnderRecorder recorder;
-	private HealthSelector health;
 	
-	public LevelsEditDisplay(AuthoringController controller, EditDisplay display) {
+	public LevelsEditDisplay(AuthoringController controller) {
 		myController = controller;
 		myStage = new Stage();
 		myStage.setTitle("Level Editor");
 		myRoot = new BorderPane();
 		myScene = new Scene(myRoot, SIZE, SIZE);
 		resourceEditor = new ResourceDisplay(controller);
-		gameEnder = new GameEnder(controller, display);
+		gameEnder = new GameEnder(controller);
 		recorder = new GameEnderRecorder(controller);
-		health = new HealthSelector(controller);
+		
 		gameEnder.setRecorder(recorder);
-		myRoot.setBottom(health);
 		myRoot.setLeft(gameEnder);
 		myRoot.setRight(resourceEditor);
 		myRoot.setCenter(recorder);
