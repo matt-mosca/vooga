@@ -54,7 +54,7 @@ import networking.protocol.PlayerServer.SpriteUpdate;
  * @author radithya
  *
  */
-class MultiPlayerController {
+class MultiPlayerController extends AbstractServerController {
 
 	// TODO - Move to resources file
 	private final String ERROR_UNAUTHORIZED = "You do not belong to any game room";
@@ -138,6 +138,7 @@ class MultiPlayerController {
 		}
 		processUserJoinRoom(clientId, roomName, userName);
 		// Push message to other clients
+		System.out.println("Adding playerJoin message to messageQueue");
 		messageQueue
 				.add(ServerMessage.newBuilder()
 						.setNotification(Notification.newBuilder()
@@ -152,6 +153,7 @@ class MultiPlayerController {
 			String exitingUserName = clientIdsToUserNames.get(clientId);
 			processUserExitRoom(clientId);
 			// Push message to other clients
+			System.out.println("Adding playerExit message to messageQueue");
 			messageQueue.add(ServerMessage.newBuilder()
 					.setNotification(Notification.newBuilder()
 							.setPlayerExited(PlayerExited.newBuilder().setUserName(exitingUserName).build()).build())
@@ -332,7 +334,8 @@ class MultiPlayerController {
 				.build().toByteArray();
 	}
 
-	void disconnectClient(int clientId) {
+	@Override
+	public void disconnectClient(int clientId) {
 		clientIdsToUserNames.remove(clientId);
 		roomMembers.entrySet().forEach(roomEntry -> {
 			if (roomEntry.getValue().contains(clientId)) {
@@ -341,13 +344,16 @@ class MultiPlayerController {
 		});
 	}
 
-	void registerNotificationStreamListener(ListChangeListener<? super ServerMessage> listener) {
+	@Override
+	public void registerNotificationStreamListener(ListChangeListener<? super ServerMessage> listener) {
+		System.out.println("Registering notification listener");
 		messageQueue.addListener(listener);
 	}
 
 	// Try refactoring / replacing following 4 methods using Reflection instead
 
-	byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) throws ReflectiveOperationException {
+	@Override
+	public byte[] handleRequestAndSerializeResponse(int clientId, byte[] inputBytes) {
 		try {
 			ServerMessage.Builder serverMessageBuilder = ServerMessage.newBuilder();
 			ClientMessage clientMessage = ClientMessage.parseFrom(inputBytes);
@@ -356,8 +362,7 @@ class MultiPlayerController {
 			return preGameResponse.length > 0 ? preGameResponse
 					: handleEarlyGameRequestAndSerializeResponse(clientId, clientMessage, serverMessageBuilder);
 
-		} catch (IOException e) {
-			e.printStackTrace(); // TEMP
+		} catch (IOException | ReflectiveOperationException e) {
 			return new byte[] {}; // TEMP - Should create a generic error message
 		}
 	}
