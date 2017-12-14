@@ -39,6 +39,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -61,9 +63,12 @@ import display.sprites.StaticObject;
 import display.toolbars.InventoryToolBar;
 
 public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
-
 	private final String GAME_FILE_KEY = "displayed-game-name";
-
+	private final int DOWN = 5;
+	private final int UP = -5;
+	private final int RIGHT = 5;
+	private final int LEFT = -5;
+	
 	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
 	private TransitorySplashScreen myTransition;
@@ -90,6 +95,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	// private Button testButton;
 
 	private int level = 1;
+	private int selectedSprite = -1;
 	private final FiringStrategy testFiring = new NoopFiringStrategy();
 	private final MovementStrategy testMovement = new StationaryMovementStrategy(new Point2D(0, 0));
 	private final CollisionHandler testCollision = new CollisionHandler(new ImmortalCollider(1),
@@ -135,7 +141,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
-
+		stage.addEventHandler(KeyEvent.KEY_PRESSED, e->moveElement(e));
 	}
 
 	@Override
@@ -341,7 +347,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			// launch win screen
 		}
 		*/
-		//TODO Adi, uncomment this when you're ready to test health 
 		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		updateSprites();
@@ -368,7 +373,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			if (e.getButton().equals(MouseButton.PRIMARY)) {
 				Point2D startLocation = new Point2D(e.getX(), e.getY());
 				try {
-					System.out.println("Placing element");
 					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
 					receivePlacedElement(newSprite);
 				} catch (ReflectiveOperationException failedToPlaceElementException) {
@@ -381,9 +385,11 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private void attachEventHandlers(ImageView imageView, int id) {
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
-				deleteClicked(imageView);
-			} else {
+				deleteClicked(id);
+			} else if(e.isControlDown()){
 				upgradeClicked(id);
+			} else {
+				setSelectedSprite(id);
 			}
 		});
 	}
@@ -425,9 +431,27 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		}
 	}
 
-	// TODO allow towers to be sold or deleted?
-	private void deleteClicked(ImageView image) {
-
+	private void deleteClicked(int id) {
+		myController.deleteElement(id);
+	}
+	
+	private void setSelectedSprite(int id) {
+		selectedSprite = id;
+	}
+	
+	private void moveElement(KeyEvent event) {
+		if(selectedSprite == -1) return;
+		double x = clientMessageUtils.getRepresentationFromSpriteId(selectedSprite).getX();
+		double y = clientMessageUtils.getRepresentationFromSpriteId(selectedSprite).getY();
+		if(event.getCode() == KeyCode.S) {
+			myController.moveElement(selectedSprite, x, y + DOWN);
+		}else if(event.getCode() == KeyCode.W) {
+			myController.moveElement(selectedSprite, x, y + UP);
+		}else if(event.getCode() == KeyCode.D) {
+			myController.moveElement(selectedSprite, x + RIGHT, y);
+		}else if(event.getCode() == KeyCode.A) {
+			myController.moveElement(selectedSprite, x + LEFT, y);
+		}
 	}
 
 	private boolean checkFunds(String elementName) {
