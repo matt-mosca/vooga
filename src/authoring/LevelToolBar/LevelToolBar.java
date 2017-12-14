@@ -166,7 +166,6 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		String[] splitLocation = stringLocation.split(",");
 		Point2D location = new Point2D(Integer.valueOf(splitLocation[X_LOCATION]),
 				Integer.valueOf(splitLocation[Y_LOCATION]));
-		myProperties.put("templatesToFire", elementsToSpawn);
 		Map<String, Object> waveProperties = new HashMap<>();
         waveProperties.putAll(myProperties);
         waveProperties.put("templatesToFire", elementsToSpawn);

@@ -189,7 +189,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		waveStage.setTitle("CheckBox Experiment 1");
         myVBox = new VBox();
         createTextFields(imageView);
-        Scene scene = new Scene(myVBox, 200, 100);
+        Scene scene = new Scene(myVBox, 200, 120);
         waveStage.setScene(scene);
         waveStage.show();
 	}
