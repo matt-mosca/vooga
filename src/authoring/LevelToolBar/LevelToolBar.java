@@ -52,7 +52,6 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	private int startingLevels;
 	private Map<Integer, LevelData> levelToData;
 	private NewWaveButton myNewWaveButton;
-
     private ClientMessageUtils clientMessageUtils;
 
 	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
@@ -65,11 +64,6 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 		this.setWidth(SIZE);
-//		mySprites = new ArrayList<>();
-//		mySprites.add(new ArrayList<>());
-		/** 
-		 * NewLevel Button needs to change. Use ButtonFactory
-		 */
 		newLevel = new Button("New Level");
 		myNewWaveButton = new NewWaveButton(this);
 		newLevel.setOnAction(e -> addLevel());
@@ -95,12 +89,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	}
 
 	private void createProperties() {
-		/**
-		 * Just a way of hardcoding waves. Will eventually be put into properties file.
-		 * Should be able to set attack period, everything else should be given (image invisible)
-		 */
 		myProperties = new ElementDefaultsGetter("WavesDefaults").getDefaultProperties();
-		//Note: Templates to fire is set when the troop is selected
 	}
 	
 	@Override
@@ -177,19 +166,10 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 //		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
 		Point2D location = new Point2D(30,60);
 		myProperties.put("templatesToFire", elementsToSpawn);
-//		myProperties.put("Projectile Type Name", mySprite.getId());
 		Map<String, Object> waveProperties = new HashMap<>();
         waveProperties.putAll(myProperties);
         waveProperties.put("templatesToFire", elementsToSpawn);
         waveProperties.put("Projectile Type Name", mySpriteId);
-		/**
-		 * Eventually we won't need line above, but for shoot periodically firing strategy
-		 * we have to include the projectile name that we're firing as a parameter. At the moment
-		 * the wave will only produce the last projectile that we add to it.
-		 * Also note that shoot periodically happens forever
-		 * Basically the elementsToSpawn is virtually useless with shoot periodically firing
-		 * strategy. Waiting for backend integration of round robin firing strategy
-		 */
 		for (String levelDotWave : levelWaveArray) {
 			int level = Integer.valueOf(levelDotWave.split("\\.+")[LEVEL_INDEX]);			
 			int wave = Integer.valueOf(levelDotWave.split("\\.+")[WAVE_INDEX]);
