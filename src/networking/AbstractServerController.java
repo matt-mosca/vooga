@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
 
 import engine.AbstractGameController;
 import engine.play_engine.PlayController;
@@ -58,7 +59,7 @@ public abstract class AbstractServerController {
 				ServerMessage.newBuilder());
 	}
 
-	public void registerNotificationStreamListener(ListChangeListener<ServerMessage> listener) {
+	public void registerNotificationStreamListener(ListChangeListener<Message> listener) {
 		System.out.println("Registering notification listener");
 		messageQueue.addListener(listener);
 	}
