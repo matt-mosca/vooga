@@ -284,6 +284,25 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 				.setGetCurrentDefeatConditions(GetCurrentDefeatConditions.getDefaultInstance()).build().toByteArray());
 		return handleCurrentDefeatConditionsResponse(readAuthoringServerResponse());
 	}
+	
+	@Override
+	public void setLevelHealth(int health) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setLevelPointQuota(int points) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setLevelTimeLimit(int timeLimit) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	@Override
 	protected int getPort() {
@@ -398,22 +417,5 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		}
 	}
 
-	@Override
-	public int getLevelHealth(int level) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setLevelHealth(int health) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNumLevelsForGame() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 }

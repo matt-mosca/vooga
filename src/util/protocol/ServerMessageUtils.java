@@ -2,12 +2,20 @@ package util.protocol;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import engine.game_elements.GameElement;
+import networking.protocol.AuthorServer.AuxiliaryElementConfigurationOption;
+import networking.protocol.AuthorServer.ConditionAssignment;
+import networking.protocol.AuthorServer.DoubleProperty;
+import networking.protocol.AuthorServer.ElementBaseConfigurationOption;
+import networking.protocol.AuthorServer.ElementUpgrade;
+import networking.protocol.AuthorServer.StringProperties;
+import networking.protocol.AuthorServer.StringProperty;
 import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.Inventory;
 import networking.protocol.PlayerServer.LevelInitialized;
@@ -20,12 +28,11 @@ import networking.protocol.PlayerServer.StatusUpdate;
 import networking.protocol.PlayerServer.TemplateProperties;
 import networking.protocol.PlayerServer.TemplateProperty;
 import networking.protocol.PlayerServer.Update;
+import util.io.SerializationUtils;
 
 public class ServerMessageUtils {
 
-	public ServerMessageUtils() {
-		// TODO Auto-generated constructor stub
-	}
+	private SerializationUtils serializationUtils = new SerializationUtils();
 
 	public LevelInitialized packageState(Map<Integer, GameElement> levelSprites, Collection<String> inventory,
 			Map<String, Double> resourceEndowments, int currentLevel) {
@@ -121,7 +128,53 @@ public class ServerMessageUtils {
 	public SpriteDeletion packageDeletedSprite(GameElement spriteToDelete, int spriteId) {
 		return SpriteDeletion.newBuilder().setSpriteId(spriteId).build();
 	}
-	
+
+	// AUTHORING SERVER - Consider moving to separate class?
+	public Collection<ElementBaseConfigurationOption> packageElementBaseConfigurationOptions(
+			Map<String, List<String>> configMap) {
+		return configMap
+				.entrySet().stream().map(entry -> ElementBaseConfigurationOption.newBuilder()
+						.setConfigKey(entry.getKey()).addAllConfigOptions(entry.getValue()).build())
+				.collect(Collectors.toList());
+	}
+
+	public Collection<AuxiliaryElementConfigurationOption> packageAuxiliaryElementConfigurationOptions(
+			Map<String, Class> configMap) {
+		return configMap
+				.entrySet().stream().map(entry -> AuxiliaryElementConfigurationOption.newBuilder()
+						.setConfigName(entry.getKey()).setConfigClassName(entry.getValue().getName()).build())
+				.collect(Collectors.toList());
+	}
+
+	public Collection<ElementUpgrade> packageElementUpgrades(Map<String, List<Map<String, Object>>> upgradesMap) {
+		return upgradesMap.entrySet().stream()
+				.map(entry -> ElementUpgrade.newBuilder().setElementName(entry.getKey())
+						.addAllElementUpgrades(entry.getValue().stream()
+								.map(elementUpgrades -> StringProperties.newBuilder()
+										.addAllItems(packageStringProperties(elementUpgrades)).build())
+								.collect(Collectors.toList()))
+						.build())
+				.collect(Collectors.toList());
+	}
+
+	public Collection<DoubleProperty> packageResourceEndowments(Map<String, Double> resourceEndowments) {
+		return resourceEndowments.entrySet().stream().map(resourceEntry -> DoubleProperty.newBuilder()
+				.setName(resourceEntry.getKey()).setValue(resourceEntry.getValue()).build())
+				.collect(Collectors.toList());
+	}
+
+	public Collection<StringProperty> packageWaveProperties(Map<String, Object> waveProperties) {
+		return packageStringProperties(waveProperties);
+	}
+
+	public Collection<ConditionAssignment> packageConditionAssignments(Map<String, Collection<Integer>> conditions) {
+		return conditions
+				.entrySet().stream().map(condition -> ConditionAssignment.newBuilder()
+						.setConditionName(condition.getKey()).addAllLevelsUsingCondition(condition.getValue()).build())
+				.collect(Collectors.toList());
+	}
+
+	//
 	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay,
 			int currentLevel) {
 		// Just always send status update for now
@@ -146,5 +199,11 @@ public class ServerMessageUtils {
 				.collect(Collectors.toList());
 	}
 
+	private Collection<StringProperty> packageStringProperties(Map<String, Object> stringProperties) {
+		return serializationUtils.serializeElementTemplate(stringProperties).entrySet().stream()
+				.map(elementUpgradeEntry -> StringProperty.newBuilder().setName(elementUpgradeEntry.getKey())
+						.setValue(elementUpgradeEntry.getValue()).build())
+				.collect(Collectors.toList());
+	}
 
 }

@@ -177,8 +177,16 @@ public interface AuthoringModelController extends AbstractGameModelController {
 
 	int getLevelHealth(int level);
 
+	int getLevelPointQuota(int level);
+	
+	int getLevelTimeLimit(int level);
+	
 	// Sorry Ben Welton, Venkat asked me to change this back
 	void setLevelHealth(int health);
+	
+	void setLevelPointQuota(int points);
+	
+	void setLevelTimeLimit(int timeLimit);
 	
 	/**
 	 * Retrieve the inventory for the current level
