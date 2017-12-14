@@ -8,5 +8,9 @@ public interface ButtonInterface {
 	
 	void openLevelDisplay();
 	
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 535ce3772ef91c465304da957d0481a706e304fd
 
 }

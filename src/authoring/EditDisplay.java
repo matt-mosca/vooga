@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import authoring.LevelToolBar.LevelToolBar;
+import authoring.LevelToolBar.LevelToolBarOld;
 import authoring.PropertiesToolBar.PropertiesToolBar;
 import authoring.PropertiesToolBar.SpriteImage;
 import authoring.customize.AttackDefenseToggle;
@@ -83,7 +83,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private AttackDefenseToggle myGameChooser;
 	private Label attackDefenseLabel;
 	private Map<String, String> basePropertyMap;
-	private LevelToolBar myBottomToolBar;
+	private LevelToolBarOld myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
 	private SpriteTesterButton myTesterButton;
@@ -199,7 +199,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		rootAdd(myThemeChanger);
 		myMenuBar = new MainMenuBar(this, controller);
 		rootAdd(myMenuBar);
-		myBottomToolBar = new LevelToolBar(this, controller, myGameEnvironment);
+		myBottomToolBar = new LevelToolBarOld(this, controller, myGameEnvironment);
 		rootAdd(myBottomToolBar);
 		volumeSlider = new Slider(0, 1, .1);
 		rootAdd(volumeSlider);
