@@ -34,6 +34,7 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
      * */
     public Point2D move() {
     	setVelocityComponents();
+    	setAngle(yVelocity,xVelocity);
     	if(targetReached() && removeUponCompletion()) {
     		setX(this.getTargetX());
     		setY(this.getTargetY());
@@ -117,8 +118,9 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
      * @param angle Angle to calculate velocity components
      * */
     protected void setVelocityComponents(double angle) {
-    	setXVelocity(velocityMagnitude * Math.cos(angle));
-        setYVelocity(velocityMagnitude * Math.sin(angle));
+    	setAngle(angle);
+    	setXVelocity(velocityMagnitude * Math.cos(Math.toRadians(angle)));
+        setYVelocity(velocityMagnitude * Math.sin(Math.toRadians(angle)));
     }
 
     /**

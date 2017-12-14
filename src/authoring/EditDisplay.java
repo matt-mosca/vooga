@@ -91,7 +91,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Slider volumeSlider;
 	private MediaPlayerFactory mediaPlayerFactory;
 	private MediaPlayer mediaPlayer;
-	private String backgroundSong = "src/MediaTesting/110 - pokemon center.mp3";
+	private String backgroundSong = "data/audio/110 - pokemon center.mp3";
 	private InteractiveObject objectToPlace;
 	private EventHandler<MouseEvent> cursorDrag;
 	private boolean addingObject = false;
@@ -230,13 +230,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			decrementButton.setLayoutY(20);
 			incrementButton.setLayoutX(50);
 			decrementButton.setLayoutX(85);
+			// To-do refactor set on action if possible
 			incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-				object.incrementSize();
-				updateObjectSize(object);
+				incrementObjectSize(object);
 			});
+			// To-do refactor set on action if possible
 			decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-				object.decrementSize();
-				updateObjectSize(object);
+				decrementObjectSize(object);
 			});
 			rootAdd(incrementButton);
 			rootAdd(decrementButton);
@@ -262,6 +262,16 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		}
 		
 
+	}
+
+	private void decrementObjectSize(StaticObject object) {
+		object.decrementSize();
+		updateObjectSize(object);
+	}
+
+	private void incrementObjectSize(StaticObject object) {
+		object.incrementSize();
+		updateObjectSize(object);
 	}
 
 	private void updateObjectSize(StaticObject object) {
@@ -410,8 +420,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		attackDefenseLabel.setText("Attack");
 	}
 
-	public void submit(String levelAndWave, int amount, ImageView mySprite) {
-		myBottomToolBar.addToWave(levelAndWave, amount, mySprite);
+	public void submit(String levelAndWave, String location, int amount, ImageView mySprite) {
+		myBottomToolBar.addToWave(levelAndWave, location, amount, mySprite);
 	}
 
 	@Override

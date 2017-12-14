@@ -122,13 +122,15 @@ message NewSprite {
 	required double imageWidth = 4;
 	required double spawnX = 5;
 	required double spawnY = 6;
-	optional string error = 7;
+	required double spawnAngle = 7;
+	optional string error = 8;
 }
 
 message SpriteUpdate {
 	required int32 spriteId = 1;
 	required double newX = 2;
 	required double newY = 3;
+	required double newAngle = 4;
 }
 
 message SpriteDeletion {

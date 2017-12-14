@@ -39,7 +39,6 @@ public class PropertiesBox extends VBox {
 	private ImageView currSprite;
 	private AddToWaveButton myWaveAdder;
 	private Droppable myDroppable;
-
 	
 	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringController
 			author) {

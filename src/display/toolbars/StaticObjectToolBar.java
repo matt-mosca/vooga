@@ -82,9 +82,9 @@ public class StaticObjectToolBar extends ToolBar {
 	public void defineElement(double size, String imageString) {
 		if(myController.getAllDefinedTemplateProperties().containsKey(imageString)) return;
 		Map<String, Object> defaultValues = getDefaultProperties();
-		defaultValues.put("imageWidth", size);
-		defaultValues.put("imageUrl", imageString);
-		defaultValues.put("imageHeight", size);
+		defaultValues.put("Width", size);
+		defaultValues.put("Path of game element image", imageString);
+		defaultValues.put("Height", size);
 		myController.defineElement(imageString, defaultValues);
 	}
 	

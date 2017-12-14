@@ -89,7 +89,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private MediaPlayer mediaPlayer;
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
-	private String backgroundSong = "src/MediaTesting/128 - battle (vs gym leader).mp3";
+	private String backgroundSong = "data/audio/128 - battle (vs gym leader).mp3";
 
 	// private ButtonFactory buttonMaker;
 	// private Button testButton;
