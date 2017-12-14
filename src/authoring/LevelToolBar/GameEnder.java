@@ -50,7 +50,7 @@ public class GameEnder extends VBox{
 	
 	private void createLevelBoxes() {
 		checkBoxes = new ArrayList<>();
-		for (int i = 0; i<myController.getNumLevels(); i++) {
+		for (int i = 0; i<myController.getNumLevelsForGame(); i++) {
 			checkBoxes.add(new CheckBox());
 			checkBoxes.get(i).setText(Integer.toString(i+1));
 		}
@@ -60,7 +60,7 @@ public class GameEnder extends VBox{
 
 	private void record() {
 		int currLevel = myController.getCurrentLevel();
-		for(int i = 0; i<myController.getNumLevels(); i++) {
+		for(int i = 0; i<myController.getNumLevelsForGame(); i++) {
 			myController.setLevel(i+1);
 			if (checkBoxes.get(i).isSelected()) {
 				if(victory.getValue()!=null) {

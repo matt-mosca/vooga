@@ -74,7 +74,7 @@ public class HealthSelector extends HBox{
 	
 	private void createLevelBoxes() {
 		checkBoxes = new ArrayList<>();
-		for (int i = 0; i<myController.getNumLevels(); i++) {
+		for (int i = 0; i<myController.getNumLevelsForGame(); i++) {
 			checkBoxes.add(new CheckBox());
 			checkBoxes.get(i).setText(Integer.toString(i+1));
 		}
