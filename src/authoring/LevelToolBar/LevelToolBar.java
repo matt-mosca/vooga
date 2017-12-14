@@ -77,7 +77,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		this.getChildren().add(mySpriteDisplay);
 		myTabPane.setMaxSize(SIZE, WIDTH);
 		myTabPane.setPrefSize(SIZE, WIDTH);
-		editLevel = new Button("Edit Level");
+		editLevel = new Button("Edit Levels");
 		editLevel.setOnAction(e -> {
 			openLevelDisplay();
 		});

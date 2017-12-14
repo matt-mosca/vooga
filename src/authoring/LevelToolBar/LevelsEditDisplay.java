@@ -25,6 +25,7 @@ public class LevelsEditDisplay {
 	public LevelsEditDisplay(AuthoringController controller, EditDisplay display) {
 		myController = controller;
 		myStage = new Stage();
+		myStage.setTitle("Level Editor");
 		myRoot = new BorderPane();
 		myScene = new Scene(myRoot, SIZE, SIZE);
 		resourceEditor = new ResourceDisplay(controller);
@@ -37,8 +38,6 @@ public class LevelsEditDisplay {
 		myRoot.setRight(resourceEditor);
 		myRoot.setCenter(recorder);
 		myStage.setScene(myScene);
-
-//		myStage.show();
 	}
 	
 	
