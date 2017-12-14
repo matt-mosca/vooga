@@ -23,9 +23,9 @@ public class LevelsEditDisplay {
 	private HealthSelector health;
 	
 	public LevelsEditDisplay(AuthoringController controller, EditDisplay display) {
-//		myDisplay = display;
 		myController = controller;
 		myStage = new Stage();
+		myStage.setTitle("Level Editor");
 		myRoot = new BorderPane();
 		myScene = new Scene(myRoot, SIZE, SIZE);
 		resourceEditor = new ResourceDisplay(controller);
@@ -38,12 +38,13 @@ public class LevelsEditDisplay {
 		myRoot.setRight(resourceEditor);
 		myRoot.setCenter(recorder);
 		myStage.setScene(myScene);
-
-//		myStage.show();
 	}
 	
 	
 	public void open() {
 		myStage.show();
+		resourceEditor.updateCurrentState();
+		gameEnder.update();
+		recorder.update();
 	}
 }
