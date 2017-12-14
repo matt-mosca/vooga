@@ -8,9 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-public class GameHealthSelector extends HBox{
+public class GameHealthSelector extends VBox{
 	private final int HEALTH_DEFAULT = 100;
 	private ArrayList<CheckBox> checkBoxes;
 	private AuthoringController myController;
