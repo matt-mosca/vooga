@@ -51,9 +51,7 @@ public class audioClipTest extends Application {
 		
 		AudioClipFactory audio = new AudioClipFactory();
 		//Slider slider = new Slider(0,100,5);
-		MediaPlayerFactory mediaPlayerFactory = new  MediaPlayerFactory("src/MediaTesting/Call of Duty 4 Opening.mp4");
-		mediaPlayer= mediaPlayerFactory.getMediaPlayer();
-		MediaWindow mediaWindow = new MediaWindow(mediaPlayer);
+		MediaWindow mediaWindow = new MediaWindow("src/MediaTesting/Call of Duty 4 Opening.mp4");
 		mediaWindow.play();
 		//mediaViewer = new MediaView(mediaPlayer);
 		//mediaPlayer.play();
