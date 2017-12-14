@@ -87,8 +87,7 @@ public class ElementManager {
 		}
 		processWaveUpdate();
 		activeElements.forEach(this::processStepForElement);
-		activeElements.removeAll(deadElements);
-		activeElements.addAll(newElements);
+		activeElements.removeAll(deadElements);	
 	}
 
 	private void processWaveUpdate() {
@@ -175,14 +174,9 @@ public class ElementManager {
 
 	private void processAllCollisionsForElement(int elementIndex, GameElement element) {
 		for (int otherIndex = elementIndex + 1; otherIndex < activeElements.size(); otherIndex++) {
-			System.out.println("*********Collision between "+ elementIndex + " "+ otherIndex+"*********");
 			GameElement otherElement = activeElements.get(otherIndex);
 			if (element.collidesWith(otherElement)) {
-				/*System.out.println("--------------------------------------------------");
-				System.out.println(element.getImageUrl()+":"+element.getX() + " " + element.getY());
-				System.out.println(otherElement.getImageUrl()+":"+otherElement.getX() + " " + otherElement.getY());
-				System.out.println("--------------------------------------------------");
-				*/element.processCollision(getAllDamageAffectedElements(element,otherElement));
+				element.processCollision(getAllDamageAffectedElements(element,otherElement));
 				otherElement.processCollision(getAllDamageAffectedElements(otherElement,element));
 				playAudio(element.getCollisionAudio());
 				playAudio(otherElement.getCollisionAudio());
@@ -191,16 +185,12 @@ public class ElementManager {
 	}
 	
 	private List<GameElement> getAllDamageAffectedElements(GameElement collider, GameElement collidee) {
-		System.out.println("Getting damage dealing elements");
 		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(collider);
 		List<GameElement> allAffectedElements = spriteQueryHandler.
 				getAllElementsWithinRange(collider.getPlayerId(), new Point2D(collider.getX(), collider.getY()), exclusionOfSelf, collider.getBlastRadius());
-		//System.out.println("All affected elements");
-		//System.out.println(allAffectedElements);
 		if(!allAffectedElements.contains(collidee)) {
 			allAffectedElements.add(collidee);
 		}
-		//System.out.println("Affected Enemies="+ ""+allAffectedElements);
 		return allAffectedElements;
 	}
 
@@ -216,32 +206,17 @@ public class ElementManager {
 		String elementTemplateName;
 		
 		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) && (elementTemplateName = element.fire()) != null) {
-			//System.out.println(nearestTargetLocation);
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
 			try {
-				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
-				newElements.add(projectile);
-				// can add to templateToIdMap here
-				
-			} catch (ReflectiveOperationException failedToGenerateProjectileException) {
-				// don't generate the projectile
-				// TODO - throw exception? (prob not)
-			}
-			playAudio(element.getFiringAudio());
-			// Use player id of firing element rather than projectile? This allows greater
-			// flexibility
-			try {
 				GameElement projectileGameElement = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
-				
 				newElements.add(projectileGameElement);
-				//System.out.println("projectile added**************************");
 			} catch (ReflectiveOperationException e) {
 				//System.out.println("Failed to  create projectile--------------------------");
 			}
-
+			playAudio(element.getFiringAudio());
 		}
-
+		
 	}
 	
 	private GameElement getNearestEnemyElement(GameElement element) {
@@ -258,10 +233,9 @@ public class ElementManager {
 	}
 	
 	private void playAudio(String audioUrl) {
-		if(audioUrl != null)
-		{
-			//audioClipFactory = new AudioClipFactory(audioUrl);
-			audioClipFactory = new AudioClipFactory();
+		if(audioUrl != null) {
+			System.out.println(audioUrl);
+			audioClipFactory = new AudioClipFactory(audioUrl);
 			audioClipFactory.getAudioClip().play();
 		}
 	}
