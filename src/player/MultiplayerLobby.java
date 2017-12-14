@@ -486,17 +486,19 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	private void handleUserJoinedRoom(String userName) {
-		notificationBar.setText("User " + userName + " joined!");
-		if(!username.equals("bot"));
+		if(!userName.equals("bot")) {
 			notificationBar.show();
+			notificationBar.setText("User " + userName + " joined!");
+		}
 		System.out.println("User " + userName + " joined!");
 		players.setNames(multiClient.getPlayerNames());
 	}
 
 	private void handleUserExitedRoom(String userName) {
-		notificationBar.setText("User " + userName + " exited!");
-		if(!username.equals("bot"));
+		if(!userName.equals("bot")) {
+			notificationBar.setText("User " + userName + " exited!");
 			notificationBar.show();
+		}
 		System.out.println("User " + userName + "exited!");
 		players.setNames(multiClient.getPlayerNames());
 	}
