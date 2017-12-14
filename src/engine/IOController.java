@@ -311,7 +311,7 @@ public class IOController {
 	 *            true if for authoring, false if for play - TODO - more flexible
 	 *            approach? reflection?
 	 */
-	public void saveGameStateForMultipleLevels(File saveName, Map<Integer, String> serializedLevelsData,
+	public void saveGameStateForMultipleLevels(String saveName, Map<Integer, String> serializedLevelsData,
 			boolean forAuthoring) {
 		String serializedGameData = serializationUtils.serializeLevelsData(serializedLevelsData);
 		// gamePersistence.saveGameState(getResolvedGameName(saveName, forAuthoring),
