@@ -483,7 +483,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		}
 	}
 
-	public int getMaxLevel() {
-		return myBottomToolBar.getMaxLevel();
-	}
+//	public int getMaxLevel() {
+//		return myBottomToolBar.getMaxLevel();
+//	}
 }
