@@ -54,10 +54,7 @@ public class CollisionHandler {
     }
 
     public void processCollision(CollisionHandler other) {
-    	if(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0) {
-    		//System.out.println("collison between " + this.getImageUrl() + " & " + other.getImageUrl());
-    		other.collisionVisitable.accept(collisionVisitor);
-    	}
+    	other.collisionVisitable.accept(collisionVisitor);
     }
 
     public boolean isBlocked() {

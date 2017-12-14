@@ -269,6 +269,18 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public int getLevelPointQuota(int level) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getLevelTimeLimit(int level) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	protected void writeRequestBytes(byte[] requestBytes) {
 		try {
