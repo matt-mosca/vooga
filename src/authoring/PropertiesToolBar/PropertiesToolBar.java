@@ -67,7 +67,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	private Label projectileLabel;
 	private HBox projectileSlot;
 	private Button deleteButton;
-	private ReturnButton retB;
+	//private ReturnButton retB;
 	private CreationInterface created;
 	private AuthoringController myController;
 	private Map<String, Object> basePropertyMap;
@@ -87,7 +87,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	public PropertiesToolBar(EditDisplay display, AuthoringController controller) {
 		this.display = display;
 		myDisplay = display;
-		retB = new ReturnButton(display);
+		//retB = new ReturnButton(display);
 		myController = controller;
 		availableProjectiles = new ArrayList<>();
 		newTower = new NewTowerTab(display);   
@@ -108,7 +108,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
-        this.getChildren().add(retB);
+        //this.getChildren().add(retB);
         
         
         newTower.attach(topTabPane.getTabs().get(0));
@@ -175,7 +175,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(topTabPane);
 		this.getChildren().add(bottomTabPane);
-		this.getChildren().add(retB);
+		//this.getChildren().add(retB);
 	}
 	
 	public void addToMap(String property, String value) {
