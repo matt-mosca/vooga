@@ -24,7 +24,7 @@ public class VoogaException extends Throwable {
 	}
 
 	/**
-	 * Get the message associated with a particular SLogo exception.
+	 * Get the message associated with a particular Vooga exception.
 	 *
 	 * @return the appropriate message for the exception type, obtained through reflection on the exception name
 	 */

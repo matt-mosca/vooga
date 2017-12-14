@@ -15,6 +15,7 @@ public class GameEnderConditions extends VBox {
 	private ComboBox<String> defeat;
 	private ArrayList<CheckBox> checkBoxes;
 	private GameEnderRecorder recorder;
+	private GamePointSelector pointManager;
 
 	public GameEnderConditions(AuthoringController controller) {
 		myController = controller; 
@@ -43,6 +44,7 @@ public class GameEnderConditions extends VBox {
 		for (int i = 0; i<myController.getNumLevelsForGame(); i++) {
 			checkBoxes.add(new CheckBox());
 			checkBoxes.get(i).setText(Integer.toString(i+1));
+			checkBoxes.get(i).setAllowIndeterminate(false);
 		}
 		this.getChildren().addAll(checkBoxes);
 		
@@ -50,6 +52,7 @@ public class GameEnderConditions extends VBox {
 
 	private void record() {
 		int currLevel = myController.getCurrentLevel();
+		ArrayList<Integer> selectedPointLevels = new ArrayList<>();
 		for(int i = 0; i<myController.getNumLevelsForGame(); i++) {
 			myController.setLevel(i+1);
 			if (checkBoxes.get(i).isSelected()) {
@@ -59,15 +62,22 @@ public class GameEnderConditions extends VBox {
 				if(defeat.getValue()!=null) {
 					myController.setDefeatCondition(defeat.getValue());	
 				}
+				if(victory.getValue().equals("points target reached")) {
+					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i).getText()));
+				}
+				checkBoxes.get(i).fire();
 		}
+	
 	}
+		if (selectedPointLevels.size()>0) {
+			pointManager.createCheckBoxes(selectedPointLevels);    
+			pointManager.show();
+		}
+		
+		victory.setValue(null);
+		defeat.setValue(null);
 		myController.setLevel(currLevel);
-		this.getChildren().clear();
-		Label completed = new Label("You have added your win and loss conditions!"
-				+ " Remember that every level must have a condition.");
-		completed.setWrapText(true);
-		this.getChildren().add(completed);
-		addMiscElements();
+		
 		recorder.update();
 	}
 	
@@ -80,5 +90,9 @@ public class GameEnderConditions extends VBox {
 	public void setRecorder(GameEnderRecorder r) {
 		recorder = r;
 		
+	}
+
+	public void setPointRecorder(GamePointSelector points) {
+		pointManager = points;
 	}
 }
