@@ -160,7 +160,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		}
 		Map<String, Object> waveProperties = new HashMap<>();
         waveProperties.putAll(myProperties);
-        waveProperties.put("templatesToFire", elementsToSpawn);
+        //waveProperties.put("Elements to fire", elementsToSpawn);
         waveProperties.put("Projectile Type Name", mySpriteId);
 		for (String levelDotWave : levelWaveArray) {
 			int level = Integer.valueOf(levelDotWave.split("\\.+")[LEVEL_INDEX]);			
@@ -170,14 +170,14 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 				try { 
 					List<String> waveElements = levelToData.get(level).waveInfo.get(wave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
 					waveElements.addAll(elementsToSpawn);
-					waveProperties.put("templatesToFire", waveElements);
+					waveProperties.put("Elements to fire", waveElements);
 					myController.editWaveProperties(levelToData.get(level).waveInfo.get(wave).waveId,
 							waveProperties, waveElements, location);
 				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 				//TODO: Refactor code below for changing map
-				List<ImageView> tempArray = new ArrayList<ImageView>();
+				List<ImageView> tempArray = new ArrayList<>();
 				tempArray.addAll(levelToData.get(level).waveInfo.get(wave).spriteNames);
 				tempArray.addAll(imageList);
 				levelToData.get(level).waveInfo.get(wave).spriteNames = tempArray;
