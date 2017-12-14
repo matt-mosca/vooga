@@ -7,7 +7,7 @@ package networking;
  */
 public class MultiPlayerServer extends AbstractGameServer {
 
-	private MultiPlayerController multiPlayerController = new MultiPlayerController();
+	private MultiPlayerController multiPlayerController;
 
 	public MultiPlayerServer() {
 		super();

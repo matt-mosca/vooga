@@ -13,6 +13,7 @@ public abstract class AbstractGameServer extends AbstractServer {
 		handlers = new HashSet<>();
 		// Register binding / observable on controller for push notifications
 		getController().registerNotificationStreamListener(e -> {
+			System.out.println("Processing notification");
 			while (e.next()) {
 				e.getAddedSubList().stream().forEach(addedMessage -> pushNotification(addedMessage.toByteArray()));				
 			}
@@ -40,7 +41,6 @@ public abstract class AbstractGameServer extends AbstractServer {
 				// TODO - handle ?
 			}
 		});
-
 	}
 	
 }
