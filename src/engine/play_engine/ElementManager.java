@@ -233,10 +233,9 @@ public class ElementManager {
 	}
 	
 	private void playAudio(String audioUrl) {
-		if(audioUrl != null)
-		{
-			//audioClipFactory = new AudioClipFactory(audioUrl);
-			audioClipFactory = new AudioClipFactory();
+		if(audioUrl != null) {
+			System.out.println(audioUrl);
+			audioClipFactory = new AudioClipFactory(audioUrl);
 			audioClipFactory.getAudioClip().play();
 		}
 	}
