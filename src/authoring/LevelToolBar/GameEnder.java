@@ -26,7 +26,6 @@ public class GameEnder extends VBox{
 	public GameEnder(AuthoringController controller, EditDisplay edit) {
 		myController = controller; 
 		this.setPrefWidth(300);
-//		myDisplay = edit;
 		selectedLevels = new HashSet<Integer>();
 		addMiscElements();
 		}
@@ -82,12 +81,15 @@ public class GameEnder extends VBox{
 		recorder.update();
 	}
 	
-	public Set<Integer>getSelectedLevels() {
-		return selectedLevels;
+
+	public void update() {
+		this.getChildren().removeAll(checkBoxes);
+		createLevelBoxes();
 	}
-	
-	public void setRecorder(GameEnderRecorder v) {
-		recorder = v;
+
+	public void setRecorder(GameEnderRecorder r) {
+		recorder = r;
+		
 	}
 	
 }
