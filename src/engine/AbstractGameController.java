@@ -534,10 +534,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	private void initialize() {
 		// To adjust for 1-indexing
-		initializeLevel();
+//		initializeLevel();
+		
 		getLevelWaves().add(new ArrayList<>());
 		getLevelWaveTemplates().add(new HashMap<>());
-		setLevel(1);
+		setLevel(0);
 	}
 
 	private void initializeLevel() {
@@ -548,6 +549,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelDescriptions().add(new String());
 		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
 		getLevelHealths().add(0);
+		levelWaves.add(new ArrayList<>());
+		levelWaveTemplates.add(new HashMap<>());
 		initializeLevelConditions();
 	}
 

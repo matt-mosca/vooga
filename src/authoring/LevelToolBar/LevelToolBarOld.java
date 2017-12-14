@@ -32,12 +32,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class LevelToolBarCopy extends VBox implements TabInterface, ButtonInterface {
+public class LevelToolBarOld extends VBox implements TabInterface, ButtonInterface {
 	private static final int SIZE = 400;
 	private static final int WIDTH = 100;
 	private static final int X_LAYOUT = 260;
 	private static final int Y_LAYOUT = 470;
-	private static final int STARTING_LEVEL = 1;
+	private static final int STARTING_LEVEL = 0;
 	private static final int LEVEL_INDEX = 0;
 
 	private AuthoringController myController;
@@ -63,7 +63,7 @@ public class LevelToolBarCopy extends VBox implements TabInterface, ButtonInterf
 
     private ClientMessageUtils clientMessageUtils;
 
-	public LevelToolBarCopy(EditDisplay created, AuthoringController controller, ScrollableArea area) {
+	public LevelToolBarOld(EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		myScrollableArea = area;
 		currentLevel = STARTING_LEVEL;
 		myCreated = created;
@@ -325,38 +325,38 @@ public class LevelToolBarCopy extends VBox implements TabInterface, ButtonInterf
     }
 }
 
-class Data0 {
-    List<ImageView> spriteNames;
-    Integer waveId;
-    
-    Data0(List<ImageView> spriteNames, Integer waveId) {
-        this.spriteNames = spriteNames;
-        this.waveId = waveId;
-    }
-} 
-
-
-
-class LevelData0 {
-	Map<Integer, List<ImageView>> waveInfo;
-	
-	LevelData0() {
-		waveInfo.put(1, new ArrayList<ImageView>());
-	}
-	
-	private void addWave() {
-		waveInfo.put(waveInfo.size()+1, new ArrayList<ImageView>());
-	}
-	
-	private void deleteWave(int waveNum) {
-		
-	}
-	
-	private boolean containsKey(int waveNum) {
-		return waveInfo.containsKey(waveNum);
-	}
-	
-	private Integer getWaves() {
-		return waveInfo.size();
-	}
-}
+//class Data {
+//    List<ImageView> spriteNames;
+//    Integer waveId;
+//
+//    Data(List<ImageView> spriteNames, Integer waveId) {
+//        this.spriteNames = spriteNames;
+//        this.waveId = waveId;
+//    }
+//} 
+//
+//
+//
+//class LevelData {
+//	Map<Integer, List<ImageView>> waveInfo;
+//	
+//	LevelData() {
+//		waveInfo.put(0, new ArrayList<ImageView>());
+//	}
+//	
+//	private void addWave() {
+//		waveInfo.put(waveInfo.size()+1, new ArrayList<ImageView>());
+//	}
+//	
+//	private void deleteWave(int waveNum) {
+//		
+//	}
+//	
+//	private boolean containsKey(int waveNum) {
+//		return waveInfo.containsKey(waveNum);
+//	}
+//	
+//	private Integer getWaves() {
+//		return waveInfo.size();
+//	}
+//}

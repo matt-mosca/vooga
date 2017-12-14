@@ -37,14 +37,16 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	private static final int WIDTH = 100;
 	private static final int X_LAYOUT = 260;
 	private static final int Y_LAYOUT = 470;
-	private static final int STARTING_LEVEL = 1;
+	private static final int STARTING_LEVEL = 0;
 	private static final int LEVEL_INDEX = 0;
+	private static final int WAVE_INDEX = 0;
+	private static final int USER_OFFSET = 1;
 
 	private AuthoringController myController;
 	private TabPane myTabPane;
-	private List<LevelTab> myLevels;
-	private List<GameArea> myGameAreas;
-	private List<List<ImageView>> mySprites;
+//	private List<LevelTab> myLevels;
+//	private List<GameArea> myGameAreas;
+//	private List<List<ImageView>> mySprites;
 	private ScrollableArea myScrollableArea;
 	private WaveDisplay myWaveDisplay;
 	private TabFactory tabMaker;
@@ -54,32 +56,35 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	private EditDisplay myCreated;
 	private SpriteDisplayer mySpriteDisplay;
 	private LevelsEditDisplay myLevelDisplayer;
-	private Map<Integer, Integer> wavesPerLevel;
+//	private Map<Integer, Integer> wavesPerLevel;
 	private Map<String, Object> myProperties;
 	private List<String> elementsToSpawn;
-	private Map<String, Data> waveToData;
-	private NewWaveButton myNewWaveButton;
+//	private Map<String, Data> waveToData;
+//	private NewWaveButton myNewWaveButton;
 	private int startingLevels;
+	private Map<Integer, LevelData> levelToData;
+	private NewWaveButton myNewWaveButton;
 
     private ClientMessageUtils clientMessageUtils;
 
 	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
+		levelToData = new TreeMap<Integer, LevelData>();
+		levelToData.put(0, new LevelData(controller));
 		myScrollableArea = area;
 		currentLevel = STARTING_LEVEL;
 		myCreated = created;
 		myController = controller;
 		clientMessageUtils = new ClientMessageUtils();
-		myGameAreas = new ArrayList<>();
 		this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 		this.setWidth(SIZE);
-		myLevels = new ArrayList<>();
-		mySprites = new ArrayList<>();
-		mySprites.add(new ArrayList<>());
+//		mySprites = new ArrayList<>();
+//		mySprites.add(new ArrayList<>());
+		/** 
+		 * NewLevel Button needs to change. Use ButtonFactory
+		 */
 		newLevel = new Button("New Level");
 		myNewWaveButton = new NewWaveButton(this);
-		wavesPerLevel = new TreeMap<Integer, Integer>();
-		waveToData = new TreeMap<String, Data>();
 		newLevel.setOnAction(e -> addLevel());
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
@@ -97,7 +102,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		this.getChildren().add(editLevel);
 		this.getChildren().add(myNewWaveButton);
 		loadLevels();
-		created.setGameArea(myGameAreas.get(0));
+		created.setGameArea(levelToData.get(0).myGameArea);
 		createProperties();
 	}
 
@@ -127,7 +132,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	
 	@Override
 	public void makeNewWave() {
-		wavesPerLevel.put(currentLevel, wavesPerLevel.get(currentLevel)+1);
+		levelToData.get(currentLevel).addWave();
 		updateWaveDisplay();
 	}
 
@@ -143,7 +148,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 			addLevel();
 			return;
 		}
-		for (int i = 1; i <= startingLevels; i++) {
+		for (int i = 0; i < startingLevels; i++) {
 			addLevel();
 			initializeSprites(i);
 		}
@@ -151,24 +156,26 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	
 	@Override
 	public void addLevel() {
-		mySprites.add(new ArrayList<>());
-		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myLevels.size() + 1), null, myTabPane);
+//		mySprites.add(new ArrayList<>());
+		myController.setLevel(levelToData.size()); 
+		levelToData.put(levelToData.size(), new LevelData(myController));
+		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(levelToData.size()), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);
-		LevelTab newLv = new LevelTab(myLevels.size() + 1, myController);
-		myGameAreas.add(new GameArea(myController));
-		myController.setLevel(myLevels.size() + 1); 
-		wavesPerLevel.put(myLevels.size()+1, 1);
-		if (myLevels.size() == 0) {
-			newTab.setClosable(false);
-		} else {
-			newTab.setOnClosed(e -> deleteLevel(newLv.getLvNumber()));
-		}
+		LevelTab newLv = new LevelTab(levelToData.size(), myController);
+		/**
+		 * Make the tabs closeable later
+		 */
+//		if (levelToData.size() == 0) {
+//			newTab.setClosable(false);
+//		} else {
+//			newTab.setOnClosed(e -> deleteLevel(newLv.getLvNumber()));
+//		}
 		newTab.setOnSelectionChanged(e -> changeDisplay(newLv.getLvNumber()));
 		newLv.attach(newTab);
-		myLevels.add(newLv);
+		levelToData.get(0).myLevelTab = newLv;
 		myTabPane.getTabs().add(newTab);
 	}
-
+	
 	// TODO need load in static object rather than just imageview
 	private void initializeSprites(int level) {
 		try {
@@ -184,7 +191,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 			savedObject.setX(imageView.getX());
 			savedObject.setY(imageView.getY());
 			savedObject.setImageView(imageView);
-			myGameAreas.get(level - 1).addBackObject(savedObject);
+			levelToData.get(level).myGameArea.addBackObject(savedObject);
 		}
 	}
 	
@@ -210,29 +217,29 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		 * strategy. Waiting for backend integration of round robin firing strategy
 		 */
 		for (String levelDotWave : levelWaveArray) {
-			int level = Integer.valueOf(levelDotWave.split("\\.+")[LEVEL_INDEX]);
+			int level = Integer.valueOf(levelDotWave.split("\\.+")[LEVEL_INDEX]) - USER_OFFSET;			
+			int wave = Integer.valueOf(levelDotWave.split("\\.+")[WAVE_INDEX]) - USER_OFFSET;
 			myController.setLevel(level);
-			if (waveToData.containsKey(levelDotWave)) {
+			if (levelToData.containsKey(level)) {
 				try {
-					System.out.println("DEBUG");
-					System.out.println(levelDotWave);
-					List<String> waveElements = waveToData.get(levelDotWave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
+					List<String> waveElements = levelToData.get(level).waveInfo.get(wave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
 					waveElements.addAll(elementsToSpawn);
 					System.out.println(elementsToSpawn.toString());
 					waveProperties.put("templatesToFire", waveElements);
-					myController.editWaveProperties(waveToData.get(levelDotWave).waveId-1, 
+					myController.editWaveProperties(levelToData.get(level).waveInfo.get(wave).waveId,
 							waveProperties, waveElements, location);
 				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 				//TODO: Refactor code below for changing map
-				List<ImageView> tempArray = new ArrayList<ImageView>();
-				tempArray.addAll(waveToData.get(levelDotWave).spriteNames);
+				List<ImageView> tempArray = levelToData.get(level).waveInfo.get(levelDotWave).spriteNames;
 				tempArray.addAll(imageList);
-				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
+				levelToData.get(level).waveInfo.get(wave).spriteNames = tempArray;
+
+//				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
 			} else {
-					waveToData.put(levelDotWave, new Data(imageList,
-							myController.createWaveProperties(myProperties, elementsToSpawn, location)));
+				levelToData.get(level).waveInfo.get(wave).waveId = 
+						myController.createWaveProperties(myProperties, elementsToSpawn, location);
 			}
 		}
 		updateImages();
@@ -246,83 +253,82 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		return currLevel + "." + currWave;
 	}
 
-	private void deleteLevel(int lvNumber) {
-		myController.deleteLevel(lvNumber);
-		myLevels.remove(lvNumber - 1);
-		myGameAreas.remove(lvNumber - 1);
-		for (int i = lvNumber - 1; i < myLevels.size(); i++) {
-			myLevels.get(i).decrementLevel();
-			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i + 1));
-		}
-		waveToData = updateDataMap(lvNumber);
-	}
+//	private void deleteLevel(int lvNumber) {
+//		myController.deleteLevel(lvNumber);
+//		myLevels.remove(lvNumber - 1);
+//		myGameAreas.remove(lvNumber - 1);
+//		for (int i = lvNumber - 1; i < myLevels.size(); i++) {
+//			myLevels.get(i).decrementLevel();
+//			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i + 1));
+//		}
+//		waveToData = updateDataMap(lvNumber);
+//	}
 
-	public Map<String,Data> updateDataMap(int levelRemoved) {
-		Map<String, Data> tempMap = new TreeMap<String, Data>();
-		waveToData.keySet().stream().forEach(waveKey -> {
-			int level = Integer.valueOf(waveKey.split("\\.+")[0]);
-			int wave = Integer.valueOf(waveKey.split("\\.+")[1]);
-			if (level < levelRemoved) tempMap.put(waveKey, waveToData.get(waveKey));
-			if (level > levelRemoved) {
-				tempMap.put(waveAndLevel(level-1, wave),
-						waveToData.get(waveKey));
-			}
-		});
-		return tempMap;
-	}
+//	public Map<String,Data> updateDataMap(int levelRemoved) {
+//		Map<String, Data> tempMap = new TreeMap<String, Data>();
+//		waveToData.keySet().stream().forEach(waveKey -> {
+//			int level = Integer.valueOf(waveKey.split("\\.+")[0]);
+//			int wave = Integer.valueOf(waveKey.split("\\.+")[1]);
+//			if (level < levelRemoved) tempMap.put(waveKey, waveToData.get(waveKey));
+//			if (level > levelRemoved) {
+//				tempMap.put(waveAndLevel(level-1, wave),
+//						waveToData.get(waveKey));
+//			}
+//		});
+//		return tempMap;
+//	}
 	
-	public Map<String,Data> updateDataMap(int levelRemoved, int waveRemoved) {
-		Map<String, Data> tempMap = new TreeMap<String, Data>();
-		waveToData.keySet().stream().forEach(waveKey -> {
-			int level = Integer.valueOf(waveKey.split("\\.+")[0]);
-			int wave = Integer.valueOf(waveKey.split("\\.+")[1]);
-			//Check this logic
-			if (level != levelRemoved || wave < levelRemoved) tempMap.put(waveKey, waveToData.get(waveKey));
-			else if (wave > levelRemoved) {
-				tempMap.put(waveAndLevel(level, wave-1), waveToData.get(waveKey));
-			}
-		});
-		wavesPerLevel.put(levelRemoved, wavesPerLevel.get(levelRemoved)-1);
-		return tempMap;
-	}
+//	public Map<String,Data> updateDataMap(int levelRemoved, int waveRemoved) {
+//		Map<String, Data> tempMap = new TreeMap<String, Data>();
+//		waveToData.keySet().stream().forEach(waveKey -> {
+//			int level = Integer.valueOf(waveKey.split("\\.+")[0]);
+//			int wave = Integer.valueOf(waveKey.split("\\.+")[1]);
+//			//Check this logic
+//			if (level != levelRemoved || wave < levelRemoved) tempMap.put(waveKey, waveToData.get(waveKey));
+//			else if (wave > levelRemoved) {
+//				tempMap.put(waveAndLevel(level, wave-1), waveToData.get(waveKey));
+//			}
+//		});
+//		wavesPerLevel.put(levelRemoved, wavesPerLevel.get(levelRemoved)-1);
+//		return tempMap;
+//	}
 
 
 	private void updateWaveDisplay() {
-        myWaveDisplay.addTabs(wavesPerLevel.get(currentLevel));
+        myWaveDisplay.addTabs(levelToData.get(currentLevel).waveInfo.size());
         updateImages();
     }
 
     public void changeDisplay(int i) {
         currentLevel = i;
-        myScrollableArea.changeLevel(myGameAreas.get(i - 1));
-        myCreated.setDroppable(myGameAreas.get(i - 1));
+        myScrollableArea.changeLevel(levelToData.get(i).myGameArea);
+        myCreated.setDroppable(levelToData.get(i).myGameArea);
         myController.setLevel(i);
-        myCreated.setGameArea(myGameAreas.get(i - 1));
+        myCreated.setGameArea(levelToData.get(i).myGameArea);
         updateWaveDisplay();
         updateImages();
     }
 
     public void updateImages() {
         mySpriteDisplay.clear();
-        if (waveToData.get(currentLevel + "." + myWaveDisplay.getCurrTab()) != null) {
-            mySpriteDisplay.addToScroll(waveToData.get(currentLevel + "." + myWaveDisplay.getCurrTab()).spriteNames);
+        if (levelToData.get(currentLevel) != null) {
+        	mySpriteDisplay.addToScroll(levelToData.get(currentLevel).waveInfo.get(myWaveDisplay.getCurrTab()).spriteNames);
         }
     }
 
 	@Override
 	public void waveDeleted(int waveNumber) {
-		waveToData = updateDataMap(currentLevel, waveNumber);
-		
+//		waveToData = updateDataMap(currentLevel, waveNumber);
 	}
 
 	public int getMaxLevel() {
-        return myLevels.size();
+		return levelToData.size()-1; //Maybe not -1 idk with this new indexing thing how we're counting lol
     }
 
-    public void addLevelProperties(ImageView currSprite, int level) {
-        myLevels.get(level - 1).update(currSprite);
-
-    }
+//    public void addLevelProperties(ImageView currSprite, int level) {
+//        myLevels.get(level - 1).update(currSprite);
+//    }
+	//Not used?
 }
 
 class Data {
@@ -338,14 +344,19 @@ class Data {
 
 
 class LevelData {
-	Map<Integer, List<ImageView>> waveInfo;
+	Map<Integer, Data> waveInfo;
+	GameArea myGameArea;
+	LevelTab myLevelTab;
+	AuthoringController myController;
 	
-	LevelData() {
-		waveInfo.put(1, new ArrayList<ImageView>());
+	LevelData(AuthoringController myController) {
+		this.myController = myController;
+		waveInfo.put(0, new Data(new ArrayList<>(), null));
+		myGameArea = new GameArea(myController);
 	}
 	
-	private void addWave() {
-		waveInfo.put(waveInfo.size()+1, new ArrayList<ImageView>());
+	public void addWave() {
+		waveInfo.put(waveInfo.size()+1, new Data(new ArrayList<>(), null));
 	}
 	
 	private void deleteWave(int waveNum) {
