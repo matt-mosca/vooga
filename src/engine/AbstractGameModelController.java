@@ -88,6 +88,10 @@ public interface AbstractGameModelController {
 	int getCurrentLevel();
 
 	int getLevelHealth(int level);
+	
+	int getLevelPointQuota(int level);
+	
+	int getLevelTimeLimit(int level);
 
 	Set<String> getInventory();
 
