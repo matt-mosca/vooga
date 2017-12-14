@@ -258,6 +258,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private void addLoadedSprites() {
 		for(ImageView spriteImage:clientMessageUtils.getNewImageViews()) {
+			System.out.println("NEW ELEMENT");
+			myPlayArea.getChildren().add(spriteImage);
 			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
 				//TODO add method here that let's you mark the object via the controller if we want to play whack-a-mole
 			});
