@@ -198,14 +198,6 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		}
 		updateImages();
 	}
-	
-	private String levelAndWave() {
-		return waveAndLevel(currentLevel, myWaveDisplay.getCurrTab());
-	}
-	
-	private String waveAndLevel(int currLevel, int currWave) {
-		return currLevel + "." + currWave;
-	}
 
 	private void deleteLevel(int lvNumber) {
 		myController.deleteLevel(lvNumber);
@@ -329,14 +321,5 @@ class LevelData {
 	
 	public void changeTab(LevelTab newTab) {
 		myLevelTab = newTab;
-	}
-	
-	
-	private boolean containsKey(int waveNum) {
-		return waveInfo.containsKey(waveNum);
-	}
-	
-	private Integer getWaves() {
-		return waveInfo.size();
 	}
 }
