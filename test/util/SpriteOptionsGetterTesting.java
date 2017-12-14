@@ -1,5 +1,7 @@
 package util;
 
+import engine.game_elements.ElementOptionsGetter;
+
 import java.util.HashMap;
 import java.util.Map;
 

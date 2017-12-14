@@ -53,7 +53,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private MuteButton myMuteButton;
 	private MediaPlayerFactory myMediaPlayerFactory;
 	private MediaPlayer myMediaPlayer;
-	private String backgroundSong = "src/MediaTesting/101 - opening.mp3";
+	private String backgroundSong = "data/audio/101 - opening.mp3";
 
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background, currentStage);
