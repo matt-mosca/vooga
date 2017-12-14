@@ -48,12 +48,14 @@ public class CollisionHandler {
 
 
     public boolean collidesWith(CollisionHandler other) {
-        return other.graphicalRepresentation.getBoundsInLocal()
-                .intersects(this.graphicalRepresentation.getBoundsInLocal());
+        return (other.graphicalRepresentation.getBoundsInLocal()
+                .intersects(this.graphicalRepresentation.getBoundsInLocal())) && 
+        		(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0);
     }
 
     public void processCollision(CollisionHandler other) {
     	if(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0) {
+    		//System.out.println("collison between " + this.getImageUrl() + " & " + other.getImageUrl());
     		other.collisionVisitable.accept(collisionVisitor);
     	}
     }
