@@ -154,20 +154,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 
-<<<<<<< HEAD
-    @Override
-    public void deleteLevel(int level) throws IllegalArgumentException {
-        getLevelStatuses().remove(level);
-        getLevelSprites().remove(level);
-        getLevelConditions().remove(level);
-        getLevelDescriptions().remove(level);
-    }
-
-    @Override
-    public Map<String, List<String>> getElementBaseConfigurationOptions() {
-        return getGameElementFactory().getElementBaseConfigurationOptions();
-    }
-
     @Override
     public int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
                                     Point2D spawningPoint) {
@@ -257,13 +243,6 @@ public class AuthoringController extends AbstractGameController implements Autho
     	audioMap.put(level,audioUrl);
     }
 
-    private void updateElementsRetroactively(String elementName, Map<String, Object> propertiesToUpdate) {
-        Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
-        for (int elementId : idsForTemplate) {
-            updateElementPropertiesById(elementId, propertiesToUpdate);
-        }
-    }
-
     private void updateElementPropertiesById(int elementId, Map<String, Object> propertiesToUpdate) {
         // TODO - can't use old method
     }
@@ -299,8 +278,8 @@ public class AuthoringController extends AbstractGameController implements Autho
     private int getLevelsForCurrentGame() {
         return getNumLevelsForGame(getGameName(), true);
     }
-=======
-	@Override
+
+    @Override
 	public void deleteLevel(int level) throws IllegalArgumentException {
 		getLevelStatuses().remove(level);
 		getLevelSprites().remove(level);
@@ -313,92 +292,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 		return getGameElementFactory().getElementBaseConfigurationOptions();
 	}
 
-	@Override
-	public int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
-			Point2D spawningPoint) {
-		String waveName = getNameForWave();
-		defineElement(waveName, waveProperties);
-		if (getLevelWaveTemplates().size() == getCurrentLevel()) {
-			getLevelWaveTemplates().add(new HashMap<>());
-		}
-		getLevelWaveTemplates().get(getCurrentLevel()).put(waveName, spawningPoint);
-		// waveIdMap.put(gameWaveCounter.getAndIncrement(), waveName);
-		// int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
-		// save this to level waves
-		// getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
-		return gameWaveCounter.getAndIncrement();
-	}
 
-	@Override
-	public void editWaveProperties(int waveId, Map<String, Object> updatedProperties,
-			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException {
-		String waveName = getNameForWaveNumber(getCurrentLevel(), waveId);
-		// Overwrite the template
-		defineElement(waveName, updatedProperties);
-		if (getLevelWaveTemplates().size() == getCurrentLevel()) {
-			getLevelWaveTemplates().add(new HashMap<>());
-		}
-		getLevelWaveTemplates().get(getCurrentLevel()).put(waveName, newSpawningPoint);
-		// deleteOutdatedWave(waveId);
-		// Place the new wave
-		// int newSpriteId = placeElement(waveName, newSpawningPoint,
-		// newElementNamesToSpawn);
-		// GameElement newWave = getSpriteIdMap().get(newSpriteId);
-		// getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
-	}
-
-	@Override
-	public Map<String, Object> getWaveProperties(int waveNum) {
-		return getTemplateProperties(getNameForWaveNumber(getCurrentLevel(), waveNum));
-	}
-
-	@Override
-	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
-		return getGameElementFactory().getAuxiliaryElementProperties(baseConfigurationChoices);
-	}
-
-	@Override
-	public Collection<String> getPossibleVictoryConditions() {
-		return getGameConditionsReader().getPossibleVictoryConditions();
-	}
-
-	@Override
-	public Collection<String> getPossibleDefeatConditions() {
-		return getGameConditionsReader().getPossibleDefeatConditions();
-	}
-
-	@Override
-	public Map<String, Collection<Integer>> getCurrentVictoryConditions() {
-		return getCurrentConditions(VICTORY);
-	}
-
-	@Override
-	public Map<String, Collection<Integer>> getCurrentDefeatConditions() {
-		return getCurrentConditions(DEFEAT);
-	}
-
-	@Override
-	public Map<String, List<Map<String, Object>>> getAllDefinedElementUpgrades() {
-		return getGameElementUpgrader().getSpriteUpgradesForEachTemplate();
-	}
-
-	@Override
-	public int cacheAndCreateIdentifier(String elementTemplateName, GameElement gameElement) {
-		int spriteId = super.cacheAndCreateIdentifier(elementTemplateName, gameElement);
-		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementTemplateName, new HashSet<>());
-		idsForTemplate.add(spriteId);
-		templateToIdMap.put(elementTemplateName, idsForTemplate);
-		return spriteId;
-	}
-
-	public void setAudioUrlForPlayer(int level, String audioUrl) {
-		audioMap.put(level, audioUrl);
-	}
 
 	public Collection<ElementBaseConfigurationOption> packageElementBaseConfigurationOptions() {
 		return getServerMessageUtils().packageElementBaseConfigurationOptions(getElementBaseConfigurationOptions());
 	}
->>>>>>> 728d40db786fe55185cd061a241336adcf7155fa
 
 	public Collection<AuxiliaryElementConfigurationOption> packageAuxiliaryElementConfigurationOptions(
 			Map<String, String> baseConfigurationChoices) {
@@ -426,14 +324,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 		return getServerMessageUtils().packageConditionAssignments(getCurrentDefeatConditions());
 	}
 
-	@Override
-	protected void assertValidLevel(int level) throws IllegalArgumentException {
-		if (level <= 0 || level > getLevelSprites().size()) {
-			throw new IllegalArgumentException();
-			// TODO - customize exception ?
-		}
-	}
-
 	private void updateElementsRetroactively(String elementName, Map<String, Object> propertiesToUpdate) {
 		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
 		for (int elementId : idsForTemplate) {
@@ -441,40 +331,5 @@ public class AuthoringController extends AbstractGameController implements Autho
 		}
 	}
 
-	private void updateElementPropertiesById(int elementId, Map<String, Object> propertiesToUpdate) {
-		// TODO - can't use old method
-	}
-
-	private void deleteOutdatedWave(int waveId) {
-		// GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
-		// Remove the old placed wave
-		// getSpriteIdMap().remove(getIdFromSprite(oldWave));
-	}
-
-	private String getNameForWave() {
-		return getNameForWaveNumber(getCurrentLevel(), gameWaveCounter.getAndIncrement());
-	}
-
-	private String getNameForWaveNumber(int level, int num) {
-		return WAVE + WAVE_DELIMITER + Integer.toString(level) + WAVE_DELIMITER + Integer.toString(num);
-	}
-
-	private Map<String, Collection<Integer>> getCurrentConditions(String conditionType) {
-		Map<String, Collection<Integer>> conditionsToLevels = new HashMap<>();
-		List<Map<String, String>> levelConditions = getLevelConditions();
-		List<String> levelSettingsForConditionType = levelConditions.stream()
-				.map(conditionMap -> conditionMap.get(conditionType)).collect(Collectors.toList());
-		for (int level = 1; level <= getLevelsForCurrentGame(); level++) {
-			String condition = levelSettingsForConditionType.get(level);
-			Collection<Integer> levelsWithCondition = conditionsToLevels.getOrDefault(condition, new ArrayList<>());
-			levelsWithCondition.add(level);
-			conditionsToLevels.put(condition, levelsWithCondition);
-		}
-		return conditionsToLevels;
-	}
-
-	private int getLevelsForCurrentGame() {
-		return getNumLevelsForGame(getGameName(), true);
-	}
 
 }

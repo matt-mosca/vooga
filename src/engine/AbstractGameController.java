@@ -587,6 +587,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelDescriptions().add(new String());
 		getLevelBanks().add(currentLevel > 0 ? getLevelBanks().get(currentLevel - 1).fromBank() : new Bank());
 		getLevelHealths().add(0);
+		getLevelPointQuotas().add(0);
+		getLevelTimeLimits().add(0);
 		initializeLevelConditions();
 	}
 

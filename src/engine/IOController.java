@@ -155,12 +155,12 @@ public class IOController {
 	}
 	
 	public int loadGamePointQuotas(String savedGameName, int level) throws FileNotFoundException {
-		String serializedGameData = gamePersistence.loadGameState(savedGameName);
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
 		return serializationUtils.deserializeGamePoints(serializedGameData, level);
 	}
 	
 	public int loadGameTimeLimits(String savedGameName, int level) throws FileNotFoundException {
-		String serializedGameData = gamePersistence.loadGameState(savedGameName);
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
 		return serializationUtils.deserializeGameTimeLimits(serializedGameData, level);
 	}
 	
