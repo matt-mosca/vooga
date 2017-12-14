@@ -22,7 +22,7 @@ public class NewGameButton extends Button {
 		this.setLayoutY(YPOS);
 		this.setText(LABEL);
 //		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->splash.newGameButtonPressed());
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e->splash.switchScreen());
+		this.setOnAction(e->splash.switchScreen());
 
 //		this.setStyle(  "-fx-border-color: transparent; -fx-border-width: 0;-fx-background-radius: 0;-fx-background-color: red;");
 	}

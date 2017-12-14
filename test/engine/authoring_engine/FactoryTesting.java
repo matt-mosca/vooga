@@ -92,6 +92,6 @@ public class FactoryTesting {
     }
 
     private void testExport(GameElementFactory gameElementFactory) {
-        // gameElementFactory.exportSpriteTemplates("Test Game");
+        // gameElementFactory.exportElementTemplates("Test Game");
     }
 }

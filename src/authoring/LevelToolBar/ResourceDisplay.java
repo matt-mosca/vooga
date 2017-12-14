@@ -1,8 +1,11 @@
 package authoring.LevelToolBar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import display.factory.TabFactory;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,30 +14,53 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class ResourceDisplay extends VBox{
+	private TabPane resourceTabs;
+	private List<ResourceTab> resources;
 	private Map<String, Double> resourceEndowments;
+	private TextField name;
+	private TextField value;
 	private AuthoringController myController;
-	private Button editResources;
+	private TabFactory tabMaker;
 	
 	public ResourceDisplay(AuthoringController controller){
 		myController = controller;
+		this.setMaxWidth(250);
 		resourceEndowments = new HashMap<>();
-		editResources = new Button("Edit or add a resource.");
-		editResources.setOnAction(e->changeResourceVal());
 		
-		this.getChildren().add(editResources);
-		update();
+		
+		resourceTabs = new TabPane();
+		tabMaker = new TabFactory();
+		resources = new ArrayList<ResourceTab>();
+		this.getChildren().add(resourceTabs);
+		changeResourceValApparatus();
 	}
 
-	private void changeResourceVal() {
-		this.getChildren().clear();
-		TextField name = new TextField();
+	private void createResourceTabs() {
+		for (int i=0; i<myController.getNumLevelsForGame(); i++) {
+//			System.out.println(Integer.toString(myController.getCurrentLevel()));
+			Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(i+1), null, resourceTabs);
+			ResourceTab newLv = new ResourceTab(i+1, myController);
+			newLv.attach(newTab);
+			resources.add(newLv);
+			final int j = i+1;
+			newTab.setOnSelectionChanged(e->update(j));
+			newTab.setClosable(false);
+			resourceTabs.getTabs().add(newTab);
+		}
+		
+	}
+
+	private void changeResourceValApparatus() {
+		name = new TextField();
 		name.setPromptText("Name");
-		TextField value = new TextField();
+		value = new TextField();
 		value.setPromptText("Value");
 		Button enter = new Button("add!");
 		enter.setOnAction(e->{
@@ -46,35 +72,40 @@ public class ResourceDisplay extends VBox{
 			else {
 				resourceEndowments.put(name.getText(), Double.parseDouble(value.getText()));
 			}
-			this.getChildren().clear();
-			this.getChildren().add(editResources);
 			try {
 				myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			} catch(NumberFormatException nfe) {
 				System.out.println("you have to type in a number");
 			}
 			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
-			update();
+			update(myController.getCurrentLevel());
 		}catch(Exception nfe) {
 			Alert a = new Alert(AlertType.ERROR);
 			a.setHeaderText("Input Not Valid");
 			a.setContentText("You need to input a number!");
 			a.showAndWait();
 		}});
-		
 		this.getChildren().addAll(name, value, enter);
 		
 	}
 
-	private void update() {
-		Map<String, Double> resources = myController.getResourceEndowments();
-		Label l = new Label("These are your current resources.");
-		this.getChildren().add(l);
-		for(String s : resources.keySet()) {
-			Label l1 = new Label(s + ": " + resources.get(s));
-			this.getChildren().add(l1);
+	private void update(int lv) {
+		if (resources.size()!=0) {
+		resources.get(lv-1).update();
 		}
+		name.clear();
+		value.clear();
 		
+	}
+	
+	void updateCurrentState() {
+		resources.clear();
+		resourceTabs.getTabs().clear();
+		createResourceTabs();
+		for(int i=0; i<resources.size(); i++) {
+			resources.get(i).update();
+		}
+		myController.setLevel(1);
 	}
 
 	public VBox getRoot() {

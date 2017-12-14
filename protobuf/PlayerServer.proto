@@ -1,5 +1,6 @@
 syntax="proto2";
 
+
 /*
 	Top-Level message
 */
@@ -9,18 +10,21 @@ message ServerMessage {
 	optional GameRoomCreationStatus gameRoomCreationStatus = 2;
 	optional GameRoomJoinStatus gameRoomJoinStatus = 3;
 	optional GameRoomLaunchStatus gameRoomLaunchStatus = 4;
-	optional GameRooms gameRooms = 5;
-	optional PlayerNames playerNames = 6;
-	optional ReadyForNextLevel readyForNextLevel = 7;
-	optional LevelInitialized levelInitialized = 8;
-	optional Update update = 9;
-	optional Inventory inventory = 10;
-	repeated TemplateProperties templateProperties = 11;
-	repeated ElementCost elementCosts = 12;
-	optional NewSprite elementPlaced = 13;
-	repeated NewSprite levelSprites = 14;
-	optional NumberOfLevels numLevels = 15;
-	optional string error = 16;
+	optional Notification notification = 5;
+	optional GameRooms gameRooms = 6;
+	optional PlayerNames playerNames = 7;
+	optional ReadyForNextLevel readyForNextLevel = 8;
+	optional LevelInitialized levelInitialized = 9;
+	optional Update update = 10;
+	optional Inventory inventory = 11;
+	repeated TemplateProperties templateProperties = 12;
+	repeated ElementCost elementCosts = 13;
+	optional NewSprite elementPlaced = 14;
+	optional SpriteUpdate elementMoved = 15;
+	optional SpriteDeletion elementDeleted = 16;
+	repeated NewSprite levelSprites = 17;
+	optional NumberOfLevels numLevels = 18;
+	optional string error = 19;
 }
 
 /*
@@ -55,6 +59,28 @@ message GameRoomLaunchStatus {
 	optional LevelInitialized initialState = 1;
 	optional string error = 2; // remove?
 }
+
+// Consider batching?
+message Notification {
+	optional PlayerJoined playerJoined = 1;
+	optional PlayerExited playerExited = 2;
+	optional LevelInitialized levelInitialized = 3;
+	// Could have batched the following 3 by using Update instead ...
+	optional NewSprite elementPlaced = 4;
+	optional SpriteUpdate elementMoved = 5;
+	optional SpriteDeletion elementDeleted = 6;
+}
+
+// Consider batching?
+message PlayerJoined {
+	required string userName = 1;
+}
+
+// Consider batching?
+message PlayerExited {
+	required string userName = 1;
+}
+
 
 message GameRooms {
 	repeated string roomNames = 1;
@@ -96,13 +122,15 @@ message NewSprite {
 	required double imageWidth = 4;
 	required double spawnX = 5;
 	required double spawnY = 6;
-	optional string error = 7;
+	required double spawnAngle = 7;
+	optional string error = 8;
 }
 
 message SpriteUpdate {
 	required int32 spriteId = 1;
 	required double newX = 2;
 	required double newY = 3;
+	required double newAngle = 4;
 }
 
 message SpriteDeletion {

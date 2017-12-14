@@ -1,7 +1,5 @@
 package engine.game_elements;
 
-import engine.behavior.ElementProperty;
-import util.ElementOptionsGetter;
 import util.io.SerializationUtils;
 
 import java.lang.reflect.Constructor;
@@ -27,19 +25,13 @@ public final class GameElementFactory {
     }
 
     /**
-     * Define a new template with specified properties. The template should not use an identical name as an existing
-     * template; updating a template is achieved with updateElementDefinition().
+     * Define a new template with specified properties. This will redefine the template if the name has already been
+     * used.
      *
      * @param spriteTemplateName the name of the sprite template
      * @param properties         a map of properties for sprites using this template
-     * @throws IllegalArgumentException if the template already exists
      */
-    public void defineElement(String spriteTemplateName, Map<String, Object> properties)
-            throws IllegalArgumentException {
-        if (spriteTemplates.containsKey(spriteTemplateName)) {
-            // TODO - custom exception?
-            throw new IllegalArgumentException();
-        }
+    public void defineElement(String spriteTemplateName, Map<String, Object> properties) {
         spriteTemplates.put(spriteTemplateName, properties);
     }
 
@@ -66,6 +58,7 @@ public final class GameElementFactory {
         Parameter[] spriteConstructionParameters = getSpriteParameters();
         // TODO - check that params are returned in the right order
         Object[] spriteConstructionArguments = new Object[spriteConstructionParameters.length];
+      
         for (int i = 0; i < spriteConstructionArguments.length; i++) {
             Parameter parameter = spriteConstructionParameters[i];
             try {

@@ -1,6 +1,6 @@
 package engine.behavior.firing;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
 /**
  * Captures whatever is common across all implementations of FiringStrategy
@@ -13,12 +13,15 @@ public abstract class GenericFiringStrategy implements FiringStrategy {
 
 	private String projectileTemplate;
 	private String audioUrl;
+	private double range;
 
 	public GenericFiringStrategy(
 			@ElementProperty(value = "projectileTemplate", isTemplateProperty = true) String projectileTemplate,
-			@ElementProperty(value = "firingAudioUrl", isTemplateProperty = true) String audioUrl) {
+			@ElementProperty(value = "firingAudioUrl", isTemplateProperty = true) String audioUrl,
+			@ElementProperty(value = "firingRange", isTemplateProperty = true) double range) {
 		this.projectileTemplate = projectileTemplate;
 		this.audioUrl = audioUrl;
+		this.range = range;
 	}
 
 	@Override

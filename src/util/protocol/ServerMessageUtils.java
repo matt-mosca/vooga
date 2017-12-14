@@ -2,12 +2,23 @@ package util.protocol;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import engine.game_elements.GameElement;
+import networking.protocol.AuthorClient.AuthoringClientMessage;
+import networking.protocol.AuthorClient.DefineElement;
+import networking.protocol.AuthorClient.Property;
+import networking.protocol.AuthorServer.AuxiliaryElementConfigurationOption;
+import networking.protocol.AuthorServer.ConditionAssignment;
+import networking.protocol.AuthorServer.DoubleProperty;
+import networking.protocol.AuthorServer.ElementBaseConfigurationOption;
+import networking.protocol.AuthorServer.ElementUpgrade;
+import networking.protocol.AuthorServer.StringProperties;
+import networking.protocol.AuthorServer.StringProperty;
 import networking.protocol.PlayerServer.ElementCost;
 import networking.protocol.PlayerServer.Inventory;
 import networking.protocol.PlayerServer.LevelInitialized;
@@ -20,22 +31,24 @@ import networking.protocol.PlayerServer.StatusUpdate;
 import networking.protocol.PlayerServer.TemplateProperties;
 import networking.protocol.PlayerServer.TemplateProperty;
 import networking.protocol.PlayerServer.Update;
+import util.io.SerializationUtils;
 
 public class ServerMessageUtils {
 
-	public ServerMessageUtils() {
-		// TODO Auto-generated constructor stub
-	}
+	private SerializationUtils serializationUtils = new SerializationUtils();
 
-	public LevelInitialized packageState(Map<Integer, GameElement> levelSprites, Collection<String> inventory, Map<String, Double> resourceEndowments, int currentLevel) {
-		return LevelInitialized.newBuilder()
-				.setSpritesAndStatus(packageUpdates(levelSprites, new HashMap<>(),
-						new HashMap<>(), false, false, false, false, resourceEndowments, currentLevel))
+	public LevelInitialized packageState(Map<Integer, GameElement> levelSprites, Collection<String> inventory,
+			Map<String, Double> resourceEndowments, int currentLevel) {
+		return LevelInitialized
+				.newBuilder().setSpritesAndStatus(packageUpdates(levelSprites, new HashMap<>(), new HashMap<>(), false,
+						false, false, false, resourceEndowments, currentLevel))
 				.setInventory(packageInventory(inventory)).build();
 	}
 
-	public Update packageStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay, int currentLevel) {
-		return Update.newBuilder().setStatusUpdates(getStatusUpdate(levelCleared, isWon, isLost, inPlay, currentLevel)).build();
+	public Update packageStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay,
+			int currentLevel) {
+		return Update.newBuilder().setStatusUpdates(getStatusUpdate(levelCleared, isWon, isLost, inPlay, currentLevel))
+				.build();
 	}
 
 	public Inventory packageInventory(Collection<String> inventory) {
@@ -65,8 +78,10 @@ public class ServerMessageUtils {
 			Map<String, String> templatePropertiesMap) {
 		TemplateProperties.Builder templatePropertiesBuilder = TemplateProperties.newBuilder();
 		templatePropertiesMap.keySet()
-				.forEach(templateProperty -> templatePropertiesBuilder.addProperty(TemplateProperty.newBuilder()
-						.setName(templateProperty).setValue(templatePropertiesMap.get(templateProperty)).build()));
+				.forEach(templateProperty -> templatePropertiesBuilder
+						.addProperty(TemplateProperty.newBuilder().setName(templateProperty)
+								.setValue(templatePropertiesMap.get(templateProperty)).build())
+						.setElementName(templateName));
 		return templatePropertiesBuilder.build();
 	}
 
@@ -100,7 +115,7 @@ public class ServerMessageUtils {
 	public Collection<NewSprite> packageNewSprites(Map<Integer, GameElement> newSprites) {
 		return packageSprites(newSprites, (newSprite, newSpriteId) -> packageNewSprite(newSprite, newSpriteId));
 	}
-	
+
 	public NewSprite packageNewSprite(GameElement newSprite, int spriteId) {
 		return NewSprite.newBuilder().setSpriteId(spriteId).setImageURL(newSprite.getImageUrl())
 				.setImageHeight(newSprite.getGraphicalRepresentation().getFitHeight())
@@ -113,7 +128,70 @@ public class ServerMessageUtils {
 				.setNewY(spriteToUpdate.getY()).build();
 	}
 
-	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay, int currentLevel) {
+	public SpriteDeletion packageDeletedSprite(GameElement spriteToDelete, int spriteId) {
+		return SpriteDeletion.newBuilder().setSpriteId(spriteId).build();
+	}
+
+	// AUTHORING SERVER - Consider moving to separate class?
+	public Collection<ElementBaseConfigurationOption> packageElementBaseConfigurationOptions(
+			Map<String, List<String>> configMap) {
+		return configMap
+				.entrySet().stream().map(entry -> ElementBaseConfigurationOption.newBuilder()
+						.setConfigKey(entry.getKey()).addAllConfigOptions(entry.getValue()).build())
+				.collect(Collectors.toList());
+	}
+
+	public Collection<AuxiliaryElementConfigurationOption> packageAuxiliaryElementConfigurationOptions(
+			Map<String, Class> configMap) {
+		return configMap
+				.entrySet().stream().map(entry -> AuxiliaryElementConfigurationOption.newBuilder()
+						.setConfigName(entry.getKey()).setConfigClassName(entry.getValue().getName()).build())
+				.collect(Collectors.toList());
+	}
+
+	public Collection<ElementUpgrade> packageElementUpgrades(Map<String, List<Map<String, Object>>> upgradesMap) {
+		return upgradesMap.entrySet().stream()
+				.map(entry -> ElementUpgrade.newBuilder().setElementName(entry.getKey())
+						.addAllElementUpgrades(entry.getValue().stream()
+								.map(elementUpgrades -> StringProperties.newBuilder()
+										.addAllItems(packageStringProperties(elementUpgrades)).build())
+								.collect(Collectors.toList()))
+						.build())
+				.collect(Collectors.toList());
+	}
+
+	public Collection<DoubleProperty> packageResourceEndowments(Map<String, Double> resourceEndowments) {
+		return resourceEndowments.entrySet().stream().map(resourceEntry -> DoubleProperty.newBuilder()
+				.setName(resourceEntry.getKey()).setValue(resourceEntry.getValue()).build())
+				.collect(Collectors.toList());
+	}
+
+	public Collection<StringProperty> packageWaveProperties(Map<String, Object> waveProperties) {
+		return packageStringProperties(waveProperties);
+	}
+
+	public Collection<ConditionAssignment> packageConditionAssignments(Map<String, Collection<Integer>> conditions) {
+		return conditions
+				.entrySet().stream().map(condition -> ConditionAssignment.newBuilder()
+						.setConditionName(condition.getKey()).addAllLevelsUsingCondition(condition.getValue()).build())
+				.collect(Collectors.toList());
+	}
+	
+	public DefineElement packageDefinedElement(String elementName, Map<String, Object> properties) {
+		return DefineElement.newBuilder().setElementName(elementName)
+				.addAllProperties(getPropertiesFromObjectMap(properties)).build();
+	}
+	
+	public Collection<Property> getPropertiesFromObjectMap(Map<String, Object> objectMap) {
+		return objectMap.entrySet().stream()
+				.map(entry -> Property.newBuilder().setName(entry.getKey())
+						.setValue(serializationUtils.serializeElementProperty(entry.getValue())).build())
+				.collect(Collectors.toList());
+	}
+
+	//
+	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay,
+			int currentLevel) {
 		// Just always send status update for now
 		return StatusUpdate.newBuilder().setLevelCleared(levelCleared).setIsWon(isWon).setIsLost(isLost)
 				.setInPlay(inPlay).setCurrentLevel(currentLevel).build();
@@ -136,8 +214,12 @@ public class ServerMessageUtils {
 				.collect(Collectors.toList());
 	}
 
-	private SpriteDeletion packageDeletedSprite(GameElement spriteToDelete, int spriteId) {
-		return SpriteDeletion.newBuilder().setSpriteId(spriteId).build();
+	private Collection<StringProperty> packageStringProperties(Map<String, Object> stringProperties) {
+		return serializationUtils.serializeElementTemplate(stringProperties).entrySet().stream()
+				.map(elementUpgradeEntry -> StringProperty.newBuilder().setName(elementUpgradeEntry.getKey())
+						.setValue(elementUpgradeEntry.getValue()).build())
+				.collect(Collectors.toList());
 	}
+
 
 }

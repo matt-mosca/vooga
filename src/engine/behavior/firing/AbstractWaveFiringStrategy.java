@@ -1,8 +1,8 @@
 package engine.behavior.firing;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Ben Schwennesen
@@ -11,48 +11,52 @@ import java.util.Set;
  */
 public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringStrategy {
 
-	private Set<String> templatesToFire;
-	private int wavesLeft;
+	private List<String> templatesToFire;
+	private int elementsRemaining;
 
 	public AbstractWaveFiringStrategy(
-			@ElementProperty(value = "templateToFire", isTemplateProperty = true) Set<String> templatesToFire,
+			@ElementProperty(value = "templateToFire", isTemplateProperty = true) List<String> templatesToFire,
 			@ElementProperty(value = "spawnPeriod", isTemplateProperty = true) double spawnPeriod,
-			@ElementProperty(value = "totalWaves", isTemplateProperty = true) int totalWaves) {
-		super(spawnPeriod);
+			@ElementProperty(value = "numberToSpawn", isTemplateProperty = true) int numberToSpawn) {
+		super(spawnPeriod,Double.POSITIVE_INFINITY);
 		if (templatesToFire.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
 		this.templatesToFire = templatesToFire;
-		wavesLeft = totalWaves;
+		elementsRemaining = numberToSpawn;
 	}
 
-	protected Set<String> getTemplatesToFire() {
+	protected List<String> getTemplatesToFire() {
 		return templatesToFire;
 	}
 
 	@Override
 	public String fire() {
+		int left = elementsRemaining;
+		if (left == 1) {
+			System.out.println("last one");
+		}
 		decrementWavesLeft();
 		return chooseElementToSpawn();
 	}
 	
 	@Override
-	public boolean shouldFire() {
-		return !isExpended() && super.shouldFire();
+	public boolean shouldFire(double targetLocation) {
+		return !this.isExpended() && super.shouldFire(targetLocation);
 	}
 	
 	@Override
 	public boolean isExpended() {
-		return wavesLeft <= 0;
+		return elementsRemaining <= 0;
 	}
 
 	protected abstract String chooseElementToSpawn();
 	
-	protected int getWavesLeft() {
-		return wavesLeft;
+	protected int getElementsRemaining() {
+		return elementsRemaining;
 	}
 
 	protected void decrementWavesLeft() {
-		wavesLeft--;
+		elementsRemaining--;
 	}
 }

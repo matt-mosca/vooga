@@ -67,7 +67,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	private Label projectileLabel;
 	private HBox projectileSlot;
 	private Button deleteButton;
-	private ReturnButton retB;
+	//private ReturnButton retB;
 	private CreationInterface created;
 	private AuthoringController myController;
 	private Map<String, Object> basePropertyMap;
@@ -87,7 +87,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	public PropertiesToolBar(EditDisplay display, AuthoringController controller) {
 		this.display = display;
 		myDisplay = display;
-		retB = new ReturnButton(display);
+		//retB = new ReturnButton(display);
 		myController = controller;
 		availableProjectiles = new ArrayList<>();
 		newTower = new NewTowerTab(display);   
@@ -108,7 +108,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
-        this.getChildren().add(retB);
+        //this.getChildren().add(retB);
         
         
         newTower.attach(topTabPane.getTabs().get(0));
@@ -163,96 +163,10 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			}
 		}
 	}
-	private void newPropertiesPane() {
-		//propertiesPane = new PropertiesPane(display, toolba);
-		//myWaveAdder = new AddToWaveButton(this);
-//		myLevelAdder = new AddToLevelButton(this);
-		deleteButton = new Button("Back");
-	}
-	private void newPaneWithProjectileSlot(ImageView imageView) {
-		/**
-		 * Awful code atm, it'll be refactored dw, just trying to get it all to work <3
-		 */
-		projectileLabel = new Label("Click to\nChoose a\nprojectile");
-		projectileLabel.setLayoutY(90);
-		projectileSlot = new HBox();
-		projectileSlot.setPrefWidth(50);
-		projectileSlot.setPrefHeight(50);
-		projectileSlot.setLayoutY(170);
-		projectileSlot.setStyle("-fx-background-color: white");
-		projectileSlot.addEventHandler(MouseEvent.MOUSE_CLICKED, e->newProjectilesWindow(clone(imageView)));
-		propertiesPane = new PropertiesPane(myDisplay, this, imageView, myController, false);
-	    myWaveAdder = new AddToWaveButton(this, imageView);
-	    myCost = new CostButton(this, imageView);
-	    myLevelAdder = new AddToLevelButton(this, imageView);
-		deleteButton = new Button("Back");
-		deleteButton.setLayoutX(370);
-		Label info = new Label("Properties here");
-		info.setLayoutY(100);
-		info.setFont(new Font("Arial", 30));
-		myPropertiesBox.setLayoutX(100);
-		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e->removeButtonPressed());
-		HBox imageBackground = new HBox();
-		imageBackground.setStyle("-fx-background-color: white");
-		imageBackground.getChildren().add(clone(imageView));
-		if (myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("Projectile Type Name") != null) {
-			String projectileName = myController.getAllDefinedTemplateProperties().get(imageView.getId()).get
-					("Projectile Type Name").toString();
-			ProjectileImage projectile = new ProjectileImage(myDisplay, myController.getAllDefinedTemplateProperties
-					().get(projectileName).get("imageUrl").toString());
-			projectile.resize(projectileSlot.getPrefHeight());
-			projectileSlot.getChildren().add(projectile);
-		}
-		/*propertiesPane.getChildren().add(imageBackground);
-		propertiesPane.getChildren().add(deleteButton);
-		propertiesPane.getChildren().add(myPropertiesBox);
-		propertiesPane.getChildren().add(projectileLabel);
-		propertiesPane.getChildren().add(projectileSlot);
-		propertiesPane.getChildren().add(myWaveAdder);
-		propertiesPane.getChildren().add(myCost);
-		propertiesPane.getChildren().add(myLevelAdder);*/
-		this.getChildren().removeAll(this.getChildren());
-		this.getChildren().add(propertiesPane);
-		this.getChildren().add(bottomTabPane);
-	}
-	
-	private void newProjectilesWindow(ImageView myTowerImage) {
-		ScrollPane projectilesWindow = new ScrollPane();
-		ListView<SpriteImage> projectilesView = new ListView<SpriteImage>();
-		if (availableProjectiles.isEmpty()) {
-			Label emptyLabel = new Label("You have no projectiles\nin your inventory");
-			/*propertiesPane.getChildren().remove(myPropertiesBox);
-			emptyLabel.setLayoutX(100);
-			propertiesPane.getChildren().add(emptyLabel);*/
-		} else {
-			List<SpriteImage> cloneList = new ArrayList<>();
-			for (SpriteImage s : availableProjectiles) {
-				cloneList.add(s.clone());
-			}
-			ObservableList<SpriteImage> items =FXCollections.observableArrayList(cloneList);
-	        projectilesView.setItems(items);
-	        projectilesView.getSelectionModel();
-	        projectilesWindow.setContent(projectilesView);
-	        projectilesWindow.setLayoutX(100);
-	        projectilesWindow.setPrefHeight(250);
-	        projectilesView.setOnMouseClicked(e->projectileSelected(myTowerImage,
-	        		projectilesView.getSelectionModel().getSelectedItem().clone()));
-        /*propertiesPane.getChildren().remove(myPropertiesBox);
-        propertiesPane.getChildren().add(projectilesWindow);*/
-		}
-	}
-	
-	private void projectileSelected(ImageView imageView, ImageView projectile) {
-		projectileSlot.getChildren().removeAll(projectileSlot.getChildren());
-		projectileSlot.getChildren().add(projectile);
-		Map<String, Object> newProperties = new HashMap<>();
-		newProperties.put("Projectile Type Name", projectile.getId());
-		myController.updateElementDefinition(imageView.getId(), newProperties, true);
-	}
 
 	private void newPane(ImageView imageView, boolean hasProjectile) {
 		this.getChildren().clear();
-		propertiesPane = new PropertiesPane(display, this, imageView, myController, hasProjectile);
+		propertiesPane = new PropertiesPane(display, this, imageView, myController, false);
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
 	}
@@ -261,7 +175,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(topTabPane);
 		this.getChildren().add(bottomTabPane);
-		this.getChildren().add(retB);
+		//this.getChildren().add(retB);
 	}
 	
 	public void addToMap(String property, String value) {
@@ -270,12 +184,12 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	
 	@Override
 	public void addToWave(ImageView imageView) {
-		int maxLevel = display.getMaxLevel();
+		int maxLevel = myController.getNumLevelsForGame();
 		waveStage = new Stage();
 		waveStage.setTitle("CheckBox Experiment 1");
         myVBox = new VBox();
         createTextFields(imageView);
-        Scene scene = new Scene(myVBox, 200, 100);
+        Scene scene = new Scene(myVBox, 200, 120);
         waveStage.setScene(scene);
         waveStage.show();
 	}
@@ -285,25 +199,28 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         waveAndLevelField.setPromptText("Which level and waves? Seperate by commas");
         TextField amountField = new TextField();
         amountField.setPromptText("How many of this Sprite?");
+        TextField locationField = new TextField();
+        locationField.setPromptText("Where should this wave spawn? (Split with comma)");
         myVBox.getChildren().add(waveAndLevelField);
         myVBox.getChildren().add(amountField);
+        myVBox.getChildren().add(locationField);
         Button submitButton = new Button("Submit");
 //        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 //        		e->submitToWaves(waveAndLevelField.getText().split("\\s+"), 
 //        				Integer.valueOf(amountField.getText())));
         submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-        		e->submitToWaves(waveAndLevelField.getText(), 
+        		e->submitToWaves(waveAndLevelField.getText(), locationField.getText(),
         				Integer.valueOf(amountField.getText()), imageView));
         myVBox.getChildren().add(submitButton);
 	}
 	
-	private void submitToWaves(String levelsAndWaves, int amount, ImageView imageView) {
+	private void submitToWaves(String levelsAndWaves, String location, int amount, ImageView imageView) {
 //        for (int i = 0; i < levelsAndWaves.length; i++) {
 //        	String[] currLevelAndWave = levelsAndWaves[i].split("\\.");
 //    		display.submit(Integer.valueOf(currLevelAndWave[0]), 
 //    				Integer.valueOf(currLevelAndWave[1]), amount, clone(myPropertiesBox.getCurrSprite()));
 //        }
-		display.submit(levelsAndWaves, amount, imageView);
+		display.submit(levelsAndWaves, location, amount, imageView);
 		waveStage.hide();
 	}
 	
@@ -370,7 +287,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 
 	@Override
 	public void addToLevel(ImageView imageView) {
-		int maxLevel = display.getMaxLevel();
+		int maxLevel = myController.getNumLevelsForGame();
 		Stage levelStage = new Stage();
 		levelStage.setTitle("CheckBox Experiment 1");
         VBox myVBox = new VBox();

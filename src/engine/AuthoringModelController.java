@@ -2,6 +2,8 @@ package engine;
 
 import util.path.PathList;
 import javafx.geometry.Point2D;
+import networking.protocol.AuthorClient.DefineElement;
+import networking.protocol.AuthorServer;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteUpdate;
@@ -28,7 +30,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @param fileToSaveTo
 	 *            the name to assign to the save file
 	 */
-	void saveGameState(File fileToSaveTo);
+	void saveGameState(String fileToSaveTo);
 
 	/**
 	 * Load the detailed state of a game for a particular level, including
@@ -44,9 +46,12 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException;
 
 	/**
-	 * Export a fully authored game, including all levels, into an executable file.
+	 * Export a fully authored game, including all levels, into an executable file, published to Google Drive.
+	 *
+	 * @return a URL to access the exported game
+	 * @throws IOException if the game cannot be fully exported or publishing fails
 	 */
-	void exportGame();
+	String exportGame() throws IOException;
 
 	/**
 	 * Set level for the game being authored. Saves the state of the current level
@@ -153,7 +158,9 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *            the coordinates at which the element should be placed
 	 * @return a unique identifier for the sprite abstraction representing the game
 	 *         element
-	 * @throws ReflectiveOperationException if the element's template did not define all the necessary properties
+	 * @throws ReflectiveOperationException
+	 *             if the element's template did not define all the necessary
+	 *             properties
 	 */
 	NewSprite placeElement(String elementName, Point2D startCoordinates) throws ReflectiveOperationException;
 
@@ -162,13 +169,26 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *
 	 * @param elementName
 	 */
-	void addElementToInventory(String elementName);
+	DefineElement addElementToInventory(String elementName);
 
 	/**
 	 * Get current level
 	 */
 	int getCurrentLevel();
 
+	int getLevelHealth(int level);
+
+	int getLevelPointQuota(int level);
+	
+	int getLevelTimeLimit(int level);
+	
+	// Sorry Ben Welton, Venkat asked me to change this back
+	void setLevelHealth(int health);
+	
+	void setLevelPointQuota(int points);
+	
+	void setLevelTimeLimit(int timeLimit);
+	
 	/**
 	 * Retrieve the inventory for the current level
 	 *
@@ -228,14 +248,6 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate);
 
 	/**
-	 * Delete a previously created game element.
-	 *
-	 * @param elementId
-	 *            the unique identifier for the element
-	 */
-	void deleteElement(int elementId);
-
-	/**
 	 * Fetch all available game names and their corresponding descriptions
 	 *
 	 * @return map where keys are game names and values are game descriptions
@@ -264,14 +276,16 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	/**
 	 * Get all the defined upgrades for elements.
 	 *
-	 * @return a map from an element's template name to a list of its upgrade property maps
+	 * @return a map from an element's template name to a list of its upgrade
+	 *         property maps
 	 */
 	Map<String, List<Map<String, Object>>> getAllDefinedElementUpgrades();
 
 	/**
 	 * Get the available resources.
 	 *
-	 * @return a map from the name of defined resources to the quantity available in the current level
+	 * @return a map from the name of defined resources to the quantity available in
+	 *         the current level
 	 */
 	Map<String, Double> getResourceEndowments();
 
@@ -356,16 +370,17 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *            name of elements to spawn
 	 * @param spawningPoint
 	 *            the point at which to spawn the wave
-	 * @throws ReflectiveOperationException if the wave object could not be regenerated with the new properties due
-	 * to the map lacking a necessary properties
+	 * @throws ReflectiveOperationException
+	 *             if the wave object could not be regenerated with the new
+	 *             properties due to the map lacking a necessary properties
 	 */
-	int setWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn, Point2D
-			spawningPoint)
-			throws ReflectiveOperationException;
+	int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
+			Point2D spawningPoint) throws ReflectiveOperationException;
 
-	void editWaveProperties(int waveId, Map<String, Object> updatedProperties, Collection<String>
-			newElementNamesToSpawn,
-			Point2D newSpawningPoint) throws ReflectiveOperationException;
+	void editWaveProperties(int waveNum, Map<String, Object> updatedProperties,
+			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException;
+
+	Map<String, Object> getWaveProperties(int waveNum);
 
 	/**
 	 * Retrieve a collection of descriptions of the possible victory conditions
@@ -382,5 +397,21 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *         that can be assigned for a given level
 	 */
 	Collection<String> getPossibleDefeatConditions();
+
+	/**
+	 * Retrieve mapping of victory condition to the levels for which it currently
+	 * applies
+	 * 
+	 * @return map of {"victory_condition":[level_num1, level_num2], ...}
+	 */
+	Map<String, Collection<Integer>> getCurrentVictoryConditions();
+
+	/**
+	 * Retrieve mapping of defeat condition to the levels for which it currently
+	 * applies
+	 * 
+	 * @return map of {"defeat_condition":[level_num1, level_num2], ...}
+	 */
+	Map<String, Collection<Integer>> getCurrentDefeatConditions();
 
 }

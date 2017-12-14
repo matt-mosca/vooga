@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import util.Exclude;
@@ -18,6 +18,7 @@ public class CollisionHandler {
     private String imageUrl;
     private double imageHeight;
     private double imageWidth;
+    private final String DEFAULT_EXPLOSION = "";
     @Exclude private ImageView graphicalRepresentation;
 
     public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
@@ -47,12 +48,13 @@ public class CollisionHandler {
 
 
     public boolean collidesWith(CollisionHandler other) {
-        return other.graphicalRepresentation.getBoundsInLocal()
-                .intersects(this.graphicalRepresentation.getBoundsInLocal());
+        return (other.graphicalRepresentation.getBoundsInLocal()
+                .intersects(this.graphicalRepresentation.getBoundsInLocal())) && 
+        		(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0);
     }
 
     public void processCollision(CollisionHandler other) {
-        other.collisionVisitable.accept(collisionVisitor);
+    	other.collisionVisitable.accept(collisionVisitor);
     }
 
     public boolean isBlocked() {
@@ -93,5 +95,17 @@ public class CollisionHandler {
     
     public String getAudioUrl() {
     	return collisionVisitable.getAudioUrl();
+    }
+    
+    public double getBlastRadius() {
+    	return collisionVisitable.getBlastRadius();
+    }
+    
+    public boolean shouldExplode() {
+    	return !collisionVisitor.explode().equals(DEFAULT_EXPLOSION);
+    }
+    
+    public String explode() {
+    	return collisionVisitor.explode();
     }
 }

@@ -3,7 +3,6 @@
 */
 
 .play-area {
-	-fx-background-color: rgb(255, 255, 255);
 	-fx-background-radius: 5;
 	-fx-background-insets: -10;
 	-fx-border-color: rgb(150, 150, 180);

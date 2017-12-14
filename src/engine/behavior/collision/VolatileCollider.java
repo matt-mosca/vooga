@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
 /**
  * Represents volatile 'explosion' behavior - simply explodes / self-destructs
@@ -10,27 +10,29 @@ import engine.behavior.ElementProperty;
  *
  */
 public abstract class VolatileCollider extends GenericCollider {
-	
 	// Can be sub-classed by different kinds of projectiles
-	public VolatileCollider(@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId) {
-		super(playerId);
+	public VolatileCollider(@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId,
+			@ElementProperty(value = "explosionTemplate", isTemplateProperty = true) String explosionTemplate) {
+		super(playerId,explosionTemplate);
 	}
 
 	@Override
 	public void visit(ImperviousCollisionVisitable visitable) {
-		explode();
+		handleCollision();
 	}
 
 	@Override
 	public void visit(DamageDealingCollisionVisitable visitable) {
-		explode();
+		handleCollision();
 	}
 
 	@Override
 	public void visit(NoopCollisionVisitable visitable) {
-		explode();
+		handleCollision();
 	}
 	
-	protected abstract void explode();
+	protected abstract void handleCollision();
+
+	
 
 }

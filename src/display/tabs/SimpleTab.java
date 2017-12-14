@@ -31,7 +31,7 @@ public class SimpleTab extends ScrollPane{
 	}
 	
 	protected void addHandler() {
-		myListView.setOnMouseClicked(e->display.listItemClicked(
+		myListView.setOnMouseClicked(e->display.listItemClicked(e, 
 	      		myListView.getSelectionModel().getSelectedItem()));
 	}
 	
