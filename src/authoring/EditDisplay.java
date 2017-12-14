@@ -60,6 +60,7 @@ import player.LiveEditingPlayDisplay;
 import player.PlayDisplay;
 import util.DropdownFactory;
 import util.Exclude;
+import util.Purger;
 import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
 import display.sprites.BackgroundObject;
@@ -390,10 +391,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
                     new LiveEditingPlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController());
             playDisplay.launchGame(GAME_NAME);
             getStage().setScene(playDisplay.getScene());
-        } catch (IOException e) {
+        } catch (Exception e) {
             Alert.AlertType type = Alert.AlertType.ERROR;
             String message = e.getMessage();
             launchAlertAndWait(message, type);
+        } finally {
+            new Purger().purge();
         }
     }
 
