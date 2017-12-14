@@ -44,9 +44,6 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
 	private AuthoringController myController;
 	private TabPane myTabPane;
-//	private List<LevelTab> myLevels;
-//	private List<GameArea> myGameAreas;
-//	private List<List<ImageView>> mySprites;
 	private ScrollableArea myScrollableArea;
 	private WaveDisplay myWaveDisplay;
 	private TabFactory tabMaker;
@@ -56,11 +53,8 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	private EditDisplay myCreated;
 	private SpriteDisplayer mySpriteDisplay;
 	private LevelsEditDisplay myLevelDisplayer;
-//	private Map<Integer, Integer> wavesPerLevel;
 	private Map<String, Object> myProperties;
 	private List<String> elementsToSpawn;
-//	private Map<String, Data> waveToData;
-//	private NewWaveButton myNewWaveButton;
 	private int startingLevels;
 	private Map<Integer, LevelData> levelToData;
 	private NewWaveButton myNewWaveButton;
