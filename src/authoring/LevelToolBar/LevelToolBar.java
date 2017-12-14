@@ -89,7 +89,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		loadLevels();
 		created.setGameArea(myGameAreas.get(0));
 		createProperties();
-		myLevelDisplayer = new LevelsEditDisplay(myController, myCreated);
+		myLevelDisplayer = new LevelsEditDisplay(myController);
 	}
 
 	private void createProperties() {
