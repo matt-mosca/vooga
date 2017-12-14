@@ -382,20 +382,20 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
 
     @Override
     public void listItemClicked(MouseEvent e, ImageView image) {
-        if (!checkFunds(image.getId()))
-            return;
-        Alert costDialog = new Alert(AlertType.CONFIRMATION);
-        costDialog.setTitle("Purchase Resource");
-        costDialog.setHeaderText(null);
-        costDialog.setContentText("Would you like to purchase this object?");
+//        if (!checkFunds(image.getId()))
+//            return;
+//        Alert costDialog = new Alert(AlertType.CONFIRMATION);
+//        costDialog.setTitle("Purchase Resource");
+//        costDialog.setHeaderText(null);
+//        costDialog.setContentText("Would you like to purchase this object?");
 
-        Optional<ButtonType> result = costDialog.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            placeable = new StaticObject(1, this, (String) image.getUserData());
-            placeable.setElementName(image.getId());
-            this.getScene().setCursor(new ImageCursor(image.getImage()));
-            selected = true;
-        }
+//        Optional<ButtonType> result = costDialog.showAndWait();
+//        if (result.get() == ButtonType.OK) {
+//            placeable = new StaticObject(1, this, (String) image.getUserData());
+//            placeable.setElementName(image.getId());
+//            this.getScene().setCursor(new ImageCursor(image.getImage()));
+//            selected = true;
+//        }
     }
 
     private void upgradeClicked(int id) {

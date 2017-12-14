@@ -27,6 +27,7 @@ import util.protocol.ClientMessageUtils;
 import java.util.HashMap;
 
 public class LevelToolBar extends VBox implements TabInterface, ButtonInterface {
+	private static final String DEFAULT_WAVE_PROPERTIES = "WavesDefaults";
 	private static final int SIZE = 400;
 	private static final int WIDTH = 100;
 	private static final int X_LAYOUT = 260;
@@ -75,13 +76,13 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		elementsToSpawn = new ArrayList<>();
 		this.getChildren().add(myTabPane);
 		loadLevels();
-		created.setGameArea(levelToData.get(1).myGameArea);
+		created.setGameArea(levelToData.get(STARTING_LEVEL + USER_OFFSET).myGameArea);
 		createProperties();
 		myLevelDisplayer = new LevelsEditDisplay(myController);
 	}
 
 	private void createProperties() {
-		myProperties = new ElementDefaultsGetter("WavesDefaults").getDefaultProperties();
+		myProperties = new ElementDefaultsGetter(DEFAULT_WAVE_PROPERTIES).getDefaultProperties();
 	}
 	
 	@Override
@@ -97,7 +98,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
     }
 
 	private void loadLevels() {
-		startingLevels = myController.getNumLevelsForGame(myController.getGameName(), true);
+		startingLevels = myController.getNumLevelsForGame();
 		if (myController.getGameName().equals("untitled") || startingLevels == 1) {
 			addLevel();
 			return;
