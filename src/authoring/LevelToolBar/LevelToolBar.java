@@ -56,7 +56,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	private int startingLevels;
 	private Map<Integer, LevelData> levelToData;
 	//private NewWaveButton myNewWaveButton;
-	private NewWaveButton myNewWaveButton;
+	//private NewWaveButton myNewWaveButton;
     private ClientMessageUtils clientMessageUtils;
 
 	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
@@ -87,13 +87,11 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		myTabPane.setPrefSize(SIZE, WIDTH);
 		//editLevel = new Button("Edit Level");
 		//editLevel.setOnAction(e -> openLevelDisplay());
-		elementsToSpawn = new ArrayList<String>();
+		elementsToSpawn = new ArrayList<>();
 		this.getChildren().add(myTabPane);
 		//this.getChildren().add(newLevel);
 		//this.getChildren().add(editLevel);
 		//this.getChildren().add(myNewWaveButton);
-		elementsToSpawn = new ArrayList<String>();
-		this.getChildren().add(myTabPane);
 		createButtons();
 		loadLevels();
 		created.setGameArea(levelToData.get(1).myGameArea);
@@ -102,12 +100,12 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	}
 
 	private void createButtons() {
-		newLevel = new NewLevelButton(this);
-		myNewWaveButton = new NewWaveButton(this);
-		editLevel = new EditLevelsButton(this);
-		this.getChildren().add(newLevel);
-		this.getChildren().add(editLevel);
-		this.getChildren().add(myNewWaveButton);
+		//newLevel = new NewLevelButton(this);
+		//myNewWaveButton = new NewWaveButton(this);
+		//editLevel = new EditLevelsButton(this);
+		//this.getChildren().add(newLevel);
+		//this.getChildren().add(editLevel);
+		//this.getChildren().add(myNewWaveButton);
 	}
 
 	private void createProperties() {
