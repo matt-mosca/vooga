@@ -91,7 +91,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private Slider volumeSlider;
 	private MediaPlayerFactory mediaPlayerFactory;
 	private MediaPlayer mediaPlayer;
-	private String backgroundSong = "src/MediaTesting/110 - pokemon center.mp3";
+	private String backgroundSong = "data/audio/110 - pokemon center.mp3";
 	private InteractiveObject objectToPlace;
 	private EventHandler<MouseEvent> cursorDrag;
 	private boolean addingObject = false;

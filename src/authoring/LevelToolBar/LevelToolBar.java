@@ -116,9 +116,9 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		myProperties.put("Collided-with effects", "Do nothing to colliding objects");
 		myProperties.put("Move an object", "Object will stay at desired location");
 		myProperties.put("Firing Behavior", "Shoot various element types in a sequence");
-		myProperties.put("imageHeight", 40);
-		myProperties.put("imageWidth", 40);
-		myProperties.put("imageUrl", "monkey.png");
+		myProperties.put("Height", 40);
+		myProperties.put("Width", 40);
+		myProperties.put("Path of game element image", "monkey.png");
 		myProperties.put("Name", "myWave");
 		myProperties.put("tabName", "Troops");
 		myProperties.put("Range of tower", 50000);
@@ -165,11 +165,11 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		/**
 		 * Make the tabs closeable later
 		 */
-//		if (levelToData.size() == 0) {
-//			newTab.setClosable(false);
-//		} else {
-//			newTab.setOnClosed(e -> deleteLevel(newLv.getLvNumber()));
-//		}
+		if (levelToData.size() == 0) {
+			newTab.setClosable(false);
+		} else {
+			newTab.setOnClosed(e -> deleteLevel(newLv.getLvNumber()));
+		}
 		newTab.setOnSelectionChanged(e -> changeDisplay(newLv.getLvNumber()));
 		newLv.attach(newTab);
 		levelToData.get(levelToData.size()).myLevelTab = newLv;
@@ -232,14 +232,16 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 					e.printStackTrace();
 				}
 				//TODO: Refactor code below for changing map
-				List<ImageView> tempArray = imageList;
-				tempArray.addAll(levelToData.get(level).waveInfo.get(levelDotWave).spriteNames);
+				List<ImageView> tempArray = new ArrayList<ImageView>();
+				tempArray.addAll(levelToData.get(level).waveInfo.get(wave).spriteNames);
+				tempArray.addAll(imageList);
 				levelToData.get(level).waveInfo.get(wave).spriteNames = tempArray;
 			} else {
 				levelToData.get(level).waveInfo.get(wave).spriteNames = imageList;
 				levelToData.get(level).waveInfo.get(wave).waveId = 
 						myController.createWaveProperties(myProperties, elementsToSpawn, location);
 			}
+			levelToData.get(level).waveInfo.get(wave).numberList.add(amount);
 		}
 		updateImages();
 	}
@@ -252,8 +254,16 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		return currLevel + "." + currWave;
 	}
 
-//	private void deleteLevel(int lvNumber) {
-//		myController.deleteLevel(lvNumber);
+	private void deleteLevel(int lvNumber) {
+		myController.deleteLevel(lvNumber);
+		Map<Integer, LevelData> tempMap = new TreeMap<Integer, LevelData>();
+		levelToData.keySet().stream().forEach(waveKey -> {
+			if (currentLevel < lvNumber) tempMap.put(waveKey, levelToData.get(waveKey));
+			if (currentLevel > lvNumber) {
+				tempMap.put(waveKey - 1, levelToData.get(waveKey));
+			}
+		});
+		levelToData = tempMap;
 //		myLevels.remove(lvNumber - 1);
 //		myGameAreas.remove(lvNumber - 1);
 //		for (int i = lvNumber - 1; i < myLevels.size(); i++) {
@@ -261,7 +271,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 //			myTabPane.getTabs().get(i).setText("Level " + Integer.toString(i + 1));
 //		}
 //		waveToData = updateDataMap(lvNumber);
-//	}
+	}
 
 //	public Map<String,Data> updateDataMap(int levelRemoved) {
 //		Map<String, Data> tempMap = new TreeMap<String, Data>();
@@ -311,7 +321,8 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
     public void updateImages() {
         mySpriteDisplay.clear();
         if (levelToData.get(currentLevel) != null) {
-        	mySpriteDisplay.addToScroll(levelToData.get(currentLevel).waveInfo.get(myWaveDisplay.getCurrTab()).spriteNames);
+        	mySpriteDisplay.addToScroll(levelToData.get(currentLevel).waveInfo.get(myWaveDisplay.getCurrTab()).spriteNames,
+        			levelToData.get(currentLevel).waveInfo.get(myWaveDisplay.getCurrTab()).numberList);
         }
     }
 
@@ -335,12 +346,13 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 class Data {
     List<ImageView> spriteNames;
     Integer waveId;
+    List<Integer> numberList;
 
     Data() {
     	spriteNames =new ArrayList<ImageView>();
+    	numberList = new ArrayList<Integer>();
     }
 } 
-
 
 
 class LevelData {
