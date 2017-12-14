@@ -12,6 +12,11 @@ import javafx.scene.layout.VBox;
 
 public class GameHealthSelector extends VBox{
 	private final int HEALTH_DEFAULT = 100;
+	private final String HEALTH_HEADER_TEXT = "Input Not Valid";
+	private final String HEALTH_PROMPT_TEXT = "Health Amount";
+	private final String HEALTH_UPDATE_TEXT = "Update";
+	private final String HEALTH_INVALID_INPUT_WARNING = "Your input was invalid, so a default value has been set. If you want";
+	private final String HEALTH_INVALID_INPUT_CORRECTION = " to change this, type in a number, please.";
 	private ArrayList<CheckBox> checkBoxes;
 	private AuthoringController myController;
 
@@ -19,9 +24,9 @@ public class GameHealthSelector extends VBox{
 		myController = controller;
 		
 		TextField amount = new TextField();
-		amount.setPromptText("Health Amount");
+		amount.setPromptText(HEALTH_PROMPT_TEXT);
 		Button update = new Button();
-		update.setText("Update");
+		update.setText(HEALTH_UPDATE_TEXT);
 		createLevelBoxes();
 		update.setOnAction(e ->{
 			record(amount, checkBoxes);});
@@ -42,9 +47,9 @@ public class GameHealthSelector extends VBox{
 		health = Integer.parseInt(amount.getText());		
 		}catch(NumberFormatException nfe) {
 			Alert a = new Alert(AlertType.ERROR);
-			a.setHeaderText("Input Not Valid");
-			a.setContentText("Your input was invalid, so a default value has been set. If you want"
-				+ " to change this, type in a number, please.");
+			a.setHeaderText(HEALTH_HEADER_TEXT);
+			a.setContentText(HEALTH_INVALID_INPUT_WARNING
+				+ HEALTH_INVALID_INPUT_CORRECTION);
 			a.showAndWait();
 			health = HEALTH_DEFAULT;
 		}

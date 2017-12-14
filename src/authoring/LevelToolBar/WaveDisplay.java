@@ -6,6 +6,7 @@ import javafx.scene.control.TabPane;
 public class WaveDisplay extends TabPane {
 	
 	private TabInterface tabInterface;
+	private final String TAB_TEXT = "wave";
 	
 	public WaveDisplay(TabInterface tabInterface) {
 		this.tabInterface = tabInterface;
@@ -18,7 +19,7 @@ public class WaveDisplay extends TabPane {
 		} else {
 			for (int i = mySize; i < numberOfWaves; i++) {
 				Tab tab = new Tab();
-				tab.setText("wave" + String.valueOf(i+1));
+				tab.setText(TAB_TEXT + String.valueOf(i+1));
 				this.getTabs().add(tab);
 				tab.setOnSelectionChanged(e -> tabInterface.updateImages());
 				if (i == 0) {
@@ -34,7 +35,7 @@ public class WaveDisplay extends TabPane {
 		tabInterface.waveDeleted(this.getTabs().indexOf(tab));
 		this.getTabs().remove(tab);
 		for (int i = 0; i < this.getTabs().size(); i++) {
-			this.getTabs().get(i).setText("wave" + String.valueOf(i+1));
+			this.getTabs().get(i).setText(TAB_TEXT + String.valueOf(i+1));
 		}
 	}
 

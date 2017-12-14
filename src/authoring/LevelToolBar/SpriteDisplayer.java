@@ -1,6 +1,5 @@
 package authoring.LevelToolBar;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,13 +14,15 @@ import javafx.scene.shape.Rectangle;
 
 public class SpriteDisplayer extends ScrollPane {
 	
+	private final int BOX_PREF_WIDTH = 400;
+	private final int BOX_PREF_HEIGHT = 30;
 	private HBox myBox;
 	
 	public SpriteDisplayer() {
 		myBox = new HBox();
-		myBox.setPrefWidth(400);
-		myBox.setPrefHeight(30);
-		myBox.setMaxHeight(30);
+		myBox.setPrefWidth(BOX_PREF_WIDTH);
+		myBox.setPrefHeight(BOX_PREF_HEIGHT);
+		myBox.setMaxHeight(BOX_PREF_HEIGHT);
 		myBox.setStyle("-fx-background-color: #336699;");
 		this.setContent(myBox);
 	}

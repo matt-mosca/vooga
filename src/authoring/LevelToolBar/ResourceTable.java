@@ -15,6 +15,7 @@ public class ResourceTable {
 	private AuthoringController myController;
 	private TableView<Resource> myTable;
 	private int myLv;
+	private final int COLUMN_PREF_WIDTH = 120;
 	
 	public ResourceTable(AuthoringController controller, int lv) {
 		myController = controller;
@@ -45,7 +46,7 @@ public class ResourceTable {
 
 	private TableColumn<Resource, ?> makeColumn(String title, String instanceVar) {
 		TableColumn<Resource, ?> column = new TableColumn<>(title);
-		column.setPrefWidth(120);
+		column.setPrefWidth(COLUMN_PREF_WIDTH);
 		column.setCellValueFactory(new PropertyValueFactory<>(instanceVar));
 		return column;
 	}
