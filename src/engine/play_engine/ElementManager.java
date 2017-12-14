@@ -109,11 +109,7 @@ public class ElementManager {
 
 	private void processStepForElement(GameElement element) {
 		if (!element.isAlive()) {
-			if(element.getImageUrl().equals("fireball.png")) {
-				System.out.println("#######################fireball dead#############################");
-			}
 			if(element.shouldExplode()) {
-				System.out.println("EXPLODE==============================");
 				Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
 				try {
 					GameElement explosionElement = gameElementFactory.generateElement(element.explode(), auxiliaryObjects);
@@ -217,7 +213,7 @@ public class ElementManager {
 				GameElement projectileGameElement = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectileGameElement);
 			} catch (ReflectiveOperationException e) {
-				//System.out.println("Failed to  create projectile--------------------------");
+	
 			}
 			playAudio(element.getFiringAudio());
 		}
@@ -239,7 +235,7 @@ public class ElementManager {
 	
 	private void playAudio(String audioUrl) {
 		if(audioUrl != null) {
-			System.out.println(audioUrl);
+			//System.out.println(audioUrl);
 			audioClipFactory = new AudioClipFactory(audioUrl);
 			audioClipFactory.getAudioClip().play();
 		}

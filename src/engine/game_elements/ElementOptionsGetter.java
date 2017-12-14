@@ -1,7 +1,4 @@
-package util;
-
-import engine.game_elements.ElementProperty;
-import engine.game_elements.GameElement;
+package engine.game_elements;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +41,7 @@ public class ElementOptionsGetter {
         initializeParameterTranslations();
         for (Parameter spriteParameter : GameElement.class.getConstructors()[0].getParameters()) {
             try {
-                loadTranslationsForSpriteParameter(spriteParameter);
+                loadTranslationsForElementParameter(spriteParameter);
             } catch (IOException | ReflectiveOperationException failedToLoadTranslationsException) {
                 // TODO - handle
             }
@@ -65,7 +62,7 @@ public class ElementOptionsGetter {
     }
 
     // TODO - refactor (strongly needed)
-    private void loadTranslationsForSpriteParameter(Parameter spriteParameter) throws IOException,
+    private void loadTranslationsForElementParameter(Parameter spriteParameter) throws IOException,
             ReflectiveOperationException {
         Properties spriteParameterSubclassProperties = new Properties();
         String parameterClassSimpleName = spriteParameter.getType().getSimpleName();
@@ -75,23 +72,36 @@ public class ElementOptionsGetter {
             processBehaviorObjectParameterTranslations(spriteParameter,
                     spriteParameterSubclassProperties, parameterClassPossibilitiesStream);
         } else {
-            // DIDNT FIND PROP FILE --> recur on parameter's parameters
-            Class parameterClass = spriteParameter.getType();
-            Map<String, Class> baseSpriteParameterMap = spriteMemberParametersMap.getOrDefault
-                    (SPRITE_BASE_PARAMETER_NAME, new HashMap<>());
-            ElementProperty elementProperty = spriteParameter.getAnnotation(ElementProperty.class);
-            if (elementProperty != null && elementProperty.isTemplateProperty()) {
-                // property common to all sprites !!!! eg imageURL
-                String parameterName = elementProperty.value();
-                baseSpriteParameterMap.put(parameterName, spriteParameter.getType());
-                spriteMemberParametersMap.put(SPRITE_BASE_PARAMETER_NAME, baseSpriteParameterMap);
-            }
-            if (parameterClass.getConstructors().length > 0) {
-                for (Parameter subparameter : parameterClass.getConstructors()[0].getParameters()){
-                    loadTranslationsForSpriteParameter(subparameter);
-                }
+            processBehaviorObjectWrapper(spriteParameter);
+        }
+    }
+
+    private void processBehaviorObjectWrapper(Parameter spriteParameter) throws IOException, ReflectiveOperationException {
+        Class parameterClass = spriteParameter.getType();
+        Map<String, Class> baseSpriteParameterMap = spriteMemberParametersMap.getOrDefault
+                (SPRITE_BASE_PARAMETER_NAME, new HashMap<>());
+        ElementProperty elementProperty = spriteParameter.getAnnotation(ElementProperty.class);
+        if (elementProperty != null && elementProperty.isTemplateProperty()) {
+            processBaseElementParameter(spriteParameter, baseSpriteParameterMap, elementProperty);
+        }
+        if (parameterClass.getConstructors().length > 0) {
+            for (Parameter subparameter : parameterClass.getConstructors()[0].getParameters()){
+                loadTranslationsForElementParameter(subparameter);
             }
         }
+    }
+
+    private void processBaseElementParameter(Parameter spriteParameter, Map<String, Class> baseSpriteParameterMap, ElementProperty elementProperty) {
+        String parameterName = elementProperty.value();
+        String parameterDescription = parameterTranslationProperties.getProperty(parameterName);
+        String parameterIdentifier = parameterName;
+        if (parameterDescription != null) {
+            parameterToDescription.put(parameterName, parameterDescription);
+            descriptionToParameter.put(parameterDescription, parameterName);
+            parameterIdentifier = parameterDescription;
+        }
+        baseSpriteParameterMap.put(parameterIdentifier, spriteParameter.getType());
+        spriteMemberParametersMap.put(SPRITE_BASE_PARAMETER_NAME, baseSpriteParameterMap);
     }
 
     private void processBehaviorObjectParameterTranslations(Parameter spriteParameter, Properties spriteParameterSubclassProperties, InputStream parameterClassPossibilitiesStream) throws IOException, ReflectiveOperationException {
@@ -110,7 +120,7 @@ public class ElementOptionsGetter {
             }
             Map<String, Class> parameterDescriptions = spriteMemberParametersMap.getOrDefault
                     (subclassOptionName, new HashMap<>());
-            loadTranslationsForSpriteParameter(subclassOptionName, parameterDescriptions);
+            loadTranslationsForElementParameter(subclassOptionName, parameterDescriptions);
             spriteMemberParametersMap.put(subclassOptionName, parameterDescriptions);
         }
         spriteParameterSubclassOptions.put(referenceClassDescription != null ?
@@ -118,7 +128,7 @@ public class ElementOptionsGetter {
     }
 
     // TODO - refactor
-    private void loadTranslationsForSpriteParameter(String spriteParameterSubclassName, Map<String, Class>
+    private void loadTranslationsForElementParameter(String spriteParameterSubclassName, Map<String, Class>
             parameterDescriptionsToClasses) throws ReflectiveOperationException {
         Class spriteParameterSubclass = Class.forName(spriteParameterSubclassName);
         Constructor[] subclassConstructors = spriteParameterSubclass.getConstructors();

@@ -1,4 +1,4 @@
-package MediaTesting;
+package util;
 
 import factory.AudioClipFactory;
 import factory.MediaPlayerFactory;
