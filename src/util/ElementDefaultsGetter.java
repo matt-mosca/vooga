@@ -36,7 +36,7 @@ public class ElementDefaultsGetter {
         for (String keyName : properties.keySet()) {
             defaultProperties.put(keyName, convertPropertyStringToObject(properties.getString(keyName)));
         }
-        return null;
+        return defaultProperties;
     }
 
     private Object convertPropertyStringToObject(String propertyString) {

@@ -199,25 +199,28 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         waveAndLevelField.setPromptText("Which level and waves? Seperate by commas");
         TextField amountField = new TextField();
         amountField.setPromptText("How many of this Sprite?");
+        TextField locationField = new TextField();
+        locationField.setPromptText("Where should this wave spawn? (Split with comma)");
         myVBox.getChildren().add(waveAndLevelField);
         myVBox.getChildren().add(amountField);
+        myVBox.getChildren().add(locationField);
         Button submitButton = new Button("Submit");
 //        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 //        		e->submitToWaves(waveAndLevelField.getText().split("\\s+"), 
 //        				Integer.valueOf(amountField.getText())));
         submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-        		e->submitToWaves(waveAndLevelField.getText(), 
+        		e->submitToWaves(waveAndLevelField.getText(), locationField.getText(),
         				Integer.valueOf(amountField.getText()), imageView));
         myVBox.getChildren().add(submitButton);
 	}
 	
-	private void submitToWaves(String levelsAndWaves, int amount, ImageView imageView) {
+	private void submitToWaves(String levelsAndWaves, String location, int amount, ImageView imageView) {
 //        for (int i = 0; i < levelsAndWaves.length; i++) {
 //        	String[] currLevelAndWave = levelsAndWaves[i].split("\\.");
 //    		display.submit(Integer.valueOf(currLevelAndWave[0]), 
 //    				Integer.valueOf(currLevelAndWave[1]), amount, clone(myPropertiesBox.getCurrSprite()));
 //        }
-		display.submit(levelsAndWaves, amount, imageView);
+		display.submit(levelsAndWaves, location, amount, imageView);
 		waveStage.hide();
 	}
 	

@@ -420,8 +420,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		attackDefenseLabel.setText("Attack");
 	}
 
-	public void submit(String levelAndWave, int amount, ImageView mySprite) {
-		myBottomToolBar.addToWave(levelAndWave, amount, mySprite);
+	public void submit(String levelAndWave, String location, int amount, ImageView mySprite) {
+		myBottomToolBar.addToWave(levelAndWave, location, amount, mySprite);
 	}
 
 	@Override

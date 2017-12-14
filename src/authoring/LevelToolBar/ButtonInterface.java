@@ -7,5 +7,4 @@ public interface ButtonInterface {
 	void addLevel();
 	
 	void openLevelDisplay();
-
 }
