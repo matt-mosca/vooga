@@ -1,6 +1,7 @@
 package networking;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import engine.play_engine.PlayController;
@@ -38,141 +39,8 @@ class MultiPlayerController extends AbstractServerController {
 
 	private final String LOAD_LEVEL_ERROR_NOT_READY = "Your peers are not yet ready to load this level";
 
-	// TODO - Consider server push instead of client pull? Would be more complicated
-	// but more accurate / realistic, and fewer packets exchanged
-	byte[] handleUpdate(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		PlayController playController = getPlayEngineForClient(clientId);
-		if (clientIsFirstMemberOfGameRoom(clientId)) {
-			// only do actual update if primary client, simply send state for the rest
-			playController.update();
-		}
-		return serverMessageBuilder.setUpdate(playController.getLatestUpdate()).build().toByteArray();
-	}
-
-	byte[] handlePauseGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		// Verify clientId, retrieve appropriate game room / controller
-		PlayController playController = getPlayEngineForClient(clientId);
-		playController.pause();
-		return serverMessageBuilder.setUpdate(playController.packageStatusUpdate()).build().toByteArray();
-	}
-
-	byte[] handleResumeGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		PlayController playController = getPlayEngineForClient(clientId);
-		playController.resume();
-		return serverMessageBuilder.setUpdate(playController.packageStatusUpdate()).build().toByteArray();
-	}
-
-	byte[] getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder.setInventory(getPlayEngineForClient(clientId).packageInventory()).build()
-				.toByteArray();
-	}
-
-	byte[] getTemplateProperties(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder
-				.addTemplateProperties(getPlayEngineForClient(clientId)
-						.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()))
-				.build().toByteArray();
-	}
-
-	byte[] getAllTemplateProperties(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder
-				.addAllTemplateProperties(getPlayEngineForClient(clientId).packageAllTemplateProperties()).build()
-				.toByteArray();
-	}
-
-	byte[] getElementCosts(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder.addAllElementCosts(getPlayEngineForClient(clientId).packageAllElementCosts())
-				.build().toByteArray();
-	}
-
-	byte[] placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
-			throws ReflectiveOperationException {
-		PlayController playController = getPlayEngineForClient(clientId);
-		PlaceElement placeElementRequest = clientMessage.getPlaceElement();
-		NewSprite placedElement = playController.placeElement(placeElementRequest.getElementName(),
-				new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord()));
-		// Broadcast
-		enqueueMessage(ServerMessage.newBuilder()
-				.setNotification(Notification.newBuilder().setElementPlaced(placedElement).build()).build());
-		return serverMessageBuilder.setElementPlaced(placedElement).build().toByteArray();
-	}
-
-	byte[] moveElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		PlayController playController = getPlayEngineForClient(clientId);
-		MoveElement moveElementRequest = clientMessage.getMoveElement();
-		SpriteUpdate updatedSprite = playController.moveElement(moveElementRequest.getElementId(),
-				moveElementRequest.getNewXCoord(), moveElementRequest.getNewYCoord());
-		// Broadcast
-		enqueueMessage(ServerMessage.newBuilder()
-				.setNotification(Notification.newBuilder().setElementMoved(updatedSprite).build()).build());
-		return serverMessageBuilder.setElementMoved(updatedSprite).build().toByteArray();
-	}
-
-	byte[] deleteElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		PlayController playController = getPlayEngineForClient(clientId);
-		DeleteElement deleteElementRequest = clientMessage.getDeleteElement();
-		try {
-			SpriteDeletion deletedElement = playController.deleteElement(deleteElementRequest.getElementId());
-			enqueueMessage(ServerMessage.newBuilder()
-					.setNotification(Notification.newBuilder().setElementDeleted(deletedElement).build()).build());
-			return serverMessageBuilder.setElementDeleted(deletedElement).build().toByteArray();
-		} catch (IllegalArgumentException e) {
-			return serverMessageBuilder.setError(e.getMessage()).build().toByteArray();
-		}
-	}
-
-	byte[] upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
-			throws ReflectiveOperationException {
-		PlayController playController = getPlayEngineForClient(clientId);
-		playController.upgradeElement(clientMessage.getUpgradeElement().getSpriteId());
-		return serverMessageBuilder.build().toByteArray();
-	}
-
-	byte[] checkReadyForNextLevel(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder
-				.setReadyForNextLevel(ReadyForNextLevel.newBuilder()
-						.setIsReady(joinAndCheckIfWaitingRoomIsFull(getGameRoomNameOfClient(clientId))).build())
-				.build().toByteArray();
-	}
-
-	byte[] loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
-		LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
-		String roomName = getGameRoomNameOfClient(clientId);
-		int levelToLoad = loadLevelRequest.getLevel();
-		if (!checkIfWaitingRoomIsFull(roomName)) {
-			// not ready to load
-			return serverMessageBuilder
-					.setLevelInitialized(levelInitializationBuilder.setError(LOAD_LEVEL_ERROR_NOT_READY).build())
-					.build().toByteArray();
-		}
-		String gameName = retrieveGameNameFromRoomName(roomName);
-		try {
-			return serverMessageBuilder
-					.setLevelInitialized(getPlayEngineForClient(clientId).loadOriginalGameState(gameName, levelToLoad))
-					.build().toByteArray();
-		} catch (IOException e) {
-			return serverMessageBuilder.setLevelInitialized(LevelInitialized.getDefaultInstance()).build()
-					.toByteArray();
-		}
-	}
-
-	byte[] getLevelElements(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder.addAllLevelSprites(
-				getPlayEngineForClient(clientId).getLevelSprites(clientMessage.getGetLevelElements().getLevel()))
-				.build().toByteArray();
-	}
-
-	byte[] getNumberOfLevels(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder
-				.setNumLevels(NumberOfLevels.newBuilder()
-						.setNumLevels(getPlayEngineForClient(clientId).getNumLevelsForGame()).build())
-				.build().toByteArray();
-	}
-
+	private Map<String, PlayController> roomsToEngines = new HashMap<>();
+	
 	@Override
 	public byte[] handleRequestAndSerializeResponse(int clientId, byte[] requestBytes) {
 		try {
@@ -185,6 +53,16 @@ class MultiPlayerController extends AbstractServerController {
 		} catch (IOException | ReflectiveOperationException e) {
 			return new byte[] {}; // TEMP - Should create a generic error message
 		}
+	}
+	
+	@Override
+	protected PlayController getEngineForRoom(String room) {
+		return roomsToEngines.get(room);
+	}
+	
+	@Override
+	protected void createEngineForRoom(String room) {
+		roomsToEngines.put(room, new PlayController());
 	}
 
 	// Try refactoring / replacing following 4 methods using Reflection instead
@@ -241,6 +119,141 @@ class MultiPlayerController extends AbstractServerController {
 			return getNumberOfLevels(clientId, clientMessage, serverMessageBuilder);
 		}
 		return ServerMessage.getDefaultInstance().toByteArray();
+	}
+	
+	// TODO - Consider server push instead of client pull? Would be more complicated
+	// but more accurate / realistic, and fewer packets exchanged
+	private byte[] handleUpdate(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		if (clientIsFirstMemberOfGameRoom(clientId)) {
+			// only do actual update if primary client, simply send state for the rest
+			playController.update();
+		}
+		return serverMessageBuilder.setUpdate(playController.getLatestUpdate()).build().toByteArray();
+	}
+
+	private byte[] handlePauseGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		// Verify clientId, retrieve appropriate game room / controller
+		PlayController playController = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		playController.pause();
+		return serverMessageBuilder.setUpdate(playController.packageStatusUpdate()).build().toByteArray();
+	}
+
+	private byte[] handleResumeGame(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		playController.resume();
+		return serverMessageBuilder.setUpdate(playController.packageStatusUpdate()).build().toByteArray();
+	}
+
+	private byte[] getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.setInventory(getEngineForRoom(getGameRoomNameOfClient(clientId)).packageInventory()).build()
+				.toByteArray();
+	}
+
+	private byte[] getTemplateProperties(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.addTemplateProperties(getEngineForRoom(getGameRoomNameOfClient(clientId))
+						.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()))
+				.build().toByteArray();
+	}
+
+	private byte[] getAllTemplateProperties(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.addAllTemplateProperties(getEngineForRoom(getGameRoomNameOfClient(clientId)).packageAllTemplateProperties()).build()
+				.toByteArray();
+	}
+
+	private byte[] getElementCosts(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.addAllElementCosts(getEngineForRoom(getGameRoomNameOfClient(clientId)).packageAllElementCosts())
+				.build().toByteArray();
+	}
+
+	private byte[] placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
+			throws ReflectiveOperationException {
+		PlayController playController = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		PlaceElement placeElementRequest = clientMessage.getPlaceElement();
+		NewSprite placedElement = playController.placeElement(placeElementRequest.getElementName(),
+				new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord()));
+		// Broadcast
+		enqueueMessage(ServerMessage.newBuilder()
+				.setNotification(Notification.newBuilder().setElementPlaced(placedElement).build()).build());
+		return serverMessageBuilder.setElementPlaced(placedElement).build().toByteArray();
+	}
+
+	private byte[] moveElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		MoveElement moveElementRequest = clientMessage.getMoveElement();
+		SpriteUpdate updatedSprite = playController.moveElement(moveElementRequest.getElementId(),
+				moveElementRequest.getNewXCoord(), moveElementRequest.getNewYCoord());
+		// Broadcast
+		enqueueMessage(ServerMessage.newBuilder()
+				.setNotification(Notification.newBuilder().setElementMoved(updatedSprite).build()).build());
+		return serverMessageBuilder.setElementMoved(updatedSprite).build().toByteArray();
+	}
+
+	private byte[] deleteElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		PlayController playController = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		DeleteElement deleteElementRequest = clientMessage.getDeleteElement();
+		try {
+			SpriteDeletion deletedElement = playController.deleteElement(deleteElementRequest.getElementId());
+			enqueueMessage(ServerMessage.newBuilder()
+					.setNotification(Notification.newBuilder().setElementDeleted(deletedElement).build()).build());
+			return serverMessageBuilder.setElementDeleted(deletedElement).build().toByteArray();
+		} catch (IllegalArgumentException e) {
+			return serverMessageBuilder.setError(e.getMessage()).build().toByteArray();
+		}
+	}
+
+	private byte[] upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
+			throws ReflectiveOperationException {
+		PlayController playController = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		playController.upgradeElement(clientMessage.getUpgradeElement().getSpriteId());
+		return serverMessageBuilder.build().toByteArray();
+	}
+
+	private byte[] checkReadyForNextLevel(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.setReadyForNextLevel(ReadyForNextLevel.newBuilder()
+						.setIsReady(joinAndCheckIfWaitingRoomIsFull(getGameRoomNameOfClient(clientId))).build())
+				.build().toByteArray();
+	}
+
+	private byte[] loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
+		LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
+		String roomName = getGameRoomNameOfClient(clientId);
+		int levelToLoad = loadLevelRequest.getLevel();
+		if (!checkIfWaitingRoomIsFull(roomName)) {
+			// not ready to load
+			return serverMessageBuilder
+					.setLevelInitialized(levelInitializationBuilder.setError(LOAD_LEVEL_ERROR_NOT_READY).build())
+					.build().toByteArray();
+		}
+		String gameName = retrieveGameNameFromRoomName(roomName);
+		try {
+			return serverMessageBuilder
+					.setLevelInitialized(getEngineForRoom(getGameRoomNameOfClient(clientId)).loadOriginalGameState(gameName, levelToLoad))
+					.build().toByteArray();
+		} catch (IOException e) {
+			return serverMessageBuilder.setLevelInitialized(LevelInitialized.getDefaultInstance()).build()
+					.toByteArray();
+		}
+	}
+
+	private byte[] getLevelElements(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.addAllLevelSprites(
+				getEngineForRoom(getGameRoomNameOfClient(clientId)).getLevelSprites(clientMessage.getGetLevelElements().getLevel()))
+				.build().toByteArray();
+	}
+
+	private byte[] getNumberOfLevels(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.setNumLevels(NumberOfLevels.newBuilder()
+						.setNumLevels(getEngineForRoom(getGameRoomNameOfClient(clientId)).getNumLevelsForGame()).build())
+				.build().toByteArray();
 	}
 
 	private boolean joinAndCheckIfWaitingRoomIsFull(String roomName) {

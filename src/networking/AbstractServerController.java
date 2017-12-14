@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import engine.AbstractGameController;
 import engine.play_engine.PlayController;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -43,7 +44,6 @@ public abstract class AbstractServerController {
 
 	// Should support multiple concurrent game rooms, i.e. need multiple
 	// concurrent engines
-	private Map<String, PlayController> roomNamesToPlayEngines = new HashMap<>();
 	private Map<String, String> roomNamesToGameNames = new HashMap<>();
 	private Map<String, List<Integer>> roomMembers = new HashMap<>();
 	private Map<String, Integer> roomNameCollisions = new HashMap<>();
@@ -92,15 +92,15 @@ public abstract class AbstractServerController {
 		}
 		String gameName = gameRoomCreationRequest.getGameName();
 		String roomName = generateUniqueRoomName(gameRoomCreationRequest.getRoomName());
+		createEngineForRoom(roomName);
+		AbstractGameController controllerForGame = getEngineForRoom(roomName);
 		// Verify that gameName is valid
-		PlayController controllerForGame = new PlayController();
 		if (!controllerForGame.getAvailableGames().containsKey(gameName)) {
 			return serverMessageBuilder
 					.setGameRoomCreationStatus(
 							gameRoomCreationStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build())
 					.build().toByteArray();
 		}
-		roomNamesToPlayEngines.put(roomName, controllerForGame);
 		roomNamesToGameNames.put(roomName, gameName);
 		roomMembers.put(roomName, new ArrayList<>());
 		clearWaitingRoom(roomName);
@@ -167,7 +167,7 @@ public abstract class AbstractServerController {
 		String roomName = getGameRoomNameOfClient(clientId);
 		String gameName = retrieveGameNameFromRoomName(roomName);
 		try {
-			LevelInitialized levelData = roomNamesToPlayEngines.get(roomName).loadOriginalGameState(gameName, 1);
+			LevelInitialized levelData = getEngineForRoom(roomName).loadOriginalGameState(gameName, 1);
 			serverMessageBuilder
 					.setGameRoomLaunchStatus(gameRoomLaunchStatusBuilder.setInitialState(levelData).build());
 			// Push message to other clients
@@ -204,9 +204,9 @@ public abstract class AbstractServerController {
 		return roomMembers.values().stream().filter(clientIds -> clientIds.contains(clientId)).count() > 0;
 	}
 
-	protected PlayController getPlayEngineForClient(int clientId) {
-		return roomNamesToPlayEngines.get(getGameRoomNameOfClient(clientId));
-	}
+	protected abstract AbstractGameController getEngineForRoom(String room);
+	
+	protected abstract void createEngineForRoom(String room);
 	
 	protected String getGameRoomNameOfClient(int clientId) {
 		return roomMembers.keySet().stream().filter(roomName -> roomMembers.get(roomName).contains(clientId)).iterator()

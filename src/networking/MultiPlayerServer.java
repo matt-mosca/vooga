@@ -9,10 +9,6 @@ public class MultiPlayerServer extends AbstractGameServer {
 
 	private MultiPlayerController multiPlayerController;
 
-	public MultiPlayerServer() {
-		super();
-	}
-
 	@Override
 	public int getPort() {
 		return Constants.MULTIPLAYER_SERVER_PORT;
@@ -27,7 +23,6 @@ public class MultiPlayerServer extends AbstractGameServer {
 	}
 
 	public static void main(String[] args) {
-		//launch(args);
 		MultiPlayerServer multiPlayerServer = new MultiPlayerServer();
 		multiPlayerServer.startServer();
 	}
