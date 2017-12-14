@@ -184,7 +184,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	
 	@Override
 	public void addToWave(ImageView imageView) {
-		int maxLevel = display.getMaxLevel();
+		int maxLevel = myController.getNumLevelsForGame();
 		waveStage = new Stage();
 		waveStage.setTitle("CheckBox Experiment 1");
         myVBox = new VBox();
@@ -284,7 +284,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 
 	@Override
 	public void addToLevel(ImageView imageView) {
-		int maxLevel = display.getMaxLevel();
+		int maxLevel = myController.getNumLevelsForGame();
 		Stage levelStage = new Stage();
 		levelStage.setTitle("CheckBox Experiment 1");
         VBox myVBox = new VBox();

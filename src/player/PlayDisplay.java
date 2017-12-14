@@ -258,6 +258,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private void addLoadedSprites() {
 		for(ImageView spriteImage:clientMessageUtils.getNewImageViews()) {
+			myPlayArea.getChildren().add(spriteImage);
 			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
 				//TODO add method here that let's you mark the object via the controller if we want to play whack-a-mole
 			});
@@ -318,6 +319,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private void step() {
 		Update latestUpdate = myController.update();
+//		myController.update();
 		/*
 		if (myController.isReadyForNextLevel()) {
 			hideTransitorySplashScreen();

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import engine.SpriteQueryHandler;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
@@ -85,8 +87,7 @@ public class ElementManager {
 		}
 		processWaveUpdate();
 		activeElements.forEach(this::processStepForElement);
-		activeElements.removeAll(deadElements);
-		activeElements.addAll(newElements);
+		activeElements.removeAll(deadElements);	
 	}
 
 	private void processWaveUpdate() {
@@ -190,7 +191,6 @@ public class ElementManager {
 		if(!allAffectedElements.contains(collidee)) {
 			allAffectedElements.add(collidee);
 		}
-		//System.out.println("Affected Enemies="+ ""+allAffectedElements);
 		return allAffectedElements;
 	}
 
@@ -204,31 +204,19 @@ public class ElementManager {
 		}
 		//@ TODO Fix should fire to take in nearest point
 		String elementTemplateName;
+		
 		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) && (elementTemplateName = element.fire()) != null) {
-			
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
-			try {
-				GameElement projectile = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
-				newElements.add(projectile);
-				// can add to templateToIdMap here
-				
-			} catch (ReflectiveOperationException failedToGenerateProjectileException) {
-				// don't generate the projectile
-				// TODO - throw exception? (prob not)
-			}
-			playAudio(element.getFiringAudio());
-			// Use player id of firing element rather than projectile? This allows greater
-			// flexibility
 			try {
 				GameElement projectileGameElement = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectileGameElement);
 			} catch (ReflectiveOperationException e) {
-				// todo
+				//System.out.println("Failed to  create projectile--------------------------");
 			}
-
+			playAudio(element.getFiringAudio());
 		}
-
+		
 	}
 	
 	private GameElement getNearestEnemyElement(GameElement element) {
@@ -245,10 +233,9 @@ public class ElementManager {
 	}
 	
 	private void playAudio(String audioUrl) {
-		if(audioUrl != null)
-		{
-			//audioClipFactory = new AudioClipFactory(audioUrl);
-			audioClipFactory = new AudioClipFactory();
+		if(audioUrl != null) {
+			System.out.println(audioUrl);
+			audioClipFactory = new AudioClipFactory(audioUrl);
 			audioClipFactory.getAudioClip().play();
 		}
 	}

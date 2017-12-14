@@ -315,8 +315,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getLevelHealths().get(level);
 	}
 	
-	
-
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)
 			throws ReflectiveOperationException {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
