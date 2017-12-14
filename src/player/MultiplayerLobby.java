@@ -2,6 +2,9 @@ package player;
 
 import java.util.Optional;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
+
 import display.factory.ButtonFactory;
 import display.splashScreen.ScreenDisplay;
 import javafx.application.Platform;
@@ -12,7 +15,6 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -20,14 +22,12 @@ import javafx.stage.Stage;
 import networking.MultiPlayerClient;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.Notification;
-import util.io.SerializationUtils;
 
 public class MultiplayerLobby extends ScreenDisplay {
 	// private static final String BACKGROUND_IMAGE = "grass_large.png";
 	private static final String BACKGROUND_IMAGE = "space_background.jpeg";
 
 	private PlayDisplay playDisplay;
-	private BorderPane multiplayerLayout;
 	private Label topScreenLabel;
 	private Label lobbyPlayersLabel;
 	private Label lobbiesLabel;
@@ -455,26 +455,30 @@ public class MultiplayerLobby extends ScreenDisplay {
 		multiClient.registerNotificationListener(notification -> processNotification(notification));
 	}
 
-	private void processNotification(Change<? extends Notification> notification) {
+	private void processNotification(Change<? extends Message> notificationMessage) {
 		Platform.runLater(() -> {
 			System.out.println("Processing notification in lobby!");
-			while (notification.next()) {
-				notification.getAddedSubList().stream().forEach(message -> {
-					if (message.hasPlayerJoined()) {
-						String nameOfJoinedPlayer = message.getPlayerJoined().getUserName();
-						handleUserJoinedRoom(nameOfJoinedPlayer);
-					}
-					if (message.hasPlayerExited()) {
-						String nameOfExitedPlayer = message.getPlayerExited().getUserName();
-						handleUserExitedRoom(nameOfExitedPlayer);
-					}
-					if (message.hasLevelInitialized() && !launched) {
-						LevelInitialized levelData = message.getLevelInitialized();
-						handleGameLaunched(levelData);
-					}
-					if (message.hasElementPlaced() && launched) {
-						System.out.println("Element placed!");
-						playDisplay.receivePlacedElement(message.getElementPlaced());
+			while (notificationMessage.next()) {
+				notificationMessage.getAddedSubList().stream().forEach(message -> {
+					try {
+						Notification notification = Notification.parseFrom(message.toByteArray());						
+						if (notification.hasPlayerJoined()) {
+							String nameOfJoinedPlayer = notification.getPlayerJoined().getUserName();
+							handleUserJoinedRoom(nameOfJoinedPlayer);
+						}
+						if (notification.hasPlayerExited()) {
+							String nameOfExitedPlayer = notification.getPlayerExited().getUserName();
+							handleUserExitedRoom(nameOfExitedPlayer);
+						}
+						if (notification.hasLevelInitialized() && !launched) {
+							LevelInitialized levelData = notification.getLevelInitialized();
+							handleGameLaunched(levelData);
+						}
+						if (notification.hasElementPlaced() && launched) {
+							System.out.println("Element placed!");
+							playDisplay.receivePlacedElement(notification.getElementPlaced());
+						}
+					} catch (InvalidProtocolBufferException e) {
 					}
 				});
 			}
