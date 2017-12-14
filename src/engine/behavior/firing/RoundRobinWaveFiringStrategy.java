@@ -18,9 +18,8 @@ public class RoundRobinWaveFiringStrategy extends AbstractWaveFiringStrategy {
 
 	public RoundRobinWaveFiringStrategy(
 			@ElementProperty(value = "templatesToFire", isTemplateProperty = true) List<String> templatesToFire,
-			@ElementProperty(value = "spawnPeriod", isTemplateProperty = true) double period,
-			@ElementProperty(value = "numberToSpawn", isTemplateProperty = true) int numberToSpawn) {
-		super(templatesToFire, period, numberToSpawn);
+			@ElementProperty(value = "spawnPeriod", isTemplateProperty = true) double period) {
+		super(templatesToFire, period, templatesToFire.size());
 		elementChooser = templatesToFire.iterator();
 		elementsToFire = templatesToFire;
 	}

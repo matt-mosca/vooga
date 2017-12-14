@@ -382,7 +382,7 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
 
     @Override
     public void listItemClicked(MouseEvent e, ImageView image) {
-        if (!checkFunds(image.getId()))
+        if (image == null || !checkFunds(image.getId()))
             return;
         Alert costDialog = new Alert(AlertType.CONFIRMATION);
         costDialog.setTitle("Purchase Resource");
