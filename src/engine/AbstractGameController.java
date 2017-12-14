@@ -160,6 +160,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			Collections.sort(sortedWaveNames);
 			for (String waveName : sortedWaveNames) {
 				try {
+					System.out.println(waveName + " " + sortedWaveNames + " " + wavesInLevel);
+				
 					waves.add(generatePlacedElement(waveName, wavesInLevel.get(waveName)));
 				} catch (ReflectiveOperationException e) {
 					throw new IOException(e);
