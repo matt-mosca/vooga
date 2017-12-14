@@ -110,9 +110,9 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		myProperties.put("Collided-with effects", "Do nothing to colliding objects");
 		myProperties.put("Move an object", "Object will stay at desired location");
 		myProperties.put("Firing Behavior", "Shoot various element types in a sequence");
-		myProperties.put("imageHeight", 40);
-		myProperties.put("imageWidth", 40);
-		myProperties.put("imageUrl", "monkey.png");
+		myProperties.put("Height", 40);
+		myProperties.put("Width", 40);
+		myProperties.put("Path of game element image", "monkey.png");
 		myProperties.put("Name", "myWave");
 		myProperties.put("tabName", "Troops");
 		myProperties.put("Range of tower", 50000);
