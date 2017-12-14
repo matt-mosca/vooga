@@ -213,8 +213,8 @@ public class LevelToolBar extends VBox implements TabInterface {
 				}
 				//TODO: Refactor code below for changing map
 				List<ImageView> tempArray = new ArrayList<ImageView>();
-				tempArray.addAll(imageList);
 				tempArray.addAll(waveToData.get(levelDotWave).spriteNames);
+				tempArray.addAll(imageList);
 				waveToData.put(levelDotWave, new Data(tempArray, waveToData.get(levelDotWave).waveId));
 			} else {
 				waveToData.put(levelDotWave, new Data(imageList,
@@ -274,6 +274,7 @@ public class LevelToolBar extends VBox implements TabInterface {
 		myLevels.get(level - 1).update(currSprite);
 
 	}
+
 }
 
 class Data{   

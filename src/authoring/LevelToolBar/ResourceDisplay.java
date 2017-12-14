@@ -29,21 +29,20 @@ public class ResourceDisplay extends VBox{
 	
 	public ResourceDisplay(AuthoringController controller){
 		myController = controller;
+		this.setMaxWidth(250);
 		resourceEndowments = new HashMap<>();
 		
 		
 		resourceTabs = new TabPane();
 		tabMaker = new TabFactory();
 		resources = new ArrayList<ResourceTab>();
+		this.getChildren().add(resourceTabs);
 		changeResourceValApparatus();
-		
-		createResourceTabs();
-		update(myController.getCurrentLevel());
 	}
 
 	private void createResourceTabs() {
 		for (int i=0; i<myController.getNumLevelsForGame(); i++) {
-			System.out.println(Integer.toString(myController.getCurrentLevel()));
+//			System.out.println(Integer.toString(myController.getCurrentLevel()));
 			Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(i+1), null, resourceTabs);
 			ResourceTab newLv = new ResourceTab(i+1, myController);
 			newLv.attach(newTab);
@@ -84,19 +83,24 @@ public class ResourceDisplay extends VBox{
 			a.setContentText("You need to input a number!");
 			a.showAndWait();
 		}});
-		this.getChildren().add(resourceTabs);
 		this.getChildren().addAll(name, value, enter);
 		
 	}
 
 	private void update(int lv) {
+		if (resources.size()!=0) {
 		resources.get(lv-1).update();
+		}
 	}
 	
 	void updateCurrentState() {
-//		resources.clear();
-//		resourceTabs.getTabs().clear();
-//		createResourceTabs();
+		resources.clear();
+		resourceTabs.getTabs().clear();
+		createResourceTabs();
+		for(int i=0; i<resources.size(); i++) {
+			resources.get(i).update();
+		}
+		myController.setLevel(1);
 	}
 
 	public VBox getRoot() {
