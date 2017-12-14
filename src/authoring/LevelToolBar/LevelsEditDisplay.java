@@ -45,5 +45,7 @@ public class LevelsEditDisplay {
 	public void open() {
 		myStage.show();
 		resourceEditor.updateCurrentState();
+		gameEnder.update();
+		recorder.update();
 	}
 }
