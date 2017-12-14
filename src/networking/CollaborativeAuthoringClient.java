@@ -407,9 +407,15 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	@Override
-	public void setLevelHealth(int level, int health) {
+	public void setLevelHealth(int health) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getNumLevelsForGame() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

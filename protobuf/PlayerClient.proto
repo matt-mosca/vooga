@@ -120,7 +120,5 @@ message GetLevelElements {
 }
 
 message GetNumberOfLevels {
-	required string gameName = 1;
-	required bool originalGame = 2;
 }
 

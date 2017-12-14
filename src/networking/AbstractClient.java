@@ -200,11 +200,16 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		return handleDeleteElementResponse(pollFromMessageQueue());
 	}
 
+	@Deprecated
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean originalGame) {
-		writeRequestBytes(ClientMessage.newBuilder()
-				.setGetNumLevels(GetNumberOfLevels.newBuilder().setGameName(gameName).setOriginalGame(originalGame))
-				.build().toByteArray());
+		return getNumLevelsForGame();
+	}
+
+	@Override
+	public int getNumLevelsForGame() {
+		writeRequestBytes(ClientMessage.newBuilder().setGetNumLevels(GetNumberOfLevels.getDefaultInstance()).build()
+				.toByteArray());
 		return handleNumLevelsForGameResponse(pollFromMessageQueue());
 	}
 
@@ -399,7 +404,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		}
 		return SpriteUpdate.getDefaultInstance();
 	}
-	
+
 	private SpriteDeletion handleDeleteElementResponse(ServerMessage serverMessage) {
 		if (serverMessage.hasElementDeleted()) {
 			return serverMessage.getElementDeleted();
