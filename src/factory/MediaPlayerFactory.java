@@ -11,7 +11,7 @@ import javafx.scene.media.MediaPlayer;
  */
 public class MediaPlayerFactory {
 	
-	private final String DEFAULT_MEDIA_NAME = "src/MediaTesting/497632384.mp4";
+	private final String DEFAULT_MEDIA_NAME = "data/audio/497632384.mp4";
 	private MediaPlayer mediaPlayer;
 	
 	/**

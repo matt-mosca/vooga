@@ -67,7 +67,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	private Label projectileLabel;
 	private HBox projectileSlot;
 	private Button deleteButton;
-	private ReturnButton retB;
+	//private ReturnButton retB;
 	private CreationInterface created;
 	private AuthoringController myController;
 	private Map<String, Object> basePropertyMap;
@@ -87,7 +87,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	public PropertiesToolBar(EditDisplay display, AuthoringController controller) {
 		this.display = display;
 		myDisplay = display;
-		retB = new ReturnButton(display);
+		//retB = new ReturnButton(display);
 		myController = controller;
 		availableProjectiles = new ArrayList<>();
 		newTower = new NewTowerTab(display);   
@@ -108,7 +108,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	    myNewButton = new AddNewButton(created);
         this.getChildren().add(topTabPane);
         this.getChildren().add(bottomTabPane);
-        this.getChildren().add(retB);
+        //this.getChildren().add(retB);
         
         
         newTower.attach(topTabPane.getTabs().get(0));
@@ -175,7 +175,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		this.getChildren().removeAll(this.getChildren());
 		this.getChildren().add(topTabPane);
 		this.getChildren().add(bottomTabPane);
-		this.getChildren().add(retB);
+		//this.getChildren().add(retB);
 	}
 	
 	public void addToMap(String property, String value) {
@@ -189,7 +189,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 		waveStage.setTitle("CheckBox Experiment 1");
         myVBox = new VBox();
         createTextFields(imageView);
-        Scene scene = new Scene(myVBox, 200, 100);
+        Scene scene = new Scene(myVBox, 200, 120);
         waveStage.setScene(scene);
         waveStage.show();
 	}
@@ -199,25 +199,28 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         waveAndLevelField.setPromptText("Which level and waves? Seperate by commas");
         TextField amountField = new TextField();
         amountField.setPromptText("How many of this Sprite?");
+        TextField locationField = new TextField();
+        locationField.setPromptText("Where should this wave spawn? (Split with comma)");
         myVBox.getChildren().add(waveAndLevelField);
         myVBox.getChildren().add(amountField);
+        myVBox.getChildren().add(locationField);
         Button submitButton = new Button("Submit");
 //        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 //        		e->submitToWaves(waveAndLevelField.getText().split("\\s+"), 
 //        				Integer.valueOf(amountField.getText())));
         submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-        		e->submitToWaves(waveAndLevelField.getText(), 
+        		e->submitToWaves(waveAndLevelField.getText(), locationField.getText(),
         				Integer.valueOf(amountField.getText()), imageView));
         myVBox.getChildren().add(submitButton);
 	}
 	
-	private void submitToWaves(String levelsAndWaves, int amount, ImageView imageView) {
+	private void submitToWaves(String levelsAndWaves, String location, int amount, ImageView imageView) {
 //        for (int i = 0; i < levelsAndWaves.length; i++) {
 //        	String[] currLevelAndWave = levelsAndWaves[i].split("\\.");
 //    		display.submit(Integer.valueOf(currLevelAndWave[0]), 
 //    				Integer.valueOf(currLevelAndWave[1]), amount, clone(myPropertiesBox.getCurrSprite()));
 //        }
-		display.submit(levelsAndWaves, amount, imageView);
+		display.submit(levelsAndWaves, location, amount, imageView);
 		waveStage.hide();
 	}
 	

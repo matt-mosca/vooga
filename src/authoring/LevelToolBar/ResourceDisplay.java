@@ -24,6 +24,8 @@ public class ResourceDisplay extends VBox{
 	private TabPane resourceTabs;
 	private List<ResourceTab> resources;
 	private Map<String, Double> resourceEndowments;
+	private TextField name;
+	private TextField value;
 	private AuthoringController myController;
 	private TabFactory tabMaker;
 	
@@ -56,9 +58,9 @@ public class ResourceDisplay extends VBox{
 	}
 
 	private void changeResourceValApparatus() {
-		TextField name = new TextField();
+		name = new TextField();
 		name.setPromptText("Name");
-		TextField value = new TextField();
+		value = new TextField();
 		value.setPromptText("Value");
 		Button enter = new Button("add!");
 		enter.setOnAction(e->{
@@ -91,6 +93,9 @@ public class ResourceDisplay extends VBox{
 		if (resources.size()!=0) {
 		resources.get(lv-1).update();
 		}
+		name.clear();
+		value.clear();
+		
 	}
 	
 	void updateCurrentState() {

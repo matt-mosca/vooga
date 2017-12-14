@@ -11,12 +11,14 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import authoring.LevelToolBar.LevelToolBar;
+import authoring.LevelToolBar.LevelToolBarOld;
 import authoring.PropertiesToolBar.PropertiesToolBar;
 import authoring.PropertiesToolBar.SpriteImage;
 import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
+import engine.PlayModelController;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
@@ -28,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -53,6 +56,7 @@ import javafx.stage.Stage;
 import main.Main;
 import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.NewSprite;
+import player.LiveEditingPlayDisplay;
 import player.PlayDisplay;
 import util.DropdownFactory;
 import util.Exclude;
@@ -86,11 +90,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private LevelToolBar myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
-	private SpriteTesterButton myTesterButton;
+	//private SpriteTesterButton myTesterButton;
 	private Slider volumeSlider;
 	private MediaPlayerFactory mediaPlayerFactory;
 	private MediaPlayer mediaPlayer;
-	private String backgroundSong = "src/MediaTesting/110 - pokemon center.mp3";
+	private String backgroundSong = "data/audio/110 - pokemon center.mp3";
 	private InteractiveObject objectToPlace;
 	private EventHandler<MouseEvent> cursorDrag;
 	private boolean addingObject = false;
@@ -117,11 +121,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		createMovementToggle();
 		createLabel();
 		basePropertyMap = new HashMap<>();
-		Button saveButton = new Button("Save");
-		saveButton.setLayoutY(600);
-		rootAdd(saveButton);
-		myTesterButton = new SpriteTesterButton(this);
-		rootAdd(myTesterButton);
+		//Button saveButton = new Button("Save");
+		//saveButton.setLayoutY(600);
+		//rootAdd(saveButton);
+		//myTesterButton = new SpriteTesterButton(this);
+		//rootAdd(myTesterButton);
 		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
@@ -229,13 +233,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			decrementButton.setLayoutY(20);
 			incrementButton.setLayoutX(50);
 			decrementButton.setLayoutX(85);
+			// To-do refactor set on action if possible
 			incrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-				object.incrementSize();
-				updateObjectSize(object);
+				incrementObjectSize(object);
 			});
+			// To-do refactor set on action if possible
 			decrementButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-				object.decrementSize();
-				updateObjectSize(object);
+				decrementObjectSize(object);
 			});
 			rootAdd(incrementButton);
 			rootAdd(decrementButton);
@@ -261,6 +265,16 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		}
 		
 
+	}
+
+	private void decrementObjectSize(StaticObject object) {
+		object.decrementSize();
+		updateObjectSize(object);
+	}
+
+	private void incrementObjectSize(StaticObject object) {
+		object.incrementSize();
+		updateObjectSize(object);
 	}
 
 	private void updateObjectSize(StaticObject object) {
@@ -312,7 +326,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		if (saveFile != null) {
 			controller.setGameName(saveFile.getName());
 			// TODO change the save game so it saves a string instead
-			controller.saveGameState(saveFile);
+			controller.saveGameState(saveFile.getName());
 			myGameArea.savePath();
 		}
 	}
@@ -344,13 +358,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			DIALOG_MESSAGE[0] = e.getMessage();
 		}
 		Thread response = new Thread(() -> {
-			final Alert alert;
-			alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.getDialogPane().setContent(new TextArea(DIALOG_MESSAGE[0]));
-			alert.showAndWait()
-					.filter(press -> press == ButtonType.OK)
-					.ifPresent(event -> alert.close());
-
+			String content = DIALOG_MESSAGE[0];
+            Alert.AlertType type = Alert.AlertType.INFORMATION;
+            launchAlertAndWait(content, type);
 		});
 		response.run();
 	}
@@ -364,7 +374,31 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private void addLevel() {
 		myBottomToolBar.addLevel();
 	}
-	// end
+	private void editLevel() {
+		myBottomToolBar.openLevelDisplay();
+	}
+	private void playGame() {
+	    final String AUTHORING = "authoring/";
+	    final String GAME_NAME = "temp.voog";
+        File saveFile = new File(AUTHORING + GAME_NAME);
+        controller.setGameName(saveFile.getName());
+        controller.saveGameState(saveFile.getName());
+        myGameArea.savePath();
+        PlayModelController playModelController = new PlayController();
+        try {
+            playModelController.loadOriginalGameState(GAME_NAME, 1);
+            LiveEditingPlayDisplay playDisplay =
+                    new LiveEditingPlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController());
+            playDisplay.launchGame(GAME_NAME);
+            getStage().setScene(playDisplay.getScene());
+        } catch (IOException e) {
+            Alert.AlertType type = Alert.AlertType.ERROR;
+            String message = e.getMessage();
+            launchAlertAndWait(message, type);
+        }
+    }
+
+    // end
 
 	private void loadGame() {
 		List<String> games = new ArrayList<>();
@@ -409,8 +443,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		attackDefenseLabel.setText("Attack");
 	}
 
-	public void submit(String levelAndWave, int amount, ImageView mySprite) {
-		myBottomToolBar.addToWave(levelAndWave, amount, mySprite);
+	public void submit(String levelAndWave, String location, int amount, ImageView mySprite) {
+		myBottomToolBar.addToWave(levelAndWave, location, amount, mySprite);
 	}
 
 	@Override
@@ -422,7 +456,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void returnButtonPressed() {
 		if (!controller.getGameName().equals("untitled")) {
-			controller.saveGameState(new File(PATH_DIRECTORY_NAME + controller.getGameName()));
+			controller.saveGameState(new File(PATH_DIRECTORY_NAME + controller.getGameName()).getName());
 		} else {
 			this.save();
 		}

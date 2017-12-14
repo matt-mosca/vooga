@@ -33,16 +33,16 @@ public abstract class ToolBar extends VBox{
 		for(String s:controller.getInventory()) {
 			ImageView imageView;
 			try {
-				imageView = new ImageView(new Image(templates.get(s).get("imageUrl").toString()));
+				imageView = new ImageView(new Image(templates.get(s).get("Path of game element image").toString()));
 				
 			}catch(NullPointerException e) {
 				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s)
-						.get("imageUrl").toString())));
+						.get("Path of game element image").toString())));
 			}
 			imageView.setFitHeight(70);
 			imageView.setFitWidth(60);
 			imageView.setId(s);
-			imageView.setUserData(templates.get(s).get("imageUrl"));
+			imageView.setUserData(templates.get(s).get("Path of game element image"));
 			addToToolbar(imageView, templates.get(s).get("tabName").toString(), pane);
 		}
 	}
