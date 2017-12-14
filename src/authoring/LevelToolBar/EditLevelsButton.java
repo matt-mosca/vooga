@@ -8,7 +8,6 @@ public class EditLevelsButton extends Button {
 	
 	public EditLevelsButton(ButtonInterface level) {
 		this.setText(LABEL);
-		this.setOnAction(e->level.makeNewWave());
+		this.setOnAction(e->level.openLevelDisplay());
 	}
-
 }

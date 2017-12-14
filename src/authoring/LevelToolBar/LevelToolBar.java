@@ -35,14 +35,16 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	private static final int LEVEL_INDEX = 0;
 	private static final int WAVE_INDEX = 1;
 	private static final int USER_OFFSET = 1;
+	private static final int X_LOCATION = 0;
+	private static final int Y_LOCATION = 1;
 
 	private AuthoringController myController;
 	private TabPane myTabPane;
 	private ScrollableArea myScrollableArea;
 	private WaveDisplay myWaveDisplay;
 	private TabFactory tabMaker;
-	private Button newLevel;
-	private Button editLevel;
+	private NewLevelButton newLevel;
+	private EditLevelsButton editLevel;
 	private int currentLevel;
 	private EditDisplay myCreated;
 	private SpriteDisplayer mySpriteDisplay;
@@ -64,9 +66,6 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		this.setLayoutX(X_LAYOUT);
 		this.setLayoutY(Y_LAYOUT);
 		this.setWidth(SIZE);
-		newLevel = new Button("New Level");
-		myNewWaveButton = new NewWaveButton(this);
-		newLevel.setOnAction(e -> addLevel());
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
 		mySpriteDisplay = new SpriteDisplayer();
@@ -75,17 +74,22 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		this.getChildren().add(mySpriteDisplay);
 		myTabPane.setMaxSize(SIZE, WIDTH);
 		myTabPane.setPrefSize(SIZE, WIDTH);
-		editLevel = new Button("Edit Level");
-		editLevel.setOnAction(e -> openLevelDisplay());
 		elementsToSpawn = new ArrayList<String>();
 		this.getChildren().add(myTabPane);
-		this.getChildren().add(newLevel);
-		this.getChildren().add(editLevel);
-		this.getChildren().add(myNewWaveButton);
+		createButtons();
 		loadLevels();
 		created.setGameArea(levelToData.get(1).myGameArea);
 		createProperties();
 		myLevelDisplayer = new LevelsEditDisplay(myController);
+	}
+
+	private void createButtons() {
+		newLevel = new NewLevelButton(this);
+		myNewWaveButton = new NewWaveButton(this);
+		editLevel = new EditLevelsButton(this);
+		this.getChildren().add(newLevel);
+		this.getChildren().add(editLevel);
+		this.getChildren().add(myNewWaveButton);
 	}
 
 	private void createProperties() {
@@ -118,15 +122,11 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	
 	@Override
 	public void addLevel() {
-//		mySprites.add(new ArrayList<>());
-		myController.setLevel(levelToData.size()+1); 
-		levelToData.put(levelToData.size()+1, new LevelData(levelToData.size(), myController));
+		myController.setLevel(levelToData.size()+USER_OFFSET); 
+		levelToData.put(levelToData.size()+USER_OFFSET, new LevelData(levelToData.size(), myController));
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(levelToData.size()), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(levelToData.size(), myController);
-		/**
-		 * Make the tabs closeable later
-		 */
 		if (levelToData.size() == 0) {
 			newTab.setClosable(false);
 		} else {
@@ -135,7 +135,6 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		newTab.setOnSelectionChanged(e -> changeDisplay(newLv.getLvNumber()));
 		newLv.attach(newTab);
 		levelToData.get(levelToData.size()).myLevelTab = newLv;
-//		levelToData.get(0).myLevelTab = newLv;
 		myTabPane.getTabs().add(newTab);
 	}
 	
@@ -158,13 +157,15 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		}
 	}
 	
-	public void addToWave(String levelAndWave, int amount, ImageView mySprite) {
+	public void addToWave(String levelAndWave, String stringLocation, int amount, ImageView mySprite) {
 		String[] levelWaveArray = levelAndWave.split("\\s+");
 		String mySpriteId = mySprite.getId();
 		List<ImageView> imageList = new ArrayList<>(Collections.nCopies(amount, mySprite));
 		elementsToSpawn = new ArrayList<>(Collections.nCopies(amount, mySpriteId));
 //		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
-		Point2D location = new Point2D(30,60);
+		String[] splitLocation = stringLocation.split(",");
+		Point2D location = new Point2D(Integer.valueOf(splitLocation[X_LOCATION]),
+				Integer.valueOf(splitLocation[Y_LOCATION]));
 		myProperties.put("templatesToFire", elementsToSpawn);
 		Map<String, Object> waveProperties = new HashMap<>();
         waveProperties.putAll(myProperties);
