@@ -432,7 +432,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	}
 
 	private void deleteClicked(int id) {
-		myController.deleteElement(id);
+		SpriteDeletion deletedSprite = myController.deleteElement(id);
+		ImageView spriteToRemove = clientMessageUtils.removeDeadSpriteFromDisplay(deletedSprite);
+		myPlayArea.getChildren().remove(spriteToRemove);
 	}
 	
 	private void setSelectedSprite(int id) {
