@@ -166,6 +166,7 @@ public class SerializationUtils {
 	 *             if serialization is ill-formatted
 	 */
 	public String deserializeGameDescription(String serializedGameData, int level) throws IllegalArgumentException {
+		System.out.println("Serialized game data: " + serializedGameData);
 		String[] serializedSections = retrieveSerializedSectionsForLevel(serializedGameData, level);
 		return deserializeDescription(serializedSections[DESCRIPTION_SERIALIZATION_INDEX]);
 	}
