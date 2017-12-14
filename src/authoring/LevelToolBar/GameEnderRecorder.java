@@ -68,7 +68,7 @@ public class GameEnderRecorder extends VBox{
 
 	private TableColumn<Conditions, String> makeColumn(String title, String instanceVar) {
 		TableColumn<Conditions, String> column = new TableColumn<>(title);
-		column.setPrefWidth(130);
+		column.setPrefWidth(120);
 		column.setCellValueFactory(new PropertyValueFactory<>(instanceVar));
 		return column;
 	}

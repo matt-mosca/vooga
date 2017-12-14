@@ -23,7 +23,6 @@ public class LevelsEditDisplay {
 	private HealthSelector health;
 	
 	public LevelsEditDisplay(AuthoringController controller, EditDisplay display) {
-//		myDisplay = display;
 		myController = controller;
 		myStage = new Stage();
 		myRoot = new BorderPane();
@@ -45,5 +44,6 @@ public class LevelsEditDisplay {
 	
 	public void open() {
 		myStage.show();
+		resourceEditor.updateCurrentState();
 	}
 }

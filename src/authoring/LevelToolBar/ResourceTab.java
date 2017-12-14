@@ -12,12 +12,12 @@ import javafx.scene.control.Tab;
 
 public class ResourceTab extends ScrollPane{
 	private AuthoringController myController;
-	private int myLv;
 	private ResourceTable resourceTable;
 	
 	public ResourceTab(int i, AuthoringController controller) {
 		myController = controller;
-		myLv = i;
+		resourceTable = new ResourceTable(myController, i);
+		this.setContent(resourceTable.getTable());	
 	}
 	
 	public void attach(Tab level) {
@@ -25,10 +25,7 @@ public class ResourceTab extends ScrollPane{
 	}
 	
 	public void update() {
-		int curr =myController.getCurrentLevel();
-		myController.setLevel(myLv);
-		resourceTable = new ResourceTable(myController, myLv);
-		
+		resourceTable.update();
 	}
 	
 }

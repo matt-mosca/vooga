@@ -25,36 +25,38 @@ public class ResourceDisplay extends VBox{
 	private List<ResourceTab> resources;
 	private Map<String, Double> resourceEndowments;
 	private AuthoringController myController;
-	private Button editResources;
 	private TabFactory tabMaker;
 	
 	public ResourceDisplay(AuthoringController controller){
 		myController = controller;
 		resourceEndowments = new HashMap<>();
 		
-		editResources = new Button("Edit or add a resource.");
-		resourceTabs = new TabPane();
-		resources = new ArrayList<ResourceTab>();
-		editResources.setOnAction(e->changeResourceVal());
 		
-		this.getChildren().add(editResources);
-		this.getChildren().add(resourceTabs);
+		resourceTabs = new TabPane();
+		tabMaker = new TabFactory();
+		resources = new ArrayList<ResourceTab>();
+		changeResourceValApparatus();
+		
 		createResourceTabs();
-		update();
+		update(myController.getCurrentLevel());
 	}
 
 	private void createResourceTabs() {
-//		for (int i=0; i<myController.getNumLevelsForGame()) {
-//			Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myController.getCurrentLevel()), null, resourceTabs);
-//			
-//			ResourceTab newLv = new ResourceTab(myController.getCurrentLevel(), myController);
-//			newLv.attach(newTab);
-//		}
+		for (int i=0; i<myController.getNumLevelsForGame(); i++) {
+			System.out.println(Integer.toString(myController.getCurrentLevel()));
+			Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(i+1), null, resourceTabs);
+			ResourceTab newLv = new ResourceTab(i+1, myController);
+			newLv.attach(newTab);
+			resources.add(newLv);
+			final int j = i+1;
+			newTab.setOnSelectionChanged(e->update(j));
+			newTab.setClosable(false);
+			resourceTabs.getTabs().add(newTab);
+		}
 		
 	}
 
-	private void changeResourceVal() {
-		this.getChildren().clear();
+	private void changeResourceValApparatus() {
 		TextField name = new TextField();
 		name.setPromptText("Name");
 		TextField value = new TextField();
@@ -69,35 +71,32 @@ public class ResourceDisplay extends VBox{
 			else {
 				resourceEndowments.put(name.getText(), Double.parseDouble(value.getText()));
 			}
-			this.getChildren().clear();
-			this.getChildren().add(editResources);
 			try {
 				myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			} catch(NumberFormatException nfe) {
 				System.out.println("you have to type in a number");
 			}
 			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
-			update();
+			update(myController.getCurrentLevel());
 		}catch(Exception nfe) {
 			Alert a = new Alert(AlertType.ERROR);
 			a.setHeaderText("Input Not Valid");
 			a.setContentText("You need to input a number!");
 			a.showAndWait();
 		}});
-		
+		this.getChildren().add(resourceTabs);
 		this.getChildren().addAll(name, value, enter);
 		
 	}
 
-	private void update() {
-		Map<String, Double> resources = myController.getResourceEndowments();
-		Label l = new Label("These are your current resources.");
-		this.getChildren().add(l);
-		for(String s : resources.keySet()) {
-			Label l1 = new Label(s + ": " + resources.get(s));
-			this.getChildren().add(l1);
-		}
-		
+	private void update(int lv) {
+		resources.get(lv-1).update();
+	}
+	
+	void updateCurrentState() {
+//		resources.clear();
+//		resourceTabs.getTabs().clear();
+//		createResourceTabs();
 	}
 
 	public VBox getRoot() {
