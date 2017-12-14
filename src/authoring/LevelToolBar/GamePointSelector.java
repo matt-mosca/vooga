@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -18,6 +19,13 @@ public class GamePointSelector extends HBox{
 	
 	public GamePointSelector(AuthoringController controller) {
 		myController = controller;
+		TextField amount = new TextField();
+		amount.setPromptText("Health Amount");
+		Button update = new Button();
+		update.setText("Update");
+		update.setOnAction(e ->record(amount));
+		this.getChildren().add(amount);
+		this.getChildren().add(update);
 		
 	}
 	
@@ -52,8 +60,9 @@ public class GamePointSelector extends HBox{
 		int currLv = myController.getCurrentLevel();
 		for (Integer i : selectedLevels) {
 			myController.setLevel(i);
-			myController.setPoints(points);
+			myController.setLevelPointQuota(points);
 		}
+		
 	}
 	
 	public void createCheckBoxes(ArrayList<Integer> lvs) {

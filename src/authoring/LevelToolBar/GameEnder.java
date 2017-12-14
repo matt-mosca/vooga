@@ -26,6 +26,7 @@ public class GameEnder extends VBox{
 	
 	public void setRecorder(GameEnderRecorder r) {
 		conditions.setRecorder(r);
+		conditions.setPointRecorder(points);
 	}
 	
 }

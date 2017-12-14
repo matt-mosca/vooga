@@ -15,6 +15,7 @@ public class GameEnderConditions extends VBox {
 	private ComboBox<String> defeat;
 	private ArrayList<CheckBox> checkBoxes;
 	private GameEnderRecorder recorder;
+	private GamePointSelector pointManager;
 
 	public GameEnderConditions(AuthoringController controller) {
 		myController = controller; 
@@ -80,5 +81,9 @@ public class GameEnderConditions extends VBox {
 	public void setRecorder(GameEnderRecorder r) {
 		recorder = r;
 		
+	}
+
+	public void setPointRecorder(GamePointSelector points) {
+		pointManager = points;
 	}
 }
