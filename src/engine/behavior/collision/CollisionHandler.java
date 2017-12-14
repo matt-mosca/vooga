@@ -48,14 +48,13 @@ public class CollisionHandler {
 
 
     public boolean collidesWith(CollisionHandler other) {
-        return other.graphicalRepresentation.getBoundsInLocal()
-                .intersects(this.graphicalRepresentation.getBoundsInLocal());
+        return (other.graphicalRepresentation.getBoundsInLocal()
+                .intersects(this.graphicalRepresentation.getBoundsInLocal())) && 
+        		(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0);
     }
 
     public void processCollision(CollisionHandler other) {
-    	if(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0) {
-    		other.collisionVisitable.accept(collisionVisitor);
-    	}
+    	other.collisionVisitable.accept(collisionVisitor);
     }
 
     public boolean isBlocked() {
