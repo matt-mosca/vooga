@@ -138,6 +138,7 @@ class MultiPlayerController extends AbstractServerController {
 		}
 		processUserJoinRoom(clientId, roomName, userName);
 		// Push message to other clients
+		System.out.println("Adding playerJoin message to messageQueue");
 		messageQueue
 				.add(ServerMessage.newBuilder()
 						.setNotification(Notification.newBuilder()
@@ -152,6 +153,7 @@ class MultiPlayerController extends AbstractServerController {
 			String exitingUserName = clientIdsToUserNames.get(clientId);
 			processUserExitRoom(clientId);
 			// Push message to other clients
+			System.out.println("Adding playerExit message to messageQueue");
 			messageQueue.add(ServerMessage.newBuilder()
 					.setNotification(Notification.newBuilder()
 							.setPlayerExited(PlayerExited.newBuilder().setUserName(exitingUserName).build()).build())
@@ -344,6 +346,7 @@ class MultiPlayerController extends AbstractServerController {
 
 	@Override
 	public void registerNotificationStreamListener(ListChangeListener<? super ServerMessage> listener) {
+		System.out.println("Registering notification listener");
 		messageQueue.addListener(listener);
 	}
 
