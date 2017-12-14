@@ -133,8 +133,8 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
     
 	@Override
-	public void setLevelHealth(int level, int health) {
-		getLevelHealths().set(level, health);
+	public void setLevelHealth(int health) {
+		getLevelHealths().set(getCurrentLevel(), health);
 	}
 
     @Override
@@ -233,6 +233,10 @@ public class AuthoringController extends AbstractGameController implements Autho
             throw new IllegalArgumentException();
             // TODO - customize exception ?
         }
+    }
+    
+    public void setAudioUrlForPlayer(int level,String audioUrl) {
+    	audioMap.put(level,audioUrl);
     }
 
     private void updateElementsRetroactively(String elementName, Map<String, Object> propertiesToUpdate) {

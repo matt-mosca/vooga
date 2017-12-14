@@ -14,8 +14,6 @@ import networking.protocol.PlayerClient.UpgradeElement;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.ResourceUpdate;
 import networking.protocol.PlayerServer.ServerMessage;
-import networking.protocol.PlayerServer.SpriteDeletion;
-import networking.protocol.PlayerServer.SpriteUpdate;
 import networking.protocol.PlayerServer.StatusUpdate;
 import networking.protocol.PlayerServer.Update;
 
@@ -147,7 +145,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 			System.out.println("Game name: " + gameName);
 		}
 		System.out.println("Creating game room");
-		String gameRoom = testClient.createGameRoom("NewThing.voog", "adi_game");
+		String gameRoom = testClient.createGameRoom("test.voog", "adi_game");
 		System.out.println("Joined " + gameRoom);
 		testClient.joinGameRoom(gameRoom, "adi");
 		testClient.launchGameRoom();

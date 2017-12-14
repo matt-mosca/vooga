@@ -5,28 +5,24 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-/**
- * Handles a game connection with a client, handling client-server messages
- * related to the multi-player game
- * 
- * @author radithya
- *
- */
-public class MultiPlayerServerHandler extends AbstractServerHandler {
+public class GameServerHandler extends AbstractServerHandler {
 
+	private AbstractServerController gameController;
 	private DataInputStream input;
 	private DataOutputStream byteWriter;
-
-	private MultiPlayerController multiPlayerController;
-
-	public MultiPlayerServerHandler(Socket socket, MultiPlayerController multiPlayerController) {
+	
+	public GameServerHandler(Socket socket, AbstractServerController gameController) {
 		super(socket);
-		this.multiPlayerController = multiPlayerController;
+		this.gameController = gameController;
 	}
 
-	void writeBytes(byte[] bytes) throws IOException {
+	public void writeBytes(byte[] bytes) throws IOException {
 		byteWriter.writeInt(bytes.length);
 		byteWriter.write(bytes, 0, bytes.length);
+	}
+	
+	protected AbstractServerController getController() {
+		return gameController;
 	}
 	
 	@Override
@@ -36,7 +32,7 @@ public class MultiPlayerServerHandler extends AbstractServerHandler {
 			if (len > 0) {
 				byte[] readBytes = new byte[len];
 				input.readFully(readBytes);
-				byte[] response = multiPlayerController
+				byte[] response = getController()
 						.handleRequestAndSerializeResponse(getSocket().getRemoteSocketAddress().hashCode(), readBytes);
 				writeBytes(response);
 			}
@@ -53,8 +49,8 @@ public class MultiPlayerServerHandler extends AbstractServerHandler {
 	@Override
 	protected void closeClient() {
 		super.closeClient();
-		multiPlayerController.disconnectClient(getSocket().getRemoteSocketAddress().hashCode());
+		getController().disconnectClient(getSocket().getRemoteSocketAddress().hashCode());
 	}
-	
+
 
 }

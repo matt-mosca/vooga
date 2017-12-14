@@ -82,6 +82,8 @@ public interface AbstractGameModelController {
 	SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException;
 
 	int getNumLevelsForGame(String gameName, boolean forOriginalGame);
+	
+	int getNumLevelsForGame();
 
 	int getCurrentLevel();
 

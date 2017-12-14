@@ -331,15 +331,15 @@ public class LevelToolBarNew extends VBox implements TabInterface, ButtonInterfa
 	//Not used?
 }
 
-class Data {
-    List<ImageView> spriteNames;
-    Integer waveId;
-
-    Data(List<ImageView> spriteNames, Integer waveId) {
-        this.spriteNames = spriteNames;
-        this.waveId = waveId;
-    }
-} 
+//class Data {
+//    List<ImageView> spriteNames;
+//    Integer waveId;
+//
+//    Data(List<ImageView> spriteNames, Integer waveId) {
+//        this.spriteNames = spriteNames;
+//        this.waveId = waveId;
+//    }
+//} 
 
 
 
