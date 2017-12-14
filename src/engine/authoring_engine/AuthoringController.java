@@ -279,7 +279,7 @@ public class AuthoringController extends AbstractGameController implements Autho
         return getNumLevelsForGame(getGameName(), true);
     }
 
-    @Override
+	@Override
 	public void deleteLevel(int level) throws IllegalArgumentException {
 		getLevelStatuses().remove(level);
 		getLevelSprites().remove(level);
@@ -291,7 +291,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public Map<String, List<String>> getElementBaseConfigurationOptions() {
 		return getGameElementFactory().getElementBaseConfigurationOptions();
 	}
-
 
 
 	public Collection<ElementBaseConfigurationOption> packageElementBaseConfigurationOptions() {

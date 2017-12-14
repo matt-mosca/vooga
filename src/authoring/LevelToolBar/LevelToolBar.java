@@ -324,6 +324,12 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
     	levelToData.get(level).myLevelTab.update(currSprite);
     }
 	//Not used?
+
+	@Override
+	public void waveDeleted(int waveNumber) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 class Data {

@@ -574,6 +574,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void initialize() {
 		// To adjust for 1-indexing
 		initializeLevel();
+		
 		getLevelWaves().add(new ArrayList<>());
 		getLevelWaveTemplates().add(new HashMap<>());
 		setLevel(1);
@@ -589,6 +590,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelHealths().add(0);
 		getLevelPointQuotas().add(0);
 		getLevelTimeLimits().add(0);
+		levelWaves.add(new ArrayList<>());
+		levelWaveTemplates.add(new HashMap<>());
 		initializeLevelConditions();
 	}
 
