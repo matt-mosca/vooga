@@ -24,9 +24,11 @@ import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
@@ -71,7 +73,6 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private Scene myTransitionScene;
 	private VBox myLeftBar;
 	private PlayArea myPlayArea;
-	private List<ImageView> currentElements;
 	private PlayModelController myController;
 	private Button pause;
 	private Button play;
@@ -113,12 +114,13 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		// myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage,
 		// this);
 		clientMessageUtils = new ClientMessageUtils();
+		System.out.println("Initialized clientMessageUtils");
 		myLeftBar = new VBox();
 		idToTemplate = new HashMap<>();
 		hud = new HUD(width);
 		speedControl = new ChangeSpeedToggles();
 		styleLeftBar();
-		createGameArea(height - 20);
+		createGameArea();
 		addItems();
 		this.setDroppable(myPlayArea);
 		initializeGameState();
@@ -129,16 +131,17 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		rootAdd(volumeSlider);
 		volumeSlider.setLayoutY(7);
 		volumeSlider.setLayoutX(55);
-		//backgroundSong = myController.getAudioClip();
 		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+
 	}
 
 	@Override
 	public void startDisplay() {
 		myInventoryToolBar.initializeInventory();
+		System.out.println("Sucessfully initialized inventory");
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
@@ -179,6 +182,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 	public void initializeGameState() {
 		List<String> games = new ArrayList<>();
 		try {
+			System.out.println("Getting available games from controller");
 			for (String title : myController.getAvailableGames().keySet()) {
 				games.add(title);
 			}
@@ -193,6 +197,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				try {
 					gameState = result.get();
 					clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
+					initializeLevelSprites();
 				} catch (IOException e) {
 					// TODO Change to alert for the user
 					e.printStackTrace();
@@ -207,12 +212,22 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 				exportedGameProperties.load(in);
 				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
 				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
+				initializeLevelSprites();
 			} catch (IOException ioException) {
 				// todo
 			}
 		}
 	}
 
+	// Has to be at least package-friendly as it is called by notification handler
+	void receivePlacedElement(NewSprite placedElement) {
+		int id = clientMessageUtils.addNewSpriteToDisplay(placedElement);
+		ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
+		myPlayArea.getChildren().add(imageView);
+		idToTemplate.put(id, placeable.getElementName());
+		attachEventHandlers(imageView, id);
+	}
+	
 	protected void reloadGame() throws IOException {
 		clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
 	}
@@ -223,15 +238,39 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
 		myLeftBar.getStyleClass().add("left-bar");
 	}
-
-	// TODO - can make it more efficient?
-	private void loadSprites() {
-		myPlayArea.getChildren().removeAll(currentElements);
-		currentElements.clear();
-		for (Integer id : clientMessageUtils.getCurrentSpriteIds()) {
-			currentElements.add(clientMessageUtils.getRepresentationFromSpriteId(id));
+	
+	private void initializeLevelSprites() {
+		updateSprites();
+		for(Node sprite:myPlayArea.getChildren()) {
+			Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    sprite.toBack();
+                }
+            });
 		}
-		myPlayArea.getChildren().addAll(currentElements);
+	}
+
+	private void updateSprites() {
+		addLoadedSprites();
+		removeEliminatedSprite();
+		clientMessageUtils.clearChanges();
+	}
+
+	private void addLoadedSprites() {
+		for(ImageView spriteImage:clientMessageUtils.getNewImageViews()) {
+			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
+				//TODO add method here that let's you mark the object via the controller if we want to play whack-a-mole
+			});
+		}
+	}
+
+	private void removeEliminatedSprite() {
+		for(ImageView spriteImage:clientMessageUtils.getDeletedImageViews()) {
+			myPlayArea.getChildren().remove(spriteImage);
+//			Map<String, Double> resourcesForUnit = myController.getUnitCostsFromId(spriteImage.getId());
+//			hud.updatePointCount(resourcesForUnit);
+//			hud.resourcesEarned(resourcesForUnit);
+		}
 	}
 
 	private void initializeButtons() {
@@ -282,14 +321,16 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		/*
 		if (myController.isReadyForNextLevel()) {
 			hideTransitorySplashScreen();
+			initializeLevelSprites();
 			// animation.play();
 			myController.resume();
 		}
+
 		if (myController.isLevelCleared()) {
 			level++;
 			animation.pause();
 			myController.pause();
-			launchTransitorySplashScreen();
+//			launchTransitorySplashScreen();
 			hud.initialize(myController.getResourceEndowments());
 		} else if (myController.isLost()) {
 			// launch lost screen
@@ -298,9 +339,10 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			// launch win screen
 		}
 		*/
+		//TODO Adi, uncomment this when you're ready to test health 
 		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
-		loadSprites();
+		updateSprites();
 	}
 
 	private void launchTransitorySplashScreen() {
@@ -311,11 +353,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		this.getStage().setScene(this.getScene());
 	}
 
-	private void createGameArea(int sideLength) {
-//		myPlayArea = new PlayArea(myController, clientMessageUtils, sideLength, sideLength);
+	private void createGameArea() {
 		myPlayArea = new PlayArea(myController, clientMessageUtils);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
-		currentElements = new ArrayList<ImageView>();
 		rootAdd(myPlayArea);
 	}
 
@@ -326,11 +366,9 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 			if (e.getButton().equals(MouseButton.PRIMARY)) {
 				Point2D startLocation = new Point2D(e.getX(), e.getY());
 				try {
+					System.out.println("Placing element");
 					NewSprite newSprite = myController.placeElement(placeable.getElementName(), startLocation);
-					int id = clientMessageUtils.addNewSpriteToDisplay(newSprite);
-					ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
-					idToTemplate.put(id, placeable.getElementName());
-					attachEventHandlers(imageView, id);
+					receivePlacedElement(newSprite);
 				} catch (ReflectiveOperationException failedToPlaceElementException) {
 					// todo - handle
 				}
@@ -350,7 +388,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	@Override
 	public void listItemClicked(MouseEvent e, ImageView image) {
-		if(!checkFunds(image.getId())) return;
+		if (!checkFunds(image.getId()))
+			return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);
