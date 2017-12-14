@@ -10,12 +10,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 
-public class HealthSelector extends HBox{
+public class GameHealthSelector extends HBox{
 	private final int HEALTH_DEFAULT = 100;
 	private ArrayList<CheckBox> checkBoxes;
 	private AuthoringController myController;
 
-	public HealthSelector(AuthoringController controller) {
+	public GameHealthSelector(AuthoringController controller) {
 		myController = controller;
 		
 		TextField amount = new TextField();
