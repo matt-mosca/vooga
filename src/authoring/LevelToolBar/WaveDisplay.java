@@ -26,6 +26,8 @@ public class WaveDisplay extends TabPane {
 	}
 	
 	public int getCurrTab() {
-		return this.getSelectionModel().getSelectedIndex() + 1;
+		
+		return Math.min(this.getTabs().size(), 
+				this.getSelectionModel().getSelectedIndex() + 1);
 	}
 }

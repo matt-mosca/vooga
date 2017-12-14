@@ -39,7 +39,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	private static final int Y_LAYOUT = 470;
 	private static final int STARTING_LEVEL = 0;
 	private static final int LEVEL_INDEX = 0;
-	private static final int WAVE_INDEX = 0;
+	private static final int WAVE_INDEX = 1;
 	private static final int USER_OFFSET = 1;
 
 	private AuthoringController myController;
@@ -69,7 +69,6 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
 	public LevelToolBar(EditDisplay created, AuthoringController controller, ScrollableArea area) {
 		levelToData = new TreeMap<Integer, LevelData>();
-		levelToData.put(0, new LevelData(controller));
 		myScrollableArea = area;
 		currentLevel = STARTING_LEVEL;
 		myCreated = created;
@@ -102,7 +101,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		this.getChildren().add(editLevel);
 		this.getChildren().add(myNewWaveButton);
 		loadLevels();
-		created.setGameArea(levelToData.get(0).myGameArea);
+		created.setGameArea(levelToData.get(1).myGameArea);
 		createProperties();
 	}
 
@@ -144,7 +143,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
 	private void loadLevels() {
 		startingLevels = myController.getNumLevelsForGame(myController.getGameName(), true);
-		if (myController.getGameName().equals("untitled") || startingLevels == 0) {
+		if (myController.getGameName().equals("untitled") || startingLevels == 1) {
 			addLevel();
 			return;
 		}
@@ -157,8 +156,8 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	@Override
 	public void addLevel() {
 //		mySprites.add(new ArrayList<>());
-		myController.setLevel(levelToData.size()); 
-		levelToData.put(levelToData.size(), new LevelData(myController));
+		myController.setLevel(levelToData.size()+1); 
+		levelToData.put(levelToData.size()+1, new LevelData(levelToData.size(), myController));
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(levelToData.size()), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(levelToData.size(), myController);
@@ -172,7 +171,8 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 //		}
 		newTab.setOnSelectionChanged(e -> changeDisplay(newLv.getLvNumber()));
 		newLv.attach(newTab);
-		levelToData.get(0).myLevelTab = newLv;
+		levelToData.get(levelToData.size()).myLevelTab = newLv;
+//		levelToData.get(0).myLevelTab = newLv;
 		myTabPane.getTabs().add(newTab);
 	}
 	
@@ -217,11 +217,11 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		 * strategy. Waiting for backend integration of round robin firing strategy
 		 */
 		for (String levelDotWave : levelWaveArray) {
-			int level = Integer.valueOf(levelDotWave.split("\\.+")[LEVEL_INDEX]) - USER_OFFSET;			
-			int wave = Integer.valueOf(levelDotWave.split("\\.+")[WAVE_INDEX]) - USER_OFFSET;
+			int level = Integer.valueOf(levelDotWave.split("\\.+")[LEVEL_INDEX]);			
+			int wave = Integer.valueOf(levelDotWave.split("\\.+")[WAVE_INDEX]);
 			myController.setLevel(level);
-			if (levelToData.containsKey(level)) {
-				try {
+			if (levelToData.get(level) != null && levelToData.get(level).waveInfo.get(wave).waveId != null) {
+				try { 
 					List<String> waveElements = levelToData.get(level).waveInfo.get(wave).spriteNames.stream().map(ImageView::getId).collect(Collectors.toList());
 					waveElements.addAll(elementsToSpawn);
 					waveProperties.put("templatesToFire", waveElements);
@@ -235,6 +235,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 				tempArray.addAll(levelToData.get(level).waveInfo.get(levelDotWave).spriteNames);
 				levelToData.get(level).waveInfo.get(wave).spriteNames = tempArray;
 			} else {
+				levelToData.get(level).waveInfo.get(wave).spriteNames = imageList;
 				levelToData.get(level).waveInfo.get(wave).waveId = 
 						myController.createWaveProperties(myProperties, elementsToSpawn, location);
 			}
@@ -313,18 +314,14 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
         }
     }
 
-	@Override
-	public void waveDeleted(int waveNumber) {
-//		waveToData = updateDataMap(currentLevel, waveNumber);
-	}
 
 	public int getMaxLevel() {
 		return levelToData.size()-1; //Maybe not -1 idk with this new indexing thing how we're counting lol
     }
 
-//    public void addLevelProperties(ImageView currSprite, int level) {
-//        myLevels.get(level - 1).update(currSprite);
-//    }
+    public void addLevelProperties(ImageView currSprite, int level) {
+    	levelToData.get(level).myLevelTab.update(currSprite);
+    }
 	//Not used?
 }
 
@@ -332,9 +329,8 @@ class Data {
     List<ImageView> spriteNames;
     Integer waveId;
 
-    Data(List<ImageView> spriteNames, Integer waveId) {
-        this.spriteNames = spriteNames;
-        this.waveId = waveId;
+    Data() {
+    	spriteNames =new ArrayList<ImageView>();
     }
 } 
 
@@ -346,19 +342,23 @@ class LevelData {
 	LevelTab myLevelTab;
 	AuthoringController myController;
 	
-	LevelData(AuthoringController myController) {
-		this.myController = myController;
-		waveInfo.put(0, new Data(new ArrayList<>(), null));
+	LevelData(int level, AuthoringController myController) {
+		myLevelTab = new LevelTab(level, myController);
+		waveInfo = new TreeMap<Integer, Data>();
 		myGameArea = new GameArea(myController);
+		waveInfo.put(1, new Data());
+		this.myController = myController;	
 	}
 	
 	public void addWave() {
-		waveInfo.put(waveInfo.size()+1, new Data(new ArrayList<>(), null));
+		waveInfo.put(waveInfo.size()+1, new Data());
+
 	}
 	
-	private void deleteWave(int waveNum) {
-		
+	public void changeTab(LevelTab newTab) {
+		myLevelTab = newTab;
 	}
+	
 	
 	private boolean containsKey(int waveNum) {
 		return waveInfo.containsKey(waveNum);
