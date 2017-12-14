@@ -326,7 +326,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		if (saveFile != null) {
 			controller.setGameName(saveFile.getName());
 			// TODO change the save game so it saves a string instead
-			controller.saveGameState(saveFile);
+			controller.saveGameState(saveFile.getName());
 			myGameArea.savePath();
 		}
 	}
@@ -456,7 +456,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void returnButtonPressed() {
 		if (!controller.getGameName().equals("untitled")) {
-			controller.saveGameState(new File(PATH_DIRECTORY_NAME + controller.getGameName()));
+			controller.saveGameState(new File(PATH_DIRECTORY_NAME + controller.getGameName()).getName());
 		} else {
 			this.save();
 		}

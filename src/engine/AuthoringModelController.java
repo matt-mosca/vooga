@@ -2,6 +2,7 @@ package engine;
 
 import util.path.PathList;
 import javafx.geometry.Point2D;
+import networking.protocol.AuthorClient.DefineElement;
 import networking.protocol.AuthorServer;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
@@ -29,7 +30,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @param fileToSaveTo
 	 *            the name to assign to the save file
 	 */
-	void saveGameState(File fileToSaveTo);
+	void saveGameState(String fileToSaveTo);
 
 	/**
 	 * Load the detailed state of a game for a particular level, including
@@ -168,7 +169,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *
 	 * @param elementName
 	 */
-	void addElementToInventory(String elementName);
+	DefineElement addElementToInventory(String elementName);
 
 	/**
 	 * Get current level

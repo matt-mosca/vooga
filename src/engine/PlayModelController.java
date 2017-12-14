@@ -25,7 +25,7 @@ public interface PlayModelController extends AbstractGameModelController {
      *
      * @param saveName the name to assign to the save file
      */
-    void saveGameState(File fileToSaveTo);
+    void saveGameState(String fileNameToSaveTo);
 
     /**
      * Load the detailed state of original (authored) game for a particular level,

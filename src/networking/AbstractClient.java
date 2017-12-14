@@ -63,7 +63,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	private DataOutputStream outputWriter;
 	private SerializationUtils serializationUtils;
 
-	private final int POLLING_FREQUENCY = 50;
+	private final int POLLING_FREQUENCY = 100;
 
 	private Update latestUpdate;
 
@@ -125,19 +125,6 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setGetPlayerNames(GetPlayerNames.newBuilder().getDefaultInstanceForType()).build().toByteArray());
 		return handlePlayerNamesResponse(pollFromMessageQueue());
-	}
-
-	/**
-	 * Save the current state of the current level a game being played or authored.
-	 *
-	 * @param fileToSaveTo
-	 *            the name to assign to the save file
-	 */
-	@Override
-	public void saveGameState(File fileToSaveTo) throws UnsupportedOperationException {
-		// TODO - Define custom exception in exceptions properties file and pass that
-		// string here
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -269,7 +256,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public int getLevelPointQuota(int level) {
 		// TODO Auto-generated method stub
@@ -291,18 +278,6 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		}
 	}
 
-	protected synchronized byte[] readResponseBytes() {
-		int len = 0;
-		try {
-			len = input.readInt();
-			byte[] readBytes = new byte[len];
-			input.readFully(readBytes);
-			return readBytes;
-		} catch (IOException e) {
-		}
-		return new byte[len];
-	}
-
 	protected SerializationUtils getSerializationUtils() {
 		return serializationUtils;
 	}
@@ -319,17 +294,22 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		return outputWriter;
 	}
 
-	protected ServerMessage pollFromMessageQueue() {
-		synchronized (messageQueue) {
+	protected <T> T pollFromCustomMessageQueue(Queue<T> queue) {
+		synchronized (queue) {
 			try {
-				while (messageQueue.isEmpty()) {
-					messageQueue.wait();
+				while (queue.isEmpty()) {
+					queue.wait();
 				}
-				return messageQueue.poll();
+				return queue.poll();				
 			} catch (InterruptedException e) {
-				return ServerMessage.getDefaultInstance();
+				return null;
 			}
 		}
+	}
+
+	protected ServerMessage pollFromMessageQueue() {
+		ServerMessage polledMessage = pollFromCustomMessageQueue(messageQueue);
+		return polledMessage == null ? ServerMessage.getDefaultInstance() : polledMessage;
 	}
 
 	private void appendMessageToAppropriateQueue(ServerMessage serverMessage) {
@@ -366,7 +346,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 					input.readFully(readBytes);
 					appendMessageToAppropriateQueue(ServerMessage.parseFrom(readBytes));
 				} catch (SocketTimeoutException timeOutException) {
-					this.wait(1000);
+					this.wait(POLLING_FREQUENCY);
 				}
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace(); // TEMP

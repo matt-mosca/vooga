@@ -66,204 +66,230 @@ public final class AuthorServer {
         int index);
 
     /**
-     * <code>optional int32 currentLevel = 3;</code>
+     * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+     */
+    boolean hasElementAddedToInventory();
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+     */
+    AuthorClient.DefineElement getElementAddedToInventory();
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+     */
+    AuthorClient.DefineElementOrBuilder getElementAddedToInventoryOrBuilder();
+
+    /**
+     * <code>optional int32 currentLevel = 4;</code>
      */
     boolean hasCurrentLevel();
     /**
-     * <code>optional int32 currentLevel = 3;</code>
+     * <code>optional int32 currentLevel = 4;</code>
      */
     int getCurrentLevel();
 
     /**
-     * <code>optional .SpriteUpdate moveElement = 4;</code>
+     * <code>optional .SpriteUpdate moveElement = 5;</code>
      */
     boolean hasMoveElement();
     /**
-     * <code>optional .SpriteUpdate moveElement = 4;</code>
+     * <code>optional .SpriteUpdate moveElement = 5;</code>
      */
     PlayerServer.SpriteUpdate getMoveElement();
     /**
-     * <code>optional .SpriteUpdate moveElement = 4;</code>
+     * <code>optional .SpriteUpdate moveElement = 5;</code>
      */
     PlayerServer.SpriteUpdateOrBuilder getMoveElementOrBuilder();
 
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     java.util.List<AuthorServer.ElementUpgrade> 
         getAllDefinedElementUpgradesList();
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     AuthorServer.ElementUpgrade getAllDefinedElementUpgrades(int index);
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     int getAllDefinedElementUpgradesCount();
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     java.util.List<? extends AuthorServer.ElementUpgradeOrBuilder> 
         getAllDefinedElementUpgradesOrBuilderList();
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     AuthorServer.ElementUpgradeOrBuilder getAllDefinedElementUpgradesOrBuilder(
         int index);
 
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     java.util.List<AuthorServer.DoubleProperty> 
         getResourceEndowmentsList();
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     AuthorServer.DoubleProperty getResourceEndowments(int index);
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     int getResourceEndowmentsCount();
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     java.util.List<? extends AuthorServer.DoublePropertyOrBuilder> 
         getResourceEndowmentsOrBuilderList();
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     AuthorServer.DoublePropertyOrBuilder getResourceEndowmentsOrBuilder(
         int index);
 
     /**
-     * <code>optional int32 createdWaveNumber = 7;</code>
+     * <code>optional int32 createdWaveNumber = 8;</code>
      */
     boolean hasCreatedWaveNumber();
     /**
-     * <code>optional int32 createdWaveNumber = 7;</code>
+     * <code>optional int32 createdWaveNumber = 8;</code>
      */
     int getCreatedWaveNumber();
 
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     java.util.List<AuthorServer.StringProperty> 
         getWavePropertiesList();
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     AuthorServer.StringProperty getWaveProperties(int index);
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     int getWavePropertiesCount();
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
         getWavePropertiesOrBuilderList();
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     AuthorServer.StringPropertyOrBuilder getWavePropertiesOrBuilder(
         int index);
 
     /**
-     * <code>repeated string possibleVictoryConditions = 9;</code>
+     * <code>repeated string possibleVictoryConditions = 10;</code>
      */
     java.util.List<java.lang.String>
         getPossibleVictoryConditionsList();
     /**
-     * <code>repeated string possibleVictoryConditions = 9;</code>
+     * <code>repeated string possibleVictoryConditions = 10;</code>
      */
     int getPossibleVictoryConditionsCount();
     /**
-     * <code>repeated string possibleVictoryConditions = 9;</code>
+     * <code>repeated string possibleVictoryConditions = 10;</code>
      */
     java.lang.String getPossibleVictoryConditions(int index);
     /**
-     * <code>repeated string possibleVictoryConditions = 9;</code>
+     * <code>repeated string possibleVictoryConditions = 10;</code>
      */
     com.google.protobuf.ByteString
         getPossibleVictoryConditionsBytes(int index);
 
     /**
-     * <code>repeated string possibleDefeatConditions = 10;</code>
+     * <code>repeated string possibleDefeatConditions = 11;</code>
      */
     java.util.List<java.lang.String>
         getPossibleDefeatConditionsList();
     /**
-     * <code>repeated string possibleDefeatConditions = 10;</code>
+     * <code>repeated string possibleDefeatConditions = 11;</code>
      */
     int getPossibleDefeatConditionsCount();
     /**
-     * <code>repeated string possibleDefeatConditions = 10;</code>
+     * <code>repeated string possibleDefeatConditions = 11;</code>
      */
     java.lang.String getPossibleDefeatConditions(int index);
     /**
-     * <code>repeated string possibleDefeatConditions = 10;</code>
+     * <code>repeated string possibleDefeatConditions = 11;</code>
      */
     com.google.protobuf.ByteString
         getPossibleDefeatConditionsBytes(int index);
 
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     java.util.List<AuthorServer.ConditionAssignment> 
         getCurrentVictoryConditionsList();
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     AuthorServer.ConditionAssignment getCurrentVictoryConditions(int index);
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     int getCurrentVictoryConditionsCount();
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     java.util.List<? extends AuthorServer.ConditionAssignmentOrBuilder> 
         getCurrentVictoryConditionsOrBuilderList();
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     AuthorServer.ConditionAssignmentOrBuilder getCurrentVictoryConditionsOrBuilder(
         int index);
 
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     java.util.List<AuthorServer.ConditionAssignment> 
         getCurrentDefeatConditionsList();
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     AuthorServer.ConditionAssignment getCurrentDefeatConditions(int index);
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     int getCurrentDefeatConditionsCount();
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     java.util.List<? extends AuthorServer.ConditionAssignmentOrBuilder> 
         getCurrentDefeatConditionsOrBuilderList();
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     AuthorServer.ConditionAssignmentOrBuilder getCurrentDefeatConditionsOrBuilder(
         int index);
 
     /**
-     * <code>optional string error = 13;</code>
+     * <code>optional .AuthoringNotification notification = 14;</code>
+     */
+    boolean hasNotification();
+    /**
+     * <code>optional .AuthoringNotification notification = 14;</code>
+     */
+    AuthorServer.AuthoringNotification getNotification();
+    /**
+     * <code>optional .AuthoringNotification notification = 14;</code>
+     */
+    AuthorServer.AuthoringNotificationOrBuilder getNotificationOrBuilder();
+
+    /**
+     * <code>optional string error = 15;</code>
      */
     boolean hasError();
     /**
-     * <code>optional string error = 13;</code>
+     * <code>optional string error = 15;</code>
      */
     java.lang.String getError();
     /**
-     * <code>optional string error = 13;</code>
+     * <code>optional string error = 15;</code>
      */
     com.google.protobuf.ByteString
         getErrorBytes();
@@ -340,14 +366,27 @@ public final class AuthorServer {
                   input.readMessage(AuthorServer.AuxiliaryElementConfigurationOption.PARSER, extensionRegistry));
               break;
             }
-            case 24: {
+            case 26: {
+              AuthorClient.DefineElement.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = elementAddedToInventory_.toBuilder();
+              }
+              elementAddedToInventory_ = input.readMessage(AuthorClient.DefineElement.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(elementAddedToInventory_);
+                elementAddedToInventory_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000001;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000002;
               currentLevel_ = input.readInt32();
               break;
             }
-            case 34: {
+            case 42: {
               PlayerServer.SpriteUpdate.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 subBuilder = moveElement_.toBuilder();
               }
               moveElement_ = input.readMessage(PlayerServer.SpriteUpdate.PARSER, extensionRegistry);
@@ -355,80 +394,93 @@ public final class AuthorServer {
                 subBuilder.mergeFrom(moveElement_);
                 moveElement_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000002;
+              bitField0_ |= 0x00000004;
               break;
             }
-            case 42: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+            case 50: {
+              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
                 allDefinedElementUpgrades_ = new java.util.ArrayList<AuthorServer.ElementUpgrade>();
-                mutable_bitField0_ |= 0x00000010;
+                mutable_bitField0_ |= 0x00000020;
               }
               allDefinedElementUpgrades_.add(
                   input.readMessage(AuthorServer.ElementUpgrade.PARSER, extensionRegistry));
               break;
             }
-            case 50: {
-              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+            case 58: {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
                 resourceEndowments_ = new java.util.ArrayList<AuthorServer.DoubleProperty>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000040;
               }
               resourceEndowments_.add(
                   input.readMessage(AuthorServer.DoubleProperty.PARSER, extensionRegistry));
               break;
             }
-            case 56: {
-              bitField0_ |= 0x00000004;
+            case 64: {
+              bitField0_ |= 0x00000008;
               createdWaveNumber_ = input.readInt32();
               break;
             }
-            case 66: {
-              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+            case 74: {
+              if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
                 waveProperties_ = new java.util.ArrayList<AuthorServer.StringProperty>();
-                mutable_bitField0_ |= 0x00000080;
+                mutable_bitField0_ |= 0x00000100;
               }
               waveProperties_.add(
                   input.readMessage(AuthorServer.StringProperty.PARSER, extensionRegistry));
               break;
             }
-            case 74: {
+            case 82: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+              if (!((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
                 possibleVictoryConditions_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000100;
+                mutable_bitField0_ |= 0x00000200;
               }
               possibleVictoryConditions_.add(bs);
               break;
             }
-            case 82: {
+            case 90: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              if (!((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+              if (!((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
                 possibleDefeatConditions_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000200;
+                mutable_bitField0_ |= 0x00000400;
               }
               possibleDefeatConditions_.add(bs);
               break;
             }
-            case 90: {
-              if (!((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+            case 98: {
+              if (!((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
                 currentVictoryConditions_ = new java.util.ArrayList<AuthorServer.ConditionAssignment>();
-                mutable_bitField0_ |= 0x00000400;
+                mutable_bitField0_ |= 0x00000800;
               }
               currentVictoryConditions_.add(
                   input.readMessage(AuthorServer.ConditionAssignment.PARSER, extensionRegistry));
               break;
             }
-            case 98: {
-              if (!((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
+            case 106: {
+              if (!((mutable_bitField0_ & 0x00001000) == 0x00001000)) {
                 currentDefeatConditions_ = new java.util.ArrayList<AuthorServer.ConditionAssignment>();
-                mutable_bitField0_ |= 0x00000800;
+                mutable_bitField0_ |= 0x00001000;
               }
               currentDefeatConditions_.add(
                   input.readMessage(AuthorServer.ConditionAssignment.PARSER, extensionRegistry));
               break;
             }
-            case 106: {
+            case 114: {
+              AuthorServer.AuthoringNotification.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                subBuilder = notification_.toBuilder();
+              }
+              notification_ = input.readMessage(AuthorServer.AuthoringNotification.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(notification_);
+                notification_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000010;
+              break;
+            }
+            case 122: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
+              bitField0_ |= 0x00000020;
               error_ = bs;
               break;
             }
@@ -446,25 +498,25 @@ public final class AuthorServer {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
           auxiliaryElementConfigurationOptions_ = java.util.Collections.unmodifiableList(auxiliaryElementConfigurationOptions_);
         }
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
           allDefinedElementUpgrades_ = java.util.Collections.unmodifiableList(allDefinedElementUpgrades_);
         }
-        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
           resourceEndowments_ = java.util.Collections.unmodifiableList(resourceEndowments_);
         }
-        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+        if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
           waveProperties_ = java.util.Collections.unmodifiableList(waveProperties_);
         }
-        if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+        if (((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
           possibleVictoryConditions_ = possibleVictoryConditions_.getUnmodifiableView();
         }
-        if (((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+        if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
           possibleDefeatConditions_ = possibleDefeatConditions_.getUnmodifiableView();
         }
-        if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+        if (((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
           currentVictoryConditions_ = java.util.Collections.unmodifiableList(currentVictoryConditions_);
         }
-        if (((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
+        if (((mutable_bitField0_ & 0x00001000) == 0x00001000)) {
           currentDefeatConditions_ = java.util.Collections.unmodifiableList(currentDefeatConditions_);
         }
         this.unknownFields = unknownFields.build();
@@ -554,300 +606,342 @@ public final class AuthorServer {
       return auxiliaryElementConfigurationOptions_.get(index);
     }
 
-    public static final int CURRENTLEVEL_FIELD_NUMBER = 3;
-    private int currentLevel_;
+    public static final int ELEMENTADDEDTOINVENTORY_FIELD_NUMBER = 3;
+    private AuthorClient.DefineElement elementAddedToInventory_;
     /**
-     * <code>optional int32 currentLevel = 3;</code>
+     * <code>optional .DefineElement elementAddedToInventory = 3;</code>
      */
-    public boolean hasCurrentLevel() {
+    public boolean hasElementAddedToInventory() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int32 currentLevel = 3;</code>
+     * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+     */
+    public AuthorClient.DefineElement getElementAddedToInventory() {
+      return elementAddedToInventory_ == null ? AuthorClient.DefineElement.getDefaultInstance() : elementAddedToInventory_;
+    }
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+     */
+    public AuthorClient.DefineElementOrBuilder getElementAddedToInventoryOrBuilder() {
+      return elementAddedToInventory_ == null ? AuthorClient.DefineElement.getDefaultInstance() : elementAddedToInventory_;
+    }
+
+    public static final int CURRENTLEVEL_FIELD_NUMBER = 4;
+    private int currentLevel_;
+    /**
+     * <code>optional int32 currentLevel = 4;</code>
+     */
+    public boolean hasCurrentLevel() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int32 currentLevel = 4;</code>
      */
     public int getCurrentLevel() {
       return currentLevel_;
     }
 
-    public static final int MOVEELEMENT_FIELD_NUMBER = 4;
+    public static final int MOVEELEMENT_FIELD_NUMBER = 5;
     private PlayerServer.SpriteUpdate moveElement_;
     /**
-     * <code>optional .SpriteUpdate moveElement = 4;</code>
+     * <code>optional .SpriteUpdate moveElement = 5;</code>
      */
     public boolean hasMoveElement() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional .SpriteUpdate moveElement = 4;</code>
+     * <code>optional .SpriteUpdate moveElement = 5;</code>
      */
     public PlayerServer.SpriteUpdate getMoveElement() {
       return moveElement_ == null ? PlayerServer.SpriteUpdate.getDefaultInstance() : moveElement_;
     }
     /**
-     * <code>optional .SpriteUpdate moveElement = 4;</code>
+     * <code>optional .SpriteUpdate moveElement = 5;</code>
      */
     public PlayerServer.SpriteUpdateOrBuilder getMoveElementOrBuilder() {
       return moveElement_ == null ? PlayerServer.SpriteUpdate.getDefaultInstance() : moveElement_;
     }
 
-    public static final int ALLDEFINEDELEMENTUPGRADES_FIELD_NUMBER = 5;
+    public static final int ALLDEFINEDELEMENTUPGRADES_FIELD_NUMBER = 6;
     private java.util.List<AuthorServer.ElementUpgrade> allDefinedElementUpgrades_;
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     public java.util.List<AuthorServer.ElementUpgrade> getAllDefinedElementUpgradesList() {
       return allDefinedElementUpgrades_;
     }
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     public java.util.List<? extends AuthorServer.ElementUpgradeOrBuilder> 
         getAllDefinedElementUpgradesOrBuilderList() {
       return allDefinedElementUpgrades_;
     }
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     public int getAllDefinedElementUpgradesCount() {
       return allDefinedElementUpgrades_.size();
     }
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     public AuthorServer.ElementUpgrade getAllDefinedElementUpgrades(int index) {
       return allDefinedElementUpgrades_.get(index);
     }
     /**
-     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+     * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
      */
     public AuthorServer.ElementUpgradeOrBuilder getAllDefinedElementUpgradesOrBuilder(
         int index) {
       return allDefinedElementUpgrades_.get(index);
     }
 
-    public static final int RESOURCEENDOWMENTS_FIELD_NUMBER = 6;
+    public static final int RESOURCEENDOWMENTS_FIELD_NUMBER = 7;
     private java.util.List<AuthorServer.DoubleProperty> resourceEndowments_;
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     public java.util.List<AuthorServer.DoubleProperty> getResourceEndowmentsList() {
       return resourceEndowments_;
     }
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     public java.util.List<? extends AuthorServer.DoublePropertyOrBuilder> 
         getResourceEndowmentsOrBuilderList() {
       return resourceEndowments_;
     }
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     public int getResourceEndowmentsCount() {
       return resourceEndowments_.size();
     }
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     public AuthorServer.DoubleProperty getResourceEndowments(int index) {
       return resourceEndowments_.get(index);
     }
     /**
-     * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+     * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
      */
     public AuthorServer.DoublePropertyOrBuilder getResourceEndowmentsOrBuilder(
         int index) {
       return resourceEndowments_.get(index);
     }
 
-    public static final int CREATEDWAVENUMBER_FIELD_NUMBER = 7;
+    public static final int CREATEDWAVENUMBER_FIELD_NUMBER = 8;
     private int createdWaveNumber_;
     /**
-     * <code>optional int32 createdWaveNumber = 7;</code>
+     * <code>optional int32 createdWaveNumber = 8;</code>
      */
     public boolean hasCreatedWaveNumber() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 createdWaveNumber = 7;</code>
+     * <code>optional int32 createdWaveNumber = 8;</code>
      */
     public int getCreatedWaveNumber() {
       return createdWaveNumber_;
     }
 
-    public static final int WAVEPROPERTIES_FIELD_NUMBER = 8;
+    public static final int WAVEPROPERTIES_FIELD_NUMBER = 9;
     private java.util.List<AuthorServer.StringProperty> waveProperties_;
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     public java.util.List<AuthorServer.StringProperty> getWavePropertiesList() {
       return waveProperties_;
     }
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     public java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
         getWavePropertiesOrBuilderList() {
       return waveProperties_;
     }
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     public int getWavePropertiesCount() {
       return waveProperties_.size();
     }
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     public AuthorServer.StringProperty getWaveProperties(int index) {
       return waveProperties_.get(index);
     }
     /**
-     * <code>repeated .StringProperty waveProperties = 8;</code>
+     * <code>repeated .StringProperty waveProperties = 9;</code>
      */
     public AuthorServer.StringPropertyOrBuilder getWavePropertiesOrBuilder(
         int index) {
       return waveProperties_.get(index);
     }
 
-    public static final int POSSIBLEVICTORYCONDITIONS_FIELD_NUMBER = 9;
+    public static final int POSSIBLEVICTORYCONDITIONS_FIELD_NUMBER = 10;
     private com.google.protobuf.LazyStringList possibleVictoryConditions_;
     /**
-     * <code>repeated string possibleVictoryConditions = 9;</code>
+     * <code>repeated string possibleVictoryConditions = 10;</code>
      */
     public com.google.protobuf.ProtocolStringList
         getPossibleVictoryConditionsList() {
       return possibleVictoryConditions_;
     }
     /**
-     * <code>repeated string possibleVictoryConditions = 9;</code>
+     * <code>repeated string possibleVictoryConditions = 10;</code>
      */
     public int getPossibleVictoryConditionsCount() {
       return possibleVictoryConditions_.size();
     }
     /**
-     * <code>repeated string possibleVictoryConditions = 9;</code>
+     * <code>repeated string possibleVictoryConditions = 10;</code>
      */
     public java.lang.String getPossibleVictoryConditions(int index) {
       return possibleVictoryConditions_.get(index);
     }
     /**
-     * <code>repeated string possibleVictoryConditions = 9;</code>
+     * <code>repeated string possibleVictoryConditions = 10;</code>
      */
     public com.google.protobuf.ByteString
         getPossibleVictoryConditionsBytes(int index) {
       return possibleVictoryConditions_.getByteString(index);
     }
 
-    public static final int POSSIBLEDEFEATCONDITIONS_FIELD_NUMBER = 10;
+    public static final int POSSIBLEDEFEATCONDITIONS_FIELD_NUMBER = 11;
     private com.google.protobuf.LazyStringList possibleDefeatConditions_;
     /**
-     * <code>repeated string possibleDefeatConditions = 10;</code>
+     * <code>repeated string possibleDefeatConditions = 11;</code>
      */
     public com.google.protobuf.ProtocolStringList
         getPossibleDefeatConditionsList() {
       return possibleDefeatConditions_;
     }
     /**
-     * <code>repeated string possibleDefeatConditions = 10;</code>
+     * <code>repeated string possibleDefeatConditions = 11;</code>
      */
     public int getPossibleDefeatConditionsCount() {
       return possibleDefeatConditions_.size();
     }
     /**
-     * <code>repeated string possibleDefeatConditions = 10;</code>
+     * <code>repeated string possibleDefeatConditions = 11;</code>
      */
     public java.lang.String getPossibleDefeatConditions(int index) {
       return possibleDefeatConditions_.get(index);
     }
     /**
-     * <code>repeated string possibleDefeatConditions = 10;</code>
+     * <code>repeated string possibleDefeatConditions = 11;</code>
      */
     public com.google.protobuf.ByteString
         getPossibleDefeatConditionsBytes(int index) {
       return possibleDefeatConditions_.getByteString(index);
     }
 
-    public static final int CURRENTVICTORYCONDITIONS_FIELD_NUMBER = 11;
+    public static final int CURRENTVICTORYCONDITIONS_FIELD_NUMBER = 12;
     private java.util.List<AuthorServer.ConditionAssignment> currentVictoryConditions_;
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     public java.util.List<AuthorServer.ConditionAssignment> getCurrentVictoryConditionsList() {
       return currentVictoryConditions_;
     }
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     public java.util.List<? extends AuthorServer.ConditionAssignmentOrBuilder> 
         getCurrentVictoryConditionsOrBuilderList() {
       return currentVictoryConditions_;
     }
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     public int getCurrentVictoryConditionsCount() {
       return currentVictoryConditions_.size();
     }
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     public AuthorServer.ConditionAssignment getCurrentVictoryConditions(int index) {
       return currentVictoryConditions_.get(index);
     }
     /**
-     * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+     * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
      */
     public AuthorServer.ConditionAssignmentOrBuilder getCurrentVictoryConditionsOrBuilder(
         int index) {
       return currentVictoryConditions_.get(index);
     }
 
-    public static final int CURRENTDEFEATCONDITIONS_FIELD_NUMBER = 12;
+    public static final int CURRENTDEFEATCONDITIONS_FIELD_NUMBER = 13;
     private java.util.List<AuthorServer.ConditionAssignment> currentDefeatConditions_;
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     public java.util.List<AuthorServer.ConditionAssignment> getCurrentDefeatConditionsList() {
       return currentDefeatConditions_;
     }
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     public java.util.List<? extends AuthorServer.ConditionAssignmentOrBuilder> 
         getCurrentDefeatConditionsOrBuilderList() {
       return currentDefeatConditions_;
     }
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     public int getCurrentDefeatConditionsCount() {
       return currentDefeatConditions_.size();
     }
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     public AuthorServer.ConditionAssignment getCurrentDefeatConditions(int index) {
       return currentDefeatConditions_.get(index);
     }
     /**
-     * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+     * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
      */
     public AuthorServer.ConditionAssignmentOrBuilder getCurrentDefeatConditionsOrBuilder(
         int index) {
       return currentDefeatConditions_.get(index);
     }
 
-    public static final int ERROR_FIELD_NUMBER = 13;
-    private volatile java.lang.Object error_;
+    public static final int NOTIFICATION_FIELD_NUMBER = 14;
+    private AuthorServer.AuthoringNotification notification_;
     /**
-     * <code>optional string error = 13;</code>
+     * <code>optional .AuthoringNotification notification = 14;</code>
      */
-    public boolean hasError() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+    public boolean hasNotification() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional string error = 13;</code>
+     * <code>optional .AuthoringNotification notification = 14;</code>
+     */
+    public AuthorServer.AuthoringNotification getNotification() {
+      return notification_ == null ? AuthorServer.AuthoringNotification.getDefaultInstance() : notification_;
+    }
+    /**
+     * <code>optional .AuthoringNotification notification = 14;</code>
+     */
+    public AuthorServer.AuthoringNotificationOrBuilder getNotificationOrBuilder() {
+      return notification_ == null ? AuthorServer.AuthoringNotification.getDefaultInstance() : notification_;
+    }
+
+    public static final int ERROR_FIELD_NUMBER = 15;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>optional string error = 15;</code>
+     */
+    public boolean hasError() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string error = 15;</code>
      */
     public java.lang.String getError() {
       java.lang.Object ref = error_;
@@ -864,7 +958,7 @@ public final class AuthorServer {
       }
     }
     /**
-     * <code>optional string error = 13;</code>
+     * <code>optional string error = 15;</code>
      */
     public com.google.protobuf.ByteString
         getErrorBytes() {
@@ -894,6 +988,12 @@ public final class AuthorServer {
       }
       for (int i = 0; i < getAuxiliaryElementConfigurationOptionsCount(); i++) {
         if (!getAuxiliaryElementConfigurationOptions(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasElementAddedToInventory()) {
+        if (!getElementAddedToInventory().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -934,6 +1034,12 @@ public final class AuthorServer {
           return false;
         }
       }
+      if (hasNotification()) {
+        if (!getNotification().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -947,37 +1053,43 @@ public final class AuthorServer {
         output.writeMessage(2, auxiliaryElementConfigurationOptions_.get(i));
       }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(3, currentLevel_);
+        output.writeMessage(3, getElementAddedToInventory());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(4, getMoveElement());
-      }
-      for (int i = 0; i < allDefinedElementUpgrades_.size(); i++) {
-        output.writeMessage(5, allDefinedElementUpgrades_.get(i));
-      }
-      for (int i = 0; i < resourceEndowments_.size(); i++) {
-        output.writeMessage(6, resourceEndowments_.get(i));
+        output.writeInt32(4, currentLevel_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(7, createdWaveNumber_);
+        output.writeMessage(5, getMoveElement());
       }
-      for (int i = 0; i < waveProperties_.size(); i++) {
-        output.writeMessage(8, waveProperties_.get(i));
+      for (int i = 0; i < allDefinedElementUpgrades_.size(); i++) {
+        output.writeMessage(6, allDefinedElementUpgrades_.get(i));
       }
-      for (int i = 0; i < possibleVictoryConditions_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, possibleVictoryConditions_.getRaw(i));
-      }
-      for (int i = 0; i < possibleDefeatConditions_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, possibleDefeatConditions_.getRaw(i));
-      }
-      for (int i = 0; i < currentVictoryConditions_.size(); i++) {
-        output.writeMessage(11, currentVictoryConditions_.get(i));
-      }
-      for (int i = 0; i < currentDefeatConditions_.size(); i++) {
-        output.writeMessage(12, currentDefeatConditions_.get(i));
+      for (int i = 0; i < resourceEndowments_.size(); i++) {
+        output.writeMessage(7, resourceEndowments_.get(i));
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, error_);
+        output.writeInt32(8, createdWaveNumber_);
+      }
+      for (int i = 0; i < waveProperties_.size(); i++) {
+        output.writeMessage(9, waveProperties_.get(i));
+      }
+      for (int i = 0; i < possibleVictoryConditions_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, possibleVictoryConditions_.getRaw(i));
+      }
+      for (int i = 0; i < possibleDefeatConditions_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, possibleDefeatConditions_.getRaw(i));
+      }
+      for (int i = 0; i < currentVictoryConditions_.size(); i++) {
+        output.writeMessage(12, currentVictoryConditions_.get(i));
+      }
+      for (int i = 0; i < currentDefeatConditions_.size(); i++) {
+        output.writeMessage(13, currentDefeatConditions_.get(i));
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeMessage(14, getNotification());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 15, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -997,27 +1109,31 @@ public final class AuthorServer {
       }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, currentLevel_);
+          .computeMessageSize(3, getElementAddedToInventory());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getMoveElement());
-      }
-      for (int i = 0; i < allDefinedElementUpgrades_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, allDefinedElementUpgrades_.get(i));
-      }
-      for (int i = 0; i < resourceEndowments_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, resourceEndowments_.get(i));
+          .computeInt32Size(4, currentLevel_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, createdWaveNumber_);
+          .computeMessageSize(5, getMoveElement());
+      }
+      for (int i = 0; i < allDefinedElementUpgrades_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, allDefinedElementUpgrades_.get(i));
+      }
+      for (int i = 0; i < resourceEndowments_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, resourceEndowments_.get(i));
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(8, createdWaveNumber_);
       }
       for (int i = 0; i < waveProperties_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, waveProperties_.get(i));
+          .computeMessageSize(9, waveProperties_.get(i));
       }
       {
         int dataSize = 0;
@@ -1037,14 +1153,18 @@ public final class AuthorServer {
       }
       for (int i = 0; i < currentVictoryConditions_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, currentVictoryConditions_.get(i));
+          .computeMessageSize(12, currentVictoryConditions_.get(i));
       }
       for (int i = 0; i < currentDefeatConditions_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, currentDefeatConditions_.get(i));
+          .computeMessageSize(13, currentDefeatConditions_.get(i));
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, error_);
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(14, getNotification());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1067,6 +1187,11 @@ public final class AuthorServer {
           .equals(other.getElementBaseConfigurationOptionsList());
       result = result && getAuxiliaryElementConfigurationOptionsList()
           .equals(other.getAuxiliaryElementConfigurationOptionsList());
+      result = result && (hasElementAddedToInventory() == other.hasElementAddedToInventory());
+      if (hasElementAddedToInventory()) {
+        result = result && getElementAddedToInventory()
+            .equals(other.getElementAddedToInventory());
+      }
       result = result && (hasCurrentLevel() == other.hasCurrentLevel());
       if (hasCurrentLevel()) {
         result = result && (getCurrentLevel()
@@ -1096,6 +1221,11 @@ public final class AuthorServer {
           .equals(other.getCurrentVictoryConditionsList());
       result = result && getCurrentDefeatConditionsList()
           .equals(other.getCurrentDefeatConditionsList());
+      result = result && (hasNotification() == other.hasNotification());
+      if (hasNotification()) {
+        result = result && getNotification()
+            .equals(other.getNotification());
+      }
       result = result && (hasError() == other.hasError());
       if (hasError()) {
         result = result && getError()
@@ -1119,6 +1249,10 @@ public final class AuthorServer {
       if (getAuxiliaryElementConfigurationOptionsCount() > 0) {
         hash = (37 * hash) + AUXILIARYELEMENTCONFIGURATIONOPTIONS_FIELD_NUMBER;
         hash = (53 * hash) + getAuxiliaryElementConfigurationOptionsList().hashCode();
+      }
+      if (hasElementAddedToInventory()) {
+        hash = (37 * hash) + ELEMENTADDEDTOINVENTORY_FIELD_NUMBER;
+        hash = (53 * hash) + getElementAddedToInventory().hashCode();
       }
       if (hasCurrentLevel()) {
         hash = (37 * hash) + CURRENTLEVEL_FIELD_NUMBER;
@@ -1159,6 +1293,10 @@ public final class AuthorServer {
       if (getCurrentDefeatConditionsCount() > 0) {
         hash = (37 * hash) + CURRENTDEFEATCONDITIONS_FIELD_NUMBER;
         hash = (53 * hash) + getCurrentDefeatConditionsList().hashCode();
+      }
+      if (hasNotification()) {
+        hash = (37 * hash) + NOTIFICATION_FIELD_NUMBER;
+        hash = (53 * hash) + getNotification().hashCode();
       }
       if (hasError()) {
         hash = (37 * hash) + ERROR_FIELD_NUMBER;
@@ -1280,12 +1418,14 @@ public final class AuthorServer {
                 .alwaysUseFieldBuilders) {
           getElementBaseConfigurationOptionsFieldBuilder();
           getAuxiliaryElementConfigurationOptionsFieldBuilder();
+          getElementAddedToInventoryFieldBuilder();
           getMoveElementFieldBuilder();
           getAllDefinedElementUpgradesFieldBuilder();
           getResourceEndowmentsFieldBuilder();
           getWavePropertiesFieldBuilder();
           getCurrentVictoryConditionsFieldBuilder();
           getCurrentDefeatConditionsFieldBuilder();
+          getNotificationFieldBuilder();
         }
       }
       public Builder clear() {
@@ -1302,52 +1442,64 @@ public final class AuthorServer {
         } else {
           auxiliaryElementConfigurationOptionsBuilder_.clear();
         }
-        currentLevel_ = 0;
+        if (elementAddedToInventoryBuilder_ == null) {
+          elementAddedToInventory_ = null;
+        } else {
+          elementAddedToInventoryBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000004);
+        currentLevel_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         if (moveElementBuilder_ == null) {
           moveElement_ = null;
         } else {
           moveElementBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         if (allDefinedElementUpgradesBuilder_ == null) {
           allDefinedElementUpgrades_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
         } else {
           allDefinedElementUpgradesBuilder_.clear();
         }
         if (resourceEndowmentsBuilder_ == null) {
           resourceEndowments_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000040);
         } else {
           resourceEndowmentsBuilder_.clear();
         }
         createdWaveNumber_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         if (wavePropertiesBuilder_ == null) {
           waveProperties_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000100);
         } else {
           wavePropertiesBuilder_.clear();
         }
         possibleVictoryConditions_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000100);
-        possibleDefeatConditions_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000200);
+        possibleDefeatConditions_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000400);
         if (currentVictoryConditionsBuilder_ == null) {
           currentVictoryConditions_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000400);
+          bitField0_ = (bitField0_ & ~0x00000800);
         } else {
           currentVictoryConditionsBuilder_.clear();
         }
         if (currentDefeatConditionsBuilder_ == null) {
           currentDefeatConditions_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000800);
+          bitField0_ = (bitField0_ & ~0x00001000);
         } else {
           currentDefeatConditionsBuilder_.clear();
         }
+        if (notificationBuilder_ == null) {
+          notification_ = null;
+        } else {
+          notificationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00002000);
         error_ = "";
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
 
@@ -1393,9 +1545,17 @@ public final class AuthorServer {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.currentLevel_ = currentLevel_;
+        if (elementAddedToInventoryBuilder_ == null) {
+          result.elementAddedToInventory_ = elementAddedToInventory_;
+        } else {
+          result.elementAddedToInventory_ = elementAddedToInventoryBuilder_.build();
+        }
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000002;
+        }
+        result.currentLevel_ = currentLevel_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000004;
         }
         if (moveElementBuilder_ == null) {
           result.moveElement_ = moveElement_;
@@ -1403,66 +1563,74 @@ public final class AuthorServer {
           result.moveElement_ = moveElementBuilder_.build();
         }
         if (allDefinedElementUpgradesBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
             allDefinedElementUpgrades_ = java.util.Collections.unmodifiableList(allDefinedElementUpgrades_);
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000020);
           }
           result.allDefinedElementUpgrades_ = allDefinedElementUpgrades_;
         } else {
           result.allDefinedElementUpgrades_ = allDefinedElementUpgradesBuilder_.build();
         }
         if (resourceEndowmentsBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          if (((bitField0_ & 0x00000040) == 0x00000040)) {
             resourceEndowments_ = java.util.Collections.unmodifiableList(resourceEndowments_);
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000040);
           }
           result.resourceEndowments_ = resourceEndowments_;
         } else {
           result.resourceEndowments_ = resourceEndowmentsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000004;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000008;
         }
         result.createdWaveNumber_ = createdWaveNumber_;
         if (wavePropertiesBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) == 0x00000080)) {
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
             waveProperties_ = java.util.Collections.unmodifiableList(waveProperties_);
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000100);
           }
           result.waveProperties_ = waveProperties_;
         } else {
           result.waveProperties_ = wavePropertiesBuilder_.build();
         }
-        if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        if (((bitField0_ & 0x00000200) == 0x00000200)) {
           possibleVictoryConditions_ = possibleVictoryConditions_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000100);
+          bitField0_ = (bitField0_ & ~0x00000200);
         }
         result.possibleVictoryConditions_ = possibleVictoryConditions_;
-        if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        if (((bitField0_ & 0x00000400) == 0x00000400)) {
           possibleDefeatConditions_ = possibleDefeatConditions_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000200);
+          bitField0_ = (bitField0_ & ~0x00000400);
         }
         result.possibleDefeatConditions_ = possibleDefeatConditions_;
         if (currentVictoryConditionsBuilder_ == null) {
-          if (((bitField0_ & 0x00000400) == 0x00000400)) {
+          if (((bitField0_ & 0x00000800) == 0x00000800)) {
             currentVictoryConditions_ = java.util.Collections.unmodifiableList(currentVictoryConditions_);
-            bitField0_ = (bitField0_ & ~0x00000400);
+            bitField0_ = (bitField0_ & ~0x00000800);
           }
           result.currentVictoryConditions_ = currentVictoryConditions_;
         } else {
           result.currentVictoryConditions_ = currentVictoryConditionsBuilder_.build();
         }
         if (currentDefeatConditionsBuilder_ == null) {
-          if (((bitField0_ & 0x00000800) == 0x00000800)) {
+          if (((bitField0_ & 0x00001000) == 0x00001000)) {
             currentDefeatConditions_ = java.util.Collections.unmodifiableList(currentDefeatConditions_);
-            bitField0_ = (bitField0_ & ~0x00000800);
+            bitField0_ = (bitField0_ & ~0x00001000);
           }
           result.currentDefeatConditions_ = currentDefeatConditions_;
         } else {
           result.currentDefeatConditions_ = currentDefeatConditionsBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
-          to_bitField0_ |= 0x00000008;
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        if (notificationBuilder_ == null) {
+          result.notification_ = notification_;
+        } else {
+          result.notification_ = notificationBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00000020;
         }
         result.error_ = error_;
         result.bitField0_ = to_bitField0_;
@@ -1559,6 +1727,9 @@ public final class AuthorServer {
             }
           }
         }
+        if (other.hasElementAddedToInventory()) {
+          mergeElementAddedToInventory(other.getElementAddedToInventory());
+        }
         if (other.hasCurrentLevel()) {
           setCurrentLevel(other.getCurrentLevel());
         }
@@ -1569,7 +1740,7 @@ public final class AuthorServer {
           if (!other.allDefinedElementUpgrades_.isEmpty()) {
             if (allDefinedElementUpgrades_.isEmpty()) {
               allDefinedElementUpgrades_ = other.allDefinedElementUpgrades_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
             } else {
               ensureAllDefinedElementUpgradesIsMutable();
               allDefinedElementUpgrades_.addAll(other.allDefinedElementUpgrades_);
@@ -1582,7 +1753,7 @@ public final class AuthorServer {
               allDefinedElementUpgradesBuilder_.dispose();
               allDefinedElementUpgradesBuilder_ = null;
               allDefinedElementUpgrades_ = other.allDefinedElementUpgrades_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
               allDefinedElementUpgradesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getAllDefinedElementUpgradesFieldBuilder() : null;
@@ -1595,7 +1766,7 @@ public final class AuthorServer {
           if (!other.resourceEndowments_.isEmpty()) {
             if (resourceEndowments_.isEmpty()) {
               resourceEndowments_ = other.resourceEndowments_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000040);
             } else {
               ensureResourceEndowmentsIsMutable();
               resourceEndowments_.addAll(other.resourceEndowments_);
@@ -1608,7 +1779,7 @@ public final class AuthorServer {
               resourceEndowmentsBuilder_.dispose();
               resourceEndowmentsBuilder_ = null;
               resourceEndowments_ = other.resourceEndowments_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000040);
               resourceEndowmentsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getResourceEndowmentsFieldBuilder() : null;
@@ -1624,7 +1795,7 @@ public final class AuthorServer {
           if (!other.waveProperties_.isEmpty()) {
             if (waveProperties_.isEmpty()) {
               waveProperties_ = other.waveProperties_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000100);
             } else {
               ensureWavePropertiesIsMutable();
               waveProperties_.addAll(other.waveProperties_);
@@ -1637,7 +1808,7 @@ public final class AuthorServer {
               wavePropertiesBuilder_.dispose();
               wavePropertiesBuilder_ = null;
               waveProperties_ = other.waveProperties_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000100);
               wavePropertiesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getWavePropertiesFieldBuilder() : null;
@@ -1649,7 +1820,7 @@ public final class AuthorServer {
         if (!other.possibleVictoryConditions_.isEmpty()) {
           if (possibleVictoryConditions_.isEmpty()) {
             possibleVictoryConditions_ = other.possibleVictoryConditions_;
-            bitField0_ = (bitField0_ & ~0x00000100);
+            bitField0_ = (bitField0_ & ~0x00000200);
           } else {
             ensurePossibleVictoryConditionsIsMutable();
             possibleVictoryConditions_.addAll(other.possibleVictoryConditions_);
@@ -1659,7 +1830,7 @@ public final class AuthorServer {
         if (!other.possibleDefeatConditions_.isEmpty()) {
           if (possibleDefeatConditions_.isEmpty()) {
             possibleDefeatConditions_ = other.possibleDefeatConditions_;
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000400);
           } else {
             ensurePossibleDefeatConditionsIsMutable();
             possibleDefeatConditions_.addAll(other.possibleDefeatConditions_);
@@ -1670,7 +1841,7 @@ public final class AuthorServer {
           if (!other.currentVictoryConditions_.isEmpty()) {
             if (currentVictoryConditions_.isEmpty()) {
               currentVictoryConditions_ = other.currentVictoryConditions_;
-              bitField0_ = (bitField0_ & ~0x00000400);
+              bitField0_ = (bitField0_ & ~0x00000800);
             } else {
               ensureCurrentVictoryConditionsIsMutable();
               currentVictoryConditions_.addAll(other.currentVictoryConditions_);
@@ -1683,7 +1854,7 @@ public final class AuthorServer {
               currentVictoryConditionsBuilder_.dispose();
               currentVictoryConditionsBuilder_ = null;
               currentVictoryConditions_ = other.currentVictoryConditions_;
-              bitField0_ = (bitField0_ & ~0x00000400);
+              bitField0_ = (bitField0_ & ~0x00000800);
               currentVictoryConditionsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getCurrentVictoryConditionsFieldBuilder() : null;
@@ -1696,7 +1867,7 @@ public final class AuthorServer {
           if (!other.currentDefeatConditions_.isEmpty()) {
             if (currentDefeatConditions_.isEmpty()) {
               currentDefeatConditions_ = other.currentDefeatConditions_;
-              bitField0_ = (bitField0_ & ~0x00000800);
+              bitField0_ = (bitField0_ & ~0x00001000);
             } else {
               ensureCurrentDefeatConditionsIsMutable();
               currentDefeatConditions_.addAll(other.currentDefeatConditions_);
@@ -1709,7 +1880,7 @@ public final class AuthorServer {
               currentDefeatConditionsBuilder_.dispose();
               currentDefeatConditionsBuilder_ = null;
               currentDefeatConditions_ = other.currentDefeatConditions_;
-              bitField0_ = (bitField0_ & ~0x00000800);
+              bitField0_ = (bitField0_ & ~0x00001000);
               currentDefeatConditionsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getCurrentDefeatConditionsFieldBuilder() : null;
@@ -1718,8 +1889,11 @@ public final class AuthorServer {
             }
           }
         }
+        if (other.hasNotification()) {
+          mergeNotification(other.getNotification());
+        }
         if (other.hasError()) {
-          bitField0_ |= 0x00001000;
+          bitField0_ |= 0x00004000;
           error_ = other.error_;
           onChanged();
         }
@@ -1736,6 +1910,11 @@ public final class AuthorServer {
         }
         for (int i = 0; i < getAuxiliaryElementConfigurationOptionsCount(); i++) {
           if (!getAuxiliaryElementConfigurationOptions(i).isInitialized()) {
+            return false;
+          }
+        }
+        if (hasElementAddedToInventory()) {
+          if (!getElementAddedToInventory().isInitialized()) {
             return false;
           }
         }
@@ -1766,6 +1945,11 @@ public final class AuthorServer {
         }
         for (int i = 0; i < getCurrentDefeatConditionsCount(); i++) {
           if (!getCurrentDefeatConditions(i).isInitialized()) {
+            return false;
+          }
+        }
+        if (hasNotification()) {
+          if (!getNotification().isInitialized()) {
             return false;
           }
         }
@@ -2271,33 +2455,151 @@ public final class AuthorServer {
         return auxiliaryElementConfigurationOptionsBuilder_;
       }
 
-      private int currentLevel_ ;
+      private AuthorClient.DefineElement elementAddedToInventory_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          AuthorClient.DefineElement, AuthorClient.DefineElement.Builder, AuthorClient.DefineElementOrBuilder> elementAddedToInventoryBuilder_;
       /**
-       * <code>optional int32 currentLevel = 3;</code>
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
        */
-      public boolean hasCurrentLevel() {
+      public boolean hasElementAddedToInventory() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 currentLevel = 3;</code>
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+       */
+      public AuthorClient.DefineElement getElementAddedToInventory() {
+        if (elementAddedToInventoryBuilder_ == null) {
+          return elementAddedToInventory_ == null ? AuthorClient.DefineElement.getDefaultInstance() : elementAddedToInventory_;
+        } else {
+          return elementAddedToInventoryBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+       */
+      public Builder setElementAddedToInventory(AuthorClient.DefineElement value) {
+        if (elementAddedToInventoryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          elementAddedToInventory_ = value;
+          onChanged();
+        } else {
+          elementAddedToInventoryBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+       */
+      public Builder setElementAddedToInventory(
+          AuthorClient.DefineElement.Builder builderForValue) {
+        if (elementAddedToInventoryBuilder_ == null) {
+          elementAddedToInventory_ = builderForValue.build();
+          onChanged();
+        } else {
+          elementAddedToInventoryBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+       */
+      public Builder mergeElementAddedToInventory(AuthorClient.DefineElement value) {
+        if (elementAddedToInventoryBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              elementAddedToInventory_ != null &&
+              elementAddedToInventory_ != AuthorClient.DefineElement.getDefaultInstance()) {
+            elementAddedToInventory_ =
+              AuthorClient.DefineElement.newBuilder(elementAddedToInventory_).mergeFrom(value).buildPartial();
+          } else {
+            elementAddedToInventory_ = value;
+          }
+          onChanged();
+        } else {
+          elementAddedToInventoryBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+       */
+      public Builder clearElementAddedToInventory() {
+        if (elementAddedToInventoryBuilder_ == null) {
+          elementAddedToInventory_ = null;
+          onChanged();
+        } else {
+          elementAddedToInventoryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+       */
+      public AuthorClient.DefineElement.Builder getElementAddedToInventoryBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getElementAddedToInventoryFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+       */
+      public AuthorClient.DefineElementOrBuilder getElementAddedToInventoryOrBuilder() {
+        if (elementAddedToInventoryBuilder_ != null) {
+          return elementAddedToInventoryBuilder_.getMessageOrBuilder();
+        } else {
+          return elementAddedToInventory_ == null ?
+              AuthorClient.DefineElement.getDefaultInstance() : elementAddedToInventory_;
+        }
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          AuthorClient.DefineElement, AuthorClient.DefineElement.Builder, AuthorClient.DefineElementOrBuilder> 
+          getElementAddedToInventoryFieldBuilder() {
+        if (elementAddedToInventoryBuilder_ == null) {
+          elementAddedToInventoryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              AuthorClient.DefineElement, AuthorClient.DefineElement.Builder, AuthorClient.DefineElementOrBuilder>(
+                  getElementAddedToInventory(),
+                  getParentForChildren(),
+                  isClean());
+          elementAddedToInventory_ = null;
+        }
+        return elementAddedToInventoryBuilder_;
+      }
+
+      private int currentLevel_ ;
+      /**
+       * <code>optional int32 currentLevel = 4;</code>
+       */
+      public boolean hasCurrentLevel() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 currentLevel = 4;</code>
        */
       public int getCurrentLevel() {
         return currentLevel_;
       }
       /**
-       * <code>optional int32 currentLevel = 3;</code>
+       * <code>optional int32 currentLevel = 4;</code>
        */
       public Builder setCurrentLevel(int value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         currentLevel_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 currentLevel = 3;</code>
+       * <code>optional int32 currentLevel = 4;</code>
        */
       public Builder clearCurrentLevel() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         currentLevel_ = 0;
         onChanged();
         return this;
@@ -2307,13 +2609,13 @@ public final class AuthorServer {
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.SpriteUpdate, PlayerServer.SpriteUpdate.Builder, PlayerServer.SpriteUpdateOrBuilder> moveElementBuilder_;
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       public boolean hasMoveElement() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       public PlayerServer.SpriteUpdate getMoveElement() {
         if (moveElementBuilder_ == null) {
@@ -2323,7 +2625,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       public Builder setMoveElement(PlayerServer.SpriteUpdate value) {
         if (moveElementBuilder_ == null) {
@@ -2335,11 +2637,11 @@ public final class AuthorServer {
         } else {
           moveElementBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       public Builder setMoveElement(
           PlayerServer.SpriteUpdate.Builder builderForValue) {
@@ -2349,15 +2651,15 @@ public final class AuthorServer {
         } else {
           moveElementBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       public Builder mergeMoveElement(PlayerServer.SpriteUpdate value) {
         if (moveElementBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
               moveElement_ != null &&
               moveElement_ != PlayerServer.SpriteUpdate.getDefaultInstance()) {
             moveElement_ =
@@ -2369,11 +2671,11 @@ public final class AuthorServer {
         } else {
           moveElementBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       public Builder clearMoveElement() {
         if (moveElementBuilder_ == null) {
@@ -2382,19 +2684,19 @@ public final class AuthorServer {
         } else {
           moveElementBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       public PlayerServer.SpriteUpdate.Builder getMoveElementBuilder() {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         onChanged();
         return getMoveElementFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       public PlayerServer.SpriteUpdateOrBuilder getMoveElementOrBuilder() {
         if (moveElementBuilder_ != null) {
@@ -2405,7 +2707,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>optional .SpriteUpdate moveElement = 4;</code>
+       * <code>optional .SpriteUpdate moveElement = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           PlayerServer.SpriteUpdate, PlayerServer.SpriteUpdate.Builder, PlayerServer.SpriteUpdateOrBuilder> 
@@ -2424,9 +2726,9 @@ public final class AuthorServer {
       private java.util.List<AuthorServer.ElementUpgrade> allDefinedElementUpgrades_ =
         java.util.Collections.emptyList();
       private void ensureAllDefinedElementUpgradesIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
           allDefinedElementUpgrades_ = new java.util.ArrayList<AuthorServer.ElementUpgrade>(allDefinedElementUpgrades_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
          }
       }
 
@@ -2434,7 +2736,7 @@ public final class AuthorServer {
           AuthorServer.ElementUpgrade, AuthorServer.ElementUpgrade.Builder, AuthorServer.ElementUpgradeOrBuilder> allDefinedElementUpgradesBuilder_;
 
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public java.util.List<AuthorServer.ElementUpgrade> getAllDefinedElementUpgradesList() {
         if (allDefinedElementUpgradesBuilder_ == null) {
@@ -2444,7 +2746,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public int getAllDefinedElementUpgradesCount() {
         if (allDefinedElementUpgradesBuilder_ == null) {
@@ -2454,7 +2756,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public AuthorServer.ElementUpgrade getAllDefinedElementUpgrades(int index) {
         if (allDefinedElementUpgradesBuilder_ == null) {
@@ -2464,7 +2766,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder setAllDefinedElementUpgrades(
           int index, AuthorServer.ElementUpgrade value) {
@@ -2481,7 +2783,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder setAllDefinedElementUpgrades(
           int index, AuthorServer.ElementUpgrade.Builder builderForValue) {
@@ -2495,7 +2797,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder addAllDefinedElementUpgrades(AuthorServer.ElementUpgrade value) {
         if (allDefinedElementUpgradesBuilder_ == null) {
@@ -2511,7 +2813,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder addAllDefinedElementUpgrades(
           int index, AuthorServer.ElementUpgrade value) {
@@ -2528,7 +2830,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder addAllDefinedElementUpgrades(
           AuthorServer.ElementUpgrade.Builder builderForValue) {
@@ -2542,7 +2844,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder addAllDefinedElementUpgrades(
           int index, AuthorServer.ElementUpgrade.Builder builderForValue) {
@@ -2556,7 +2858,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder addAllAllDefinedElementUpgrades(
           java.lang.Iterable<? extends AuthorServer.ElementUpgrade> values) {
@@ -2571,12 +2873,12 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder clearAllDefinedElementUpgrades() {
         if (allDefinedElementUpgradesBuilder_ == null) {
           allDefinedElementUpgrades_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
           onChanged();
         } else {
           allDefinedElementUpgradesBuilder_.clear();
@@ -2584,7 +2886,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public Builder removeAllDefinedElementUpgrades(int index) {
         if (allDefinedElementUpgradesBuilder_ == null) {
@@ -2597,14 +2899,14 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public AuthorServer.ElementUpgrade.Builder getAllDefinedElementUpgradesBuilder(
           int index) {
         return getAllDefinedElementUpgradesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public AuthorServer.ElementUpgradeOrBuilder getAllDefinedElementUpgradesOrBuilder(
           int index) {
@@ -2614,7 +2916,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public java.util.List<? extends AuthorServer.ElementUpgradeOrBuilder> 
            getAllDefinedElementUpgradesOrBuilderList() {
@@ -2625,14 +2927,14 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public AuthorServer.ElementUpgrade.Builder addAllDefinedElementUpgradesBuilder() {
         return getAllDefinedElementUpgradesFieldBuilder().addBuilder(
             AuthorServer.ElementUpgrade.getDefaultInstance());
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public AuthorServer.ElementUpgrade.Builder addAllDefinedElementUpgradesBuilder(
           int index) {
@@ -2640,7 +2942,7 @@ public final class AuthorServer {
             index, AuthorServer.ElementUpgrade.getDefaultInstance());
       }
       /**
-       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 5;</code>
+       * <code>repeated .ElementUpgrade allDefinedElementUpgrades = 6;</code>
        */
       public java.util.List<AuthorServer.ElementUpgrade.Builder> 
            getAllDefinedElementUpgradesBuilderList() {
@@ -2653,7 +2955,7 @@ public final class AuthorServer {
           allDefinedElementUpgradesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AuthorServer.ElementUpgrade, AuthorServer.ElementUpgrade.Builder, AuthorServer.ElementUpgradeOrBuilder>(
                   allDefinedElementUpgrades_,
-                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  ((bitField0_ & 0x00000020) == 0x00000020),
                   getParentForChildren(),
                   isClean());
           allDefinedElementUpgrades_ = null;
@@ -2664,9 +2966,9 @@ public final class AuthorServer {
       private java.util.List<AuthorServer.DoubleProperty> resourceEndowments_ =
         java.util.Collections.emptyList();
       private void ensureResourceEndowmentsIsMutable() {
-        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
           resourceEndowments_ = new java.util.ArrayList<AuthorServer.DoubleProperty>(resourceEndowments_);
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
          }
       }
 
@@ -2674,7 +2976,7 @@ public final class AuthorServer {
           AuthorServer.DoubleProperty, AuthorServer.DoubleProperty.Builder, AuthorServer.DoublePropertyOrBuilder> resourceEndowmentsBuilder_;
 
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public java.util.List<AuthorServer.DoubleProperty> getResourceEndowmentsList() {
         if (resourceEndowmentsBuilder_ == null) {
@@ -2684,7 +2986,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public int getResourceEndowmentsCount() {
         if (resourceEndowmentsBuilder_ == null) {
@@ -2694,7 +2996,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public AuthorServer.DoubleProperty getResourceEndowments(int index) {
         if (resourceEndowmentsBuilder_ == null) {
@@ -2704,7 +3006,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder setResourceEndowments(
           int index, AuthorServer.DoubleProperty value) {
@@ -2721,7 +3023,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder setResourceEndowments(
           int index, AuthorServer.DoubleProperty.Builder builderForValue) {
@@ -2735,7 +3037,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder addResourceEndowments(AuthorServer.DoubleProperty value) {
         if (resourceEndowmentsBuilder_ == null) {
@@ -2751,7 +3053,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder addResourceEndowments(
           int index, AuthorServer.DoubleProperty value) {
@@ -2768,7 +3070,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder addResourceEndowments(
           AuthorServer.DoubleProperty.Builder builderForValue) {
@@ -2782,7 +3084,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder addResourceEndowments(
           int index, AuthorServer.DoubleProperty.Builder builderForValue) {
@@ -2796,7 +3098,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder addAllResourceEndowments(
           java.lang.Iterable<? extends AuthorServer.DoubleProperty> values) {
@@ -2811,12 +3113,12 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder clearResourceEndowments() {
         if (resourceEndowmentsBuilder_ == null) {
           resourceEndowments_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000040);
           onChanged();
         } else {
           resourceEndowmentsBuilder_.clear();
@@ -2824,7 +3126,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public Builder removeResourceEndowments(int index) {
         if (resourceEndowmentsBuilder_ == null) {
@@ -2837,14 +3139,14 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public AuthorServer.DoubleProperty.Builder getResourceEndowmentsBuilder(
           int index) {
         return getResourceEndowmentsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public AuthorServer.DoublePropertyOrBuilder getResourceEndowmentsOrBuilder(
           int index) {
@@ -2854,7 +3156,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public java.util.List<? extends AuthorServer.DoublePropertyOrBuilder> 
            getResourceEndowmentsOrBuilderList() {
@@ -2865,14 +3167,14 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public AuthorServer.DoubleProperty.Builder addResourceEndowmentsBuilder() {
         return getResourceEndowmentsFieldBuilder().addBuilder(
             AuthorServer.DoubleProperty.getDefaultInstance());
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public AuthorServer.DoubleProperty.Builder addResourceEndowmentsBuilder(
           int index) {
@@ -2880,7 +3182,7 @@ public final class AuthorServer {
             index, AuthorServer.DoubleProperty.getDefaultInstance());
       }
       /**
-       * <code>repeated .DoubleProperty resourceEndowments = 6;</code>
+       * <code>repeated .DoubleProperty resourceEndowments = 7;</code>
        */
       public java.util.List<AuthorServer.DoubleProperty.Builder> 
            getResourceEndowmentsBuilderList() {
@@ -2893,7 +3195,7 @@ public final class AuthorServer {
           resourceEndowmentsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AuthorServer.DoubleProperty, AuthorServer.DoubleProperty.Builder, AuthorServer.DoublePropertyOrBuilder>(
                   resourceEndowments_,
-                  ((bitField0_ & 0x00000020) == 0x00000020),
+                  ((bitField0_ & 0x00000040) == 0x00000040),
                   getParentForChildren(),
                   isClean());
           resourceEndowments_ = null;
@@ -2903,31 +3205,31 @@ public final class AuthorServer {
 
       private int createdWaveNumber_ ;
       /**
-       * <code>optional int32 createdWaveNumber = 7;</code>
+       * <code>optional int32 createdWaveNumber = 8;</code>
        */
       public boolean hasCreatedWaveNumber() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional int32 createdWaveNumber = 7;</code>
+       * <code>optional int32 createdWaveNumber = 8;</code>
        */
       public int getCreatedWaveNumber() {
         return createdWaveNumber_;
       }
       /**
-       * <code>optional int32 createdWaveNumber = 7;</code>
+       * <code>optional int32 createdWaveNumber = 8;</code>
        */
       public Builder setCreatedWaveNumber(int value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         createdWaveNumber_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 createdWaveNumber = 7;</code>
+       * <code>optional int32 createdWaveNumber = 8;</code>
        */
       public Builder clearCreatedWaveNumber() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         createdWaveNumber_ = 0;
         onChanged();
         return this;
@@ -2936,9 +3238,9 @@ public final class AuthorServer {
       private java.util.List<AuthorServer.StringProperty> waveProperties_ =
         java.util.Collections.emptyList();
       private void ensureWavePropertiesIsMutable() {
-        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
+        if (!((bitField0_ & 0x00000100) == 0x00000100)) {
           waveProperties_ = new java.util.ArrayList<AuthorServer.StringProperty>(waveProperties_);
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
          }
       }
 
@@ -2946,7 +3248,7 @@ public final class AuthorServer {
           AuthorServer.StringProperty, AuthorServer.StringProperty.Builder, AuthorServer.StringPropertyOrBuilder> wavePropertiesBuilder_;
 
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public java.util.List<AuthorServer.StringProperty> getWavePropertiesList() {
         if (wavePropertiesBuilder_ == null) {
@@ -2956,7 +3258,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public int getWavePropertiesCount() {
         if (wavePropertiesBuilder_ == null) {
@@ -2966,7 +3268,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public AuthorServer.StringProperty getWaveProperties(int index) {
         if (wavePropertiesBuilder_ == null) {
@@ -2976,7 +3278,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder setWaveProperties(
           int index, AuthorServer.StringProperty value) {
@@ -2993,7 +3295,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder setWaveProperties(
           int index, AuthorServer.StringProperty.Builder builderForValue) {
@@ -3007,7 +3309,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder addWaveProperties(AuthorServer.StringProperty value) {
         if (wavePropertiesBuilder_ == null) {
@@ -3023,7 +3325,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder addWaveProperties(
           int index, AuthorServer.StringProperty value) {
@@ -3040,7 +3342,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder addWaveProperties(
           AuthorServer.StringProperty.Builder builderForValue) {
@@ -3054,7 +3356,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder addWaveProperties(
           int index, AuthorServer.StringProperty.Builder builderForValue) {
@@ -3068,7 +3370,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder addAllWaveProperties(
           java.lang.Iterable<? extends AuthorServer.StringProperty> values) {
@@ -3083,12 +3385,12 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder clearWaveProperties() {
         if (wavePropertiesBuilder_ == null) {
           waveProperties_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000100);
           onChanged();
         } else {
           wavePropertiesBuilder_.clear();
@@ -3096,7 +3398,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public Builder removeWaveProperties(int index) {
         if (wavePropertiesBuilder_ == null) {
@@ -3109,14 +3411,14 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public AuthorServer.StringProperty.Builder getWavePropertiesBuilder(
           int index) {
         return getWavePropertiesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public AuthorServer.StringPropertyOrBuilder getWavePropertiesOrBuilder(
           int index) {
@@ -3126,7 +3428,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
            getWavePropertiesOrBuilderList() {
@@ -3137,14 +3439,14 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public AuthorServer.StringProperty.Builder addWavePropertiesBuilder() {
         return getWavePropertiesFieldBuilder().addBuilder(
             AuthorServer.StringProperty.getDefaultInstance());
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public AuthorServer.StringProperty.Builder addWavePropertiesBuilder(
           int index) {
@@ -3152,7 +3454,7 @@ public final class AuthorServer {
             index, AuthorServer.StringProperty.getDefaultInstance());
       }
       /**
-       * <code>repeated .StringProperty waveProperties = 8;</code>
+       * <code>repeated .StringProperty waveProperties = 9;</code>
        */
       public java.util.List<AuthorServer.StringProperty.Builder> 
            getWavePropertiesBuilderList() {
@@ -3165,7 +3467,7 @@ public final class AuthorServer {
           wavePropertiesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AuthorServer.StringProperty, AuthorServer.StringProperty.Builder, AuthorServer.StringPropertyOrBuilder>(
                   waveProperties_,
-                  ((bitField0_ & 0x00000080) == 0x00000080),
+                  ((bitField0_ & 0x00000100) == 0x00000100),
                   getParentForChildren(),
                   isClean());
           waveProperties_ = null;
@@ -3175,39 +3477,39 @@ public final class AuthorServer {
 
       private com.google.protobuf.LazyStringList possibleVictoryConditions_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensurePossibleVictoryConditionsIsMutable() {
-        if (!((bitField0_ & 0x00000100) == 0x00000100)) {
+        if (!((bitField0_ & 0x00000200) == 0x00000200)) {
           possibleVictoryConditions_ = new com.google.protobuf.LazyStringArrayList(possibleVictoryConditions_);
-          bitField0_ |= 0x00000100;
+          bitField0_ |= 0x00000200;
          }
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public com.google.protobuf.ProtocolStringList
           getPossibleVictoryConditionsList() {
         return possibleVictoryConditions_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public int getPossibleVictoryConditionsCount() {
         return possibleVictoryConditions_.size();
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public java.lang.String getPossibleVictoryConditions(int index) {
         return possibleVictoryConditions_.get(index);
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public com.google.protobuf.ByteString
           getPossibleVictoryConditionsBytes(int index) {
         return possibleVictoryConditions_.getByteString(index);
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public Builder setPossibleVictoryConditions(
           int index, java.lang.String value) {
@@ -3220,7 +3522,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public Builder addPossibleVictoryConditions(
           java.lang.String value) {
@@ -3233,7 +3535,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public Builder addAllPossibleVictoryConditions(
           java.lang.Iterable<java.lang.String> values) {
@@ -3244,16 +3546,16 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public Builder clearPossibleVictoryConditions() {
         possibleVictoryConditions_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string possibleVictoryConditions = 9;</code>
+       * <code>repeated string possibleVictoryConditions = 10;</code>
        */
       public Builder addPossibleVictoryConditionsBytes(
           com.google.protobuf.ByteString value) {
@@ -3268,39 +3570,39 @@ public final class AuthorServer {
 
       private com.google.protobuf.LazyStringList possibleDefeatConditions_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensurePossibleDefeatConditionsIsMutable() {
-        if (!((bitField0_ & 0x00000200) == 0x00000200)) {
+        if (!((bitField0_ & 0x00000400) == 0x00000400)) {
           possibleDefeatConditions_ = new com.google.protobuf.LazyStringArrayList(possibleDefeatConditions_);
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000400;
          }
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public com.google.protobuf.ProtocolStringList
           getPossibleDefeatConditionsList() {
         return possibleDefeatConditions_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public int getPossibleDefeatConditionsCount() {
         return possibleDefeatConditions_.size();
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public java.lang.String getPossibleDefeatConditions(int index) {
         return possibleDefeatConditions_.get(index);
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public com.google.protobuf.ByteString
           getPossibleDefeatConditionsBytes(int index) {
         return possibleDefeatConditions_.getByteString(index);
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public Builder setPossibleDefeatConditions(
           int index, java.lang.String value) {
@@ -3313,7 +3615,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public Builder addPossibleDefeatConditions(
           java.lang.String value) {
@@ -3326,7 +3628,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public Builder addAllPossibleDefeatConditions(
           java.lang.Iterable<java.lang.String> values) {
@@ -3337,16 +3639,16 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public Builder clearPossibleDefeatConditions() {
         possibleDefeatConditions_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string possibleDefeatConditions = 10;</code>
+       * <code>repeated string possibleDefeatConditions = 11;</code>
        */
       public Builder addPossibleDefeatConditionsBytes(
           com.google.protobuf.ByteString value) {
@@ -3362,9 +3664,9 @@ public final class AuthorServer {
       private java.util.List<AuthorServer.ConditionAssignment> currentVictoryConditions_ =
         java.util.Collections.emptyList();
       private void ensureCurrentVictoryConditionsIsMutable() {
-        if (!((bitField0_ & 0x00000400) == 0x00000400)) {
+        if (!((bitField0_ & 0x00000800) == 0x00000800)) {
           currentVictoryConditions_ = new java.util.ArrayList<AuthorServer.ConditionAssignment>(currentVictoryConditions_);
-          bitField0_ |= 0x00000400;
+          bitField0_ |= 0x00000800;
          }
       }
 
@@ -3372,7 +3674,7 @@ public final class AuthorServer {
           AuthorServer.ConditionAssignment, AuthorServer.ConditionAssignment.Builder, AuthorServer.ConditionAssignmentOrBuilder> currentVictoryConditionsBuilder_;
 
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public java.util.List<AuthorServer.ConditionAssignment> getCurrentVictoryConditionsList() {
         if (currentVictoryConditionsBuilder_ == null) {
@@ -3382,7 +3684,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public int getCurrentVictoryConditionsCount() {
         if (currentVictoryConditionsBuilder_ == null) {
@@ -3392,7 +3694,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public AuthorServer.ConditionAssignment getCurrentVictoryConditions(int index) {
         if (currentVictoryConditionsBuilder_ == null) {
@@ -3402,7 +3704,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder setCurrentVictoryConditions(
           int index, AuthorServer.ConditionAssignment value) {
@@ -3419,7 +3721,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder setCurrentVictoryConditions(
           int index, AuthorServer.ConditionAssignment.Builder builderForValue) {
@@ -3433,7 +3735,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder addCurrentVictoryConditions(AuthorServer.ConditionAssignment value) {
         if (currentVictoryConditionsBuilder_ == null) {
@@ -3449,7 +3751,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder addCurrentVictoryConditions(
           int index, AuthorServer.ConditionAssignment value) {
@@ -3466,7 +3768,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder addCurrentVictoryConditions(
           AuthorServer.ConditionAssignment.Builder builderForValue) {
@@ -3480,7 +3782,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder addCurrentVictoryConditions(
           int index, AuthorServer.ConditionAssignment.Builder builderForValue) {
@@ -3494,7 +3796,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder addAllCurrentVictoryConditions(
           java.lang.Iterable<? extends AuthorServer.ConditionAssignment> values) {
@@ -3509,12 +3811,12 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder clearCurrentVictoryConditions() {
         if (currentVictoryConditionsBuilder_ == null) {
           currentVictoryConditions_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000400);
+          bitField0_ = (bitField0_ & ~0x00000800);
           onChanged();
         } else {
           currentVictoryConditionsBuilder_.clear();
@@ -3522,7 +3824,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public Builder removeCurrentVictoryConditions(int index) {
         if (currentVictoryConditionsBuilder_ == null) {
@@ -3535,14 +3837,14 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public AuthorServer.ConditionAssignment.Builder getCurrentVictoryConditionsBuilder(
           int index) {
         return getCurrentVictoryConditionsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public AuthorServer.ConditionAssignmentOrBuilder getCurrentVictoryConditionsOrBuilder(
           int index) {
@@ -3552,7 +3854,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public java.util.List<? extends AuthorServer.ConditionAssignmentOrBuilder> 
            getCurrentVictoryConditionsOrBuilderList() {
@@ -3563,14 +3865,14 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public AuthorServer.ConditionAssignment.Builder addCurrentVictoryConditionsBuilder() {
         return getCurrentVictoryConditionsFieldBuilder().addBuilder(
             AuthorServer.ConditionAssignment.getDefaultInstance());
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public AuthorServer.ConditionAssignment.Builder addCurrentVictoryConditionsBuilder(
           int index) {
@@ -3578,7 +3880,7 @@ public final class AuthorServer {
             index, AuthorServer.ConditionAssignment.getDefaultInstance());
       }
       /**
-       * <code>repeated .ConditionAssignment currentVictoryConditions = 11;</code>
+       * <code>repeated .ConditionAssignment currentVictoryConditions = 12;</code>
        */
       public java.util.List<AuthorServer.ConditionAssignment.Builder> 
            getCurrentVictoryConditionsBuilderList() {
@@ -3591,7 +3893,7 @@ public final class AuthorServer {
           currentVictoryConditionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AuthorServer.ConditionAssignment, AuthorServer.ConditionAssignment.Builder, AuthorServer.ConditionAssignmentOrBuilder>(
                   currentVictoryConditions_,
-                  ((bitField0_ & 0x00000400) == 0x00000400),
+                  ((bitField0_ & 0x00000800) == 0x00000800),
                   getParentForChildren(),
                   isClean());
           currentVictoryConditions_ = null;
@@ -3602,9 +3904,9 @@ public final class AuthorServer {
       private java.util.List<AuthorServer.ConditionAssignment> currentDefeatConditions_ =
         java.util.Collections.emptyList();
       private void ensureCurrentDefeatConditionsIsMutable() {
-        if (!((bitField0_ & 0x00000800) == 0x00000800)) {
+        if (!((bitField0_ & 0x00001000) == 0x00001000)) {
           currentDefeatConditions_ = new java.util.ArrayList<AuthorServer.ConditionAssignment>(currentDefeatConditions_);
-          bitField0_ |= 0x00000800;
+          bitField0_ |= 0x00001000;
          }
       }
 
@@ -3612,7 +3914,7 @@ public final class AuthorServer {
           AuthorServer.ConditionAssignment, AuthorServer.ConditionAssignment.Builder, AuthorServer.ConditionAssignmentOrBuilder> currentDefeatConditionsBuilder_;
 
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public java.util.List<AuthorServer.ConditionAssignment> getCurrentDefeatConditionsList() {
         if (currentDefeatConditionsBuilder_ == null) {
@@ -3622,7 +3924,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public int getCurrentDefeatConditionsCount() {
         if (currentDefeatConditionsBuilder_ == null) {
@@ -3632,7 +3934,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public AuthorServer.ConditionAssignment getCurrentDefeatConditions(int index) {
         if (currentDefeatConditionsBuilder_ == null) {
@@ -3642,7 +3944,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder setCurrentDefeatConditions(
           int index, AuthorServer.ConditionAssignment value) {
@@ -3659,7 +3961,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder setCurrentDefeatConditions(
           int index, AuthorServer.ConditionAssignment.Builder builderForValue) {
@@ -3673,7 +3975,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder addCurrentDefeatConditions(AuthorServer.ConditionAssignment value) {
         if (currentDefeatConditionsBuilder_ == null) {
@@ -3689,7 +3991,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder addCurrentDefeatConditions(
           int index, AuthorServer.ConditionAssignment value) {
@@ -3706,7 +4008,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder addCurrentDefeatConditions(
           AuthorServer.ConditionAssignment.Builder builderForValue) {
@@ -3720,7 +4022,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder addCurrentDefeatConditions(
           int index, AuthorServer.ConditionAssignment.Builder builderForValue) {
@@ -3734,7 +4036,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder addAllCurrentDefeatConditions(
           java.lang.Iterable<? extends AuthorServer.ConditionAssignment> values) {
@@ -3749,12 +4051,12 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder clearCurrentDefeatConditions() {
         if (currentDefeatConditionsBuilder_ == null) {
           currentDefeatConditions_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000800);
+          bitField0_ = (bitField0_ & ~0x00001000);
           onChanged();
         } else {
           currentDefeatConditionsBuilder_.clear();
@@ -3762,7 +4064,7 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public Builder removeCurrentDefeatConditions(int index) {
         if (currentDefeatConditionsBuilder_ == null) {
@@ -3775,14 +4077,14 @@ public final class AuthorServer {
         return this;
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public AuthorServer.ConditionAssignment.Builder getCurrentDefeatConditionsBuilder(
           int index) {
         return getCurrentDefeatConditionsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public AuthorServer.ConditionAssignmentOrBuilder getCurrentDefeatConditionsOrBuilder(
           int index) {
@@ -3792,7 +4094,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public java.util.List<? extends AuthorServer.ConditionAssignmentOrBuilder> 
            getCurrentDefeatConditionsOrBuilderList() {
@@ -3803,14 +4105,14 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public AuthorServer.ConditionAssignment.Builder addCurrentDefeatConditionsBuilder() {
         return getCurrentDefeatConditionsFieldBuilder().addBuilder(
             AuthorServer.ConditionAssignment.getDefaultInstance());
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public AuthorServer.ConditionAssignment.Builder addCurrentDefeatConditionsBuilder(
           int index) {
@@ -3818,7 +4120,7 @@ public final class AuthorServer {
             index, AuthorServer.ConditionAssignment.getDefaultInstance());
       }
       /**
-       * <code>repeated .ConditionAssignment currentDefeatConditions = 12;</code>
+       * <code>repeated .ConditionAssignment currentDefeatConditions = 13;</code>
        */
       public java.util.List<AuthorServer.ConditionAssignment.Builder> 
            getCurrentDefeatConditionsBuilderList() {
@@ -3831,7 +4133,7 @@ public final class AuthorServer {
           currentDefeatConditionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AuthorServer.ConditionAssignment, AuthorServer.ConditionAssignment.Builder, AuthorServer.ConditionAssignmentOrBuilder>(
                   currentDefeatConditions_,
-                  ((bitField0_ & 0x00000800) == 0x00000800),
+                  ((bitField0_ & 0x00001000) == 0x00001000),
                   getParentForChildren(),
                   isClean());
           currentDefeatConditions_ = null;
@@ -3839,15 +4141,133 @@ public final class AuthorServer {
         return currentDefeatConditionsBuilder_;
       }
 
-      private java.lang.Object error_ = "";
+      private AuthorServer.AuthoringNotification notification_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          AuthorServer.AuthoringNotification, AuthorServer.AuthoringNotification.Builder, AuthorServer.AuthoringNotificationOrBuilder> notificationBuilder_;
       /**
-       * <code>optional string error = 13;</code>
+       * <code>optional .AuthoringNotification notification = 14;</code>
        */
-      public boolean hasError() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
+      public boolean hasNotification() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>optional string error = 13;</code>
+       * <code>optional .AuthoringNotification notification = 14;</code>
+       */
+      public AuthorServer.AuthoringNotification getNotification() {
+        if (notificationBuilder_ == null) {
+          return notification_ == null ? AuthorServer.AuthoringNotification.getDefaultInstance() : notification_;
+        } else {
+          return notificationBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .AuthoringNotification notification = 14;</code>
+       */
+      public Builder setNotification(AuthorServer.AuthoringNotification value) {
+        if (notificationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          notification_ = value;
+          onChanged();
+        } else {
+          notificationBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00002000;
+        return this;
+      }
+      /**
+       * <code>optional .AuthoringNotification notification = 14;</code>
+       */
+      public Builder setNotification(
+          AuthorServer.AuthoringNotification.Builder builderForValue) {
+        if (notificationBuilder_ == null) {
+          notification_ = builderForValue.build();
+          onChanged();
+        } else {
+          notificationBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00002000;
+        return this;
+      }
+      /**
+       * <code>optional .AuthoringNotification notification = 14;</code>
+       */
+      public Builder mergeNotification(AuthorServer.AuthoringNotification value) {
+        if (notificationBuilder_ == null) {
+          if (((bitField0_ & 0x00002000) == 0x00002000) &&
+              notification_ != null &&
+              notification_ != AuthorServer.AuthoringNotification.getDefaultInstance()) {
+            notification_ =
+              AuthorServer.AuthoringNotification.newBuilder(notification_).mergeFrom(value).buildPartial();
+          } else {
+            notification_ = value;
+          }
+          onChanged();
+        } else {
+          notificationBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00002000;
+        return this;
+      }
+      /**
+       * <code>optional .AuthoringNotification notification = 14;</code>
+       */
+      public Builder clearNotification() {
+        if (notificationBuilder_ == null) {
+          notification_ = null;
+          onChanged();
+        } else {
+          notificationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00002000);
+        return this;
+      }
+      /**
+       * <code>optional .AuthoringNotification notification = 14;</code>
+       */
+      public AuthorServer.AuthoringNotification.Builder getNotificationBuilder() {
+        bitField0_ |= 0x00002000;
+        onChanged();
+        return getNotificationFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .AuthoringNotification notification = 14;</code>
+       */
+      public AuthorServer.AuthoringNotificationOrBuilder getNotificationOrBuilder() {
+        if (notificationBuilder_ != null) {
+          return notificationBuilder_.getMessageOrBuilder();
+        } else {
+          return notification_ == null ?
+              AuthorServer.AuthoringNotification.getDefaultInstance() : notification_;
+        }
+      }
+      /**
+       * <code>optional .AuthoringNotification notification = 14;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          AuthorServer.AuthoringNotification, AuthorServer.AuthoringNotification.Builder, AuthorServer.AuthoringNotificationOrBuilder> 
+          getNotificationFieldBuilder() {
+        if (notificationBuilder_ == null) {
+          notificationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              AuthorServer.AuthoringNotification, AuthorServer.AuthoringNotification.Builder, AuthorServer.AuthoringNotificationOrBuilder>(
+                  getNotification(),
+                  getParentForChildren(),
+                  isClean());
+          notification_ = null;
+        }
+        return notificationBuilder_;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>optional string error = 15;</code>
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00004000) == 0x00004000);
+      }
+      /**
+       * <code>optional string error = 15;</code>
        */
       public java.lang.String getError() {
         java.lang.Object ref = error_;
@@ -3864,7 +4284,7 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>optional string error = 13;</code>
+       * <code>optional string error = 15;</code>
        */
       public com.google.protobuf.ByteString
           getErrorBytes() {
@@ -3880,36 +4300,36 @@ public final class AuthorServer {
         }
       }
       /**
-       * <code>optional string error = 13;</code>
+       * <code>optional string error = 15;</code>
        */
       public Builder setError(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00001000;
+  bitField0_ |= 0x00004000;
         error_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string error = 13;</code>
+       * <code>optional string error = 15;</code>
        */
       public Builder clearError() {
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         error_ = getDefaultInstance().getError();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string error = 13;</code>
+       * <code>optional string error = 15;</code>
        */
       public Builder setErrorBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00001000;
+  bitField0_ |= 0x00004000;
         error_ = value;
         onChanged();
         return this;
@@ -9191,6 +9611,1382 @@ public final class AuthorServer {
 
   }
 
+  public interface AuthoringNotificationOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AuthoringNotification)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .Notification pregameNotification = 1;</code>
+     */
+    boolean hasPregameNotification();
+    /**
+     * <code>optional .Notification pregameNotification = 1;</code>
+     */
+    PlayerServer.Notification getPregameNotification();
+    /**
+     * <code>optional .Notification pregameNotification = 1;</code>
+     */
+    PlayerServer.NotificationOrBuilder getPregameNotificationOrBuilder();
+
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+     */
+    boolean hasElementAddedToInventory();
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+     */
+    AuthorClient.DefineElement getElementAddedToInventory();
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+     */
+    AuthorClient.DefineElementOrBuilder getElementAddedToInventoryOrBuilder();
+
+    /**
+     * <code>optional int32 levelCreated = 3;</code>
+     */
+    boolean hasLevelCreated();
+    /**
+     * <code>optional int32 levelCreated = 3;</code>
+     */
+    int getLevelCreated();
+
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    java.util.List<AuthorServer.StringProperty> 
+        getWaveCreatedList();
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    AuthorServer.StringProperty getWaveCreated(int index);
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    int getWaveCreatedCount();
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
+        getWaveCreatedOrBuilderList();
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    AuthorServer.StringPropertyOrBuilder getWaveCreatedOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code AuthoringNotification}
+   */
+  public  static final class AuthoringNotification extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:AuthoringNotification)
+      AuthoringNotificationOrBuilder {
+    // Use AuthoringNotification.newBuilder() to construct.
+    private AuthoringNotification(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AuthoringNotification() {
+      levelCreated_ = 0;
+      waveCreated_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AuthoringNotification(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              PlayerServer.Notification.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = pregameNotification_.toBuilder();
+              }
+              pregameNotification_ = input.readMessage(PlayerServer.Notification.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(pregameNotification_);
+                pregameNotification_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              AuthorClient.DefineElement.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = elementAddedToInventory_.toBuilder();
+              }
+              elementAddedToInventory_ = input.readMessage(AuthorClient.DefineElement.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(elementAddedToInventory_);
+                elementAddedToInventory_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              levelCreated_ = input.readInt32();
+              break;
+            }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                waveCreated_ = new java.util.ArrayList<AuthorServer.StringProperty>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              waveCreated_.add(
+                  input.readMessage(AuthorServer.StringProperty.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          waveCreated_ = java.util.Collections.unmodifiableList(waveCreated_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return AuthorServer.internal_static_AuthoringNotification_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return AuthorServer.internal_static_AuthoringNotification_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              AuthorServer.AuthoringNotification.class, AuthorServer.AuthoringNotification.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int PREGAMENOTIFICATION_FIELD_NUMBER = 1;
+    private PlayerServer.Notification pregameNotification_;
+    /**
+     * <code>optional .Notification pregameNotification = 1;</code>
+     */
+    public boolean hasPregameNotification() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .Notification pregameNotification = 1;</code>
+     */
+    public PlayerServer.Notification getPregameNotification() {
+      return pregameNotification_ == null ? PlayerServer.Notification.getDefaultInstance() : pregameNotification_;
+    }
+    /**
+     * <code>optional .Notification pregameNotification = 1;</code>
+     */
+    public PlayerServer.NotificationOrBuilder getPregameNotificationOrBuilder() {
+      return pregameNotification_ == null ? PlayerServer.Notification.getDefaultInstance() : pregameNotification_;
+    }
+
+    public static final int ELEMENTADDEDTOINVENTORY_FIELD_NUMBER = 2;
+    private AuthorClient.DefineElement elementAddedToInventory_;
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+     */
+    public boolean hasElementAddedToInventory() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+     */
+    public AuthorClient.DefineElement getElementAddedToInventory() {
+      return elementAddedToInventory_ == null ? AuthorClient.DefineElement.getDefaultInstance() : elementAddedToInventory_;
+    }
+    /**
+     * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+     */
+    public AuthorClient.DefineElementOrBuilder getElementAddedToInventoryOrBuilder() {
+      return elementAddedToInventory_ == null ? AuthorClient.DefineElement.getDefaultInstance() : elementAddedToInventory_;
+    }
+
+    public static final int LEVELCREATED_FIELD_NUMBER = 3;
+    private int levelCreated_;
+    /**
+     * <code>optional int32 levelCreated = 3;</code>
+     */
+    public boolean hasLevelCreated() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 levelCreated = 3;</code>
+     */
+    public int getLevelCreated() {
+      return levelCreated_;
+    }
+
+    public static final int WAVECREATED_FIELD_NUMBER = 4;
+    private java.util.List<AuthorServer.StringProperty> waveCreated_;
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    public java.util.List<AuthorServer.StringProperty> getWaveCreatedList() {
+      return waveCreated_;
+    }
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    public java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
+        getWaveCreatedOrBuilderList() {
+      return waveCreated_;
+    }
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    public int getWaveCreatedCount() {
+      return waveCreated_.size();
+    }
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    public AuthorServer.StringProperty getWaveCreated(int index) {
+      return waveCreated_.get(index);
+    }
+    /**
+     * <pre>
+     * ambitious
+     * </pre>
+     *
+     * <code>repeated .StringProperty waveCreated = 4;</code>
+     */
+    public AuthorServer.StringPropertyOrBuilder getWaveCreatedOrBuilder(
+        int index) {
+      return waveCreated_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (hasPregameNotification()) {
+        if (!getPregameNotification().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasElementAddedToInventory()) {
+        if (!getElementAddedToInventory().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getWaveCreatedCount(); i++) {
+        if (!getWaveCreated(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, getPregameNotification());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, getElementAddedToInventory());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, levelCreated_);
+      }
+      for (int i = 0; i < waveCreated_.size(); i++) {
+        output.writeMessage(4, waveCreated_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getPregameNotification());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getElementAddedToInventory());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, levelCreated_);
+      }
+      for (int i = 0; i < waveCreated_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, waveCreated_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof AuthorServer.AuthoringNotification)) {
+        return super.equals(obj);
+      }
+      AuthorServer.AuthoringNotification other = (AuthorServer.AuthoringNotification) obj;
+
+      boolean result = true;
+      result = result && (hasPregameNotification() == other.hasPregameNotification());
+      if (hasPregameNotification()) {
+        result = result && getPregameNotification()
+            .equals(other.getPregameNotification());
+      }
+      result = result && (hasElementAddedToInventory() == other.hasElementAddedToInventory());
+      if (hasElementAddedToInventory()) {
+        result = result && getElementAddedToInventory()
+            .equals(other.getElementAddedToInventory());
+      }
+      result = result && (hasLevelCreated() == other.hasLevelCreated());
+      if (hasLevelCreated()) {
+        result = result && (getLevelCreated()
+            == other.getLevelCreated());
+      }
+      result = result && getWaveCreatedList()
+          .equals(other.getWaveCreatedList());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasPregameNotification()) {
+        hash = (37 * hash) + PREGAMENOTIFICATION_FIELD_NUMBER;
+        hash = (53 * hash) + getPregameNotification().hashCode();
+      }
+      if (hasElementAddedToInventory()) {
+        hash = (37 * hash) + ELEMENTADDEDTOINVENTORY_FIELD_NUMBER;
+        hash = (53 * hash) + getElementAddedToInventory().hashCode();
+      }
+      if (hasLevelCreated()) {
+        hash = (37 * hash) + LEVELCREATED_FIELD_NUMBER;
+        hash = (53 * hash) + getLevelCreated();
+      }
+      if (getWaveCreatedCount() > 0) {
+        hash = (37 * hash) + WAVECREATED_FIELD_NUMBER;
+        hash = (53 * hash) + getWaveCreatedList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static AuthorServer.AuthoringNotification parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AuthorServer.AuthoringNotification parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AuthorServer.AuthoringNotification parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AuthorServer.AuthoringNotification parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AuthorServer.AuthoringNotification parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static AuthorServer.AuthoringNotification parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static AuthorServer.AuthoringNotification parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static AuthorServer.AuthoringNotification parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static AuthorServer.AuthoringNotification parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static AuthorServer.AuthoringNotification parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(AuthorServer.AuthoringNotification prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code AuthoringNotification}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:AuthoringNotification)
+        AuthorServer.AuthoringNotificationOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return AuthorServer.internal_static_AuthoringNotification_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return AuthorServer.internal_static_AuthoringNotification_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                AuthorServer.AuthoringNotification.class, AuthorServer.AuthoringNotification.Builder.class);
+      }
+
+      // Construct using AuthorServer.AuthoringNotification.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getPregameNotificationFieldBuilder();
+          getElementAddedToInventoryFieldBuilder();
+          getWaveCreatedFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (pregameNotificationBuilder_ == null) {
+          pregameNotification_ = null;
+        } else {
+          pregameNotificationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (elementAddedToInventoryBuilder_ == null) {
+          elementAddedToInventory_ = null;
+        } else {
+          elementAddedToInventoryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        levelCreated_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        if (waveCreatedBuilder_ == null) {
+          waveCreated_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        } else {
+          waveCreatedBuilder_.clear();
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return AuthorServer.internal_static_AuthoringNotification_descriptor;
+      }
+
+      public AuthorServer.AuthoringNotification getDefaultInstanceForType() {
+        return AuthorServer.AuthoringNotification.getDefaultInstance();
+      }
+
+      public AuthorServer.AuthoringNotification build() {
+        AuthorServer.AuthoringNotification result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public AuthorServer.AuthoringNotification buildPartial() {
+        AuthorServer.AuthoringNotification result = new AuthorServer.AuthoringNotification(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (pregameNotificationBuilder_ == null) {
+          result.pregameNotification_ = pregameNotification_;
+        } else {
+          result.pregameNotification_ = pregameNotificationBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (elementAddedToInventoryBuilder_ == null) {
+          result.elementAddedToInventory_ = elementAddedToInventory_;
+        } else {
+          result.elementAddedToInventory_ = elementAddedToInventoryBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.levelCreated_ = levelCreated_;
+        if (waveCreatedBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            waveCreated_ = java.util.Collections.unmodifiableList(waveCreated_);
+            bitField0_ = (bitField0_ & ~0x00000008);
+          }
+          result.waveCreated_ = waveCreated_;
+        } else {
+          result.waveCreated_ = waveCreatedBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof AuthorServer.AuthoringNotification) {
+          return mergeFrom((AuthorServer.AuthoringNotification)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(AuthorServer.AuthoringNotification other) {
+        if (other == AuthorServer.AuthoringNotification.getDefaultInstance()) return this;
+        if (other.hasPregameNotification()) {
+          mergePregameNotification(other.getPregameNotification());
+        }
+        if (other.hasElementAddedToInventory()) {
+          mergeElementAddedToInventory(other.getElementAddedToInventory());
+        }
+        if (other.hasLevelCreated()) {
+          setLevelCreated(other.getLevelCreated());
+        }
+        if (waveCreatedBuilder_ == null) {
+          if (!other.waveCreated_.isEmpty()) {
+            if (waveCreated_.isEmpty()) {
+              waveCreated_ = other.waveCreated_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+            } else {
+              ensureWaveCreatedIsMutable();
+              waveCreated_.addAll(other.waveCreated_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.waveCreated_.isEmpty()) {
+            if (waveCreatedBuilder_.isEmpty()) {
+              waveCreatedBuilder_.dispose();
+              waveCreatedBuilder_ = null;
+              waveCreated_ = other.waveCreated_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+              waveCreatedBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getWaveCreatedFieldBuilder() : null;
+            } else {
+              waveCreatedBuilder_.addAllMessages(other.waveCreated_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (hasPregameNotification()) {
+          if (!getPregameNotification().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasElementAddedToInventory()) {
+          if (!getElementAddedToInventory().isInitialized()) {
+            return false;
+          }
+        }
+        for (int i = 0; i < getWaveCreatedCount(); i++) {
+          if (!getWaveCreated(i).isInitialized()) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        AuthorServer.AuthoringNotification parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (AuthorServer.AuthoringNotification) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private PlayerServer.Notification pregameNotification_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.Notification, PlayerServer.Notification.Builder, PlayerServer.NotificationOrBuilder> pregameNotificationBuilder_;
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      public boolean hasPregameNotification() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      public PlayerServer.Notification getPregameNotification() {
+        if (pregameNotificationBuilder_ == null) {
+          return pregameNotification_ == null ? PlayerServer.Notification.getDefaultInstance() : pregameNotification_;
+        } else {
+          return pregameNotificationBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      public Builder setPregameNotification(PlayerServer.Notification value) {
+        if (pregameNotificationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          pregameNotification_ = value;
+          onChanged();
+        } else {
+          pregameNotificationBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      public Builder setPregameNotification(
+          PlayerServer.Notification.Builder builderForValue) {
+        if (pregameNotificationBuilder_ == null) {
+          pregameNotification_ = builderForValue.build();
+          onChanged();
+        } else {
+          pregameNotificationBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      public Builder mergePregameNotification(PlayerServer.Notification value) {
+        if (pregameNotificationBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              pregameNotification_ != null &&
+              pregameNotification_ != PlayerServer.Notification.getDefaultInstance()) {
+            pregameNotification_ =
+              PlayerServer.Notification.newBuilder(pregameNotification_).mergeFrom(value).buildPartial();
+          } else {
+            pregameNotification_ = value;
+          }
+          onChanged();
+        } else {
+          pregameNotificationBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      public Builder clearPregameNotification() {
+        if (pregameNotificationBuilder_ == null) {
+          pregameNotification_ = null;
+          onChanged();
+        } else {
+          pregameNotificationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      public PlayerServer.Notification.Builder getPregameNotificationBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getPregameNotificationFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      public PlayerServer.NotificationOrBuilder getPregameNotificationOrBuilder() {
+        if (pregameNotificationBuilder_ != null) {
+          return pregameNotificationBuilder_.getMessageOrBuilder();
+        } else {
+          return pregameNotification_ == null ?
+              PlayerServer.Notification.getDefaultInstance() : pregameNotification_;
+        }
+      }
+      /**
+       * <code>optional .Notification pregameNotification = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerServer.Notification, PlayerServer.Notification.Builder, PlayerServer.NotificationOrBuilder> 
+          getPregameNotificationFieldBuilder() {
+        if (pregameNotificationBuilder_ == null) {
+          pregameNotificationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerServer.Notification, PlayerServer.Notification.Builder, PlayerServer.NotificationOrBuilder>(
+                  getPregameNotification(),
+                  getParentForChildren(),
+                  isClean());
+          pregameNotification_ = null;
+        }
+        return pregameNotificationBuilder_;
+      }
+
+      private AuthorClient.DefineElement elementAddedToInventory_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          AuthorClient.DefineElement, AuthorClient.DefineElement.Builder, AuthorClient.DefineElementOrBuilder> elementAddedToInventoryBuilder_;
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      public boolean hasElementAddedToInventory() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      public AuthorClient.DefineElement getElementAddedToInventory() {
+        if (elementAddedToInventoryBuilder_ == null) {
+          return elementAddedToInventory_ == null ? AuthorClient.DefineElement.getDefaultInstance() : elementAddedToInventory_;
+        } else {
+          return elementAddedToInventoryBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      public Builder setElementAddedToInventory(AuthorClient.DefineElement value) {
+        if (elementAddedToInventoryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          elementAddedToInventory_ = value;
+          onChanged();
+        } else {
+          elementAddedToInventoryBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      public Builder setElementAddedToInventory(
+          AuthorClient.DefineElement.Builder builderForValue) {
+        if (elementAddedToInventoryBuilder_ == null) {
+          elementAddedToInventory_ = builderForValue.build();
+          onChanged();
+        } else {
+          elementAddedToInventoryBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      public Builder mergeElementAddedToInventory(AuthorClient.DefineElement value) {
+        if (elementAddedToInventoryBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              elementAddedToInventory_ != null &&
+              elementAddedToInventory_ != AuthorClient.DefineElement.getDefaultInstance()) {
+            elementAddedToInventory_ =
+              AuthorClient.DefineElement.newBuilder(elementAddedToInventory_).mergeFrom(value).buildPartial();
+          } else {
+            elementAddedToInventory_ = value;
+          }
+          onChanged();
+        } else {
+          elementAddedToInventoryBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      public Builder clearElementAddedToInventory() {
+        if (elementAddedToInventoryBuilder_ == null) {
+          elementAddedToInventory_ = null;
+          onChanged();
+        } else {
+          elementAddedToInventoryBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      public AuthorClient.DefineElement.Builder getElementAddedToInventoryBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getElementAddedToInventoryFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      public AuthorClient.DefineElementOrBuilder getElementAddedToInventoryOrBuilder() {
+        if (elementAddedToInventoryBuilder_ != null) {
+          return elementAddedToInventoryBuilder_.getMessageOrBuilder();
+        } else {
+          return elementAddedToInventory_ == null ?
+              AuthorClient.DefineElement.getDefaultInstance() : elementAddedToInventory_;
+        }
+      }
+      /**
+       * <code>optional .DefineElement elementAddedToInventory = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          AuthorClient.DefineElement, AuthorClient.DefineElement.Builder, AuthorClient.DefineElementOrBuilder> 
+          getElementAddedToInventoryFieldBuilder() {
+        if (elementAddedToInventoryBuilder_ == null) {
+          elementAddedToInventoryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              AuthorClient.DefineElement, AuthorClient.DefineElement.Builder, AuthorClient.DefineElementOrBuilder>(
+                  getElementAddedToInventory(),
+                  getParentForChildren(),
+                  isClean());
+          elementAddedToInventory_ = null;
+        }
+        return elementAddedToInventoryBuilder_;
+      }
+
+      private int levelCreated_ ;
+      /**
+       * <code>optional int32 levelCreated = 3;</code>
+       */
+      public boolean hasLevelCreated() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 levelCreated = 3;</code>
+       */
+      public int getLevelCreated() {
+        return levelCreated_;
+      }
+      /**
+       * <code>optional int32 levelCreated = 3;</code>
+       */
+      public Builder setLevelCreated(int value) {
+        bitField0_ |= 0x00000004;
+        levelCreated_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 levelCreated = 3;</code>
+       */
+      public Builder clearLevelCreated() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        levelCreated_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<AuthorServer.StringProperty> waveCreated_ =
+        java.util.Collections.emptyList();
+      private void ensureWaveCreatedIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          waveCreated_ = new java.util.ArrayList<AuthorServer.StringProperty>(waveCreated_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          AuthorServer.StringProperty, AuthorServer.StringProperty.Builder, AuthorServer.StringPropertyOrBuilder> waveCreatedBuilder_;
+
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public java.util.List<AuthorServer.StringProperty> getWaveCreatedList() {
+        if (waveCreatedBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(waveCreated_);
+        } else {
+          return waveCreatedBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public int getWaveCreatedCount() {
+        if (waveCreatedBuilder_ == null) {
+          return waveCreated_.size();
+        } else {
+          return waveCreatedBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public AuthorServer.StringProperty getWaveCreated(int index) {
+        if (waveCreatedBuilder_ == null) {
+          return waveCreated_.get(index);
+        } else {
+          return waveCreatedBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder setWaveCreated(
+          int index, AuthorServer.StringProperty value) {
+        if (waveCreatedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureWaveCreatedIsMutable();
+          waveCreated_.set(index, value);
+          onChanged();
+        } else {
+          waveCreatedBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder setWaveCreated(
+          int index, AuthorServer.StringProperty.Builder builderForValue) {
+        if (waveCreatedBuilder_ == null) {
+          ensureWaveCreatedIsMutable();
+          waveCreated_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          waveCreatedBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder addWaveCreated(AuthorServer.StringProperty value) {
+        if (waveCreatedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureWaveCreatedIsMutable();
+          waveCreated_.add(value);
+          onChanged();
+        } else {
+          waveCreatedBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder addWaveCreated(
+          int index, AuthorServer.StringProperty value) {
+        if (waveCreatedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureWaveCreatedIsMutable();
+          waveCreated_.add(index, value);
+          onChanged();
+        } else {
+          waveCreatedBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder addWaveCreated(
+          AuthorServer.StringProperty.Builder builderForValue) {
+        if (waveCreatedBuilder_ == null) {
+          ensureWaveCreatedIsMutable();
+          waveCreated_.add(builderForValue.build());
+          onChanged();
+        } else {
+          waveCreatedBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder addWaveCreated(
+          int index, AuthorServer.StringProperty.Builder builderForValue) {
+        if (waveCreatedBuilder_ == null) {
+          ensureWaveCreatedIsMutable();
+          waveCreated_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          waveCreatedBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder addAllWaveCreated(
+          java.lang.Iterable<? extends AuthorServer.StringProperty> values) {
+        if (waveCreatedBuilder_ == null) {
+          ensureWaveCreatedIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, waveCreated_);
+          onChanged();
+        } else {
+          waveCreatedBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder clearWaveCreated() {
+        if (waveCreatedBuilder_ == null) {
+          waveCreated_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+          onChanged();
+        } else {
+          waveCreatedBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public Builder removeWaveCreated(int index) {
+        if (waveCreatedBuilder_ == null) {
+          ensureWaveCreatedIsMutable();
+          waveCreated_.remove(index);
+          onChanged();
+        } else {
+          waveCreatedBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public AuthorServer.StringProperty.Builder getWaveCreatedBuilder(
+          int index) {
+        return getWaveCreatedFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public AuthorServer.StringPropertyOrBuilder getWaveCreatedOrBuilder(
+          int index) {
+        if (waveCreatedBuilder_ == null) {
+          return waveCreated_.get(index);  } else {
+          return waveCreatedBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
+           getWaveCreatedOrBuilderList() {
+        if (waveCreatedBuilder_ != null) {
+          return waveCreatedBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(waveCreated_);
+        }
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public AuthorServer.StringProperty.Builder addWaveCreatedBuilder() {
+        return getWaveCreatedFieldBuilder().addBuilder(
+            AuthorServer.StringProperty.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public AuthorServer.StringProperty.Builder addWaveCreatedBuilder(
+          int index) {
+        return getWaveCreatedFieldBuilder().addBuilder(
+            index, AuthorServer.StringProperty.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * ambitious
+       * </pre>
+       *
+       * <code>repeated .StringProperty waveCreated = 4;</code>
+       */
+      public java.util.List<AuthorServer.StringProperty.Builder> 
+           getWaveCreatedBuilderList() {
+        return getWaveCreatedFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          AuthorServer.StringProperty, AuthorServer.StringProperty.Builder, AuthorServer.StringPropertyOrBuilder> 
+          getWaveCreatedFieldBuilder() {
+        if (waveCreatedBuilder_ == null) {
+          waveCreatedBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              AuthorServer.StringProperty, AuthorServer.StringProperty.Builder, AuthorServer.StringPropertyOrBuilder>(
+                  waveCreated_,
+                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  getParentForChildren(),
+                  isClean());
+          waveCreated_ = null;
+        }
+        return waveCreatedBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:AuthoringNotification)
+    }
+
+    // @@protoc_insertion_point(class_scope:AuthoringNotification)
+    private static final AuthorServer.AuthoringNotification DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new AuthorServer.AuthoringNotification();
+    }
+
+    public static AuthorServer.AuthoringNotification getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<AuthoringNotification>
+        PARSER = new com.google.protobuf.AbstractParser<AuthoringNotification>() {
+      public AuthoringNotification parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new AuthoringNotification(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<AuthoringNotification> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AuthoringNotification> getParserForType() {
+      return PARSER;
+    }
+
+    public AuthorServer.AuthoringNotification getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_AuthoringServerMessage_descriptor;
   private static final 
@@ -9231,6 +11027,11 @@ public final class AuthorServer {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ConditionAssignment_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_AuthoringNotification_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_AuthoringNotification_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -9241,33 +11042,41 @@ public final class AuthorServer {
   static {
     java.lang.String[] descriptorData = {
       "\n\022AuthorServer.proto\032\022PlayerServer.proto" +
-      "\"\330\004\n\026AuthoringServerMessage\022H\n\037elementBa" +
-      "seConfigurationOptions\030\001 \003(\0132\037.ElementBa" +
-      "seConfigurationOption\022R\n$auxiliaryElemen" +
-      "tConfigurationOptions\030\002 \003(\0132$.AuxiliaryE" +
-      "lementConfigurationOption\022\024\n\014currentLeve" +
-      "l\030\003 \001(\005\022\"\n\013moveElement\030\004 \001(\0132\r.SpriteUpd" +
-      "ate\0222\n\031allDefinedElementUpgrades\030\005 \003(\0132\017" +
-      ".ElementUpgrade\022+\n\022resourceEndowments\030\006 " +
-      "\003(\0132\017.DoubleProperty\022\031\n\021createdWaveNumbe",
-      "r\030\007 \001(\005\022\'\n\016waveProperties\030\010 \003(\0132\017.String" +
-      "Property\022!\n\031possibleVictoryConditions\030\t " +
-      "\003(\t\022 \n\030possibleDefeatConditions\030\n \003(\t\0226\n" +
-      "\030currentVictoryConditions\030\013 \003(\0132\024.Condit" +
-      "ionAssignment\0225\n\027currentDefeatConditions" +
-      "\030\014 \003(\0132\024.ConditionAssignment\022\r\n\005error\030\r " +
-      "\001(\t\"J\n\036ElementBaseConfigurationOption\022\021\n" +
-      "\tconfigKey\030\001 \002(\t\022\025\n\rconfigOptions\030\002 \003(\t\"" +
-      "R\n#AuxiliaryElementConfigurationOption\022\022" +
-      "\n\nconfigName\030\001 \002(\t\022\027\n\017configClassName\030\002 ",
-      "\002(\t\"Q\n\016ElementUpgrade\022\023\n\013elementName\030\001 \002" +
-      "(\t\022*\n\017elementUpgrades\030\002 \003(\0132\021.StringProp" +
-      "erties\"-\n\016DoubleProperty\022\014\n\004name\030\001 \002(\t\022\r" +
-      "\n\005value\030\002 \002(\001\"2\n\020StringProperties\022\036\n\005ite" +
-      "ms\030\001 \003(\0132\017.StringProperty\"-\n\016StringPrope" +
-      "rty\022\014\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"J\n\023Cond" +
-      "itionAssignment\022\025\n\rconditionName\030\001 \002(\t\022\034" +
-      "\n\024levelsUsingCondition\030\002 \003(\005"
+      "\032\022AuthorClient.proto\"\267\005\n\026AuthoringServer" +
+      "Message\022H\n\037elementBaseConfigurationOptio" +
+      "ns\030\001 \003(\0132\037.ElementBaseConfigurationOptio" +
+      "n\022R\n$auxiliaryElementConfigurationOption" +
+      "s\030\002 \003(\0132$.AuxiliaryElementConfigurationO" +
+      "ption\022/\n\027elementAddedToInventory\030\003 \001(\0132\016" +
+      ".DefineElement\022\024\n\014currentLevel\030\004 \001(\005\022\"\n\013" +
+      "moveElement\030\005 \001(\0132\r.SpriteUpdate\0222\n\031allD" +
+      "efinedElementUpgrades\030\006 \003(\0132\017.ElementUpg",
+      "rade\022+\n\022resourceEndowments\030\007 \003(\0132\017.Doubl" +
+      "eProperty\022\031\n\021createdWaveNumber\030\010 \001(\005\022\'\n\016" +
+      "waveProperties\030\t \003(\0132\017.StringProperty\022!\n" +
+      "\031possibleVictoryConditions\030\n \003(\t\022 \n\030poss" +
+      "ibleDefeatConditions\030\013 \003(\t\0226\n\030currentVic" +
+      "toryConditions\030\014 \003(\0132\024.ConditionAssignme" +
+      "nt\0225\n\027currentDefeatConditions\030\r \003(\0132\024.Co" +
+      "nditionAssignment\022,\n\014notification\030\016 \001(\0132" +
+      "\026.AuthoringNotification\022\r\n\005error\030\017 \001(\t\"J" +
+      "\n\036ElementBaseConfigurationOption\022\021\n\tconf",
+      "igKey\030\001 \002(\t\022\025\n\rconfigOptions\030\002 \003(\t\"R\n#Au" +
+      "xiliaryElementConfigurationOption\022\022\n\ncon" +
+      "figName\030\001 \002(\t\022\027\n\017configClassName\030\002 \002(\t\"Q" +
+      "\n\016ElementUpgrade\022\023\n\013elementName\030\001 \002(\t\022*\n" +
+      "\017elementUpgrades\030\002 \003(\0132\021.StringPropertie" +
+      "s\"-\n\016DoubleProperty\022\014\n\004name\030\001 \002(\t\022\r\n\005val" +
+      "ue\030\002 \002(\001\"2\n\020StringProperties\022\036\n\005items\030\001 " +
+      "\003(\0132\017.StringProperty\"-\n\016StringProperty\022\014" +
+      "\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"J\n\023Condition" +
+      "Assignment\022\025\n\rconditionName\030\001 \002(\t\022\034\n\024lev",
+      "elsUsingCondition\030\002 \003(\005\"\260\001\n\025AuthoringNot" +
+      "ification\022*\n\023pregameNotification\030\001 \001(\0132\r" +
+      ".Notification\022/\n\027elementAddedToInventory" +
+      "\030\002 \001(\0132\016.DefineElement\022\024\n\014levelCreated\030\003" +
+      " \001(\005\022$\n\013waveCreated\030\004 \003(\0132\017.StringProper" +
+      "ty"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9281,13 +11090,14 @@ public final class AuthorServer {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           PlayerServer.getDescriptor(),
+          AuthorClient.getDescriptor(),
         }, assigner);
     internal_static_AuthoringServerMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_AuthoringServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuthoringServerMessage_descriptor,
-        new java.lang.String[] { "ElementBaseConfigurationOptions", "AuxiliaryElementConfigurationOptions", "CurrentLevel", "MoveElement", "AllDefinedElementUpgrades", "ResourceEndowments", "CreatedWaveNumber", "WaveProperties", "PossibleVictoryConditions", "PossibleDefeatConditions", "CurrentVictoryConditions", "CurrentDefeatConditions", "Error", });
+        new java.lang.String[] { "ElementBaseConfigurationOptions", "AuxiliaryElementConfigurationOptions", "ElementAddedToInventory", "CurrentLevel", "MoveElement", "AllDefinedElementUpgrades", "ResourceEndowments", "CreatedWaveNumber", "WaveProperties", "PossibleVictoryConditions", "PossibleDefeatConditions", "CurrentVictoryConditions", "CurrentDefeatConditions", "Notification", "Error", });
     internal_static_ElementBaseConfigurationOption_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ElementBaseConfigurationOption_fieldAccessorTable = new
@@ -9330,7 +11140,14 @@ public final class AuthorServer {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ConditionAssignment_descriptor,
         new java.lang.String[] { "ConditionName", "LevelsUsingCondition", });
+    internal_static_AuthoringNotification_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_AuthoringNotification_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_AuthoringNotification_descriptor,
+        new java.lang.String[] { "PregameNotification", "ElementAddedToInventory", "LevelCreated", "WaveCreated", });
     PlayerServer.getDescriptor();
+    AuthorClient.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
