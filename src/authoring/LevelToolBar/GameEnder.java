@@ -17,7 +17,7 @@ public class GameEnder extends VBox{
 	private AuthoringController myController;
 	private ComboBox<String> victory;
 	private ComboBox<String> defeat;
-	private EditDisplay myDisplay;
+//	private EditDisplay myDisplay;
 	private ArrayList<CheckBox> checkBoxes;
 	private HashSet<Integer> selectedLevels;
 	private GameEnderRecorder recorder;
@@ -26,7 +26,7 @@ public class GameEnder extends VBox{
 	public GameEnder(AuthoringController controller, EditDisplay edit) {
 		myController = controller; 
 		this.setPrefWidth(300);
-		myDisplay = edit;
+//		myDisplay = edit;
 		selectedLevels = new HashSet<Integer>();
 		addMiscElements();
 		}
@@ -50,7 +50,7 @@ public class GameEnder extends VBox{
 	
 	private void createLevelBoxes() {
 		checkBoxes = new ArrayList<>();
-		for (int i = 0; i<myDisplay.getMaxLevel(); i++) {
+		for (int i = 0; i<myController.getNumLevelsForGame(); i++) {
 			checkBoxes.add(new CheckBox());
 			checkBoxes.get(i).setText(Integer.toString(i+1));
 		}
@@ -60,7 +60,7 @@ public class GameEnder extends VBox{
 
 	private void record() {
 		int currLevel = myController.getCurrentLevel();
-		for(int i = 0; i<myDisplay.getMaxLevel(); i++) {
+		for(int i = 0; i<myController.getNumLevelsForGame(); i++) {
 			myController.setLevel(i+1);
 			if (checkBoxes.get(i).isSelected()) {
 				if(victory.getValue()!=null) {
