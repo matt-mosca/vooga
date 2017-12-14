@@ -73,7 +73,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myMuteButton);
 	}
 
-	private void basicSetup() {
+	protected void basicSetup() {
 		// createTitle();
 		setSplashBackground();
 		createPathTitle();
