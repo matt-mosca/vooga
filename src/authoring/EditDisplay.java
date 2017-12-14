@@ -382,7 +382,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	    final String GAME_NAME = "temp.voog";
         File saveFile = new File(AUTHORING + GAME_NAME);
         controller.setGameName(saveFile.getName());
-        controller.saveGameState(saveFile);
+        controller.saveGameState(saveFile.getName());
         myGameArea.savePath();
         PlayModelController playModelController = new PlayController();
         try {
