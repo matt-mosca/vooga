@@ -37,7 +37,7 @@ public abstract class ToolBar extends VBox{
 				
 			}catch(NullPointerException e) {
 				imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(templates.get(s)
-						.get("imageUrl").toString())));
+						.get("Path of game element image").toString())));
 			}
 			imageView.setFitHeight(70);
 			imageView.setFitWidth(60);
