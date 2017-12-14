@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 
 /**
  * Deals damage when collided with
@@ -16,7 +16,7 @@ public class DamageDealingCollisionVisitable implements CollisionVisitable {
     
     public DamageDealingCollisionVisitable(
             @ElementProperty(value = "damageToDeal", isTemplateProperty = true) double damageToDeal,
-            @ElementProperty(value = "collisonAudioUrl", isTemplateProperty = true) String audioUrl,
+            @ElementProperty(value = "collisionAudioUrl", isTemplateProperty = true) String audioUrl,
             @ElementProperty(value = "blastRadius", isTemplateProperty = true) double blastRadius) {
         this.damageToDeal = damageToDeal;
         this.audioUrl = audioUrl;

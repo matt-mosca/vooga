@@ -3,14 +3,19 @@ package engine.authoring_engine;
 import engine.AbstractGameController;
 import engine.AuthoringModelController;
 import engine.game_elements.GameElement;
-import javafx.geometry.Point2D;
-import networking.protocol.PlayerServer.SpriteUpdate;
 import exporting.Packager;
 import exporting.Publisher;
+import javafx.geometry.Point2D;
+import networking.protocol.AuthorClient.DefineElement;
+import networking.protocol.AuthorServer.AuxiliaryElementConfigurationOption;
+import networking.protocol.AuthorServer.ConditionAssignment;
+import networking.protocol.AuthorServer.DoubleProperty;
+import networking.protocol.AuthorServer.ElementBaseConfigurationOption;
+import networking.protocol.AuthorServer.ElementUpgrade;
+import networking.protocol.AuthorServer.StringProperty;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,21 +54,14 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void exportGame() {
-		getSpriteTemplateIoHandler().exportSpriteTemplates(getGameName(),
+	public String exportGame() throws IOException {
+		getGameElementIoHandler().exportElementTemplates(getGameName(),
 				getGameElementFactory().getAllDefinedTemplateProperties());
-		try {
-			if (publisher == null) {
-				publisher = new Publisher();
-			}
-			String pathToExportedJar = packager.generateJar(getGameName());
-			String urlForSharedJar = publisher.uploadExportedJar(pathToExportedJar);
-			// TODO - push the link to Facebook
-		} catch (IOException failedToExportOrPublishException) {
-			// TODO - handle
-			// this one does have a custom message set already (getMessage()) but
-			// it's hard coded as a final string
+		if (publisher == null) {
+			publisher = new Publisher();
 		}
+		String pathToExportedJar = packager.generateJar(getGameName());
+		return publisher.uploadExportedJar(pathToExportedJar);
 	}
 
 	public void setGameDescription(String gameDescription) {
@@ -109,36 +107,15 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public SpriteUpdate moveElement(int elementId, double xCoordinate, double yCoordinate)
-			throws IllegalArgumentException {
-		GameElement gameElement = getElement(elementId);
-		gameElement.setX(xCoordinate);
-		gameElement.setY(yCoordinate);
-		return getServerMessageUtils().packageUpdatedSprite(gameElement, elementId);
-	}
-
-	@Override
 	public void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate)
 			throws IllegalArgumentException {
 		updateElementPropertiesById(elementId, propertiesToUpdate);
 	}
 
 	@Override
-	public void deleteElement(int elementId) throws IllegalArgumentException {
-		GameElement removedGameElement = getSpriteIdMap().remove(elementId);
-		getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
-	}
-
-	@Override
-	public void addElementToInventory(String elementName) {
+	public DefineElement addElementToInventory(String elementName) {
 		getLevelInventories().get(getCurrentLevel()).add(elementName);
-	}
-
-	private GameElement getElement(int elementId) throws IllegalArgumentException {
-		if (!getSpriteIdMap().containsKey(elementId)) {
-			throw new IllegalArgumentException();
-		}
-		return getSpriteIdMap().get(elementId);
+		return getServerMessageUtils().packageDefinedElement(elementName, getTemplateProperties(elementName));
 	}
 
 	@Override
@@ -162,27 +139,34 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	@Override
-	public void deleteLevel(int level) throws IllegalArgumentException {
-		getLevelStatuses().remove(level);
-		getLevelSprites().remove(level);
-		getLevelConditions().remove(level);
-		getLevelDescriptions().remove(level);
+	public void setLevelHealth(int health) {
+		getLevelHealths().set(getCurrentLevel(), health);
 	}
 
 	@Override
-	public Map<String, List<String>> getElementBaseConfigurationOptions() {
-		return getGameElementFactory().getElementBaseConfigurationOptions();
+	public void setLevelPointQuota(int points) {
+		getLevelPointQuotas().set(getCurrentLevel(), points);
+	}
+
+	@Override
+	public void setLevelTimeLimit(int timeLimit) {
+		getLevelTimeLimits().set(getCurrentLevel(), timeLimit);
 	}
 
 	@Override
 	public int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
-			Point2D spawningPoint) throws ReflectiveOperationException {
+			Point2D spawningPoint) {
 		String waveName = getNameForWave();
 		defineElement(waveName, waveProperties);
-		int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
+		if (getLevelWaveTemplates().size() == getCurrentLevel()) {
+			getLevelWaveTemplates().add(new HashMap<>());
+		}
+		getLevelWaveTemplates().get(getCurrentLevel()).put(waveName, spawningPoint);
+		// waveIdMap.put(gameWaveCounter.getAndIncrement(), waveName);
+		// int spriteId = placeElement(waveName, spawningPoint, elementNamesToSpawn);
 		// save this to level waves
-		getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
-		return gameWaveCounter.get();
+		// getLevelWaves().get(getCurrentLevel()).add(getSpriteIdMap().get(spriteId));
+		return gameWaveCounter.getAndIncrement();
 	}
 
 	@Override
@@ -191,11 +175,16 @@ public class AuthoringController extends AbstractGameController implements Autho
 		String waveName = getNameForWaveNumber(getCurrentLevel(), waveId);
 		// Overwrite the template
 		defineElement(waveName, updatedProperties);
-		deleteOutdatedWave(waveId);
+		if (getLevelWaveTemplates().size() == getCurrentLevel()) {
+			getLevelWaveTemplates().add(new HashMap<>());
+		}
+		getLevelWaveTemplates().get(getCurrentLevel()).put(waveName, newSpawningPoint);
+		// deleteOutdatedWave(waveId);
 		// Place the new wave
-		int newSpriteId = placeElement(waveName, newSpawningPoint, newElementNamesToSpawn);
-		GameElement newWave = getSpriteIdMap().get(newSpriteId);
-		getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
+		// int newSpriteId = placeElement(waveName, newSpawningPoint,
+		// newElementNamesToSpawn);
+		// GameElement newWave = getSpriteIdMap().get(newSpriteId);
+		// getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
 	}
 
 	@Override
@@ -245,16 +234,13 @@ public class AuthoringController extends AbstractGameController implements Autho
 	@Override
 	protected void assertValidLevel(int level) throws IllegalArgumentException {
 		if (level <= 0 || level > getLevelSprites().size()) {
-			throw new IllegalArgumentException();
+			// throw new IllegalArgumentException();
 			// TODO - customize exception ?
 		}
 	}
 
-	private void updateElementsRetroactively(String elementName, Map<String, Object> propertiesToUpdate) {
-		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
-		for (int elementId : idsForTemplate) {
-			updateElementPropertiesById(elementId, propertiesToUpdate);
-		}
+	public void setAudioUrlForPlayer(int level, String audioUrl) {
+		audioMap.put(level, audioUrl);
 	}
 
 	private void updateElementPropertiesById(int elementId, Map<String, Object> propertiesToUpdate) {
@@ -262,9 +248,9 @@ public class AuthoringController extends AbstractGameController implements Autho
 	}
 
 	private void deleteOutdatedWave(int waveId) {
-		GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
+		// GameElement oldWave = getLevelWaves().get(getCurrentLevel()).get(waveId);
 		// Remove the old placed wave
-		getSpriteIdMap().remove(getIdFromSprite(oldWave));
+		// getSpriteIdMap().remove(getIdFromSprite(oldWave));
 	}
 
 	private String getNameForWave() {
@@ -288,9 +274,59 @@ public class AuthoringController extends AbstractGameController implements Autho
 		}
 		return conditionsToLevels;
 	}
-	
+
 	private int getLevelsForCurrentGame() {
 		return getNumLevelsForGame(getGameName(), true);
+	}
+
+	@Override
+	public void deleteLevel(int level) throws IllegalArgumentException {
+		getLevelStatuses().remove(level);
+		getLevelSprites().remove(level);
+		getLevelConditions().remove(level);
+		getLevelDescriptions().remove(level);
+	}
+
+	@Override
+	public Map<String, List<String>> getElementBaseConfigurationOptions() {
+		return getGameElementFactory().getElementBaseConfigurationOptions();
+	}
+
+	public Collection<ElementBaseConfigurationOption> packageElementBaseConfigurationOptions() {
+		return getServerMessageUtils().packageElementBaseConfigurationOptions(getElementBaseConfigurationOptions());
+	}
+
+	public Collection<AuxiliaryElementConfigurationOption> packageAuxiliaryElementConfigurationOptions(
+			Map<String, String> baseConfigurationChoices) {
+		return getServerMessageUtils().packageAuxiliaryElementConfigurationOptions(
+				getAuxiliaryElementConfigurationOptions(baseConfigurationChoices));
+	}
+
+	public Collection<ElementUpgrade> packageElementUpgrades() {
+		return getServerMessageUtils().packageElementUpgrades(getAllDefinedElementUpgrades());
+	}
+
+	public Collection<DoubleProperty> packageResourceEndowments() {
+		return getServerMessageUtils().packageResourceEndowments(getResourceEndowments());
+	}
+
+	public Collection<StringProperty> packageWaveProperties(int waveNum) {
+		return getServerMessageUtils().packageWaveProperties(getWaveProperties(waveNum));
+	}
+
+	public Collection<ConditionAssignment> packageVictoryConditions() {
+		return getServerMessageUtils().packageConditionAssignments(getCurrentVictoryConditions());
+	}
+
+	public Collection<ConditionAssignment> packageDefeatConditions() {
+		return getServerMessageUtils().packageConditionAssignments(getCurrentDefeatConditions());
+	}
+
+	private void updateElementsRetroactively(String elementName, Map<String, Object> propertiesToUpdate) {
+		Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());
+		for (int elementId : idsForTemplate) {
+			updateElementPropertiesById(elementId, propertiesToUpdate);
+		}
 	}
 
 }

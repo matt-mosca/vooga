@@ -1,13 +1,10 @@
 package display.splashScreen;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import authoring.EditDisplay;
-import display.interfaces.ClickableInterface;
 import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
@@ -36,8 +33,6 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final int PREFSIZE = 80;
 	private static final int MAINWIDTH = 1100;
 	private static final int MAINHEIGHT = 750;
-	private static final int PLAYWIDTH = 1000;
-	private static final int PLAYHEIGHT = 700;
 	private static final String TITLEFONT = "Verdana";
 	private static final String TITLE = "Welcome to VOOGA";
 	private static final double STANDARD_PATH_WIDTH = Main.WIDTH / 15;
@@ -53,7 +48,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private MuteButton myMuteButton;
 	private MediaPlayerFactory myMediaPlayerFactory;
 	private MediaPlayer myMediaPlayer;
-	private String backgroundSong = "src/MediaTesting/101 - opening.mp3";
+	private String backgroundSong = "data/audio/101 - opening.mp3";
 
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background, currentStage);
@@ -73,7 +68,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myMuteButton);
 	}
 
-	private void basicSetup() {
+	protected void basicSetup() {
 		// createTitle();
 		setSplashBackground();
 		createPathTitle();
@@ -201,20 +196,24 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		// param
 		// for PlayDisplay constructor
 		boolean isMultiplayer = initializePlayersSetting();
-		MultiPlayerClient multiPlayerClient = new MultiPlayerClient();
-		PlayDisplay myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(),
-				isMultiplayer ? multiPlayerClient : new PlayController()); // TEMP
+		PlayDisplay myScene;
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - PLAYWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
 		myMediaPlayer.stop();
 		if (!isMultiplayer) {
-
+			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController()); 
 			getStage().setScene(myScene.getScene());
 			myScene.startDisplay();
+			System.out.println("Initialized play display");
 		} else {
+			MultiPlayerClient multiPlayerClient = new MultiPlayerClient();
+			multiPlayerClient.launchNotificationListener();
+			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), multiPlayerClient);
+			System.out.println("Initializing multiplayer lobby");
 			MultiplayerLobby multi = new MultiplayerLobby(PLAYWIDTH, PLAYHEIGHT, Color.WHITE, getStage(), myScene,
 					multiPlayerClient);
+			System.out.println("Initialized multiplayer lobby");
 			getStage().setScene(multi.getScene());
 			multi.promptForUsername();
 		}

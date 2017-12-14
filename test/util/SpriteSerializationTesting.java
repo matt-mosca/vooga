@@ -15,7 +15,7 @@ public class SpriteSerializationTesting {
         gameElement.setX(50000000);
         SerializationUtils serializationUtils = new SerializationUtils();
         String ss = serializationUtils.serializeLevelData("bleh", new HashMap<>(), new Bank(),
-                new HashMap<>(), Arrays.asList(gameElement), new HashSet<>(), new ArrayList<>(),1);
+                new HashMap<>(), Arrays.asList(gameElement), new HashSet<>(), 1,1, 1, 1);
         Map<Integer, String> map = new HashMap<>();
         map.put(1, ss);
         String sssss = serializationUtils.serializeLevelsData(map);

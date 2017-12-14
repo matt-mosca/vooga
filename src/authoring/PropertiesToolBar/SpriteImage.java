@@ -50,7 +50,7 @@ public abstract class SpriteImage extends InteractiveObject {
 		}catch (NullPointerException e) {
 			image = new Image(imageName);
 		}
-		defaultValues.put("imageUrl", imageName);
+		defaultValues.put("Path of game element image", imageName);
 		this.setImage(image);
 	}
 	

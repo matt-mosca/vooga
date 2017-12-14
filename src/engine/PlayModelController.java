@@ -25,7 +25,7 @@ public interface PlayModelController extends AbstractGameModelController {
      *
      * @param saveName the name to assign to the save file
      */
-    void saveGameState(File fileToSaveTo);
+    void saveGameState(String fileNameToSaveTo);
 
     /**
      * Load the detailed state of original (authored) game for a particular level,
@@ -136,6 +136,12 @@ public interface PlayModelController extends AbstractGameModelController {
      */
     Set<String> getInventory();
 
+	int getLevelHealth(int level);
+	
+	int getLevelPointQuota(int level);
+	
+	int getLevelTimeLimit(int level);
+    
     /**
      * Get the high-level status of a game in-progress, notably points, lives, etc
      *

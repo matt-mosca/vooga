@@ -1,6 +1,6 @@
 package engine.behavior.movement;
 
-import engine.behavior.ElementProperty;
+import engine.game_elements.ElementProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
@@ -18,12 +18,14 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	// Alternative to using properties - can simply update x, y values of
 	// trackingPoint in setX and setY respectively ... preferred approach?
 	private TrackingPoint trackingPoint;
+	protected double angle;
 
 	public AbstractMovementStrategy(
 			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint) {
 		DoubleProperty xCoordinate = new SimpleDoubleProperty(startPoint.getX());
 		DoubleProperty yCoordinate = new SimpleDoubleProperty(startPoint.getY());
 		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
+		angle = 0;
 	}
 
 	/**
@@ -104,6 +106,18 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * */
 	public boolean removeUponCompletion() {
 		return true;
+	}
+	
+	public double getAngle() {
+		return angle;
+	}
+	
+	public void setAngle(double y, double x) {
+		this.angle=Math.toDegrees(Math.atan2(y, x));
+	}
+	
+	public void setAngle(double angle) {
+		this.angle = angle;
 	}
 	
 	/**

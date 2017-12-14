@@ -2,11 +2,11 @@ package authoring.LevelToolBar;
 
 public class Resource {
 	private String resourceType;
-	private int amount;
+	private Double amount;
 	
-	public Resource(String type, int amt) {
+	public Resource(String type, double double1) {
 		setResourceType(type);
-		setAmount(amt);
+		setAmount(double1);
 	}
 	
 	
@@ -16,11 +16,11 @@ public class Resource {
 	public void setResourceType(String resourceType) {
 		this.resourceType = resourceType;
 	}
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public void setAmount(double double1) {
+		this.amount = double1;
 	}
 	
 	

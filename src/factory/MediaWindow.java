@@ -10,11 +10,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * @author tyler
+ * This class creates a window to view MediaPlayers videos 
+ */
 public class MediaWindow {
 
-	public static final int STANDARD_TEXT_SIZE = 12;
-	public static final int LARGE_TEXT_SIZE = 20;
-	public static final int WRAPPING_WIDTH = 450;
 	private double width;
 	private double height;
 	private double centeredX;
@@ -24,18 +25,20 @@ public class MediaWindow {
 	private Stage mediaStage;
 	private Group root = new Group();
 	private Button skipButton;
+	MediaPlayerFactory mediaPlayerFactory;
 	
-	public MediaWindow(MediaPlayer mediaPlayer) {
+	/**
+	 * @param mediaName
+	 * Sets up window as well as the MediaPlayer and MediaView.
+	 * The skip button is also created here
+	 */
+	public MediaWindow(String mediaName) {
 		mediaStage = new Stage();
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		width = primaryScreenBounds.getWidth();
-		height = primaryScreenBounds.getHeight();
-		mediaStage.setX(primaryScreenBounds.getMinX());
-		mediaStage.setY(primaryScreenBounds.getMinY());
-		mediaStage.setWidth(width);
-		mediaStage.setHeight(height);
-		this.mediaPlayer = mediaPlayer;
-		mediaViewer = new MediaView(this.mediaPlayer);
+		setStageToScreen();
+		
+		mediaPlayerFactory = new MediaPlayerFactory(mediaName);
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaViewer = new MediaView(mediaPlayer);
 		mediaViewer.setFitWidth(width);
 		mediaViewer.setFitHeight(height);
 		centeredX= width/7;
@@ -43,7 +46,23 @@ public class MediaWindow {
 		skipButton = new Button("skip");
 		skipButton.setOnAction(e->skip());
 	}
+
+	/**
+	 * Sets up stage to fit the screen of the computer
+	 */
+	private void setStageToScreen() {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		width = primaryScreenBounds.getWidth();
+		height = primaryScreenBounds.getHeight();
+		mediaStage.setX(primaryScreenBounds.getMinX());
+		mediaStage.setY(primaryScreenBounds.getMinY());
+		mediaStage.setWidth(width);
+		mediaStage.setHeight(height);
+	}
 	
+	/**
+	 * Plays the MediaPlayer as well as displays the stage
+	 */
 	public void play() {
 		root.getChildren().add(mediaViewer);
 		root.getChildren().add(skipButton);
@@ -55,6 +74,9 @@ public class MediaWindow {
 		mediaStage.setOnCloseRequest(e->mediaPlayer.stop());
 	}
 	
+	/**
+	 * Closes out of the MediaWindow
+	 */
 	public void skip() {
 		mediaPlayer.stop();
 		mediaStage.close();

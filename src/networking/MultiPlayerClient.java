@@ -27,10 +27,6 @@ import networking.protocol.PlayerServer.Update;
  */
 public class MultiPlayerClient extends AbstractClient implements PlayModelController { // Is this weird?
 
-	private final int PORT = 9041;
-
-	// Game client state (keeping track of which multi-player game it is in, etc)
-
 	public MultiPlayerClient() {
 		super();
 	}
@@ -43,25 +39,40 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Save the current state of the current level a game being played or authored.
+	 *
+	 * @param fileToSaveTo
+	 *            the name to assign to the save file
+	 */
+	@Override
+	public void saveGameState(String fileName) throws UnsupportedOperationException {
+		// TODO - Define custom exception in exceptions properties file and pass that
+		// string here
+		throw new UnsupportedOperationException();
+	}
+	
 	@Override
 	public Update update() {
+		System.out.println("Requesting update");
 		writeRequestBytes(
 				ClientMessage.newBuilder().setPerformUpdate(PerformUpdate.getDefaultInstance()).build().toByteArray());
-		return handleUpdateResponse(readServerResponse());
+		System.out.println("Made update request!");
+		return handleUpdateResponse(pollFromMessageQueue());
 	}
 
 	@Override
 	public void pause() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setPauseGame(PauseGame.getDefaultInstance()).build().toByteArray());
-		handleUpdateResponse(readServerResponse());
+		handleUpdateResponse(pollFromMessageQueue());
 	}
 
 	@Override
 	public void resume() {
 		writeRequestBytes(
 				ClientMessage.newBuilder().setResumeGame(ResumeGame.getDefaultInstance()).build().toByteArray());
-		handleUpdateResponse(readServerResponse());
+		handleUpdateResponse(pollFromMessageQueue());
 	}
 
 	@Override
@@ -78,7 +89,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	public boolean isReadyForNextLevel() {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setCheckReadyForNextLevel(CheckReadyForNextLevel.getDefaultInstance()).build().toByteArray());
-		return handleCheckReadyResponse(readServerResponse());
+		return handleCheckReadyResponse(pollFromMessageQueue());
 	}
 
 	@Override
@@ -106,12 +117,14 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	public void upgradeElement(int elementId) throws IllegalArgumentException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setUpgradeElement(UpgradeElement.newBuilder().setSpriteId(elementId).build()).build().toByteArray());
-		// This request doesn't care about response
+		pollFromMessageQueue();
 	}
 	
+	
+
 	@Override
 	protected int getPort() {
-		return PORT;
+		return Constants.MULTIPLAYER_SERVER_PORT;
 	}
 
 	private Update handleUpdateResponse(ServerMessage serverMessage) {
@@ -140,11 +153,14 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	// Test client-server integration
 	public static void main(String[] args) {
 		MultiPlayerClient testClient = new MultiPlayerClient();
+		testClient.launchNotificationListener();
+		System.out.println("Getting available games");
 		Map<String, String> availableGames = testClient.getAvailableGames();
 		for (String gameName : availableGames.keySet()) {
 			System.out.println("Game name: " + gameName);
 		}
-		String gameRoom = testClient.createGameRoom("NewThing.voog", "adi_game");
+		System.out.println("Creating game room");
+		String gameRoom = testClient.createGameRoom("test.voog", "adi_game");
 		System.out.println("Joined " + gameRoom);
 		testClient.joinGameRoom(gameRoom, "adi");
 		testClient.launchGameRoom();
@@ -158,6 +174,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 		for (String item : inventory) {
 			System.out.println("Item: " + item);
 		}
+		testClient.exitGameRoom();
 	}
 
 }
