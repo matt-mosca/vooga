@@ -136,6 +136,12 @@ public interface PlayModelController extends AbstractGameModelController {
      */
     Set<String> getInventory();
 
+	int getLevelHealth(int level);
+	
+	int getLevelPointQuota(int level);
+	
+	int getLevelTimeLimit(int level);
+    
     /**
      * Get the high-level status of a game in-progress, notably points, lives, etc
      *

@@ -142,6 +142,17 @@ public class AuthoringController extends AbstractGameController implements Autho
 	public void setLevelHealth(int health) {
 		getLevelHealths().set(getCurrentLevel(), health);
 	}
+	
+	@Override
+	public void setLevelPointQuota(int points) {
+		getLevelPointQuotas().set(getCurrentLevel(), points);
+	}
+
+	@Override
+	public void setLevelTimeLimit(int timeLimit) {
+		getLevelTimeLimits().set(getCurrentLevel(), timeLimit);
+	}
+
 
 	@Override
 	public void deleteLevel(int level) throws IllegalArgumentException {
