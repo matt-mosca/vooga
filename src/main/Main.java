@@ -38,12 +38,6 @@ public class Main extends Application {
 	 * Start the program.
 	 */
 	public static void main(String[] args) {
-//		List<String> myList = new ArrayList<String>();
-//		myList.add("a");
-//		myList.add("ab");
-//		myList.add("abc");
-//		List<String> upper = myList.stream().map(String::toUpperCase).collect(Collectors.toList());
-//		System.out.println(upper);
 		launch(args);
 	}
 }

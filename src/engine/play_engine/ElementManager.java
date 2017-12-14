@@ -109,11 +109,15 @@ public class ElementManager {
 
 	private void processStepForElement(GameElement element) {
 		if (!element.isAlive()) {
+			if(element.getImageUrl().equals("fireball.png")) {
+				System.out.println("#######################fireball dead#############################");
+			}
 			if(element.shouldExplode()) {
+				System.out.println("EXPLODE==============================");
 				Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
 				try {
 					GameElement explosionElement = gameElementFactory.generateElement(element.explode(), auxiliaryObjects);
-					updatedElements.add(explosionElement);
+					newElements.add(explosionElement);					
 				} catch (ReflectiveOperationException failedToGenerateProjectileException) {
 					// don't generate the projectile
 					// TODO - throw exception? (prob not)
@@ -195,17 +199,18 @@ public class ElementManager {
 	}
 
 	private void handleElementFiring(GameElement element) {
-		Point2D nearestTargetLocation;
+		final int UNREACHABLE_POINT = -1000;
+		final Point2D DEFAULT_LOCATION= new Point2D( UNREACHABLE_POINT, UNREACHABLE_POINT);
+		Point2D nearestTargetLocation = DEFAULT_LOCATION;
 		GameElement nearestEnemyElement = getNearestEnemyElement(element);
-		if(nearestEnemyElement == null) {
-			nearestTargetLocation = new Point2D(500,500);
-		} else {
+		if(nearestEnemyElement != null) {
 			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
 		}
-		//@ TODO Fix should fire to take in nearest point
 		String elementTemplateName;
 		
-		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) && (elementTemplateName = element.fire()) != null) {
+		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) 
+							   && (elementTemplateName = element.fire()) != null
+							   && (nearestTargetLocation!=DEFAULT_LOCATION)) {
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
 			try {
