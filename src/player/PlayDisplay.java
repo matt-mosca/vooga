@@ -279,6 +279,7 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 
 	private void step() {
 		Update latestUpdate = myController.update();
+		/*
 		if (myController.isReadyForNextLevel()) {
 			hideTransitorySplashScreen();
 			// animation.play();
@@ -296,7 +297,8 @@ public class PlayDisplay extends ScreenDisplay implements PlayerInterface {
 		} else if (myController.isWon()) {
 			// launch win screen
 		}
-		hud.update(myController.getResourceEndowments());
+		*/
+		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		loadSprites();
 	}

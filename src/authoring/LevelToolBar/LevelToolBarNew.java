@@ -342,32 +342,32 @@ public class LevelToolBarNew extends VBox implements TabInterface, ButtonInterfa
 //} 
 
 
-
-class LevelData {
-	Map<Integer, Data> waveInfo;
-	GameArea myGameArea;
-	LevelTab myLevelTab;
-	AuthoringController myController;
-	
-	LevelData(AuthoringController myController) {
-		this.myController = myController;
-		waveInfo.put(0, new Data(new ArrayList<>(), null));
-		myGameArea = new GameArea(myController);
-	}
-	
-	public void addWave() {
-		waveInfo.put(waveInfo.size()+1, new Data(new ArrayList<>(), null));
-	}
-	
-	private void deleteWave(int waveNum) {
-		
-	}
-	
-	private boolean containsKey(int waveNum) {
-		return waveInfo.containsKey(waveNum);
-	}
-	
-	private Integer getWaves() {
-		return waveInfo.size();
-	}
-}
+//
+//class LevelData {
+//	Map<Integer, Data> waveInfo;
+//	GameArea myGameArea;
+//	LevelTab myLevelTab;
+//	AuthoringController myController;
+//	
+//	LevelData(AuthoringController myController) {
+//		this.myController = myController;
+//		waveInfo.put(0, new Data(new ArrayList<>(), null));
+//		myGameArea = new GameArea(myController);
+//	}
+//	
+//	public void addWave() {
+//		waveInfo.put(waveInfo.size()+1, new Data(new ArrayList<>(), null));
+//	}
+//	
+//	private void deleteWave(int waveNum) {
+//		
+//	}
+//	
+//	private boolean containsKey(int waveNum) {
+//		return waveInfo.containsKey(waveNum);
+//	}
+//	
+//	private Integer getWaves() {
+//		return waveInfo.size();
+//	}
+//}

@@ -229,7 +229,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
     @Override
     protected void assertValidLevel(int level) throws IllegalArgumentException {
-        if (level <= 0 || level > getLevelSprites().size()) {
+        if (level < 0 || level > getLevelSprites().size()) {
             throw new IllegalArgumentException();
             // TODO - customize exception ?
         }
