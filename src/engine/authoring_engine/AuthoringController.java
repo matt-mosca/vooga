@@ -234,6 +234,10 @@ public class AuthoringController extends AbstractGameController implements Autho
             // TODO - customize exception ?
         }
     }
+    
+    public void setAudioUrlForPlayer(int level,String audioUrl) {
+    	audioMap.put(level,audioUrl);
+    }
 
     private void updateElementsRetroactively(String elementName, Map<String, Object> propertiesToUpdate) {
         Set<Integer> idsForTemplate = templateToIdMap.getOrDefault(elementName, new HashSet<>());

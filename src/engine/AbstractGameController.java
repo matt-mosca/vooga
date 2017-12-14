@@ -68,6 +68,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	// TODO - move these into own object? Or have them in the sprite factory?
 	private AtomicInteger spriteIdCounter;
 	private Map<Integer, GameElement> spriteIdMap;
+	
+	protected Map<Integer, String> audioMap;
 
 	private GameElementFactory gameElementFactory;
 	private GameElementUpgrader gameElementUpgrader;
