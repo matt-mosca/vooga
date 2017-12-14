@@ -20,17 +20,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import util.ElementDefaultsGetter;
 import networking.protocol.PlayerServer.NewSprite;
 import util.protocol.ClientMessageUtils;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public class LevelToolBar extends VBox implements TabInterface, ButtonInterface {
 	private static final int SIZE = 400;
@@ -105,22 +99,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		 * Just a way of hardcoding waves. Will eventually be put into properties file.
 		 * Should be able to set attack period, everything else should be given (image invisible)
 		 */
-		myProperties = new TreeMap<>();
-		myProperties.put("Collision effects", "Invulnerable to collision damage");
-		myProperties.put("Collided-with effects", "Do nothing to colliding objects");
-		myProperties.put("Move an object", "Object will stay at desired location");
-		myProperties.put("Firing Behavior", "Shoot various element types in a sequence");
-		myProperties.put("Height", 40);
-		myProperties.put("Width", 40);
-		myProperties.put("Path of game element image", "monkey.png");
-		myProperties.put("Name", "myWave");
-		myProperties.put("tabName", "Troops");
-		myProperties.put("Range of tower", 50000);
-		myProperties.put("Attack period", 120);
-		myProperties.put("Firing Sound", "Sounds");
-		myProperties.put("Numerical \"team\" association", 0);
-		myProperties.put("period", 60);
-		myProperties.put("Number of troops to spawn", 10);
+		myProperties = new ElementDefaultsGetter("WavesDefaults").getDefaultProperties();
 		//Note: Templates to fire is set when the troop is selected
 	}
 	
