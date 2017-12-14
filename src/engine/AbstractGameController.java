@@ -62,6 +62,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private List<Set<String>> levelInventories = new ArrayList<>();
 	private List<List<GameElement>> levelWaves = new ArrayList<>();
 	private List<Integer> levelHealths = new ArrayList<>();
+	private List<Integer> levelPointQuotas = new ArrayList<>();
+	private List<Integer> levelTimeLimits = new ArrayList<>();
 
 	private List<Map<String, Point2D>> levelWaveTemplates = new ArrayList<>();
 
@@ -112,8 +114,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			serializedLevelsData.put(level,
 					getIoController().getLevelSerialization(level, getLevelDescriptions().get(level),
 							getLevelConditions().get(level), getLevelBanks().get(level), getLevelStatuses().get(level),
-							levelSpritesCache.get(level), levelInventories.get(level), new ArrayList<>(),
-							levelHealths.get(level)));
+							levelSpritesCache.get(level), levelInventories.get(level),
+							levelHealths.get(level), levelPointQuotas.get(level), levelTimeLimits.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
@@ -315,6 +317,16 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getLevelHealths().get(level);
 	}
 	
+	@Override
+	public int getLevelPointQuota(int level) {
+		return getLevelPointQuotas().get(level);
+	}
+	
+	@Override
+	public int getLevelTimeLimit(int level) {
+		return getLevelTimeLimits().get(level);
+	}
+	
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)
 			throws ReflectiveOperationException {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
@@ -381,6 +393,14 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	protected List<Integer> getLevelHealths() {
 		return levelHealths;
 	}
+	
+	protected List<Integer> getLevelPointQuotas() {
+		return levelPointQuotas;
+	}
+	
+	protected List<Integer> getLevelTimeLimits() {
+		return levelTimeLimits;
+	} 
 
 	protected List<Map<String, Point2D>> getLevelWaveTemplates() {
 		return levelWaveTemplates;
@@ -394,6 +414,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		loadGameBankForLevel(saveName, level, originalGame);
 		loadGameInventoryElementsForLevel(saveName, level, originalGame);
 		loadGameHealthForLevel(saveName, level, originalGame);
+		loadGamePointsQuotaForLevel(saveName, level);
+		loadGameTimeLimitsForLevel(saveName, level);
 		// loadGameWavesForLevel(saveName, level);
 	}
 
@@ -524,6 +546,17 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		addOrSetLevelData(levelHealths, ioController.loadGameHealth(savedGameName, level, originalGame), level);
 	}
 
+	private void loadGamePointsQuotaForLevel(String savedGameName, int level) throws FileNotFoundException {
+		assertValidLevel(level);
+		addOrSetLevelData(levelPointQuotas, ioController.loadGamePointQuotas(savedGameName, level), level);
+
+	}
+	
+	private void loadGameTimeLimitsForLevel(String savedGameName, int level) throws FileNotFoundException {
+		assertValidLevel(level);
+		addOrSetLevelData(levelTimeLimits, ioController.loadGameTimeLimits(savedGameName, level), level);
+	}
+	
 	private boolean isAuthoring() {
 		// TODO - remove the forAuthoring param from ioController method so we don't
 		// have to do this
@@ -541,6 +574,9 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void initialize() {
 		// To adjust for 1-indexing
 		initializeLevel();
+		
+		getLevelWaves().add(new ArrayList<>());
+		getLevelWaveTemplates().add(new HashMap<>());
 		setLevel(1);
 	}
 
@@ -554,6 +590,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelWaves().add(new ArrayList<>());
 		getLevelWaveTemplates().add(new HashMap<>());
 		getLevelHealths().add(0);
+		getLevelPointQuotas().add(0);
+		getLevelTimeLimits().add(0);
+		levelWaves.add(new ArrayList<>());
+		levelWaveTemplates.add(new HashMap<>());
 		initializeLevelConditions();
 	}
 

@@ -50,10 +50,10 @@ public class IOController {
 	 */
 	public void saveGameState(String savedGameName, String gameDescription, int currentLevel,
 			Map<String, String> levelConditions, Bank levelBank, List<GameElement> levelGameElements,
-			Set<String> levelInventories, List<GameElement> levelWaves, int levelHealth, Map<String, Double> status, boolean forAuthoring) {
+			Set<String> levelInventories, int levelHealth, int levelPointsQuota, int levelTimeLimits, Map<String, Double> status, boolean forAuthoring) {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
-				currentLevel, status, levelGameElements, levelInventories, levelWaves, levelHealth);
+				currentLevel, status, levelGameElements, levelInventories, levelHealth, levelPointsQuota, levelTimeLimits);
 		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
 	}
 
@@ -149,14 +149,19 @@ public class IOController {
 		return serializationUtils.deserializeGameInventories(serializedGameData, level);
 	}
 
-	public List<GameElement> loadGameWaves(String savedGameName, int level) throws FileNotFoundException {
-		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
-		return serializationUtils.deserializeGameWaves(serializedGameData, level);
-	}
-
 	public int loadGameHealth(String savedGameName, int level, boolean forAuthoring) throws FileNotFoundException {
 		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, forAuthoring));
 		return serializationUtils.deserializeGameHealth(serializedGameData, level);
+	}
+	
+	public int loadGamePointQuotas(String savedGameName, int level) throws FileNotFoundException {
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
+		return serializationUtils.deserializeGamePoints(serializedGameData, level);
+	}
+	
+	public int loadGameTimeLimits(String savedGameName, int level) throws FileNotFoundException {
+		String serializedGameData = gamePersistence.loadGameState(getResolvedGameName(savedGameName, true));
+		return serializationUtils.deserializeGameTimeLimits(serializedGameData, level);
 	}
 	
 	/**
@@ -283,9 +288,9 @@ public class IOController {
 	 */
 	public String getLevelSerialization(int level, String levelDescription, Map<String, String> levelConditions,
 			Bank levelBank, Map<String, Double> levelStatus, List<GameElement> levelGameElements,
-			Set<String> levelInventories, List<GameElement> levelWaves, int levelHealth) {
+			Set<String> levelInventories, int levelHealth, int levelPointsQuota, int levelTimeLimits) {
 		return serializationUtils.serializeLevelData(levelDescription, levelConditions, levelBank, levelStatus,
-				levelGameElements, levelInventories, levelWaves, levelHealth, level);
+				levelGameElements, levelInventories, levelHealth, levelPointsQuota, levelTimeLimits, level);
 	}
 
 	public Map<String, String> getWaveSerialization(Map<String, ?> waveProperties) {

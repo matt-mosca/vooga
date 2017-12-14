@@ -106,6 +106,8 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 				.setUpgradeElement(UpgradeElement.newBuilder().setSpriteId(elementId).build()).build().toByteArray());
 		pollFromMessageQueue();
 	}
+	
+	
 
 	@Override
 	protected int getPort() {

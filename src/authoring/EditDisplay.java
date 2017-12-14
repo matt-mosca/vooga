@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import authoring.LevelToolBar.LevelToolBar;
+import authoring.LevelToolBar.LevelToolBarOld;
 import authoring.PropertiesToolBar.PropertiesToolBar;
 import authoring.PropertiesToolBar.SpriteImage;
 import authoring.customize.AttackDefenseToggle;
