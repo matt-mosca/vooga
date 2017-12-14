@@ -325,12 +325,9 @@ class MultiPlayerController extends AbstractServerController {
 	}
 
 	byte[] getNumberOfLevels(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		GetNumberOfLevels getNumLevelsRequest = clientMessage.getGetNumLevels();
 		return serverMessageBuilder
 				.setNumLevels(NumberOfLevels.newBuilder()
-						.setNumLevels(getPlayEngineForClient(clientId).getNumLevelsForGame(
-								getNumLevelsRequest.getGameName(), getNumLevelsRequest.getOriginalGame()))
-						.build())
+						.setNumLevels(getPlayEngineForClient(clientId).getNumLevelsForGame()).build())
 				.build().toByteArray();
 	}
 

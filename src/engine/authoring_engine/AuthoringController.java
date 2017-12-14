@@ -133,8 +133,8 @@ public class AuthoringController extends AbstractGameController implements Autho
     }
     
 	@Override
-	public void setLevelHealth(int level, int health) {
-		getLevelHealths().set(level, health);
+	public void setLevelHealth(int health) {
+		getLevelHealths().set(getCurrentLevel(), health);
 	}
 
     @Override

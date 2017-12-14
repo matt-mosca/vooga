@@ -1250,12 +1250,6 @@ public final class PlayerClient {
           return false;
         }
       }
-      if (hasGetNumLevels()) {
-        if (!getGetNumLevels().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -2278,11 +2272,6 @@ public final class PlayerClient {
         }
         if (hasGetLevelElements()) {
           if (!getGetLevelElements().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasGetNumLevels()) {
-          if (!getGetNumLevels().isInitialized()) {
             return false;
           }
         }
@@ -15028,29 +15017,6 @@ public final class PlayerClient {
   public interface GetNumberOfLevelsOrBuilder extends
       // @@protoc_insertion_point(interface_extends:GetNumberOfLevels)
       com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string gameName = 1;</code>
-     */
-    boolean hasGameName();
-    /**
-     * <code>required string gameName = 1;</code>
-     */
-    java.lang.String getGameName();
-    /**
-     * <code>required string gameName = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getGameNameBytes();
-
-    /**
-     * <code>required bool originalGame = 2;</code>
-     */
-    boolean hasOriginalGame();
-    /**
-     * <code>required bool originalGame = 2;</code>
-     */
-    boolean getOriginalGame();
   }
   /**
    * Protobuf type {@code GetNumberOfLevels}
@@ -15064,8 +15030,6 @@ public final class PlayerClient {
       super(builder);
     }
     private GetNumberOfLevels() {
-      gameName_ = "";
-      originalGame_ = false;
     }
 
     @java.lang.Override
@@ -15078,7 +15042,6 @@ public final class PlayerClient {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -15094,17 +15057,6 @@ public final class PlayerClient {
                                      extensionRegistry, tag)) {
                 done = true;
               }
-              break;
-            }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              gameName_ = bs;
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              originalGame_ = input.readBool();
               break;
             }
           }
@@ -15131,90 +15083,18 @@ public final class PlayerClient {
               PlayerClient.GetNumberOfLevels.class, PlayerClient.GetNumberOfLevels.Builder.class);
     }
 
-    private int bitField0_;
-    public static final int GAMENAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object gameName_;
-    /**
-     * <code>required string gameName = 1;</code>
-     */
-    public boolean hasGameName() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string gameName = 1;</code>
-     */
-    public java.lang.String getGameName() {
-      java.lang.Object ref = gameName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          gameName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string gameName = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getGameNameBytes() {
-      java.lang.Object ref = gameName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        gameName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int ORIGINALGAME_FIELD_NUMBER = 2;
-    private boolean originalGame_;
-    /**
-     * <code>required bool originalGame = 2;</code>
-     */
-    public boolean hasOriginalGame() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required bool originalGame = 2;</code>
-     */
-    public boolean getOriginalGame() {
-      return originalGame_;
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasGameName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasOriginalGame()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, gameName_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBool(2, originalGame_);
-      }
       unknownFields.writeTo(output);
     }
 
@@ -15223,13 +15103,6 @@ public final class PlayerClient {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, gameName_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, originalGame_);
-      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -15247,16 +15120,6 @@ public final class PlayerClient {
       PlayerClient.GetNumberOfLevels other = (PlayerClient.GetNumberOfLevels) obj;
 
       boolean result = true;
-      result = result && (hasGameName() == other.hasGameName());
-      if (hasGameName()) {
-        result = result && getGameName()
-            .equals(other.getGameName());
-      }
-      result = result && (hasOriginalGame() == other.hasOriginalGame());
-      if (hasOriginalGame()) {
-        result = result && (getOriginalGame()
-            == other.getOriginalGame());
-      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -15268,15 +15131,6 @@ public final class PlayerClient {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasGameName()) {
-        hash = (37 * hash) + GAMENAME_FIELD_NUMBER;
-        hash = (53 * hash) + getGameName().hashCode();
-      }
-      if (hasOriginalGame()) {
-        hash = (37 * hash) + ORIGINALGAME_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-            getOriginalGame());
-      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -15395,10 +15249,6 @@ public final class PlayerClient {
       }
       public Builder clear() {
         super.clear();
-        gameName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        originalGame_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -15421,17 +15271,6 @@ public final class PlayerClient {
 
       public PlayerClient.GetNumberOfLevels buildPartial() {
         PlayerClient.GetNumberOfLevels result = new PlayerClient.GetNumberOfLevels(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.gameName_ = gameName_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.originalGame_ = originalGame_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -15473,26 +15312,12 @@ public final class PlayerClient {
 
       public Builder mergeFrom(PlayerClient.GetNumberOfLevels other) {
         if (other == PlayerClient.GetNumberOfLevels.getDefaultInstance()) return this;
-        if (other.hasGameName()) {
-          bitField0_ |= 0x00000001;
-          gameName_ = other.gameName_;
-          onChanged();
-        }
-        if (other.hasOriginalGame()) {
-          setOriginalGame(other.getOriginalGame());
-        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasGameName()) {
-          return false;
-        }
-        if (!hasOriginalGame()) {
-          return false;
-        }
         return true;
       }
 
@@ -15511,115 +15336,6 @@ public final class PlayerClient {
             mergeFrom(parsedMessage);
           }
         }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object gameName_ = "";
-      /**
-       * <code>required string gameName = 1;</code>
-       */
-      public boolean hasGameName() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string gameName = 1;</code>
-       */
-      public java.lang.String getGameName() {
-        java.lang.Object ref = gameName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            gameName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string gameName = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getGameNameBytes() {
-        java.lang.Object ref = gameName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          gameName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string gameName = 1;</code>
-       */
-      public Builder setGameName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        gameName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string gameName = 1;</code>
-       */
-      public Builder clearGameName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        gameName_ = getDefaultInstance().getGameName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string gameName = 1;</code>
-       */
-      public Builder setGameNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        gameName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private boolean originalGame_ ;
-      /**
-       * <code>required bool originalGame = 2;</code>
-       */
-      public boolean hasOriginalGame() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required bool originalGame = 2;</code>
-       */
-      public boolean getOriginalGame() {
-        return originalGame_;
-      }
-      /**
-       * <code>required bool originalGame = 2;</code>
-       */
-      public Builder setOriginalGame(boolean value) {
-        bitField0_ |= 0x00000002;
-        originalGame_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool originalGame = 2;</code>
-       */
-      public Builder clearOriginalGame() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        originalGame_ = false;
-        onChanged();
         return this;
       }
       public final Builder setUnknownFields(
@@ -15834,9 +15550,8 @@ public final class PlayerClient {
       "\030\001 \002(\005\"\"\n\016UpgradeElement\022\020\n\010spriteId\030\001 \002" +
       "(\005\"\030\n\026CheckReadyForNextLevel\",\n\tLoadLeve" +
       "l\022\020\n\010gameName\030\001 \002(\t\022\r\n\005level\030\002 \002(\005\"!\n\020Ge" +
-      "tLevelElements\022\r\n\005level\030\001 \002(\005\";\n\021GetNumb",
-      "erOfLevels\022\020\n\010gameName\030\001 \002(\t\022\024\n\014original" +
-      "Game\030\002 \002(\010"
+      "tLevelElements\022\r\n\005level\030\001 \002(\005\"\023\n\021GetNumb",
+      "erOfLevels"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -15987,7 +15702,7 @@ public final class PlayerClient {
     internal_static_GetNumberOfLevels_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetNumberOfLevels_descriptor,
-        new java.lang.String[] { "GameName", "OriginalGame", });
+        new java.lang.String[] { });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -177,9 +177,15 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		this.gameName = gameName;
 	}
 
+	@Deprecated
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		return getLevelSprites().size() - 1; // Account for 0-indexing vs 1-indexing
+		return  getNumLevelsForGame();
+	}
+	
+	@Override
+	public int getNumLevelsForGame() {
+		return getLevelSprites().size() - 1;
 	}
 
 	@Override
