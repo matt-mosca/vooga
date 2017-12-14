@@ -2,7 +2,6 @@ package networking;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -14,6 +13,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.google.protobuf.Message;
 
 import engine.AbstractGameModelController;
 import javafx.collections.FXCollections;
@@ -67,7 +68,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 
 	private Update latestUpdate;
 
-	private ObservableList<Notification> notificationQueue = FXCollections.observableArrayList();
+	private ObservableList<Message> notificationQueue = FXCollections.observableArrayList();
 	private Queue<ServerMessage> messageQueue;
 
 	public AbstractClient() {
@@ -84,7 +85,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		new Thread(() -> pollForServerMessages()).start();
 	}
 
-	public void registerNotificationListener(ListChangeListener<? super Notification> listener) {
+	public void registerNotificationListener(ListChangeListener<? super Message> listener) {
 		notificationQueue.addListener(listener);
 		System.out.println("Registered listener!");
 	}
@@ -293,7 +294,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	protected DataOutputStream getOutput() {
 		return outputWriter;
 	}
-
+	
 	protected <T> T pollFromCustomMessageQueue(Queue<T> queue) {
 		synchronized (queue) {
 			try {

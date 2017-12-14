@@ -9651,11 +9651,20 @@ public final class AuthorServer {
     int getLevelCreated();
 
     /**
+     * <code>optional int32 levelDeleted = 4;</code>
+     */
+    boolean hasLevelDeleted();
+    /**
+     * <code>optional int32 levelDeleted = 4;</code>
+     */
+    int getLevelDeleted();
+
+    /**
      * <pre>
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     java.util.List<AuthorServer.StringProperty> 
         getWaveCreatedList();
@@ -9664,7 +9673,7 @@ public final class AuthorServer {
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     AuthorServer.StringProperty getWaveCreated(int index);
     /**
@@ -9672,7 +9681,7 @@ public final class AuthorServer {
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     int getWaveCreatedCount();
     /**
@@ -9680,7 +9689,7 @@ public final class AuthorServer {
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
         getWaveCreatedOrBuilderList();
@@ -9689,7 +9698,7 @@ public final class AuthorServer {
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     AuthorServer.StringPropertyOrBuilder getWaveCreatedOrBuilder(
         int index);
@@ -9707,6 +9716,7 @@ public final class AuthorServer {
     }
     private AuthoringNotification() {
       levelCreated_ = 0;
+      levelDeleted_ = 0;
       waveCreated_ = java.util.Collections.emptyList();
     }
 
@@ -9769,10 +9779,15 @@ public final class AuthorServer {
               levelCreated_ = input.readInt32();
               break;
             }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+            case 32: {
+              bitField0_ |= 0x00000008;
+              levelDeleted_ = input.readInt32();
+              break;
+            }
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
                 waveCreated_ = new java.util.ArrayList<AuthorServer.StringProperty>();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000010;
               }
               waveCreated_.add(
                   input.readMessage(AuthorServer.StringProperty.PARSER, extensionRegistry));
@@ -9786,7 +9801,7 @@ public final class AuthorServer {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
           waveCreated_ = java.util.Collections.unmodifiableList(waveCreated_);
         }
         this.unknownFields = unknownFields.build();
@@ -9863,14 +9878,29 @@ public final class AuthorServer {
       return levelCreated_;
     }
 
-    public static final int WAVECREATED_FIELD_NUMBER = 4;
+    public static final int LEVELDELETED_FIELD_NUMBER = 4;
+    private int levelDeleted_;
+    /**
+     * <code>optional int32 levelDeleted = 4;</code>
+     */
+    public boolean hasLevelDeleted() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 levelDeleted = 4;</code>
+     */
+    public int getLevelDeleted() {
+      return levelDeleted_;
+    }
+
+    public static final int WAVECREATED_FIELD_NUMBER = 5;
     private java.util.List<AuthorServer.StringProperty> waveCreated_;
     /**
      * <pre>
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     public java.util.List<AuthorServer.StringProperty> getWaveCreatedList() {
       return waveCreated_;
@@ -9880,7 +9910,7 @@ public final class AuthorServer {
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     public java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
         getWaveCreatedOrBuilderList() {
@@ -9891,7 +9921,7 @@ public final class AuthorServer {
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     public int getWaveCreatedCount() {
       return waveCreated_.size();
@@ -9901,7 +9931,7 @@ public final class AuthorServer {
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     public AuthorServer.StringProperty getWaveCreated(int index) {
       return waveCreated_.get(index);
@@ -9911,7 +9941,7 @@ public final class AuthorServer {
      * ambitious
      * </pre>
      *
-     * <code>repeated .StringProperty waveCreated = 4;</code>
+     * <code>repeated .StringProperty waveCreated = 5;</code>
      */
     public AuthorServer.StringPropertyOrBuilder getWaveCreatedOrBuilder(
         int index) {
@@ -9957,8 +9987,11 @@ public final class AuthorServer {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, levelCreated_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, levelDeleted_);
+      }
       for (int i = 0; i < waveCreated_.size(); i++) {
-        output.writeMessage(4, waveCreated_.get(i));
+        output.writeMessage(5, waveCreated_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -9980,9 +10013,13 @@ public final class AuthorServer {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, levelCreated_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, levelDeleted_);
+      }
       for (int i = 0; i < waveCreated_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, waveCreated_.get(i));
+          .computeMessageSize(5, waveCreated_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -10016,6 +10053,11 @@ public final class AuthorServer {
         result = result && (getLevelCreated()
             == other.getLevelCreated());
       }
+      result = result && (hasLevelDeleted() == other.hasLevelDeleted());
+      if (hasLevelDeleted()) {
+        result = result && (getLevelDeleted()
+            == other.getLevelDeleted());
+      }
       result = result && getWaveCreatedList()
           .equals(other.getWaveCreatedList());
       result = result && unknownFields.equals(other.unknownFields);
@@ -10040,6 +10082,10 @@ public final class AuthorServer {
       if (hasLevelCreated()) {
         hash = (37 * hash) + LEVELCREATED_FIELD_NUMBER;
         hash = (53 * hash) + getLevelCreated();
+      }
+      if (hasLevelDeleted()) {
+        hash = (37 * hash) + LEVELDELETED_FIELD_NUMBER;
+        hash = (53 * hash) + getLevelDeleted();
       }
       if (getWaveCreatedCount() > 0) {
         hash = (37 * hash) + WAVECREATED_FIELD_NUMBER;
@@ -10180,9 +10226,11 @@ public final class AuthorServer {
         bitField0_ = (bitField0_ & ~0x00000002);
         levelCreated_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        levelDeleted_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         if (waveCreatedBuilder_ == null) {
           waveCreated_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000010);
         } else {
           waveCreatedBuilder_.clear();
         }
@@ -10230,10 +10278,14 @@ public final class AuthorServer {
           to_bitField0_ |= 0x00000004;
         }
         result.levelCreated_ = levelCreated_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.levelDeleted_ = levelDeleted_;
         if (waveCreatedBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
             waveCreated_ = java.util.Collections.unmodifiableList(waveCreated_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000010);
           }
           result.waveCreated_ = waveCreated_;
         } else {
@@ -10290,11 +10342,14 @@ public final class AuthorServer {
         if (other.hasLevelCreated()) {
           setLevelCreated(other.getLevelCreated());
         }
+        if (other.hasLevelDeleted()) {
+          setLevelDeleted(other.getLevelDeleted());
+        }
         if (waveCreatedBuilder_ == null) {
           if (!other.waveCreated_.isEmpty()) {
             if (waveCreated_.isEmpty()) {
               waveCreated_ = other.waveCreated_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000010);
             } else {
               ensureWaveCreatedIsMutable();
               waveCreated_.addAll(other.waveCreated_);
@@ -10307,7 +10362,7 @@ public final class AuthorServer {
               waveCreatedBuilder_.dispose();
               waveCreatedBuilder_ = null;
               waveCreated_ = other.waveCreated_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000010);
               waveCreatedBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getWaveCreatedFieldBuilder() : null;
@@ -10627,12 +10682,44 @@ public final class AuthorServer {
         return this;
       }
 
+      private int levelDeleted_ ;
+      /**
+       * <code>optional int32 levelDeleted = 4;</code>
+       */
+      public boolean hasLevelDeleted() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 levelDeleted = 4;</code>
+       */
+      public int getLevelDeleted() {
+        return levelDeleted_;
+      }
+      /**
+       * <code>optional int32 levelDeleted = 4;</code>
+       */
+      public Builder setLevelDeleted(int value) {
+        bitField0_ |= 0x00000008;
+        levelDeleted_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 levelDeleted = 4;</code>
+       */
+      public Builder clearLevelDeleted() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        levelDeleted_ = 0;
+        onChanged();
+        return this;
+      }
+
       private java.util.List<AuthorServer.StringProperty> waveCreated_ =
         java.util.Collections.emptyList();
       private void ensureWaveCreatedIsMutable() {
-        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
           waveCreated_ = new java.util.ArrayList<AuthorServer.StringProperty>(waveCreated_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
          }
       }
 
@@ -10644,7 +10731,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public java.util.List<AuthorServer.StringProperty> getWaveCreatedList() {
         if (waveCreatedBuilder_ == null) {
@@ -10658,7 +10745,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public int getWaveCreatedCount() {
         if (waveCreatedBuilder_ == null) {
@@ -10672,7 +10759,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public AuthorServer.StringProperty getWaveCreated(int index) {
         if (waveCreatedBuilder_ == null) {
@@ -10686,7 +10773,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder setWaveCreated(
           int index, AuthorServer.StringProperty value) {
@@ -10707,7 +10794,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder setWaveCreated(
           int index, AuthorServer.StringProperty.Builder builderForValue) {
@@ -10725,7 +10812,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder addWaveCreated(AuthorServer.StringProperty value) {
         if (waveCreatedBuilder_ == null) {
@@ -10745,7 +10832,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder addWaveCreated(
           int index, AuthorServer.StringProperty value) {
@@ -10766,7 +10853,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder addWaveCreated(
           AuthorServer.StringProperty.Builder builderForValue) {
@@ -10784,7 +10871,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder addWaveCreated(
           int index, AuthorServer.StringProperty.Builder builderForValue) {
@@ -10802,7 +10889,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder addAllWaveCreated(
           java.lang.Iterable<? extends AuthorServer.StringProperty> values) {
@@ -10821,12 +10908,12 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder clearWaveCreated() {
         if (waveCreatedBuilder_ == null) {
           waveCreated_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000010);
           onChanged();
         } else {
           waveCreatedBuilder_.clear();
@@ -10838,7 +10925,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public Builder removeWaveCreated(int index) {
         if (waveCreatedBuilder_ == null) {
@@ -10855,7 +10942,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public AuthorServer.StringProperty.Builder getWaveCreatedBuilder(
           int index) {
@@ -10866,7 +10953,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public AuthorServer.StringPropertyOrBuilder getWaveCreatedOrBuilder(
           int index) {
@@ -10880,7 +10967,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public java.util.List<? extends AuthorServer.StringPropertyOrBuilder> 
            getWaveCreatedOrBuilderList() {
@@ -10895,7 +10982,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public AuthorServer.StringProperty.Builder addWaveCreatedBuilder() {
         return getWaveCreatedFieldBuilder().addBuilder(
@@ -10906,7 +10993,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public AuthorServer.StringProperty.Builder addWaveCreatedBuilder(
           int index) {
@@ -10918,7 +11005,7 @@ public final class AuthorServer {
        * ambitious
        * </pre>
        *
-       * <code>repeated .StringProperty waveCreated = 4;</code>
+       * <code>repeated .StringProperty waveCreated = 5;</code>
        */
       public java.util.List<AuthorServer.StringProperty.Builder> 
            getWaveCreatedBuilderList() {
@@ -10931,7 +11018,7 @@ public final class AuthorServer {
           waveCreatedBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AuthorServer.StringProperty, AuthorServer.StringProperty.Builder, AuthorServer.StringPropertyOrBuilder>(
                   waveCreated_,
-                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  ((bitField0_ & 0x00000010) == 0x00000010),
                   getParentForChildren(),
                   isClean());
           waveCreated_ = null;
@@ -11071,12 +11158,12 @@ public final class AuthorServer {
       "\003(\0132\017.StringProperty\"-\n\016StringProperty\022\014" +
       "\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"J\n\023Condition" +
       "Assignment\022\025\n\rconditionName\030\001 \002(\t\022\034\n\024lev",
-      "elsUsingCondition\030\002 \003(\005\"\260\001\n\025AuthoringNot" +
+      "elsUsingCondition\030\002 \003(\005\"\306\001\n\025AuthoringNot" +
       "ification\022*\n\023pregameNotification\030\001 \001(\0132\r" +
       ".Notification\022/\n\027elementAddedToInventory" +
       "\030\002 \001(\0132\016.DefineElement\022\024\n\014levelCreated\030\003" +
-      " \001(\005\022$\n\013waveCreated\030\004 \003(\0132\017.StringProper" +
-      "ty"
+      " \001(\005\022\024\n\014levelDeleted\030\004 \001(\005\022$\n\013waveCreate" +
+      "d\030\005 \003(\0132\017.StringProperty"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11145,7 +11232,7 @@ public final class AuthorServer {
     internal_static_AuthoringNotification_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuthoringNotification_descriptor,
-        new java.lang.String[] { "PregameNotification", "ElementAddedToInventory", "LevelCreated", "WaveCreated", });
+        new java.lang.String[] { "PregameNotification", "ElementAddedToInventory", "LevelCreated", "LevelDeleted", "WaveCreated", });
     PlayerServer.getDescriptor();
     AuthorClient.getDescriptor();
   }

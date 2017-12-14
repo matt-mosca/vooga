@@ -64,5 +64,6 @@ message AuthoringNotification {
 	optional Notification pregameNotification = 1;
 	optional DefineElement elementAddedToInventory = 2;
 	optional int32 levelCreated = 3;
-	repeated StringProperty waveCreated = 4; // ambitious
+	optional int32 levelDeleted = 4;
+	repeated StringProperty waveCreated = 5; // ambitious
 }

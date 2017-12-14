@@ -1,6 +1,5 @@
 package networking;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -10,8 +9,11 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
+import com.google.protobuf.Message;
+
 import engine.AuthoringModelController;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import networking.protocol.AuthorClient.AddElementToInventory;
@@ -59,6 +61,12 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		messageQueue = new ArrayDeque<>();
 	}
 
+	@Override
+	public void registerNotificationListener(ListChangeListener<? super Message> listener) {
+		super.registerNotificationListener(listener);
+		notificationQueue.addListener(listener);
+	}
+	
 	// TODO
 	@Override
 	public void saveGameState(String fileNameToSaveTo) {
