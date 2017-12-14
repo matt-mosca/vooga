@@ -1,6 +1,8 @@
 package authoring.PropertiesToolBar;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +54,11 @@ public class PropertiesBox extends VBox {
 		data = FXCollections.observableArrayList();
 		
 		for (String propertyName : propertiesMap.keySet()) {
+			System.out.println(propertiesMap.toString());
 			data.add(new Properties(propertyName, propertiesMap.get(propertyName)));
 		}
+		
+		FXCollections.sort(data, new Sortbyname());
 		
 		propertiesColumn.setCellValueFactory(
 				new PropertyValueFactory<Properties, String>("myProperty"));
@@ -150,4 +155,17 @@ public class PropertiesBox extends VBox {
 		return null;
 	}
 	
+}
+
+/* @author sgrillo
+ * 
+ */
+class Sortbyname implements Comparator<Properties>
+{
+    // Used for sorting in ascending order of
+    // roll name
+    public int compare(Properties a, Properties b)
+    {
+        return a.getMyProperty().compareTo(b.getMyProperty());
+    }
 }
