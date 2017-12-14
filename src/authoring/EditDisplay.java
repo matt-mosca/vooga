@@ -395,6 +395,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
             Alert.AlertType type = Alert.AlertType.ERROR;
             String message = e.getMessage();
             launchAlertAndWait(message, type);
+            e.printStackTrace();
         } finally {
             new Purger().purge();
         }
