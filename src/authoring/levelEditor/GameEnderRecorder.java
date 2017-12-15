@@ -46,6 +46,9 @@ public class GameEnderRecorder extends VBox{
 		defeatConditions.getItems().clear();
 		Map<String, Collection<Integer>> victory = myController.getCurrentVictoryConditions();
 		Map<String, Collection<Integer>> defeat = myController.getCurrentDefeatConditions();
+		for (String s : victory.keySet()) {
+			System.out.println(s + " " + victory.get(s));
+		}
 		makeConditions(victory, victoryConditions.getItems());
 		makeConditions(defeat, defeatConditions.getItems());
 		
