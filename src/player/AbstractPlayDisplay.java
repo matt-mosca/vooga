@@ -286,6 +286,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
     private void removeEliminatedSprite() {
         for (ImageView spriteImage : clientMessageUtils.getDeletedImageViews()) {
             myPlayArea.getChildren().remove(spriteImage);
+            hud.updatePointDisplay(myController.getElementPointValue(Integer.parseInt(spriteImage.getId())));
             // Map<String, Double> resourcesForUnit =
             // myController.getUnitCostsFromId(spriteImage.getId());
             // hud.updatePointCount(resourcesForUnit);
@@ -352,7 +353,9 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
             return;
         }
         if(myController.isLost()){
-            this.getStage().close();
+        	animation.pause();
+            launchLoseScreen();
+            return;
         }
         if(myController.isLevelCleared()){
             level++;
@@ -362,6 +365,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
         }
 
         hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
+        
         clientMessageUtils.handleSpriteUpdates(latestUpdate);
         updateSprites();
     }
@@ -373,6 +377,11 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
     private void launchWinScreen() {
         System.out.println("launching win screen");
         this.getStage().setScene(myWinScreen.getScene());
+    }
+    
+    private void launchLoseScreen() {
+        System.out.println("launching win screen");
+        this.getStage().setScene(myGameOver.getScene());
     }
 
     private void hideTransitorySplashScreen() {

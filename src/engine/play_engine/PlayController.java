@@ -104,6 +104,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				}
 				registerLevelCleared();
 			}
+			if(this.checkDefeatCondition()) {
+				this.registerDefeat();
+			}
 			/*
 			 * } else if (checkDefeatCondition()) { registerDefeat(); } else {
 			 */ // Move elements, check and handle collisions
@@ -383,6 +386,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean zeroHealth() {
+		System.out.println("Checking for 0 health");
 		return getLevelHealths().get(getCurrentLevel()) <= 0;
 	}
 
