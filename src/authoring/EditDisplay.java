@@ -80,6 +80,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private final String HEIGHT = "Height";
 	private final String WIDTH = "Width";
 	
+	private Scene myScene;
 	private AuthoringModelController controller;
 	private StaticObjectToolBar myLeftToolBar;
 	private GameArea myGameArea;
@@ -395,13 +396,22 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
             LiveEditingPlayDisplay playDisplay =
                     new LiveEditingPlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController());
             playDisplay.launchGame(GAME_NAME);
+            myScene = this.getScene();
             getStage().setScene(playDisplay.getScene());
+            getStage().setOnCloseRequest(e->{
+            	e.consume();
+            	returnToEdit();});
         } catch (Exception e) {
             new AlertFactory(e.getMessage(),AlertType.ERROR);
         } finally {
             new Purger().purge();
         }
     }
+	
+	private void returnToEdit() {
+		getStage().setScene(myScene);
+		getStage().setOnCloseRequest(null);
+	}
 
     // end
 
