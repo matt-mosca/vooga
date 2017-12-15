@@ -154,7 +154,6 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			myController.deleteElementDefinition(imageView.getId());
 			tab.removeItem(imageView);
 		}else {
-			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, new HashMap<>(), myController);
 			String tabType =
 					myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName").toString();
 			if (tabType.equals("Towers")) {
