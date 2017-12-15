@@ -89,8 +89,11 @@ public class GameElementIoHandler {
      * @param levelWaves the waves in each level of the game
      */
     public void exportWaves(String gameName, List<Map<String, Point2D>> levelWaves) {
+    	System.out.println("exporting waves");
+    	System.out.println(levelWaves.toString());
         String directoryPath = createDirectory(gameName, WAVES_OUTPUT_PATH);
         for (int level = 1; level < levelWaves.size(); level++) {
+        	System.out.println("Exporting Wave " + level);
             String fileName = LEVEL_FILE_INDICATOR + level + PROPERTIES_EXTENSION;
             Map<String, Point2D> wavesInLevel = levelWaves.get(level);
             Properties levelProperties = new Properties();

@@ -26,7 +26,7 @@ public abstract class ScreenDisplay {
 	private Droppable droppable;
 	private KeyFrame frame;
 	private Timeline animation = new Timeline();
-	private Scene myScene;
+	protected Scene myScene;
 	private Stage stage;
 	private Group root = new Group();
 

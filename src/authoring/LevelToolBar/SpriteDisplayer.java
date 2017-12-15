@@ -20,8 +20,8 @@ public class SpriteDisplayer extends ScrollPane {
 	public SpriteDisplayer() {
 		myBox = new HBox();
 		myBox.setPrefWidth(400);
-		myBox.setPrefHeight(30);
-		myBox.setMaxHeight(30);
+		myBox.setPrefHeight(75);
+		myBox.setMaxHeight(75);
 		myBox.setStyle("-fx-background-color: #336699;");
 		this.setContent(myBox);
 	}
