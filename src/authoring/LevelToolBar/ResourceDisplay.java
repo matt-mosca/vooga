@@ -8,6 +8,7 @@ import java.util.Map;
 import display.factory.TabFactory;
 import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
+import factory.AlertFactory;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -36,6 +37,8 @@ public class ResourceDisplay extends VBox{
 	private final String TAB_LEVELS_LABEL = "Level ";
 	private final String RESOURCE_VALUE_PROMPT_TEXT = "Value";
 	private final String ENTER_BUTTON_LABEL = "add!";
+	private final String RESOURCE_ALERT_CONTENT = "You need to input a number!";
+	private final String RESOURCE_ALERT_HEADER = "You need to input a number!";
 	
 	public ResourceDisplay(AuthoringModelController controller){
 		myController = controller;
@@ -81,11 +84,7 @@ public class ResourceDisplay extends VBox{
 			try {
 				myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			} catch(NumberFormatException nfe) {
-				Alert a = new Alert(AlertType.ERROR);
-				a.setHeaderText("Input Not Valid");
-				a.setContentText("You need to input a number!");
-				a.showAndWait().filter(button -> button == ButtonType.OK)
-						.ifPresent(event -> a.close());
+				new AlertFactory(RESOURCE_ALERT_CONTENT,RESOURCE_ALERT_HEADER,AlertType.ERROR);
 			}
 			System.out.println(name.getText());
 			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
