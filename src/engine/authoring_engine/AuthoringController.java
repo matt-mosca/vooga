@@ -273,8 +273,6 @@ public class AuthoringController extends AbstractGameController implements Autho
 		List<String> levelSettingsForConditionType = levelConditions.stream()
 				.map(conditionMap -> conditionMap.get(conditionType)).collect(Collectors.toList());
 		for (int level = 1; level <= getLevelsForCurrentGame(); level++) {
-			System.out.println("currentLv" + level);
-			System.out.println("Total numbers for game = " + getLevelsForCurrentGame() );
 			String condition = levelSettingsForConditionType.get(level);
 			Collection<Integer> levelsWithCondition = conditionsToLevels.getOrDefault(condition, new ArrayList<>());
 			levelsWithCondition.add(level);
