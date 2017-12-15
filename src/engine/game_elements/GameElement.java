@@ -22,15 +22,18 @@ import javafx.geometry.Point2D;
 public final class GameElement {
 
 	public enum Team {
-		NEUTRAL, COMPUTER, HUMAN
+		NEUTRAL, HUMAN, COMPUTER
 	}
 
 	private FiringStrategy firingStrategy;
 	private MovementStrategy movementStrategy;
 	private CollisionHandler collisionHandler;
 
-	public GameElement(FiringStrategy firingStrategy, MovementStrategy movementStrategy,
+	private String templateName;
+
+	public GameElement(String templateName, FiringStrategy firingStrategy, MovementStrategy movementStrategy,
 					   CollisionHandler collisionHandler) {
+		this.templateName = templateName;
 		this.firingStrategy = firingStrategy;
 		this.movementStrategy = movementStrategy;
 		this.collisionHandler = collisionHandler;
@@ -170,15 +173,20 @@ public final class GameElement {
 		return getPlayerId() == Team.HUMAN.ordinal();
 	}
 	
-	public double getBlastRadius() {
-		return collisionHandler.getBlastRadius();
-	}
-	
+
 	public boolean shouldExplode() {
 		return collisionHandler.shouldExplode();
 	}
 	
 	public String explode() {
 		return collisionHandler.explode();
+	}
+
+	public double getBlastRadius() {
+		return collisionHandler.getBlastRadius();
+	}
+
+	public String getTemplateName() {
+		return templateName;
 	}
 }
