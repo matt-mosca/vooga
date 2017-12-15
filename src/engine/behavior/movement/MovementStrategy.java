@@ -59,6 +59,11 @@ public interface MovementStrategy {
      * */
     boolean targetReached();
     
+    /**
+     * Get the facing angle of the element
+     * 
+     * @return facing angle of element
+     */
     double getAngle();
     
     /**
