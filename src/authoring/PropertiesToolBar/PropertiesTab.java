@@ -1,5 +1,6 @@
 package authoring.PropertiesToolBar;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import display.splashScreen.ScreenDisplay;
@@ -18,10 +19,11 @@ public class PropertiesTab extends Pane{
 	private ImageView myImageView;
 	
 	public PropertiesTab(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView,
-			Map<String, Object> propertyMap, AuthoringModelController controller) {
+			Map<String, Object> propertyMap, AuthoringModelController controller, int upgradeVal) {
 		myProperties = properties;
 		myImageView = imageView;
-		myPropertiesBox = new PropertiesBox(display.getDroppable(), myImageView, propertyMap, controller);
+		Map<String, Object> newPropertyMap = new HashMap<>(propertyMap);
+		myPropertiesBox = new PropertiesBox(display.getDroppable(), myImageView, newPropertyMap, controller, upgradeVal);
 		
 		AddToWaveButton myWaveAdder = new AddToWaveButton(myProperties, myImageView);
 		CostButton myCost = new CostButton(myProperties, myImageView);

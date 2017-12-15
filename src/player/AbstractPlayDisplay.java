@@ -406,22 +406,22 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	private void upgradeClicked(int id) {
-		// if (!checkFunds(idToTemplate.get(id)))
-		// return;
-		// Alert costDialog = new Alert(AlertType.CONFIRMATION);
-		// costDialog.setTitle("Upgrade Resource");
-		// costDialog.setHeaderText(null);
-		// costDialog.setContentText("Would you like to upgrade this object?");
-		//
-		// Optional<ButtonType> result = costDialog.showAndWait();
-		// if (result.get() == ButtonType.OK) {
-		// try {
-		// myController.upgradeElement(id);
-		// } catch (IllegalArgumentException | ReflectiveOperationException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
+		 if (!checkFunds(idToTemplate.get(id)))
+			 return;
+		 Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		 costDialog.setTitle("Upgrade Resource");
+		 costDialog.setHeaderText(null);
+		 costDialog.setContentText("Would you like to upgrade this object?");
+		
+		 Optional<ButtonType> result = costDialog.showAndWait();
+		 if (result.get() == ButtonType.OK) {
+		 try {
+		 myController.upgradeElement(id);
+		 } catch (IllegalArgumentException | ReflectiveOperationException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
+		 }
 	}
 
 	private void deleteClicked(int id) {

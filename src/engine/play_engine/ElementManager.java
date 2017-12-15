@@ -64,9 +64,16 @@ public class ElementManager {
 	void setCurrentElements(List<GameElement> newElements) {
 		activeElements = newElements;
 	}
+	
+	void addElement(GameElement newElement) {
+		activeElements.add(newElement);
+	}
+	
+	void removeElement(GameElement elementToRemove) {
+		activeElements.remove(elementToRemove);
+	}
 
 	void setCurrentWaves(List<GameElement> waves) {
-		System.out.println(waves);
 		this.waves = waves.iterator();
 		if (this.waves.hasNext()) {
 			currentWave = this.waves.next();

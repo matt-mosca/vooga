@@ -179,7 +179,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			throw new IllegalArgumentException();
 		}
 		GameElement gameElement = getSpriteIdMap().get(elementId);
+		elementManager.removeElement(gameElement);
 		gameElement = getGameElementUpgrader().upgradeSprite(gameElement);
+		elementManager.addElement(gameElement);
 		getSpriteIdMap().put(elementId, gameElement);
 		// I think this will update the reference in the element manager but might need
 		// to manually
