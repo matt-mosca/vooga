@@ -39,8 +39,6 @@ public class ResourceDisplay extends VBox{
 		myController = controller;
 		this.setMaxWidth(RESOURCE_DISPLAY_MAX_WIDTH );
 		resourceEndowments = new HashMap<>();
-		
-		
 		resourceTabs = new TabPane();
 		tabMaker = new TabFactory();
 		resources = new ArrayList<ResourceTab>();

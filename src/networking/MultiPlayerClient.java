@@ -39,6 +39,19 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Save the current state of the current level a game being played or authored.
+	 *
+	 * @param fileToSaveTo
+	 *            the name to assign to the save file
+	 */
+	@Override
+	public void saveGameState(String fileName) throws UnsupportedOperationException {
+		// TODO - Define custom exception in exceptions properties file and pass that
+		// string here
+		throw new UnsupportedOperationException();
+	}
+	
 	@Override
 	public Update update() {
 		System.out.println("Requesting update");
@@ -147,7 +160,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 			System.out.println("Game name: " + gameName);
 		}
 		System.out.println("Creating game room");
-		String gameRoom = testClient.createGameRoom("test.voog", "adi_game");
+		String gameRoom = testClient.createGameRoom("savetest.voog", "adi_game");
 		System.out.println("Joined " + gameRoom);
 		testClient.joinGameRoom(gameRoom, "adi");
 		testClient.launchGameRoom();

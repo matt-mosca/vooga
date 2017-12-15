@@ -18,6 +18,7 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
+import engine.PlayModelController;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
@@ -29,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -54,9 +56,11 @@ import javafx.stage.Stage;
 import main.Main;
 import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.NewSprite;
+import player.LiveEditingPlayDisplay;
 import player.PlayDisplay;
 import util.DropdownFactory;
 import util.Exclude;
+import util.Purger;
 import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
 import display.sprites.BackgroundObject;
@@ -87,7 +91,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private LevelToolBar myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
-	private SpriteTesterButton myTesterButton;
+	//private SpriteTesterButton myTesterButton;
 	private Slider volumeSlider;
 	private MediaPlayerFactory mediaPlayerFactory;
 	private MediaPlayer mediaPlayer;
@@ -118,11 +122,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		createMovementToggle();
 		createLabel();
 		basePropertyMap = new HashMap<>();
-		Button saveButton = new Button("Save");
-		saveButton.setLayoutY(600);
-		rootAdd(saveButton);
-		myTesterButton = new SpriteTesterButton(this);
-		rootAdd(myTesterButton);
+		//Button saveButton = new Button("Save");
+		//saveButton.setLayoutY(600);
+		//rootAdd(saveButton);
+		//myTesterButton = new SpriteTesterButton(this);
+		//rootAdd(myTesterButton);
 		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
@@ -322,8 +326,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		File saveFile = SaveDialog.SaveLocation(getScene());
 		if (saveFile != null) {
 			controller.setGameName(saveFile.getName());
-			// TODO change the save game so it saves a string instead
-			controller.saveGameState(saveFile);
+			controller.saveGameState(saveFile.getName());
 			myGameArea.savePath();
 		}
 	}
@@ -355,13 +358,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			DIALOG_MESSAGE[0] = e.getMessage();
 		}
 		Thread response = new Thread(() -> {
-			final Alert alert;
-			alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.getDialogPane().setContent(new TextArea(DIALOG_MESSAGE[0]));
-			alert.showAndWait()
-					.filter(press -> press == ButtonType.OK)
-					.ifPresent(event -> alert.close());
-
+			String content = DIALOG_MESSAGE[0];
+            Alert.AlertType type = Alert.AlertType.INFORMATION;
+            launchAlertAndWait(content, type);
 		});
 		response.run();
 	}
@@ -375,7 +374,32 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private void addLevel() {
 		myBottomToolBar.addLevel();
 	}
-	// end
+	private void editLevel() {
+		myBottomToolBar.openLevelDisplay();
+	}
+	private void playGame() {
+	    final String AUTHORING = "authoring/";
+	    final String GAME_NAME = "temp.voog";
+        myGameArea.savePath();
+        controller.setGameName(GAME_NAME);
+        controller.saveGameState(GAME_NAME);
+        PlayModelController playModelController = new PlayController();
+        try {
+            playModelController.loadOriginalGameState(GAME_NAME, 1);
+            LiveEditingPlayDisplay playDisplay =
+                    new LiveEditingPlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController());
+            playDisplay.launchGame(GAME_NAME);
+            getStage().setScene(playDisplay.getScene());
+        } catch (Exception e) {
+            Alert.AlertType type = Alert.AlertType.ERROR;
+            String message = e.getMessage();
+            launchAlertAndWait(message, type);
+        } finally {
+            new Purger().purge();
+        }
+    }
+
+    // end
 
 	private void loadGame() {
 		List<String> games = new ArrayList<>();
@@ -433,7 +457,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	@Override
 	public void returnButtonPressed() {
 		if (!controller.getGameName().equals("untitled")) {
-			controller.saveGameState(new File(PATH_DIRECTORY_NAME + controller.getGameName()));
+			controller.saveGameState(new File(controller.getGameName()).getName());
 		} else {
 			this.save();
 		}

@@ -105,10 +105,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	 *            the name to assign to the save file
 	 */
 	@Override
-	public void saveGameState(File saveName) {
+	public void saveGameState(String saveName) {
 		// Note : saveName overrides previously set gameName if different - need to
 		// handle this?
 		// Serialize separately for every level
+		System.out.println("Save name: " + saveName);
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (int level = 1; level < getLevelStatuses().size(); level++) {
 			serializedLevelsData.put(level,
@@ -119,9 +120,9 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
-		gameElementIoHandler.exportElementTemplates(saveName.getName(),
+		gameElementIoHandler.exportElementTemplates(saveName,
 				gameElementFactory.getAllDefinedTemplateProperties());
-		gameElementIoHandler.exportElementUpgrades(saveName.getName(),
+		gameElementIoHandler.exportElementUpgrades(saveName,
 				gameElementUpgrader.getSpriteUpgradesForEachTemplate());
 		gameElementIoHandler.exportWaves(gameName, levelWaveTemplates);
 	}
@@ -160,6 +161,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			Collections.sort(sortedWaveNames);
 			for (String waveName : sortedWaveNames) {
 				try {
+					System.out.println(waveName + " " + sortedWaveNames + " " + wavesInLevel);
+				
 					waves.add(generatePlacedElement(waveName, wavesInLevel.get(waveName)));
 				} catch (ReflectiveOperationException e) {
 					throw new IOException(e);

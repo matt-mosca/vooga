@@ -9,6 +9,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import engine.game_elements.GameElement;
+import networking.protocol.AuthorClient.AuthoringClientMessage;
+import networking.protocol.AuthorClient.DefineElement;
+import networking.protocol.AuthorClient.Property;
 import networking.protocol.AuthorServer.AuxiliaryElementConfigurationOption;
 import networking.protocol.AuthorServer.ConditionAssignment;
 import networking.protocol.AuthorServer.DoubleProperty;
@@ -173,6 +176,18 @@ public class ServerMessageUtils {
 						.setConditionName(condition.getKey()).addAllLevelsUsingCondition(condition.getValue()).build())
 				.collect(Collectors.toList());
 	}
+	
+	public DefineElement packageDefinedElement(String elementName, Map<String, Object> properties) {
+		return DefineElement.newBuilder().setElementName(elementName)
+				.addAllProperties(getPropertiesFromObjectMap(properties)).build();
+	}
+	
+	public Collection<Property> getPropertiesFromObjectMap(Map<String, Object> objectMap) {
+		return objectMap.entrySet().stream()
+				.map(entry -> Property.newBuilder().setName(entry.getKey())
+						.setValue(serializationUtils.serializeElementProperty(entry.getValue())).build())
+				.collect(Collectors.toList());
+	}
 
 	//
 	private StatusUpdate getStatusUpdate(boolean levelCleared, boolean isWon, boolean isLost, boolean inPlay,
@@ -205,5 +220,6 @@ public class ServerMessageUtils {
 						.setValue(elementUpgradeEntry.getValue()).build())
 				.collect(Collectors.toList());
 	}
+
 
 }

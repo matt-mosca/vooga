@@ -26,7 +26,7 @@ public interface AbstractGameModelController {
 	 * @param saveName
 	 *            the name to assign to the save file
 	 */
-	public void saveGameState(File saveName);
+	public void saveGameState(String saveName);
 
 	/**
 	 * Load the detailed state of the original authored game for a particular level,
