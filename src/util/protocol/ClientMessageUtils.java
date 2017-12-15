@@ -67,6 +67,7 @@ public class ClientMessageUtils {
 		imageViewForSprite.setX(newSprite.getSpawnX());
 		imageViewForSprite.setY(newSprite.getSpawnY());
 		int spriteId = newSprite.getSpriteId();
+		imageViewForSprite.setId(Integer.toString(spriteId));
 		idsToImageViews.put(spriteId, imageViewForSprite);
 		return spriteId;
 	}
