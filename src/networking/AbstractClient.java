@@ -86,8 +86,9 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	public void registerNotificationListener(ListChangeListener<? super Message> listener) {
+		System.out.println("About to register notification listener for pre-game messages");
 		notificationQueue.addListener(listener);
-		System.out.println("Registered listener!");
+		System.out.println("Registered pre-game notification listener!");
 	}
 
 	public String createGameRoom(String gameName, String roomName) {

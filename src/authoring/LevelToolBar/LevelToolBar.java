@@ -25,6 +25,8 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class LevelToolBar extends VBox implements TabInterface, ButtonInterface {
+    
+    private static final String DEFAULT_WAVE_PROPERTIES = "WavesDefaults";
     private static final int SIZE = 400;
     private static final int WIDTH = 100;
     private static final int X_LAYOUT = 260;
@@ -79,7 +81,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
     }
 
     private void createProperties() {
-        myProperties = new ElementDefaultsGetter("WavesDefaults").getDefaultProperties();
+        myProperties = new ElementDefaultsGetter(DEFAULT_WAVE_PROPERTIES).getDefaultProperties();
     }
 
     @Override
@@ -94,60 +96,60 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
         myLevelDisplayer.open();
     }
 
-    private void loadLevels() {
-        startingLevels = myController.getNumLevelsForGame(myController.getGameName(), true);
-        if (myController.getGameName().equals("untitled") || startingLevels == 1) {
-            addLevel();
-            return;
-        }
-        for (int i = 0; i < startingLevels; i++) {
-            addLevel();
-            initializeSprites(i);
-        }
-    }
-
-    @Override
-    public void addLevel() {
-        myController.setLevel(levelToData.size() + USER_OFFSET);
-        levelToData.put(levelToData.size() + USER_OFFSET, new LevelData(levelToData.size(), myController));
-        Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(levelToData.size()), null, myTabPane);
-        newTab.setContent(mySpriteDisplay);
-        LevelTab newLv = new LevelTab(levelToData.size(), myController);
-        if (levelToData.size() == 0) {
-            newTab.setClosable(false);
-        } else {
-            newTab.setOnClosed(e -> deleteLevel(newLv.getLvNumber()));
-        }
-        newTab.setOnSelectionChanged(e -> changeDisplay(newLv.getLvNumber()));
-        newLv.attach(newTab);
-        levelToData.get(levelToData.size()).myLevelTab = newLv;
-        myTabPane.getTabs().add(newTab);
-    }
-
-    // TODO need load in static object rather than just imageview
-    private void initializeSprites(int level) {
-        try {
-            clientMessageUtils
-                    .initializeLoadedLevel(myController.loadOriginalGameState(myController.getGameName(), level));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (Integer id : myController.getLevelSprites(level).stream().map(NewSprite::getSpriteId).collect(Collectors.toList())) {
-            ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
-            InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
-            savedObject.setElementId(id);
-            savedObject.setX(imageView.getX());
-            savedObject.setY(imageView.getY());
-            savedObject.setImageView(imageView);
-            levelToData.get(level).myGameArea.addBackObject(savedObject);
-        }
-    }
-
-    public void addToWave(String levelAndWave, String stringLocation, int amount, ImageView mySprite) {
-        String[] levelWaveArray = levelAndWave.split("\\s+");
-        String mySpriteId = mySprite.getId();
-        List<ImageView> imageList = new ArrayList<>(Collections.nCopies(amount, mySprite));
-        elementsToSpawn = new ArrayList<>(Collections.nCopies(amount, mySpriteId));
+	private void loadLevels() {
+		startingLevels = myController.getNumLevelsForGame();
+		if (myController.getGameName().equals("untitled") || startingLevels == 1) {
+			addLevel();
+			return;
+		}
+		for (int i = 0; i < startingLevels; i++) {
+			addLevel();
+			initializeSprites(i);
+		}
+	}
+	
+	@Override
+	public void addLevel() {
+		myController.setLevel(levelToData.size()+USER_OFFSET); 
+		levelToData.put(levelToData.size()+USER_OFFSET, new LevelData(levelToData.size(), myController));
+		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(levelToData.size()), null, myTabPane);
+		newTab.setContent(mySpriteDisplay);
+		LevelTab newLv = new LevelTab(levelToData.size(), myController);
+		if (levelToData.size() == 0) {
+			newTab.setClosable(false);
+		} else {
+			newTab.setOnClosed(e -> deleteLevel(newLv.getLvNumber()));
+		}
+		newTab.setOnSelectionChanged(e -> changeDisplay(newLv.getLvNumber()));
+		newLv.attach(newTab);
+		levelToData.get(levelToData.size()).myLevelTab = newLv;
+		myTabPane.getTabs().add(newTab);
+	}
+	
+	// TODO need load in static object rather than just imageview
+	private void initializeSprites(int level) {
+		try {
+			clientMessageUtils
+					.initializeLoadedLevel(myController.loadOriginalGameState(myController.getGameName(), level));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (Integer id : myController.getLevelSprites(level).stream().map(NewSprite::getSpriteId).collect(Collectors.toList())) {
+			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
+			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());
+			savedObject.setElementId(id);
+			savedObject.setX(imageView.getX());
+			savedObject.setY(imageView.getY());
+			savedObject.setImageView(imageView);
+			levelToData.get(level).myGameArea.addBackObject(savedObject);
+		}
+	}
+	
+	public void addToWave(String levelAndWave, String stringLocation, int amount, ImageView mySprite) {
+		String[] levelWaveArray = levelAndWave.split("\\s+");
+		String mySpriteId = mySprite.getId();
+		List<ImageView> imageList = new ArrayList<>(Collections.nCopies(amount, mySprite));
+		elementsToSpawn = new ArrayList<>(Collections.nCopies(amount, mySpriteId));
 //		elementsToSpawn = imageList.stream().map(ImageView::getId).collect(Collectors.toList());
         if (stringLocation.split(",").length != 2) {
             location = new Point2D(100, 100);
