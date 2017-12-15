@@ -105,10 +105,10 @@ public abstract class ScreenDisplay {
 		animation.play();
 	}
 
-    protected void launchAlertAndWait(String message, Alert.AlertType type) {
+    /*protected void launchAlertAndWait(String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setContentText(message);
         alert.showAndWait().filter(press -> press == ButtonType.OK)
                 .ifPresent(event -> alert.close());
-    }
+    }*/
 }
