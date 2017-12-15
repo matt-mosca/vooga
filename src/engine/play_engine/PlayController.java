@@ -144,6 +144,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public void resume() {
 		inPlay = true;
+		isWon = false;
+		levelCleared = false;
 	}
 
 	@Override
@@ -215,7 +217,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	@Override
 	public boolean isReadyForNextLevel() {
-		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not last level
+		return isLevelCleared() && !isWon(); // For single-player, always ready if level cleared and not
 	}
 
 	public Update getLatestUpdate() {
