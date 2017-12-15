@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ParameterName;
+import engine.game_elements.ElementProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import util.Exclude;
@@ -12,21 +12,19 @@ import util.Exclude;
  */
 public class CollisionHandler {
 
-    // TODO - default from prop getter
-    private final String DEFAULT_IMAGE_PATH = "https://users.cs.duke.edu/~rcd/images/rcd.jpg";
-
     private CollisionVisitor collisionVisitor;
     private CollisionVisitable collisionVisitable;
 
     private String imageUrl;
     private double imageHeight;
     private double imageWidth;
+    private final String DEFAULT_EXPLOSION = "";
     @Exclude private ImageView graphicalRepresentation;
 
     public CollisionHandler(CollisionVisitor collisionVisitor, CollisionVisitable collisionVisitable,
-                            @ParameterName("imageUrl") String imageUrl,
-                            @ParameterName("imageHeight") double imageHeight,
-                            @ParameterName("imageWidth") double imageWidth) {
+                            @ElementProperty(value = "imageUrl", isTemplateProperty = true) String imageUrl,
+                            @ElementProperty(value = "imageHeight", isTemplateProperty = true) double imageHeight,
+                            @ElementProperty(value = "imageWidth", isTemplateProperty = true) double imageWidth) {
         this.collisionVisitor = collisionVisitor;
         this.collisionVisitable = collisionVisitable;
         this.imageUrl = imageUrl;
@@ -50,12 +48,13 @@ public class CollisionHandler {
 
 
     public boolean collidesWith(CollisionHandler other) {
-        return other.graphicalRepresentation.getBoundsInLocal()
-                .intersects(this.graphicalRepresentation.getBoundsInLocal());
+        return (other.graphicalRepresentation.getBoundsInLocal()
+                .intersects(this.graphicalRepresentation.getBoundsInLocal())) && 
+        		(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0);
     }
 
     public void processCollision(CollisionHandler other) {
-        other.collisionVisitable.accept(collisionVisitor);
+    	other.collisionVisitable.accept(collisionVisitor);
     }
 
     public boolean isBlocked() {
@@ -88,5 +87,25 @@ public class CollisionHandler {
         	constructGraphicalRepresentation();    		
     	}
         return graphicalRepresentation;
+    }
+    
+    public String getImageUrl() {
+    		return imageUrl;
+    }
+    
+    public String getAudioUrl() {
+    	return collisionVisitable.getAudioUrl();
+    }
+    
+    public double getBlastRadius() {
+    	return collisionVisitable.getBlastRadius();
+    }
+    
+    public boolean shouldExplode() {
+    	return !collisionVisitor.explode().equals(DEFAULT_EXPLOSION);
+    }
+    
+    public String explode() {
+    	return collisionVisitor.explode();
     }
 }

@@ -1,5 +1,7 @@
 package engine.behavior.firing;
 
+import engine.game_elements.ElementProperty;
+
 /**
  * Periodically fires projectiles.
  *
@@ -10,15 +12,19 @@ public abstract class AbstractPeriodicFiringStrategy implements FiringStrategy {
 
     private double attackPeriod;
     private double attackCounter;
+    private double range;
 
-    public AbstractPeriodicFiringStrategy(double attackPeriod) {
+    public AbstractPeriodicFiringStrategy(
+            @ElementProperty(value = "attackPeriod", isTemplateProperty = true) double attackPeriod,
+            @ElementProperty(value = "firingRange", isTemplateProperty = true) double range) {
         this.attackPeriod = attackPeriod;
+        this.range = range;
         resetAttackTimer();
     }
 
     @Override
-    public boolean shouldFire() {
-        return updateAndCheckTimer();
+    public boolean shouldFire(double distanceToTarget) {
+        return updateAndCheckTimer() && checkIfWithinRange(distanceToTarget);
     }
     
     @Override
@@ -40,5 +46,9 @@ public abstract class AbstractPeriodicFiringStrategy implements FiringStrategy {
 
     protected double getAttackPeriod() {
         return attackPeriod;
+    }
+    
+    private boolean checkIfWithinRange(double distanceToTarget) {
+    	return (distanceToTarget<=range);
     }
 }

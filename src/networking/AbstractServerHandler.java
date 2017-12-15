@@ -24,14 +24,14 @@ public abstract class AbstractServerHandler extends Thread {
 			initializeStreams();
 			processMessages();
 			return;
-		} catch (IOException e) {
-			// todo - handle
+		} catch (IOException | ReflectiveOperationException e) {
+			// TODO - handle
 		} finally {
 			closeClient();
 		}
 	}
 
-	protected abstract void processMessages() throws IOException;
+	protected abstract void processMessages() throws IOException, ReflectiveOperationException;
 
 	protected abstract void initializeStreams() throws IOException;
 

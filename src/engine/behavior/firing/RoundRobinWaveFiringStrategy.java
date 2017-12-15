@@ -1,7 +1,10 @@
 package engine.behavior.firing;
 
+import engine.game_elements.ElementProperty;
+import util.Exclude;
+
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 /**
  * 
@@ -10,19 +13,31 @@ import java.util.Set;
  */
 public class RoundRobinWaveFiringStrategy extends AbstractWaveFiringStrategy {
 
-	Iterator<String> elementChooser;
+	@Exclude private Iterator<String> elementChooser;
+	private List<String> elementsToFire;
 
-	public RoundRobinWaveFiringStrategy(Set<String> templatesToFire, double period, int totalWaves) {
-		super(templatesToFire, period, totalWaves);
+	public RoundRobinWaveFiringStrategy(
+			@ElementProperty(value = "templatesToFire", isTemplateProperty = true) List<String> templatesToFire,
+			@ElementProperty(value = "spawnPeriod", isTemplateProperty = true) double period) {
+		super(templatesToFire, period, templatesToFire.size());
 		elementChooser = templatesToFire.iterator();
+		elementsToFire = templatesToFire;
 	}
 
 	@Override
 	protected String chooseElementToSpawn() {
+		if (elementChooser == null) {
+			elementChooser = elementsToFire.iterator();
+		}
 		if (!elementChooser.hasNext()) {
 			elementChooser = getTemplatesToFire().iterator();
 		}
 		return elementChooser.next();
+	}
+
+	@Override
+	public String getAudioUrl() {
+		return null;
 	}
 
 }

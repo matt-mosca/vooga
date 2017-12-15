@@ -2,7 +2,7 @@ package display.tabs;
 
 import java.util.List;
 
-import authoring.rightToolBar.SpriteImage;
+import authoring.PropertiesToolBar.SpriteImage;
 import display.interfaces.PropertiesInterface;
 import javafx.scene.image.ImageView;
 import display.splashScreen.ScreenDisplay;
@@ -17,8 +17,10 @@ public class InventoryTab extends SimpleTab{
 	
 	@Override
 	protected void addHandler() {
-		myListView.setOnMouseClicked(e->myProperties.clicked(
-        		myListView.getSelectionModel().getSelectedItem()));
+		myListView.setOnMouseClicked(e->{
+			if(myListView.getSelectionModel().isEmpty()) return;
+			myProperties.clicked(e, myListView.getSelectionModel().getSelectedItem(), this);
+		});
 	}
 
 }

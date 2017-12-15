@@ -76,5 +76,7 @@ public interface CollisionVisitor {
 	 *         instance
 	 */
 	public int getPlayerId();
+	
+	public String explode();
 
 }

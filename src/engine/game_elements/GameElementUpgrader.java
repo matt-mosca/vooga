@@ -1,5 +1,7 @@
 package engine.game_elements;
 
+import javafx.geometry.Point2D;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +16,7 @@ public class GameElementUpgrader {
 
     private Map<GameElement, Integer> currentSpriteLevels = new HashMap<>();
     private Map<GameElement, String> spriteTemplateAssociation = new HashMap<>();
-    private Map<String, List<Map<String, String>>> spriteUpgradesByTemplate = new HashMap<>();
+    private Map<String, List<Map<String, Object>>> spriteUpgradesByTemplate = new HashMap<>();
     private GameElementFactory gameElementFactory;
 
     /**
@@ -33,14 +35,18 @@ public class GameElementUpgrader {
      * @param upgradeLevel
      * @param upgradeProperties  a map of properties for sprites using this template
      */
-    public void defineUpgrade(String spriteTemplateName, int upgradeLevel, Map<String, String> upgradeProperties) {
-        List<Map<String, String>> templateUpgrades =
+    public void defineUpgrade(String spriteTemplateName, int upgradeLevel, Map<String, Object> upgradeProperties) {
+        List<Map<String, Object>> templateUpgrades =
                 spriteUpgradesByTemplate.getOrDefault(spriteTemplateName, new ArrayList<>());
-        Map<String, String> betweenDefinedUpgradesProperties = templateUpgrades.get(templateUpgrades.size() - 1);
-        for (int i = templateUpgrades.size(); i < upgradeLevel; i++) {
-            templateUpgrades.add(betweenDefinedUpgradesProperties);
+        if (templateUpgrades.size() > 0) {
+            Map<String, Object> betweenDefinedUpgradesProperties = templateUpgrades.get(templateUpgrades.size() - 1);
+            for (int i = templateUpgrades.size(); i < upgradeLevel; i++) {
+                templateUpgrades.add(betweenDefinedUpgradesProperties);
+            }
         }
         templateUpgrades.add(upgradeProperties);
+        // put shouldn't be necessary but let's do it for clarity's sake
+        spriteUpgradesByTemplate.put(spriteTemplateName, templateUpgrades);
     }
 
     /**
@@ -60,9 +66,11 @@ public class GameElementUpgrader {
      *
      * @param gameElement the gameElement to upgrade
      * @return the gameElement in its upgraded state
-     * @throws IllegalArgumentException if the gameElement cannot be upgraded
+     * @throws IllegalArgumentException if there are no remaining upgrades for the element
+     * @throws ReflectiveOperationException if the element cannot be regenerated with its new properties
      */
-    public GameElement upgradeSprite(GameElement gameElement) throws IllegalArgumentException {
+    public GameElement upgradeSprite(GameElement gameElement)
+            throws IllegalArgumentException, ReflectiveOperationException {
         if (!spriteTemplateAssociation.containsKey(gameElement) || !currentSpriteLevels.containsKey(gameElement)) {
             throw new IllegalArgumentException();
         }
@@ -71,8 +79,12 @@ public class GameElementUpgrader {
         if (!canUpgrade(templateName, newUpgradeLevel)) {
             throw new IllegalArgumentException();
         }
-        Map<String, String> upgradeProperties = spriteUpgradesByTemplate.get(templateName).get(newUpgradeLevel);
-        return gameElementFactory.generateSprite(upgradeProperties, new HashMap<>());
+        Map<String, ?> upgradeProperties = spriteUpgradesByTemplate.get(templateName).get(newUpgradeLevel);
+        Map<String, Object> upgradeArguments = new HashMap<>();
+        upgradeArguments.putAll(upgradeProperties);
+        // todo - key from prop file/getter
+        upgradeArguments.put("startPoint", new Point2D(gameElement.getX(), gameElement.getY()));
+        return gameElementFactory.generateElement(upgradeProperties);
     }
 
     private boolean canUpgrade(String templateName, int currentUpgradeLevel) {
@@ -85,7 +97,7 @@ public class GameElementUpgrader {
      *
      * @param spriteUpgradesByTemplate upgrade templates, loaded from memory, associated with their base templates
      */
-    public void loadSpriteUpgrades(Map<String, List<Map<String, String>>> spriteUpgradesByTemplate) {
+    public void loadSpriteUpgrades(Map<String, List<Map<String, Object>>> spriteUpgradesByTemplate) {
         this.spriteUpgradesByTemplate = spriteUpgradesByTemplate;
     }
 
@@ -94,7 +106,7 @@ public class GameElementUpgrader {
      *
      * @return the sprite upgrade templates for the current game.
      */
-    public Map<String, List<Map<String, String>>> getSpriteUpgradesForEachTemplate() {
+    public Map<String, List<Map<String, Object>>> getSpriteUpgradesForEachTemplate() {
         return spriteUpgradesByTemplate;
     }
 }

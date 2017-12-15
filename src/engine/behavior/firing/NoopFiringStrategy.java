@@ -1,6 +1,6 @@
 package engine.behavior.firing;
 
-import engine.behavior.ParameterName;
+import javafx.geometry.Point2D;
 
 /**
  * Represents strategy of not firing at all, applies to sprites whose firing is
@@ -19,7 +19,7 @@ public class NoopFiringStrategy implements FiringStrategy {
 	}
 
 	@Override
-	public boolean shouldFire() {
+	public boolean shouldFire(double targetLocation) {
 		return false;
 	}
 	
@@ -27,5 +27,9 @@ public class NoopFiringStrategy implements FiringStrategy {
 	public boolean isExpended() {
 		return false;
 	}
-
+	
+	@Override
+	public String getAudioUrl() {
+		return null;
+	}
 }

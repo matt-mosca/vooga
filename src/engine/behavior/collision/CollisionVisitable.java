@@ -17,5 +17,8 @@ public interface CollisionVisitable {
 	 *            the CollisionVisitor who collides with this CollisionVisitable
 	 */
 	public void accept(CollisionVisitor v);
-
+	
+	public String getAudioUrl();
+	
+	public double getBlastRadius();
 }

@@ -2,14 +2,18 @@ package engine.play_engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+
+import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import engine.SpriteQueryHandler;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
 import engine.game_elements.GameElementFactory;
+import factory.AudioClipFactory;
 
 /**
  * Single-source of truth for elements and their behavior when in-play
@@ -24,7 +28,16 @@ public class ElementManager {
 	// every element pair only once
 	private List<GameElement> activeElements;
 	private List<GameElement> newElements;
+	private List<GameElement> updatedElements;
 	private List<GameElement> deadElements;
+	private Iterator<GameElement> waves;
+	private GameElement currentWave;
+
+	private final int FRAMES_BETWEEN_WAVES = 180;
+	private int waveGapCountdown = 0;
+
+	
+	private AudioClipFactory audioClipFactory;
 
 	private SpriteQueryHandler spriteQueryHandler;
 
@@ -32,13 +45,15 @@ public class ElementManager {
 	// Reference to GridManager
 
 	/**
-	 * Handles the collision-checking and GameElement-specific collision-handling logic
-	 * Implements the 'Behavior' interface from the api/doc in the DESIGN_PLAN.md
+	 * Handles the collision-checking and GameElement-specific collision-handling
+	 * logic Implements the 'Behavior' interface from the api/doc in the
+	 * DESIGN_PLAN.md
 	 */
 	public ElementManager(GameElementFactory gameElementFactory, SpriteQueryHandler spriteQueryHandler) {
 		this.gameElementFactory = gameElementFactory;
 		this.spriteQueryHandler = spriteQueryHandler;
 		newElements = new ArrayList<>();
+		updatedElements = new ArrayList<>();
 		deadElements = new ArrayList<>();
 		activeElements = new ArrayList<>();
 	}
@@ -54,6 +69,15 @@ public class ElementManager {
 		activeElements = newElements;
 	}
 
+	void setCurrentWaves(List<GameElement> waves) {
+		this.waves = waves.iterator();
+		if (this.waves.hasNext()) {
+			currentWave = this.waves.next();
+		} else {
+			currentWave = null;
+		}
+	}
+
 	void update() {
 		for (int elementIndex = 0; elementIndex < activeElements.size(); elementIndex++) {
 			GameElement element = activeElements.get(elementIndex);
@@ -61,29 +85,68 @@ public class ElementManager {
 			handleElementFiring(element);
 			processAllCollisionsForElement(elementIndex, element);
 		}
-		activeElements.forEach(element -> {
-			if (!element.isAlive()) {
-				deadElements.add(element);
+		processWaveUpdate();
+		activeElements.forEach(this::processStepForElement);
+		activeElements.removeAll(deadElements);	
+	}
+
+	private void processWaveUpdate() {
+		if (currentWave != null && waveGapCountdown <= 0) {
+			handleElementFiring(currentWave);
+			processStepForElement(currentWave);
+			if (!currentWave.isAlive()) {
+				if (waves.hasNext()) {
+					waveGapCountdown = FRAMES_BETWEEN_WAVES;
+					currentWave = waves.next();
+				} else {
+					currentWave = null;
+				}
 			}
-		});
-		activeElements.removeAll(deadElements);
-		activeElements.addAll(newElements);
+		} else {
+			waveGapCountdown--;
+		}
 	}
 
-	List<GameElement> getDeadElements() {
-		return deadElements;
-	}
-
-	void clearDeadElements() {
-		deadElements.clear();
+	private void processStepForElement(GameElement element) {
+		if (!element.isAlive()) {
+			if(element.shouldExplode()) {
+				Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
+				try {
+					GameElement explosionElement = gameElementFactory.generateElement(element.explode(), auxiliaryObjects);
+					newElements.add(explosionElement);					
+				} catch (ReflectiveOperationException failedToGenerateProjectileException) {
+					// don't generate the projectile
+					// TODO - throw exception? (prob not)
+				}
+			}
+			deadElements.add(element);
+		} else {
+			updatedElements.add(element);
+		}
 	}
 
 	List<GameElement> getNewlyGeneratedElements() {
 		return newElements;
 	}
 
+	List<GameElement> getUpdatedElements() {
+		return updatedElements;
+	}
+	
+	List<GameElement> getDeadElements() {
+		return deadElements;
+	}
+
 	void clearNewElements() {
 		newElements.clear();
+	}
+
+	void clearUpdatedElements() {
+		updatedElements.clear();
+	}
+	
+	void clearDeadElements() {
+		deadElements.clear();
 	}
 
 	boolean allEnemiesDead() {
@@ -94,8 +157,10 @@ public class ElementManager {
 		return allElementsFulfillCondition(element -> !element.isAlly() || !element.isAlive());
 	}
 
+	boolean allWavesComplete() { return currentWave == null; }
+
 	boolean enemyReachedTarget() {
-		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
+		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
 	}
 
 	boolean allElementsFulfillCondition(Predicate<GameElement> condition) {
@@ -111,26 +176,70 @@ public class ElementManager {
 		for (int otherIndex = elementIndex + 1; otherIndex < activeElements.size(); otherIndex++) {
 			GameElement otherElement = activeElements.get(otherIndex);
 			if (element.collidesWith(otherElement)) {
-				element.processCollision(otherElement);
-				otherElement.processCollision(element);
+				element.processCollision(getAllDamageAffectedElements(element,otherElement));
+				otherElement.processCollision(getAllDamageAffectedElements(otherElement,element));
+				playAudio(element.getCollisionAudio());
+				playAudio(otherElement.getCollisionAudio());
 			}
 		}
 	}
+	
+	private List<GameElement> getAllDamageAffectedElements(GameElement collider, GameElement collidee) {
+		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(collider);
+		List<GameElement> allAffectedElements = spriteQueryHandler.
+				getAllElementsWithinRange(collider.getPlayerId(), new Point2D(collider.getX(), collider.getY()), exclusionOfSelf, collider.getBlastRadius());
+		if(!allAffectedElements.contains(collidee)) {
+			allAffectedElements.add(collidee);
+		}
+		return allAffectedElements;
+	}
 
 	private void handleElementFiring(GameElement element) {
-		if (element.shouldFire()) {
-			String elementTemplateName = element.fire();
-			List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
-			exclusionOfSelf.remove(element);
-			// Use player id of firing element rather than projectile? This allows greater
-			// flexibility
-			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(
-					element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
-			GameElement projectileGameElement = gameElementFactory.generateSprite(elementTemplateName,
-					new Point2D(element.getX(), element.getY()), auxiliaryObjects);
-			newElements.add(projectileGameElement);
+		final int UNREACHABLE_POINT = -1000;
+		final Point2D DEFAULT_LOCATION= new Point2D( UNREACHABLE_POINT, UNREACHABLE_POINT);
+		Point2D nearestTargetLocation = DEFAULT_LOCATION;
+		GameElement nearestEnemyElement = getNearestEnemyElement(element);
+		if(nearestEnemyElement != null) {
+			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
 		}
-
+		String elementTemplateName;
+		
+		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) 
+							   && (elementTemplateName = element.fire()) != null
+							   && (nearestTargetLocation!=DEFAULT_LOCATION)) {
+			// Use player id of firing element rather than projectile? This allows greater flexibility
+			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
+			try {
+				GameElement projectileGameElement = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
+				newElements.add(projectileGameElement);
+			} catch (ReflectiveOperationException e) {
+	
+			}
+			playAudio(element.getFiringAudio());
+		}
+		
 	}
+	
+	private GameElement getNearestEnemyElement(GameElement element) {
+		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(element);
+		return spriteQueryHandler.getNearestEnemy(
+				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
+		
+	}
+	
+	private List<GameElement> getListOfElementsExcludingElement(GameElement element){
+		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
+		exclusionOfSelf.remove(element);
+		return exclusionOfSelf;
+	}
+	
+	private void playAudio(String audioUrl) {
+		if(audioUrl != null) {
+			//System.out.println(audioUrl);
+			audioClipFactory = new AudioClipFactory(audioUrl);
+			audioClipFactory.getAudioClip().play();
+		}
+	}
+
 
 }

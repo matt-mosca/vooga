@@ -1,6 +1,6 @@
 package authoring;
 
-import authoring.rightToolBar.SpriteImage;
+import authoring.PropertiesToolBar.SpriteImage;
 import display.interfaces.ClickableInterface;
 import display.interfaces.CreationInterface;
 import display.interfaces.CustomizeInterface;

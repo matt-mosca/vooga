@@ -1,6 +1,6 @@
 package engine;
 
-import authoring.path.PathList;
+import util.path.PathList;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 

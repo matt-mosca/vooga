@@ -1,6 +1,6 @@
 package engine.behavior.movement;
 
-import engine.behavior.ParameterName;
+import engine.game_elements.ElementProperty;
 import javafx.geometry.Point2D;
 
 /**
@@ -17,10 +17,13 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
     private double yVelocity;
     private double velocityMagnitude;
 
-    protected TargetedMovementStrategy(Point2D targetPoint,
-                                       @ParameterName("velocityMagnitude") double velocityMagnitude) {
-        super();
-        setTargetCoordinates(targetPoint.getX(), targetPoint.getY());
+    protected TargetedMovementStrategy(
+            @ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
+            @ElementProperty(value = "targetX", isTemplateProperty = true) double targetX,
+            @ElementProperty(value = "targetY", isTemplateProperty = true) double targetY,
+            @ElementProperty(value = "velocityMagnitude", isTemplateProperty = true) double velocityMagnitude) {
+        super(startPoint);
+        setTargetCoordinates(targetX, targetY);
         this.velocityMagnitude = velocityMagnitude;
     }
 
@@ -31,6 +34,7 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
      * */
     public Point2D move() {
     	setVelocityComponents();
+    	setAngle(yVelocity,xVelocity);
     	if(targetReached() && removeUponCompletion()) {
     		setX(this.getTargetX());
     		setY(this.getTargetY());
@@ -114,8 +118,9 @@ public class TargetedMovementStrategy extends AbstractMovementStrategy {
      * @param angle Angle to calculate velocity components
      * */
     protected void setVelocityComponents(double angle) {
-    	setXVelocity(velocityMagnitude * Math.cos(angle));
-        setYVelocity(velocityMagnitude * Math.sin(angle));
+    	setAngle(angle);
+    	setXVelocity(velocityMagnitude * Math.cos(Math.toRadians(angle)));
+        setYVelocity(velocityMagnitude * Math.sin(Math.toRadians(angle)));
     }
 
     /**

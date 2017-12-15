@@ -1,6 +1,6 @@
 package engine.behavior.collision;
 
-import engine.behavior.ParameterName;
+import engine.game_elements.ElementProperty;
 
 /**
  * Represents mortal collider behavior - takes damage or explodes upon collision
@@ -13,9 +13,10 @@ public class MortalCollider extends GenericCollider {
 
 	private double healthPoints;
 
-	public MortalCollider(@ParameterName("playerId") int playerId,
-		                  @ParameterName("healthPoints") double healthPoints) {
-		super(playerId);
+	public MortalCollider(@ElementProperty(value = "playerId", isTemplateProperty = true) int playerId,
+		                  @ElementProperty(value = "healthPoints", isTemplateProperty = true) double healthPoints,
+		                  @ElementProperty(value = "explosionTemplate", isTemplateProperty = true) String explosionTemplate) {
+		super(playerId,explosionTemplate);
 		this.healthPoints = healthPoints;
 	}
 
@@ -35,5 +36,10 @@ public class MortalCollider extends GenericCollider {
 
 	private void setHealthPoints(double newHitPoints) {
 		healthPoints = newHitPoints;
+	}
+
+	@Override
+	public String explode() {
+		return "";
 	}
 }

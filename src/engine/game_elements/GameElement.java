@@ -1,9 +1,12 @@
 package engine.game_elements;
 
+import java.util.List;
+
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
 import engine.behavior.movement.TrackingPoint;
+import factory.AudioClipFactory;
 import javafx.scene.image.ImageView;
 
 import javafx.geometry.Point2D;
@@ -48,14 +51,15 @@ public final class GameElement {
 		collisionHandler.getGraphicalRepresentation().setY(newLocation.getY());
 	}
 
-	public boolean shouldFire() {
-		return firingStrategy.shouldFire();
+	public boolean shouldFire(double distanceToTarget) {
+		return firingStrategy.shouldFire(distanceToTarget);
 	}
 
 	public String fire() {
 		return firingStrategy.fire();
 	}
-
+	
+	
 	/**
 	 * Check for a collision with another sprite.
 	 *
@@ -68,13 +72,15 @@ public final class GameElement {
 	}
 
 	/**
-	 * Apply the effects of a collision with another sprite to this sprite.
+	 * Apply the effects of a collision with other sprites to this sprite.
 	 * 
-	 * @param other
-	 *            the other sprite with which this sprite collided
+	 * @param otherElements
+	 *            the other sprites with which this sprite collided with
 	 */
-	public void processCollision(GameElement other) {
-		this.collisionHandler.processCollision(other.collisionHandler);
+	public void processCollision(List<GameElement> otherElements) {
+		for(GameElement other : otherElements) {
+			this.collisionHandler.processCollision(other.collisionHandler);
+		}
 	}
 
 	/**
@@ -108,17 +114,29 @@ public final class GameElement {
 	public double getY() {
 		return movementStrategy.getCurrentY();
 	}
+	
+	public double getAngle() {
+		return movementStrategy.getAngle();
+	}
+	
+	public String getFiringAudio() {
+		return firingStrategy.getAudioUrl();
+	}
+	
+	public String getCollisionAudio() {
+		return collisionHandler.getAudioUrl();
+	}
 
 	public boolean shouldRemoveUponCompletion() {
 		return movementStrategy.removeUponCompletion();
 	}
 
-	public void setGraphicalRepresentation(ImageView graphicalRepresentation) {
-		collisionHandler.setGraphicalRepresentation(graphicalRepresentation);
-	}
-
 	public ImageView getGraphicalRepresentation() {
 		return collisionHandler.getGraphicalRepresentation();
+	}
+	
+	public String getImageUrl() {
+		return collisionHandler.getImageUrl();
 	}
 
 	public void setX(double newX) {
@@ -150,5 +168,17 @@ public final class GameElement {
 	// parameter
 	public boolean isAlly() {
 		return getPlayerId() == Team.HUMAN.ordinal();
+	}
+	
+	public double getBlastRadius() {
+		return collisionHandler.getBlastRadius();
+	}
+	
+	public boolean shouldExplode() {
+		return collisionHandler.shouldExplode();
+	}
+	
+	public String explode() {
+		return collisionHandler.explode();
 	}
 }

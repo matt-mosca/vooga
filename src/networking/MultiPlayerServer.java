@@ -1,30 +1,25 @@
 package networking;
 
-import java.net.Socket;
-
 /**
  * Handles requests from multi-player clients over the network
  * 
  * @author radithya
  */
-public class MultiPlayerServer extends AbstractServer {
+public class MultiPlayerServer extends AbstractGameServer {
 
-	public static final int PORT = 9041;
-
-	private MultiPlayerController multiPlayerController = new MultiPlayerController();
-
-	public MultiPlayerServer() {
-		super();
-	}
+	private MultiPlayerController multiPlayerController;
 
 	@Override
 	public int getPort() {
-		return PORT;
+		return Constants.MULTIPLAYER_SERVER_PORT;
 	}
-
+	
 	@Override
-	protected AbstractServerHandler getServerHandler(Socket acceptSocket) {
-		return new MultiPlayerServerHandler(acceptSocket, multiPlayerController);
+	protected AbstractServerController getController() {
+		if (multiPlayerController == null) {
+			multiPlayerController = new MultiPlayerController();
+		}
+		return multiPlayerController;
 	}
 
 	public static void main(String[] args) {

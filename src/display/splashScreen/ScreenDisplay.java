@@ -9,13 +9,18 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public abstract class ScreenDisplay {
 
-	public double FRAMES_PER_SECOND = 60;
+    protected static final int PLAYWIDTH = 1000;
+    protected static final int PLAYHEIGHT = 700;
+    public double FRAMES_PER_SECOND = 60;
 	public double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public double SECOND_DELAY = 100.0 / FRAMES_PER_SECOND;
 	private Droppable droppable;
@@ -31,11 +36,8 @@ public abstract class ScreenDisplay {
 	 */
 
 	public ScreenDisplay(int width, int height, Paint background, Stage currentStage) {
-		init();
 		stage = currentStage;
 		setMyScene(new Scene(root, width, height, background));
-
-
 	}
 	
 	public ScreenDisplay(int width, int height) {
@@ -87,9 +89,9 @@ public abstract class ScreenDisplay {
 		droppable = drop;
 	}
 	
-	public abstract void save(File saveFile);
+	public abstract void save();
 	
-	public abstract void listItemClicked(ImageView object);
+	public abstract void listItemClicked(MouseEvent e, ImageView object);
 
 	public Scene getScene() {
 		return myScene;
@@ -98,4 +100,15 @@ public abstract class ScreenDisplay {
 	public void setMyScene(Scene myScene) {
 		this.myScene = myScene;
 	}
+
+	public void startDisplay() {
+		animation.play();
+	}
+
+    protected void launchAlertAndWait(String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setContentText(message);
+        alert.showAndWait().filter(press -> press == ButtonType.OK)
+                .ifPresent(event -> alert.close());
+    }
 }

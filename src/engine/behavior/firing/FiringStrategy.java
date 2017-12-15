@@ -1,5 +1,7 @@
 package engine.behavior.firing;
 
+import javafx.geometry.Point2D;
+
 /**
  * Support different ways of firing, one of which is chosen by authoring and
  * then passed to GameElement at initialization
@@ -20,7 +22,7 @@ public interface FiringStrategy {
 	 * 
 	 * @return
 	 */
-	boolean shouldFire();
+	boolean shouldFire(double distanceToTarget);
 
 	/**
 	 * Whether the firing element has fired its quota and should be removed
@@ -28,4 +30,7 @@ public interface FiringStrategy {
 	 * @return
 	 */
 	boolean isExpended();
+	
+	String getAudioUrl();
+	
 }

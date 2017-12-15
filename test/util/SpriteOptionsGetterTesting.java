@@ -1,12 +1,14 @@
 package util;
 
+import engine.game_elements.ElementOptionsGetter;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class SpriteOptionsGetterTesting {
 
     public static void main(String[] args) {
-        SpriteOptionsGetter spriteTranslator = new SpriteOptionsGetter();
+        ElementOptionsGetter spriteTranslator = new ElementOptionsGetter();
         Map<String, String> choices = new HashMap<>();
         choices.put("engine.behavior.movement.MovementStrategy", "Move in a straight line to a target location");
         choices.put("engine.behavior.collision.CollisionVisitor", "Invulnerable to collision damage");

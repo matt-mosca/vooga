@@ -1,6 +1,6 @@
 package engine.behavior.movement;
 
-import engine.behavior.ParameterName;
+import engine.game_elements.ElementProperty;
 import javafx.geometry.Point2D;
 
 /**
@@ -16,8 +16,11 @@ public class TrackingMovementStrategy extends TargetedMovementStrategy {
 	// can't be set in constructor in order for reflexive creation of sprites to work
 	private TrackingPoint targetLocation;
 	
-	public TrackingMovementStrategy(TrackingPoint targetLocation, @ParameterName("velocity") double velocity) {
-		super(new Point2D(targetLocation.getCurrentX(),targetLocation.getCurrentY()), velocity);
+	public TrackingMovementStrategy(
+			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
+			@ElementProperty(value = "targetLocation", isTemplateProperty = false) TrackingPoint targetLocation,
+			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
+		super(startPoint, targetLocation.getCurrentX(), targetLocation.getCurrentY(), velocity);
 		this.targetLocation = targetLocation;
 	}
 

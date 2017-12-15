@@ -31,12 +31,16 @@ public class SimpleTab extends ScrollPane{
 	}
 	
 	protected void addHandler() {
-		myListView.setOnMouseClicked(e->display.listItemClicked(
+		myListView.setOnMouseClicked(e->display.listItemClicked(e, 
 	      		myListView.getSelectionModel().getSelectedItem()));
 	}
 	
 	public void addItem(ImageView object) {
 		items.add(object);
+	}
+	
+	public boolean removeItem(ImageView object) {
+		return items.remove(object);
 	}
 	
 	public List<ImageView> getImages(){

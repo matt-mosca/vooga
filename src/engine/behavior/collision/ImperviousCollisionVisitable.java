@@ -18,4 +18,13 @@ public class ImperviousCollisionVisitable implements CollisionVisitable {
 		v.visit(this);
 	}
 
+	@Override
+	public String getAudioUrl() {
+		return null;
+	}
+	
+	public double getBlastRadius() {
+		return 0;
+	}
+
 }
