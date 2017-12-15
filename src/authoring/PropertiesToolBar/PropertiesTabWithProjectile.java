@@ -24,8 +24,8 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	private ImageView myImageView;
 	
 	public PropertiesTabWithProjectile(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView,
-									   Map<String, Object> propertyMap, AuthoringModelController author) {
-		super(display, properties, imageView, propertyMap, author);
+									   Map<String, Object> propertyMap, AuthoringModelController author, int upgradeVal) {
+		super(display, properties, imageView, propertyMap, author, upgradeVal);
 		myController = author;
 		myImageView = imageView;
 		myProperties = properties;

@@ -38,11 +38,12 @@ public class GameElementUpgrader {
     public void defineUpgrade(String spriteTemplateName, int upgradeLevel, Map<String, Object> upgradeProperties) {
         List<Map<String, Object>> templateUpgrades =
                 spriteUpgradesByTemplate.getOrDefault(spriteTemplateName, new ArrayList<>());
+        System.out.println(upgradeLevel);
         if (upgradeLevel < 0) {
             upgradeLevel = 0;
         } else if (upgradeLevel > templateUpgrades.size()) {
             upgradeLevel = templateUpgrades.size();
-        } else if (upgradeLevel > 0 && upgradeLevel < templateUpgrades.size()) {
+        } else if (upgradeLevel >= 0 && upgradeLevel < templateUpgrades.size()) {
             // redefine
             templateUpgrades.remove(upgradeLevel);
         }
