@@ -39,6 +39,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
     private static final int USER_OFFSET = 1;
     private static final int X_LOCATION = 0;
     private static final int Y_LOCATION = 1;
+	private static final int HEIGHT = 400;
 
     private AuthoringModelController myController;
     private TabPane myTabPane;
@@ -66,6 +67,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
         this.setLayoutX(X_LAYOUT);
         this.setLayoutY(Y_LAYOUT);
         this.setWidth(SIZE);
+        this.setHeight(HEIGHT);
         myTabPane = new TabPane();
         tabMaker = new TabFactory();
         mySpriteDisplay = new SpriteDisplayer();
