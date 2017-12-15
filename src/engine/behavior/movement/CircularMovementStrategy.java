@@ -63,5 +63,18 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 		this.setX(Math.cos(angle)*radius);
 		this.setY(Math.sin(angle)*radius);
 	}
+	
+	public static void main(String[] args) throws InterruptedException {
+		Point2D startingLoc = new Point2D(0,0);
+		double radius = 1;
+		double velocity = 5;
+		double initialAngle =0;
+		CircularMovementStrategy circle = new CircularMovementStrategy(startingLoc, radius, 
+													initialAngle, radius);
+		for(int i=0;i<1000;i++) {
+			System.out.println(circle.move());
+			Thread.sleep(1000);
+		}
+	}
 
 }
