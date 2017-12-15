@@ -14,6 +14,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 
 import engine.AbstractGameModelController;
@@ -21,6 +22,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
+import networking.protocol.AuthorClient.AuthoringClientMessage;
+import networking.protocol.AuthorServer.AuthoringServerMessage;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.DeleteElement;
@@ -273,10 +276,20 @@ public abstract class AbstractClient implements AbstractGameModelController {
 
 	protected void writeRequestBytes(byte[] requestBytes) {
 		try {
-			outputWriter.writeInt(requestBytes.length);
-			outputWriter.write(requestBytes);
+			try {
+				ClientMessage clientMessage = ClientMessage.parseFrom(requestBytes);
+				System.out.println("Outgoing message: " + clientMessage.toString());
+			} catch (InvalidProtocolBufferException e) {
+				try {
+					AuthoringClientMessage msg = AuthoringClientMessage.parseFrom(requestBytes);
+					System.out.println("Outgoing msg: " + msg.toString());				
+				} catch (InvalidProtocolBufferException e1) {
+				}
+			} 
+				outputWriter.writeInt(requestBytes.length);
+				outputWriter.write(requestBytes);			
 		} catch (IOException e) {
-			e.printStackTrace();// TEMP
+			//e.printStackTrace();// TEMP
 		}
 	}
 
@@ -314,21 +327,32 @@ public abstract class AbstractClient implements AbstractGameModelController {
 		return polledMessage == null ? ServerMessage.getDefaultInstance() : polledMessage;
 	}
 
-	private void appendMessageToAppropriateQueue(ServerMessage serverMessage) {
-		if (serverMessage.hasNotification()) {
-			appendNotificationToQueue(serverMessage.getNotification());
-		} else {
-			appendMessageToQueue(serverMessage);
+	protected boolean appendMessageToAppropriateQueue(byte[] requestBytes) {
+		if (isAuthoringMessage(requestBytes)) {
+			return false;
+		}
+		try {
+			ServerMessage serverMessage = ServerMessage.parseFrom(requestBytes);
+			if (serverMessage.hasNotification()) {
+				appendNotificationToQueue(serverMessage.getNotification(), notificationQueue);
+			} else {
+				appendMessageToQueue(serverMessage, messageQueue);
+			}		
+			System.out.println("Successfully appended common message");
+			return true;
+		} catch (InvalidProtocolBufferException e) {
+			System.out.println("Unable to append common message");
+			return false;
 		}
 	}
 
-	private void appendNotificationToQueue(Notification notification) {
+	protected <T> void appendNotificationToQueue(T notification, ObservableList<T> notificationQueue) {
 		// System.out.println("NOTIFICATION MESSAGE: ");
 		// System.out.println(notification.toString());
 		notificationQueue.add(notification);
 	}
 
-	private void appendMessageToQueue(ServerMessage serverMessage) {
+	protected <T> void appendMessageToQueue(T serverMessage, Queue<T> messageQueue) {
 		// System.out.println("NORMAL MESSAGE: ");
 		// System.out.println(serverMessage.toString());
 		synchronized (messageQueue) {
@@ -346,12 +370,13 @@ public abstract class AbstractClient implements AbstractGameModelController {
 					len = getInput().readInt();
 					byte[] readBytes = new byte[len];
 					input.readFully(readBytes);
-					appendMessageToAppropriateQueue(ServerMessage.parseFrom(readBytes));
+					appendMessageToAppropriateQueue(readBytes);
 				} catch (SocketTimeoutException timeOutException) {
 					this.wait(POLLING_FREQUENCY);
 				}
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace(); // TEMP
+				//System.exit(1); // TEMP
 			}
 		}
 	}
@@ -407,10 +432,12 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	private int handleNumLevelsForGameResponse(ServerMessage serverMessage) {
+		System.out.println("Handling num levels response");
 		if (serverMessage.hasNumLevels()) {
 			return serverMessage.getNumLevels().getNumLevels();
 		}
-		return 0;
+		System.out.println("Unable to find num levels in message");
+		return Constants.DEFAULT_NUM_LEVELS;
 	}
 
 	private Set<String> handleInventoryResponse(ServerMessage serverMessage) {
@@ -509,6 +536,15 @@ public abstract class AbstractClient implements AbstractGameModelController {
 			input = new DataInputStream(socket.getInputStream());
 		} catch (IOException socketException) {
 			socketException.printStackTrace();
+		}
+	}
+	
+	private boolean isAuthoringMessage(byte[] requestBytes) {
+		try {
+			AuthoringServerMessage authoringServerMessage = AuthoringServerMessage.parseFrom(requestBytes);
+			return authoringServerMessage.getForAuthoring();
+		} catch (InvalidProtocolBufferException e) {
+			return false;
 		}
 	}
 

@@ -417,6 +417,15 @@ public final class AuthorClient {
      * <code>optional .GetCurrentDefeatConditions getCurrentDefeatConditions = 30;</code>
      */
     AuthorClient.GetCurrentDefeatConditionsOrBuilder getGetCurrentDefeatConditionsOrBuilder();
+
+    /**
+     * <code>optional bool forAuthoring = 31;</code>
+     */
+    boolean hasForAuthoring();
+    /**
+     * <code>optional bool forAuthoring = 31;</code>
+     */
+    boolean getForAuthoring();
   }
   /**
    * Protobuf type {@code AuthoringClientMessage}
@@ -431,6 +440,7 @@ public final class AuthorClient {
     }
     private AuthoringClientMessage() {
       setResourceEndowments_ = java.util.Collections.emptyList();
+      forAuthoring_ = false;
     }
 
     @java.lang.Override
@@ -845,6 +855,11 @@ public final class AuthorClient {
                 getCurrentDefeatConditions_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x10000000;
+              break;
+            }
+            case 248: {
+              bitField0_ |= 0x20000000;
+              forAuthoring_ = input.readBool();
               break;
             }
           }
@@ -1519,6 +1534,21 @@ public final class AuthorClient {
       return getCurrentDefeatConditions_ == null ? AuthorClient.GetCurrentDefeatConditions.getDefaultInstance() : getCurrentDefeatConditions_;
     }
 
+    public static final int FORAUTHORING_FIELD_NUMBER = 31;
+    private boolean forAuthoring_;
+    /**
+     * <code>optional bool forAuthoring = 31;</code>
+     */
+    public boolean hasForAuthoring() {
+      return ((bitField0_ & 0x20000000) == 0x20000000);
+    }
+    /**
+     * <code>optional bool forAuthoring = 31;</code>
+     */
+    public boolean getForAuthoring() {
+      return forAuthoring_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1747,6 +1777,9 @@ public final class AuthorClient {
       if (((bitField0_ & 0x10000000) == 0x10000000)) {
         output.writeMessage(30, getGetCurrentDefeatConditions());
       }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        output.writeBool(31, forAuthoring_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1874,6 +1907,10 @@ public final class AuthorClient {
       if (((bitField0_ & 0x10000000) == 0x10000000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(30, getGetCurrentDefeatConditions());
+      }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(31, forAuthoring_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2039,6 +2076,11 @@ public final class AuthorClient {
         result = result && getGetCurrentDefeatConditions()
             .equals(other.getGetCurrentDefeatConditions());
       }
+      result = result && (hasForAuthoring() == other.hasForAuthoring());
+      if (hasForAuthoring()) {
+        result = result && (getForAuthoring()
+            == other.getForAuthoring());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -2169,6 +2211,11 @@ public final class AuthorClient {
       if (hasGetCurrentDefeatConditions()) {
         hash = (37 * hash) + GETCURRENTDEFEATCONDITIONS_FIELD_NUMBER;
         hash = (53 * hash) + getGetCurrentDefeatConditions().hashCode();
+      }
+      if (hasForAuthoring()) {
+        hash = (37 * hash) + FORAUTHORING_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getForAuthoring());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -2498,6 +2545,8 @@ public final class AuthorClient {
           getCurrentDefeatConditionsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x20000000);
+        forAuthoring_ = false;
+        bitField0_ = (bitField0_ & ~0x40000000);
         return this;
       }
 
@@ -2763,6 +2812,10 @@ public final class AuthorClient {
         } else {
           result.getCurrentDefeatConditions_ = getCurrentDefeatConditionsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x40000000) == 0x40000000)) {
+          to_bitField0_ |= 0x20000000;
+        }
+        result.forAuthoring_ = forAuthoring_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2917,6 +2970,9 @@ public final class AuthorClient {
         }
         if (other.hasGetCurrentDefeatConditions()) {
           mergeGetCurrentDefeatConditions(other.getGetCurrentDefeatConditions());
+        }
+        if (other.hasForAuthoring()) {
+          setForAuthoring(other.getForAuthoring());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6711,6 +6767,38 @@ public final class AuthorClient {
           getCurrentDefeatConditions_ = null;
         }
         return getCurrentDefeatConditionsBuilder_;
+      }
+
+      private boolean forAuthoring_ ;
+      /**
+       * <code>optional bool forAuthoring = 31;</code>
+       */
+      public boolean hasForAuthoring() {
+        return ((bitField0_ & 0x40000000) == 0x40000000);
+      }
+      /**
+       * <code>optional bool forAuthoring = 31;</code>
+       */
+      public boolean getForAuthoring() {
+        return forAuthoring_;
+      }
+      /**
+       * <code>optional bool forAuthoring = 31;</code>
+       */
+      public Builder setForAuthoring(boolean value) {
+        bitField0_ |= 0x40000000;
+        forAuthoring_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool forAuthoring = 31;</code>
+       */
+      public Builder clearForAuthoring() {
+        bitField0_ = (bitField0_ & ~0x40000000);
+        forAuthoring_ = false;
+        onChanged();
+        return this;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -24954,7 +25042,7 @@ public final class AuthorClient {
   static {
     java.lang.String[] descriptorData = {
       "\n\022AuthorClient.proto\032\022PlayerClient.proto" +
-      "\"\234\014\n\026AuthoringClientMessage\022\037\n\nexportGam" +
+      "\"\262\014\n\026AuthoringClientMessage\022\037\n\nexportGam" +
       "e\030\001 \001(\0132\013.ExportGame\022\033\n\010setLevel\030\002 \001(\0132\t" +
       ".SetLevel\022!\n\013deleteLevel\030\003 \001(\0132\014.DeleteL" +
       "evel\022A\n\024getElementBaseConfig\030\004 \001(\0132#.Get" +
@@ -24993,45 +25081,45 @@ public final class AuthorClient {
       "etCurrentVictoryConditions\030\035 \001(\0132\034.GetCu" +
       "rrentVictoryConditions\022?\n\032getCurrentDefe" +
       "atConditions\030\036 \001(\0132\033.GetCurrentDefeatCon",
-      "ditions\"\014\n\nExportGame\"\031\n\010SetLevel\022\r\n\005lev" +
-      "el\030\001 \002(\005\"\034\n\013DeleteLevel\022\r\n\005level\030\001 \002(\005\"$" +
-      "\n\"GetElementBaseConfigurationOptions\"V\n\'" +
-      "GetAuxiliaryElementConfigurationOptions\022" +
-      "+\n\030baseConfigurationChoices\030\001 \003(\0132\t.Prop" +
-      "erty\"C\n\rDefineElement\022\023\n\013elementName\030\001 \002" +
-      "(\t\022\035\n\nproperties\030\002 \003(\0132\t.Property\"`\n\024Def" +
-      "ineElementUpgrade\022\023\n\013elementName\030\001 \002(\t\022\024" +
-      "\n\014upgradeLevel\030\002 \002(\005\022\035\n\nproperties\030\003 \003(\013" +
-      "2\t.Property\"b\n\027UpdateElementDefinition\022\023",
-      "\n\013elementName\030\001 \002(\t\022\035\n\nproperties\030\002 \003(\0132" +
-      "\t.Property\022\023\n\013retroactive\030\003 \002(\010\".\n\027Delet" +
-      "eElementDefinition\022\023\n\013elementName\030\001 \002(\t\"" +
-      ",\n\025AddElementToInventory\022\023\n\013elementName\030" +
-      "\001 \002(\t\"\021\n\017GetCurrentLevel\"K\n\027UpdateElemen" +
-      "tProperties\022\021\n\telementId\030\001 \002(\005\022\035\n\nproper" +
-      "ties\030\002 \003(\0132\t.Property\"\036\n\034GetAllDefinedEl" +
-      "ementUpgrades\"\027\n\025GetResourceEndowments\"\037" +
-      "\n\013SetGameName\022\020\n\010gameName\030\001 \002(\t\"-\n\022SetGa" +
-      "meDescription\022\027\n\017gameDescription\030\001 \002(\t\"2",
-      "\n\023SetVictoryCondition\022\033\n\023conditionIdenti" +
-      "fier\030\001 \002(\t\"1\n\022SetDefeatCondition\022\033\n\023cond" +
-      "itionIdentifier\030\001 \002(\t\"@\n\021SetStatusProper" +
-      "ty\022\024\n\014propertyName\030\001 \002(\t\022\025\n\rpropertyValu" +
-      "e\030\002 \002(\001\"1\n\021ResourceEndowment\022\014\n\004name\030\001 \002" +
-      "(\t\022\016\n\006amount\030\002 \002(\001\"L\n\013SetUnitCost\022\023\n\013ele" +
-      "mentName\030\001 \002(\t\022(\n\014elementCosts\030\002 \003(\0132\022.R" +
-      "esourceEndowment\"u\n\024CreateWaveProperties" +
-      "\022!\n\016waveProperties\030\001 \003(\0132\t.Property\022\033\n\023e" +
-      "lementNamesToSpawn\030\002 \003(\t\022\035\n\rspawningPoin",
-      "t\030\003 \002(\0132\006.Point\"T\n\022EditWaveProperties\022\017\n" +
-      "\007waveNum\030\001 \002(\005\022-\n\016editProperties\030\002 \002(\0132\025" +
-      ".CreateWaveProperties\"$\n\021GetWaveProperti" +
-      "es\022\017\n\007waveNum\030\001 \002(\005\"\036\n\034GetPossibleVictor" +
-      "yConditions\"\035\n\033GetPossibleDefeatConditio" +
-      "ns\"\035\n\033GetCurrentVictoryConditions\"\034\n\032Get" +
-      "CurrentDefeatConditions\"\'\n\010Property\022\014\n\004n" +
-      "ame\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"\035\n\005Point\022\t\n\001x\030\001" +
-      " \002(\001\022\t\n\001y\030\002 \002(\001"
+      "ditions\022\024\n\014forAuthoring\030\037 \001(\010\"\014\n\nExportG" +
+      "ame\"\031\n\010SetLevel\022\r\n\005level\030\001 \002(\005\"\034\n\013Delete" +
+      "Level\022\r\n\005level\030\001 \002(\005\"$\n\"GetElementBaseCo" +
+      "nfigurationOptions\"V\n\'GetAuxiliaryElemen" +
+      "tConfigurationOptions\022+\n\030baseConfigurati" +
+      "onChoices\030\001 \003(\0132\t.Property\"C\n\rDefineElem" +
+      "ent\022\023\n\013elementName\030\001 \002(\t\022\035\n\nproperties\030\002" +
+      " \003(\0132\t.Property\"`\n\024DefineElementUpgrade\022" +
+      "\023\n\013elementName\030\001 \002(\t\022\024\n\014upgradeLevel\030\002 \002" +
+      "(\005\022\035\n\nproperties\030\003 \003(\0132\t.Property\"b\n\027Upd",
+      "ateElementDefinition\022\023\n\013elementName\030\001 \002(" +
+      "\t\022\035\n\nproperties\030\002 \003(\0132\t.Property\022\023\n\013retr" +
+      "oactive\030\003 \002(\010\".\n\027DeleteElementDefinition" +
+      "\022\023\n\013elementName\030\001 \002(\t\",\n\025AddElementToInv" +
+      "entory\022\023\n\013elementName\030\001 \002(\t\"\021\n\017GetCurren" +
+      "tLevel\"K\n\027UpdateElementProperties\022\021\n\tele" +
+      "mentId\030\001 \002(\005\022\035\n\nproperties\030\002 \003(\0132\t.Prope" +
+      "rty\"\036\n\034GetAllDefinedElementUpgrades\"\027\n\025G" +
+      "etResourceEndowments\"\037\n\013SetGameName\022\020\n\010g" +
+      "ameName\030\001 \002(\t\"-\n\022SetGameDescription\022\027\n\017g",
+      "ameDescription\030\001 \002(\t\"2\n\023SetVictoryCondit" +
+      "ion\022\033\n\023conditionIdentifier\030\001 \002(\t\"1\n\022SetD" +
+      "efeatCondition\022\033\n\023conditionIdentifier\030\001 " +
+      "\002(\t\"@\n\021SetStatusProperty\022\024\n\014propertyName" +
+      "\030\001 \002(\t\022\025\n\rpropertyValue\030\002 \002(\001\"1\n\021Resourc" +
+      "eEndowment\022\014\n\004name\030\001 \002(\t\022\016\n\006amount\030\002 \002(\001" +
+      "\"L\n\013SetUnitCost\022\023\n\013elementName\030\001 \002(\t\022(\n\014" +
+      "elementCosts\030\002 \003(\0132\022.ResourceEndowment\"u" +
+      "\n\024CreateWaveProperties\022!\n\016waveProperties" +
+      "\030\001 \003(\0132\t.Property\022\033\n\023elementNamesToSpawn",
+      "\030\002 \003(\t\022\035\n\rspawningPoint\030\003 \002(\0132\006.Point\"T\n" +
+      "\022EditWaveProperties\022\017\n\007waveNum\030\001 \002(\005\022-\n\016" +
+      "editProperties\030\002 \002(\0132\025.CreateWavePropert" +
+      "ies\"$\n\021GetWaveProperties\022\017\n\007waveNum\030\001 \002(" +
+      "\005\"\036\n\034GetPossibleVictoryConditions\"\035\n\033Get" +
+      "PossibleDefeatConditions\"\035\n\033GetCurrentVi" +
+      "ctoryConditions\"\034\n\032GetCurrentDefeatCondi" +
+      "tions\"\'\n\010Property\022\014\n\004name\030\001 \002(\t\022\r\n\005value" +
+      "\030\002 \002(\t\"\035\n\005Point\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -25051,7 +25139,7 @@ public final class AuthorClient {
     internal_static_AuthoringClientMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuthoringClientMessage_descriptor,
-        new java.lang.String[] { "ExportGame", "SetLevel", "DeleteLevel", "GetElementBaseConfig", "GetAuxiliaryElementConfig", "DefineElement", "DefineElementUpgrade", "UpdateElementDefinition", "DeleteElementDefinition", "AddElementToInventory", "GetCurrentLevel", "MoveElement", "DeleteElement", "UpdateElementProperties", "GetAllDefinedElementUpgrades", "GetResourceEndowments", "SetGameName", "SetGameDescription", "SetVictoryCondition", "SetDefeatCondition", "SetStatusProperty", "SetResourceEndowments", "SetUnitCost", "CreateWaveProperties", "EditWaveProperties", "GetWaveProperties", "GetPossibleVictoryConditions", "GetPossibleDefeatConditions", "GetCurrentVictoryConditions", "GetCurrentDefeatConditions", });
+        new java.lang.String[] { "ExportGame", "SetLevel", "DeleteLevel", "GetElementBaseConfig", "GetAuxiliaryElementConfig", "DefineElement", "DefineElementUpgrade", "UpdateElementDefinition", "DeleteElementDefinition", "AddElementToInventory", "GetCurrentLevel", "MoveElement", "DeleteElement", "UpdateElementProperties", "GetAllDefinedElementUpgrades", "GetResourceEndowments", "SetGameName", "SetGameDescription", "SetVictoryCondition", "SetDefeatCondition", "SetStatusProperty", "SetResourceEndowments", "SetUnitCost", "CreateWaveProperties", "EditWaveProperties", "GetWaveProperties", "GetPossibleVictoryConditions", "GetPossibleDefeatConditions", "GetCurrentVictoryConditions", "GetCurrentDefeatConditions", "ForAuthoring", });
     internal_static_ExportGame_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ExportGame_fieldAccessorTable = new

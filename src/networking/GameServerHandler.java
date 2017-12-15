@@ -34,6 +34,7 @@ public class GameServerHandler extends AbstractServerHandler {
 				input.readFully(readBytes);
 				byte[] response = getController()
 						.handleRequestAndSerializeResponse(getSocket().getRemoteSocketAddress().hashCode(), readBytes);
+				System.out.println("Writing response of length " + response.length);
 				writeBytes(response);
 			}
 		}

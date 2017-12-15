@@ -1,6 +1,5 @@
 package networking;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,9 +7,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import engine.play_engine.PlayController;
 import networking.protocol.PlayerClient.ClientMessage;
-import networking.protocol.PlayerClient.LoadLevel;
-import networking.protocol.PlayerServer.LevelInitialized;
-import networking.protocol.PlayerServer.NumberOfLevels;
 import networking.protocol.PlayerServer.ReadyForNextLevel;
 import networking.protocol.PlayerServer.ServerMessage;
 
@@ -30,8 +26,6 @@ import networking.protocol.PlayerServer.ServerMessage;
  *
  */
 class MultiPlayerController extends AbstractServerController {
-
-	private final String LOAD_LEVEL_ERROR_NOT_READY = "Your peers are not yet ready to load this level";
 
 	private Map<String, PlayController> roomsToEngines = new HashMap<>();
 
@@ -67,18 +61,6 @@ class MultiPlayerController extends AbstractServerController {
 		if (clientMessage.hasResumeGame()) {
 			return handleResumeGame(clientId, clientMessage, serverMessageBuilder);
 		}
-		if (clientMessage.hasGetInventory()) {
-			return getInventory(clientId, clientMessage, serverMessageBuilder);
-		}
-		if (clientMessage.hasGetTemplateProperties()) {
-			return getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
-		}
-		if (clientMessage.hasGetAllTemplateProperties()) {
-			return getAllTemplateProperties(clientId, clientMessage, serverMessageBuilder);
-		}
-		if (clientMessage.hasGetElementCosts()) {
-			return getElementCosts(clientId, clientMessage, serverMessageBuilder);
-		}
 		return handleLateGameRequestAndSerializeResponse(clientId, clientMessage, serverMessageBuilder);
 	}
 
@@ -89,15 +71,6 @@ class MultiPlayerController extends AbstractServerController {
 		}
 		if (clientMessage.hasCheckReadyForNextLevel()) {
 			return checkReadyForNextLevel(clientId, clientMessage, serverMessageBuilder);
-		}
-		if (clientMessage.hasLoadLevel()) {
-			return loadLevel(clientId, clientMessage, serverMessageBuilder);
-		}
-		if (clientMessage.hasGetLevelElements()) {
-			return getLevelElements(clientId, clientMessage, serverMessageBuilder);
-		}
-		if (clientMessage.hasGetNumLevels()) {
-			return getNumberOfLevels(clientId, clientMessage, serverMessageBuilder);
 		}
 		return ServerMessage.getDefaultInstance().toByteArray();
 	}
@@ -128,31 +101,6 @@ class MultiPlayerController extends AbstractServerController {
 		return serverMessageBuilder.setUpdate(playController.packageStatusUpdate()).build().toByteArray();
 	}
 
-	private byte[] getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder.setInventory(getEngineForClient(clientId).packageInventory()).build().toByteArray();
-	}
-
-	private byte[] getTemplateProperties(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder
-				.addTemplateProperties(getEngineForClient(clientId)
-						.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()))
-				.build().toByteArray();
-	}
-
-	private byte[] getAllTemplateProperties(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder
-				.addAllTemplateProperties(getEngineForClient(clientId).packageAllTemplateProperties()).build()
-				.toByteArray();
-	}
-
-	private byte[] getElementCosts(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder.addAllElementCosts(getEngineForClient(clientId).packageAllElementCosts()).build()
-				.toByteArray();
-	}
-
 	private byte[] upgradeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
 			throws ReflectiveOperationException {
 		PlayController playController = getEngineForClient(clientId);
@@ -168,53 +116,6 @@ class MultiPlayerController extends AbstractServerController {
 				.build().toByteArray();
 	}
 
-	private byte[] loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
-		LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
-		LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
-		String roomName = getGameRoomNameOfClient(clientId);
-		int levelToLoad = loadLevelRequest.getLevel();
-		if (!checkIfWaitingRoomIsFull(roomName)) {
-			// not ready to load
-			return serverMessageBuilder
-					.setLevelInitialized(levelInitializationBuilder.setError(LOAD_LEVEL_ERROR_NOT_READY).build())
-					.build().toByteArray();
-		}
-		String gameName = retrieveGameNameFromRoomName(roomName);
-		try {
-			return serverMessageBuilder
-					.setLevelInitialized(getEngineForClient(clientId).loadOriginalGameState(gameName, levelToLoad))
-					.build().toByteArray();
-		} catch (IOException e) {
-			return serverMessageBuilder.setLevelInitialized(LevelInitialized.getDefaultInstance()).build()
-					.toByteArray();
-		}
-	}
-
-	private byte[] getLevelElements(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder
-				.addAllLevelSprites(
-						getEngineForClient(clientId).getLevelSprites(clientMessage.getGetLevelElements().getLevel()))
-				.build().toByteArray();
-	}
-
-	private byte[] getNumberOfLevels(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
-		return serverMessageBuilder
-				.setNumLevels(NumberOfLevels.newBuilder()
-						.setNumLevels(getEngineForClient(clientId).getNumLevelsForGame()).build())
-				.build().toByteArray();
-	}
-
-	private boolean joinAndCheckIfWaitingRoomIsFull(String roomName) {
-		Map<String, Integer> waitingRoom = getWaitingRoom();
-		waitingRoom.put(roomName, waitingRoom.getOrDefault(roomName, 0) + 1);
-		return checkIfWaitingRoomIsFull(roomName);
-	}
-
-	private boolean checkIfWaitingRoomIsFull(String roomName) {
-		return getWaitingRoom().get(roomName) < getRoomSize(roomName);
-	}
 
 	@Override
 	protected PlayController getEngineForClient(int clientId) {
