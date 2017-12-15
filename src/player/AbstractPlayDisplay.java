@@ -337,7 +337,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		if (myController.isLevelCleared()) {
 			System.out.println("level: " + level);
 			// launchTransitorySplashScreen();
-			changeLevel(level + 1);
+			changeLevel(++level);
 			hud.initialize(myController.getResourceEndowments());
 			
 			return;

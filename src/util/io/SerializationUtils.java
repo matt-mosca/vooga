@@ -410,6 +410,7 @@ public class SerializationUtils {
 		Map<String, String> serializedLevelData = gsonBuilder.create()
 				.fromJson(new JsonReader(new StringReader(serializedGameData)), Map.class);
 		String levelString = Integer.toString(level);
+		System.out.printf("level %d", level);
 		if (!serializedLevelData.containsKey(levelString)) {
 			throw new IllegalArgumentException();
 		}

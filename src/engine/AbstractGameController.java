@@ -160,7 +160,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			Collections.sort(sortedWaveNames);
 			for (String waveName : sortedWaveNames) {
 				try {
-					System.out.println(waveName + " " + sortedWaveNames + " " + wavesInLevel);
+//					System.out.println(waveName + " " + sortedWaveNames + " " + wavesInLevel);
 				
 					waves.add(generatePlacedElement(waveName, wavesInLevel.get(waveName)));
 				} catch (ReflectiveOperationException e) {
@@ -169,6 +169,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			}
 			levelWaves.add(translateToOneBasedIndexing(i), waves);
 		}
+		System.out.println("LEVELWAVETEMPLATES:"+levelWaveTemplates);
 	}
 
 	public Inventory packageInventory() {
@@ -186,12 +187,9 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	@Deprecated
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		try {
-			return ioController.getNumberOfLevelsForGame(gameName, forOriginalGame);			
-		} catch (FileNotFoundException e) {
-			return 0;
-		}
+			return getNumLevelsForGame();
 	}
+	
 	
 	@Override
 	public int getNumLevelsForGame() {
@@ -491,10 +489,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
-		System.out.println("\n\n\n\n\n");
-		System.out.println(auxiliarySpriteConstructionObjects.keySet().toString());
-		System.out.println(auxiliarySpriteConstructionObjects.values().toString());
-		System.out.println("\n\n\n\n\n");
+//		System.out.println("\n\n\n\n\n");
+//		System.out.println(auxiliarySpriteConstructionObjects.keySet().toString());
+//		System.out.println(auxiliarySpriteConstructionObjects.values().toString());
+//		System.out.println("\n\n\n\n\n");
 		GameElement element = gameElementFactory.generateElement(elementTemplateName,
 				auxiliarySpriteConstructionObjects);
 		return element;
@@ -624,13 +622,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return new ArrayList<>(gameConditionsReader.getPossibleDefeatConditions()).get(0);
 	}
 
-	public static void main(String[] args) {
-		AuthoringController tester = new AuthoringController();
-		System.out.println(tester.getLevelHealth(1));
-	}
-
 	public int translateToOneBasedIndexing(int index) {
 		return index+1;
 	}
-
 }
