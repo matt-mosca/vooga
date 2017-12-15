@@ -32,6 +32,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import main.Main;
 import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
@@ -60,6 +61,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	private final int UP = -5;
 	private final int RIGHT = 5;
 	private final int LEFT = -5;
+	private final int RETURN_BUTTON_Y = 600;
 	private final String EXTENSION_KEY = "voogExtension";
 	private final String PLAY_DISPLAY_ALERT_RESOURCE_CONTENT = "lackOfResource";
 	private final String PLAY_DISPLAY_ALERT_RESOURCE_TITLE = "resourceError";
@@ -69,6 +71,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	private final String PURCHASE_PROMPT_KEY = "purchasePrompt";
 	private final String UPGRADE_RESOURCE_KEY = "upgradeResource";
 	private final String UPGRADE_PROMPT_KEY = "upgradePrompt";
+	private final String RETURN_TO_MAIN = "returnMain";
 
 	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
@@ -300,7 +303,10 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		// play.setText("Play");
 		// rootAdd(play);
 		// play.setLayoutY(pause.getLayoutY() + 30);
-
+		Button returnToMainButton = new Button(PropertiesGetter.getProperty(RETURN_TO_MAIN));
+		returnToMainButton.setOnAction(e->returnToMain());
+		returnToMainButton.setLayoutY(RETURN_BUTTON_Y);
+		rootAdd(returnToMainButton);
 		rootAdd(speedControl.getPlay());
 		speedControl.getPlay().setLayoutY(myInventoryToolBar.getLayoutY() + 450);
 		rootAdd(speedControl.getPause());
@@ -492,5 +498,18 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 
 	protected PlayModelController getMyController() {
 		return myController;
+	}
+	
+	protected void returnToMain() {
+		mediaPlayer.stop();
+		VBox newProject = new VBox();
+		Scene newScene = new Scene(newProject, 400, 400);
+		Stage myStage = new Stage();
+		myStage.setScene(newScene);
+		myStage.show();
+		Main restart = new Main();
+		System.out.println("HEEEP");
+		restart.start(myStage);
+		getStage().close();
 	}
 }
