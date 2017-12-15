@@ -208,7 +208,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		//PlayController has method that take int unique id return void. call manager that handles string return 
 	
 	public void triggerFire(int elementId) {
-		elementManager.triggeredFire(elementId);
+		elementManager.triggeredFire(this.getSpriteIdMap().get(elementId));
 	}
 
 	@Override
