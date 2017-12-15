@@ -195,7 +195,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		setLevel(level);
 		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
 		elementManager.setCurrentElements(getLevelSprites().get(level));
-		List<GameElement> levelWaves = getLevelWaves().get(getCurrentLevel()-1);
+		List<GameElement> levelWaves = getLevelWaves().get(getCurrentLevel());
 		elementManager.setCurrentWaves(levelWaves);
 		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
 		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
@@ -236,7 +236,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private boolean dispatchBooleanMethod(Method chosenBooleanMethod) {
 		try {
-			System.out.println(chosenBooleanMethod);
 			return (boolean) chosenBooleanMethod.invoke(this, new Object[] {});
 		} catch (ReflectiveOperationException e) {
 			return false;

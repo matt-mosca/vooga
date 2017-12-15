@@ -106,7 +106,6 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
         // myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage,
         // this);
         clientMessageUtils = new ClientMessageUtils();
-        System.out.println("Initialized clientMessageUtils");
         myLeftBar = new VBox();
         idToTemplate = new HashMap<>();
         hud = new HUD(width);
@@ -132,7 +131,6 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
     @Override
     public void startDisplay() {
         myInventoryToolBar.initializeInventory();
-        System.out.println("Sucessfully initialized inventory");
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
@@ -175,14 +173,11 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
     public void initializeGameState() {
         List<String> games = new ArrayList<>();
         try {
-            System.out.println("Getting available games from controller");
             for (String title : myController.getAvailableGames().keySet()) {
                 games.add(title);
             }
             Collections.sort(games);
             ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Saved games", games);
-            loadChoices.setTitle("Load Game");
-            loadChoices.setHeaderText("Choose a saved game.");
             loadChoices.setContentText(null);
 
             Optional<String> result = loadChoices.showAndWait();

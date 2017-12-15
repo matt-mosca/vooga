@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import java.util.ResourceBundle;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -26,7 +27,7 @@ public class LevelDisplay {
 	private int myNumber;
 	private Stage myStage;
 	private LevelTab myLv;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private ResourceDisplay resources;
 	private ResourceBundle rb;
 	private Scene myScene;
@@ -36,7 +37,7 @@ public class LevelDisplay {
 	
 	
 	
-	public LevelDisplay(int n, LevelTab lv, AuthoringController controller) {
+	public LevelDisplay(int n, LevelTab lv, AuthoringModelController controller) {
 		myRoot = new BorderPane();
 		centerPane = new VBox();
 		resources = new ResourceDisplay(controller);
@@ -73,7 +74,7 @@ public class LevelDisplay {
 		myNumber-=1;
 	}
 
-	public AuthoringController getAuthor() {
+	public AuthoringModelController getAuthor() {
 		// TODO Auto-generated method stub
 		return myController;
 	}
