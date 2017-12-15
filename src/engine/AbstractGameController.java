@@ -109,6 +109,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		// Note : saveName overrides previously set gameName if different - need to
 		// handle this?
 		// Serialize separately for every level
+		System.out.println("Save name: " + saveName);
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (int level = 1; level < getLevelStatuses().size(); level++) {
 			serializedLevelsData.put(level,

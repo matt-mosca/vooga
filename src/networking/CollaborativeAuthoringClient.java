@@ -48,6 +48,7 @@ import networking.protocol.AuthorClient.SetGameDescription;
 import networking.protocol.AuthorClient.SetGameName;
 import networking.protocol.AuthorServer.AuthoringNotification;
 import networking.protocol.AuthorServer.AuthoringServerMessage;
+import networking.protocol.PlayerServer.LevelInitialized;
 import util.protocol.ServerMessageUtils;
 
 public class CollaborativeAuthoringClient extends AbstractClient implements AuthoringModelController {
@@ -429,6 +430,25 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 						.map(entry -> Property.newBuilder().setName(entry.getKey()).setValue(entry.getValue()).build())
 						.collect(Collectors.toList()))
 				.build();
+	}
+	
+	public static void main(String[] args) {
+		CollaborativeAuthoringClient testClient = new CollaborativeAuthoringClient();
+		testClient.launchNotificationListener();
+		Map<String, String> games = testClient.getAvailableGames();
+		System.out.println("Games:");
+		String gameToJoin = "";
+		for (String game : games.keySet()) {
+			System.out.println(game);
+			gameToJoin = game;
+		}
+		System.out.println("Creating game room : " + gameToJoin);
+		String roomCreated = testClient.createGameRoom(gameToJoin, "Adi_Game");
+		System.out.println("Created game room " + roomCreated);
+		testClient.joinGameRoom(roomCreated, "Adi");
+		System.out.println("Joined game room: " + roomCreated);
+		LevelInitialized levelData = testClient.launchGameRoom();
+		System.out.println("Level data: " + levelData.toString());
 	}
 
 }
