@@ -171,6 +171,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 
 	@Override
 	public NewSprite placeElement(String elementName, Point2D startCoordinates) {
+		System.out.println("Placing element with X " + startCoordinates.getX() + "Y: " + startCoordinates.getY());
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setPlaceElement(PlaceElement.newBuilder().setElementName(elementName)
 						.setXCoord(startCoordinates.getX()).setYCoord(startCoordinates.getY()).build())
@@ -282,14 +283,14 @@ public abstract class AbstractClient implements AbstractGameModelController {
 			} catch (InvalidProtocolBufferException e) {
 				try {
 					AuthoringClientMessage msg = AuthoringClientMessage.parseFrom(requestBytes);
-					System.out.println("Outgoing msg: " + msg.toString());				
+					System.out.println("Outgoing msg: " + msg.toString());
 				} catch (InvalidProtocolBufferException e1) {
 				}
-			} 
-				outputWriter.writeInt(requestBytes.length);
-				outputWriter.write(requestBytes);			
+			}
+			outputWriter.writeInt(requestBytes.length);
+			outputWriter.write(requestBytes);
 		} catch (IOException e) {
-			//e.printStackTrace();// TEMP
+			// e.printStackTrace();// TEMP
 		}
 	}
 
@@ -308,14 +309,14 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	protected DataOutputStream getOutput() {
 		return outputWriter;
 	}
-	
+
 	protected <T> T pollFromCustomMessageQueue(Queue<T> queue) {
 		synchronized (queue) {
 			try {
 				while (queue.isEmpty()) {
 					queue.wait();
 				}
-				return queue.poll();				
+				return queue.poll();
 			} catch (InterruptedException e) {
 				return null;
 			}
@@ -337,7 +338,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 				appendNotificationToQueue(serverMessage.getNotification(), notificationQueue);
 			} else {
 				appendMessageToQueue(serverMessage, messageQueue);
-			}		
+			}
 			System.out.println("Successfully appended common message");
 			return true;
 		} catch (InvalidProtocolBufferException e) {
@@ -376,7 +377,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 				}
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace(); // TEMP
-				//System.exit(1); // TEMP
+				// System.exit(1); // TEMP
 			}
 		}
 	}
@@ -538,7 +539,7 @@ public abstract class AbstractClient implements AbstractGameModelController {
 			socketException.printStackTrace();
 		}
 	}
-	
+
 	private boolean isAuthoringMessage(byte[] requestBytes) {
 		try {
 			AuthoringServerMessage authoringServerMessage = AuthoringServerMessage.parseFrom(requestBytes);

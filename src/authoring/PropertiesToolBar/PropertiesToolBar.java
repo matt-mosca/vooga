@@ -166,8 +166,10 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			myController.deleteElementDefinition(imageView.getId());
 			tab.removeItem(imageView);
 		}else {
+			Map<String, Map<String, Object>> templatePropertiesMap = myController.getAllDefinedTemplateProperties();
+			System.out.println("Size of template properties map: " + templatePropertiesMap.keySet().size());
 			String tabType =
-					myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName").toString();
+					templatePropertiesMap.get(imageView.getId()).get("tabName").toString();
 			if (tabType.equals("Towers")) {
 				newPane(imageView, true);
 			}else {

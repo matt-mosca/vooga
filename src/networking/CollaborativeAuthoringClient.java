@@ -374,6 +374,8 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	private Map<String, List<String>> handleElementBaseConfigurationOptionsResponse(
 			AuthoringServerMessage authoringServerMessage) {
 		Map<String, List<String>> configOptions = new HashMap<>();
+		System.out.println("HANDLING BASE CONFIG OPTIONS RESPONSE");
+		System.out.println(authoringServerMessage.toString());
 		authoringServerMessage.getElementBaseConfigurationOptionsList()
 				.forEach(config -> configOptions.put(config.getConfigKey(), config.getConfigOptionsList()));
 		return configOptions;

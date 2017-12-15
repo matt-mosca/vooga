@@ -31,7 +31,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	// The conditions don't take any arguments, at least for now
 	private final Class[] CONDITION_METHODS_PARAMETER_CLASSES = new Class[] {};
-
+	private final int HEALTH_LOSS_PER_ESCAPE = 5;
+	
 	private ElementManager elementManager;
 	private GameConditionsReader conditionsReader;
 	private boolean inPlay;
@@ -119,6 +120,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			// Package these changes into an Update message
 			latestUpdate = packageSpriteUpdates(newlyGeneratedElements, updatedElements, deadElements);
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
+			deadElements.stream().filter(element -> element.reachedTarget()).forEach(element -> decrementHealth(HEALTH_LOSS_PER_ESCAPE));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
 			elementManager.clearUpdatedElements();
@@ -127,6 +129,11 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		}
 		// If not in play, only one of the status properties could have changed, yes?
 		return packageStatusUpdate();
+	}
+	
+	private void decrementHealth(int amount) {
+		int currentHealth = getLevelHealths().get(getCurrentLevel());
+		getLevelHealths().set(getCurrentLevel(), currentHealth - amount);
 	}
 
 	@Override

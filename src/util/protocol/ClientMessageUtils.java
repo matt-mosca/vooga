@@ -76,6 +76,12 @@ public class ClientMessageUtils {
 		return idsToImageViews.remove(spriteDeletion.getSpriteId());
 	}
 
+	public void updateSpriteDisplay(SpriteUpdate updatedSprite) {
+		ImageView imageViewForSprite = idsToImageViews.get(updatedSprite.getSpriteId());
+		imageViewForSprite.setX(updatedSprite.getNewX());
+		imageViewForSprite.setY(updatedSprite.getNewY());
+	}
+	
 	private void registerNewlyGeneratedSprites(Update update) {
 		update.getNewSpritesList().forEach(newSprite -> {
 			newImageViews.add(idsToImageViews.get(addNewSpriteToDisplay(newSprite)));
@@ -88,11 +94,6 @@ public class ClientMessageUtils {
 		});
 	}
 
-	private void updateSpriteDisplay(SpriteUpdate updatedSprite) {
-		ImageView imageViewForSprite = idsToImageViews.get(updatedSprite.getSpriteId());
-		imageViewForSprite.setX(updatedSprite.getNewX());
-		imageViewForSprite.setY(updatedSprite.getNewY());
-	}
 
 
 }
