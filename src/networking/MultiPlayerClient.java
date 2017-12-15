@@ -126,6 +126,11 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	}
 
 	@Override
+	public void triggerFire(int elementId) {
+		// do nothing, no time
+	}
+
+	@Override
 	public void upgradeElement(int elementId) throws IllegalArgumentException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setUpgradeElement(UpgradeElement.newBuilder().setSpriteId(elementId).build()).build().toByteArray());

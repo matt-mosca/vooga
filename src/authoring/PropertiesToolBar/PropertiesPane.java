@@ -35,9 +35,9 @@ public class PropertiesPane extends TabPane {
 		this.getSelectionModel().selectedItemProperty().addListener(e->{
 			if(this.getSelectionModel().getSelectedItem() == addTab) {
 				Map<String, Object> lastUpdateProperties = (upgradeSize > 1) ?
-						myController.getAllDefinedElementUpgrades().get(myImageView.getId()).get(upgradeSize-1) :
+						myController.getAllDefinedElementUpgrades().get(myImageView.getId()).get(upgradeSize-2) :
 							myController.getAllDefinedTemplateProperties().get(myImageView.getId());
-				myController.defineElementUpgrade(myImageView.getId(), upgradeSize, lastUpdateProperties);
+				myController.defineElementUpgrade(myImageView.getId(), upgradeSize-2, lastUpdateProperties);
 				addUpgrade(lastUpdateProperties);
 				this.getSelectionModel().select(upgradeSize);
 			}
@@ -54,18 +54,19 @@ public class PropertiesPane extends TabPane {
 	}
 	
 	private void addUpgrade(Map<String, Object> propertyMap) {
-		PropertiesTab newTab = (projectile) ? new PropertiesTabWithProjectile(myDisplay, myProperties, clone(myImageView), propertyMap, myController) 
-				: new PropertiesTab(myDisplay, myProperties, clone(myImageView), propertyMap, myController);
+		PropertiesTab newTab = (projectile) ? new PropertiesTabWithProjectile(myDisplay, myProperties, clone(myImageView), propertyMap, myController, upgradeSize) 
+				: new PropertiesTab(myDisplay, myProperties, clone(myImageView), propertyMap, myController, upgradeSize);
 		if(this.getTabs().isEmpty()) {
 			this.getTabs().add(tabMaker.buildTab("Base Level", null, newTab, this));
 			this.getTabs().get(0).setClosable(false);
 			
 			this.getTabs().add(addTab);
 		}else {
-			Tab tab = tabMaker.buildTab("Upgrade " + ++upgradeSize, null, newTab, this);
+			Tab tab = tabMaker.buildTab("Upgrade " + upgradeSize, null, newTab, this);
 			tab.setOnClosed(e->{ upgradeSize--; });
 			this.getTabs().add(this.getTabs().size()-1, tab);
 		}
+		upgradeSize++;
 	}
 	
 	private ImageView clone(ImageView imageView) {

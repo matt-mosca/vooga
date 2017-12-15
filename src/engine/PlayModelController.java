@@ -192,4 +192,12 @@ public interface PlayModelController extends AbstractGameModelController {
      * @throws IllegalArgumentException if the given ID does not correspond to a placed game element
      */
     LocationProperty getElementLocationProperty(int elementId);
+    
+    /**
+     * Prompts a particular element to fire it's projectile if a firing strategy is assigned
+     * 
+     * @param elementId
+     */
+    void triggerFire(int elementId);
+    	
 }

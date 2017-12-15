@@ -36,7 +36,7 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 		double angle = Math.toRadians(this.getAngle());
 		angle += angularVelocity;
 		setTargetCoordinates(radius * Math.cos(angle),radius * Math.sin(angle));
-		//setVelocityComponents(angle);
+		setVelocityComponents(angle);
 		setX(this.getCurrentX()+ getXVelocity());
 		setY(this.getCurrentY()+ getYVelocity());
 		setAngle(Math.toDegrees(angle));
@@ -62,6 +62,19 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 	private void setInitialLocation() {
 		this.setX(Math.cos(angle)*radius);
 		this.setY(Math.sin(angle)*radius);
+	}
+	
+	public static void main(String[] args) throws InterruptedException {
+		Point2D startingLoc = new Point2D(0,0);
+		double radius = 1;
+		double velocity = 5;
+		double initialAngle =0;
+		CircularMovementStrategy circle = new CircularMovementStrategy(startingLoc, radius, 
+													initialAngle, radius);
+		for(int i=0;i<1000;i++) {
+			System.out.println(circle.move());
+			Thread.sleep(1000);
+		}
 	}
 
 }

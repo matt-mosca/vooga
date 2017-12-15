@@ -37,6 +37,7 @@ import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.Update;
+import util.PropertiesGetter;
 import util.protocol.ClientMessageUtils;
 
 import java.io.IOException;
@@ -51,12 +52,13 @@ import java.util.Properties;
 
 public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final String GAME_FILE_KEY = "displayed-game-name";
+	private final String EXTENSION_KEY = "voogExtension";
 	private final int DOWN = 5;
 	private final int UP = -5;
 	private final int RIGHT = 5;
 	private final int LEFT = -5;
-	private final String PLAY_DISPLAY_ALERT_RESOURCE_CONTENT = "You do not have the funds for this item.";
-	private final String PLAY_DISPLAY_ALERT_RESOURCE_TITLE = "Resource Error!";
+	private final String PLAY_DISPLAY_ALERT_RESOURCE_CONTENT = "lackOfResource";
+	private final String PLAY_DISPLAY_ALERT_RESOURCE_TITLE = "resourceError";
 
 	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
@@ -199,7 +201,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 			try {
 				Properties exportedGameProperties = new Properties();
 				exportedGameProperties.load(in);
-				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
+				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + PropertiesGetter.getDoubleProperty(EXTENSION_KEY);
 				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
 				initializeLevelSprites();
 			} catch (IOException ioException) {
@@ -250,8 +252,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		for (ImageView spriteImage : clientMessageUtils.getNewImageViews()) {
 			myPlayArea.getChildren().add(spriteImage);
 			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-				// TODO add method here that let's you mark the object via the controller if we
-				// want to play whack-a-mole
+				deleteClicked(Integer.parseInt(spriteImage.getId()));
 			});
 		}
 	}
@@ -330,7 +331,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		if (myController.isLevelCleared()) {
 			System.out.println("level: " + level);
 			// launchTransitorySplashScreen();
-			changeLevel(level);
+			changeLevel(++level);
 			hud.initialize(myController.getResourceEndowments());
 			
 			return;
@@ -406,22 +407,22 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	private void upgradeClicked(int id) {
-		// if (!checkFunds(idToTemplate.get(id)))
-		// return;
-		// Alert costDialog = new Alert(AlertType.CONFIRMATION);
-		// costDialog.setTitle("Upgrade Resource");
-		// costDialog.setHeaderText(null);
-		// costDialog.setContentText("Would you like to upgrade this object?");
-		//
-		// Optional<ButtonType> result = costDialog.showAndWait();
-		// if (result.get() == ButtonType.OK) {
-		// try {
-		// myController.upgradeElement(id);
-		// } catch (IllegalArgumentException | ReflectiveOperationException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
+		 if (!checkFunds(idToTemplate.get(id)))
+			 return;
+		 Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		 costDialog.setTitle("Upgrade Resource");
+		 costDialog.setHeaderText(null);
+		 costDialog.setContentText("Would you like to upgrade this object?");
+		
+		 Optional<ButtonType> result = costDialog.showAndWait();
+		 if (result.get() == ButtonType.OK) {
+		 try {
+		 myController.upgradeElement(id);
+		 } catch (IllegalArgumentException | ReflectiveOperationException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
+		 }
 	}
 
 	private void deleteClicked(int id) {
@@ -460,7 +461,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	private void launchInvalidResources() {
-		new AlertFactory(PLAY_DISPLAY_ALERT_RESOURCE_CONTENT,null,PLAY_DISPLAY_ALERT_RESOURCE_TITLE,AlertType.ERROR);
+		new AlertFactory(PropertiesGetter.getProperty(PLAY_DISPLAY_ALERT_RESOURCE_CONTENT),null,PropertiesGetter.getProperty(PLAY_DISPLAY_ALERT_RESOURCE_TITLE),AlertType.ERROR);
 	}
 
 	public String getGameState() {
