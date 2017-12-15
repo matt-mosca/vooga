@@ -252,8 +252,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		for (ImageView spriteImage : clientMessageUtils.getNewImageViews()) {
 			myPlayArea.getChildren().add(spriteImage);
 			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-				// TODO add method here that let's you mark the object via the controller if we
-				// want to play whack-a-mole
+				deleteClicked(Integer.parseInt(spriteImage.getId()));
 			});
 		}
 	}
