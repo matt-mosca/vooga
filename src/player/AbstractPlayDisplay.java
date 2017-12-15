@@ -247,8 +247,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		for (ImageView spriteImage : clientMessageUtils.getNewImageViews()) {
 			myPlayArea.getChildren().add(spriteImage);
 			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-				// TODO add method here that let's you mark the object via the controller if we
-				// want to play whack-a-mole
+				deleteClicked(Integer.parseInt(spriteImage.getId()));
 			});
 		}
 	}
@@ -313,24 +312,24 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		 * if (myController.isReadyForNextLevel()) { hideTransitorySplashScreen();
 		 * initializeLevelSprites(); // animation.play(); myController.resume(); }
 		 */
-		if (myController.isLevelCleared()) {
-			level++;
-			animation.pause();
-			myController.pause();
-			// launchTransitorySplashScreen();
-			hud.initialize(myController.getResourceEndowments());
-		}
-		if (myController.isLost()) {
-			// launch lost screen
-			this.getStage().close();
-		}
-		if (myController.isWon()) {
-			// launch win screen
-			animation.pause();
-			myController.pause();
-			launchWinScreen();
-			return;
-		}
+//		if (myController.isLevelCleared()) {
+//			level++;
+//			animation.pause();
+//			myController.pause();
+//			// launchTransitorySplashScreen();
+//			hud.initialize(myController.getResourceEndowments());
+//		}
+//		if (myController.isLost()) {
+//			// launch lost screen
+//			this.getStage().close();
+//		}
+//		if (myController.isWon()) {
+//			// launch win screen
+//			animation.pause();
+//			myController.pause();
+//			launchWinScreen();
+//			return;
+//		}
 		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		updateSprites();

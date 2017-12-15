@@ -75,6 +75,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_X_LOCATION = 620;
 	private static final double GRID_Y_LOCATION = 20;
 	private final String PATH_DIRECTORY_NAME = "authoring/";
+	private final String HEIGHT = "Height";
+	private final String WIDTH = "Width";
 	
 	private AuthoringModelController controller;
 	private StaticObjectToolBar myLeftToolBar;
@@ -281,8 +283,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	private void updateObjectSize(StaticObject object) {
 		Map<String, Object> newProperties = controller.getTemplateProperties(object.getElementName());
-		newProperties.put("imageWidth", object.getSize());
-		newProperties.put("imageHeight", object.getSize());
+		newProperties.put(WIDTH, object.getSize());
+		newProperties.put(HEIGHT, object.getSize());
 		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
 	
