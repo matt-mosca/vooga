@@ -20,9 +20,9 @@ public abstract class ScreenDisplay {
 
     protected static final int PLAYWIDTH = 1000;
     protected static final int PLAYHEIGHT = 700;
-    public double FRAMES_PER_SECOND = 60;
-	public double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
-	public double SECOND_DELAY = 100.0 / FRAMES_PER_SECOND;
+    public static final double FRAMES_PER_SECOND = 60;
+	public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+	public static final double SECOND_DELAY = 100.0 / FRAMES_PER_SECOND;
 	private Droppable droppable;
 	private KeyFrame frame;
 	private Timeline animation = new Timeline();
