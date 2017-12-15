@@ -2,6 +2,7 @@ package engine.play_engine;
 
 import engine.AbstractGameController;
 import engine.PlayModelController;
+import engine.behavior.movement.LocationProperty;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.LevelInitialized;
@@ -148,6 +149,14 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		 * getIdsCollectionFromSpriteCollection(levelGameElements);
 		 */
 		return null;
+	}
+
+	@Override
+	public LocationProperty getElementLocationProperty(int elementId) throws IllegalArgumentException {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			throw new IllegalArgumentException();
+		}
+		return getSpriteIdMap().get(elementId).getLocationProperty();
 	}
 
 	@Override

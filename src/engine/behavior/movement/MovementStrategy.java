@@ -50,7 +50,7 @@ public interface MovementStrategy {
      *
      * @return point object that changes with movement
      */
-    TrackingPoint getPositionForTracking();
+    LocationProperty getPositionForTracking();
     
     /**
      * Get if the Sprite has reached its destination
