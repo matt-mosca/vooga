@@ -187,6 +187,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 		// GameElement newWave = getSpriteIdMap().get(newSpriteId);
 		// getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
 	}
+	
+	@Override
+	public int getNumWavesForLevel(int level) {
+		return getLevelWaves().get(getCurrentLevel()).size();
+	}
 
 	@Override
 	public Map<String, Object> getWaveProperties(int waveNum) {

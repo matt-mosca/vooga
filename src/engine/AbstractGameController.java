@@ -186,7 +186,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	@Deprecated
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		return  getNumLevelsForGame();
+		try {
+			return ioController.getNumberOfLevelsForGame(gameName, forOriginalGame);			
+		} catch (FileNotFoundException e) {
+			return 0;
+		}
 	}
 	
 	@Override
@@ -327,6 +331,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	@Override
 	public int getLevelTimeLimit(int level) {
 		return getLevelTimeLimits().get(level);
+	}
+	
+	@Override
+	public int getNumWavesForLevel(int level) {
+		return getLevelWaves().get(getCurrentLevel()).size();
 	}
 	
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)
