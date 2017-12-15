@@ -156,6 +156,7 @@ public class ElementManager {
 	}
 
 	boolean allWavesComplete() { return (currentWave == null && allEnemiesDead()); }
+	
 
 	boolean enemyReachedTarget() {
 		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
