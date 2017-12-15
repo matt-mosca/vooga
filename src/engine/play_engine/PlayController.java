@@ -203,6 +203,13 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public Update packageStatusUpdate() {
 		return getServerMessageUtils().packageStatusUpdate(levelCleared, isWon, isLost, inPlay, getCurrentLevel());
 	}
+	
+	//PlayModel controller to add to interface
+		//PlayController has method that take int unique id return void. call manager that handles string return 
+	
+	public void triggerFire(int elementId) {
+		elementManager.triggeredFire(elementId);
+	}
 
 	@Override
 	protected void assertValidLevel(int level) throws IllegalArgumentException {
@@ -308,7 +315,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			throw new IllegalArgumentException();
 		}
 	}
-
+	
 	// TODO - Move conditions to separate file?
 
 	// TODO (extension) - for multiplayer, take a playerId parameter in this method
