@@ -43,7 +43,7 @@ public class GamePointSelector extends VBox{
 	}
 	
 	
-	public void show() {
+	void show() {
 		setVisible(true);
 	}
 	
@@ -77,6 +77,7 @@ public class GamePointSelector extends VBox{
 			myController.setLevelPointQuota(points);
 		}
 		amount.clear();
+		myController.setLevel(currLv);
 	}
 	
 	public void createCheckBoxes(ArrayList<Integer> lvs) {

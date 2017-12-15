@@ -162,7 +162,7 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *             if the element's template did not define all the necessary
 	 *             properties
 	 */
-	NewSprite placeElement(String elementName, Point2D startCoordinates) throws ReflectiveOperationException;
+	NewSprite placeElement(String elementName, Point2D startCoordinates);
 
 	/**
 	 * Add element of given name

@@ -35,10 +35,8 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 	public Point2D move() {
 		double angle = Math.toRadians(this.getAngle());
 		angle += angularVelocity;
-		setTargetCoordinates(radius * Math.cos(angle),radius * Math.sin(angle));
-		setVelocityComponents(angle);
-		setX(this.getCurrentX()+ getXVelocity());
-		setY(this.getCurrentY()+ getYVelocity());
+		setX(radius * Math.cos(angle));
+		setY(radius * Math.sin(angle));
 		setAngle(Math.toDegrees(angle));
 		return getCurrentCoordinates();
 	}
@@ -54,23 +52,13 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 		return false;
 	}
 	
-	/**
-	 * Sets the initial starting location of the 
-	 * Will always return false since the circle is continuous.
-	 * 
-	 * */
-	private void setInitialLocation() {
-		this.setX(Math.cos(angle)*radius);
-		this.setY(Math.sin(angle)*radius);
-	}
-	
 	public static void main(String[] args) throws InterruptedException {
 		Point2D startingLoc = new Point2D(0,0);
-		double radius = 1;
+		double radius = 100;
 		double velocity = 5;
 		double initialAngle =0;
 		CircularMovementStrategy circle = new CircularMovementStrategy(startingLoc, radius, 
-													initialAngle, radius);
+													initialAngle, velocity);
 		for(int i=0;i<1000;i++) {
 			System.out.println(circle.move());
 			Thread.sleep(1000);

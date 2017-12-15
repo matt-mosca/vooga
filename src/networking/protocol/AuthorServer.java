@@ -293,6 +293,15 @@ public final class AuthorServer {
      */
     com.google.protobuf.ByteString
         getErrorBytes();
+
+    /**
+     * <code>optional bool forAuthoring = 16;</code>
+     */
+    boolean hasForAuthoring();
+    /**
+     * <code>optional bool forAuthoring = 16;</code>
+     */
+    boolean getForAuthoring();
   }
   /**
    * Protobuf type {@code AuthoringServerMessage}
@@ -318,6 +327,7 @@ public final class AuthorServer {
       currentVictoryConditions_ = java.util.Collections.emptyList();
       currentDefeatConditions_ = java.util.Collections.emptyList();
       error_ = "";
+      forAuthoring_ = false;
     }
 
     @java.lang.Override
@@ -482,6 +492,11 @@ public final class AuthorServer {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
               error_ = bs;
+              break;
+            }
+            case 128: {
+              bitField0_ |= 0x00000040;
+              forAuthoring_ = input.readBool();
               break;
             }
           }
@@ -974,6 +989,21 @@ public final class AuthorServer {
       }
     }
 
+    public static final int FORAUTHORING_FIELD_NUMBER = 16;
+    private boolean forAuthoring_;
+    /**
+     * <code>optional bool forAuthoring = 16;</code>
+     */
+    public boolean hasForAuthoring() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional bool forAuthoring = 16;</code>
+     */
+    public boolean getForAuthoring() {
+      return forAuthoring_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1091,6 +1121,9 @@ public final class AuthorServer {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 15, error_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBool(16, forAuthoring_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1166,6 +1199,10 @@ public final class AuthorServer {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, error_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(16, forAuthoring_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1230,6 +1267,11 @@ public final class AuthorServer {
       if (hasError()) {
         result = result && getError()
             .equals(other.getError());
+      }
+      result = result && (hasForAuthoring() == other.hasForAuthoring());
+      if (hasForAuthoring()) {
+        result = result && (getForAuthoring()
+            == other.getForAuthoring());
       }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
@@ -1301,6 +1343,11 @@ public final class AuthorServer {
       if (hasError()) {
         hash = (37 * hash) + ERROR_FIELD_NUMBER;
         hash = (53 * hash) + getError().hashCode();
+      }
+      if (hasForAuthoring()) {
+        hash = (37 * hash) + FORAUTHORING_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getForAuthoring());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1500,6 +1547,8 @@ public final class AuthorServer {
         bitField0_ = (bitField0_ & ~0x00002000);
         error_ = "";
         bitField0_ = (bitField0_ & ~0x00004000);
+        forAuthoring_ = false;
+        bitField0_ = (bitField0_ & ~0x00008000);
         return this;
       }
 
@@ -1633,6 +1682,10 @@ public final class AuthorServer {
           to_bitField0_ |= 0x00000020;
         }
         result.error_ = error_;
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.forAuthoring_ = forAuthoring_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1896,6 +1949,9 @@ public final class AuthorServer {
           bitField0_ |= 0x00004000;
           error_ = other.error_;
           onChanged();
+        }
+        if (other.hasForAuthoring()) {
+          setForAuthoring(other.getForAuthoring());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4331,6 +4387,38 @@ public final class AuthorServer {
   }
   bitField0_ |= 0x00004000;
         error_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean forAuthoring_ ;
+      /**
+       * <code>optional bool forAuthoring = 16;</code>
+       */
+      public boolean hasForAuthoring() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional bool forAuthoring = 16;</code>
+       */
+      public boolean getForAuthoring() {
+        return forAuthoring_;
+      }
+      /**
+       * <code>optional bool forAuthoring = 16;</code>
+       */
+      public Builder setForAuthoring(boolean value) {
+        bitField0_ |= 0x00008000;
+        forAuthoring_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool forAuthoring = 16;</code>
+       */
+      public Builder clearForAuthoring() {
+        bitField0_ = (bitField0_ & ~0x00008000);
+        forAuthoring_ = false;
         onChanged();
         return this;
       }
@@ -11129,7 +11217,7 @@ public final class AuthorServer {
   static {
     java.lang.String[] descriptorData = {
       "\n\022AuthorServer.proto\032\022PlayerServer.proto" +
-      "\032\022AuthorClient.proto\"\267\005\n\026AuthoringServer" +
+      "\032\022AuthorClient.proto\"\315\005\n\026AuthoringServer" +
       "Message\022H\n\037elementBaseConfigurationOptio" +
       "ns\030\001 \003(\0132\037.ElementBaseConfigurationOptio" +
       "n\022R\n$auxiliaryElementConfigurationOption" +
@@ -11146,24 +11234,25 @@ public final class AuthorServer {
       "toryConditions\030\014 \003(\0132\024.ConditionAssignme" +
       "nt\0225\n\027currentDefeatConditions\030\r \003(\0132\024.Co" +
       "nditionAssignment\022,\n\014notification\030\016 \001(\0132" +
-      "\026.AuthoringNotification\022\r\n\005error\030\017 \001(\t\"J" +
-      "\n\036ElementBaseConfigurationOption\022\021\n\tconf",
-      "igKey\030\001 \002(\t\022\025\n\rconfigOptions\030\002 \003(\t\"R\n#Au" +
-      "xiliaryElementConfigurationOption\022\022\n\ncon" +
-      "figName\030\001 \002(\t\022\027\n\017configClassName\030\002 \002(\t\"Q" +
-      "\n\016ElementUpgrade\022\023\n\013elementName\030\001 \002(\t\022*\n" +
-      "\017elementUpgrades\030\002 \003(\0132\021.StringPropertie" +
-      "s\"-\n\016DoubleProperty\022\014\n\004name\030\001 \002(\t\022\r\n\005val" +
-      "ue\030\002 \002(\001\"2\n\020StringProperties\022\036\n\005items\030\001 " +
-      "\003(\0132\017.StringProperty\"-\n\016StringProperty\022\014" +
-      "\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\"J\n\023Condition" +
-      "Assignment\022\025\n\rconditionName\030\001 \002(\t\022\034\n\024lev",
-      "elsUsingCondition\030\002 \003(\005\"\306\001\n\025AuthoringNot" +
-      "ification\022*\n\023pregameNotification\030\001 \001(\0132\r" +
-      ".Notification\022/\n\027elementAddedToInventory" +
-      "\030\002 \001(\0132\016.DefineElement\022\024\n\014levelCreated\030\003" +
-      " \001(\005\022\024\n\014levelDeleted\030\004 \001(\005\022$\n\013waveCreate" +
-      "d\030\005 \003(\0132\017.StringProperty"
+      "\026.AuthoringNotification\022\r\n\005error\030\017 \001(\t\022\024" +
+      "\n\014forAuthoring\030\020 \001(\010\"J\n\036ElementBaseConfi",
+      "gurationOption\022\021\n\tconfigKey\030\001 \002(\t\022\025\n\rcon" +
+      "figOptions\030\002 \003(\t\"R\n#AuxiliaryElementConf" +
+      "igurationOption\022\022\n\nconfigName\030\001 \002(\t\022\027\n\017c" +
+      "onfigClassName\030\002 \002(\t\"Q\n\016ElementUpgrade\022\023" +
+      "\n\013elementName\030\001 \002(\t\022*\n\017elementUpgrades\030\002" +
+      " \003(\0132\021.StringProperties\"-\n\016DoublePropert" +
+      "y\022\014\n\004name\030\001 \002(\t\022\r\n\005value\030\002 \002(\001\"2\n\020String" +
+      "Properties\022\036\n\005items\030\001 \003(\0132\017.StringProper" +
+      "ty\"-\n\016StringProperty\022\014\n\004name\030\001 \002(\t\022\r\n\005va" +
+      "lue\030\002 \002(\t\"J\n\023ConditionAssignment\022\025\n\rcond",
+      "itionName\030\001 \002(\t\022\034\n\024levelsUsingCondition\030" +
+      "\002 \003(\005\"\306\001\n\025AuthoringNotification\022*\n\023prega" +
+      "meNotification\030\001 \001(\0132\r.Notification\022/\n\027e" +
+      "lementAddedToInventory\030\002 \001(\0132\016.DefineEle" +
+      "ment\022\024\n\014levelCreated\030\003 \001(\005\022\024\n\014levelDelet" +
+      "ed\030\004 \001(\005\022$\n\013waveCreated\030\005 \003(\0132\017.StringPr" +
+      "operty"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11184,7 +11273,7 @@ public final class AuthorServer {
     internal_static_AuthoringServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuthoringServerMessage_descriptor,
-        new java.lang.String[] { "ElementBaseConfigurationOptions", "AuxiliaryElementConfigurationOptions", "ElementAddedToInventory", "CurrentLevel", "MoveElement", "AllDefinedElementUpgrades", "ResourceEndowments", "CreatedWaveNumber", "WaveProperties", "PossibleVictoryConditions", "PossibleDefeatConditions", "CurrentVictoryConditions", "CurrentDefeatConditions", "Notification", "Error", });
+        new java.lang.String[] { "ElementBaseConfigurationOptions", "AuxiliaryElementConfigurationOptions", "ElementAddedToInventory", "CurrentLevel", "MoveElement", "AllDefinedElementUpgrades", "ResourceEndowments", "CreatedWaveNumber", "WaveProperties", "PossibleVictoryConditions", "PossibleDefeatConditions", "CurrentVictoryConditions", "CurrentDefeatConditions", "Notification", "Error", "ForAuthoring", });
     internal_static_ElementBaseConfigurationOption_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ElementBaseConfigurationOption_fieldAccessorTable = new

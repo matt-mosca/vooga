@@ -89,7 +89,6 @@ public class GameEnderRecorder extends VBox{
 
 	private void makeConditions(Map<String, Collection<Integer>> list, ObservableList<Conditions> conditions) {
 		for(String s : list.keySet()) {
-			System.out.println(list.get(s).toString());
 			Conditions c = new Conditions(s, list.get(s));
 			conditions.add(c);
 		}

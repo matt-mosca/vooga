@@ -3,11 +3,18 @@ package engine.behavior.movement;
 import engine.game_elements.ElementProperty;
 import javafx.geometry.Point2D;
 
+/**
+ * Movement strategy for object that will fall at a given acceleration
+ * 
+ * @author mscruggs
+ *
+ */
 public class FallingMovementStrategy extends AbstractMovementStrategy{
 	private double gravity;
-	public double yVelocity;
+	private double yVelocity;
 	private double xVelocity;
 	private final double FPS = 60;
+	
 	
 	public FallingMovementStrategy(@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint,
 			@ElementProperty(value = "initialYVelocity", isTemplateProperty = true) double initialYVelocity, 

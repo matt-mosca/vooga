@@ -3,6 +3,12 @@ package engine.behavior.movement;
 import engine.game_elements.ElementProperty;
 import javafx.geometry.Point2D;
 
+/**
+ * Movement strategy for object that will move in a elliptical path at a target
+ * 
+ * @author mscruggs
+ *
+ */
 public class BoomerangMovementStrategy extends CircularMovementStrategy{
 
 	private Point2D startingLocation;
@@ -12,8 +18,6 @@ public class BoomerangMovementStrategy extends CircularMovementStrategy{
 			@ElementProperty(value = "targetY", isTemplateProperty = true) double targetY,
 			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
 		super(startPoint,
-			 // startPoint.getX()+((targetX-startPoint.getX())/2),
-			  //startPoint.getY()+((targetY-startPoint.getY())/2),
 			  startPoint.distance(targetX, targetY)/2,
 			  startPoint.angle(targetX,targetY),
 			  velocity);

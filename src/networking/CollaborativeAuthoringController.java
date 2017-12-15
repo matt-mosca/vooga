@@ -14,6 +14,7 @@ import networking.protocol.AuthorClient.AuthoringClientMessage;
 import networking.protocol.AuthorClient.DefineElement;
 import networking.protocol.AuthorServer.AuthoringNotification;
 import networking.protocol.AuthorServer.AuthoringServerMessage;
+import networking.protocol.PlayerServer.ServerMessage;
 import util.io.SerializationUtils;
 
 public class CollaborativeAuthoringController extends AbstractServerController {
@@ -28,6 +29,8 @@ public class CollaborativeAuthoringController extends AbstractServerController {
 		try {
 			AuthoringClientMessage clientMessage = AuthoringClientMessage.parseFrom(requestBytes);
 			AuthoringServerMessage.Builder serverMessageBuilder = AuthoringServerMessage.newBuilder();
+			serverMessageBuilder.setForAuthoring(true);
+			System.out.println("Authoring-specific request: " + clientMessage.toString());
 			byte[] queryResponses = handleQueries(clientId, clientMessage, serverMessageBuilder);
 			if (queryResponses.length > 0) {
 				return queryResponses;
@@ -35,9 +38,12 @@ public class CollaborativeAuthoringController extends AbstractServerController {
 			byte[] mutationResponses = handleMutations(clientId, clientMessage, serverMessageBuilder);
 			if (mutationResponses.length > 0) {
 				return mutationResponses;
-			}			
+			}
+			return serverMessageBuilder.build().toByteArray();
 		} catch (InvalidProtocolBufferException e) {
+			System.out.println("Invalid protobuf!");
 		}
+		//return AuthoringServerMessage.newBuilder().setForAuthoring(true).build().toByteArray();
 		return new byte[] {};
 	}
 
@@ -56,19 +62,27 @@ public class CollaborativeAuthoringController extends AbstractServerController {
 	protected void createEngineForRoom(String room) {
 		roomsToEngines.put(room, new AuthoringController());
 	}
-	
-	private byte[] handleQueries(int clientId, AuthoringClientMessage clientMessage, AuthoringServerMessage.Builder serverMessageBuilder) {
+
+	private byte[] handleQueries(int clientId, AuthoringClientMessage clientMessage,
+			AuthoringServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasGetElementBaseConfig()) {
 			return handleGetElementBaseConfigurationOptions(clientId, clientMessage, serverMessageBuilder);
 		}
 		if (clientMessage.hasGetAuxiliaryElementConfig()) {
 			return handleGetAuxiliaryElementConfigurationOptions(clientId, clientMessage, serverMessageBuilder);
 		}
+		if (clientMessage.hasGetPossibleVictoryConditions()) {
+			return handleGetPossibleVictoryConditions(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetPossibleDefeatConditions()) {
+			return handleGetPossibleDefeatConditions(clientId, clientMessage, serverMessageBuilder);
+		}
 		// TODO - Other queries
 		return new byte[] {};
 	}
-	
-	private byte[] handleMutations(int clientId, AuthoringClientMessage clientMessage, AuthoringServerMessage.Builder serverMessageBuilder) {
+
+	private byte[] handleMutations(int clientId, AuthoringClientMessage clientMessage,
+			AuthoringServerMessage.Builder serverMessageBuilder) {
 		if (clientMessage.hasSetLevel()) {
 			return handleSetLevel(clientId, clientMessage, serverMessageBuilder);
 		}
@@ -109,10 +123,9 @@ public class CollaborativeAuthoringController extends AbstractServerController {
 
 	private byte[] handleGetElementBaseConfigurationOptions(int clientId, AuthoringClientMessage clientMessage,
 			AuthoringServerMessage.Builder serverMessageBuilder) {
-		return AuthoringServerMessage.newBuilder()
-				.addAllElementBaseConfigurationOptions(
-						getEngineForClient(clientId).packageElementBaseConfigurationOptions())
-				.build().toByteArray();
+		System.out.println("Handling get element base config");
+		return serverMessageBuilder.addAllElementBaseConfigurationOptions(
+				getEngineForClient(clientId).packageElementBaseConfigurationOptions()).build().toByteArray();
 	}
 
 	private byte[] handleGetAuxiliaryElementConfigurationOptions(int clientId, AuthoringClientMessage clientMessage,
@@ -120,9 +133,9 @@ public class CollaborativeAuthoringController extends AbstractServerController {
 		Map<String, String> baseConfigOptions = new HashMap<>();
 		clientMessage.getGetAuxiliaryElementConfig().getBaseConfigurationChoicesList().stream()
 				.forEach(property -> baseConfigOptions.put(property.getName(), property.getValue()));
-		return AuthoringServerMessage.newBuilder()
-				.addAllAuxiliaryElementConfigurationOptions(getEngineForClient(clientId)
-						.packageAuxiliaryElementConfigurationOptions(baseConfigOptions))
+		return serverMessageBuilder
+				.addAllAuxiliaryElementConfigurationOptions(
+						getEngineForClient(clientId).packageAuxiliaryElementConfigurationOptions(baseConfigOptions))
 				.build().toByteArray();
 	}
 
@@ -137,6 +150,15 @@ public class CollaborativeAuthoringController extends AbstractServerController {
 				serializationUtils.deserializeElementTemplate(elementProperties));
 		return new byte[] {};
 	}
+
+	private byte[] handleGetPossibleVictoryConditions(int clientId, AuthoringClientMessage clientMessage, AuthoringServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.addAllPossibleVictoryConditions(getEngineForClient(clientId).getPossibleVictoryConditions()).build().toByteArray();
+	}
+	
+	private byte[] handleGetPossibleDefeatConditions(int clientId, AuthoringClientMessage clientMessage, AuthoringServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.addAllPossibleDefeatConditions(getEngineForClient(clientId).getPossibleDefeatConditions()).build().toByteArray();
+	}
+	
 
 	// TODO - Define Element Upgrade
 
@@ -154,12 +176,12 @@ public class CollaborativeAuthoringController extends AbstractServerController {
 				.build());
 		return serverMessageBuilder.setElementAddedToInventory(definedElement).build().toByteArray();
 	}
-	
+
 	// TODO - Other methods
 
 	@Override
 	protected AuthoringController getEngineForClient(int clientId) {
 		return getEngineForRoom(getGameRoomNameOfClient(clientId));
 	}
-	
+
 }

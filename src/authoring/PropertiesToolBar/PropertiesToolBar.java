@@ -120,6 +120,18 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
         initializeInventory(myController, bottomTabPane);
     }
 	
+	public Optional<SpriteImage> getImageOfAppropriateTypeFromId(String id) {
+		Optional<SpriteImage> towerImage = newTower.getImageFromId(id);
+		if (towerImage.isPresent()) {
+			return towerImage;
+		}
+		Optional<SpriteImage> troopImage = newTroop.getImageFromId(id);
+		if (troopImage.isPresent()) {
+			return troopImage;
+		}
+		return newProjectile.getImageFromId(id);
+	}
+	
 	@Override
 	protected void createAndAddTabs() {
 		topTabPane.getTabs().add(tabMaker.buildTabWithoutContent("New Tower", "TowerImage", topTabPane));
