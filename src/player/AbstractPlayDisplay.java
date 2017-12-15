@@ -51,14 +51,20 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterface {
-	private final String GAME_FILE_KEY = "displayed-game-name";
-	private final String EXTENSION_KEY = "voogExtension";
 	private final int DOWN = 5;
 	private final int UP = -5;
 	private final int RIGHT = 5;
 	private final int LEFT = -5;
+	private final String GAME_FILE_KEY = "displayed-game-name";
+	private final String EXTENSION_KEY = "voogExtension";
 	private final String PLAY_DISPLAY_ALERT_RESOURCE_CONTENT = "lackOfResource";
 	private final String PLAY_DISPLAY_ALERT_RESOURCE_TITLE = "resourceError";
+	private final String PLAY_SONG = "gymBattleSong";
+	private final String SAVED_GAMES_KEY = "savedGamesKey";
+	private final String PURCHASE_RESOURCE_KEY = "purchaseResource";
+	private final String PURCHASE_PROMPT_KEY = "purchasePrompt";
+	private final String UPGRADE_RESOURCE_KEY = "upgradeResource";
+	private final String UPGRADE_PROMPT_KEY = "upgradePrompt";
 
 	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
@@ -80,7 +86,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	private MediaPlayer mediaPlayer;
 	private ChoiceBox<Integer> levelSelector;
 	private HUD hud;
-	private String backgroundSong = "data/audio/128 - battle (vs gym leader).mp3";
+	
 
 	// private ButtonFactory buttonMaker;
 	// private Button testButton;
@@ -126,7 +132,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		rootAdd(volumeSlider);
 		volumeSlider.setLayoutY(7);
 		volumeSlider.setLayoutX(55);
-		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
+		mediaPlayerFactory = new MediaPlayerFactory(PropertiesGetter.getProperty(PLAY_SONG));
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
@@ -180,7 +186,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 				games.add(title);
 			}
 			Collections.sort(games);
-			ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Saved games", games);
+			ChoiceDialog<String> loadChoices = new ChoiceDialog<>(PropertiesGetter.getProperty(SAVED_GAMES_KEY), games);
 			loadChoices.setContentText(null);
 
 			Optional<String> result = loadChoices.showAndWait();
@@ -393,9 +399,9 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		if (image == null || !checkFunds(image.getId()))
 			return;
 		Alert costDialog = new Alert(AlertType.CONFIRMATION);
-		costDialog.setTitle("Purchase Resource");
+		costDialog.setTitle(PropertiesGetter.getProperty(PURCHASE_RESOURCE_KEY));
 		costDialog.setHeaderText(null);
-		costDialog.setContentText("Would you like to purchase this object?");
+		costDialog.setContentText(PropertiesGetter.getProperty(PURCHASE_PROMPT_KEY));
 		//TO-DO check if alertFactory will work
 		Optional<ButtonType> result = costDialog.showAndWait();
 		if (result.get() == ButtonType.OK) {
@@ -410,9 +416,9 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		 if (!checkFunds(idToTemplate.get(id)))
 			 return;
 		 Alert costDialog = new Alert(AlertType.CONFIRMATION);
-		 costDialog.setTitle("Upgrade Resource");
+		 costDialog.setTitle(PropertiesGetter.getProperty(UPGRADE_RESOURCE_KEY));
 		 costDialog.setHeaderText(null);
-		 costDialog.setContentText("Would you like to upgrade this object?");
+		 costDialog.setContentText(PropertiesGetter.getProperty(UPGRADE_PROMPT_KEY));
 		
 		 Optional<ButtonType> result = costDialog.showAndWait();
 		 if (result.get() == ButtonType.OK) {
