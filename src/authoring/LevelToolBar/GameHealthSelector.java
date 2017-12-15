@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
+import factory.AlertFactory;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -47,11 +48,8 @@ public class GameHealthSelector extends VBox{
 		try {
 		health = Integer.parseInt(amount.getText());		
 		}catch(NumberFormatException nfe) {
-			Alert a = new Alert(AlertType.ERROR);
-			a.setHeaderText(HEALTH_HEADER_TEXT);
-			a.setContentText(HEALTH_INVALID_INPUT_WARNING
-				+ HEALTH_INVALID_INPUT_CORRECTION);
-			a.showAndWait();
+			new AlertFactory(HEALTH_INVALID_INPUT_WARNING
+				+ HEALTH_INVALID_INPUT_CORRECTION,HEALTH_HEADER_TEXT,AlertType.ERROR);
 			health = HEALTH_DEFAULT;
 		}
 		int currLv = myController.getCurrentLevel();
@@ -60,7 +58,7 @@ public class GameHealthSelector extends VBox{
 			myController.setLevelHealth(health);
 		}
 	}
-	
+
 	private void createLevelBoxes() {
 		checkBoxes = new ArrayList<>();
 		for (int i = 0; i<myController.getNumLevelsForGame(); i++) {

@@ -60,6 +60,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
 		LevelInitialized levelData = super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
+		maxLevels = getNumLevelsForGame(saveName, true);
+		System.out.println("Maxlevels: " + maxLevels);
 		return levelData;
 	}
 
@@ -80,7 +82,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public Update update() {
 		if (inPlay) {
-			/*
+			/*---
 			 * Uncomment when front end is ready to set wave properties fully (team & no. of
 			 * attacks of wave)
 			 */
