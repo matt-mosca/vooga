@@ -182,6 +182,8 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	
 	int getLevelTimeLimit(int level);
 	
+	int getNumWavesForLevel(int level);
+	
 	// Sorry Ben Welton, Venkat asked me to change this back
 	void setLevelHealth(int health);
 	

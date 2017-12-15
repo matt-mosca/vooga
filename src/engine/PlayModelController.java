@@ -1,11 +1,11 @@
 package engine;
 
+import engine.behavior.movement.LocationProperty;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Update;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface PlayModelController extends AbstractGameModelController {
     /**
      * Save the current state of a game being played.
      *
-     * @param saveName the name to assign to the save file
+     * @param fileNameToSaveTo the name to assign to the save file
      */
     void saveGameState(String fileNameToSaveTo);
 
@@ -167,7 +167,7 @@ public interface PlayModelController extends AbstractGameModelController {
 
     /**
      * Get the elements of a game (represented as sprites) for a particular level.
-     * <p>
+     *
      * TODO - custom exception?
      *
      * @param level the level of the game which should be loaded
@@ -175,4 +175,13 @@ public interface PlayModelController extends AbstractGameModelController {
      * @throws IllegalArgumentException if there is no corresponding level in the current game
      */
     Collection<NewSprite> getLevelSprites(int level) throws IllegalArgumentException;
+
+    /**
+     * Get an object that allows for the tracking and setting of a particular element's location.
+     *
+     * @param elementId the unique identifier of the element
+     * @return a settable object property for the location for the desired game element
+     * @throws IllegalArgumentException if the given ID does not correspond to a placed game element
+     */
+    LocationProperty getElementLocationProperty(int elementId);
 }

@@ -16,15 +16,15 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 
 	private final int DEFAULT_START_COORDINATE = -1;
 	// Alternative to using properties - can simply update x, y values of
-	// trackingPoint in setX and setY respectively ... preferred approach?
-	private TrackingPoint trackingPoint;
+	// locationProperty in setX and setY respectively ... preferred approach?
+	private LocationProperty locationProperty;
 	protected double angle;
 
 	public AbstractMovementStrategy(
 			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint) {
 		DoubleProperty xCoordinate = new SimpleDoubleProperty(startPoint.getX());
 		DoubleProperty yCoordinate = new SimpleDoubleProperty(startPoint.getY());
-		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
+		locationProperty = new LocationProperty(xCoordinate, yCoordinate);
 		angle = 0;
 	}
 
@@ -50,7 +50,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * @return Current X coordinate
 	 * */
 	public double getCurrentX() {
-		return trackingPoint.getCurrentX();
+		return locationProperty.getCurrentX();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * @return Current Y coordinate
 	 * */
 	public double getCurrentY() {
-		return trackingPoint.getCurrentY();
+		return locationProperty.getCurrentY();
 	}
 
 	/**
@@ -67,8 +67,8 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * 
 	 * @return Tracking point of this object
 	 * */
-	public TrackingPoint getPositionForTracking() {
-		return trackingPoint;
+	public LocationProperty getPositionForTracking() {
+		return locationProperty;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * @param New desired x coordinate
 	 * */
 	public void setX(double newX) {
-		trackingPoint.setX(newX);
+		locationProperty.setX(newX);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * @param New desired y coordinate
 	 * */
 	public void setY(double newY) {
-		trackingPoint.setY(newY);
+		locationProperty.setY(newY);
 	}
 	
 	/**

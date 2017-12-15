@@ -16,7 +16,14 @@ public class GameEnderRecorder extends VBox{
 	private TableView <Conditions> victoryConditions;
 	private TableView<Conditions> defeatConditions;
 	private AuthoringModelController myController;
-	
+	private final String VICTORY_TEXT = "Victory";
+	private final String DEFEAT_TEXT = "Defeat";
+	private final String CONDITIONS_TEXT = " Conditions";
+	private final String MY_CONDITIONS_TEXT = "myCondition";
+	private final String LEVELS_TEXT = "Levels";
+	private final String MY_LEVELS_TEXT = "myLevels";
+	private final int COLUMN_PREF_WIDTH = 120;
+
 	
 	public GameEnderRecorder(AuthoringModelController controller) {
 //		myCompletedLevels=levels;
@@ -53,15 +60,15 @@ public class GameEnderRecorder extends VBox{
 		makeConditions(defeat, lossConditions);
 		victoryConditions = new TableView<Conditions>();
 		defeatConditions = new TableView<Conditions>();
-		fillTable("Victory", victoryConditions, vicConditions);
-		fillTable("Defeat", defeatConditions, lossConditions);
+		fillTable(VICTORY_TEXT, victoryConditions, vicConditions);
+		fillTable(DEFEAT_TEXT, defeatConditions, lossConditions);
 		this.getChildren().addAll(victoryConditions, defeatConditions);
 		
 	}
 
 	private void fillTable(String cond, TableView<Conditions> table, ObservableList<Conditions> conditions) {
-		TableColumn<Conditions, String> condColumn = makeColumn(cond + " Conditions", "myCondition");
-		TableColumn<Conditions, String> levelsColumn = makeColumn("Levels", "myLevels");
+		TableColumn<Conditions, String> condColumn = makeColumn(cond + CONDITIONS_TEXT, MY_CONDITIONS_TEXT);
+		TableColumn<Conditions, String> levelsColumn = makeColumn(LEVELS_TEXT, MY_LEVELS_TEXT);
 		table.setItems(conditions);
 		table.getColumns().addAll(condColumn, levelsColumn);
 		
@@ -69,7 +76,7 @@ public class GameEnderRecorder extends VBox{
 
 	private TableColumn<Conditions, String> makeColumn(String title, String instanceVar) {
 		TableColumn<Conditions, String> column = new TableColumn<>(title);
-		column.setPrefWidth(120);
+		column.setPrefWidth(COLUMN_PREF_WIDTH);
 		column.setCellValueFactory(new PropertyValueFactory<>(instanceVar));
 		return column;
 	}
