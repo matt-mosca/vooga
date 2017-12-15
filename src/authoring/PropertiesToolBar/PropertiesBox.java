@@ -155,7 +155,6 @@ public class PropertiesBox extends VBox {
 		}
 		return null;
 	}
-	
 }
 
 /* @author sgrillo

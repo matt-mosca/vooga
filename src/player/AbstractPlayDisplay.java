@@ -158,7 +158,9 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
         rootAdd(hud);
         myInventoryToolBar = new InventoryToolBar(this, myController);
         levelSelector = new ChoiceBox<>();
-        levelSelector.getItems().addAll(1, 2, 3, 4);
+        for (int i = 1; i < myController.getNumLevelsForGame()+1; i++) {
+            levelSelector.getItems().add(i);
+        }
         levelSelector.setOnAction(e -> {
             changeLevel(levelSelector.getSelectionModel().getSelectedItem());
             // Maybe clear the screen here?? myPlayArea.getChildren().clear()

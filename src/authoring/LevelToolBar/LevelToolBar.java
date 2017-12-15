@@ -93,6 +93,9 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
 	@Override
     public void openLevelDisplay() {
+		System.out.println("a");
+		myController.setLevel(1);
+    	System.out.println(myController.getWaveProperties(0));
         myLevelDisplayer = new LevelsEditDisplay(myController);
         myLevelDisplayer.open();
     }
