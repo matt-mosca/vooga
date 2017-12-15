@@ -70,6 +70,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public void setVictoryCondition(String conditionIdentifier) {
+		System.out.println("setting victory condition: " + conditionIdentifier);
 		getLevelConditions().get(getCurrentLevel()).put(VICTORY, conditionIdentifier);
 	}
 

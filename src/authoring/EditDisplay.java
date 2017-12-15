@@ -286,11 +286,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	private void addStaticObject(MouseEvent e) {
+		System.out.println("adding static object");
 		if(addingObject) {
 			e.consume();
 			this.getScene().removeEventHandler(MouseEvent.ANY, cursorDrag);
 			rootRemove(objectToPlace);
 			try {
+				System.out.println(objectToPlace.getElementName());
+				System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap).keySet().toString());
 				NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(), new Point2D(0, 0));
 				objectToPlace.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
 			} catch (ReflectiveOperationException failedToAddObjectException) {
@@ -301,7 +304,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			myGameArea.addBackObject(objectToPlace);
 			myGameArea.droppedInto(objectToPlace);
 			addingObject = false;
-			
+			System.out.println("fixing cursor");
 			this.getScene().setCursor(ImageCursor.DEFAULT);
 		}
 	}
