@@ -13,11 +13,11 @@ import javafx.scene.control.ComboBox;
  */
 public class BackgroundColorChanger extends ComboBox<String> {
 	
-	private final int Y_POS = 500;
-	private final int WIDTH = 200;
-	private final int VISIBLE_ROW_COUNT = 3;
-	private final String PROMPT_TEXT = "Choose a background color";
-	private final String[] COLORS = {"white", "blue", "orange", "yellow", "green", "purple", "grey", "red"};
+	private static final int Y_POS = 500;
+	private static final int WIDTH = 200;
+	private static final int VISIBLE_ROW_COUNT = 3;
+	private static final String PROMPT_TEXT = "Choose a background color";
+	private static final String[] COLORS = {"white", "blue", "orange", "yellow", "green", "purple", "grey", "red"};
 	private final boolean IS_EDITABLE = true;
 	
 	public BackgroundColorChanger(CustomizeInterface customize) {
