@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 public class GameEnderConditions extends VBox {
+	private static final Object VICTORY_TIME_CONDITIONS = null;
 	private AuthoringModelController myController;
 	private ComboBox<String> victory;
 	private ComboBox<String> defeat;
@@ -72,6 +73,9 @@ public class GameEnderConditions extends VBox {
 					myController.setDefeatCondition(defeat.getValue());	
 				}
 				if(victory.getValue().equals(VICTORY_POINTS_CONDITIONS)) {
+					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
+				}
+				if(victory.getValue().equals(VICTORY_TIME_CONDITIONS)) {
 					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
 				}
 				checkBoxes.get(i-1).fire();
