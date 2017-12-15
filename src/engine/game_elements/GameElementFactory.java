@@ -1,14 +1,10 @@
 package engine.game_elements;
 
-import util.io.SerializationUtils;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.
@@ -20,6 +16,8 @@ public final class GameElementFactory {
     private Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
 
     private ElementOptionsGetter elementOptionsGetter = new ElementOptionsGetter();
+
+    private final int TEMPLATE_NAME_INDEX = 0, BEHAVIOR_OBJECT_START_INDEX = TEMPLATE_NAME_INDEX + 1;
 
     /**
      * Define a new template with specified properties. This will redefine the template if the name has already been
@@ -47,17 +45,17 @@ public final class GameElementFactory {
                 new HashMap<>(spriteTemplates.getOrDefault(elementTemplateName, new HashMap<>()));
         properties.putAll(nonTemplateArguments);
         System.out.println(elementTemplateName + " " + properties);
-        return generateElement(properties);
+        return constructElement(elementTemplateName, properties);
     }
 
     // generate a sprite based on a map of string properties and auxiliary elements which are not part of a template
-    GameElement generateElement(Map<String, ?> properties)
+    GameElement constructElement(String templateName, Map<String, ?> properties)
             throws ReflectiveOperationException {
         Parameter[] spriteConstructionParameters = getSpriteParameters();
         // TODO - check that params are returned in the right order
         Object[] spriteConstructionArguments = new Object[spriteConstructionParameters.length];
-
-        for (int i = 0; i < spriteConstructionArguments.length; i++) {
+        spriteConstructionArguments[TEMPLATE_NAME_INDEX] = templateName;
+        for (int i = BEHAVIOR_OBJECT_START_INDEX; i < spriteConstructionArguments.length; i++) {
             Parameter parameter = spriteConstructionParameters[i];
             try {
                 spriteConstructionArguments[i] = generateSpriteParameter(parameter.getType(), properties);

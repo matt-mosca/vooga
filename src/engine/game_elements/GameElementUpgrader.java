@@ -74,17 +74,17 @@ public class GameElementUpgrader {
         if (!spriteTemplateAssociation.containsKey(gameElement) || !currentSpriteLevels.containsKey(gameElement)) {
             throw new IllegalArgumentException();
         }
-        String templateName = spriteTemplateAssociation.get(gameElement);
+        String upgradeTemplateName = spriteTemplateAssociation.get(gameElement);
         int newUpgradeLevel = currentSpriteLevels.get(gameElement);
-        if (!canUpgrade(templateName, newUpgradeLevel)) {
+        if (!canUpgrade(upgradeTemplateName, newUpgradeLevel)) {
             throw new IllegalArgumentException();
         }
-        Map<String, ?> upgradeProperties = spriteUpgradesByTemplate.get(templateName).get(newUpgradeLevel);
+        Map<String, ?> upgradeProperties = spriteUpgradesByTemplate.get(upgradeTemplateName).get(newUpgradeLevel);
         Map<String, Object> upgradeArguments = new HashMap<>();
         upgradeArguments.putAll(upgradeProperties);
         // todo - key from prop file/getter
         upgradeArguments.put("startPoint", new Point2D(gameElement.getX(), gameElement.getY()));
-        return gameElementFactory.generateElement(upgradeProperties);
+        return gameElementFactory.constructElement(upgradeTemplateName, upgradeProperties);
     }
 
     private boolean canUpgrade(String templateName, int currentUpgradeLevel) {
