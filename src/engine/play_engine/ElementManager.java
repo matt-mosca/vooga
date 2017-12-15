@@ -82,7 +82,6 @@ public class ElementManager {
 			handleElementFiring(element, false);
 			processAllCollisionsForElement(elementIndex, element);
 		}
-		System.out.println(currentWave);
 		processWaveUpdate();
 		activeElements.forEach(this::processStepForElement);
 		activeElements.removeAll(deadElements);	
@@ -156,7 +155,7 @@ public class ElementManager {
 		return allElementsFulfillCondition(element -> !element.isAlly() || !element.isAlive());
 	}
 
-	boolean allWavesComplete() { return (currentWave == null) && allEnemiesDead(); }
+	boolean allWavesComplete() { return (currentWave == null && allEnemiesDead()); }
 
 	boolean enemyReachedTarget() {
 		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
@@ -209,10 +208,11 @@ public class ElementManager {
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
 			try {
+				System.out.println("trying to shoot");
 				GameElement projectileGameElement = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectileGameElement);
 			} catch (ReflectiveOperationException e) {
-	
+				
 			}
 			playAudio(element.getFiringAudio());
 		}
@@ -220,7 +220,8 @@ public class ElementManager {
 	}
 	
 	private GameElement getNearestEnemyElement(GameElement element) {
-		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(element);
+		List<GameElement> exclusionOfSelf = removeStaticElementsFromList(
+				getListOfElementsExcludingElement(element));
 		return spriteQueryHandler.getNearestEnemy(
 				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
 		
@@ -230,6 +231,17 @@ public class ElementManager {
 		List<GameElement> exclusionOfSelf = new ArrayList<>(activeElements);
 		exclusionOfSelf.remove(element);
 		return exclusionOfSelf;
+	}
+	
+	private List<GameElement> removeStaticElementsFromList(List<GameElement> list) {
+		List<GameElement> result = new ArrayList<GameElement>(list);
+		List<GameElement> statics = new ArrayList<GameElement>();
+		for(GameElement e : list)
+		{
+			if(e.getPlayerId() == 0) { statics.add(e); }
+		}
+		result.removeAll(statics);
+		return result;
 	}
 	
 	private void playAudio(String audioUrl) {
