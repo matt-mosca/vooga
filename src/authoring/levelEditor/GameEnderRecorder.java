@@ -45,6 +45,10 @@ public class GameEnderRecorder extends VBox{
 		defeatConditions.getItems().clear();
 		Map<String, Collection<Integer>> victory = myController.getCurrentVictoryConditions();
 		Map<String, Collection<Integer>> defeat = myController.getCurrentDefeatConditions();
+		System.out.println("hi");
+		for(String s: victory.keySet()) {
+			System.out.println(s);
+		}
 		makeConditions(victory, victoryConditions.getItems());
 		makeConditions(defeat, defeatConditions.getItems());
 		
@@ -56,6 +60,8 @@ public class GameEnderRecorder extends VBox{
 		ObservableList<Conditions> lossConditions = FXCollections.observableArrayList();
 		Map<String, Collection<Integer>> victory = myController.getCurrentVictoryConditions();
 		Map<String, Collection<Integer>> defeat = myController.getCurrentDefeatConditions();
+//		System.out.println(defeat.keySet().toString());
+//		System.out.println(victory.keySet().toString());
 		makeConditions(victory, vicConditions);
 		makeConditions(defeat, lossConditions);
 		victoryConditions = new TableView<Conditions>();
@@ -83,6 +89,7 @@ public class GameEnderRecorder extends VBox{
 
 	private void makeConditions(Map<String, Collection<Integer>> list, ObservableList<Conditions> conditions) {
 		for(String s : list.keySet()) {
+			System.out.println(list.get(s).toString());
 			Conditions c = new Conditions(s, list.get(s));
 			conditions.add(c);
 		}

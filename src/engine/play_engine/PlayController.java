@@ -219,6 +219,16 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	
 	public void triggerFire(int elementId) {
 		elementManager.triggeredFire(this.getSpriteIdMap().get(elementId));
+
+	}
+	
+	@Override
+	public int getNumLevelsForGame(String gameName, boolean original) {
+		try {
+			return getIoController().getNumberOfLevelsForGame(gameName, original);
+		} catch (FileNotFoundException e) {
+			return getNumLevelsForGame();
+		}
 	}
 
 	@Override

@@ -67,9 +67,6 @@ public final class PropertiesGetter {
             		}
             			MYMAP.put(current, rb.getString(current));
             		}
-            		for (String s: MYMAP.keySet()) {
-            			System.out.println(MYMAP.get(s));
-            		}
             }
         } catch (Exception e) {
             /* do nothing: if file fails to load, all methods are prepared to return

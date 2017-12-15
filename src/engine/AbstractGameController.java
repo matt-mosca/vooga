@@ -186,12 +186,9 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	@Deprecated
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		try {
-			return ioController.getNumberOfLevelsForGame(gameName, forOriginalGame);			
-		} catch (FileNotFoundException e) {
-			return 0;
-		}
+			return getNumLevelsForGame();
 	}
+	
 	
 	@Override
 	public int getNumLevelsForGame() {

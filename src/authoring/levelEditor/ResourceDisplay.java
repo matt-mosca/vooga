@@ -52,13 +52,13 @@ public class ResourceDisplay extends VBox{
 	}
 
 	private void createResourceTabs() {
-		for (int i=0; i<myController.getNumLevelsForGame(); i++) {
+		for (int i=1; i<=myController.getNumLevelsForGame(); i++) {
 //			System.out.println(Integer.toString(myController.getCurrentLevel()));
-			Tab newTab = tabMaker.buildTabWithoutContent(TAB_LEVELS_LABEL + Integer.toString(i+1), null, resourceTabs);
-			ResourceTab newLv = new ResourceTab(i+1, myController);
+			Tab newTab = tabMaker.buildTabWithoutContent(TAB_LEVELS_LABEL + Integer.toString(i), null, resourceTabs);
+			ResourceTab newLv = new ResourceTab(i, myController);
 			newLv.attach(newTab);
 			resources.add(newLv);
-			final int j = i+1;
+			final int j = i;
 			newTab.setOnSelectionChanged(e->update(j));
 			newTab.setClosable(IS_CLOSABLE);
 			resourceTabs.getTabs().add(newTab);
