@@ -32,10 +32,6 @@ public abstract class AbstractWaveFiringStrategy extends AbstractPeriodicFiringS
 
 	@Override
 	public String fire() {
-		int left = elementsRemaining;
-		if (left == 1) {
-			System.out.println("last one");
-		}
 		decrementWavesLeft();
 		return chooseElementToSpawn();
 	}

@@ -4,6 +4,7 @@ package authoring.LevelToolBar;
 
 import java.util.Map;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,12 +13,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ResourceTable {
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private TableView<Resource> myTable;
 	private int myLv;
 	private final int COLUMN_PREF_WIDTH = 120;
 	
-	public ResourceTable(AuthoringController controller, int lv) {
+	public ResourceTable(AuthoringModelController controller, int lv) {
 		myController = controller;
 		myController.setLevel(lv);
 		myLv = lv;

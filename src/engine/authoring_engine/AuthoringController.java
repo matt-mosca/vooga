@@ -70,6 +70,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public void setVictoryCondition(String conditionIdentifier) {
+		System.out.println("setting victory condition: " + conditionIdentifier);
 		getLevelConditions().get(getCurrentLevel()).put(VICTORY, conditionIdentifier);
 	}
 
@@ -171,7 +172,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public void editWaveProperties(int waveId, Map<String, Object> updatedProperties,
-			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException {
+			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) {
 		String waveName = getNameForWaveNumber(getCurrentLevel(), waveId);
 		// Overwrite the template
 		defineElement(waveName, updatedProperties);

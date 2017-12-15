@@ -1,16 +1,17 @@
 package authoring.LevelToolBar;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.layout.VBox;
 
 public class GameEnder extends VBox{
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private GameEnderConditions conditions;
 	private GameHealthSelector health;
 	private GamePointSelector points;
 	
 	
-	public GameEnder(AuthoringController controller) {
+	public GameEnder(AuthoringModelController controller) {
 		myController = controller; 
 		conditions = new GameEnderConditions(controller);
 		health = new GameHealthSelector(controller);

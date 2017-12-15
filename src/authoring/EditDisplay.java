@@ -18,6 +18,7 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
+import engine.AuthoringModelController;
 import engine.PlayModelController;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
@@ -75,7 +76,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_Y_LOCATION = 20;
 	private final String PATH_DIRECTORY_NAME = "authoring/";
 	
-	private AuthoringController controller;
+	private AuthoringModelController controller;
 	private StaticObjectToolBar myLeftToolBar;
 	private GameArea myGameArea;
 	private ScrollableArea myGameEnvironment;
@@ -286,11 +287,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 	
 	private void addStaticObject(MouseEvent e) {
+		System.out.println("adding static object");
 		if(addingObject) {
 			e.consume();
 			this.getScene().removeEventHandler(MouseEvent.ANY, cursorDrag);
 			rootRemove(objectToPlace);
 			try {
+				System.out.println(objectToPlace.getElementName());
+				System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap).keySet().toString());
 				NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(), new Point2D(0, 0));
 				objectToPlace.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
 			} catch (ReflectiveOperationException failedToAddObjectException) {
@@ -301,7 +305,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			myGameArea.addBackObject(objectToPlace);
 			myGameArea.droppedInto(objectToPlace);
 			addingObject = false;
-			
+			System.out.println("fixing cursor");
 			this.getScene().setCursor(ImageCursor.DEFAULT);
 		}
 	}

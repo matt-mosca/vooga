@@ -23,13 +23,13 @@ public class FactoryTesting {
     public static void main(String[] args) {
         FactoryTesting factoryTesting = new FactoryTesting();
         //factoryTesting.testWithConsole();
-        GameElementFactory gameElementFactory = new GameElementFactory(new SerializationUtils());
+        GameElementFactory gameElementFactory = new GameElementFactory();
         GameElement gameElement = factoryTesting.generateSingleTestSprite(gameElementFactory);
         factoryTesting.testExport(gameElementFactory);
     }
 
     private void testWithConsole() {
-        GameElementFactory sf = new GameElementFactory(new SerializationUtils());
+        GameElementFactory sf = new GameElementFactory();
         Map<String, List<String>> baseConfig = sf.getElementBaseConfigurationOptions();
         Scanner in = new Scanner(System.in);
         Map<String, Object> choices = new HashMap<>();
@@ -55,7 +55,7 @@ public class FactoryTesting {
     }
 
     public GameElement generateSingleTestSprite() {
-        GameElementFactory gameElementFactory = new GameElementFactory(new SerializationUtils());
+        GameElementFactory gameElementFactory = new GameElementFactory();
         return generateSingleTestSprite(gameElementFactory);
     }
 

@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import java.util.ArrayList;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -18,9 +19,9 @@ public class GameHealthSelector extends VBox{
 	private final String HEALTH_INVALID_INPUT_WARNING = "Your input was invalid, so a default value has been set. If you want";
 	private final String HEALTH_INVALID_INPUT_CORRECTION = " to change this, type in a number, please.";
 	private ArrayList<CheckBox> checkBoxes;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 
-	public GameHealthSelector(AuthoringController controller) {
+	public GameHealthSelector(AuthoringModelController controller) {
 		myController = controller;
 		
 		TextField amount = new TextField();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import authoring.GameArea;
 import display.factory.TabFactory;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -16,7 +17,7 @@ public class SpriteDisplayTab extends HBox {
 	private int myWaves;
 	private List<LevelTab> myWavesList;
 	private SpriteDisplayer mySpriteDisplay;
-	private AuthoringController controller;
+	private AuthoringModelController controller;
 	private int currentDisplay;
 	private final int TAB_PANE_PREF_WIDTH = 400;
 	private final int TAB_PANE_PREF_HEIGHT = 100;
@@ -24,8 +25,10 @@ public class SpriteDisplayTab extends HBox {
 	private final int INITIAL_WAVES = 0;
 	private final String LEVELS_TEXT = "Level ";
 	
-	public SpriteDisplayTab(AuthoringController myController) {
+
+	public SpriteDisplayTab(AuthoringModelController myController) {
 		currentDisplay = INITIAL_DISPLAY;
+
 		controller = myController;
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();

@@ -1,6 +1,7 @@
 package authoring.LevelToolBar;
 
 import authoring.EditDisplay;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,14 +15,14 @@ public class LevelsEditDisplay {
 	
 	private Stage myStage;
 	private Scene myScene;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private BorderPane myRoot;
 	private ResourceDisplay resourceEditor;
 	private GameEnder gameEnder;
 	private GameEnderRecorder recorder;
 	private final String LEVEL_EDITOR_TITLE = "Level Editor";
 	
-	public LevelsEditDisplay(AuthoringController controller) {
+	public LevelsEditDisplay(AuthoringModelController controller) {
 		myController = controller;
 		myStage = new Stage();
 		myStage.setTitle(LEVEL_EDITOR_TITLE);

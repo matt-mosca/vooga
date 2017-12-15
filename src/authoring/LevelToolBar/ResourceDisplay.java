@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import display.factory.TabFactory;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -26,7 +28,7 @@ public class ResourceDisplay extends VBox{
 	private Map<String, Double> resourceEndowments;
 	private TextField name;
 	private TextField value;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private TabFactory tabMaker;
 	private final int RESOURCE_DISPLAY_MAX_WIDTH = 250;
 	private final boolean IS_CLOSABLE = false;
@@ -35,7 +37,7 @@ public class ResourceDisplay extends VBox{
 	private final String RESOURCE_VALUE_PROMPT_TEXT = "Value";
 	private final String ENTER_BUTTON_LABEL = "add!";
 	
-	public ResourceDisplay(AuthoringController controller){
+	public ResourceDisplay(AuthoringModelController controller){
 		myController = controller;
 		this.setMaxWidth(RESOURCE_DISPLAY_MAX_WIDTH );
 		resourceEndowments = new HashMap<>();
@@ -79,17 +81,21 @@ public class ResourceDisplay extends VBox{
 			try {
 				myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			} catch(NumberFormatException nfe) {
-				//System.out.println("you have to type in a number");
-				//TODO ALERT FACTORY
+				Alert a = new Alert(AlertType.ERROR);
+				a.setHeaderText("Input Not Valid");
+				a.setContentText("You need to input a number!");
+				a.showAndWait().filter(button -> button == ButtonType.OK)
+						.ifPresent(event -> a.close());
 			}
+			System.out.println(name.getText());
 			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			update(myController.getCurrentLevel());
 		}catch(Exception nfe) {
 			Alert a = new Alert(AlertType.ERROR);
 			a.setHeaderText("Input Not Valid");
 			a.setContentText("You need to input a number!");
-			a.showAndWait();
-			//TODO ALERT FACTORY
+			a.showAndWait().filter(button -> button == ButtonType.OK)
+					.ifPresent(event -> a.close());
 		}});
 		this.getChildren().addAll(name, value, enter);
 		

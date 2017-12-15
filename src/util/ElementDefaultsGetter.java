@@ -44,10 +44,10 @@ public class ElementDefaultsGetter {
             return parseList(propertyString);
         }
         try {
-            return Double.parseDouble(propertyString);
+            return Integer.parseInt(propertyString);
         } catch (NumberFormatException nonDoublePropertyException) {
             try {
-                return Integer.parseInt(propertyString);
+                return Double.parseDouble(propertyString);
             } catch (NumberFormatException nonIntegerPropertyException) {
                 return propertyString;
             }

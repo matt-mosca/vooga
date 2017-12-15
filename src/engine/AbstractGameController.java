@@ -91,7 +91,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		gameName = DEFAULT_GAME_NAME;
 		spriteIdCounter = new AtomicInteger();
 		spriteIdMap = new HashMap<>();
-		gameElementFactory = new GameElementFactory(serializationUtils);
+		gameElementFactory = new GameElementFactory();
 		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
 		gameElementIoHandler = new GameElementIoHandler(serializationUtils);
 		spriteQueryHandler = new SpriteQueryHandler();
@@ -109,7 +109,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		// Note : saveName overrides previously set gameName if different - need to
 		// handle this?
 		// Serialize separately for every level
-		System.out.println("Save name: " + saveName);
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (int level = 1; level < getLevelStatuses().size(); level++) {
 			serializedLevelsData.put(level,
@@ -154,8 +153,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	private void buildWaves() throws IOException {
 		// ordering should be correct because of loading process
-		for (Map<String, Point2D> wavesInLevel : levelWaveTemplates) {
-			System.out.println("wtf mayne");
+		for (int i = 0; i < levelWaveTemplates.size(); i++) {
+			Map<String, Point2D> wavesInLevel = levelWaveTemplates.get(i);
 			List<GameElement> waves = new ArrayList<>();
 			List<String> sortedWaveNames = new ArrayList<>(wavesInLevel.keySet());
 			Collections.sort(sortedWaveNames);
@@ -168,7 +167,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 					throw new IOException(e);
 				}
 			}
-			levelWaves.add(waves);
+			levelWaves.add(translateToOneBasedIndexing(i), waves);
 		}
 	}
 
@@ -479,6 +478,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
+		System.out.println("\n\n\n\n\n");
+		System.out.println(auxiliarySpriteConstructionObjects.keySet().toString());
+		System.out.println(auxiliarySpriteConstructionObjects.values().toString());
+		System.out.println("\n\n\n\n\n");
 		GameElement element = gameElementFactory.generateElement(elementTemplateName,
 				auxiliarySpriteConstructionObjects);
 		return element;
@@ -577,14 +580,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void initialize() {
 		// To adjust for 1-indexing
 		initializeLevel();
-		
-		getLevelWaves().add(new ArrayList<>());
-		getLevelWaveTemplates().add(new HashMap<>());
 		setLevel(1);
 	}
 
 	private void initializeLevel() {
-		System.out.println("wtf");
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
 		getLevelInventories().add(new HashSet<>());
@@ -595,8 +594,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelHealths().add(0);
 		getLevelPointQuotas().add(0);
 		getLevelTimeLimits().add(0);
-		levelWaves.add(new ArrayList<>());
-		levelWaveTemplates.add(new HashMap<>());
 		initializeLevelConditions();
 	}
 
@@ -617,6 +614,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	public static void main(String[] args) {
 		AuthoringController tester = new AuthoringController();
 		System.out.println(tester.getLevelHealth(1));
+	}
+
+	public int translateToOneBasedIndexing(int index) {
+		return index+1;
 	}
 
 }
