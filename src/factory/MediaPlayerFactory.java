@@ -29,7 +29,7 @@ public class MediaPlayerFactory {
 	public MediaPlayerFactory(String mediaName) {
 		mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(mediaName)));
 		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
-		mediaPlayer.setMute(true);
+		//mediaPlayer.setMute(true);
 	}
 	
 	/**
