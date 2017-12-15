@@ -8,8 +8,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import main.Main;
+import util.PropertiesGetter;
 
 public abstract class EndScreen extends ScreenDisplay {
+	
+	private final String BACKGROUND_NAME = "endScreenBackground";
+	private final String TITLE_SCREEN = "titleScreen";
+	
 	public EndScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background, currentStage);
 		setScreenBackground(width, height);
@@ -17,8 +22,8 @@ public abstract class EndScreen extends ScreenDisplay {
 	}
 	
 	private void setScreenBackground(int screenWidth, int screenHeight) {
-		String backgroundName = "grass_large.png";
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(backgroundName));
+		
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(BACKGROUND_NAME)));
 		ImageView splashBackground = new ImageView(image);
 		splashBackground.setFitWidth(screenWidth);
 		splashBackground.setFitHeight(screenHeight);
@@ -26,8 +31,7 @@ public abstract class EndScreen extends ScreenDisplay {
 	}
 	
 	private void createScreenTitle(int screenWidth, int screenHeight) {
-		String titleName = "VOOGA_Words.png";
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(titleName));
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(TITLE_SCREEN)));
 		ImageView voogaTitle = new ImageView(image);
 		double titleWidth = voogaTitle.getBoundsInLocal().getWidth();
 		double titleHeight = voogaTitle.getBoundsInLocal().getHeight();

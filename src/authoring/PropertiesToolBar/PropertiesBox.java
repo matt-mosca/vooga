@@ -14,6 +14,7 @@ import util.path.Path;
 import util.path.PathList;
 import util.path.PathParser;
 import display.interfaces.Droppable;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

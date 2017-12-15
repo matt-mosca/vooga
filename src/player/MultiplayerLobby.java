@@ -6,6 +6,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 
 import display.factory.ButtonFactory;
+import display.splashScreen.NotifiableDisplay;
 import display.splashScreen.ScreenDisplay;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener.Change;
@@ -19,15 +20,61 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import networking.MultiPlayerClient;
+import networking.AbstractClient;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.Notification;
+import util.PropertiesGetter;
+import networking.Constants;
+
 
 public class MultiplayerLobby extends ScreenDisplay {
 	// private static final String BACKGROUND_IMAGE = "grass_large.png";
-	private static final String BACKGROUND_IMAGE = "space_background.jpeg";
+	private final String BACKGROUND_IMAGE = "spaceImage";
+	private final String NAME = "matthew";
+	private final String NAME_TITLE = "nameSelection";
+	private final String NAME_HEADER = "enterUsername";
+	private final String NAME_CONTENT = "Username:";
+	private final String COOL_LOBBY = "coolLobby";
+	private final String LOBBY_TITLE = "lobbyName";
+	private final String LOBBY_HEADER = "enterLobby";
+	private final String LOBBY_CONTENT = "Lobby name:";
+	private final String VOOGA_LOBBY = "voogaLobby";
+	private final String MULTIPLAYER_KEY = "multiplayer";
+	private final String GAME_STATE_LABEL = "gameLabel";
+	private final int HEIGHT_SHIFT = 40;
+	private final int BUTTON_BOX_SHIFT = 100;
+	private final int BUTTON_BOX_Y = 400;
+	private final int MIN_DIMENSION = 300;
+	private final int SPACING = 20;
+	private final int LOBBIES_MIN_HEIGHT = 400;
+	private final int LOBBIES_BOX_Y = 200;
+	private final int NOTIFICATION_X = 350;
+	private final int ACTIVITY_BOX_Y = 100;
+	private final int Y_SHIFT = 80;
+	private final int HOME_Y_SHIFT = 40;
+	private final int RIGHT_SPACING = 40;
+	private final int START_X_SHIFT = 50;
+	private final int START_Y_SHIFT = 100;
+	private final int RIGHT_BOX_Y = 20;
+	private final int USER_SPACING = 10;
+	private final String IMAGE_NAME = "personImage";
+	private final String CREATE_LOBBY = "createLobby";
+	private final String JOIN_LOBBY = "joinLobby";
+	private final String START_GAME = "startGame";
+	private final String RETURN_HOME = "returnHome";
+	private final String BACK = "back";
+	private final String VIEW_LOBBIES = "viewLobbies";
+	private final String SELECTED_LOBBY = "selectedLobby";
+	private final int PERSON_DIMENSION = 30;
+	private final String PLAYERS = "players";
+	private final String ACTIVE_PLAYERS = "activePlayers";
+	private final String LOBBIES = "lobbies";
+	private final String BOT = "bot";
+	private final String USER = "user";
+	private final String JOINED = "joined";
+	private final String EXITED = "exited";
 
-	private PlayDisplay playDisplay;
+	private NotifiableDisplay playDisplay;
 	private Label topScreenLabel;
 	private Label lobbyPlayersLabel;
 	private Label lobbiesLabel;
@@ -52,10 +99,11 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private MultiplayerListBox lobbies;
 	private MultiplayerListBox players;
 	private ActivityListBox activityList;
-	private MultiPlayerClient multiClient;
+	private AbstractClient multiClient;
 	private String username;
 	private String gameName;
 	private String currentLobby;
+	
 
 	private boolean launched = false;
 
@@ -67,8 +115,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 
 	// TODO need to start the play display at some point when you are ready!
 
-	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, PlayDisplay play,
-			MultiPlayerClient multiPlayerClient) {
+	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, NotifiableDisplay play,
+			AbstractClient client) {
 		super(width, height, background, currentStage);
 		// multiplayerLayout = new BorderPane();
 		playDisplay = play;
@@ -89,13 +137,15 @@ public class MultiplayerLobby extends ScreenDisplay {
 		lobbies = new MultiplayerListBox();
 		players = new MultiplayerListBox();
 		activityList = new ActivityListBox();
-		multiClient = multiPlayerClient;
+		multiClient = client;
 		System.out.println("Registering notification listener");
 		registerNotificationListener();
 		username = new String();
-		gameName = new String();
 		currentLobby = new String();
-		gameName = playDisplay.getGameState();
+		System.out.println("Retrieving game name");
+		String loadedGameName = playDisplay.getGameState();
+		gameName = loadedGameName == null ? Constants.NEW_GAME_NAME : loadedGameName;
+		System.out.println("Setting multiplayer background");
 		setMultiplayerBackground(width, height);
 		// rootAdd(multiplayerLayout);
 		rootAdd(topScreenLabel);
@@ -120,10 +170,10 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	public void promptForUsername() {
-		TextInputDialog dialog = new TextInputDialog("Matthew");
-		dialog.setTitle("Name Selection");
-		dialog.setHeaderText("Enter a username.");
-		dialog.setContentText("Username:");
+		TextInputDialog dialog = new TextInputDialog(PropertiesGetter.getProperty(NAME));
+		dialog.setTitle(PropertiesGetter.getProperty(NAME_TITLE));
+		dialog.setHeaderText(PropertiesGetter.getProperty(NAME_HEADER));
+		dialog.setContentText(PropertiesGetter.getProperty(NAME_CONTENT));
 
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()) {
@@ -140,44 +190,44 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private void setStyleAndLayout(int width, int height) {
 		rootStyleAndClear("player/resources/multiplayer.css");
 		topScreenLabel.getStyleClass().add("label2");
-		buttonBox.setLayoutX(width / 2 - 100);
-		buttonBox.setLayoutY(400);
-		buttonBox.setSpacing(20);
-		playersBox.setMinWidth(300);
-		playersBox.setMinHeight(300);
+		buttonBox.setLayoutX(width / 2 - BUTTON_BOX_SHIFT);
+		buttonBox.setLayoutY(BUTTON_BOX_Y);
+		buttonBox.setSpacing(SPACING);
+		playersBox.setMinWidth(MIN_DIMENSION);
+		playersBox.setMinHeight(MIN_DIMENSION);
 		playersBox.getStyleClass().add("borders");
-		lobbiesListBox.setLayoutX(width / 2 - 300);
-		lobbiesListBox.setLayoutY(height / 2 - 200);
-		lobbiesListBox.setMinWidth(600);
-		lobbiesListBox.setMinHeight(400);
+		lobbiesListBox.setLayoutX(width / 2 - MIN_DIMENSION);
+		lobbiesListBox.setLayoutY(height / 2 - LOBBIES_BOX_Y);
+		lobbiesListBox.setMinWidth(MIN_DIMENSION*2);
+		lobbiesListBox.setMinHeight(LOBBIES_MIN_HEIGHT);
 		lobbiesListBox.getStyleClass().add("borders");
-		startGame.setLayoutX(width / 2 - 50);
-		startGame.setLayoutY(height - 100);
-		returnHome.setLayoutX(width - 300);
-		returnHome.setLayoutY(height - 40);
-		backHome.setLayoutX(width - 300);
-		backHome.setLayoutY(height - 40);
-		returnToLobbies.setLayoutX(width - 300);
-		returnToLobbies.setLayoutY(height - 80);
-		joinSelectedLobby.setLayoutX(width - 300);
-		joinSelectedLobby.setLayoutY(height - 80);
-		rightBox.setLayoutX(width - 300);
-		rightBox.setLayoutY(20);
-		rightBox.setSpacing(40);
+		startGame.setLayoutX(width / 2 - START_X_SHIFT);
+		startGame.setLayoutY(height - START_Y_SHIFT);
+		returnHome.setLayoutX(width - MIN_DIMENSION);
+		returnHome.setLayoutY(height - HOME_Y_SHIFT);
+		backHome.setLayoutX(width - MIN_DIMENSION);
+		backHome.setLayoutY(height - HOME_Y_SHIFT);
+		returnToLobbies.setLayoutX(width - MIN_DIMENSION);
+		returnToLobbies.setLayoutY(height - Y_SHIFT);
+		joinSelectedLobby.setLayoutX(width - MIN_DIMENSION);
+		joinSelectedLobby.setLayoutY(height - Y_SHIFT);
+		rightBox.setLayoutX(width - MIN_DIMENSION);
+		rightBox.setLayoutY(RIGHT_BOX_Y);
+		rightBox.setSpacing(RIGHT_SPACING);
 		usernameBox.getStyleClass().add("borders");
-		usernameBox.setMinWidth(300);
-		usernameBox.setSpacing(10);
+		usernameBox.setMinWidth(MIN_DIMENSION);
+		usernameBox.setSpacing(USER_SPACING);
 		lobbiesListBox.getStyleClass().add("borders");
-		activityBox.setLayoutY(100);
-		activityBox.setMinWidth(300);
-		activityBox.setMinHeight(300);
+		activityBox.setLayoutY(ACTIVITY_BOX_Y);
+		activityBox.setMinWidth(MIN_DIMENSION);
+		activityBox.setMinHeight(MIN_DIMENSION);
 		activityBox.getStyleClass().add("borders");
-		notificationBox.setLayoutX(350);
+		notificationBox.setLayoutX(NOTIFICATION_X);
 		rootAdd(notificationBox);
 	}
 
 	private void setMultiplayerBackground(int width, int height) {
-		String backgroundName = BACKGROUND_IMAGE;
+		String backgroundName = PropertiesGetter.getProperty(BACKGROUND_IMAGE);
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(backgroundName));
 		ImageView splashBackground = new ImageView(image);
 		splashBackground.setFitWidth(width);
@@ -251,20 +301,22 @@ public class MultiplayerLobby extends ScreenDisplay {
 
 	private void changeLobbyToHome() {
 		clearLobby();
-		multiClient.exitGameRoom();
+		System.out.println("EXITING LOBBY");
+		//multiClient.exitGameRoom();
 		initializeMultiplayerHomeScreen();
 	}
 
 	private void changeLobbyToLobbiesList() {
 		clearLobby();
-		multiClient.exitGameRoom();
+		System.out.println("EXITING LOBBY");
+		//multiClient.exitGameRoom();
 		initializeLobbiesList();
 	}
 
 	private void createLobby() {
 		promptForLobbyName();
-		multiClient.createGameRoom(gameName, currentLobby);
-		multiClient.joinGameRoom(currentLobby, username);
+		String createdLobbyName = multiClient.createGameRoom(gameName, currentLobby);
+		multiClient.joinGameRoom(createdLobbyName, username);
 		changeHomeToLobby();
 	}
 
@@ -290,10 +342,11 @@ public class MultiplayerLobby extends ScreenDisplay {
 	// Call this method when user wants to create new lobby- to name the lobby
 	// This method should pull up prompt box
 	private void promptForLobbyName() {
-		TextInputDialog dialog = new TextInputDialog("Cool lobby");
-		dialog.setTitle("Lobby Name");
-		dialog.setHeaderText("Enter a lobby name.");
-		dialog.setContentText("Lobby name:");
+		TextInputDialog dialog = new TextInputDialog(PropertiesGetter.getProperty(COOL_LOBBY));
+		dialog.setTitle(PropertiesGetter.getProperty(LOBBY_TITLE));
+		dialog.setHeaderText(PropertiesGetter.getProperty(LOBBY_HEADER));
+		dialog.setContentText(PropertiesGetter.getProperty(LOBBY_CONTENT));
+		
 
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()) {
@@ -314,21 +367,21 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	private void setTopLabelForLobby() {
-		topScreenLabel.setText("VOOGA Lobby");
+		topScreenLabel.setText(PropertiesGetter.getProperty(VOOGA_LOBBY));
 	}
 
 	private void setTopLabelForMultiplayerHomeScreen() {
-		topScreenLabel.setText("Multiplayer");
+		topScreenLabel.setText(PropertiesGetter.getProperty(MULTIPLAYER_KEY));
 	}
 
 	private void createButtons() {
-		createGameLobby = buttonFactory.buildDefaultTextButton("Create Game Lobby", e -> createLobby());
-		joinGameLobby = buttonFactory.buildDefaultTextButton("Join Game Lobby", e -> joinLobby());
-		startGame = buttonFactory.buildDefaultTextButton("START GAME", e -> startGame());
-		returnHome = buttonFactory.buildDefaultTextButton("Return to Multiplayer Home", e -> changeLobbyToHome());
-		backHome = buttonFactory.buildDefaultTextButton("Back", e -> changeLobbiesListToHome());
-		returnToLobbies = buttonFactory.buildDefaultTextButton("View Open Lobbies", e -> changeLobbyToLobbiesList());
-		joinSelectedLobby = buttonFactory.buildDefaultTextButton("Join Selected Lobby", e -> joinSelectedLobby());
+		createGameLobby = buttonFactory.buildDefaultTextButton(PropertiesGetter.getProperty(CREATE_LOBBY), e -> createLobby());
+		joinGameLobby = buttonFactory.buildDefaultTextButton(PropertiesGetter.getProperty(JOIN_LOBBY), e -> joinLobby());
+		startGame = buttonFactory.buildDefaultTextButton(PropertiesGetter.getProperty(START_GAME), e -> startGame());
+		returnHome = buttonFactory.buildDefaultTextButton(PropertiesGetter.getProperty(RETURN_HOME), e -> changeLobbyToHome());
+		backHome = buttonFactory.buildDefaultTextButton(PropertiesGetter.getProperty(BACK), e -> changeLobbiesListToHome());
+		returnToLobbies = buttonFactory.buildDefaultTextButton(PropertiesGetter.getProperty(VIEW_LOBBIES), e -> changeLobbyToLobbiesList());
+		joinSelectedLobby = buttonFactory.buildDefaultTextButton(PropertiesGetter.getProperty(SELECTED_LOBBY), e -> joinSelectedLobby());
 	}
 
 	private void createGameStateLabel(int width, int height) {
@@ -337,8 +390,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 		// gameLabel
 		// gameStateBox.getChildren().add(gameStateLabel);
 		// gameStateBox.setLayoutY(height - 80);
-		gameStateLabel.setText("Game:  " + gameName);
-		gameStateLabel.setLayoutY(height - 40);
+		gameStateLabel.setText(PropertiesGetter.getProperty(GAME_STATE_LABEL) + gameName);
+		gameStateLabel.setLayoutY(height - HEIGHT_SHIFT);
 		rootAdd(gameStateLabel);
 	}
 
@@ -348,29 +401,28 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	private void setUpRightBox() {
-		String imageName = "person_silhouette.png";
-		Image personImage = new Image(getClass().getClassLoader().getResourceAsStream(imageName));
+		Image personImage = new Image(getClass().getClassLoader().getResourceAsStream(IMAGE_NAME));
 		ImageView person = new ImageView(personImage);
-		person.setFitWidth(30);
-		person.setFitHeight(30);
+		person.setFitWidth(PERSON_DIMENSION);
+		person.setFitHeight(PERSON_DIMENSION);
 		usernameBox.getChildren().add(person);
 		usernameBox.getStyleClass().add("borders");
 		rightBox.getChildren().add(usernameBox);
-		lobbyPlayersLabel.setText("Players");
+		lobbyPlayersLabel.setText(PropertiesGetter.getProperty(PLAYERS));
 		playersBox.getChildren().add(lobbyPlayersLabel);
 		players.attach(playersBox);
 		rootAdd(rightBox);
 	}
 
 	private void setUpActivityBox() {
-		Label activityLabel = new Label("Active Players");
+		Label activityLabel = new Label(PropertiesGetter.getProperty(ACTIVE_PLAYERS));
 		activityBox.getChildren().add(activityLabel);
 		activityList.attach(activityBox);
 		activityList.setNames(multiClient);
 	}
 
 	private void setUpLobbiesListBox() {
-		lobbiesLabel.setText("Lobbies");
+		lobbiesLabel.setText(PropertiesGetter.getProperty(LOBBIES));
 		lobbiesListBox.getChildren().add(lobbiesLabel);
 		lobbies.attach(lobbiesListBox);
 	}
@@ -476,7 +528,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 						}
 						if (notification.hasElementPlaced() && launched) {
 							System.out.println("Element placed!");
-							playDisplay.receivePlacedElement(notification.getElementPlaced());
+							playDisplay.receiveNotification(notification.toByteArray());
 						}
 					} catch (InvalidProtocolBufferException e) {
 					}
@@ -486,20 +538,20 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	private void handleUserJoinedRoom(String userName) {
-		if(!userName.equals("bot")) {
+		if(!userName.equals(PropertiesGetter.getProperty(BOT))) {
 			notificationBar.show();
-			notificationBar.setText("User " + userName + " joined!");
+			notificationBar.setText(PropertiesGetter.getProperty(USER) + userName + PropertiesGetter.getProperty(JOINED));
 		}
-		System.out.println("User " + userName + " joined!");
+		System.out.println(PropertiesGetter.getProperty(USER) + userName + " joined!");
 		players.setNames(multiClient.getPlayerNames());
 	}
 
 	private void handleUserExitedRoom(String userName) {
 		if(!userName.equals("bot")) {
-			notificationBar.setText("User " + userName + " exited!");
+			notificationBar.setText(PropertiesGetter.getProperty(USER) + userName + PropertiesGetter.getProperty(EXITED));
 			notificationBar.show();
 		}
-		System.out.println("User " + userName + "exited!");
+		System.out.println(PropertiesGetter.getProperty(USER) + userName + "exited!");
 		players.setNames(multiClient.getPlayerNames());
 	}
 

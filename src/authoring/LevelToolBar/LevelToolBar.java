@@ -104,7 +104,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
 	private void loadLevels() {
 		startingLevels = myController.getNumLevelsForGame();
-		if (myController.getGameName().equals(UNTITLED)) {
+		if (myController.getGameName().equals(UNTITLED) || startingLevels == 1) {
 			addLevel();
 			return;
 		}
@@ -327,7 +327,7 @@ class Data {
         spriteNames = new ArrayList<ImageView>();
         numberList = new ArrayList<Integer>();
     }
-}
+} 
 
 
 class LevelData {

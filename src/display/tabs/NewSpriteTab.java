@@ -2,6 +2,7 @@ package display.tabs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import authoring.PropertiesToolBar.SpriteImage;
@@ -34,6 +35,10 @@ public abstract class NewSpriteTab extends ScrollPane {
 		this.setContent(list);
 		list.setOnMouseClicked(e->myCreated.clicked(
         		list.getSelectionModel().getSelectedItem()));
+	}
+	
+	public Optional<SpriteImage> getImageFromId(String id) {
+		return newSpriteImages.stream().filter(newSprite -> newSprite.getId().equals(id)).findFirst();
 	}
 	
 	public void attach(Tab newTroopTab) {

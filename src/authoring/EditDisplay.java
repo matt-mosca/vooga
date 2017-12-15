@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import authoring.LevelToolBar.LevelToolBar;
 import authoring.LevelToolBar.LevelToolBarOld;
 import authoring.PropertiesToolBar.PropertiesToolBar;
@@ -57,7 +59,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
+import networking.protocol.AuthorClient.DefineElement;
+import networking.protocol.AuthorServer.AuthoringNotification;
 import networking.protocol.PlayerServer;
+import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import player.LiveEditingPlayDisplay;
 import player.PlayDisplay;
@@ -66,6 +71,7 @@ import util.Exclude;
 import util.PropertiesGetter;
 import util.Purger;
 import util.protocol.ClientMessageUtils;
+import display.splashScreen.NotifiableDisplay;
 import display.splashScreen.ScreenDisplay;
 import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
@@ -73,7 +79,7 @@ import display.sprites.StaticObject;
 import display.tabs.SaveDialog;
 import display.toolbars.StaticObjectToolBar;
 
-public class EditDisplay extends ScreenDisplay implements AuthorInterface {
+public class EditDisplay extends ScreenDisplay implements AuthorInterface, NotifiableDisplay {
 
 	private static final String TEXT = "-";
 	private static final String PLUS = "+";
@@ -90,7 +96,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private final String PATH_DIRECTORY_NAME = DEFAULT_PATH;
 	private final String HEIGHT = "Height";
 	private final String WIDTH = "Width";
-	
+
 	private Scene myScene;
 	private AuthoringModelController controller;
 	private StaticObjectToolBar myLeftToolBar;
@@ -108,7 +114,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private LevelToolBar myBottomToolBar;
 	private VBox myLeftBar;
 	private VBox myLeftButtonsBar;
-	//private SpriteTesterButton myTesterButton;
+	// private SpriteTesterButton myTesterButton;
 	private Slider volumeSlider;
 	private MediaPlayerFactory mediaPlayerFactory;
 	private MediaPlayer mediaPlayer;
@@ -116,45 +122,83 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private InteractiveObject objectToPlace;
 	private EventHandler<MouseEvent> cursorDrag;
 	private boolean addingObject = false;
+	private String gameName = null;
 
 	private DropdownFactory dropdownFactory = new DropdownFactory();
 
 	private ClientMessageUtils clientMessageUtils;
 
-	public EditDisplay(int width, int height, Stage stage, boolean loaded) {
+	public EditDisplay(int width, int height, Stage stage, boolean loaded, AuthoringModelController controller) {
 		super(width, height, Color.BLACK, stage);
-		controller = new AuthoringController();
+		this.controller = controller;
 		clientMessageUtils = new ClientMessageUtils();
 		if (loaded) {
 			loadGame();
 		}
-
 		myLeftButtonsBar = new VBox();
 		myLeftBar = new VBox();
 		basePropertyMap = new HashMap<>();
+	}
+
+	@Override
+	public void startDisplay() {
+		System.out.println("STARTING EDIT DISPLAY");
+		super.startDisplay();
 		addItems();
+		System.out.println("Added items!");
 		formatLeftBar();
 		setStandardTheme();
 		createGridToggle();
 		createMovementToggle();
 		createLabel();
 		basePropertyMap = new HashMap<>();
-		//Button saveButton = new Button("Save");
-		//saveButton.setLayoutY(600);
-		//rootAdd(saveButton);
-		//myTesterButton = new SpriteTesterButton(this);
-		//rootAdd(myTesterButton);
+		// Button saveButton = new Button("Save");
+		// saveButton.setLayoutY(600);
+		// rootAdd(saveButton);
+		// myTesterButton = new SpriteTesterButton(this);
+		// rootAdd(myTesterButton);
 		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
 		mediaPlayer.play();
 		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
 		volumeSlider.setLayoutY(735);
 		volumeSlider.setLayoutX(950);
-		
 		this.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, e -> addStaticObject(e));
-
 		myMenuBar.getMenus().clear();
 		myMenuBar.getMenus().addAll(dropdownFactory.generateMenuDropdowns(this));
+		System.out.println("Done starting display!");
+	}
+
+	@Override
+	public void startDisplay(LevelInitialized levelData) {
+		startDisplay();
+		clientMessageUtils.initializeLoadedLevel(levelData);
+	}
+
+	@Override
+	public void receiveNotification(byte[] messageBytes) {
+		try {
+			AuthoringNotification notification = AuthoringNotification.parseFrom(messageBytes);
+			if (notification.hasElementAddedToInventory()) {
+				receiveElementAddedToInventory(notification.getElementAddedToInventory());
+			}
+			// TODO - Handle place, move, setLevel, deleteLevel notifications
+		} catch (InvalidProtocolBufferException e) {
+		}
+	}
+
+	@Override
+	public String getGameState() {
+		return gameName;
+	}
+
+	public void receiveElementAddedToInventory(DefineElement elementAddedToInventory) {
+		String nameOfElementAdded = elementAddedToInventory.getElementName();
+		// get imageView from image name
+		Optional<SpriteImage> imageViewToAdd = myRightToolBar.getImageOfAppropriateTypeFromId(nameOfElementAdded);
+		if (imageViewToAdd.isPresent()) {
+			myRightToolBar.imageSelected(imageViewToAdd.get());
+		}
 	}
 
 	private void createGridToggle() {
@@ -209,6 +253,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	private void addItems() {
+		System.out.print("Adding items");
 		myGameArea = new GameArea(controller);
 		myGameEnvironment = new ScrollableArea(myGameArea);
 		rootAdd(myGameEnvironment);
@@ -261,7 +306,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			});
 			rootAdd(incrementButton);
 			rootAdd(decrementButton);
-		}else {
+		} else {
 			if (object instanceof BackgroundObject) {
 				objectToPlace = new BackgroundObject(object.getCellSize(), this, object.getElementName());
 			} else {
@@ -273,15 +318,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 				@Override
 				public void handle(MouseEvent event) {
 					e.consume();
-					objectToPlace.setX(event.getX() - objectToPlace.getFitWidth()/2);
-					objectToPlace.setY(event.getY()- objectToPlace.getFitHeight()/2);
+					objectToPlace.setX(event.getX() - objectToPlace.getFitWidth() / 2);
+					objectToPlace.setY(event.getY() - objectToPlace.getFitHeight() / 2);
 				}
 			};
 			this.getScene().addEventHandler(MouseEvent.ANY, cursorDrag);
 			this.getScene().setCursor(ImageCursor.NONE);
 			addingObject = true;
 		}
-		
 
 	}
 
@@ -301,23 +345,19 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		newProperties.put(HEIGHT, object.getSize());
 		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
-	
+
 	private void addStaticObject(MouseEvent e) {
 		System.out.println("adding static object");
-		if(addingObject) {
+		if (addingObject) {
 			e.consume();
 			this.getScene().removeEventHandler(MouseEvent.ANY, cursorDrag);
 			rootRemove(objectToPlace);
-			try {
-				System.out.println(objectToPlace.getElementName());
-				System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap).keySet().toString());
-				NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(), new Point2D(0, 0));
-				objectToPlace.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
-			} catch (ReflectiveOperationException failedToAddObjectException) {
-
-			}
-			objectToPlace.setX(e.getX() - objectToPlace.getFitWidth()/2 - myGameEnvironment.getLayoutX());
-			objectToPlace.setY(e.getY() - objectToPlace.getFitHeight()/2 - myGameEnvironment.getLayoutY());
+			System.out.println(objectToPlace.getElementName());
+			System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap).keySet().toString());
+			NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(), new Point2D(0, 0));
+			objectToPlace.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
+			objectToPlace.setX(e.getX() - objectToPlace.getFitWidth() / 2 - myGameEnvironment.getLayoutX());
+			objectToPlace.setY(e.getY() - objectToPlace.getFitHeight() / 2 - myGameEnvironment.getLayoutY());
 			myGameArea.addBackObject(objectToPlace);
 			myGameArea.droppedInto(objectToPlace);
 			addingObject = false;
@@ -353,15 +393,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	// I'm adding this to do reflective generation of dropdown menu (I am Ben S)
 	private void export() {
-		/*Dialog dialog = new Dialog();
-		dialog.setContentText("Wait for the exportation to complete...");
-		Thread st = new Thread(() -> {
-			synchronized (dialog) {
-				dialog.show();
-				dialog.notify();
-			}
-		});
-		st.run();*/
+		/*
+		 * Dialog dialog = new Dialog();
+		 * dialog.setContentText("Wait for the exportation to complete..."); Thread st =
+		 * new Thread(() -> { synchronized (dialog) { dialog.show(); dialog.notify(); }
+		 * }); st.run();
+		 */
 		final String[] DIALOG_MESSAGE = new String[1];
 		Task<String> exportTask = new Task<String>() {
 			@Override
@@ -370,7 +407,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 				return controller.exportGame();
 			}
 		};
-		//exportTask.setOnSucceeded(event -> dialog.close());
+		// exportTask.setOnSucceeded(event -> dialog.close());
 		try {
 			Thread run = new Thread(exportTask);
 			run.run();
@@ -378,7 +415,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			DIALOG_MESSAGE[0] = e.getMessage();
 		}
 		Thread response = new Thread(() -> {
-            new AlertFactory(DIALOG_MESSAGE[0],AlertType.INFORMATION);
+			new AlertFactory(DIALOG_MESSAGE[0], AlertType.INFORMATION);
 		});
 		response.run();
 	}
@@ -386,15 +423,19 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private void rename() {
 		myMenuBar.renameGame();
 	}
+
 	private void addWave() {
 		myBottomToolBar.makeNewWave();
 	}
+
 	private void addLevel() {
 		myBottomToolBar.addLevel();
 	}
+
 	private void editLevel() {
 		myBottomToolBar.openLevelDisplay();
 	}
+
 	private void playGame() {
 //	    final String AUTHORING = DEFAULT_PATH;
 //	    final String GAME_NAME = DEFAULT_GAME_NAME;
@@ -424,7 +465,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setOnCloseRequest(null);
 	}
 
-    // end
+	// end
 
 	private void loadGame() {
 		List<String> games = new ArrayList<>();
@@ -439,7 +480,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		Optional<String> result = loadChoices.showAndWait();
 		if (result.isPresent()) {
 			try {
-				clientMessageUtils.initializeLoadedLevel(controller.loadOriginalGameState(result.get(), 1));
+				gameName = result.get();
+				System.out.println("Set game name to " + gameName);
+				clientMessageUtils.initializeLoadedLevel(controller.loadOriginalGameState(gameName, 1));
 			} catch (IOException e) {
 				// TODO Change to alert for the user
 				e.printStackTrace();
@@ -543,7 +586,4 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		}
 	}
 
-//	public int getMaxLevel() {
-//		return myBottomToolBar.getMaxLevel();
-//	}
 }
