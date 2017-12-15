@@ -147,6 +147,7 @@ public class ElementManager {
 	}
 
 	boolean allEnemiesDead() {
+		System.out.println("checking that all enemies are ded.");
 		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.isAlive());
 	}
 
@@ -154,7 +155,7 @@ public class ElementManager {
 		return allElementsFulfillCondition(element -> !element.isAlly() || !element.isAlive());
 	}
 
-	boolean allWavesComplete() { return currentWave == null; }
+	boolean allWavesComplete() { return (currentWave == null) && allEnemiesDead(); }
 
 	boolean enemyReachedTarget() {
 		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
