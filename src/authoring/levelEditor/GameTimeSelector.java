@@ -10,15 +10,15 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
+import util.PropertiesGetter;
 
 public class GameTimeSelector  extends VBox{
-	private static final String TIME_SELECTOR_PROMPT_TEXT = "Enter a time limit!";
-	private static final String UPDATE_TEXT = "Update";
-	private static final String DONE_LABEL = "Are you done?";
-	private static final String TIME_ALERT_MESSAGE = "Your input was invalid, so a default value has been set. If you want"
-			+ " to change this, type in a number, please.";
-	private final String TIME_ALERT_HEADER = "Input Not Valid";
-	private static final int TIME_DEFAULT = 60;
+	private static final String TIME_SELECTOR_PROMPT_TEXT = "timeLimitPrompt";
+	private static final String UPDATE_TEXT = "updateButton";
+	private static final String DONE_LABEL = "doneLabel";
+	private static final String TIME_ALERT_MESSAGE = "invalidInputInfo";
+	private final String TIME_ALERT_HEADER = "invalidInput";
+	private static final int TIME_DEFAULT = 600;
 	private ArrayList<CheckBox> checkBoxes;
 	private AuthoringModelController myController;
 	private TextField amount;
@@ -28,11 +28,11 @@ public class GameTimeSelector  extends VBox{
 	public GameTimeSelector(AuthoringModelController controller) {
 		myController = controller;		
 		amount = new TextField();
-		amount.setPromptText(TIME_SELECTOR_PROMPT_TEXT );
+		amount.setPromptText(PropertiesGetter.getProperty(TIME_SELECTOR_PROMPT_TEXT));
 		update = new Button();
-		update.setText(UPDATE_TEXT);
+		update.setText(PropertiesGetter.getProperty(UPDATE_TEXT));
 		update.setOnAction(e ->record(amount));
-		done = new Button(DONE_LABEL);
+		done = new Button(PropertiesGetter.getProperty(DONE_LABEL));
 		done.setOnAction(e->hide());
 		this.getChildren().add(done);
 		hide();
@@ -57,13 +57,13 @@ public class GameTimeSelector  extends VBox{
 			}
 			else {
 				myController.setLevel(Integer.parseInt(checkBoxes.get(i).getText()));
-				myController.setLevelPointQuota(TIME_DEFAULT);
+				myController.setLevelTimeLimit(TIME_DEFAULT);
 			}
 		}
 		try {
 		time = Integer.parseInt(amount.getText());		
 		}catch(NumberFormatException nfe) {
-			new AlertFactory(TIME_ALERT_MESSAGE,TIME_ALERT_HEADER,AlertType.ERROR);
+			new AlertFactory(PropertiesGetter.getProperty(TIME_ALERT_MESSAGE),PropertiesGetter.getProperty(TIME_ALERT_HEADER),AlertType.ERROR);
 			time = TIME_DEFAULT;
 		}
 		

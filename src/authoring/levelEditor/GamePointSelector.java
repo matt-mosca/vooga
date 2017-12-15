@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import util.PropertiesGetter;
 
 public class GamePointSelector extends VBox{
 	private final int POINT_DEFAULT = 100;
@@ -30,11 +31,11 @@ public class GamePointSelector extends VBox{
 	public GamePointSelector(AuthoringModelController controller) {
 		myController = controller;		
 		amount = new TextField();
-		amount.setPromptText(POINT_SELECTOR_PROMPT_TEXT );
+		amount.setPromptText(PropertiesGetter.getProperty(POINT_SELECTOR_PROMPT_TEXT));
 		update = new Button();
-		update.setText(UPDATE_TEXT);
+		update.setText(PropertiesGetter.getProperty(UPDATE_TEXT));
 		update.setOnAction(e ->record(amount));
-		done = new Button(DONE_LABEL);
+		done = new Button(PropertiesGetter.getProperty(DONE_LABEL));
 		done.setOnAction(e->hide());
 		this.getChildren().add(done);
 		hide();
