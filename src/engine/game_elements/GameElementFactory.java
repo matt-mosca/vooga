@@ -121,6 +121,7 @@ public final class GameElementFactory {
             for (int i = 0; i < parameters.length; i++) {
                 constructorParameters[i] = supplyConstructorArgument(properties, parameters[i]);
             }
+            System.out.println(Arrays.asList(constructorParameters));
             return parameterClass.getConstructors()[0].newInstance(constructorParameters);
         } else {
             // TODO - exception here
@@ -133,8 +134,10 @@ public final class GameElementFactory {
         ElementProperty propertyParameterName = parameter.getAnnotation(ElementProperty.class);
         if (propertyParameterName != null) {
             //if (propertyParameterName.isTemplateProperty()) {
-                // String propertyArgument = properties.get(propertyParameterName.value());
-                return properties.get(propertyParameterName.value());
+                String argumentName = propertyParameterName.value();
+                String argumentDescription =
+                        elementOptionsGetter.translateParameterToDescription(argumentName);
+                return properties.get(argumentDescription);
             /*} else {
                 return nonTemplateArguments.get(propertyParameterName.value());
             }*/

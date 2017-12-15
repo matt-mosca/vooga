@@ -160,7 +160,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 			System.out.println("Game name: " + gameName);
 		}
 		System.out.println("Creating game room");
-		String gameRoom = testClient.createGameRoom("blah.voog", "adi_game");
+		String gameRoom = testClient.createGameRoom("savetest.voog", "adi_game");
 		System.out.println("Joined " + gameRoom);
 		testClient.joinGameRoom(gameRoom, "adi");
 		testClient.launchGameRoom();
