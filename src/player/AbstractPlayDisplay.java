@@ -211,8 +211,10 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 			try {
 				Properties exportedGameProperties = new Properties();
 				exportedGameProperties.load(in);
+
 				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY)
-						+ PropertiesGetter.getDoubleProperty(EXTENSION_KEY);
+						+ PropertiesGetter.getProperty(EXTENSION_KEY);
+
 				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
 				initializeLevelSprites();
 			} catch (IOException ioException) {
