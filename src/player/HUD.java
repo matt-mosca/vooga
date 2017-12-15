@@ -11,6 +11,7 @@ public class HUD extends HBox{
 	private Map<String, ValueDisplay> displays;
 	private PointsDisplay myPointsDisplay;
 	private HealthDisplay myHealthDisplay;
+	private final double INITIAL_POINTS = 0;
 	
 	public HUD(int width) {
 		this.setLayoutX(0);
@@ -63,7 +64,7 @@ public class HUD extends HBox{
 	
 	protected void updatePointDisplay(Map<String, Double> pointsEarned) {
 		//this can be improved to associate point multipliers with certain resource types
-		double totalPoints = 0;
+		double totalPoints = INITIAL_POINTS;
 		for(double val:pointsEarned.values()) { totalPoints += val; }
 		myPointsDisplay.increaseByAmount(totalPoints);
 	}

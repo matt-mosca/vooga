@@ -9,11 +9,14 @@ public class HealthBar extends Rectangle {
 	private Rectangle healthBackground;
 	private Rectangle healthBar;
 	private double myHealth;
+	private final int INITIAL_HEALTH = 200;
+	private final int HEALTH_HEIGHT = 40;
+	private final int HEALTH_WIDTH = 200;
 	
 	public HealthBar() {
-		myHealth = 200;
-		this.setHeight(40);
-		this.setWidth(200);
+		myHealth = INITIAL_HEALTH;
+		this.setHeight(HEALTH_HEIGHT);
+		this.setWidth(HEALTH_WIDTH);
 		this.setFill(Color.LIGHTGREEN);
 	}
 
