@@ -8,6 +8,7 @@ import java.util.Map;
 import display.factory.TabFactory;
 import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
+import factory.AlertFactory;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -30,10 +31,18 @@ public class ResourceDisplay extends VBox{
 	private TextField value;
 	private AuthoringModelController myController;
 	private TabFactory tabMaker;
+	private final int RESOURCE_DISPLAY_MAX_WIDTH = 250;
+	private final boolean IS_CLOSABLE = false;
+	private final String RESOURCE_NAME_PROMPT_TEXT = "Name";
+	private final String TAB_LEVELS_LABEL = "Level ";
+	private final String RESOURCE_VALUE_PROMPT_TEXT = "Value";
+	private final String ENTER_BUTTON_LABEL = "add!";
+	private final String RESOURCE_ALERT_CONTENT = "You need to input a number!";
+	private final String RESOURCE_ALERT_HEADER = "You need to input a number!";
 	
 	public ResourceDisplay(AuthoringModelController controller){
 		myController = controller;
-		this.setMaxWidth(250);
+		this.setMaxWidth(RESOURCE_DISPLAY_MAX_WIDTH );
 		resourceEndowments = new HashMap<>();
 		resourceTabs = new TabPane();
 		tabMaker = new TabFactory();
@@ -45,13 +54,13 @@ public class ResourceDisplay extends VBox{
 	private void createResourceTabs() {
 		for (int i=0; i<myController.getNumLevelsForGame(); i++) {
 //			System.out.println(Integer.toString(myController.getCurrentLevel()));
-			Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(i+1), null, resourceTabs);
+			Tab newTab = tabMaker.buildTabWithoutContent(TAB_LEVELS_LABEL + Integer.toString(i+1), null, resourceTabs);
 			ResourceTab newLv = new ResourceTab(i+1, myController);
 			newLv.attach(newTab);
 			resources.add(newLv);
 			final int j = i+1;
 			newTab.setOnSelectionChanged(e->update(j));
-			newTab.setClosable(false);
+			newTab.setClosable(IS_CLOSABLE);
 			resourceTabs.getTabs().add(newTab);
 		}
 		
@@ -59,10 +68,10 @@ public class ResourceDisplay extends VBox{
 
 	private void changeResourceValApparatus() {
 		name = new TextField();
-		name.setPromptText("Name");
+		name.setPromptText(RESOURCE_NAME_PROMPT_TEXT);
 		value = new TextField();
-		value.setPromptText("Value");
-		Button enter = new Button("add!");
+		value.setPromptText(RESOURCE_VALUE_PROMPT_TEXT);
+		Button enter = new Button(ENTER_BUTTON_LABEL);
 		enter.setOnAction(e->{
 			try {
 			if (myController.getResourceEndowments().containsKey(name.getText())) {
@@ -75,11 +84,7 @@ public class ResourceDisplay extends VBox{
 			try {
 				myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			} catch(NumberFormatException nfe) {
-				Alert a = new Alert(AlertType.ERROR);
-				a.setHeaderText("Input Not Valid");
-				a.setContentText("You need to input a number!");
-				a.showAndWait().filter(button -> button == ButtonType.OK)
-						.ifPresent(event -> a.close());
+				new AlertFactory(RESOURCE_ALERT_CONTENT,RESOURCE_ALERT_HEADER,AlertType.ERROR);
 			}
 			System.out.println(name.getText());
 			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));

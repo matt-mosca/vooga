@@ -19,20 +19,27 @@ public class SpriteDisplayTab extends HBox {
 	private SpriteDisplayer mySpriteDisplay;
 	private AuthoringModelController controller;
 	private int currentDisplay;
+	private final int TAB_PANE_PREF_WIDTH = 400;
+	private final int TAB_PANE_PREF_HEIGHT = 100;
+	private final int INITIAL_DISPLAY = 1;
+	private final int INITIAL_WAVES = 0;
+	private final String LEVELS_TEXT = "Level ";
 	
+
 	public SpriteDisplayTab(AuthoringModelController myController) {
-		currentDisplay = 1;
+		currentDisplay = INITIAL_DISPLAY;
+
 		controller = myController;
 		myTabPane = new TabPane();
 		tabMaker = new TabFactory();
-		myWaves = 0;
-		myTabPane.setMaxSize(400, 100);
-		myTabPane.setPrefSize(400, 100);
+		myWaves = INITIAL_WAVES;
+		myTabPane.setMaxSize(TAB_PANE_PREF_WIDTH, TAB_PANE_PREF_HEIGHT);
+		myTabPane.setPrefSize(TAB_PANE_PREF_WIDTH, TAB_PANE_PREF_HEIGHT);
 		this.getChildren().add(myTabPane);
 	}
 		
 	public void addLevel() {
-		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(myWavesList.size() + 1), null, myTabPane);
+		Tab newTab = tabMaker.buildTabWithoutContent(LEVELS_TEXT + Integer.toString(myWavesList.size() + 1), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);
 		LevelTab newLv = new LevelTab(myWavesList.size() + 1, controller);
 		controller.setLevel(myWavesList.size() + 1);

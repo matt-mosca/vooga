@@ -20,11 +20,12 @@ public class LevelsEditDisplay {
 	private ResourceDisplay resourceEditor;
 	private GameEnder gameEnder;
 	private GameEnderRecorder recorder;
+	private final String LEVEL_EDITOR_TITLE = "Level Editor";
 	
 	public LevelsEditDisplay(AuthoringModelController controller) {
 		myController = controller;
 		myStage = new Stage();
-		myStage.setTitle("Level Editor");
+		myStage.setTitle(LEVEL_EDITOR_TITLE);
 		myRoot = new BorderPane();
 		myScene = new Scene(myRoot, SIZE, SIZE);
 		resourceEditor = new ResourceDisplay(controller);

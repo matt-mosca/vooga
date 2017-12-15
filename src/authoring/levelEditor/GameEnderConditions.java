@@ -17,6 +17,13 @@ public class GameEnderConditions extends VBox {
 	private ArrayList<CheckBox> checkBoxes;
 	private GameEnderRecorder recorder;
 	private GamePointSelector pointManager;
+	private final String VICTORY_PROMPT_TEXT = "Choose your victory condition!";
+	private final String DEFEAT_PROMPT_TEXT = "Choose how someone loses!";
+	private final String RECORD_CONDITIONS_LABEL = "Record end condtions!";
+	private final String LEVELS_CONDITIONS_PROMPT_TEXT = "Select which levels you want to set these conditions for!";
+	private final String VICTORY_POINTS_CONDITIONS = "points target reached";
+	private final boolean IS_WRAPPED = true;
+	private final boolean IS_ALLOW_INDETERMINATE = false;
 
 	public GameEnderConditions(AuthoringModelController controller) {
 		myController = controller; 
@@ -25,16 +32,16 @@ public class GameEnderConditions extends VBox {
 	
 	private void addMiscElements() {
 		victory = new ComboBox<>();
-		victory.setPromptText("Choose your victory condition!");
+		victory.setPromptText(VICTORY_PROMPT_TEXT);
 		victory.getItems().addAll(myController.getPossibleVictoryConditions());
 		defeat = new ComboBox<>();
-		defeat.setPromptText("Choose how someone loses!");
+		defeat.setPromptText(DEFEAT_PROMPT_TEXT);
 		defeat.getItems().addAll(myController.getPossibleDefeatConditions());
 		
-		Button recordConditions = new Button("Record end condtions!");
+		Button recordConditions = new Button(RECORD_CONDITIONS_LABEL);
 		recordConditions.setOnAction(e->record());
-		Label l = new Label("Select which levels you want to set these conditions for!");
-		l.setWrapText(true);
+		Label l = new Label(LEVELS_CONDITIONS_PROMPT_TEXT);
+		l.setWrapText(IS_WRAPPED);
 		this.getChildren().addAll(victory, defeat, l);
 		createLevelBoxes();
 		this.getChildren().add(recordConditions);
@@ -45,7 +52,7 @@ public class GameEnderConditions extends VBox {
 		for (int i = 0; i<myController.getNumLevelsForGame(); i++) {
 			checkBoxes.add(new CheckBox());
 			checkBoxes.get(i).setText(Integer.toString(i+1));
-			checkBoxes.get(i).setAllowIndeterminate(false);
+			checkBoxes.get(i).setAllowIndeterminate(IS_ALLOW_INDETERMINATE);
 		}
 		this.getChildren().addAll(checkBoxes);
 		
@@ -63,7 +70,7 @@ public class GameEnderConditions extends VBox {
 				if(defeat.getValue()!=null) {
 					myController.setDefeatCondition(defeat.getValue());	
 				}
-				if(victory.getValue().equals("points target reached")) {
+				if(victory.getValue().equals(VICTORY_POINTS_CONDITIONS)) {
 					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i).getText()));
 				}
 				checkBoxes.get(i).fire();
