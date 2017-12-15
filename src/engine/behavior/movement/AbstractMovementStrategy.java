@@ -14,11 +14,8 @@ import javafx.geometry.Point2D;
  */
 public abstract class AbstractMovementStrategy implements MovementStrategy {
 
-	private final int DEFAULT_START_COORDINATE = -1;
-	// Alternative to using properties - can simply update x, y values of
-	// locationProperty in setX and setY respectively ... preferred approach?
 	private LocationProperty locationProperty;
-	protected double angle;
+	private double angle;
 
 	public AbstractMovementStrategy(
 			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint) {
@@ -108,14 +105,30 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 		return true;
 	}
 	
+	/**
+	 * Returns the angle this object is facing
+	 * 
+	 * @return facing angle
+	 */
 	public double getAngle() {
 		return angle;
 	}
 	
+	/**
+	 * Sets the facing angle of this object based on the target x and y coordinates
+	 * 
+	 * @param y target y coordinate
+	 * @param x target x coordinate
+	 */
 	public void setAngle(double y, double x) {
 		this.angle=Math.toDegrees(Math.atan2(y, x));
 	}
 	
+	/**
+	 * Set the facing angle of this object
+	 * 
+	 * @param angle New desired angle
+	 */
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}

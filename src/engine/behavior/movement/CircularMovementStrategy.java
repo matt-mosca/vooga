@@ -52,16 +52,6 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 		return false;
 	}
 	
-	/**
-	 * Sets the initial starting location of the 
-	 * Will always return false since the circle is continuous.
-	 * 
-	 * */
-	private void setInitialLocation() {
-		this.setX(Math.cos(angle)*radius);
-		this.setY(Math.sin(angle)*radius);
-	}
-	
 	public static void main(String[] args) throws InterruptedException {
 		Point2D startingLoc = new Point2D(0,0);
 		double radius = 100;

@@ -21,9 +21,4 @@ public class StraightLineMovementStrategy extends TargetedMovementStrategy {
 		super(startPoint, targetX, targetY, velocity);
 		setVelocityComponents();
 	}
-
-	public void bounce() {
-
-	}
-
 }
