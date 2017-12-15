@@ -63,6 +63,7 @@ import player.LiveEditingPlayDisplay;
 import player.PlayDisplay;
 import util.DropdownFactory;
 import util.Exclude;
+import util.PropertiesGetter;
 import util.Purger;
 import util.protocol.ClientMessageUtils;
 import display.splashScreen.ScreenDisplay;
@@ -74,9 +75,17 @@ import display.toolbars.StaticObjectToolBar;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
+	private static final String TESTING_GAME = "testingGame";
+	private static final String UNTITLED = "untitled";
+	private static final String ATTACK = "attackLabel";
+	private static final String DEFENSE = "defenseLabel";
+	private static final String DEFAULT_GAME_NAME = "temp.voog";
+	private static final String DEFAULT_PATH = "authoring/";
+	private static final String LOAD_GAME = "loadGameLabel";
+	private static final String SAVED_GAME_LABEL = "savedGameLabel";
 	private static final double GRID_X_LOCATION = 620;
 	private static final double GRID_Y_LOCATION = 20;
-	private final String PATH_DIRECTORY_NAME = "authoring/";
+	private final String PATH_DIRECTORY_NAME = DEFAULT_PATH;
 	private final String HEIGHT = "Height";
 	private final String WIDTH = "Width";
 	
@@ -181,7 +190,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	private void createLabel() {
-		attackDefenseLabel = new Label("Defense");
+		attackDefenseLabel = new Label(DEFENSE);
 		// styleLabel(attackDefenseLabel);
 		attackDefenseLabel.setFont(new Font("Times New Roman", 35));
 		// attackDefenseLabel.setFont(new Font("American Typewriter", 40));
@@ -385,17 +394,17 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		myBottomToolBar.openLevelDisplay();
 	}
 	private void playGame() {
-	    final String AUTHORING = "authoring/";
-	    final String GAME_NAME = "temp.voog";
+//	    final String AUTHORING = DEFAULT_PATH;
+//	    final String GAME_NAME = DEFAULT_GAME_NAME;
         myGameArea.savePath();
-        controller.setGameName(GAME_NAME);
-        controller.saveGameState(GAME_NAME);
+        controller.setGameName(DEFAULT_GAME_NAME);
+        controller.saveGameState(DEFAULT_GAME_NAME);
         PlayModelController playModelController = new PlayController();
         try {
-            playModelController.loadOriginalGameState(GAME_NAME, 1);
+            playModelController.loadOriginalGameState(DEFAULT_GAME_NAME, 1);
             LiveEditingPlayDisplay playDisplay =
                     new LiveEditingPlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController());
-            playDisplay.launchGame(GAME_NAME);
+            playDisplay.launchGame(DEFAULT_GAME_NAME);
             myScene = this.getScene();
             getStage().setScene(playDisplay.getScene());
             getStage().setOnCloseRequest(e->{
@@ -421,8 +430,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			games.add(title);
 		}
 		Collections.sort(games);
-		ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Pick a saved game", games);
-		loadChoices.setTitle("Load Game");
+		ChoiceDialog<String> loadChoices = new ChoiceDialog<>(PropertiesGetter.getProperty(SAVED_GAME_LABEL), games);
+		loadChoices.setTitle(PropertiesGetter.getProperty(LOAD_GAME));
 		loadChoices.setContentText(null);
 
 		Optional<String> result = loadChoices.showAndWait();
@@ -451,11 +460,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	public void attack() {
-		attackDefenseLabel.setText("Defense");
+		attackDefenseLabel.setText(PropertiesGetter.getProperty(DEFENSE));
 	}
 
 	public void defense() {
-		attackDefenseLabel.setText("Attack");
+		attackDefenseLabel.setText(PropertiesGetter.getProperty(ATTACK));
 	}
 
 	public void submit(String levelAndWave, String location, int amount, ImageView mySprite) {
@@ -470,7 +479,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	@Override
 	public void returnButtonPressed() {
-		if (!controller.getGameName().equals("untitled")) {
+		if (!controller.getGameName().equals(UNTITLED)) {
 			controller.saveGameState(new File(controller.getGameName()).getName());
 		} else {
 			this.save();
@@ -515,7 +524,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - 1000 / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - 1000 / 2);
 		getStage().setScene(testingScene.getScene());
-		controller.setGameName("testingGame");
+		controller.setGameName(TESTING_GAME);
 		//try {
 			controller.createWaveProperties(fun, sprites, new Point2D(100, 100));
 		/*} catch (ReflectiveOperationException failedToGenerateWaveException) {
