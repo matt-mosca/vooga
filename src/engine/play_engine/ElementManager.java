@@ -250,6 +250,10 @@ public class ElementManager {
 			audioClipFactory.getAudioClip().play();
 		}
 	}
-
+	
+	void triggeredFire(int elementId) {
+		activeElements.get(elementId).fire();
+		playAudio(activeElements.get(elementId).getFiringAudio());
+	}
 
 }
