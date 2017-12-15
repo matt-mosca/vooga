@@ -22,6 +22,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -30,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.Main;
@@ -42,6 +44,7 @@ import networking.protocol.PlayerServer.Update;
 import util.PropertiesGetter;
 import util.protocol.ClientMessageUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -72,6 +75,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	private final String UPGRADE_RESOURCE_KEY = "upgradeResource";
 	private final String UPGRADE_PROMPT_KEY = "upgradePrompt";
 	private final String RETURN_TO_MAIN = "returnMain";
+	private final String CHANGE_MUSIC = "changeMusic";
 
 	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
@@ -306,6 +310,10 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		Button returnToMainButton = new Button(PropertiesGetter.getProperty(RETURN_TO_MAIN));
 		returnToMainButton.setOnAction(e->returnToMain());
 		returnToMainButton.setLayoutY(RETURN_BUTTON_Y);
+		Button changeMusicButton = new Button(PropertiesGetter.getProperty(CHANGE_MUSIC));
+		changeMusicButton.setOnAction(e->changeMusic());
+		changeMusicButton.setLayoutY(RETURN_BUTTON_Y+30);
+		rootAdd(changeMusicButton);
 		rootAdd(returnToMainButton);
 		rootAdd(speedControl.getPlay());
 		speedControl.getPlay().setLayoutY(myInventoryToolBar.getLayoutY() + 450);
@@ -508,8 +516,33 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		myStage.setScene(newScene);
 		myStage.show();
 		Main restart = new Main();
-		System.out.println("HEEEP");
 		restart.start(myStage);
 		getStage().close();
+	}
+	
+	protected void changeMusic() {
+		mediaPlayer.stop();
+		getPauseAction();
+		openFile();
+		mediaPlayer.play();
+		getPlayAction();
+	}
+	
+	private void openFile() {
+		File dataFile = null; 
+		String fileLocation ="";
+		FileChooser myChooser = makeChooser();
+		dataFile = myChooser.showOpenDialog(this.getStage());
+		if (dataFile != null) {
+			fileLocation = "data/audio/"+dataFile.getName();
+			mediaPlayerFactory.changeMediaPlayer(fileLocation);
+			mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		}
+	}
+	
+	private FileChooser makeChooser() {
+		FileChooser result = new FileChooser();
+		result.setInitialDirectory(new File(System.getProperty("user.dir")));
+		return result;
 	}
 }
