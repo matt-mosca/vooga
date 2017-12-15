@@ -20,11 +20,6 @@ public final class GameElementFactory {
     private Map<String, Map<String, Object>> spriteTemplates = new HashMap<>();
 
     private ElementOptionsGetter elementOptionsGetter = new ElementOptionsGetter();
-    private SerializationUtils serializationUtils;
-
-    public GameElementFactory(SerializationUtils serializationUtils) {
-        this.serializationUtils = serializationUtils;
-    }
 
     /**
      * Define a new template with specified properties. This will redefine the template if the name has already been
@@ -60,7 +55,7 @@ public final class GameElementFactory {
         Parameter[] spriteConstructionParameters = getSpriteParameters();
         // TODO - check that params are returned in the right order
         Object[] spriteConstructionArguments = new Object[spriteConstructionParameters.length];
-      
+
         for (int i = 0; i < spriteConstructionArguments.length; i++) {
             Parameter parameter = spriteConstructionParameters[i];
             try {
@@ -99,15 +94,13 @@ public final class GameElementFactory {
             throws ReflectiveOperationException {
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
-        System.out.println(Arrays.asList(constructorParameters));
-        //System.out.println(Arrays.stream(constructorParameters).map(object -> object.getClass()).collect(Collectors
-        //        .toList()));
+        /*System.out.println(Arrays.asList(constructorParameters));
         System.out.println(properties);
         System.out.println(Arrays.stream(chosenParameterSubclass.getConstructors()[0].getParameters())
                 .map(param -> param.getAnnotation(ElementProperty.class).value()).collect(Collectors.toList()));
         System.out.println(Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameters()));
         System.out.println(Arrays.stream(chosenParameterSubclass.getConstructors()[0].getParameters())
-                .map(param -> param.getType()).collect(Collectors.toList()));
+                .map(param -> param.getType()).collect(Collectors.toList()));*/
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
     }
 
@@ -120,7 +113,6 @@ public final class GameElementFactory {
             for (int i = 0; i < parameters.length; i++) {
                 constructorParameters[i] = supplyConstructorArgument(properties, parameters[i]);
             }
-            System.out.println(Arrays.asList(constructorParameters));
             return parameterClass.getConstructors()[0].newInstance(constructorParameters);
         } else {
             // TODO - exception here
@@ -132,14 +124,10 @@ public final class GameElementFactory {
                                              Parameter parameter) throws ReflectiveOperationException {
         ElementProperty propertyParameterName = parameter.getAnnotation(ElementProperty.class);
         if (propertyParameterName != null) {
-            //if (propertyParameterName.isTemplateProperty()) {
-                String argumentName = propertyParameterName.value();
-                String argumentDescription =
-                        elementOptionsGetter.translateParameterToDescription(argumentName);
-                return properties.get(argumentDescription);
-            /*} else {
-                return nonTemplateArguments.get(propertyParameterName.value());
-            }*/
+            String argumentName = propertyParameterName.value();
+            String argumentDescription =
+                    elementOptionsGetter.translateParameterToDescription(argumentName);
+            return properties.get(argumentDescription);
         } else {
             // nested behavior object
             return generateSpriteParameter(parameter.getType(), properties);
@@ -158,38 +146,12 @@ public final class GameElementFactory {
             if (parameterDescription == null) {
                 constructorArguments[i] = properties.get(parameterIdentifier);
             } else {
-                // TODO - this should change now that everything should be a part of the map
-            /*if (!properties.containsKey(parameterDescription)) {
-                constructorArguments[i] = nonTemplateArguments.get(parameterIdentifier);
-                // TODO - throw exception if aux objects doesn't contain key
-            } else {*/
-                //String propertyValueAsString = properties.get(parameterDescription);
-                //Class parameterClass = constructorParameters[i].getType();
-                System.out.println(parameterIdentifier + " " + parameterDescription);
-                constructorArguments[i] = properties.get(parameterDescription);//setConstructorParameter
-                // (propertyValueAsString,
-                // parameterClass);
-                //}
+                constructorArguments[i] = properties.get(parameterDescription);
             }
         }
         return constructorArguments;
     }
 
-    // TODO - make more elegant if possible
-    private Object setConstructorParameter(String propertyValueAsString, Class propertyClass) {
-        /*try {
-            return Integer.parseInt(propertyValueAsString);
-        } catch (NumberFormatException nonIntegerProperty) {
-            try {
-                return Double.parseDouble(propertyValueAsString);
-            } catch (NumberFormatException | NullPointerException nonDoubleProperty) {
-                return propertyValueAsString;
-            }
-        }*/
-        return serializationUtils.deserializeElementProperty(propertyValueAsString, propertyClass);
-    }
-
-    // todo - refactor these out
     /**
      * Obtain the base configuration options for sprites; specifically, obtain
      * descriptive names for the subclass options for the sprite's construction

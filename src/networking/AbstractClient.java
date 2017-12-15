@@ -427,7 +427,6 @@ public abstract class AbstractClient implements AbstractGameModelController {
 	}
 
 	private Collection<NewSprite> handleLevelSpritesResponse(ServerMessage serverMessage) {
-		System.out.print("No. of level sprites: " + serverMessage.getLevelSpritesCount());
 		return serverMessage.getLevelSpritesList();
 	}
 
@@ -508,7 +507,6 @@ public abstract class AbstractClient implements AbstractGameModelController {
 			outputWriter = new DataOutputStream(socket.getOutputStream());
 			input = new DataInputStream(socket.getInputStream());
 		} catch (IOException socketException) {
-			System.out.println("Unable to connect");
 			socketException.printStackTrace();
 		}
 	}

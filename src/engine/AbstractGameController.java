@@ -91,7 +91,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		gameName = DEFAULT_GAME_NAME;
 		spriteIdCounter = new AtomicInteger();
 		spriteIdMap = new HashMap<>();
-		gameElementFactory = new GameElementFactory(serializationUtils);
+		gameElementFactory = new GameElementFactory();
 		gameElementUpgrader = new GameElementUpgrader(gameElementFactory);
 		gameElementIoHandler = new GameElementIoHandler(serializationUtils);
 		spriteQueryHandler = new SpriteQueryHandler();
@@ -109,7 +109,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		// Note : saveName overrides previously set gameName if different - need to
 		// handle this?
 		// Serialize separately for every level
-		System.out.println("Save name: " + saveName);
 		Map<Integer, String> serializedLevelsData = new HashMap<>();
 		for (int level = 1; level < getLevelStatuses().size(); level++) {
 			serializedLevelsData.put(level,
@@ -155,7 +154,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void buildWaves() throws IOException {
 		// ordering should be correct because of loading process
 		for (Map<String, Point2D> wavesInLevel : levelWaveTemplates) {
-			System.out.println("wtf mayne");
 			List<GameElement> waves = new ArrayList<>();
 			List<String> sortedWaveNames = new ArrayList<>(wavesInLevel.keySet());
 			Collections.sort(sortedWaveNames);
@@ -582,7 +580,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	}
 
 	private void initializeLevel() {
-		System.out.println("wtf");
 		getLevelStatuses().add(new HashMap<>());
 		getLevelSprites().add(new ArrayList<>());
 		getLevelInventories().add(new HashSet<>());

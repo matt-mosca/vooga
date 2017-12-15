@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
+import engine.AuthoringModelController;
 import util.path.Path;
 import util.path.PathList;
 import util.path.PathParser;
@@ -42,28 +43,27 @@ public class PropertiesBox extends VBox {
 	private AddToWaveButton myWaveAdder;
 	private Droppable myDroppable;
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringController
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringModelController
 			author) {
 		currSprite = mySprite;
 		myDroppable = droppable;
 		propertiesMap = propertyMap;
-		table = new TableView<Properties>();
+		table = new TableView<>();
 		table.setEditable(true);
-		propertiesColumn = new TableColumn<Properties, String>("Properties");
-		valuesColumn = new TableColumn<Properties, String>("Values");
+		propertiesColumn = new TableColumn<>("Properties");
+		valuesColumn = new TableColumn<>("Values");
 		data = FXCollections.observableArrayList();
 		
 		for (String propertyName : propertiesMap.keySet()) {
-			System.out.println(propertiesMap.toString());
 			data.add(new Properties(propertyName, propertiesMap.get(propertyName)));
 		}
 		
 		FXCollections.sort(data, new Sortbyname());
 		
 		propertiesColumn.setCellValueFactory(
-				new PropertyValueFactory<Properties, String>("myProperty"));
+				new PropertyValueFactory<>("myProperty"));
 		valuesColumn.setCellValueFactory(
-				new PropertyValueFactory<Properties, String>("myValue"));
+				new PropertyValueFactory<>("myValue"));
 		table.setItems(data);
 		table.getColumns().addAll(propertiesColumn, valuesColumn);
 		this.getChildren().add(table);

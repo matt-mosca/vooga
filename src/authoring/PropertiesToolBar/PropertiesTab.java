@@ -3,6 +3,7 @@ package authoring.PropertiesToolBar;
 import java.util.Map;
 
 import display.splashScreen.ScreenDisplay;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,7 +18,7 @@ public class PropertiesTab extends Pane{
 	private ImageView myImageView;
 	
 	public PropertiesTab(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView,
-			Map<String, Object> propertyMap, AuthoringController controller) {
+			Map<String, Object> propertyMap, AuthoringModelController controller) {
 		myProperties = properties;
 		myImageView = imageView;
 		myPropertiesBox = new PropertiesBox(display.getDroppable(), myImageView, propertyMap, controller);

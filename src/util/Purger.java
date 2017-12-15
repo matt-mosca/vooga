@@ -18,9 +18,8 @@ public class Purger {
      */
     public void purge() {
         try {
-            System.out.println("ayo");
             File tempSaveFile = new File(TEMPORARY_LIVE_EDITING_FILE);
-            System.out.println(tempSaveFile.delete());
+            tempSaveFile.delete();
             for (String tempDirectory : TEMPORARY_FILE_DIRECTORIES) {
                 File tempSaveDirectory = new File(tempDirectory);
                 purgeDirectory(tempSaveDirectory);
