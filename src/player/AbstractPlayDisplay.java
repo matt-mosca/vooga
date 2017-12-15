@@ -76,6 +76,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
     private final String UPGRADE_PROMPT_KEY = "upgradePrompt";
     private final String RETURN_TO_MAIN = "returnMain";
     private final String CHANGE_MUSIC = "changeMusic";
+    private final String BACKGROUND_IMAGE = "spaceImage";
 
     private Map<Integer, String> idToTemplate;
     private InventoryToolBar myInventoryToolBar;
@@ -120,7 +121,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
     }
 
     private void displaySetup(int width, int height, Stage stage, PlayModelController myController) {
-        this.myController = myController;
+    	this.myController = myController;
         myTransition = new TransitorySplashScreen(myController);
         myTransitionScene = new Scene(myTransition, width, height);
         myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
@@ -132,6 +133,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
         idToTemplate = new HashMap<>();
         hud = new HUD(width);
         speedControl = new ChangeSpeedToggles();
+        setBackground(width, height);
         styleLeftBar();
         createGameArea();
         addItems();
@@ -149,6 +151,15 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
         mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
         stage.addEventHandler(KeyEvent.KEY_PRESSED, e -> moveElement(e));
     }
+    
+    private void setBackground(int width, int height) {
+		String backgroundName = PropertiesGetter.getProperty(BACKGROUND_IMAGE);
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(backgroundName));
+		ImageView splashBackground = new ImageView(image);
+		splashBackground.setFitWidth(width);
+		splashBackground.setFitHeight(height);
+		rootAdd(splashBackground);
+	}
 
     @Override
     public void startDisplay() {
