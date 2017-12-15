@@ -41,14 +41,15 @@ public class GameElementUpgrader {
     public void defineUpgrade(String spriteTemplateName, int upgradeLevel, Map<String, Object> upgradeProperties) {
         List<Map<String, Object>> templateUpgrades =
                 spriteUpgradesByTemplate.getOrDefault(spriteTemplateName, new ArrayList<>());
-        if (templateUpgrades.size() > 0) {
-            Map<String, Object> betweenDefinedUpgradesProperties = templateUpgrades.get(templateUpgrades.size() - 1);
-            for (int i = templateUpgrades.size(); i < upgradeLevel; i++) {
-                templateUpgrades.add(betweenDefinedUpgradesProperties);
-            }
+        if (upgradeLevel < 0) {
+            upgradeLevel = 0;
+        } else if (upgradeLevel > templateUpgrades.size()) {
+            upgradeLevel = templateUpgrades.size();
+        } else if (upgradeLevel > 0 && upgradeLevel < templateUpgrades.size()) {
+            // redefine
+            templateUpgrades.remove(upgradeLevel);
         }
-        templateUpgrades.add(upgradeProperties);
-        // put shouldn't be necessary but let's do it for clarity's sake
+        templateUpgrades.add(upgradeLevel, upgradeProperties);
         spriteUpgradesByTemplate.put(spriteTemplateName, templateUpgrades);
     }
 
@@ -77,17 +78,17 @@ public class GameElementUpgrader {
         if (!spriteTemplateAssociation.containsKey(gameElement) || !currentSpriteLevels.containsKey(gameElement)) {
             throw new IllegalArgumentException();
         }
-        String templateName = spriteTemplateAssociation.get(gameElement);
+        String upgradeTemplateName = spriteTemplateAssociation.get(gameElement);
         int newUpgradeLevel = currentSpriteLevels.get(gameElement);
-        if (!canUpgrade(templateName, newUpgradeLevel)) {
+        if (!canUpgrade(upgradeTemplateName, newUpgradeLevel)) {
             throw new IllegalArgumentException();
         }
-        Map<String, ?> upgradeProperties = spriteUpgradesByTemplate.get(templateName).get(newUpgradeLevel);
+        Map<String, ?> upgradeProperties = spriteUpgradesByTemplate.get(upgradeTemplateName).get(newUpgradeLevel);
         Map<String, Object> upgradeArguments = new HashMap<>();
         upgradeArguments.putAll(upgradeProperties);
         // todo - key from prop file/getter
         upgradeArguments.put("startPoint", new Point2D(gameElement.getX(), gameElement.getY()));
-        return gameElementFactory.generateElement(upgradeArguments);
+        return gameElementFactory.constructElement(upgradeArguments, upgradeProperties);
     }
 
     private boolean canUpgrade(String templateName, int currentUpgradeLevel) {

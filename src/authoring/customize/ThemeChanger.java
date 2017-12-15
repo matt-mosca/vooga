@@ -15,16 +15,18 @@ import display.splashScreen.ScreenDisplay;
  */
 public class ThemeChanger extends ComboBox<String> {
 	
-	private static final int X_POS = 350;
-	private static final int Y_POS = 23;
-	private static final int WIDTH = 200;
-	private static final String PROMPT_TEXT = "Choose a theme";
+	private final int X_POS = 350;
+	private final int Y_POS = 23;
+	private final int WIDTH = 200;
+	private final int VISIBLE_ROW_COUNT = 3;
+	private final String PROMPT_TEXT = "Choose a theme";
 	public static final String STANDARD = "Standard";
-	public static final String DARK = "Dark";
-	public static final String FOREST = "Forest";
-	public static final String SKY = "Sky";
-	public static final String GOLD = "Gold";
-	public static final String MIDNIGHT = "Midnight";
+	private final String DARK = "Dark";
+	private final String FOREST = "Forest";
+	private final String SKY = "Sky";
+	private final String GOLD = "Gold";
+	private final String MIDNIGHT = "Midnight";
+	private final boolean IS_EDITABLE = true;
 	
 	public ThemeChanger(EditDisplay display) {
 		this.setPrefWidth(WIDTH);
@@ -35,8 +37,8 @@ public class ThemeChanger extends ComboBox<String> {
 		ObservableList<String> colorList = FXCollections.observableArrayList(themes);
 		ChangeListener<String> propertyHandler = (obs, old, cur) -> display.changeTheme(cur);
 		this.getSelectionModel().selectedItemProperty().addListener(propertyHandler);
-		this.setEditable(true);
-		this.setVisibleRowCount(3);
+		this.setEditable(IS_EDITABLE);
+		this.setVisibleRowCount(VISIBLE_ROW_COUNT);
 		this.setItems(colorList);
 	}
 	
