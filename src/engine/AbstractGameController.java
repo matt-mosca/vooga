@@ -233,8 +233,15 @@ public abstract class AbstractGameController implements AbstractGameModelControl
         		throw new IllegalArgumentException();
         }
         getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
+		processElementSale(removedGameElement);
         return getServerMessageUtils().packageDeletedSprite(removedGameElement, elementId);
     }
+
+	private void processElementSale(GameElement removedGameElement) {
+		String removedElementName = removedGameElement.getTemplateName();
+		getLevelBanks().get(getCurrentLevel())
+                .gainResourcesFromElement(removedElementName);
+	}
 
 	@Override
 	public int getCurrentLevel() {

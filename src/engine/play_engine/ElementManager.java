@@ -86,7 +86,7 @@ public class ElementManager {
 		for (int elementIndex = 0; elementIndex < activeElements.size(); elementIndex++) {
 			GameElement element = activeElements.get(elementIndex);
 			element.move();
-			handleElementFiring(element, false);
+			handleElementFiring(element, false,false);
 			processAllCollisionsForElement(elementIndex, element);
 		}
 		processWaveUpdate();
@@ -96,7 +96,7 @@ public class ElementManager {
 
 	private void processWaveUpdate() {
 		if (currentWave != null && waveGapCountdown <= 0) {
-			handleElementFiring(currentWave, true);
+			handleElementFiring(currentWave, true,false);
 			processStepForElement(currentWave);
 			if (!currentWave.isAlive()) {
 				if (waves.hasNext()) {
@@ -163,6 +163,7 @@ public class ElementManager {
 	}
 
 	boolean allWavesComplete() { return (currentWave == null && allEnemiesDead()); }
+	
 
 	boolean enemyReachedTarget() {
 		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
@@ -199,7 +200,7 @@ public class ElementManager {
 		return allAffectedElements;
 	}
 
-	private void handleElementFiring(GameElement element, boolean isWave) {
+	private void handleElementFiring(GameElement element, boolean isWave, boolean forcedFire) {
 		final int UNREACHABLE_POINT = -1000;
 		final Point2D DEFAULT_LOCATION= new Point2D( UNREACHABLE_POINT, UNREACHABLE_POINT);
 		Point2D nearestTargetLocation = DEFAULT_LOCATION;
@@ -207,10 +208,10 @@ public class ElementManager {
 		if(nearestEnemyElement != null) {
 			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
 		}
-		String elementTemplateName;
+		String elementTemplateName = element.fire() ;
 		
 		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) 
-							   && (elementTemplateName = element.fire()) != null
+							   && (elementTemplateName != null)
 							   && (isWave || nearestTargetLocation!=DEFAULT_LOCATION)) {
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
@@ -258,9 +259,8 @@ public class ElementManager {
 		}
 	}
 	
-	void triggeredFire(int elementId) {
-		activeElements.get(elementId).fire();
-		playAudio(activeElements.get(elementId).getFiringAudio());
+	void triggeredFire(GameElement element) {
+		this.handleElementFiring(element, false, true);
 	}
 
 }

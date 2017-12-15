@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import engine.PlayModelController;
+import engine.behavior.movement.LocationProperty;
 import networking.protocol.PlayerClient.CheckReadyForNextLevel;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.PauseGame;
@@ -175,6 +176,12 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 			System.out.println("Item: " + item);
 		}
 		testClient.exitGameRoom();
+	}
+
+	@Override
+	public LocationProperty getElementLocationProperty(int elementId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

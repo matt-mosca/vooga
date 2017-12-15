@@ -37,6 +37,7 @@ import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.Update;
+import util.PropertiesGetter;
 import util.protocol.ClientMessageUtils;
 
 import java.io.IOException;
@@ -49,268 +50,273 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
-public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterface {
-    private final String GAME_FILE_KEY = "displayed-game-name";
-    private final int DOWN = 5;
-    private final int UP = -5;
-    private final int RIGHT = 5;
-    private final int LEFT = -5;
+public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterface {
+	private final String GAME_FILE_KEY = "displayed-game-name";
+	private final String EXTENSION_KEY = "voogExtension";
+	private final int DOWN = 5;
+	private final int UP = -5;
+	private final int RIGHT = 5;
+	private final int LEFT = -5;
+	private final String PLAY_DISPLAY_ALERT_RESOURCE_CONTENT = "lackOfResource";
+	private final String PLAY_DISPLAY_ALERT_RESOURCE_TITLE = "resourceError";
 
-    private Map<Integer, String> idToTemplate;
-    private InventoryToolBar myInventoryToolBar;
-    private TransitorySplashScreen myTransition;
-    private WinScreen myWinScreen;
-    private GameOverScreen myGameOver;
-    private MultiplayerLobby myMulti;
-    private Scene myTransitionScene;
-    private VBox myLeftBar;
-    private PlayArea myPlayArea;
-    private PlayModelController myController;
-    private Button pause;
-    private Button play;
-    private ChangeSpeedToggles speedControl;
-    private Timeline animation;
-    private String gameState;
-    private Slider volumeSlider;
-    private MediaPlayerFactory mediaPlayerFactory;
-    private MediaPlayer mediaPlayer;
-    private ChoiceBox<Integer> levelSelector;
-    private HUD hud;
-    private String backgroundSong = "data/audio/128 - battle (vs gym leader).mp3";
+	private Map<Integer, String> idToTemplate;
+	private InventoryToolBar myInventoryToolBar;
+	private TransitorySplashScreen myTransition;
+	private WinScreen myWinScreen;
+	private GameOverScreen myGameOver;
+	private MultiplayerLobby myMulti;
+	private Scene myTransitionScene;
+	private VBox myLeftBar;
+	private PlayArea myPlayArea;
+	private PlayModelController myController;
+	private Button pause;
+	private Button play;
+	private ChangeSpeedToggles speedControl;
+	private Timeline animation;
+	private String gameState;
+	private Slider volumeSlider;
+	private MediaPlayerFactory mediaPlayerFactory;
+	private MediaPlayer mediaPlayer;
+	private ChoiceBox<Integer> levelSelector;
+	private HUD hud;
+	private String backgroundSong = "data/audio/128 - battle (vs gym leader).mp3";
 
-    // private ButtonFactory buttonMaker;
-    // private Button testButton;
+	// private ButtonFactory buttonMaker;
+	// private Button testButton;
 
-    private int level = 1;
-    private int selectedSprite = -1;
-    private boolean selected = false;
-    private StaticObject placeable;
+	private int level = 1;
+	private int selectedSprite = -1;
+	private boolean selected = false;
+	private StaticObject placeable;
 
-    private ClientMessageUtils clientMessageUtils;
+	private ClientMessageUtils clientMessageUtils;
 
-    public AbstractPlayDisplay(int width, int height, Stage stage, PlayModelController myController) {
-        super(width, height, Color.rgb(20, 20, 20), stage);
+	public AbstractPlayDisplay(int width, int height, Stage stage, PlayModelController myController) {
+		super(width, height, Color.rgb(20, 20, 20), stage);
 
-        // buttonMaker = new ButtonFactory();
-        // testButton = buttonMaker.buildDefaultTextButton("Test scene", e ->
-        // testOpenMultiplayer(stage));
+		// buttonMaker = new ButtonFactory();
+		// testButton = buttonMaker.buildDefaultTextButton("Test scene", e ->
+		// testOpenMultiplayer(stage));
 
-        displaySetup(width, height, stage, myController);
-    }
+		displaySetup(width, height, stage, myController);
+	}
 
-    private void displaySetup(int width, int height, Stage stage, PlayModelController myController) {
-        this.myController = myController;
-        myTransition = new TransitorySplashScreen(myController);
-        myTransitionScene = new Scene(myTransition, width, height);
-        myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
-        myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
-        // myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage,
-        // this);
-        clientMessageUtils = new ClientMessageUtils();
-        myLeftBar = new VBox();
-        idToTemplate = new HashMap<>();
-        hud = new HUD(width);
-        speedControl = new ChangeSpeedToggles();
-        styleLeftBar();
-        createGameArea();
-        addItems();
-        this.setDroppable(myPlayArea);
-        initializeButtons();
-        volumeSlider = new Slider(0, 1, .1);
-        rootAdd(volumeSlider);
-        volumeSlider.setLayoutY(7);
-        volumeSlider.setLayoutX(55);
-        mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
-        mediaPlayer = mediaPlayerFactory.getMediaPlayer();
-        mediaPlayer.play();
-        mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
-        stage.addEventHandler(KeyEvent.KEY_PRESSED, e -> moveElement(e));
-    }
+	private void displaySetup(int width, int height, Stage stage, PlayModelController myController) {
+		this.myController = myController;
+		myTransition = new TransitorySplashScreen(myController);
+		myTransitionScene = new Scene(myTransition, width, height);
+		myWinScreen = new WinScreen(width, height, Color.WHITE, stage);
+		myGameOver = new GameOverScreen(width, height, Color.WHITE, stage);
+		// myMulti = new MultiplayerLobby(width, height, Color.WHITE, stage,
+		// this);
+		clientMessageUtils = new ClientMessageUtils();
+		myLeftBar = new VBox();
+		idToTemplate = new HashMap<>();
+		hud = new HUD(width);
+		speedControl = new ChangeSpeedToggles();
+		styleLeftBar();
+		createGameArea();
+		addItems();
+		this.setDroppable(myPlayArea);
+		initializeButtons();
+		hud.initialize(myController.getResourceEndowments());
+		hud.toFront();
+		volumeSlider = new Slider(0, 1, .1);
+		rootAdd(volumeSlider);
+		volumeSlider.setLayoutY(7);
+		volumeSlider.setLayoutX(55);
+		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
+		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
+		mediaPlayer.play();
+		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+		stage.addEventHandler(KeyEvent.KEY_PRESSED, e -> moveElement(e));
+	}
 
-    @Override
-    public void startDisplay() {
-        myInventoryToolBar.initializeInventory();
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
-        animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
-    }
+	@Override
+	public void startDisplay() {
+		myInventoryToolBar.initializeInventory();
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
+		animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
+		animation.play();
+	}
 
-    public void startDisplay(LevelInitialized newLevelData) {
-        clientMessageUtils.initializeLoadedLevel(newLevelData);
-        startDisplay();
-    }
+	public void startDisplay(LevelInitialized newLevelData) {
+		clientMessageUtils.initializeLoadedLevel(newLevelData);
+		startDisplay();
+	}
 
-    // private void openSesame(Stage stage) {
-    // stage.setScene(myWinScreen.getScene());
-    // stage.setScene(myGameOver.getScene());
-    // }
+	// private void openSesame(Stage stage) {
+	// stage.setScene(myWinScreen.getScene());
+	// stage.setScene(myGameOver.getScene());
+	// }
 
-    // private void testOpenMultiplayer(Stage stage) {
-    // stage.setScene(myMulti.getScene());
-    // }
+	// private void testOpenMultiplayer(Stage stage) {
+	// stage.setScene(myMulti.getScene());
+	// }
 
-    private void addItems() {
-        rootAdd(hud);
-        myInventoryToolBar = new InventoryToolBar(this, myController);
-        levelSelector = new ChoiceBox<>();
-        for (int i = 1; i < myController.getNumLevelsForGame()+1; i++) {
-            levelSelector.getItems().add(i);
-        }
-        levelSelector.setOnAction(e -> {
-            changeLevel(levelSelector.getSelectionModel().getSelectedItem());
-            // Maybe clear the screen here?? myPlayArea.getChildren().clear()
-            // didn't work.
-        });
-        myLeftBar.getChildren().add(myInventoryToolBar);
-        myLeftBar.getChildren().add(levelSelector);
-        rootAdd(myLeftBar);
+	private void addItems() {
+		rootAdd(hud);
+		myInventoryToolBar = new InventoryToolBar(this, myController);
+		levelSelector = new ChoiceBox<>();
+		levelSelector.getItems().addAll(1, 2, 3, 4);
+		levelSelector.setOnAction(e -> {
+			changeLevel(levelSelector.getSelectionModel().getSelectedItem());
+			// Maybe clear the screen here?? myPlayArea.getChildren().clear()
+			// didn't work.
+		});
+		myLeftBar.getChildren().add(myInventoryToolBar);
+		myLeftBar.getChildren().add(levelSelector);
+		rootAdd(myLeftBar);
 
-    }
+	}
 
-    public void initializeGameState() {
-        List<String> games = new ArrayList<>();
-        try {
-            for (String title : myController.getAvailableGames().keySet()) {
-                games.add(title);
-            }
-            Collections.sort(games);
-            ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Saved games", games);
-            loadChoices.setContentText(null);
+	public void initializeGameState() {
+		List<String> games = new ArrayList<>();
+		try {
+			for (String title : myController.getAvailableGames().keySet()) {
+				games.add(title);
+			}
+			Collections.sort(games);
+			ChoiceDialog<String> loadChoices = new ChoiceDialog<>("Saved games", games);
+			loadChoices.setContentText(null);
 
-            Optional<String> result = loadChoices.showAndWait();
-            if (result.isPresent()) {
-                try {
-                    gameState = result.get();
-                    clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
-                    initializeLevelSprites();
-                    hud.initialize(myController.getResourceEndowments());
-                    hud.toFront();
-                } catch (IOException e) {
-                    // TODO Change to alert for the user
-                    e.printStackTrace();
-                }
-            }
-        } catch (IllegalStateException e) {
-            InputStream in = getClass().getClassLoader()
-                    .getResourceAsStream(SplashPlayScreen.EXPORTED_GAME_PROPERTIES_FILE);
-            // sorry, this was lazy
-            try {
-                Properties exportedGameProperties = new Properties();
-                exportedGameProperties.load(in);
-                String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
-                clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
-                hud.initialize(myController.getResourceEndowments());
-                hud.toFront();
-                initializeLevelSprites();
-            } catch (IOException ioException) {
-                // todo
-            }
-        }
-    }
+			Optional<String> result = loadChoices.showAndWait();
+			if (result.isPresent()) {
+				try {
+					gameState = result.get();
+					clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
+					initializeLevelSprites();
+				} catch (IOException e) {
+					// TODO Change to alert for the user
+					e.printStackTrace();
+				}
+			}
+		} catch (IllegalStateException e) {
+			InputStream in = getClass().getClassLoader()
+					.getResourceAsStream(SplashPlayScreen.EXPORTED_GAME_PROPERTIES_FILE);
+			// sorry, this was lazy
+			try {
+				Properties exportedGameProperties = new Properties();
+				exportedGameProperties.load(in);
+				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + PropertiesGetter.getDoubleProperty(EXTENSION_KEY);
+				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
+				initializeLevelSprites();
+			} catch (IOException ioException) {
+				// todo
+			}
+		}
+	}
 
-    // Has to be at least package-friendly as it is called by notification handler
-    void receivePlacedElement(NewSprite placedElement) {
-        int id = clientMessageUtils.addNewSpriteToDisplay(placedElement);
-        ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
-        myPlayArea.getChildren().add(imageView);
-        idToTemplate.put(id, placeable.getElementName());
-        attachEventHandlers(imageView, id);
-    }
+	// Has to be at least package-friendly as it is called by notification handler
+	void receivePlacedElement(NewSprite placedElement) {
+		int id = clientMessageUtils.addNewSpriteToDisplay(placedElement);
+		ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
+		myPlayArea.getChildren().add(imageView);
+		idToTemplate.put(id, placeable.getElementName());
+		attachEventHandlers(imageView, id);
+	}
 
-    protected void reloadGame() throws IOException {
-        clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
-    }
+	protected void reloadGame() throws IOException {
+		clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
+	}
 
-    private void styleLeftBar() {
-        myLeftBar.setPrefHeight(650);
-        myLeftBar.setLayoutY(25);
-        myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
-        myLeftBar.getStyleClass().add("left-bar");
-    }
+	private void styleLeftBar() {
+		myLeftBar.setPrefHeight(650);
+		myLeftBar.setLayoutY(25);
+		myLeftBar.getStylesheets().add("player/resources/playerPanes.css");
+		myLeftBar.getStyleClass().add("left-bar");
+	}
 
-    protected void initializeLevelSprites() {
-        updateSprites();
-        for (Node sprite : myPlayArea.getChildren()) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    sprite.toBack();
-                }
-            });
-        }
-    }
+	protected void initializeLevelSprites() {
+		updateSprites();
+		for (Node sprite : myPlayArea.getChildren()) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					sprite.toBack();
+				}
+			});
+		}
+	}
 
-    private void updateSprites() {
-        addLoadedSprites();
-        removeEliminatedSprite();
-        clientMessageUtils.clearChanges();
-    }
+	private void updateSprites() {
+		addLoadedSprites();
+		removeEliminatedSprite();
+		clientMessageUtils.clearChanges();
+	}
 
-    private void addLoadedSprites() {
-        for (ImageView spriteImage : clientMessageUtils.getNewImageViews()) {
-            myPlayArea.getChildren().add(spriteImage);
-            spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-                deleteClicked(Integer.parseInt(spriteImage.getId()));
-            });
-        }
-    }
+	private void addLoadedSprites() {
+		for (ImageView spriteImage : clientMessageUtils.getNewImageViews()) {
+			myPlayArea.getChildren().add(spriteImage);
+			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+				deleteClicked(Integer.parseInt(spriteImage.getId()));
+			});
+		}
+	}
 
-    private void removeEliminatedSprite() {
-        for (ImageView spriteImage : clientMessageUtils.getDeletedImageViews()) {
-            myPlayArea.getChildren().remove(spriteImage);
-//			Map<String, Double> resourcesForUnit = myController.getUnitCostsFromId(spriteImage.getId());
-//			hud.updatePointCount(resourcesForUnit);
-//			hud.resourcesEarned(resourcesForUnit);
-        }
-    }
+	private void removeEliminatedSprite() {
+		for (ImageView spriteImage : clientMessageUtils.getDeletedImageViews()) {
+			myPlayArea.getChildren().remove(spriteImage);
+			// Map<String, Double> resourcesForUnit =
+			// myController.getUnitCostsFromId(spriteImage.getId());
+			// hud.updatePointCount(resourcesForUnit);
+			// hud.resourcesEarned(resourcesForUnit);
+		}
+	}
 
-    private void initializeButtons() {
-        // pause = new Button();
-        // pause.setOnAction(e -> {
-        // myController.pause();
-        // animation.pause();
-        // });
-        // pause.setText("Pause");
-        // rootAdd(pause);
-        // pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
-        //
-        // play = new Button();
-        // play.setOnAction(e -> {
-        // myController.resume();
-        // animation.play();
-        // });
-        // play.setText("Play");
-        // rootAdd(play);
-        // play.setLayoutY(pause.getLayoutY() + 30);
+	private void initializeButtons() {
+		// pause = new Button();
+		// pause.setOnAction(e -> {
+		// myController.pause();
+		// animation.pause();
+		// });
+		// pause.setText("Pause");
+		// rootAdd(pause);
+		// pause.setLayoutY(myInventoryToolBar.getLayoutY() + 450);
+		//
+		// play = new Button();
+		// play.setOnAction(e -> {
+		// myController.resume();
+		// animation.play();
+		// });
+		// play.setText("Play");
+		// rootAdd(play);
+		// play.setLayoutY(pause.getLayoutY() + 30);
 
-        rootAdd(speedControl.getPlay());
-        speedControl.getPlay().setLayoutY(myInventoryToolBar.getLayoutY() + 450);
-        rootAdd(speedControl.getPause());
-        speedControl.getPause().setLayoutY(speedControl.getPlay().getLayoutY());
-        speedControl.getPause().setLayoutX(50);
-        speedControl.setPlayMouseEvent(e -> getPlayAction());
-        speedControl.setPauseMouseEvent(e -> getPauseAction());
+		rootAdd(speedControl.getPlay());
+		speedControl.getPlay().setLayoutY(myInventoryToolBar.getLayoutY() + 450);
+		rootAdd(speedControl.getPause());
+		speedControl.getPause().setLayoutY(speedControl.getPlay().getLayoutY());
+		speedControl.getPause().setLayoutX(50);
+		speedControl.setPlayMouseEvent(e -> getPlayAction());
+		speedControl.setPauseMouseEvent(e -> getPauseAction());
 
-        // rootAdd(testButton);
-        // testButton.setLayoutY(play.getLayoutY() + 30);
-    }
+		// rootAdd(testButton);
+		// testButton.setLayoutY(play.getLayoutY() + 30);
+	}
 
-    private void getPlayAction() {
-        myController.resume();
-        animation.play();
-        speedControl.orchestratePlay();
-    }
+	private void getPlayAction() {
+		myController.resume();
+		animation.play();
+		speedControl.orchestratePlay();
+	}
 
-    private void getPauseAction() {
-        myController.pause();
-        animation.pause();
-        speedControl.orchestratePause();
-    }
+	private void getPauseAction() {
+		myController.pause();
+		animation.pause();
+		speedControl.orchestratePause();
+	}
 
-    private void step() {
-        PlayerServer.Update latestUpdate = myController.update();
+	private void step() {
+		PlayerServer.Update latestUpdate = myController.update();
+		// myController.update();
+		/*
+		 * if (myController.isReadyForNextLevel()) { hideTransitorySplashScreen();
+		 * initializeLevelSprites(); // animation.play(); myController.resume(); }
+		 */
 		if (myController.isLost()) {
 			// launch lost screen
 			this.getStage().close();
@@ -323,8 +329,11 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
 			return;
 		}
 		if (myController.isLevelCleared()) {
-			changeLevel(level+1);
+			System.out.println("level: " + level);
+			// launchTransitorySplashScreen();
+			changeLevel(level + 1);
 			hud.initialize(myController.getResourceEndowments());
+			
 			return;
 		}
 		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
@@ -452,7 +461,7 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
 	}
 
 	private void launchInvalidResources() {
-//		new AlertFactory(PLAY_DISPLAY_ALERT_RESOURCE_CONTENT,null,PLAY_DISPLAY_ALERT_RESOURCE_TITLE,AlertType.ERROR);
+		new AlertFactory(PropertiesGetter.getProperty(PLAY_DISPLAY_ALERT_RESOURCE_CONTENT),null,PropertiesGetter.getProperty(PLAY_DISPLAY_ALERT_RESOURCE_TITLE),AlertType.ERROR);
 	}
 
 	public String getGameState() {
@@ -469,7 +478,9 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
 		try {
 			clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, newLevel));
 			level = newLevel;
+			
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
