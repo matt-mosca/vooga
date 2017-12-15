@@ -1,4 +1,4 @@
-package authoring.LevelToolBar;
+package authoring.levelEditor;
 
 import java.util.ArrayList;
 import java.util.HashMap;

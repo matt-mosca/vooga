@@ -1,4 +1,4 @@
-package authoring.LevelToolBar;
+package authoring.levelEditor;
 
 import java.util.Collection;
 import java.util.Map;
