@@ -2,8 +2,10 @@ package engine.play_engine;
 
 import engine.AbstractGameController;
 import engine.PlayModelController;
+import engine.behavior.movement.LocationProperty;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Update;
@@ -44,7 +46,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private int score;
 	private int cycles;
-	
+
 	public PlayController() {
 		super();
 		savedList = new ArrayList<>();
@@ -52,12 +54,18 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
 		latestUpdate = Update.getDefaultInstance();
+		maxLevels = getNumLevelsForGame();
+//		System.out.println("Max levels: " + maxLevels);
 	}
 
 	@Override
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
+		System.out.print("A");
+		System.out.println(level);
 		LevelInitialized levelData = super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
+		maxLevels = getNumLevelsForGame(saveName, true);
+//		System.out.println("Maxlevels: " + maxLevels);
 		return levelData;
 	}
 
@@ -78,35 +86,42 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public Update update() {
 		if (inPlay) {
-			/*
+			/*---
 			 * Uncomment when front end is ready to set wave properties fully (team & no. of
-			 * attacks of wave) */
-			 /*if (checkLevelClearanceCondition()) {
-			 	if (checkVictoryCondition()) {
-			 		registerVictory();
-			 	} else {
-			 		registerLevelCleared();
-			 	}
-			 } else if (checkDefeatCondition()) {
-				 registerDefeat();
-			 } else {*/ // Move elements, check and handle collisions
-				incrementCycles();
-				 savedList.add(getSpriteIdMap().entrySet());
-				 elementManager.update();
-				 List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
-				 List<GameElement> updatedElements = elementManager.getUpdatedElements();
-				 List<GameElement> deadElements = elementManager.getDeadElements();
-				 for (GameElement element : newlyGeneratedElements) {
-					 cacheAndCreateIdentifier(element);
-				 }
-				 // Package these changes into an Update message
-				 latestUpdate = packageSpriteUpdates(newlyGeneratedElements, updatedElements, deadElements);
-				 getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
-				 elementManager.clearDeadElements();
-				 elementManager.clearNewElements();
-				 elementManager.clearUpdatedElements();
-				 return latestUpdate;
-			 //}
+			 * attacks of wave)
+			 */
+			if (checkLevelClearanceCondition()) {
+				if (checkVictoryCondition()) {
+//					System.out.println("Victory Condition Fulfilled");
+					registerVictory();
+				} else {
+//					System.out.println("Level Cleared Condition Fulfilled");
+//					System.out.println("Max levels: " + maxLevels);
+//					System.out.println("current level: " + getCurrentLevel());
+				}
+				registerLevelCleared();
+			}
+			/*
+			 * } else if (checkDefeatCondition()) { registerDefeat(); } else {
+			 */ // Move elements, check and handle collisions
+			incrementCycles();
+			savedList.add(getSpriteIdMap().entrySet());
+			elementManager.update();
+			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
+			List<GameElement> updatedElements = elementManager.getUpdatedElements();
+			List<GameElement> deadElements = elementManager.getDeadElements();
+			getLevelBanks().get(getCurrentLevel()).processPointsAndResourcesFromDeadElements(deadElements);
+			for (GameElement element : newlyGeneratedElements) {
+				cacheAndCreateIdentifier(element);
+			}
+			// Package these changes into an Update message
+			latestUpdate = packageSpriteUpdates(newlyGeneratedElements, updatedElements, deadElements);
+			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
+			elementManager.clearDeadElements();
+			elementManager.clearNewElements();
+			elementManager.clearUpdatedElements();
+			return latestUpdate;
+			// }
 		}
 		// If not in play, only one of the status properties could have changed, yes?
 		return packageStatusUpdate();
@@ -143,6 +158,14 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
+	public LocationProperty getElementLocationProperty(int elementId) throws IllegalArgumentException {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			throw new IllegalArgumentException();
+		}
+		return getSpriteIdMap().get(elementId).getLocationProperty();
+	}
+
+	@Override
 	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
 			// TODO - keep track of the resources that were changed in this cycle, and only
@@ -159,12 +182,24 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			throw new IllegalArgumentException();
 		}
 		GameElement gameElement = getSpriteIdMap().get(elementId);
+		elementManager.removeElement(gameElement);
 		gameElement = getGameElementUpgrader().upgradeSprite(gameElement);
+		elementManager.addElement(gameElement);
 		getSpriteIdMap().put(elementId, gameElement);
 		// I think this will update the reference in the element manager but might need
 		// to manually
 	}
 
+	@Override
+	public double getElementPointValue(int elementId) {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			return 0;
+		}
+		String elementName = getSpriteIdMap().get(elementId).getTemplateName();
+		return getLevelBanks().get(getCurrentLevel()).getPointsValue(elementName);
+	}
+
+	@Override
 	public boolean isLevelCleared() {
 		return levelCleared;
 	}
@@ -181,6 +216,23 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public Update packageStatusUpdate() {
 		return getServerMessageUtils().packageStatusUpdate(levelCleared, isWon, isLost, inPlay, getCurrentLevel());
 	}
+	
+	//PlayModel controller to add to interface
+		//PlayController has method that take int unique id return void. call manager that handles string return 
+	
+	public void triggerFire(int elementId) {
+		elementManager.triggeredFire(this.getSpriteIdMap().get(elementId));
+
+	}
+	
+	@Override
+	public int getNumLevelsForGame(String gameName, boolean original) {
+		try {
+			return getIoController().getNumberOfLevelsForGame(gameName, original);
+		} catch (FileNotFoundException e) {
+			return getNumLevelsForGame();
+		}
+	}
 
 	@Override
 	protected void assertValidLevel(int level) throws IllegalArgumentException {
@@ -192,9 +244,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private void updateForLevelChange(String saveName, int level) {
 		setLevel(level);
-		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
+		//setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
 		elementManager.setCurrentElements(getLevelSprites().get(level));
-		List<GameElement> levelWaves = getLevelWaves().get(getCurrentLevel()-1);
+		List<GameElement> levelWaves = getLevelWaves().get(getCurrentLevel());
 		elementManager.setCurrentWaves(levelWaves);
 		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
 		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
@@ -208,21 +260,21 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				getFilteredSpriteIdMap(updatedElements), getFilteredSpriteIdMap(deletedElements), levelCleared, isWon,
 				isLost, inPlay, getResourceEndowments(), getCurrentLevel());
 	}
-	
+
 	private void resetScore() {
 		score = 0;
 	}
-	
+
 	private void resetCycles() {
 		cycles = 0;
 	}
 
 	private void incrementCycles() {
-		cycles ++;
+		cycles++;
 	}
-	
+
 	private boolean checkVictoryCondition() {
-		return levelCleared && getCurrentLevel() == maxLevels;
+		return getCurrentLevel() >= maxLevels;
 	}
 
 	private boolean checkDefeatCondition() {
@@ -286,7 +338,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			throw new IllegalArgumentException();
 		}
 	}
-
+	
 	// TODO - Move conditions to separate file?
 
 	// TODO (extension) - for multiplayer, take a playerId parameter in this method
@@ -296,7 +348,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean allWavesDead() {
-		//return getLevelWaves().get(getCurrentLevel()).stream().filter(wave -> wave.isAlive()).count() == 0;
+		// return getLevelWaves().get(getCurrentLevel()).stream().filter(wave ->
+		// wave.isAlive()).count() == 0;
 		return elementManager.allWavesComplete();
 	}
 
@@ -308,16 +361,16 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private boolean enemyReachedTarget() {
 		return elementManager.enemyReachedTarget();
 	}
-	
+
 	// TODO - Awarding of score in elementManager
 	private boolean pointsQuotaReached() {
 		return score >= getLevelPointQuotas().get(getCurrentLevel());
 	}
-	
+
 	private boolean timeLimitReached() {
 		return cycles >= getLevelTimeLimits().get(getCurrentLevel());
 	}
-	
+
 	private boolean zeroHealth() {
 		return getLevelHealths().get(getCurrentLevel()) <= 0;
 	}

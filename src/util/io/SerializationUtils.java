@@ -90,6 +90,8 @@ public class SerializationUtils {
 		serializedLevelData.put(Integer.toString(level),
 				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelGameElements,
 						levelInventories, levelHealth, levelPointsQuota, levelTimeLimits, level));
+		System.out.println(gameConditions.keySet().toString());
+		System.out.println(gameConditions.values().toString());
 		return gsonBuilder.create().toJson(serializedLevelData);
 	}
 
@@ -408,6 +410,7 @@ public class SerializationUtils {
 		Map<String, String> serializedLevelData = gsonBuilder.create()
 				.fromJson(new JsonReader(new StringReader(serializedGameData)), Map.class);
 		String levelString = Integer.toString(level);
+		System.out.printf("level %d", level);
 		if (!serializedLevelData.containsKey(levelString)) {
 			throw new IllegalArgumentException();
 		}

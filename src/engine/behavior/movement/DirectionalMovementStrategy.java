@@ -3,6 +3,12 @@ package engine.behavior.movement;
 import engine.game_elements.ElementProperty;
 import javafx.geometry.Point2D;
 
+/**
+ * Movement strategy for object that will move in a straight line in a given direction
+ * 
+ * @author mscruggs
+ *
+ */
 public class DirectionalMovementStrategy extends TargetedMovementStrategy{
 
 	private double angle;

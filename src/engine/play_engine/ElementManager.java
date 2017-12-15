@@ -64,9 +64,16 @@ public class ElementManager {
 	void setCurrentElements(List<GameElement> newElements) {
 		activeElements = newElements;
 	}
+	
+	void addElement(GameElement newElement) {
+		activeElements.add(newElement);
+	}
+	
+	void removeElement(GameElement elementToRemove) {
+		activeElements.remove(elementToRemove);
+	}
 
 	void setCurrentWaves(List<GameElement> waves) {
-		System.out.println(waves);
 		this.waves = waves.iterator();
 		if (this.waves.hasNext()) {
 			currentWave = this.waves.next();
@@ -79,7 +86,7 @@ public class ElementManager {
 		for (int elementIndex = 0; elementIndex < activeElements.size(); elementIndex++) {
 			GameElement element = activeElements.get(elementIndex);
 			element.move();
-			handleElementFiring(element);
+			handleElementFiring(element, false,false);
 			processAllCollisionsForElement(elementIndex, element);
 		}
 		processWaveUpdate();
@@ -89,7 +96,7 @@ public class ElementManager {
 
 	private void processWaveUpdate() {
 		if (currentWave != null && waveGapCountdown <= 0) {
-			handleElementFiring(currentWave);
+			handleElementFiring(currentWave, true,false);
 			processStepForElement(currentWave);
 			if (!currentWave.isAlive()) {
 				if (waves.hasNext()) {
@@ -147,6 +154,7 @@ public class ElementManager {
 	}
 
 	boolean allEnemiesDead() {
+		System.out.println("checking that all enemies are ded.");
 		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.isAlive());
 	}
 
@@ -154,7 +162,8 @@ public class ElementManager {
 		return allElementsFulfillCondition(element -> !element.isAlly() || !element.isAlive());
 	}
 
-	boolean allWavesComplete() { return currentWave == null; }
+	boolean allWavesComplete() { return (currentWave == null && allEnemiesDead()); }
+	
 
 	boolean enemyReachedTarget() {
 		return !allElementsFulfillCondition(element -> !element.isEnemy() || !element.reachedTarget());
@@ -191,7 +200,7 @@ public class ElementManager {
 		return allAffectedElements;
 	}
 
-	private void handleElementFiring(GameElement element) {
+	private void handleElementFiring(GameElement element, boolean isWave, boolean forcedFire) {
 		final int UNREACHABLE_POINT = -1000;
 		final Point2D DEFAULT_LOCATION= new Point2D( UNREACHABLE_POINT, UNREACHABLE_POINT);
 		Point2D nearestTargetLocation = DEFAULT_LOCATION;
@@ -199,18 +208,19 @@ public class ElementManager {
 		if(nearestEnemyElement != null) {
 			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
 		}
-		String elementTemplateName;
+		String elementTemplateName = element.fire() ;
 		
 		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) 
-							   && (elementTemplateName = element.fire()) != null
-							   && (nearestTargetLocation!=DEFAULT_LOCATION)) {
+							   && (elementTemplateName != null)
+							   && (isWave || nearestTargetLocation!=DEFAULT_LOCATION)) {
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
 			try {
+				System.out.println("trying to shoot");
 				GameElement projectileGameElement = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectileGameElement);
 			} catch (ReflectiveOperationException e) {
-	
+				
 			}
 			playAudio(element.getFiringAudio());
 		}
@@ -218,7 +228,8 @@ public class ElementManager {
 	}
 	
 	private GameElement getNearestEnemyElement(GameElement element) {
-		List<GameElement> exclusionOfSelf = getListOfElementsExcludingElement(element);
+		List<GameElement> exclusionOfSelf = removeStaticElementsFromList(
+				getListOfElementsExcludingElement(element));
 		return spriteQueryHandler.getNearestEnemy(
 				element.getPlayerId(), new Point2D(element.getX(), element.getY()), exclusionOfSelf);
 		
@@ -230,12 +241,26 @@ public class ElementManager {
 		return exclusionOfSelf;
 	}
 	
+	private List<GameElement> removeStaticElementsFromList(List<GameElement> list) {
+		List<GameElement> result = new ArrayList<GameElement>(list);
+		List<GameElement> statics = new ArrayList<GameElement>();
+		for(GameElement e : list)
+		{
+			if(e.getPlayerId() == 0) { statics.add(e); }
+		}
+		result.removeAll(statics);
+		return result;
+	}
+	
 	private void playAudio(String audioUrl) {
 		if(audioUrl != null) {
 			audioClipFactory = new AudioClipFactory(audioUrl);
 			audioClipFactory.getAudioClip().play();
 		}
 	}
-
+	
+	void triggeredFire(GameElement element) {
+		this.handleElementFiring(element, false, true);
+	}
 
 }

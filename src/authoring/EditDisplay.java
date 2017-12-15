@@ -24,6 +24,7 @@ import engine.AuthoringModelController;
 import engine.PlayModelController;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
+import factory.AlertFactory;
 import factory.MediaPlayerFactory;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -37,6 +38,7 @@ import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
@@ -81,7 +83,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 	private static final double GRID_X_LOCATION = 620;
 	private static final double GRID_Y_LOCATION = 20;
 	private final String PATH_DIRECTORY_NAME = "authoring/";
+	private final String HEIGHT = "Height";
+	private final String WIDTH = "Width";
 
+	private Scene myScene;
 	private AuthoringModelController controller;
 	private StaticObjectToolBar myLeftToolBar;
 	private GameArea myGameArea;
@@ -107,7 +112,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 	private EventHandler<MouseEvent> cursorDrag;
 	private boolean addingObject = false;
 	private String gameName = null;
-	
+
 	private DropdownFactory dropdownFactory = new DropdownFactory();
 
 	private ClientMessageUtils clientMessageUtils;
@@ -123,7 +128,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 		myLeftBar = new VBox();
 		basePropertyMap = new HashMap<>();
 	}
-	
+
 	@Override
 	public void startDisplay() {
 		System.out.println("STARTING EDIT DISPLAY");
@@ -158,7 +163,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 		startDisplay();
 		clientMessageUtils.initializeLoadedLevel(levelData);
 	}
-	
+
 	@Override
 	public void receiveNotification(byte[] messageBytes) {
 		try {
@@ -168,17 +173,13 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 			}
 			// TODO - Handle place, move, setLevel, deleteLevel notifications
 		} catch (InvalidProtocolBufferException e) {
-		}	
+		}
 	}
-
 
 	@Override
 	public String getGameState() {
 		return gameName;
 	}
-
-
-	
 
 	public void receiveElementAddedToInventory(DefineElement elementAddedToInventory) {
 		String nameOfElementAdded = elementAddedToInventory.getElementName();
@@ -329,16 +330,19 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 
 	private void updateObjectSize(StaticObject object) {
 		Map<String, Object> newProperties = controller.getTemplateProperties(object.getElementName());
-		newProperties.put("imageWidth", object.getSize());
-		newProperties.put("imageHeight", object.getSize());
+		newProperties.put(WIDTH, object.getSize());
+		newProperties.put(HEIGHT, object.getSize());
 		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
 
 	private void addStaticObject(MouseEvent e) {
+		System.out.println("adding static object");
 		if (addingObject) {
 			e.consume();
 			this.getScene().removeEventHandler(MouseEvent.ANY, cursorDrag);
 			rootRemove(objectToPlace);
+			System.out.println(objectToPlace.getElementName());
+			System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap).keySet().toString());
 			NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(), new Point2D(0, 0));
 			objectToPlace.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
 			objectToPlace.setX(e.getX() - objectToPlace.getFitWidth() / 2 - myGameEnvironment.getLayoutX());
@@ -346,7 +350,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 			myGameArea.addBackObject(objectToPlace);
 			myGameArea.droppedInto(objectToPlace);
 			addingObject = false;
-
+			System.out.println("fixing cursor");
 			this.getScene().setCursor(ImageCursor.DEFAULT);
 		}
 	}
@@ -400,9 +404,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 			DIALOG_MESSAGE[0] = e.getMessage();
 		}
 		Thread response = new Thread(() -> {
-			String content = DIALOG_MESSAGE[0];
-			Alert.AlertType type = Alert.AlertType.INFORMATION;
-			launchAlertAndWait(content, type);
+			new AlertFactory(DIALOG_MESSAGE[0], AlertType.INFORMATION);
 		});
 		response.run();
 	}
@@ -435,14 +437,22 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 			LiveEditingPlayDisplay playDisplay = new LiveEditingPlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(),
 					new PlayController());
 			playDisplay.launchGame(GAME_NAME);
+			myScene = this.getScene();
 			getStage().setScene(playDisplay.getScene());
+			getStage().setOnCloseRequest(e -> {
+				e.consume();
+				returnToEdit();
+			});
 		} catch (Exception e) {
-			Alert.AlertType type = Alert.AlertType.ERROR;
-			String message = e.getMessage();
-			launchAlertAndWait(message, type);
+			new AlertFactory(e.getMessage(), AlertType.ERROR);
 		} finally {
 			new Purger().purge();
 		}
+	}
+
+	private void returnToEdit() {
+		getStage().setScene(myScene);
+		getStage().setOnCloseRequest(null);
 	}
 
 	// end
@@ -567,7 +577,4 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 		}
 	}
 
-	// public int getMaxLevel() {
-	// return myBottomToolBar.getMaxLevel();
-	// }
 }

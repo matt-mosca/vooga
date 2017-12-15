@@ -70,6 +70,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 
 	@Override
 	public void setVictoryCondition(String conditionIdentifier) {
+		System.out.println("setting victory condition: " + conditionIdentifier);
 		getLevelConditions().get(getCurrentLevel()).put(VICTORY, conditionIdentifier);
 	}
 
@@ -186,6 +187,11 @@ public class AuthoringController extends AbstractGameController implements Autho
 		// GameElement newWave = getSpriteIdMap().get(newSpriteId);
 		// getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
 	}
+	
+	
+	public int getNumWavesForLevel(int level) {
+		return getLevelWaves().get(getCurrentLevel()).size();
+	}
 
 	@Override
 	public Map<String, Object> getWaveProperties(int waveNum) {
@@ -267,6 +273,8 @@ public class AuthoringController extends AbstractGameController implements Autho
 		List<String> levelSettingsForConditionType = levelConditions.stream()
 				.map(conditionMap -> conditionMap.get(conditionType)).collect(Collectors.toList());
 		for (int level = 1; level <= getLevelsForCurrentGame(); level++) {
+			System.out.println("currentLv" + level);
+			System.out.println("Total numbers for game = " + getLevelsForCurrentGame() );
 			String condition = levelSettingsForConditionType.get(level);
 			Collection<Integer> levelsWithCondition = conditionsToLevels.getOrDefault(condition, new ArrayList<>());
 			levelsWithCondition.add(level);

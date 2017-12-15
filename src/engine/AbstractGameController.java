@@ -151,21 +151,22 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	private void buildWaves() throws IOException {
 		// ordering should be correct because of loading process
-		for (Map<String, Point2D> wavesInLevel : levelWaveTemplates) {
+		for (int i = 0; i < levelWaveTemplates.size(); i++) {
+			Map<String, Point2D> wavesInLevel = levelWaveTemplates.get(i);
 			List<GameElement> waves = new ArrayList<>();
 			List<String> sortedWaveNames = new ArrayList<>(wavesInLevel.keySet());
 			Collections.sort(sortedWaveNames);
 			for (String waveName : sortedWaveNames) {
 				try {
 					System.out.println(waveName + " " + sortedWaveNames + " " + wavesInLevel);
-
 					waves.add(generatePlacedElement(waveName, wavesInLevel.get(waveName)));
 				} catch (ReflectiveOperationException e) {
 					throw new IOException(e);
 				}
 			}
-			levelWaves.add(waves);
+			levelWaves.add(translateToOneBasedIndexing(i), waves);
 		}
+		System.out.println("LEVELWAVETEMPLATES:"+levelWaveTemplates);
 	}
 
 	public Inventory packageInventory() {
@@ -180,7 +181,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		this.gameName = gameName;
 	}
 
-	@Deprecated
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
 		return getNumLevelsForGame();
@@ -225,14 +225,21 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getServerMessageUtils().packageUpdatedSprite(gameElement, elementId);
 	}
 
-	@Override
-	public SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException {
-		GameElement removedGameElement = getSpriteIdMap().remove(elementId);
-		if (removedGameElement == null) {
-			throw new IllegalArgumentException();
-		}
-		getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
-		return getServerMessageUtils().packageDeletedSprite(removedGameElement, elementId);
+    @Override
+    public SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException {
+        GameElement removedGameElement = getSpriteIdMap().remove(elementId);
+        if (removedGameElement == null) {
+        		throw new IllegalArgumentException();
+        }
+        getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
+		processElementSale(removedGameElement);
+        return getServerMessageUtils().packageDeletedSprite(removedGameElement, elementId);
+    }
+
+	private void processElementSale(GameElement removedGameElement) {
+		String removedElementName = removedGameElement.getTemplateName();
+		getLevelBanks().get(getCurrentLevel())
+                .gainResourcesFromElement(removedElementName);
 	}
 
 	@Override
@@ -481,6 +488,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
+//		System.out.println("\n\n\n\n\n");
+//		System.out.println(auxiliarySpriteConstructionObjects.keySet().toString());
+//		System.out.println(auxiliarySpriteConstructionObjects.values().toString());
+//		System.out.println("\n\n\n\n\n");
 		GameElement element = gameElementFactory.generateElement(elementTemplateName,
 				auxiliarySpriteConstructionObjects);
 		return element;
@@ -579,9 +590,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void initialize() {
 		// To adjust for 1-indexing
 		initializeLevel();
-
-		getLevelWaves().add(new ArrayList<>());
-		getLevelWaveTemplates().add(new HashMap<>());
 		setLevel(1);
 	}
 
@@ -596,8 +604,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelHealths().add(0);
 		getLevelPointQuotas().add(0);
 		getLevelTimeLimits().add(0);
-		levelWaves.add(new ArrayList<>());
-		levelWaveTemplates.add(new HashMap<>());
 		initializeLevelConditions();
 	}
 
@@ -615,9 +621,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return new ArrayList<>(gameConditionsReader.getPossibleDefeatConditions()).get(0);
 	}
 
-	public static void main(String[] args) {
-		AuthoringController tester = new AuthoringController();
-		System.out.println(tester.getLevelHealth(1));
+	public int translateToOneBasedIndexing(int index) {
+		return index+1;
 	}
-
 }

@@ -50,7 +50,7 @@ public interface MovementStrategy {
      *
      * @return point object that changes with movement
      */
-    TrackingPoint getPositionForTracking();
+    LocationProperty getPositionForTracking();
     
     /**
      * Get if the Sprite has reached its destination
@@ -59,6 +59,11 @@ public interface MovementStrategy {
      * */
     boolean targetReached();
     
+    /**
+     * Get the facing angle of the element
+     * 
+     * @return facing angle of element
+     */
     double getAngle();
     
     /**

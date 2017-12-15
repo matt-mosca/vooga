@@ -14,17 +14,14 @@ import javafx.geometry.Point2D;
  */
 public abstract class AbstractMovementStrategy implements MovementStrategy {
 
-	private final int DEFAULT_START_COORDINATE = -1;
-	// Alternative to using properties - can simply update x, y values of
-	// trackingPoint in setX and setY respectively ... preferred approach?
-	private TrackingPoint trackingPoint;
-	protected double angle;
+	private LocationProperty locationProperty;
+	private double angle;
 
 	public AbstractMovementStrategy(
 			@ElementProperty(value = "startPoint", isTemplateProperty = false) Point2D startPoint) {
 		DoubleProperty xCoordinate = new SimpleDoubleProperty(startPoint.getX());
 		DoubleProperty yCoordinate = new SimpleDoubleProperty(startPoint.getY());
-		trackingPoint = new TrackingPoint(xCoordinate, yCoordinate);
+		locationProperty = new LocationProperty(xCoordinate, yCoordinate);
 		angle = 0;
 	}
 
@@ -50,7 +47,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * @return Current X coordinate
 	 * */
 	public double getCurrentX() {
-		return trackingPoint.getCurrentX();
+		return locationProperty.getCurrentX();
 	}
 
 	/**
@@ -59,7 +56,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * @return Current Y coordinate
 	 * */
 	public double getCurrentY() {
-		return trackingPoint.getCurrentY();
+		return locationProperty.getCurrentY();
 	}
 
 	/**
@@ -67,8 +64,8 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * 
 	 * @return Tracking point of this object
 	 * */
-	public TrackingPoint getPositionForTracking() {
-		return trackingPoint;
+	public LocationProperty getPositionForTracking() {
+		return locationProperty;
 	}
 
 	/**
@@ -77,7 +74,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * @param New desired x coordinate
 	 * */
 	public void setX(double newX) {
-		trackingPoint.setX(newX);
+		locationProperty.setX(newX);
 	}
 
 	/**
@@ -86,7 +83,7 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 	 * @param New desired y coordinate
 	 * */
 	public void setY(double newY) {
-		trackingPoint.setY(newY);
+		locationProperty.setY(newY);
 	}
 	
 	/**
@@ -108,14 +105,30 @@ public abstract class AbstractMovementStrategy implements MovementStrategy {
 		return true;
 	}
 	
+	/**
+	 * Returns the angle this object is facing
+	 * 
+	 * @return facing angle
+	 */
 	public double getAngle() {
 		return angle;
 	}
 	
+	/**
+	 * Sets the facing angle of this object based on the target x and y coordinates
+	 * 
+	 * @param y target y coordinate
+	 * @param x target x coordinate
+	 */
 	public void setAngle(double y, double x) {
 		this.angle=Math.toDegrees(Math.atan2(y, x));
 	}
 	
+	/**
+	 * Set the facing angle of this object
+	 * 
+	 * @param angle New desired angle
+	 */
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}

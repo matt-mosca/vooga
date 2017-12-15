@@ -487,4 +487,10 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		System.out.println("Level data: " + levelData.toString());
 	}
 
+	@Override
+	public int getNumWavesForLevel(int level) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

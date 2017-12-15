@@ -29,6 +29,7 @@ import networking.CollaborativeAuthoringClient;
 import networking.MultiPlayerClient;
 import player.MultiplayerLobby;
 import player.PlayDisplay;
+import util.PropertiesGetter;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
@@ -36,7 +37,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final int MAINWIDTH = 1100;
 	private static final int MAINHEIGHT = 750;
 	private static final String TITLEFONT = "Verdana";
-	private static final String TITLE = "Welcome to VOOGA";
+	private static final String TITLE = "TowerDefenseTitleLabel";
+	public static final String SPLASHTITLE = "SplashTitle";
 	private static final double STANDARD_PATH_WIDTH = Main.WIDTH / 15;
 	private static final double STANDARD_PATH_HEIGHT = Main.HEIGHT / 15;
 	private static final String SINGLE_PLAYER = "Single Player";
@@ -56,7 +58,9 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private MuteButton myMuteButton;
 	private MediaPlayerFactory myMediaPlayerFactory;
 	private MediaPlayer myMediaPlayer;
+	private ChangeLanguageDropDown myLanguageChanger;
 	private String backgroundSong = "data/audio/101 - opening.mp3";
+	private Label title;
 
 	public SplashScreen(int width, int height, Paint background, Stage currentStage) {
 		super(width, height, background, currentStage);
@@ -69,6 +73,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
+		myLanguageChanger = new ChangeLanguageDropDown(this);
+		rootAdd(myLanguageChanger);
 		myMediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		myMediaPlayer = myMediaPlayerFactory.getMediaPlayer();
 		myMediaPlayer.play();
@@ -85,7 +91,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	private void createTitle() {
-		VoogaTitle = new Text(10, 20, TITLE);
+//		VoogaTitle = new Text(10, 20, TITLE);
 		VoogaTitle.setFont(Font.font(TITLEFONT, FontPosture.ITALIC, 30));
 		VoogaTitle.setFill(Color.DARKBLUE);
 		// VoogaTitle.setFill(Color.GOLD);
@@ -119,12 +125,12 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	private void createSubtitle() {
-		Label subtitle = new Label("TOWER DEFENSE GAME AUTHORING & PLAYING ENVIRONMENT");
-		subtitle.setFont(new Font("American Typewriter", Main.WIDTH / 40));
-		subtitle.setTextFill(Color.BLACK);
-		subtitle.setLayoutX(Main.WIDTH / 10);
-		subtitle.setLayoutY(Main.HEIGHT / 3);
-		rootAdd(subtitle);
+		title = new Label(PropertiesGetter.getProperty(TITLE));
+		title.setFont(new Font("American Typewriter", Main.WIDTH / 40));
+		title.setTextFill(Color.BLACK);
+		title.setLayoutX(Main.WIDTH / 10);
+		title.setLayoutY(Main.HEIGHT / 3);
+		rootAdd(title);
 	}
 
 	private void addPath() {
@@ -282,6 +288,16 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 				collabClient);
 		getStage().setScene(multi.getScene());
 		multi.promptForUsername();
+	}
+
+	public void updateLanguage() {
+		getStage().setTitle(PropertiesGetter.getProperty(SPLASHTITLE));
+		myNewGameButton.changeLanguage();
+		myEditGameButton.changeLanguage();
+		myMuteButton.changeLanguage();
+		myLoadGameButton.changeLanguage();
+		title.setText(PropertiesGetter.getProperty(TITLE));
+		
 	}
 
 }

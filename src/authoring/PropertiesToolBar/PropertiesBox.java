@@ -43,12 +43,14 @@ public class PropertiesBox extends VBox {
 	private ImageView currSprite;
 	private AddToWaveButton myWaveAdder;
 	private Droppable myDroppable;
+	private int upgradeLevel;
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringModelController
-			author) {
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap,
+			AuthoringModelController author, int upgradeVal) {
 		currSprite = mySprite;
 		myDroppable = droppable;
 		propertiesMap = propertyMap;
+		upgradeLevel = upgradeVal;
 		table = new TableView<>();
 		table.setEditable(true);
 		propertiesColumn = new TableColumn<>("Properties");
@@ -94,11 +96,13 @@ public class PropertiesBox extends VBox {
 							((Properties) t.getTableView().getItems().get(
 					                t.getTablePosition().getRow())
 					                ).setMyObject(filePath);
-							
-							Map<String, Object> newPropertiesMap = new HashMap<>();
-				            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
-				            author.updateElementDefinition(mySprite.getId(), newPropertiesMap, true);
-						
+
+				            propertiesMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
+				            if(upgradeVal != 0) {
+			            			author.defineElementUpgrade(mySprite.getId(), upgradeLevel-1, propertiesMap);
+				            }else {
+			            			author.updateElementDefinition(mySprite.getId(), propertiesMap, true);
+				            }
 						}
 					}  
 				 }       
@@ -110,9 +114,14 @@ public class PropertiesBox extends VBox {
 			        public void handle(CellEditEvent<Properties, String> t) {
 			        		if(t.getRowValue().getMyProperty().equals("Path to follow")) return;
 			            t.getTableView().getItems().get(t.getTablePosition().getRow()).setMyValue(t.getNewValue());
-			            Map<String, Object> newPropertiesMap = new HashMap<>();
-			            newPropertiesMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
-			            author.updateElementDefinition(mySprite.getId(), newPropertiesMap, true);
+			            propertyMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
+			            if(upgradeVal != 0) {
+			            		author.defineElementUpgrade(mySprite.getId(), upgradeLevel-1, propertiesMap);
+			   
+			            }else {
+			            		author.updateElementDefinition(mySprite.getId(), propertiesMap, true);
+			            }
+			            
 			        }
 			    }
 			);
@@ -156,7 +165,6 @@ public class PropertiesBox extends VBox {
 		}
 		return null;
 	}
-	
 }
 
 /* @author sgrillo

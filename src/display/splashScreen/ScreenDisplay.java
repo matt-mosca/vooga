@@ -27,7 +27,7 @@ public abstract class ScreenDisplay {
 	private Droppable droppable;
 	private KeyFrame frame;
 	private Timeline animation = new Timeline();
-	private Scene myScene;
+	protected Scene myScene;
 	private Stage stage;
 	private Group root = new Group();
 
@@ -105,11 +105,4 @@ public abstract class ScreenDisplay {
 	public void startDisplay() {
 		animation.play();
 	}
-
-    protected void launchAlertAndWait(String message, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setContentText(message);
-        alert.showAndWait().filter(press -> press == ButtonType.OK)
-                .ifPresent(event -> alert.close());
-    }
 }

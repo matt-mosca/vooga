@@ -166,7 +166,6 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 			myController.deleteElementDefinition(imageView.getId());
 			tab.removeItem(imageView);
 		}else {
-			myPropertiesBox = new PropertiesBox(myDisplay.getDroppable(), imageView, new HashMap<>(), myController);
 			String tabType =
 					myController.getAllDefinedTemplateProperties().get(imageView.getId()).get("tabName").toString();
 			if (tabType.equals("Towers")) {
@@ -179,7 +178,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 
 	private void newPane(ImageView imageView, boolean hasProjectile) {
 		this.getChildren().clear();
-		propertiesPane = new PropertiesPane(display, this, imageView, myController, false);
+		propertiesPane = new PropertiesPane(display, this, imageView, myController, hasProjectile);
 		this.getChildren().add(propertiesPane);
 		this.getChildren().add(bottomTabPane);
 	}

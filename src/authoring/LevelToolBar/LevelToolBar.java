@@ -3,18 +3,21 @@ package authoring.LevelToolBar;
 import authoring.EditDisplay;
 import authoring.GameArea;
 import authoring.ScrollableArea;
+import authoring.levelEditor.LevelsEditDisplay;
 import display.factory.TabFactory;
 import display.sprites.InteractiveObject;
 import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import networking.protocol.PlayerServer.NewSprite;
 import util.ElementDefaultsGetter;
 import util.protocol.ClientMessageUtils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 public class LevelToolBar extends VBox implements TabInterface, ButtonInterface {
     
     private static final String DEFAULT_WAVE_PROPERTIES = "WavesDefaults";
+    private final String UNTITLED = "untitled";
     private static final int SIZE = 400;
     private static final int WIDTH = 100;
     private static final int X_LAYOUT = 260;
@@ -37,6 +41,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
     private static final int USER_OFFSET = 1;
     private static final int X_LOCATION = 0;
     private static final int Y_LOCATION = 1;
+	private static final int HEIGHT = 400;
 
     private AuthoringModelController myController;
     private TabPane myTabPane;
@@ -64,6 +69,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
         this.setLayoutX(X_LAYOUT);
         this.setLayoutY(Y_LAYOUT);
         this.setWidth(SIZE);
+        this.setHeight(HEIGHT);
         myTabPane = new TabPane();
         tabMaker = new TabFactory();
         mySpriteDisplay = new SpriteDisplayer();
@@ -98,12 +104,11 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
 	private void loadLevels() {
 		startingLevels = myController.getNumLevelsForGame();
-		System.out.println("Num levels for game: " + startingLevels);
-		if (myController.getGameName().equals("untitled") || startingLevels == 1) {
+		if (myController.getGameName().equals(UNTITLED) || startingLevels == 1) {
 			addLevel();
 			return;
 		}
-		for (int i = 0; i < startingLevels; i++) {
+		for (int i = 1; i <= startingLevels; i++) {
 			addLevel();
 			initializeSprites(i);
 		}
@@ -112,6 +117,9 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	@Override
 	public void addLevel() {
 		myController.setLevel(levelToData.size()+USER_OFFSET); 
+		/**
+		 * Change the below level
+		 */
 		levelToData.put(levelToData.size()+USER_OFFSET, new LevelData(levelToData.size(), myController));
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(levelToData.size()), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);
@@ -135,6 +143,39 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("YA");
+		int numWaves = myController.getNumWavesForLevel(level);
+		System.out.println(numWaves);
+		for (int i = 0; i < numWaves; i++) {
+			System.out.println(myController.getWaveProperties(i).toString());
+		}
+		reloadSavedInventory(level);
+		reloadSavedWaves(level);
+	}
+	
+	private void reloadSavedWaves(int level) {
+		List<String> imageStringList = (List<String>) myController.getWaveProperties(level).get("Elements to fire");
+		System.out.println(imageStringList.toString());
+		List<String> myImages = new ArrayList<>();
+		List<String> uniqueImageString = (List<String>) imageStringList.stream().distinct().collect(Collectors.toList());
+		List<Integer> imageCount = new ArrayList<>();
+		List<ImageView> myImageViews = new ArrayList<>();
+		for (String s : uniqueImageString) {
+			imageCount.add(Collections.frequency(imageStringList, s));
+			String imageString = (String) myController.getAllDefinedTemplateProperties().get(s).get("Path of game element image");
+			myImages.add(imageString);
+			Image myImage = new Image(imageString);
+			ImageView myImageView = new ImageView(myImage);
+			myImageView.setId(imageString);
+			System.out.println(myController.getAllDefinedTemplateProperties().get(s).toString());
+			myImageView.setFitHeight((Integer) myController.getAllDefinedTemplateProperties().get(s).get("Height"));
+			myImageView.setFitWidth((Integer) myController.getAllDefinedTemplateProperties().get(s).get("Width"));
+			myImageViews.add(myImageView);
+		}
+		mySpriteDisplay.addToScroll(myImageViews, imageCount);
+	}
+
+	private void reloadSavedInventory(int level) {
 		for (Integer id : myController.getLevelSprites(level).stream().map(NewSprite::getSpriteId).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());

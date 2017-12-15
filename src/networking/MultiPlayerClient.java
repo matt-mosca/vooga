@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import engine.PlayModelController;
+import engine.behavior.movement.LocationProperty;
 import networking.protocol.PlayerClient.CheckReadyForNextLevel;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.PauseGame;
@@ -42,7 +43,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	/**
 	 * Save the current state of the current level a game being played or authored.
 	 *
-	 * @param fileToSaveTo
+	 * @param fileName
 	 *            the name to assign to the save file
 	 */
 	@Override
@@ -111,6 +112,22 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 		resourceUpdate.getResourcesList()
 				.forEach(resource -> resourcesMap.put(resource.getName(), resource.getAmount()));
 		return resourcesMap;
+	}
+
+	@Override
+	public double getElementPointValue(int elementId) {
+		return 0;
+	}
+
+	@Override
+	public LocationProperty getElementLocationProperty(int elementId) {
+		// no time for this
+		return null;
+	}
+
+	@Override
+	public void triggerFire(int elementId) {
+		// do nothing, no time
 	}
 
 	@Override
