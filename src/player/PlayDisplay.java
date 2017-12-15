@@ -19,10 +19,10 @@ public class PlayDisplay extends AbstractPlayDisplay implements NotifiableDispla
 		initializeGameState();
 	}
 
-	
+
 	@Override
 	public void receiveNotification(byte[] notificationBytes) {
-		try {			
+		try {
 			Notification playerNotification = Notification.parseFrom(notificationBytes);
 			if (playerNotification.hasElementPlaced()) {
 				receivePlacedElement(playerNotification.getElementPlaced());

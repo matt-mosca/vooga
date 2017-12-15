@@ -155,14 +155,21 @@ public class ElementManager {
 
 	boolean allEnemiesDead() {
 		System.out.println("checking that all enemies are ded.");
-		return allElementsFulfillCondition(element -> !element.isEnemy() || !element.isAlive());
+		boolean result = allElementsFulfillCondition(element -> !element.isEnemy() || !element.isAlive());
+		if (result) {
+			System.out.println("WOAH");
+
+		} else {
+			System.out.println("expected");
+		}
+		return result;
 	}
 
 	boolean allAlliesDead() {
 		return allElementsFulfillCondition(element -> !element.isAlly() || !element.isAlive());
 	}
 
-	boolean allWavesComplete() { return (currentWave == null && allEnemiesDead()); }
+	boolean allWavesComplete() { return (!waves.hasNext() && currentWave == null && allEnemiesDead()); }
 	
 
 	boolean enemyReachedTarget() {
@@ -208,10 +215,9 @@ public class ElementManager {
 		if(nearestEnemyElement != null) {
 			nearestTargetLocation = new Point2D(nearestEnemyElement.getX(),nearestEnemyElement.getY());
 		}
-		String elementTemplateName = element.fire() ;
-		
+		String elementTemplateName;
 		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) 
-							   && (elementTemplateName != null)
+							   && ((elementTemplateName = element.fire()) != null)
 							   && (isWave || nearestTargetLocation!=DEFAULT_LOCATION)) {
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);

@@ -69,7 +69,9 @@ public class SplashPlayScreen extends SplashScreen {
 		rootAdd(myLoadGameButton);
 		mediaPlayerFactory = new MediaPlayerFactory("data/audio/101 - opening.mp3");
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
-		mediaPlayer.play();
+		if (mediaPlayer != null) {
+			mediaPlayer.play();
+		}
 	}
 
 	private String getGameName() {

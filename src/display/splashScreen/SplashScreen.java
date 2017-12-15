@@ -77,8 +77,10 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myLanguageChanger);
 		myMediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		myMediaPlayer = myMediaPlayerFactory.getMediaPlayer();
-		myMediaPlayer.play();
-		myMuteButton = new MuteButton(myMediaPlayer);
+		if (myMediaPlayer != null) {
+			myMediaPlayer.play();
+			myMuteButton = new MuteButton(myMediaPlayer);
+		}
 		rootAdd(myMuteButton);
 	}
 

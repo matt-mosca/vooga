@@ -3,6 +3,7 @@ package factory;
 import java.io.File;
 
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 
 /**
@@ -27,9 +28,14 @@ public class MediaPlayerFactory {
 	 * Constructor that takes a specific media's URL as a string
 	 */
 	public MediaPlayerFactory(String mediaName) {
-		mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(mediaName)));
-		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
-		mediaPlayer.setMute(true);
+		try {
+			mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(mediaName)));
+			mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
+			mediaPlayer.setMute(true);
+		} catch (MediaException mediaException) {
+			// do nothing -- inside JAR
+			mediaPlayer = null;
+		}
 	}
 	
 	/**
