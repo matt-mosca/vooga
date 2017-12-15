@@ -88,7 +88,7 @@ public class GameElementUpgrader {
         upgradeArguments.putAll(upgradeProperties);
         // todo - key from prop file/getter
         upgradeArguments.put("startPoint", new Point2D(gameElement.getX(), gameElement.getY()));
-        return gameElementFactory.constructElement(upgradeArguments, upgradeProperties);
+        return gameElementFactory.constructElement(upgradeTemplateName, upgradeArguments);
     }
 
     private boolean canUpgrade(String templateName, int currentUpgradeLevel) {

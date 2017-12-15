@@ -48,7 +48,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
-<<<<<<< HEAD
 public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterface {
     private final String GAME_FILE_KEY = "displayed-game-name";
     private final int DOWN = 5;
