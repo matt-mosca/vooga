@@ -71,17 +71,18 @@ public class GameEnderConditions extends VBox {
 			if (checkBoxes.get(i-1).isSelected()) {
 				if(victory.getValue()!=null) {
 					myController.setVictoryCondition(victory.getValue());
+					if(victory.getValue().equals(PropertiesGetter.getProperty(VICTORY_POINTS_CONDITIONS))) {
+						selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
+					}
+					if(victory.getValue().equals(PropertiesGetter.getProperty(VICTORY_TIME_CONDITIONS))) {
+						
+						selectedTimeLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
+					}
 				}
 				if(defeat.getValue()!=null) {
 					myController.setDefeatCondition(defeat.getValue());	
 				}
-				if(victory.getValue().equals(PropertiesGetter.getProperty(VICTORY_POINTS_CONDITIONS))) {
-					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
-				}
-				if(victory.getValue().equals(PropertiesGetter.getProperty(VICTORY_TIME_CONDITIONS))) {
-					
-					selectedTimeLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
-				}
+				
 				checkBoxes.get(i-1).fire();
 		}
 	
