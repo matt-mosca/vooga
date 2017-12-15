@@ -153,7 +153,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	private void buildWaves() throws IOException {
 		// ordering should be correct because of loading process
-		for (Map<String, Point2D> wavesInLevel : levelWaveTemplates) {
+		for (int i = 0; i < levelWaveTemplates.size(); i++) {
+			Map<String, Point2D> wavesInLevel = levelWaveTemplates.get(i);
 			List<GameElement> waves = new ArrayList<>();
 			List<String> sortedWaveNames = new ArrayList<>(wavesInLevel.keySet());
 			Collections.sort(sortedWaveNames);
@@ -166,7 +167,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 					throw new IOException(e);
 				}
 			}
-			levelWaves.add(waves);
+			levelWaves.add(translateToOneBasedIndexing(i), waves);
 		}
 	}
 
@@ -575,9 +576,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void initialize() {
 		// To adjust for 1-indexing
 		initializeLevel();
-		
-		getLevelWaves().add(new ArrayList<>());
-		getLevelWaveTemplates().add(new HashMap<>());
 		setLevel(1);
 	}
 
@@ -592,8 +590,6 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelHealths().add(0);
 		getLevelPointQuotas().add(0);
 		getLevelTimeLimits().add(0);
-		levelWaves.add(new ArrayList<>());
-		levelWaveTemplates.add(new HashMap<>());
 		initializeLevelConditions();
 	}
 
@@ -614,6 +610,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	public static void main(String[] args) {
 		AuthoringController tester = new AuthoringController();
 		System.out.println(tester.getLevelHealth(1));
+	}
+
+	public int translateToOneBasedIndexing(int index) {
+		return index+1;
 	}
 
 }
