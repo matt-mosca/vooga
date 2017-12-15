@@ -54,15 +54,17 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		inPlay = true;
 		latestUpdate = Update.getDefaultInstance();
 		maxLevels = getNumLevelsForGame();
-		System.out.println("Max levels: " + maxLevels);
+//		System.out.println("Max levels: " + maxLevels);
 	}
 
 	@Override
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
+		System.out.print("A");
+		System.out.println(level);
 		LevelInitialized levelData = super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
 		maxLevels = getNumLevelsForGame(saveName, true);
-		System.out.println("Maxlevels: " + maxLevels);
+//		System.out.println("Maxlevels: " + maxLevels);
 		return levelData;
 	}
 
@@ -89,12 +91,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			 */
 			if (checkLevelClearanceCondition()) {
 				if (checkVictoryCondition()) {
-					System.out.println("Victory Condition Fulfilled");
+//					System.out.println("Victory Condition Fulfilled");
 					registerVictory();
 				} else {
-					System.out.println("Level Cleared Condition Fulfilled");
-					System.out.println("Max levels: " + maxLevels);
-					System.out.println("current level: " + getCurrentLevel());
+//					System.out.println("Level Cleared Condition Fulfilled");
+//					System.out.println("Max levels: " + maxLevels);
+//					System.out.println("current level: " + getCurrentLevel());
 				}
 				registerLevelCleared();
 			}

@@ -160,7 +160,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			Collections.sort(sortedWaveNames);
 			for (String waveName : sortedWaveNames) {
 				try {
-					System.out.println(waveName + " " + sortedWaveNames + " " + wavesInLevel);
+//					System.out.println(waveName + " " + sortedWaveNames + " " + wavesInLevel);
 				
 					waves.add(generatePlacedElement(waveName, wavesInLevel.get(waveName)));
 				} catch (ReflectiveOperationException e) {
@@ -488,10 +488,10 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 				.getAuxiliarySpriteConstructionObjectMap(ASSUMED_PLAYER_ID, startCoordinates,
 						levelSpritesCache.get(currentLevel));
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
-		System.out.println("\n\n\n\n\n");
-		System.out.println(auxiliarySpriteConstructionObjects.keySet().toString());
-		System.out.println(auxiliarySpriteConstructionObjects.values().toString());
-		System.out.println("\n\n\n\n\n");
+//		System.out.println("\n\n\n\n\n");
+//		System.out.println(auxiliarySpriteConstructionObjects.keySet().toString());
+//		System.out.println(auxiliarySpriteConstructionObjects.values().toString());
+//		System.out.println("\n\n\n\n\n");
 		GameElement element = gameElementFactory.generateElement(elementTemplateName,
 				auxiliarySpriteConstructionObjects);
 		return element;
