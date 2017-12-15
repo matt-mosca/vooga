@@ -51,9 +51,9 @@ public class SpriteQueryHandler {
 		GameElement nearestGameElement = null;
 		for (GameElement gameElement : levelGameElements) {
 			//System.out.println("ImageUrl: "+gameElement.getImageUrl());
-			System.out.println(gameElement.getImageUrl());
 			double distanceToSprite = new Point2D(gameElement.getX(), gameElement.getY()).distance(coordinates);
-			if ((distanceToSprite < nearestDistance )&& gameElement.getPlayerId() != toGenerateId ) {
+			if ((distanceToSprite < nearestDistance )&& gameElement.getPlayerId() != toGenerateId 
+					&& gameElement.getPlayerId()!=0) {
 				nearestDistance = distanceToSprite;
 				nearestGameElement = gameElement;
 			}

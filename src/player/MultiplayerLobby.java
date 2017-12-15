@@ -401,7 +401,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	}
 
 	private void setUpRightBox() {
-		Image personImage = new Image(getClass().getClassLoader().getResourceAsStream(IMAGE_NAME));
+		Image personImage = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(IMAGE_NAME)));
 		ImageView person = new ImageView(personImage);
 		person.setFitWidth(PERSON_DIMENSION);
 		person.setFitHeight(PERSON_DIMENSION);

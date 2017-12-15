@@ -21,6 +21,9 @@ public class TrackingMovementStrategy extends TargetedMovementStrategy {
 			@ElementProperty(value = "targetLocation", isTemplateProperty = false) LocationProperty targetLocation,
 			@ElementProperty(value = "velocity", isTemplateProperty = true) double velocity) {
 		super(startPoint, targetLocation.getCurrentX(), targetLocation.getCurrentY(), velocity);
+		System.out.println("**********************************************");
+		System.out.println(targetLocation.getCurrentX()+" "+targetLocation.getCurrentY());
+		System.out.println("**********************************************");
 		this.targetLocation = targetLocation;
 	}
 

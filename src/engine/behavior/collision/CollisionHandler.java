@@ -50,7 +50,7 @@ public class CollisionHandler {
     public boolean collidesWith(CollisionHandler other) {
         return (other.graphicalRepresentation.getBoundsInLocal()
                 .intersects(this.graphicalRepresentation.getBoundsInLocal())) && 
-        		(other.getPlayerId()!=this.getPlayerId()&&other.getPlayerId()!=0);
+        		(other.getPlayerId()!=this.getPlayerId() && other.getPlayerId()!=0 && this.getPlayerId()!=0);
     }
 
     public void processCollision(CollisionHandler other) {
