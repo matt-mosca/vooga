@@ -51,7 +51,9 @@ public class MediaPlayerFactory {
 	 * Changes the MediaPlayer to what new string input is
 	 */
 	public void changeMediaPlayer(String newMediaName) {
-		mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(newMediaName)));
+		if(newMediaName!=null) {
+			mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(newMediaName)));
+		}
 	}
 	
 	private String composeResourceStringUrl(String url) {

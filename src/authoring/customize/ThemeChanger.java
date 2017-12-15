@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
+import util.PropertiesGetter;
 import display.splashScreen.ScreenDisplay;
 
 /**
@@ -19,7 +20,7 @@ public class ThemeChanger extends ComboBox<String> {
 	private final int Y_POS = 23;
 	private final int WIDTH = 200;
 	private final int VISIBLE_ROW_COUNT = 3;
-	private final String PROMPT_TEXT = "Choose a theme";
+	private final String PROMPT_TEXT = "themePrompt";
 	public static final String STANDARD = "Standard";
 	private final String DARK = "Dark";
 	private final String FOREST = "Forest";
@@ -32,7 +33,7 @@ public class ThemeChanger extends ComboBox<String> {
 		this.setPrefWidth(WIDTH);
 		this.setLayoutX(X_POS);
 		this.setLayoutY(Y_POS);
-		this.setPromptText(PROMPT_TEXT);
+		this.setPromptText(PropertiesGetter.getProperty(PROMPT_TEXT));
 		String[] themes = {STANDARD, DARK, FOREST, SKY, GOLD, MIDNIGHT};
 		ObservableList<String> colorList = FXCollections.observableArrayList(themes);
 		ChangeListener<String> propertyHandler = (obs, old, cur) -> display.changeTheme(cur);

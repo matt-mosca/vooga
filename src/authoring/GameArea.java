@@ -24,6 +24,7 @@ import display.sprites.InteractiveObject;
 import display.sprites.StaticObject;
 
 public class GameArea extends Pane implements CustomizeInterface, Droppable {
+	private static final String DEFAULT_BUNDLE_PATH = "authoring/resources/GameArea";
 	private final String WIDTH = "Game_Area_Width";
 	private final String HEIGHT = "Game_Area_Height";
 	private final String COLOR = "Game_Area_Color";
@@ -76,7 +77,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable {
 	}
 
 	private void initializeProperties() {
-		gameProperties = ResourceBundle.getBundle("authoring/resources/GameArea");
+		gameProperties = ResourceBundle.getBundle(DEFAULT_BUNDLE_PATH);
 		width = Integer.parseInt(gameProperties.getString(WIDTH));
 		height = Integer.parseInt(gameProperties.getString(HEIGHT));
 		backgroundColor = gameProperties.getString(COLOR);

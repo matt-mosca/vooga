@@ -13,9 +13,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import util.PropertiesGetter;
 
 public class SelectionWindow extends Stage {
 	
+	private static final String BACK = "back";
+	private static final String COMMIT = "commit";
+	private static final String ENTER_NAME = "nameEnter";
 	private Button yesButton;
 	private Button noButton;
 	private TextField enterName;
@@ -35,8 +39,8 @@ public class SelectionWindow extends Stage {
 		this.show();
 		createTextField();
 		createComboBoxes();
-		yesButton = new Button("Commit");
-		noButton = new Button("Back");
+		yesButton = new Button(PropertiesGetter.getProperty(COMMIT));
+		noButton = new Button(PropertiesGetter.getProperty(BACK));
 		yesButton.setLayoutX(1000);
 		noButton.setLayoutX(1050);
 		yesButton.setLayoutY(20);
@@ -50,7 +54,7 @@ public class SelectionWindow extends Stage {
 	
 	private void createTextField() {
 		enterName = new TextField();
-		enterName.setPromptText("Enter name");
+		enterName.setPromptText(PropertiesGetter.getProperty(ENTER_NAME));
 		enterName.setLayoutX(1000);
 		enterName.setLayoutY(50);
 		newProject.getChildren().add(enterName);
@@ -69,6 +73,7 @@ public class SelectionWindow extends Stage {
 	private void createComboBoxes() {
 		System.out.println("Getting element base configurations");
 		Map<String, List<String>> baseOptions = controller.getElementBaseConfigurationOptions();
+		System.out.println("Size of element base configurations: " + baseOptions.keySet().size());
 		for (String s : baseOptions.keySet()) {
 			BaseComboBox newComboBox = new BaseComboBox(s, baseOptions.get(s), author);
 			newComboBox.setLayoutY(200);

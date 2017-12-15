@@ -12,11 +12,14 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
+import util.PropertiesGetter;
 import display.splashScreen.ScreenDisplay;
 
 public class MainMenuBar extends MenuBar{
-	private final String RENAME = "Rename Game:";
-	private final String SAVE = "Save As:";
+	private static final String EXPORT = "exportGame";
+	private static final String EDIT = "editGame";
+	private static final String RENAME = "renameGame";
+	private static final String SAVE = "saveAs";
 	
 	private Menu file;
 	private Menu edit;
@@ -35,14 +38,14 @@ public class MainMenuBar extends MenuBar{
 	}
 
 	private void createEditMenu() {
-		edit = new Menu("Edit");
+		edit = new Menu(EDIT);
 	}
 
 	private void createFileMenu() {
 		file = new Menu("File");
-		MenuItem saveAsMenuItem = new MenuItem("Save As");
-		MenuItem exportMenuItem = new MenuItem("Export");
-		MenuItem renameMenuItem = new MenuItem("Rename");
+		MenuItem saveAsMenuItem = new MenuItem(SAVE);
+		MenuItem exportMenuItem = new MenuItem(EXPORT);
+		MenuItem renameMenuItem = new MenuItem(RENAME);
 		
 		saveAsMenuItem.setOnAction(ActionEvent -> saveGame());
 		exportMenuItem.setOnAction(ActionEvent -> exportGame());
@@ -72,7 +75,7 @@ public class MainMenuBar extends MenuBar{
 	}
 	
 	public void renameGame() {
-		Optional<String> newName = launchInput(RENAME);
+		Optional<String> newName = launchInput(PropertiesGetter.getProperty(RENAME));
 		if(newName.isPresent()) {
 			myController.setGameName(newName.get());
 		}

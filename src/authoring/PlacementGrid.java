@@ -15,6 +15,7 @@ import javafx.geometry.Point2D;
  *
  */
 public class PlacementGrid extends GridPane {
+	private static final int HUNDRED_SIZE_CONSTANT = 100;
 	private GameArea area;
 	private Path path;
 	private Cell[][] cells;
@@ -41,21 +42,21 @@ public class PlacementGrid extends GridPane {
 		this.setPrefSize(width, height);
 		for(int i = 0; i<100; i+=rowPercentage) {
 			RowConstraints row = new RowConstraints();
-			row.setPercentHeight(100/rowPercentage);
+			row.setPercentHeight(HUNDRED_SIZE_CONSTANT/rowPercentage);
 			this.getRowConstraints().add(row);
 		}
 		
 		for(int i = 0; i<100; i+=colPercentage) {
 			ColumnConstraints col = new ColumnConstraints();
-			col.setPercentWidth(100/colPercentage);
+			col.setPercentWidth(HUNDRED_SIZE_CONSTANT/colPercentage);
 			this.getColumnConstraints().add(col);
 		}
 	}
 	
 	private void initializeCells() {
-		cells = new Cell[(100/colPercentage)][(100/rowPercentage)];
-		for(int i = 0; i<(100/rowPercentage); i++) {
-			for(int j = 0; j<(100/colPercentage);j++) {
+		cells = new Cell[(HUNDRED_SIZE_CONSTANT/colPercentage)][(HUNDRED_SIZE_CONSTANT/rowPercentage)];
+		for(int i = 0; i<(HUNDRED_SIZE_CONSTANT/rowPercentage); i++) {
+			for(int j = 0; j<(HUNDRED_SIZE_CONSTANT/colPercentage);j++) {
 				Cell cell = new Cell();
 				this.add(cell, j, i); //column then row for this javafx command
 				cells[i][j] = cell;
@@ -65,12 +66,12 @@ public class PlacementGrid extends GridPane {
 
 	private void activatePath(MouseEvent e) {
 		e.consume();
-		int row = (int) e.getY()/(height/(100/rowPercentage));
-		int col = (int) e.getX()/(width/(100/colPercentage));
+		int row = (int) e.getY()/(height/(HUNDRED_SIZE_CONSTANT/rowPercentage));
+		int col = (int) e.getX()/(width/(HUNDRED_SIZE_CONSTANT/colPercentage));
 		Cell cell = cells[row][col];
 		
-		double x = col*(width/(100/colPercentage)) + cell.getWidth()/2;
-		double y = row*(height/(100/rowPercentage)) + cell.getHeight()/2;
+		double x = col*(width/(HUNDRED_SIZE_CONSTANT/colPercentage)) + cell.getWidth()/2;
+		double y = row*(height/(HUNDRED_SIZE_CONSTANT/rowPercentage)) + cell.getHeight()/2;
 		
 		if(cell.pathActive()) {
 			cell.deactivate();
@@ -154,8 +155,8 @@ public class PlacementGrid extends GridPane {
 	}
 
 	private Cell calculateCell(double x, double y) {
-		int row = (int) y/(height/(100/rowPercentage));
-		int col = (int) x/(width/(100/colPercentage));
+		int row = (int) y/(height/(HUNDRED_SIZE_CONSTANT/rowPercentage));
+		int col = (int) x/(width/(HUNDRED_SIZE_CONSTANT/colPercentage));
 		return cells[row][col];
 	}
 

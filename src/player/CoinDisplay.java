@@ -1,13 +1,15 @@
 package player;
 
+import util.PropertiesGetter;
+
 public class CoinDisplay extends ValueDisplay {
-	private static final String IMAGE = "coins.png";
-	private static final double XPOS = 700;
-	private static final double YPOS = 0;
+	private final String IMAGE = "coinImage";
+	private final double XPOS = 700;
+	private final double YPOS = 0;
 	
 	public CoinDisplay() {
 		super();
-		setStandardDisplayImage(IMAGE);
+		setStandardDisplayImage(PropertiesGetter.getProperty(IMAGE));
 		setStandardImageViewSize();
 		setBoxPosition(XPOS, YPOS);
 		addItemsWithImage();
