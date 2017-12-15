@@ -10,6 +10,7 @@ import engine.AuthoringModelController;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import networking.protocol.PlayerServer.NewSprite;
@@ -116,6 +117,9 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 	@Override
 	public void addLevel() {
 		myController.setLevel(levelToData.size()+USER_OFFSET); 
+		/**
+		 * Change the below level
+		 */
 		levelToData.put(levelToData.size()+USER_OFFSET, new LevelData(levelToData.size(), myController));
 		Tab newTab = tabMaker.buildTabWithoutContent("Level " + Integer.toString(levelToData.size()), null, myTabPane);
 		newTab.setContent(mySpriteDisplay);
@@ -139,6 +143,39 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("YA");
+		int numWaves = myController.getNumWavesForLevel(level);
+		System.out.println(numWaves);
+		for (int i = 0; i < numWaves; i++) {
+			System.out.println(myController.getWaveProperties(i).toString());
+		}
+		reloadSavedInventory(level);
+		reloadSavedWaves(level);
+	}
+	
+	private void reloadSavedWaves(int level) {
+		List<String> imageStringList = (List<String>) myController.getWaveProperties(level).get("Elements to fire");
+		System.out.println(imageStringList.toString());
+		List<String> myImages = new ArrayList<>();
+		List<String> uniqueImageString = (List<String>) imageStringList.stream().distinct().collect(Collectors.toList());
+		List<Integer> imageCount = new ArrayList<>();
+		List<ImageView> myImageViews = new ArrayList<>();
+		for (String s : uniqueImageString) {
+			imageCount.add(Collections.frequency(imageStringList, s));
+			String imageString = (String) myController.getAllDefinedTemplateProperties().get(s).get("Path of game element image");
+			myImages.add(imageString);
+			Image myImage = new Image(imageString);
+			ImageView myImageView = new ImageView(myImage);
+			myImageView.setId(imageString);
+			System.out.println(myController.getAllDefinedTemplateProperties().get(s).toString());
+			myImageView.setFitHeight((Integer) myController.getAllDefinedTemplateProperties().get(s).get("Height"));
+			myImageView.setFitWidth((Integer) myController.getAllDefinedTemplateProperties().get(s).get("Width"));
+			myImageViews.add(myImageView);
+		}
+		mySpriteDisplay.addToScroll(myImageViews, imageCount);
+	}
+
+	private void reloadSavedInventory(int level) {
 		for (Integer id : myController.getLevelSprites(level).stream().map(NewSprite::getSpriteId).collect(Collectors.toList())) {
 			ImageView imageView = clientMessageUtils.getRepresentationFromSpriteId(id);
 			InteractiveObject savedObject = new InteractiveObject(myCreated, imageView.getImage().toString());

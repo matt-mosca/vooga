@@ -44,7 +44,7 @@ public final class GameElementFactory {
         Map<String, Object> properties =
                 new HashMap<>(spriteTemplates.getOrDefault(elementTemplateName, new HashMap<>()));
         properties.putAll(nonTemplateArguments);
-        System.out.println(elementTemplateName + " " + properties);
+//        System.out.println(elementTemplateName + " " + properties);
         return constructElement(elementTemplateName, properties);
     }
 

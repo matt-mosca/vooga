@@ -5,6 +5,7 @@ import engine.PlayModelController;
 import engine.behavior.movement.LocationProperty;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Update;
@@ -54,15 +55,17 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		inPlay = true;
 		latestUpdate = Update.getDefaultInstance();
 		maxLevels = getNumLevelsForGame();
-		System.out.println("Max levels: " + maxLevels);
+//		System.out.println("Max levels: " + maxLevels);
 	}
 
 	@Override
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
+		System.out.print("A");
+		System.out.println(level);
 		LevelInitialized levelData = super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
 		maxLevels = getNumLevelsForGame(saveName, true);
-		System.out.println("Maxlevels: " + maxLevels);
+//		System.out.println("Maxlevels: " + maxLevels);
 		return levelData;
 	}
 
@@ -89,12 +92,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			 */
 			if (checkLevelClearanceCondition()) {
 				if (checkVictoryCondition()) {
-					System.out.println("Victory Condition Fulfilled");
+//					System.out.println("Victory Condition Fulfilled");
 					registerVictory();
 				} else {
-					System.out.println("Level Cleared Condition Fulfilled");
-					System.out.println("Max levels: " + maxLevels);
-					System.out.println("current level: " + getCurrentLevel());
+//					System.out.println("Level Cleared Condition Fulfilled");
+//					System.out.println("Max levels: " + maxLevels);
+//					System.out.println("current level: " + getCurrentLevel());
 				}
 				registerLevelCleared();
 			}
@@ -197,6 +200,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		return getLevelBanks().get(getCurrentLevel()).getPointsValue(elementName);
 	}
 
+	@Override
 	public boolean isLevelCleared() {
 		return levelCleared;
 	}
@@ -219,6 +223,16 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	
 	public void triggerFire(int elementId) {
 		elementManager.triggeredFire(this.getSpriteIdMap().get(elementId));
+
+	}
+	
+	@Override
+	public int getNumLevelsForGame(String gameName, boolean original) {
+		try {
+			return getIoController().getNumberOfLevelsForGame(gameName, original);
+		} catch (FileNotFoundException e) {
+			return getNumLevelsForGame();
+		}
 	}
 
 	@Override

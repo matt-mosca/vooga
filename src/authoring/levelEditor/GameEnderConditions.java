@@ -49,10 +49,11 @@ public class GameEnderConditions extends VBox {
 	
 	private void createLevelBoxes() {
 		checkBoxes = new ArrayList<>();
-		for (int i = 0; i<myController.getNumLevelsForGame(); i++) {
+		for (int i = 1; i<=myController.getNumLevelsForGame(); i++) {
+			System.out.println(myController.getNumLevelsForGame());
 			checkBoxes.add(new CheckBox());
-			checkBoxes.get(i).setText(Integer.toString(i+1));
-			checkBoxes.get(i).setAllowIndeterminate(IS_ALLOW_INDETERMINATE);
+			checkBoxes.get(i-1).setText(Integer.toString(i));
+			checkBoxes.get(i-1).setAllowIndeterminate(IS_ALLOW_INDETERMINATE);
 		}
 		this.getChildren().addAll(checkBoxes);
 		
@@ -61,9 +62,9 @@ public class GameEnderConditions extends VBox {
 	private void record() {
 		int currLevel = myController.getCurrentLevel();
 		ArrayList<Integer> selectedPointLevels = new ArrayList<>();
-		for(int i = 0; i<myController.getNumLevelsForGame(); i++) {
-			myController.setLevel(i+1);
-			if (checkBoxes.get(i).isSelected()) {
+		for(int i = 1; i<=myController.getNumLevelsForGame(); i++) {
+			myController.setLevel(i);
+			if (checkBoxes.get(i-1).isSelected()) {
 				if(victory.getValue()!=null) {
 					myController.setVictoryCondition(victory.getValue());
 				}
@@ -71,9 +72,9 @@ public class GameEnderConditions extends VBox {
 					myController.setDefeatCondition(defeat.getValue());	
 				}
 				if(victory.getValue().equals(VICTORY_POINTS_CONDITIONS)) {
-					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i).getText()));
+					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
 				}
-				checkBoxes.get(i).fire();
+				checkBoxes.get(i-1).fire();
 		}
 	
 	}
