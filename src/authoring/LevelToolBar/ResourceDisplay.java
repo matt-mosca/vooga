@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import display.factory.TabFactory;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -24,15 +26,15 @@ public class ResourceDisplay extends VBox{
 	private TabPane resourceTabs;
 	private List<ResourceTab> resources;
 	private Map<String, Double> resourceEndowments;
-	private AuthoringController myController;
+	private TextField name;
+	private TextField value;
+	private AuthoringModelController myController;
 	private TabFactory tabMaker;
 	
-	public ResourceDisplay(AuthoringController controller){
+	public ResourceDisplay(AuthoringModelController controller){
 		myController = controller;
 		this.setMaxWidth(250);
 		resourceEndowments = new HashMap<>();
-		
-		
 		resourceTabs = new TabPane();
 		tabMaker = new TabFactory();
 		resources = new ArrayList<ResourceTab>();
@@ -56,9 +58,9 @@ public class ResourceDisplay extends VBox{
 	}
 
 	private void changeResourceValApparatus() {
-		TextField name = new TextField();
+		name = new TextField();
 		name.setPromptText("Name");
-		TextField value = new TextField();
+		value = new TextField();
 		value.setPromptText("Value");
 		Button enter = new Button("add!");
 		enter.setOnAction(e->{
@@ -73,7 +75,11 @@ public class ResourceDisplay extends VBox{
 			try {
 				myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			} catch(NumberFormatException nfe) {
-				System.out.println("you have to type in a number");
+				Alert a = new Alert(AlertType.ERROR);
+				a.setHeaderText("Input Not Valid");
+				a.setContentText("You need to input a number!");
+				a.showAndWait().filter(button -> button == ButtonType.OK)
+						.ifPresent(event -> a.close());
 			}
 			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			update(myController.getCurrentLevel());
@@ -81,7 +87,8 @@ public class ResourceDisplay extends VBox{
 			Alert a = new Alert(AlertType.ERROR);
 			a.setHeaderText("Input Not Valid");
 			a.setContentText("You need to input a number!");
-			a.showAndWait();
+			a.showAndWait().filter(button -> button == ButtonType.OK)
+					.ifPresent(event -> a.close());
 		}});
 		this.getChildren().addAll(name, value, enter);
 		
@@ -91,6 +98,9 @@ public class ResourceDisplay extends VBox{
 		if (resources.size()!=0) {
 		resources.get(lv-1).update();
 		}
+		name.clear();
+		value.clear();
+		
 	}
 	
 	void updateCurrentState() {

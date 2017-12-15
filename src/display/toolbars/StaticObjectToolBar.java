@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import display.tabs.AddStaticTab;
 import display.tabs.AddTab;
 import display.tabs.SimpleTab;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import display.factory.TabFactory;
 
@@ -23,7 +24,7 @@ import display.sprites.StaticObject;
 public class StaticObjectToolBar extends ToolBar {
 	private static final int Y_POSITION = 50;
 	private ScreenDisplay myDisplay;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private TabPane tabPane;
 	private TabFactory tabFactory;
 	private SimpleTab staticTab;
@@ -31,7 +32,7 @@ public class StaticObjectToolBar extends ToolBar {
 	private AddTab addTab;
 	private ResourceBundle defaultProperties;
 	
-	public StaticObjectToolBar(ScreenDisplay display, AuthoringController controller) {
+	public StaticObjectToolBar(ScreenDisplay display, AuthoringModelController controller) {
 		this.setLayoutY(Y_POSITION);
 		myDisplay = display;
 		myController = controller;
@@ -82,9 +83,9 @@ public class StaticObjectToolBar extends ToolBar {
 	public void defineElement(double size, String imageString) {
 		if(myController.getAllDefinedTemplateProperties().containsKey(imageString)) return;
 		Map<String, Object> defaultValues = getDefaultProperties();
-		defaultValues.put("imageWidth", size);
-		defaultValues.put("imageUrl", imageString);
-		defaultValues.put("imageHeight", size);
+		defaultValues.put("Width", size);
+		defaultValues.put("Path of game element image", imageString);
+		defaultValues.put("Height", size);
 		myController.defineElement(imageString, defaultValues);
 	}
 	

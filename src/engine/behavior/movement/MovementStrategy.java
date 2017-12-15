@@ -59,6 +59,8 @@ public interface MovementStrategy {
      * */
     boolean targetReached();
     
+    double getAngle();
+    
     /**
      * Get if the Sprite should be removed upon completion of the its movement
      * 

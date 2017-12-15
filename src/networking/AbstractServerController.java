@@ -9,15 +9,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
 
 import engine.AbstractGameController;
 import engine.play_engine.PlayController;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
+import networking.protocol.PlayerClient.DeleteElement;
 import networking.protocol.PlayerClient.JoinRoom;
+import networking.protocol.PlayerClient.MoveElement;
+import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.Game;
 import networking.protocol.PlayerServer.GameRoomCreationStatus;
 import networking.protocol.PlayerServer.GameRoomJoinStatus;
@@ -25,11 +30,14 @@ import networking.protocol.PlayerServer.GameRoomLaunchStatus;
 import networking.protocol.PlayerServer.GameRooms;
 import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
+import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Notification;
 import networking.protocol.PlayerServer.PlayerExited;
 import networking.protocol.PlayerServer.PlayerJoined;
 import networking.protocol.PlayerServer.PlayerNames;
 import networking.protocol.PlayerServer.ServerMessage;
+import networking.protocol.PlayerServer.SpriteDeletion;
+import networking.protocol.PlayerServer.SpriteUpdate;
 
 public abstract class AbstractServerController {
 
@@ -52,13 +60,21 @@ public abstract class AbstractServerController {
 	
 	private ObservableList<ServerMessage> messageQueue = FXCollections.observableArrayList();
 
-	public byte[] handleRequestAndSerializeResponse(int clientId, byte[] requestBytes)
-			throws InvalidProtocolBufferException {
-		return handlePreGameRequestAndSerializeResponse(clientId, ClientMessage.parseFrom(requestBytes),
-				ServerMessage.newBuilder());
+	public byte[] handleRequestAndSerializeResponse(int clientId, byte[] requestBytes) {
+		try {
+			System.out.println("Handling request");
+			byte[] pregameResponseBytes = handlePreGameRequestAndSerializeResponse(clientId, ClientMessage.parseFrom(requestBytes),
+					ServerMessage.newBuilder());	
+			if (pregameResponseBytes.length > 0) {
+				return pregameResponseBytes;
+			}
+			return handleSpecificRequestAndSerializeResponse(clientId, requestBytes);
+		} catch (InvalidProtocolBufferException | ReflectiveOperationException e) {
+			return new byte[] {};
+		}
 	}
 
-	public void registerNotificationStreamListener(ListChangeListener<ServerMessage> listener) {
+	public void registerNotificationStreamListener(ListChangeListener<Message> listener) {
 		System.out.println("Registering notification listener");
 		messageQueue.addListener(listener);
 	}
@@ -71,6 +87,8 @@ public abstract class AbstractServerController {
 			}
 		});
 	}
+	
+	protected abstract byte[] handleSpecificRequestAndSerializeResponse(int clientId, byte[] requestBytes);
 
 	protected byte[] getAvailableGames(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
 		Games.Builder gamesBuilder = Games.newBuilder();
@@ -196,6 +214,42 @@ public abstract class AbstractServerController {
 				.build().toByteArray();
 	}
 
+	private byte[] placeElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder)
+			throws ReflectiveOperationException {
+		AbstractGameController controller = getEngineForClient(clientId);
+		PlaceElement placeElementRequest = clientMessage.getPlaceElement();
+		NewSprite placedElement = controller.placeElement(placeElementRequest.getElementName(),
+				new Point2D(placeElementRequest.getXCoord(), placeElementRequest.getYCoord()));
+		// Broadcast
+		enqueueMessage(ServerMessage.newBuilder()
+				.setNotification(Notification.newBuilder().setElementPlaced(placedElement).build()).build());
+		return serverMessageBuilder.setElementPlaced(placedElement).build().toByteArray();
+	}
+
+	private byte[] moveElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		AbstractGameController controller = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		MoveElement moveElementRequest = clientMessage.getMoveElement();
+		SpriteUpdate updatedSprite = controller.moveElement(moveElementRequest.getElementId(),
+				moveElementRequest.getNewXCoord(), moveElementRequest.getNewYCoord());
+		// Broadcast
+		enqueueMessage(ServerMessage.newBuilder()
+				.setNotification(Notification.newBuilder().setElementMoved(updatedSprite).build()).build());
+		return serverMessageBuilder.setElementMoved(updatedSprite).build().toByteArray();
+	}
+
+	private byte[] deleteElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		AbstractGameController controller = getEngineForRoom(getGameRoomNameOfClient(clientId));
+		DeleteElement deleteElementRequest = clientMessage.getDeleteElement();
+		try {
+			SpriteDeletion deletedElement = controller.deleteElement(deleteElementRequest.getElementId());
+			enqueueMessage(ServerMessage.newBuilder()
+					.setNotification(Notification.newBuilder().setElementDeleted(deletedElement).build()).build());
+			return serverMessageBuilder.setElementDeleted(deletedElement).build().toByteArray();
+		} catch (IllegalArgumentException e) {
+			return serverMessageBuilder.setError(e.getMessage()).build().toByteArray();
+		}
+	}
+	
 	protected void enqueueMessage(ServerMessage message) {
 		messageQueue.add(message);
 	}
@@ -207,6 +261,8 @@ public abstract class AbstractServerController {
 	protected abstract AbstractGameController getEngineForRoom(String room);
 	
 	protected abstract void createEngineForRoom(String room);
+	
+	protected abstract AbstractGameController getEngineForClient(int clientId);
 	
 	protected String getGameRoomNameOfClient(int clientId) {
 		return roomMembers.keySet().stream().filter(roomName -> roomMembers.get(roomName).contains(clientId)).iterator()
@@ -265,7 +321,7 @@ public abstract class AbstractServerController {
 	}
 
 	private byte[] handlePreGameRequestAndSerializeResponse(int clientId, ClientMessage clientMessage,
-			ServerMessage.Builder serverMessageBuilder) {
+			ServerMessage.Builder serverMessageBuilder) throws ReflectiveOperationException {
 		if (clientMessage.hasGetAvailableGames()) {
 			return getAvailableGames(clientMessage, serverMessageBuilder);
 		}
@@ -292,7 +348,20 @@ public abstract class AbstractServerController {
 		if (clientMessage.hasGetPlayerNames()) {
 			return getPlayerNames(clientId, clientMessage, serverMessageBuilder);
 		}
-		return serverMessageBuilder.getDefaultInstanceForType().toByteArray();
+		return handleCommonGameRequestAndSerializeResponse(clientId, clientMessage, serverMessageBuilder);
+	}
+	
+	private byte[] handleCommonGameRequestAndSerializeResponse(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) throws ReflectiveOperationException {
+		if (clientMessage.hasPlaceElement()) {
+			return placeElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasMoveElement()) {
+			return moveElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasDeleteElement()) {
+			return deleteElement(clientId, clientMessage, serverMessageBuilder);
+		}
+		return serverMessageBuilder.getDefaultInstanceForType().toByteArray();		
 	}
 
 	private void clearWaitingRoom(String roomName) {

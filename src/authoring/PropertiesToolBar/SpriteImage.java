@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.image.Image;
 import display.splashScreen.ScreenDisplay;
@@ -11,7 +12,7 @@ import display.sprites.InteractiveObject;
 
 public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
-	private AuthoringController controller;
+	private AuthoringModelController controller;
 	private Map<String, Object> myPossibleProperties;
 	private Map<String, String> myBaseProperties;
 	private String myName;
@@ -50,7 +51,7 @@ public abstract class SpriteImage extends InteractiveObject {
 		}catch (NullPointerException e) {
 			image = new Image(imageName);
 		}
-		defaultValues.put("imageUrl", imageName);
+		defaultValues.put("Path of game element image", imageName);
 		this.setImage(image);
 	}
 	

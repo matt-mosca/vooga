@@ -7,8 +7,11 @@ public class ServerMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		MultiPlayerServer multiPlayerServer = new MultiPlayerServer();
-		multiPlayerServer.startServer();
+		bootServer().startServer();
+	}
+	
+	protected AbstractGameServer bootServer() {
+		return new MultiPlayerServer();
 	}
 	
 	public static void main(String[] args) {

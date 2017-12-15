@@ -36,13 +36,9 @@ public class ElementManager {
 	private final int FRAMES_BETWEEN_WAVES = 180;
 	private int waveGapCountdown = 0;
 
-	
 	private AudioClipFactory audioClipFactory;
 
 	private SpriteQueryHandler spriteQueryHandler;
-
-	// TODO
-	// Reference to GridManager
 
 	/**
 	 * Handles the collision-checking and GameElement-specific collision-handling
@@ -70,6 +66,7 @@ public class ElementManager {
 	}
 
 	void setCurrentWaves(List<GameElement> waves) {
+		System.out.println(waves);
 		this.waves = waves.iterator();
 		if (this.waves.hasNext()) {
 			currentWave = this.waves.next();
@@ -109,11 +106,7 @@ public class ElementManager {
 
 	private void processStepForElement(GameElement element) {
 		if (!element.isAlive()) {
-			if(element.getImageUrl().equals("fireball.png")) {
-				System.out.println("#######################fireball dead#############################");
-			}
 			if(element.shouldExplode()) {
-				System.out.println("EXPLODE==============================");
 				Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()), element);
 				try {
 					GameElement explosionElement = gameElementFactory.generateElement(element.explode(), auxiliaryObjects);
@@ -217,7 +210,7 @@ public class ElementManager {
 				GameElement projectileGameElement = gameElementFactory.generateElement(elementTemplateName, auxiliaryObjects);
 				newElements.add(projectileGameElement);
 			} catch (ReflectiveOperationException e) {
-				//System.out.println("Failed to  create projectile--------------------------");
+	
 			}
 			playAudio(element.getFiringAudio());
 		}
@@ -239,7 +232,6 @@ public class ElementManager {
 	
 	private void playAudio(String audioUrl) {
 		if(audioUrl != null) {
-			System.out.println(audioUrl);
 			audioClipFactory = new AudioClipFactory(audioUrl);
 			audioClipFactory.getAudioClip().play();
 		}

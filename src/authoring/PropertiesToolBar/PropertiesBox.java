@@ -1,12 +1,15 @@
 package authoring.PropertiesToolBar;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
+import engine.AuthoringModelController;
 import util.path.Path;
 import util.path.PathList;
 import util.path.PathParser;
@@ -39,27 +42,28 @@ public class PropertiesBox extends VBox {
 	private ImageView currSprite;
 	private AddToWaveButton myWaveAdder;
 	private Droppable myDroppable;
-
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringController
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringModelController
 			author) {
 		currSprite = mySprite;
 		myDroppable = droppable;
 		propertiesMap = propertyMap;
-		table = new TableView<Properties>();
+		table = new TableView<>();
 		table.setEditable(true);
-		propertiesColumn = new TableColumn<Properties, String>("Properties");
-		valuesColumn = new TableColumn<Properties, String>("Values");
+		propertiesColumn = new TableColumn<>("Properties");
+		valuesColumn = new TableColumn<>("Values");
 		data = FXCollections.observableArrayList();
 		
 		for (String propertyName : propertiesMap.keySet()) {
 			data.add(new Properties(propertyName, propertiesMap.get(propertyName)));
 		}
 		
+		FXCollections.sort(data, new Sortbyname());
+		
 		propertiesColumn.setCellValueFactory(
-				new PropertyValueFactory<Properties, String>("myProperty"));
+				new PropertyValueFactory<>("myProperty"));
 		valuesColumn.setCellValueFactory(
-				new PropertyValueFactory<Properties, String>("myValue"));
+				new PropertyValueFactory<>("myValue"));
 		table.setItems(data);
 		table.getColumns().addAll(propertiesColumn, valuesColumn);
 		this.getChildren().add(table);
@@ -144,11 +148,25 @@ public class PropertiesBox extends VBox {
 		}
 
 		for(Path path:paths.keySet()) {
-			if(paths.get(path).equals(colorChooser.getSelectionModel().getSelectedItem().getFill())) {
+			if(paths.get(path) != null
+					&& paths.get(path).equals(colorChooser.getSelectionModel().getSelectedItem().getFill())) {
 				return path;
 			}
 		}
 		return null;
 	}
 	
+}
+
+/* @author sgrillo
+ * 
+ */
+class Sortbyname implements Comparator<Properties>
+{
+    // Used for sorting in ascending order of
+    // roll name
+    public int compare(Properties a, Properties b)
+    {
+        return a.getMyProperty().compareTo(b.getMyProperty());
+    }
 }

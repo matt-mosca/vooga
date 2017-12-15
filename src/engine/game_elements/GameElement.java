@@ -59,6 +59,7 @@ public final class GameElement {
 		return firingStrategy.fire();
 	}
 	
+	
 	/**
 	 * Check for a collision with another sprite.
 	 *
@@ -112,6 +113,10 @@ public final class GameElement {
 
 	public double getY() {
 		return movementStrategy.getCurrentY();
+	}
+	
+	public double getAngle() {
+		return movementStrategy.getAngle();
 	}
 	
 	public String getFiringAudio() {

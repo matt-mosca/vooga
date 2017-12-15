@@ -42,6 +42,9 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	private List<Set<Entry<Integer, GameElement>>> savedList;
 	private Update latestUpdate;
 
+	private int score;
+	private int cycles;
+	
 	public PlayController() {
 		super();
 		savedList = new ArrayList<>();
@@ -87,6 +90,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			 } else if (checkDefeatCondition()) {
 				 registerDefeat();
 			 } else {*/ // Move elements, check and handle collisions
+				incrementCycles();
 				 savedList.add(getSpriteIdMap().entrySet());
 				 elementManager.update();
 				 List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
@@ -191,10 +195,12 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		setLevel(level);
 		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
 		elementManager.setCurrentElements(getLevelSprites().get(level));
-		List<GameElement> levelWaves = getLevelWaves().get(getCurrentLevel()-1);
+		List<GameElement> levelWaves = getLevelWaves().get(getCurrentLevel());
 		elementManager.setCurrentWaves(levelWaves);
 		setVictoryCondition(getLevelConditions().get(level).get(VICTORY));
 		setDefeatCondition(getLevelConditions().get(level).get(DEFEAT));
+		resetScore();
+		resetCycles();
 	}
 
 	private Update packageSpriteUpdates(Collection<GameElement> newlyGeneratedElements,
@@ -203,7 +209,19 @@ public class PlayController extends AbstractGameController implements PlayModelC
 				getFilteredSpriteIdMap(updatedElements), getFilteredSpriteIdMap(deletedElements), levelCleared, isWon,
 				isLost, inPlay, getResourceEndowments(), getCurrentLevel());
 	}
+	
+	private void resetScore() {
+		score = 0;
+	}
+	
+	private void resetCycles() {
+		cycles = 0;
+	}
 
+	private void incrementCycles() {
+		cycles ++;
+	}
+	
 	private boolean checkVictoryCondition() {
 		return levelCleared && getCurrentLevel() == maxLevels;
 	}
@@ -218,7 +236,6 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private boolean dispatchBooleanMethod(Method chosenBooleanMethod) {
 		try {
-			System.out.println(chosenBooleanMethod);
 			return (boolean) chosenBooleanMethod.invoke(this, new Object[] {});
 		} catch (ReflectiveOperationException e) {
 			return false;
@@ -290,8 +307,16 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean enemyReachedTarget() {
-		boolean reached = elementManager.enemyReachedTarget();
-		return reached;
+		return elementManager.enemyReachedTarget();
+	}
+	
+	// TODO - Awarding of score in elementManager
+	private boolean pointsQuotaReached() {
+		return score >= getLevelPointQuotas().get(getCurrentLevel());
+	}
+	
+	private boolean timeLimitReached() {
+		return cycles >= getLevelTimeLimits().get(getCurrentLevel());
 	}
 	
 	private boolean zeroHealth() {

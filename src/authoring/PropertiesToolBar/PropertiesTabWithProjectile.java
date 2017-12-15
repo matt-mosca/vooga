@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import display.splashScreen.ScreenDisplay;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,11 +20,11 @@ import javafx.scene.layout.HBox;
 public class PropertiesTabWithProjectile extends PropertiesTab{
 	private PropertiesToolBar myProperties;
 	private ProjectileSlot projectileSlot;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private ImageView myImageView;
 	
 	public PropertiesTabWithProjectile(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView,
-									   Map<String, Object> propertyMap, AuthoringController author) {
+									   Map<String, Object> propertyMap, AuthoringModelController author) {
 		super(display, properties, imageView, propertyMap, author);
 		myController = author;
 		myImageView = imageView;
@@ -47,7 +48,8 @@ public class PropertiesTabWithProjectile extends PropertiesTab{
 	private void addProjectileImage() {
 		String projectileName = myController.getAllDefinedTemplateProperties().get(myImageView.getId()).get
 				("Projectile Type Name").toString();
-		String url = myController.getAllDefinedTemplateProperties().get(projectileName).get("imageUrl").toString();
+		String url = myController.getAllDefinedTemplateProperties().get(projectileName)
+				.get("Path of game element image").toString();
 		ImageView projectile = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(url)));
 		resize(projectileSlot.getPrefHeight(), projectile);
 		projectileSlot.getChildren().add(projectile);
