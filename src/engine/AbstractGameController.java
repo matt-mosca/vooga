@@ -45,6 +45,8 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	protected static final String DEFEAT = "defeat";
 
 	private final int ASSUMED_PLAYER_ID = -1;
+	
+	private final int DEFAULT_POINTS_QUOTA = 100;
 
 	private GameElementIoHandler gameElementIoHandler;
 	private SpriteQueryHandler spriteQueryHandler;
@@ -603,7 +605,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		getLevelWaves().add(new ArrayList<>());
 		getLevelWaveTemplates().add(new HashMap<>());
 		getLevelHealths().add(0);
-		getLevelPointQuotas().add(0);
+		getLevelPointQuotas().add(DEFAULT_POINTS_QUOTA);
 		getLevelTimeLimits().add(0);
 		initializeLevelConditions();
 	}
