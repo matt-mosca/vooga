@@ -5,6 +5,7 @@ import engine.PlayModelController;
 import engine.behavior.movement.LocationProperty;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Update;
@@ -107,6 +108,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
 			List<GameElement> updatedElements = elementManager.getUpdatedElements();
 			List<GameElement> deadElements = elementManager.getDeadElements();
+			getLevelBanks().get(getCurrentLevel()).processPointsAndResourcesFromDeadElements(deadElements);
 			for (GameElement element : newlyGeneratedElements) {
 				cacheAndCreateIdentifier(element);
 			}
@@ -185,6 +187,16 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		// to manually
 	}
 
+	@Override
+	public double getElementPointValue(int elementId) {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			return 0;
+		}
+		String elementName = getSpriteIdMap().get(elementId).getTemplateName();
+		return getLevelBanks().get(getCurrentLevel()).getPointsValue(elementName);
+	}
+
+	@Override
 	public boolean isLevelCleared() {
 		return levelCleared;
 	}

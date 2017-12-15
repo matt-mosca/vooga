@@ -1,6 +1,9 @@
 package engine;
 
+import engine.game_elements.GameElement;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,6 +92,49 @@ public class Bank {
 		}
 		resourceEndowments = resourcesAfterPurchase;
 		return true;
+	}
+
+	/**
+	 * Calculate and update resource endowment additions and point additions from destroyed game elements.
+	 *
+	 * @return the aggregate point value associated with the destroyed elements
+	 */
+	public double processPointsAndResourcesFromDeadElements(List<GameElement> deadElements) {
+		double points = 0;
+		for (GameElement gameElement : deadElements) {
+			String elementName = gameElement.getTemplateName();
+			gainResourcesFromElement(elementName);
+			points += getPointsValue(elementName);
+		}
+		return points;
+	}
+
+	/**
+	 * Process the addition of resources associated with a particular game element (for example, when it's sold).
+	 *
+	 * @param elementName
+	 */
+	public void gainResourcesFromElement(String elementName) {
+		Map<String, Double> elementCosts = unitCosts.getOrDefault(elementName, new HashMap<>());
+		for (String resourceName : resourceEndowments.keySet()) {
+			double currentEndowment = resourceEndowments.get(resourceName);
+			currentEndowment += elementCosts.getOrDefault(resourceName, 0.0);
+			resourceEndowments.put(resourceName, currentEndowment);
+		}
+	}
+
+	/**
+	 * Get the points value associated with (the destruction of) a particular element.
+	 *
+	 * @param elementName the template name of the element being queried
+	 * @return the point cost associated with the element
+	 */
+	public double getPointsValue(String elementName) {
+		return unitCosts.getOrDefault(elementName, new HashMap<>())
+				.values()
+				.stream()
+				.mapToDouble(Double::doubleValue)
+				.sum();
 	}
 	
 	private void setUnitCosts(Map<String, Map<String, Double>> unitCosts) {
