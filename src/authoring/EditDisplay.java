@@ -325,14 +325,14 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void save() {
 		File saveFile = SaveDialog.SaveLocation(getScene());
 		if (saveFile != null) {
-		    String gameName = saveFile.getName();
-			controller.setGameName(gameName);
-			controller.saveGameState(gameName);
+			controller.setGameName(saveFile.getName());
+			// TODO change the save game so it saves a string instead
+			controller.saveGameState(PATH_DIRECTORY_NAME + saveFile.getName());
 			myGameArea.savePath();
 		}
 	}
 
-	// These are called via reflection do not delete
+	// I'm adding this to do reflective generation of dropdown menu (I am Ben S)
 	private void export() {
 		/*Dialog dialog = new Dialog();
 		dialog.setContentText("Wait for the exportation to complete...");
@@ -383,7 +383,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	    final String GAME_NAME = "temp.voog";
         myGameArea.savePath();
         controller.setGameName(GAME_NAME);
-        controller.saveGameState(GAME_NAME);
+        controller.saveGameState(AUTHORING + GAME_NAME);
         PlayModelController playModelController = new PlayController();
         try {
             playModelController.loadOriginalGameState(GAME_NAME, 1);
@@ -395,11 +395,11 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
             Alert.AlertType type = Alert.AlertType.ERROR;
             String message = e.getMessage();
             launchAlertAndWait(message, type);
-            e.printStackTrace();
         } finally {
             new Purger().purge();
         }
     }
+
     // end
 
 	private void loadGame() {

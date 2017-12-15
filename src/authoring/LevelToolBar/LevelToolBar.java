@@ -160,7 +160,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 		}
 		Map<String, Object> waveProperties = new HashMap<>();
         waveProperties.putAll(myProperties);
-        //waveProperties.put("Elements to fire", elementsToSpawn);
+        waveProperties.put("Elements to fire", elementsToSpawn);
         waveProperties.put("Projectile Type Name", mySpriteId);
 		for (String levelDotWave : levelWaveArray) {
 			int level = Integer.valueOf(levelDotWave.split("\\.+")[LEVEL_INDEX]);			
@@ -184,7 +184,7 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 			} else {
 				levelToData.get(level).waveInfo.get(wave).spriteNames = imageList;
 				levelToData.get(level).waveInfo.get(wave).waveId = 
-						myController.createWaveProperties(myProperties, elementsToSpawn, location);
+						myController.createWaveProperties(waveProperties, elementsToSpawn, location);
 			}
 			levelToData.get(level).waveInfo.get(wave).numberList.add(amount);
 		}

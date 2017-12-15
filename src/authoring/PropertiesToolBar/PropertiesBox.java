@@ -148,7 +148,8 @@ public class PropertiesBox extends VBox {
 		}
 
 		for(Path path:paths.keySet()) {
-			if(paths.get(path).equals(colorChooser.getSelectionModel().getSelectedItem().getFill())) {
+			if(paths.get(path) != null
+					&& paths.get(path).equals(colorChooser.getSelectionModel().getSelectedItem().getFill())) {
 				return path;
 			}
 		}

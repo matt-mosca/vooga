@@ -29,9 +29,8 @@ import java.util.zip.ZipInputStream;
 public class GameElementIoHandler {
 
     private final String PROPERTIES_COMMENT = "Programmatically generated game element template file";
-    private final String AUTHORING_PATH = "authoring/";
-    private final String TEMPLATE_FILE_OUTPUT_PATH = AUTHORING_PATH + "sprite-templates/";
-    private final String WAVES_OUTPUT_PATH = AUTHORING_PATH + "waves/";
+    private final String TEMPLATE_FILE_OUTPUT_PATH = "authoring/sprite-templates/";
+    private final String WAVES_OUTPUT_PATH = "authoring/waves/";
     private final String PROPERTIES_EXTENSION = ".properties";
     private final String UPGRADE_INDICATOR = "_upgrade_";
     private final String LEVEL_FILE_INDICATOR = "level_";
@@ -277,7 +276,6 @@ public class GameElementIoHandler {
     }
 
     private String createDirectory(String gameName, String outputPath) {
-        gameName = gameName.replace(AUTHORING_PATH, "");
         String directoryPath = createDirectoryPath(gameName, outputPath);
         createDirectoryIfNonExistent(directoryPath);
         return directoryPath;
