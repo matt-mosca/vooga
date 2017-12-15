@@ -1,7 +1,8 @@
-package authoring.LevelToolBar;
+package authoring.levelEditor;
 
 import java.util.ResourceBundle;
 
+import authoring.LevelToolBar.LevelTab;
 import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;

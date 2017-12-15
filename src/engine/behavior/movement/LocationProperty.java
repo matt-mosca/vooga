@@ -9,7 +9,7 @@ import util.Exclude;
  *
  * @author Ben Schwennesen
  */
-public class TrackingPoint {
+public class LocationProperty {
 
     @Exclude private DoubleProperty xCoordinate;
     @Exclude private DoubleProperty yCoordinate;
@@ -22,7 +22,7 @@ public class TrackingPoint {
      * @param xCoordinate the double property responsible for tracking the element's horizontal position
      * @param yCoordinate the double property responsible for tracking the element's vertical position
      */
-    public TrackingPoint(DoubleProperty xCoordinate, DoubleProperty yCoordinate) {
+    public LocationProperty(DoubleProperty xCoordinate, DoubleProperty yCoordinate) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         xCoordinateSerializable = xCoordinate.doubleValue();
