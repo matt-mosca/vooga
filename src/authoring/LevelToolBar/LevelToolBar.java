@@ -15,6 +15,7 @@ import networking.protocol.PlayerServer.NewSprite;
 import util.ElementDefaultsGetter;
 import util.protocol.ClientMessageUtils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class LevelToolBar extends VBox implements TabInterface, ButtonInterface {
     
     private static final String DEFAULT_WAVE_PROPERTIES = "WavesDefaults";
+    private final String UNTITLED = "untitled";
     private static final int SIZE = 400;
     private static final int WIDTH = 100;
     private static final int X_LAYOUT = 260;
@@ -98,11 +100,11 @@ public class LevelToolBar extends VBox implements TabInterface, ButtonInterface 
 
 	private void loadLevels() {
 		startingLevels = myController.getNumLevelsForGame();
-		if (myController.getGameName().equals("untitled") || startingLevels == 1) {
+		if (myController.getGameName().equals(UNTITLED)) {
 			addLevel();
 			return;
 		}
-		for (int i = 0; i < startingLevels; i++) {
+		for (int i = 1; i <= startingLevels; i++) {
 			addLevel();
 			initializeSprites(i);
 		}
