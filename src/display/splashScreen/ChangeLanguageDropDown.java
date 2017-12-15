@@ -17,14 +17,18 @@ public class ChangeLanguageDropDown extends VBox {
 	
 	private ComboBox<String> myBox;
 	private Button update;
+	private SplashScreen myScreen;
 	
-	public ChangeLanguageDropDown(){
+	public ChangeLanguageDropDown(SplashScreen splashScreen){
+		myScreen = splashScreen;
 		myBox = new ComboBox<String>();
 		myBox.setPromptText(PropertiesGetter.getProperty(LABEL));
 		myBox.getItems().addAll(ENGLISH, FRENCH);
 		update = new Button();
 		update.setText(PropertiesGetter.getProperty(BUTTON_LABEL));
-		update.setOnAction(e->PropertiesGetter.setLanguageFiles(myBox.getValue()));
+		update.setOnAction(e->{PropertiesGetter.setLanguageFiles(myBox.getValue());
+		myScreen.updateLanguage();
+		});
 		this.getChildren().addAll(myBox, update);
 	}
 	

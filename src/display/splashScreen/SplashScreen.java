@@ -27,6 +27,7 @@ import main.Main;
 import networking.MultiPlayerClient;
 import player.MultiplayerLobby;
 import player.PlayDisplay;
+import util.PropertiesGetter;
 
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
@@ -35,6 +36,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final int MAINHEIGHT = 750;
 	private static final String TITLEFONT = "Verdana";
 	private static final String TITLE = "Welcome to VOOGA";
+	public static final String SPLASHTITLE = "SplashTitle";
 	private static final double STANDARD_PATH_WIDTH = Main.WIDTH / 15;
 	private static final double STANDARD_PATH_HEIGHT = Main.HEIGHT / 15;
 	private static final String SINGLE_PLAYER = "Single Player";
@@ -62,7 +64,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(myEditGameButton);
 		myLoadGameButton = new PlayExistingGameButton(this);
 		rootAdd(myLoadGameButton);
-		myLanguageChanger = new ChangeLanguageDropDown();
+		myLanguageChanger = new ChangeLanguageDropDown(this);
 		rootAdd(myLanguageChanger);
 		myMediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		myMediaPlayer = myMediaPlayerFactory.getMediaPlayer();
@@ -246,6 +248,10 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	public void listItemClicked(MouseEvent e, ImageView object) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void updateLanguage() {
+		getStage().setTitle(PropertiesGetter.getProperty(SPLASHTITLE));;		
 	}
 
 }
