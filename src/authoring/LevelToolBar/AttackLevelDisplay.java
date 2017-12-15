@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import authoring.levelEditor.LevelDisplay;
 import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.Scene;

@@ -47,18 +47,33 @@ public class StaticObjectToolBar extends ToolBar {
 	protected void createAndAddTabs() {
 		//TODO Change these addItem calls to run in a loop over properties sent from back end
 		staticTab = new SimpleTab(myDisplay, new ArrayList<>());
-		staticTab.addItem(createStaticObject(1, "tortoise.png"));
-		staticTab.addItem(createStaticObject(2, "gray_circle.png"));		
-		staticTab.addItem(createStaticObject(2, "green_soldier.gif"));
 		staticTab.addItem(createStaticObject(2, "tree1.png"));
+		staticTab.addItem(createStaticObject(2, "tree2.png"));
+		staticTab.addItem(createStaticObject(2, "castle_tower1.png"));
+		staticTab.addItem(createStaticObject(2, "castle_tower3.png"));
+		staticTab.addItem(createStaticObject(3, "castle_tower4.png"));
+		staticTab.addItem(createStaticObject(1, "tortoise.png"));
+		staticTab.addItem(createStaticObject(2, "gray_circle.png"));
+		staticTab.addItem(createStaticObject(2, "blue_balloon.png"));
+		staticTab.addItem(createStaticObject(2, "green_balloon.png"));
+		staticTab.addItem(createStaticObject(2, "red_balloon.png"));
+		staticTab.addItem(createStaticObject(2, "yellow_balloon.png"));
+		staticTab.addItem(createStaticObject(2, "black_square.png"));
+		staticTab.addItem(createStaticObject(2, "black_square2.png"));
 		
 		backgroundTab = new SimpleTab(myDisplay, new ArrayList<>());
-		backgroundTab.addItem(createBackgroundObject(2, "grass_small.png"));
-		backgroundTab.addItem(createBackgroundObject(1, "grass2_medium.png"));		
+		backgroundTab.addItem(createBackgroundObject(1, "grass_small.png"));
+		backgroundTab.addItem(createBackgroundObject(2, "grass_medium.png"));
+		backgroundTab.addItem(createBackgroundObject(3, "grass_large.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "grass2_small.png"));
+		backgroundTab.addItem(createBackgroundObject(2, "grass2_medium.png"));	
+		backgroundTab.addItem(createBackgroundObject(3, "grass2_large.png"));
 		backgroundTab.addItem(createBackgroundObject(1, "brick_path.png"));
 		backgroundTab.addItem(createBackgroundObject(1, "stone_path1.png"));
-		backgroundTab.addItem(createBackgroundObject(1, "water_medium.png"));
-		backgroundTab.addItem(createBackgroundObject(3, "grass_large.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "stone_path2.png"));
+		backgroundTab.addItem(createBackgroundObject(1, "water_small.png"));
+		backgroundTab.addItem(createBackgroundObject(2, "water_medium.png"));
+		backgroundTab.addItem(createBackgroundObject(3, "water_large.png"));
 		
 		tabPane.getTabs().add(tabFactory.buildTab("Static", "StaticObject", staticTab, tabPane));
 		tabPane.getTabs().add(tabFactory.buildTab("Background", "BackgroundObject", backgroundTab, tabPane));

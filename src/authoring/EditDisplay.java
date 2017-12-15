@@ -22,6 +22,7 @@ import engine.AuthoringModelController;
 import engine.PlayModelController;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
+import factory.AlertFactory;
 import factory.MediaPlayerFactory;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -35,6 +36,7 @@ import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
@@ -75,6 +77,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_X_LOCATION = 620;
 	private static final double GRID_Y_LOCATION = 20;
 	private final String PATH_DIRECTORY_NAME = "authoring/";
+	private final String HEIGHT = "Height";
+	private final String WIDTH = "Width";
 	
 	private AuthoringModelController controller;
 	private StaticObjectToolBar myLeftToolBar;
@@ -281,8 +285,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	private void updateObjectSize(StaticObject object) {
 		Map<String, Object> newProperties = controller.getTemplateProperties(object.getElementName());
-		newProperties.put("imageWidth", object.getSize());
-		newProperties.put("imageHeight", object.getSize());
+		newProperties.put(WIDTH, object.getSize());
+		newProperties.put(HEIGHT, object.getSize());
 		controller.updateElementDefinition(object.getElementName(), newProperties, false);
 	}
 	
@@ -362,9 +366,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 			DIALOG_MESSAGE[0] = e.getMessage();
 		}
 		Thread response = new Thread(() -> {
-			String content = DIALOG_MESSAGE[0];
-            Alert.AlertType type = Alert.AlertType.INFORMATION;
-            launchAlertAndWait(content, type);
+            new AlertFactory(DIALOG_MESSAGE[0],AlertType.INFORMATION);
 		});
 		response.run();
 	}
@@ -395,9 +397,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
             playDisplay.launchGame(GAME_NAME);
             getStage().setScene(playDisplay.getScene());
         } catch (Exception e) {
-            Alert.AlertType type = Alert.AlertType.ERROR;
-            String message = e.getMessage();
-            launchAlertAndWait(message, type);
+            new AlertFactory(e.getMessage(),AlertType.ERROR);
         } finally {
             new Purger().purge();
         }

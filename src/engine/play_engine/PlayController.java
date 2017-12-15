@@ -2,6 +2,7 @@ package engine.play_engine;
 
 import engine.AbstractGameController;
 import engine.PlayModelController;
+import engine.behavior.movement.LocationProperty;
 import engine.game_elements.GameElement;
 import javafx.geometry.Point2D;
 import networking.protocol.PlayerServer.LevelInitialized;
@@ -60,6 +61,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
 		LevelInitialized levelData = super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
+		maxLevels = getNumLevelsForGame(saveName, true);
+		System.out.println("Maxlevels: " + maxLevels);
 		return levelData;
 	}
 
@@ -80,7 +83,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	@Override
 	public Update update() {
 		if (inPlay) {
-			/*
+			/*---
 			 * Uncomment when front end is ready to set wave properties fully (team & no. of
 			 * attacks of wave)
 			 */
@@ -104,6 +107,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
 			List<GameElement> updatedElements = elementManager.getUpdatedElements();
 			List<GameElement> deadElements = elementManager.getDeadElements();
+			getLevelBanks().get(getCurrentLevel()).processPointsAndResourcesFromDeadElements(deadElements);
 			for (GameElement element : newlyGeneratedElements) {
 				cacheAndCreateIdentifier(element);
 			}
@@ -151,6 +155,14 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
+	public LocationProperty getElementLocationProperty(int elementId) throws IllegalArgumentException {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			throw new IllegalArgumentException();
+		}
+		return getSpriteIdMap().get(elementId).getLocationProperty();
+	}
+
+	@Override
 	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates)
 			throws ReflectiveOperationException {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
@@ -168,10 +180,21 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			throw new IllegalArgumentException();
 		}
 		GameElement gameElement = getSpriteIdMap().get(elementId);
+		elementManager.removeElement(gameElement);
 		gameElement = getGameElementUpgrader().upgradeSprite(gameElement);
+		elementManager.addElement(gameElement);
 		getSpriteIdMap().put(elementId, gameElement);
 		// I think this will update the reference in the element manager but might need
 		// to manually
+	}
+
+	@Override
+	public double getElementPointValue(int elementId) {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			return 0;
+		}
+		String elementName = getSpriteIdMap().get(elementId).getTemplateName();
+		return getLevelBanks().get(getCurrentLevel()).getPointsValue(elementName);
 	}
 
 	public boolean isLevelCleared() {
@@ -189,6 +212,13 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	public Update packageStatusUpdate() {
 		return getServerMessageUtils().packageStatusUpdate(levelCleared, isWon, isLost, inPlay, getCurrentLevel());
+	}
+	
+	//PlayModel controller to add to interface
+		//PlayController has method that take int unique id return void. call manager that handles string return 
+	
+	public void triggerFire(int elementId) {
+		elementManager.triggeredFire(this.getSpriteIdMap().get(elementId));
 	}
 
 	@Override
@@ -295,7 +325,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			throw new IllegalArgumentException();
 		}
 	}
-
+	
 	// TODO - Move conditions to separate file?
 
 	// TODO (extension) - for multiplayer, take a playerId parameter in this method

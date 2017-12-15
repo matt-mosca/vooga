@@ -12,6 +12,7 @@ public class ToggleSwitch extends HBox {
 	
 	protected final Label	switchLabel = new Label();
 	protected final Button button = new Button();
+	private final int TOGGLE_SWITCH_WIDTH = 80;
 	
 	protected SimpleBooleanProperty switchedOn = new SimpleBooleanProperty(false);
 	public SimpleBooleanProperty switchOnProperty() { return switchedOn; }
@@ -33,7 +34,7 @@ public class ToggleSwitch extends HBox {
 	
 	private void setStyle() {
 		//Default Width
-		setWidth(80);
+		setWidth(TOGGLE_SWITCH_WIDTH);
 		switchLabel.setAlignment(Pos.CENTER);
 		setStyle("-fx-background-color: red; -fx-text-fill:black; -fx-background-radius: 4;");
 		setAlignment(Pos.CENTER_LEFT);

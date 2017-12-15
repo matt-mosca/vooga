@@ -5,6 +5,7 @@ import display.splashScreen.SplashPlayScreen;
 import display.sprites.StaticObject;
 import display.toolbars.InventoryToolBar;
 import engine.PlayModelController;
+import factory.AlertFactory;
 import factory.MediaPlayerFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -36,6 +37,7 @@ import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.SpriteDeletion;
 import networking.protocol.PlayerServer.Update;
+import util.PropertiesGetter;
 import util.protocol.ClientMessageUtils;
 
 import java.io.IOException;
@@ -50,10 +52,13 @@ import java.util.Properties;
 
 public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterface {
 	private final String GAME_FILE_KEY = "displayed-game-name";
+	private final String EXTENSION_KEY = "voogExtension";
 	private final int DOWN = 5;
 	private final int UP = -5;
 	private final int RIGHT = 5;
 	private final int LEFT = -5;
+	private final String PLAY_DISPLAY_ALERT_RESOURCE_CONTENT = "lackOfResource";
+	private final String PLAY_DISPLAY_ALERT_RESOURCE_TITLE = "resourceError";
 
 	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
@@ -196,7 +201,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 			try {
 				Properties exportedGameProperties = new Properties();
 				exportedGameProperties.load(in);
-				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
+				String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + PropertiesGetter.getDoubleProperty(EXTENSION_KEY);
 				clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
 				initializeLevelSprites();
 			} catch (IOException ioException) {
@@ -247,8 +252,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		for (ImageView spriteImage : clientMessageUtils.getNewImageViews()) {
 			myPlayArea.getChildren().add(spriteImage);
 			spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-				// TODO add method here that let's you mark the object via the controller if we
-				// want to play whack-a-mole
+				deleteClicked(Integer.parseInt(spriteImage.getId()));
 			});
 		}
 	}
@@ -313,13 +317,6 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		 * if (myController.isReadyForNextLevel()) { hideTransitorySplashScreen();
 		 * initializeLevelSprites(); // animation.play(); myController.resume(); }
 		 */
-		if (myController.isLevelCleared()) {
-			level++;
-			animation.pause();
-			myController.pause();
-			// launchTransitorySplashScreen();
-			hud.initialize(myController.getResourceEndowments());
-		}
 		if (myController.isLost()) {
 			// launch lost screen
 			this.getStage().close();
@@ -329,6 +326,14 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 			animation.pause();
 			myController.pause();
 			launchWinScreen();
+			return;
+		}
+		if (myController.isLevelCleared()) {
+			System.out.println("level: " + level);
+			// launchTransitorySplashScreen();
+			changeLevel(level + 1);
+			hud.initialize(myController.getResourceEndowments());
+			
 			return;
 		}
 		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
@@ -348,7 +353,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	private void hideTransitorySplashScreen() {
 		this.getStage().setScene(this.getScene());
 	}
-
+	
 	private void createGameArea() {
 		myPlayArea = new PlayArea(myController, clientMessageUtils);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
@@ -391,7 +396,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);
 		costDialog.setContentText("Would you like to purchase this object?");
-
+		//TO-DO check if alertFactory will work
 		Optional<ButtonType> result = costDialog.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			placeable = new StaticObject(1, this, (String) image.getUserData());
@@ -402,22 +407,22 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	private void upgradeClicked(int id) {
-		// if (!checkFunds(idToTemplate.get(id)))
-		// return;
-		// Alert costDialog = new Alert(AlertType.CONFIRMATION);
-		// costDialog.setTitle("Upgrade Resource");
-		// costDialog.setHeaderText(null);
-		// costDialog.setContentText("Would you like to upgrade this object?");
-		//
-		// Optional<ButtonType> result = costDialog.showAndWait();
-		// if (result.get() == ButtonType.OK) {
-		// try {
-		// myController.upgradeElement(id);
-		// } catch (IllegalArgumentException | ReflectiveOperationException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
+		 if (!checkFunds(idToTemplate.get(id)))
+			 return;
+		 Alert costDialog = new Alert(AlertType.CONFIRMATION);
+		 costDialog.setTitle("Upgrade Resource");
+		 costDialog.setHeaderText(null);
+		 costDialog.setContentText("Would you like to upgrade this object?");
+		
+		 Optional<ButtonType> result = costDialog.showAndWait();
+		 if (result.get() == ButtonType.OK) {
+		 try {
+		 myController.upgradeElement(id);
+		 } catch (IllegalArgumentException | ReflectiveOperationException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
+		 }
 	}
 
 	private void deleteClicked(int id) {
@@ -456,11 +461,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	private void launchInvalidResources() {
-		Alert error = new Alert(AlertType.ERROR);
-		error.setTitle("Resource Error!");
-		error.setHeaderText(null);
-		error.setContentText("You do not have the funds for this item.");
-		error.show();
+		new AlertFactory(PropertiesGetter.getProperty(PLAY_DISPLAY_ALERT_RESOURCE_CONTENT),null,PropertiesGetter.getProperty(PLAY_DISPLAY_ALERT_RESOURCE_TITLE),AlertType.ERROR);
 	}
 
 	public String getGameState() {
@@ -474,9 +475,10 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	protected void changeLevel(int newLevel) {
-		level = newLevel;
 		try {
 			clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, newLevel));
+			level = newLevel;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
