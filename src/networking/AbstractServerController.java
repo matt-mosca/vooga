@@ -62,6 +62,7 @@ public abstract class AbstractServerController {
 
 	public byte[] handleRequestAndSerializeResponse(int clientId, byte[] requestBytes) {
 		try {
+			System.out.println("Handling request");
 			byte[] pregameResponseBytes = handlePreGameRequestAndSerializeResponse(clientId, ClientMessage.parseFrom(requestBytes),
 					ServerMessage.newBuilder());	
 			if (pregameResponseBytes.length > 0) {
