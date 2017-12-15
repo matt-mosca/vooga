@@ -370,15 +370,12 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 *            name of elements to spawn
 	 * @param spawningPoint
 	 *            the point at which to spawn the wave
-	 * @throws ReflectiveOperationException
-	 *             if the wave object could not be regenerated with the new
-	 *             properties due to the map lacking a necessary properties
 	 */
 	int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
-			Point2D spawningPoint) throws ReflectiveOperationException;
+			Point2D spawningPoint);
 
 	void editWaveProperties(int waveNum, Map<String, Object> updatedProperties,
-			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException;
+			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint);
 
 	Map<String, Object> getWaveProperties(int waveNum);
 
@@ -413,5 +410,13 @@ public interface AuthoringModelController extends AbstractGameModelController {
 	 * @return map of {"defeat_condition":[level_num1, level_num2], ...}
 	 */
 	Map<String, Collection<Integer>> getCurrentDefeatConditions();
+
+
+	/**
+	 * Get the name of the game being authored.
+	 *
+	 * @return the name of the game
+	 */
+	String getGameName();
 
 }

@@ -6,15 +6,16 @@ package authoring.LevelToolBar;
 
 import java.util.Map;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 
 public class ResourceTab extends ScrollPane{
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private ResourceTable resourceTable;
 	
-	public ResourceTab(int i, AuthoringController controller) {
+	public ResourceTab(int i, AuthoringModelController controller) {
 		myController = controller;
 		resourceTable = new ResourceTable(myController, i);
 		this.setContent(resourceTable.getTable());	
