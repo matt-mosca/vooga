@@ -480,9 +480,9 @@ public class MultiplayerLobby extends ScreenDisplay {
 							LevelInitialized levelData = notification.getLevelInitialized();
 							handleGameLaunched(levelData);
 						}
-						if (notification.hasElementPlaced() && launched) {
-							System.out.println("Element placed!");
-							playDisplay.receiveNotification(notification.toByteArray());
+						if (launched) {
+							System.out.println("In-game notification!");
+							playDisplay.receiveNotification(message.toByteArray());
 						}
 					} catch (InvalidProtocolBufferException e) {
 					}

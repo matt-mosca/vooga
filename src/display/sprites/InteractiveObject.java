@@ -40,9 +40,13 @@ public class InteractiveObject extends ImageView implements ClickableInterface{
 		cellSize = (int) (height*(rowPercentage/100));
 	}
 	
-	protected int sizeOfCell() {
+	public int sizeOfCell() {
 		return cellSize;
 	}
+	
+	
+	
+	
 	
 	@Override
 	public void dragged(MouseEvent e) {

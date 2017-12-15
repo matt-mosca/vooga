@@ -61,9 +61,11 @@ import javafx.stage.Stage;
 import main.Main;
 import networking.protocol.AuthorClient.DefineElement;
 import networking.protocol.AuthorServer.AuthoringNotification;
+import networking.protocol.AuthorServer.AuthoringServerMessage;
 import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.Notification;
 import player.LiveEditingPlayDisplay;
 import player.PlayDisplay;
 import util.DropdownFactory;
@@ -167,11 +169,35 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 	@Override
 	public void receiveNotification(byte[] messageBytes) {
 		try {
-			AuthoringNotification notification = AuthoringNotification.parseFrom(messageBytes);
+			System.out.println("Receiving notification!");
+			handleCommonNotifications(messageBytes);
+			AuthoringServerMessage message = AuthoringServerMessage.parseFrom(messageBytes);
+			AuthoringNotification notification = message.getNotification();
 			if (notification.hasElementAddedToInventory()) {
+				System.out.println("Someone added to inventory!");
 				receiveElementAddedToInventory(notification.getElementAddedToInventory());
 			}
-			// TODO - Handle place, move, setLevel, deleteLevel notifications
+		} catch (InvalidProtocolBufferException e) {
+		}
+	}
+
+	private void handleCommonNotifications(byte[] messageBytes) {
+		try {
+			Notification commonNotification = Notification.parseFrom(messageBytes);
+			if (commonNotification.hasElementPlaced()) {
+				System.out.println("Placing element!");
+				mountObjectToMap(commonNotification.getElementPlaced());
+			}
+			if (commonNotification.hasElementMoved()) {
+				System.out.println("Moving element!");
+				clientMessageUtils.updateSpriteDisplay(commonNotification.getElementMoved());
+			}
+			if (commonNotification.hasElementDeleted()) {
+				System.out.println("Deleting element!");
+				clientMessageUtils.removeDeadSpriteFromDisplay(commonNotification.getElementDeleted());
+				//
+				// myGameArea.objectRemoved(interactive);
+			}
 		} catch (InvalidProtocolBufferException e) {
 		}
 	}
@@ -343,7 +369,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 			rootRemove(objectToPlace);
 			System.out.println(objectToPlace.getElementName());
 			System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap).keySet().toString());
-			NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(), new Point2D(0, 0));
+			NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(),
+					new Point2D(e.getX() - objectToPlace.getFitWidth() / 2 - myGameEnvironment.getLayoutX(),
+							e.getY() - objectToPlace.getFitHeight() / 2 - myGameEnvironment.getLayoutY()));
 			objectToPlace.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
 			objectToPlace.setX(e.getX() - objectToPlace.getFitWidth() / 2 - myGameEnvironment.getLayoutX());
 			objectToPlace.setY(e.getY() - objectToPlace.getFitHeight() / 2 - myGameEnvironment.getLayoutY());
@@ -353,6 +381,30 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 			System.out.println("fixing cursor");
 			this.getScene().setCursor(ImageCursor.DEFAULT);
 		}
+	}
+
+	private void mountObjectToMap(NewSprite newSprite) {
+		System.out.println("Mounting object");
+		System.out.println("X: " + newSprite.getSpawnX());
+		System.out.println("Y: " + newSprite.getSpawnY());
+		if (clientMessageUtils.getCurrentSpriteIds().contains(newSprite.getSpriteId())) {
+			// Discard
+			return;
+		}
+		int placedSpriteId = clientMessageUtils.addNewSpriteToDisplay(newSprite);
+		objectToPlace = new InteractiveObject(this, newSprite.getImageURL());
+		objectToPlace.setElementId(placedSpriteId);
+		objectToPlace.setImageView(clientMessageUtils.getRepresentationFromSpriteId(placedSpriteId));
+		objectToPlace.setX(newSprite.getSpawnX());
+		objectToPlace.setY(newSprite.getSpawnY());
+
+		// StaticObject newStatic = new StaticObject(objectToPlace.getCellSize(), this,
+		// newSprite.getImageURL());
+		myGameArea.addBackObject(objectToPlace);
+		myGameArea.droppedInto(objectToPlace);
+		// myGameArea.addBackObject(objectToPlace);
+		// myGameArea.droppedInto(objectToPlace);
+		addingObject = false;
 	}
 
 	@Override

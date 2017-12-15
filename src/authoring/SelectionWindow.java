@@ -69,6 +69,7 @@ public class SelectionWindow extends Stage {
 	private void createComboBoxes() {
 		System.out.println("Getting element base configurations");
 		Map<String, List<String>> baseOptions = controller.getElementBaseConfigurationOptions();
+		System.out.println("Size of element base configurations: " + baseOptions.keySet().size());
 		for (String s : baseOptions.keySet()) {
 			BaseComboBox newComboBox = new BaseComboBox(s, baseOptions.get(s), author);
 			newComboBox.setLayoutY(200);
