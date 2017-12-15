@@ -79,9 +79,10 @@ public class ElementManager {
 		for (int elementIndex = 0; elementIndex < activeElements.size(); elementIndex++) {
 			GameElement element = activeElements.get(elementIndex);
 			element.move();
-			handleElementFiring(element);
+			handleElementFiring(element, false);
 			processAllCollisionsForElement(elementIndex, element);
 		}
+		System.out.println(currentWave);
 		processWaveUpdate();
 		activeElements.forEach(this::processStepForElement);
 		activeElements.removeAll(deadElements);	
@@ -89,7 +90,7 @@ public class ElementManager {
 
 	private void processWaveUpdate() {
 		if (currentWave != null && waveGapCountdown <= 0) {
-			handleElementFiring(currentWave);
+			handleElementFiring(currentWave, true);
 			processStepForElement(currentWave);
 			if (!currentWave.isAlive()) {
 				if (waves.hasNext()) {
@@ -192,7 +193,7 @@ public class ElementManager {
 		return allAffectedElements;
 	}
 
-	private void handleElementFiring(GameElement element) {
+	private void handleElementFiring(GameElement element, boolean isWave) {
 		final int UNREACHABLE_POINT = -1000;
 		final Point2D DEFAULT_LOCATION= new Point2D( UNREACHABLE_POINT, UNREACHABLE_POINT);
 		Point2D nearestTargetLocation = DEFAULT_LOCATION;
@@ -204,7 +205,7 @@ public class ElementManager {
 		
 		if (element.shouldFire(nearestTargetLocation.distance(element.getX(),element.getY())) 
 							   && (elementTemplateName = element.fire()) != null
-							   && (nearestTargetLocation!=DEFAULT_LOCATION)) {
+							   && (isWave || nearestTargetLocation!=DEFAULT_LOCATION)) {
 			// Use player id of firing element rather than projectile? This allows greater flexibility
 			Map<String, Object> auxiliaryObjects = spriteQueryHandler.getAuxiliarySpriteConstructionObjectMap(new Point2D(element.getX(),element.getY()),nearestEnemyElement);
 			try {
