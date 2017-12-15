@@ -201,6 +201,15 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	public Update packageStatusUpdate() {
 		return getServerMessageUtils().packageStatusUpdate(levelCleared, isWon, isLost, inPlay, getCurrentLevel());
 	}
+	
+	@Override
+	public int getNumLevelsForGame(String gameName, boolean original) {
+		try {
+			return getIoController().getNumberOfLevelsForGame(gameName, original);
+		} catch (FileNotFoundException e) {
+			return getNumLevelsForGame();
+		}
+	}
 
 	@Override
 	protected void assertValidLevel(int level) throws IllegalArgumentException {
