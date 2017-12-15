@@ -36,7 +36,7 @@ public class CircularMovementStrategy extends TargetedMovementStrategy {
 		double angle = Math.toRadians(this.getAngle());
 		angle += angularVelocity;
 		setTargetCoordinates(radius * Math.cos(angle),radius * Math.sin(angle));
-		//setVelocityComponents(angle);
+		setVelocityComponents(angle);
 		setX(this.getCurrentX()+ getXVelocity());
 		setY(this.getCurrentY()+ getYVelocity());
 		setAngle(Math.toDegrees(angle));

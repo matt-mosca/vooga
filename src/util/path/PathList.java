@@ -47,6 +47,7 @@ public class PathList extends LinkedList {
 		return new Point2D(x, y);
 	}
 	
+	
 	protected boolean add(PathPoint point) {
 		orderedPoints.add(point);
 		if(pointsToNodes.containsKey(point)) {

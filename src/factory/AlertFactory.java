@@ -15,6 +15,13 @@ public class AlertFactory {
         setContentAndShow(alert,message);
     }
 	
+	public AlertFactory(String message, String header, String title, Alert.AlertType type){
+		Alert alert = new Alert(type);
+        alert.setHeaderText(header);
+        alert.setTitle(title);
+        setContentAndShow(alert,message);
+    }
+	
 	private void setContentAndShow(Alert alert, String message) {
 		alert.setContentText(message);
         alert.showAndWait().filter(press -> press == ButtonType.OK)

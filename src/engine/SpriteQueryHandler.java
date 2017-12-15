@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
-import engine.behavior.movement.TrackingPoint;
+import engine.behavior.movement.LocationProperty;
 import engine.game_elements.GameElement;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
@@ -22,11 +20,11 @@ public class SpriteQueryHandler {
 	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(int elementPlayerId, Point2D startCoordinates,
 			List<GameElement> levelGameElements) {
 		GameElement gameElementToTrack = getNearestEnemy(elementPlayerId, startCoordinates, levelGameElements);
-		TrackingPoint targetLocation;
+		LocationProperty targetLocation;
 		if (gameElementToTrack != null)
-			targetLocation = gameElementToTrack.getPositionForTracking();
+			targetLocation = gameElementToTrack.getLocationProperty();
 		else
-			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
+			targetLocation = new LocationProperty(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
 		auxiliarySpriteConstructionObjects.put("targetLocation", targetLocation);
 		auxiliarySpriteConstructionObjects.put("startPoint", startCoordinates);
@@ -34,11 +32,11 @@ public class SpriteQueryHandler {
 	}
 
 	public Map<String, Object> getAuxiliarySpriteConstructionObjectMap(Point2D startCoordinates,GameElement gameElementToTrack) {
-		TrackingPoint targetLocation;
+		LocationProperty targetLocation;
 		if (gameElementToTrack != null)
-			targetLocation = gameElementToTrack.getPositionForTracking();
+			targetLocation = gameElementToTrack.getLocationProperty();
 		else
-			targetLocation = new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
+			targetLocation = new LocationProperty(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0));
 		Point2D targetPoint = new Point2D(targetLocation.getCurrentX(), targetLocation.getCurrentY());
 		Map<String, Object> auxiliarySpriteConstructionObjects = new HashMap<>();
 		//auxiliarySpriteConstructionObjects.put(targetLocation.getClass().getName(), targetLocation);

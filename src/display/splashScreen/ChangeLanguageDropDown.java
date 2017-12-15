@@ -1,0 +1,31 @@
+package display.splashScreen;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.VBox;
+import util.PropertiesGetter;
+
+/*
+ * @author venkat
+ * Class that provides ability to change languages in the game.
+ */
+public class ChangeLanguageDropDown extends VBox {
+	private static final String BUTTON_LABEL = "languageButtonLabel";
+	private static final String LABEL = "languageChangerLabel";
+	private static final String ENGLISH = "English";
+	private static final String FRENCH = "French";
+	
+	private ComboBox<String> myBox;
+	private Button update;
+	
+	public ChangeLanguageDropDown(){
+		myBox = new ComboBox<String>();
+		myBox.setPromptText(PropertiesGetter.getProperty(LABEL));
+		myBox.getItems().addAll(ENGLISH, FRENCH);
+		update = new Button();
+		update.setText(PropertiesGetter.getProperty(BUTTON_LABEL));
+		update.setOnAction(e->PropertiesGetter.setLanguageFiles(myBox.getValue()));
+		this.getChildren().addAll(myBox, update);
+	}
+	
+}

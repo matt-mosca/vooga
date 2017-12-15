@@ -1,7 +1,9 @@
 package player;
 
 import engine.PlayModelController;
+import factory.AlertFactory;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,9 +25,7 @@ public class LiveEditingPlayDisplay extends AbstractPlayDisplay {
             getClientMessageUtils().initializeLoadedLevel(getMyController().loadOriginalGameState(gameName, 1));
             initializeLevelSprites();
         } catch (IOException e) {
-            Alert.AlertType alertType = Alert.AlertType.ERROR;
-            String message = e.getMessage();
-            launchAlertAndWait(message, alertType);
+            new AlertFactory(e.getMessage(),AlertType.ERROR);
         }
     }
 }
