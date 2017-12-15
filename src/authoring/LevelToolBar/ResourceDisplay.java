@@ -81,6 +81,7 @@ public class ResourceDisplay extends VBox{
 				a.showAndWait().filter(button -> button == ButtonType.OK)
 						.ifPresent(event -> a.close());
 			}
+			System.out.println(name.getText());
 			myController.setResourceEndowment(name.getText(), Double.parseDouble(value.getText()));
 			update(myController.getCurrentLevel());
 		}catch(Exception nfe) {
