@@ -18,6 +18,7 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
+import engine.AuthoringModelController;
 import engine.PlayModelController;
 import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
@@ -54,6 +55,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
+import networking.protocol.AuthorClient.DefineElement;
 import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.NewSprite;
 import player.LiveEditingPlayDisplay;
@@ -75,7 +77,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	private static final double GRID_Y_LOCATION = 20;
 	private final String PATH_DIRECTORY_NAME = "authoring/";
 	
-	private AuthoringController controller;
+	private AuthoringModelController controller;
 	private StaticObjectToolBar myLeftToolBar;
 	private GameArea myGameArea;
 	private ScrollableArea myGameEnvironment;
@@ -104,9 +106,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 	private ClientMessageUtils clientMessageUtils;
 
-	public EditDisplay(int width, int height, Stage stage, boolean loaded) {
+	public EditDisplay(int width, int height, Stage stage, boolean loaded, AuthoringModelController controller) {
 		super(width, height, Color.BLACK, stage);
-		controller = new AuthoringController();
+		this.controller = controller;
 		clientMessageUtils = new ClientMessageUtils();
 		if (loaded) {
 			loadGame();
@@ -138,6 +140,15 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
 		myMenuBar.getMenus().clear();
 		myMenuBar.getMenus().addAll(dropdownFactory.generateMenuDropdowns(this));
+	}
+	
+	public void receiveElementAddedToInventory(DefineElement elementAddedToInventory) {
+		String nameOfElementAdded = elementAddedToInventory.getElementName();
+		// get imageView from image name
+		Optional<SpriteImage> imageViewToAdd = myRightToolBar.getImageOfAppropriateTypeFromId(nameOfElementAdded);
+		if (imageViewToAdd.isPresent()) {
+			myRightToolBar.imageSelected(imageViewToAdd.get());
+		}
 	}
 
 	private void createGridToggle() {
@@ -481,7 +492,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		controller.addElementToInventory(imageView.getId());
 		myRightToolBar.imageSelected(imageView);
 	}
-
+	
 	@Override
 	public void addToMap(String baseProperty, String value) {
 		basePropertyMap.put(baseProperty, value);

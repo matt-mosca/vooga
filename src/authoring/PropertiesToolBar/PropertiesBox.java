@@ -13,6 +13,7 @@ import util.path.Path;
 import util.path.PathList;
 import util.path.PathParser;
 import display.interfaces.Droppable;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,7 +43,7 @@ public class PropertiesBox extends VBox {
 	private AddToWaveButton myWaveAdder;
 	private Droppable myDroppable;
 	
-	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringController
+	public PropertiesBox(Droppable droppable, ImageView mySprite, Map<String, Object> propertyMap, AuthoringModelController
 			author) {
 		currSprite = mySprite;
 		myDroppable = droppable;

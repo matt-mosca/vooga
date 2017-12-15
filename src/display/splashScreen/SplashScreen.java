@@ -39,7 +39,14 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final double STANDARD_PATH_HEIGHT = Main.HEIGHT / 15;
 	private static final String SINGLE_PLAYER = "Single Player";
 	private static final String MULTIPLAYER = "Multiplayer";
-
+	private static final String PLAY_CHOICE_DIALOG_STRING = "Players options";
+	private static final String PLAY_TITLE_STRING = "Players Setting";
+	private static final String PLAY_HEADER_STRING = "Single player or multiplayer?";
+	private static final String AUTHOR_CHOICE_DIALOG_STRING = "Authoring options";
+	private static final String AUTHOR_TITLE_STRING = "Authoring Setting";
+	private static final String AUTHOR_HEADER_STRING = "Single author or collaborative editing?";
+	
+	
 	private HBox titleBox = new HBox();
 	private Text VoogaTitle;
 	private NewGameButton myNewGameButton;
@@ -164,6 +171,8 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(path);
 		return path;
 	}
+	
+	// TODO - register notification handlers for collaborative editing
 
 	@Override
 	public void editButtonPressed() {
@@ -181,8 +190,16 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	@Override
-	public void switchScreen() {
-		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage(), false);
+	public void switchScreen() { // called by New
+		
+		boolean isMultiplayer = initializeEditingSetting();
+		EditDisplay myScene;
+		
+		
+		
+		myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage(), false);
+		
+		
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
@@ -220,21 +237,29 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	}
 
 	private boolean initializePlayersSetting() {
+		return initializeSetting(PLAY_CHOICE_DIALOG_STRING, PLAY_TITLE_STRING, PLAY_HEADER_STRING);
+	}
+	
+	private boolean initializeEditingSetting() {
+		return initializeSetting(AUTHOR_CHOICE_DIALOG_STRING, AUTHOR_TITLE_STRING, AUTHOR_HEADER_STRING);
+	}
+	
+	private boolean initializeSetting(String choiceDialogString, String titleString, String headerString) {
 		List<String> numPlayers = new ArrayList<String>();
 		String settingChoice = new String();
 		numPlayers.add(SINGLE_PLAYER);
 		numPlayers.add(MULTIPLAYER);
-		ChoiceDialog<String> playerSetting = new ChoiceDialog<>("Players options", numPlayers);
-		playerSetting.setTitle("Players Setting");
-		playerSetting.setHeaderText("Single player or multiplayer?");
+		ChoiceDialog<String> playerSetting = new ChoiceDialog<>(choiceDialogString, numPlayers);
+		playerSetting.setTitle(titleString);
+		playerSetting.setHeaderText(headerString);
 		playerSetting.setContentText(null);
-
 		Optional<String> result = playerSetting.showAndWait();
 		if (result.isPresent()) {
 			settingChoice = result.get();
 		}
 		return settingChoice.equals(MULTIPLAYER);
 	}
+	
 
 	@Override
 	public void save() {

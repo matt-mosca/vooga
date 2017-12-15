@@ -290,6 +290,10 @@ class Data {
     	spriteNames =new ArrayList<ImageView>();
     	numberList = new ArrayList<Integer>();
     }
+    
+    ImageView getImageViewFromId(String id) {
+    		return spriteNames.stream().filter(spriteName -> spriteName.equals(id)).findFirst().get();
+    }
 } 
 
 
@@ -310,6 +314,10 @@ class LevelData {
 	public void addWave() {
 		waveInfo.put(waveInfo.size()+1, new Data());
 
+	}
+	
+	public ImageView getImageViewFromIdForLevel(int level, String id) {
+		return wa
 	}
 	
 	public void changeTab(LevelTab newTab) {
