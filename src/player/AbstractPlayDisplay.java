@@ -115,8 +115,6 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
         addItems();
         this.setDroppable(myPlayArea);
         initializeButtons();
-        hud.initialize(myController.getResourceEndowments());
-        hud.toFront();
         volumeSlider = new Slider(0, 1, .1);
         rootAdd(volumeSlider);
         volumeSlider.setLayoutY(7);
@@ -186,6 +184,8 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
                     gameState = result.get();
                     clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
                     initializeLevelSprites();
+                    hud.initialize(myController.getResourceEndowments());
+                    hud.toFront();
                 } catch (IOException e) {
                     // TODO Change to alert for the user
                     e.printStackTrace();
@@ -200,6 +200,8 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
                 exportedGameProperties.load(in);
                 String gameName = exportedGameProperties.getProperty(GAME_FILE_KEY) + ".voog";
                 clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
+                hud.initialize(myController.getResourceEndowments());
+                hud.toFront();
                 initializeLevelSprites();
             } catch (IOException ioException) {
                 // todo
@@ -249,7 +251,7 @@ public class AbstractPlayDisplay  extends ScreenDisplay implements PlayerInterfa
         for (ImageView spriteImage : clientMessageUtils.getNewImageViews()) {
             myPlayArea.getChildren().add(spriteImage);
             spriteImage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-                //TODO add method here that let's you mark the object via the controller if we want to play whack-a-mole
+                deleteClicked(Integer.parseInt(spriteImage.getId()));
             });
         }
     }
