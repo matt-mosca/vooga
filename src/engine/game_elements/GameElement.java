@@ -5,8 +5,7 @@ import java.util.List;
 import engine.behavior.collision.CollisionHandler;
 import engine.behavior.firing.FiringStrategy;
 import engine.behavior.movement.MovementStrategy;
-import engine.behavior.movement.TrackingPoint;
-import factory.AudioClipFactory;
+import engine.behavior.movement.LocationProperty;
 import javafx.scene.image.ImageView;
 
 import javafx.geometry.Point2D;
@@ -106,7 +105,7 @@ public final class GameElement {
 	 *
 	 * @return auto-updating position that changes with movement
 	 */
-	public TrackingPoint getPositionForTracking() {
+	public LocationProperty getLocationProperty() {
 		return movementStrategy.getPositionForTracking();
 	}
 

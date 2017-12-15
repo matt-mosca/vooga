@@ -1,12 +1,11 @@
 package engine.authoring_engine;
 
-import engine.behavior.movement.TrackingPoint;
+import engine.behavior.movement.LocationProperty;
 import engine.game_elements.GameElement;
 import engine.game_elements.GameElementFactory;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Point2D;
-import util.io.SerializationUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +81,7 @@ public class FactoryTesting {
         JFXPanel jfxPanel = new JFXPanel(); // so that ImageView can be made
         Map<String, Object> auxArgs = new HashMap<>();
         auxArgs.put("startPoint", new Point2D(0,0));
-        auxArgs.put("targetLocation", new TrackingPoint(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0)));
+        auxArgs.put("targetLocation", new LocationProperty(new SimpleDoubleProperty(0), new SimpleDoubleProperty(0)));
         try {
             return  gameElementFactory.generateElement("Tower1", auxArgs);
         } catch (ReflectiveOperationException e) {

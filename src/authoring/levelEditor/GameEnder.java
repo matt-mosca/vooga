@@ -1,4 +1,4 @@
-package authoring.LevelToolBar;
+package authoring.levelEditor;
 
 import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
