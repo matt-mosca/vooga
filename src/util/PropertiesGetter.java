@@ -22,8 +22,8 @@ import javafx.scene.paint.Color;
 public final class PropertiesGetter {
 
     private static String[] PROPERTIES_FILES;
-    private static final String[] ENGLISH_PROPERTIES_FILES = {"authoring/resources/EnglishText"};
-    private static final String[] FRENCH_PROPERTIES_FILES = {"authoring/resources/FrenchText"};
+    private static final String[] ENGLISH_PROPERTIES_FILES = {"authoring/resources/EnglishText","player/resources/EnglishText"};
+    private static final String[] FRENCH_PROPERTIES_FILES = {"authoring/resources/FrenchText","player/resources/FrenchText"};
     private static final String ENGLISH = "English";
 //    private static final Properties PROPERTIES;
     private static Map<String, String> MYMAP;

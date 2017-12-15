@@ -107,6 +107,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			List<GameElement> newlyGeneratedElements = elementManager.getNewlyGeneratedElements();
 			List<GameElement> updatedElements = elementManager.getUpdatedElements();
 			List<GameElement> deadElements = elementManager.getDeadElements();
+			getLevelBanks().get(getCurrentLevel()).processPointsAndResourcesFromDeadElements(deadElements);
 			for (GameElement element : newlyGeneratedElements) {
 				cacheAndCreateIdentifier(element);
 			}
@@ -187,6 +188,15 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		// to manually
 	}
 
+	@Override
+	public double getElementPointValue(int elementId) {
+		if (!getSpriteIdMap().containsKey(elementId)) {
+			return 0;
+		}
+		String elementName = getSpriteIdMap().get(elementId).getTemplateName();
+		return getLevelBanks().get(getCurrentLevel()).getPointsValue(elementName);
+	}
+
 	public boolean isLevelCleared() {
 		return levelCleared;
 	}
@@ -208,7 +218,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		//PlayController has method that take int unique id return void. call manager that handles string return 
 	
 	public void triggerFire(int elementId) {
-		elementManager.triggeredFire(elementId);
+		elementManager.triggeredFire(this.getSpriteIdMap().get(elementId));
 	}
 
 	@Override
