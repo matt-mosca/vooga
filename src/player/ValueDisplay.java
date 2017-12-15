@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class ValueDisplay extends HBox {
-	private static final double IMAGE_WIDTH= 40;
-	private static final double IMAGE_HEIGHT= 32;
+	private final double IMAGE_WIDTH= 40;
+	private final double IMAGE_HEIGHT= 32;
 	
 	private Label myValue;
 	private Label myLabel;
