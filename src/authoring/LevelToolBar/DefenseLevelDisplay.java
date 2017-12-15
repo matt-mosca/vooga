@@ -31,7 +31,7 @@
 //	private List<ComboBox> myDropDowns;
 //	private static String DEFAULT_IMAGE_URL = "https://users.cs.duke.edu/~rcd/images/rcd.jpg\"";
 //
-//	public DefenseLevelDisplay(int n, LevelTab lv, AuthoringController myController) {
+//	public DefenseLevelDisplay(int n, LevelTab lv, AuthoringModelController myController) {
 //		super(n, lv, myController);
 //		defaults = myController.getElementBaseConfigurationOptions();
 //		myDropDowns = new ArrayList<ComboBox>();

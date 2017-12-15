@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import java.util.ArrayList;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -10,14 +11,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 public class GameEnderConditions extends VBox {
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private ComboBox<String> victory;
 	private ComboBox<String> defeat;
 	private ArrayList<CheckBox> checkBoxes;
 	private GameEnderRecorder recorder;
 	private GamePointSelector pointManager;
 
-	public GameEnderConditions(AuthoringController controller) {
+	public GameEnderConditions(AuthoringModelController controller) {
 		myController = controller; 
 		addMiscElements();
 	}

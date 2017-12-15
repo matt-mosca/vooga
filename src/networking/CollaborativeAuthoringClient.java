@@ -253,7 +253,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 
 	@Override
 	public int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
-			Point2D spawningPoint) throws ReflectiveOperationException {
+			Point2D spawningPoint) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setCreateWaveProperties(
 						makeCreateWavePropertiesMessage(waveProperties, elementNamesToSpawn, spawningPoint))
@@ -263,7 +263,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 
 	@Override
 	public void editWaveProperties(int waveNum, Map<String, Object> updatedProperties,
-			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException {
+			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setEditWaveProperties(EditWaveProperties.newBuilder().setWaveNum(waveNum).setEditProperties(
 						makeCreateWavePropertiesMessage(updatedProperties, newElementNamesToSpawn, newSpawningPoint))
@@ -308,6 +308,12 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetCurrentDefeatConditions(GetCurrentDefeatConditions.getDefaultInstance()).build().toByteArray());
 		return handleCurrentDefeatConditionsResponse(pollFromAuthoringMessageQueue());
+	}
+
+	@Override
+	public String getGameName() {
+		// todo (lol)
+		return "TODO LOL";
 	}
 
 	@Override

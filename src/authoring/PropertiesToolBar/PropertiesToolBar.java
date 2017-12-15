@@ -16,6 +16,7 @@ import display.tabs.NewSpriteTab;
 import display.tabs.NewTowerTab;
 import display.tabs.NewTroopTab;
 import display.tabs.SimpleTab;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import display.factory.TabFactory;
 import display.interfaces.CreationInterface;
@@ -69,7 +70,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	private Button deleteButton;
 	//private ReturnButton retB;
 	private CreationInterface created;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private Map<String, Object> basePropertyMap;
 	private EditDisplay display;
     private AddToWaveButton myWaveAdder;
@@ -84,7 +85,7 @@ public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	private final int Y_LAYOUT = 30;
 
 	
-	public PropertiesToolBar(EditDisplay display, AuthoringController controller) {
+	public PropertiesToolBar(EditDisplay display, AuthoringModelController controller) {
 		this.display = display;
 		myDisplay = display;
 		//retB = new ReturnButton(display);

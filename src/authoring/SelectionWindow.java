@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import authoring.PropertiesToolBar.SpriteImage;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import display.interfaces.PropertiesInterface;
 import javafx.scene.Scene;
@@ -21,9 +22,9 @@ public class SelectionWindow extends Stage {
 	private VBox newProject;
 	private Scene newScene;
 	private AuthorInterface author;
-	private AuthoringController controller;
+	private AuthoringModelController controller;
 	
-	public SelectionWindow(SpriteImage imageView, AuthorInterface author, AuthoringController controller) {
+	public SelectionWindow(SpriteImage imageView, AuthorInterface author, AuthoringModelController controller) {
 		this.author = author;
 		this.controller = controller;
 		newProject = new VBox();

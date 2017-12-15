@@ -36,13 +36,9 @@ public class ElementManager {
 	private final int FRAMES_BETWEEN_WAVES = 180;
 	private int waveGapCountdown = 0;
 
-	
 	private AudioClipFactory audioClipFactory;
 
 	private SpriteQueryHandler spriteQueryHandler;
-
-	// TODO
-	// Reference to GridManager
 
 	/**
 	 * Handles the collision-checking and GameElement-specific collision-handling
@@ -70,6 +66,7 @@ public class ElementManager {
 	}
 
 	void setCurrentWaves(List<GameElement> waves) {
+		System.out.println(waves);
 		this.waves = waves.iterator();
 		if (this.waves.hasNext()) {
 			currentWave = this.waves.next();
@@ -236,7 +233,6 @@ public class ElementManager {
 	
 	private void playAudio(String audioUrl) {
 		if(audioUrl != null) {
-			//System.out.println(audioUrl);
 			audioClipFactory = new AudioClipFactory(audioUrl);
 			audioClipFactory.getAudioClip().play();
 		}
