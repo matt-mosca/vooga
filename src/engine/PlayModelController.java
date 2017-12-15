@@ -166,6 +166,14 @@ public interface PlayModelController extends AbstractGameModelController {
     Map<String, Map<String, Double>> getElementCosts();
 
     /**
+     * Get the points value associated with (the destruction of) a particular element.
+     *
+     * @param elementId the unique identifier of the element being queried
+     * @return the point cost associated with the element
+     */
+    double getElementPointValue(int elementId);
+
+    /**
      * Get the elements of a game (represented as sprites) for a particular level.
      *
      * TODO - custom exception?
