@@ -94,7 +94,8 @@ public class ValueDisplay extends HBox {
 	
 	public void setValue(double amount) {
 		myValue.setText(Double.toString(amount));
-		quantity = amount;
+		if(amount >= 0)
+			quantity = amount;
 	}
 	
 	protected double getQuantity() {

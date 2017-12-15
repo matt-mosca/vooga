@@ -206,6 +206,8 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
                     gameState = result.get();
                     clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, 1));
                     initializeLevelSprites();
+                    hud.initialize(myController.getResourceEndowments());
+                    hud.toFront();
                 } catch (IOException e) {
                     // TODO Change to alert for the user
                     e.printStackTrace();
@@ -224,6 +226,8 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 
                 clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameName, 1));
                 initializeLevelSprites();
+                hud.initialize(myController.getResourceEndowments());
+                hud.toFront();
             } catch (IOException ioException) {
                 // todo
             }

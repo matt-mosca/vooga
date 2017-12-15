@@ -120,7 +120,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			// Package these changes into an Update message
 			latestUpdate = packageSpriteUpdates(newlyGeneratedElements, updatedElements, deadElements);
 			getSpriteIdMap().entrySet().removeIf(entry -> deadElements.contains(entry.getValue()));
-			deadElements.stream().filter(element -> element.reachedTarget()).forEach(element -> decrementHealth(HEALTH_LOSS_PER_ESCAPE));
+			deadElements.stream().filter(element -> element.reachedTarget() && element.isEnemy()).forEach(element -> decrementHealth(HEALTH_LOSS_PER_ESCAPE));
 			elementManager.clearDeadElements();
 			elementManager.clearNewElements();
 			elementManager.clearUpdatedElements();
