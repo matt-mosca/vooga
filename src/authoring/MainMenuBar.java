@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import display.tabs.SaveDialog;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -20,9 +21,9 @@ public class MainMenuBar extends MenuBar{
 	private Menu file;
 	private Menu edit;
 	private ScreenDisplay myDisplay;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	
-	public MainMenuBar(ScreenDisplay display, AuthoringController controller) {
+	public MainMenuBar(ScreenDisplay display, AuthoringModelController controller) {
 		this.prefWidthProperty().bind(display.getScene().widthProperty());
 		myDisplay = display;
 		myController = controller;

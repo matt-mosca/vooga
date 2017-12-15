@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import java.util.ArrayList;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -14,12 +15,12 @@ import javafx.scene.layout.VBox;
 public class GamePointSelector extends VBox{
 	private static final int POINT_DEFAULT = 100;
 	private ArrayList<CheckBox> checkBoxes;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private TextField amount;
 	private Button update;
 	private Button done;
 	
-	public GamePointSelector(AuthoringController controller) {
+	public GamePointSelector(AuthoringModelController controller) {
 		myController = controller;		
 		amount = new TextField();
 		amount.setPromptText("Point Amount");

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import engine.AuthoringModelController;
 import util.path.Path;
 import util.path.PathParser;
 import engine.authoring_engine.AuthoringController;
@@ -35,7 +36,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable {
 	private int colPercentage;
 	private String backgroundColor;
 
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private ResourceBundle gameProperties;
 	private PlacementGrid grid;
 	private Path currentPath;
@@ -49,7 +50,7 @@ public class GameArea extends Pane implements CustomizeInterface, Droppable {
 	private Group backObjects;
 	private List<InteractiveObject> objectList;
 
-	public GameArea(AuthoringController controller) {
+	public GameArea(AuthoringModelController controller) {
 		initializeProperties();
 		initializeLayout();
 		initializeHandlers();
