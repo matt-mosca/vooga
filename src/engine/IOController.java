@@ -54,7 +54,8 @@ public class IOController {
 		// First extract string from file through io module
 		String serializedGameState = serializationUtils.serializeGameData(gameDescription, levelConditions, levelBank,
 				currentLevel, status, levelGameElements, levelInventories, levelHealth, levelPointsQuota, levelTimeLimits);
-		gamePersistence.saveGameState(getResolvedGameName(savedGameName, forAuthoring), serializedGameState);
+		String resolvedGameName = getResolvedGameName(savedGameName, forAuthoring);
+		gamePersistence.saveGameState(resolvedGameName, serializedGameState);
 	}
 
 	// TODO - throw custom exception
@@ -314,9 +315,9 @@ public class IOController {
 	public void saveGameStateForMultipleLevels(String saveName, Map<Integer, String> serializedLevelsData,
 			boolean forAuthoring) {
 		String serializedGameData = serializationUtils.serializeLevelsData(serializedLevelsData);
-		// gamePersistence.saveGameState(getResolvedGameName(saveName, forAuthoring),
-		// serializedGameData);
-		gamePersistence.saveGameState(saveName, serializedGameData);
+		 gamePersistence.saveGameState(getResolvedGameName(saveName, forAuthoring),
+		 serializedGameData);
+		//gamePersistence.saveGameState(saveName, serializedGameData);
 	}
 	
 
