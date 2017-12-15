@@ -476,6 +476,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 
 	protected void changeLevel(int newLevel) {
 		try {
+			System.out.println("\n\n\nChanging to level: " + newLevel + "\n\n\n");
 			clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, newLevel));
 			level = newLevel;
 
