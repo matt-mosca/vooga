@@ -41,14 +41,15 @@ public class GameElementUpgrader {
     public void defineUpgrade(String spriteTemplateName, int upgradeLevel, Map<String, Object> upgradeProperties) {
         List<Map<String, Object>> templateUpgrades =
                 spriteUpgradesByTemplate.getOrDefault(spriteTemplateName, new ArrayList<>());
-        if (templateUpgrades.size() > 0) {
-            Map<String, Object> betweenDefinedUpgradesProperties = templateUpgrades.get(templateUpgrades.size() - 1);
-            for (int i = templateUpgrades.size(); i < upgradeLevel; i++) {
-                templateUpgrades.add(betweenDefinedUpgradesProperties);
-            }
+        if (upgradeLevel < 0) {
+            upgradeLevel = 0;
+        } else if (upgradeLevel > templateUpgrades.size()) {
+            upgradeLevel = templateUpgrades.size();
+        } else if (upgradeLevel > 0 && upgradeLevel < templateUpgrades.size()) {
+            // redefine
+            templateUpgrades.remove(upgradeLevel);
         }
-        templateUpgrades.add(upgradeProperties);
-        // put shouldn't be necessary but let's do it for clarity's sake
+        templateUpgrades.add(upgradeLevel, upgradeProperties);
         spriteUpgradesByTemplate.put(spriteTemplateName, templateUpgrades);
     }
 
