@@ -43,7 +43,7 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	/**
 	 * Save the current state of the current level a game being played or authored.
 	 *
-	 * @param fileToSaveTo
+	 * @param fileName
 	 *            the name to assign to the save file
 	 */
 	@Override
@@ -115,6 +115,22 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 	}
 
 	@Override
+	public double getElementPointValue(int elementId) {
+		return 0;
+	}
+
+	@Override
+	public LocationProperty getElementLocationProperty(int elementId) {
+		// no time for this
+		return null;
+	}
+
+	@Override
+	public void triggerFire(int elementId) {
+		// do nothing, no time
+	}
+
+	@Override
 	public void upgradeElement(int elementId) throws IllegalArgumentException {
 		writeRequestBytes(ClientMessage.newBuilder()
 				.setUpgradeElement(UpgradeElement.newBuilder().setSpriteId(elementId).build()).build().toByteArray());
@@ -176,12 +192,6 @@ public class MultiPlayerClient extends AbstractClient implements PlayModelContro
 			System.out.println("Item: " + item);
 		}
 		testClient.exitGameRoom();
-	}
-
-	@Override
-	public LocationProperty getElementLocationProperty(int elementId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
