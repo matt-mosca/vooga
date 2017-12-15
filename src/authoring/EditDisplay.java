@@ -75,6 +75,8 @@ import display.toolbars.StaticObjectToolBar;
 
 public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 
+	private static final String TEXT = "-";
+	private static final String PLUS = "+";
 	private static final String TESTING_GAME = "testingGame";
 	private static final String UNTITLED = "untitled";
 	private static final String ATTACK = "attackLabel";
@@ -190,7 +192,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	}
 
 	private void createLabel() {
-		attackDefenseLabel = new Label(DEFENSE);
+		attackDefenseLabel = new Label(PropertiesGetter.getProperty(DEFENSE));
 		// styleLabel(attackDefenseLabel);
 		attackDefenseLabel.setFont(new Font("Times New Roman", 35));
 		// attackDefenseLabel.setFont(new Font("American Typewriter", 40));
@@ -243,8 +245,8 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 	public void listItemClicked(MouseEvent e, ImageView clickable) {
 		StaticObject object = (StaticObject) clickable;
 		if(e.getButton() == MouseButton.SECONDARY) {
-			Button incrementButton = new Button("+");
-			Button decrementButton = new Button("-");
+			Button incrementButton = new Button(PLUS);
+			Button decrementButton = new Button(TEXT);
 			incrementButton.setLayoutY(20);
 			decrementButton.setLayoutY(20);
 			incrementButton.setLayoutX(50);
