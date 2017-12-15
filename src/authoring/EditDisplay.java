@@ -326,8 +326,7 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface {
 		File saveFile = SaveDialog.SaveLocation(getScene());
 		if (saveFile != null) {
 			controller.setGameName(saveFile.getName());
-			// TODO change the save game so it saves a string instead
-			controller.saveGameState(PATH_DIRECTORY_NAME + saveFile.getName());
+			controller.saveGameState(saveFile.getName());
 			myGameArea.savePath();
 		}
 	}
