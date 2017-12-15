@@ -70,6 +70,11 @@ public class PathFollowingMovementStrategy extends TargetedMovementStrategy {
 	private void checkIfLocationReached() {
 		if (super.targetReached()) {
 			target = coordinates.next();
+			System.out.println("===================================");
+			System.out.println(this);
+			System.out.println(target);
+			System.out.println("===================================");
+			
 			if (target == null) {
 				stop();
 			} else {

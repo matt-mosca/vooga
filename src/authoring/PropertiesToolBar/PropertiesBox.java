@@ -116,6 +116,7 @@ public class PropertiesBox extends VBox {
 			            propertyMap.put(t.getRowValue().getMyProperty(), t.getRowValue().getMyObject());
 			            if(upgradeVal != 0) {
 			            		author.defineElementUpgrade(mySprite.getId(), upgradeLevel-1, propertiesMap);
+			   
 			            }else {
 			            		author.updateElementDefinition(mySprite.getId(), propertiesMap, true);
 			            }
