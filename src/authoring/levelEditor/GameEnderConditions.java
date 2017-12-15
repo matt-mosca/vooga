@@ -9,9 +9,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import util.PropertiesGetter;
 
 public class GameEnderConditions extends VBox {
-	private static final Object VICTORY_TIME_CONDITIONS = "time limit reached";
+	private static final String VICTORY_TIME_CONDITIONS = "timeLimit";
 	private AuthoringModelController myController;
 	private ComboBox<String> victory;
 	private ComboBox<String> defeat;
@@ -19,11 +20,11 @@ public class GameEnderConditions extends VBox {
 	private GameEnderRecorder recorder;
 	private GamePointSelector pointManager;
 	private GameTimeSelector timeManager;
-	private final String VICTORY_PROMPT_TEXT = "Choose your victory condition!";
-	private final String DEFEAT_PROMPT_TEXT = "Choose how someone loses!";
-	private final String RECORD_CONDITIONS_LABEL = "Record end condtions!";
-	private final String LEVELS_CONDITIONS_PROMPT_TEXT = "Select which levels you want to set these conditions for!";
-	private final String VICTORY_POINTS_CONDITIONS = "points target reached";
+	private final String VICTORY_PROMPT_TEXT = "winQuestion";
+	private final String DEFEAT_PROMPT_TEXT = "lossQuestion";
+	private final String RECORD_CONDITIONS_LABEL = "endConditionRecorder";
+	private final String LEVELS_CONDITIONS_PROMPT_TEXT = "endConditionSelector";
+	private final String VICTORY_POINTS_CONDITIONS = "pointsLimit";
 	private final boolean IS_WRAPPED = true;
 	private final boolean IS_ALLOW_INDETERMINATE = false;
 
@@ -34,15 +35,15 @@ public class GameEnderConditions extends VBox {
 	
 	private void addMiscElements() {
 		victory = new ComboBox<>();
-		victory.setPromptText(VICTORY_PROMPT_TEXT);
+		victory.setPromptText(PropertiesGetter.getProperty(VICTORY_PROMPT_TEXT));
 		victory.getItems().addAll(myController.getPossibleVictoryConditions());
 		defeat = new ComboBox<>();
-		defeat.setPromptText(DEFEAT_PROMPT_TEXT);
+		defeat.setPromptText(PropertiesGetter.getProperty(DEFEAT_PROMPT_TEXT));
 		defeat.getItems().addAll(myController.getPossibleDefeatConditions());
 		
-		Button recordConditions = new Button(RECORD_CONDITIONS_LABEL);
+		Button recordConditions = new Button(PropertiesGetter.getProperty(RECORD_CONDITIONS_LABEL));
 		recordConditions.setOnAction(e->record());
-		Label l = new Label(LEVELS_CONDITIONS_PROMPT_TEXT);
+		Label l = new Label(PropertiesGetter.getProperty(LEVELS_CONDITIONS_PROMPT_TEXT));
 		l.setWrapText(IS_WRAPPED);
 		this.getChildren().addAll(victory, defeat, l);
 		createLevelBoxes();
@@ -74,10 +75,10 @@ public class GameEnderConditions extends VBox {
 				if(defeat.getValue()!=null) {
 					myController.setDefeatCondition(defeat.getValue());	
 				}
-				if(victory.getValue().equals(VICTORY_POINTS_CONDITIONS)) {
+				if(victory.getValue().equals(PropertiesGetter.getProperty(VICTORY_POINTS_CONDITIONS))) {
 					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
 				}
-				if(victory.getValue().equals(VICTORY_TIME_CONDITIONS)) {
+				if(victory.getValue().equals(PropertiesGetter.getProperty(VICTORY_TIME_CONDITIONS))) {
 					
 					selectedTimeLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
 				}
