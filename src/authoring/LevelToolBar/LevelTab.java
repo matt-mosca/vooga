@@ -2,6 +2,7 @@ package authoring.LevelToolBar;
 
 import java.util.Set;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,10 +21,10 @@ public class LevelTab extends ScrollPane{
 	private Button editLevel;
 //	private LevelDisplay myLevelDisplay;
 	private boolean edited;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	private HBox myDisplay;
 	
-	public LevelTab(int n, AuthoringController controller) {
+	public LevelTab(int n, AuthoringModelController controller) {
 		myNumber = n;
 		myDisplay = new HBox();
 		this.setContent(myDisplay);

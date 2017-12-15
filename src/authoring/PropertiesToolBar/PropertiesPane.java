@@ -4,6 +4,7 @@ import java.util.Map;
 
 import display.factory.TabFactory;
 import display.splashScreen.ScreenDisplay;
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -11,7 +12,7 @@ import javafx.scene.image.ImageView;
 
 public class PropertiesPane extends TabPane {
 	private ScreenDisplay myDisplay;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
     private ImageView myImageView;
     private PropertiesToolBar myProperties;
     private Tab addTab;
@@ -20,7 +21,7 @@ public class PropertiesPane extends TabPane {
     private boolean projectile;
 	
 	public PropertiesPane(ScreenDisplay display, PropertiesToolBar properties, ImageView imageView,
-			AuthoringController controller, boolean hasProjectile) {
+			AuthoringModelController controller, boolean hasProjectile) {
 		myImageView = clone(imageView);
 		myProperties = properties;
 		myController = controller;

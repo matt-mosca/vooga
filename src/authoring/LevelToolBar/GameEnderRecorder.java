@@ -3,6 +3,7 @@ package authoring.LevelToolBar;
 import java.util.Collection;
 import java.util.Map;
 
+import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,10 +15,10 @@ import javafx.scene.layout.VBox;
 public class GameEnderRecorder extends VBox{
 	private TableView <Conditions> victoryConditions;
 	private TableView<Conditions> defeatConditions;
-	private AuthoringController myController;
+	private AuthoringModelController myController;
 	
 	
-	public GameEnderRecorder(AuthoringController controller) {
+	public GameEnderRecorder(AuthoringModelController controller) {
 //		myCompletedLevels=levels;
 		myController = controller;
 		setUp();

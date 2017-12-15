@@ -28,7 +28,7 @@ public class LevelToolBarOld {
 //	private static final int X_LAYOUT = 260;
 //	private static final int Y_LAYOUT = 470;
 //
-//	private AuthoringController myController;
+//	private AuthoringModelController myController;
 //	private TabPane myTabPane;
 //	private List<LevelTab> myLevels;
 //	private List<GameArea> myGameAreas;
@@ -49,7 +49,7 @@ public class LevelToolBarOld {
 //
 //	private ClientMessageUtils clientMessageUtils;
 	public LevelToolBarOld() {
-//	public LevelToolBarOld(EditDisplay created, AuthoringController controller, ScrollableArea area) {
+//	public LevelToolBarOld(EditDisplay created, AuthoringModelController controller, ScrollableArea area) {
 //		myScrollableArea = area;
 //		
 //		currentLevel = 1;

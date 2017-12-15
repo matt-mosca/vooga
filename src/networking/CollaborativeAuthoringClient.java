@@ -1,15 +1,20 @@
 package networking;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
-import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
 
 import engine.AuthoringModelController;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import networking.protocol.AuthorClient.AddElementToInventory;
 import networking.protocol.AuthorClient.AuthoringClientMessage;
@@ -41,19 +46,41 @@ import networking.protocol.AuthorClient.ResourceEndowment;
 import networking.protocol.AuthorClient.SetDefeatCondition;
 import networking.protocol.AuthorClient.SetGameDescription;
 import networking.protocol.AuthorClient.SetGameName;
+import networking.protocol.AuthorServer.AuthoringNotification;
 import networking.protocol.AuthorServer.AuthoringServerMessage;
+import networking.protocol.PlayerServer.LevelInitialized;
+import util.protocol.ServerMessageUtils;
 
 public class CollaborativeAuthoringClient extends AbstractClient implements AuthoringModelController {
 
+	private ObservableList<AuthoringNotification> notificationQueue = FXCollections.observableArrayList();
+	private ServerMessageUtils serverMessageUtils = new ServerMessageUtils();
+	private Queue<AuthoringServerMessage> messageQueue;
+
 	public CollaborativeAuthoringClient() {
 		super();
+		messageQueue = new ArrayDeque<>();
+	}
+
+	@Override
+	public void registerNotificationListener(ListChangeListener<? super Message> listener) {
+		super.registerNotificationListener(listener);
+		notificationQueue.addListener(listener);
+		System.out.println("Registered notification listener");
+	}
+	
+	// TODO
+	@Override
+	public void saveGameState(String fileNameToSaveTo) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public String exportGame() throws IOException {
 		writeRequestBytes(AuthoringClientMessage.newBuilder().setExportGame(ExportGame.getDefaultInstance()).build()
 				.toByteArray());
-		// todo - get message
+		// TODO - Corresponding server message
 		return "";
 	}
 
@@ -70,11 +97,18 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	@Override
+	public int getCurrentLevel() {
+		writeRequestBytes(AuthoringClientMessage.newBuilder().setGetCurrentLevel(GetCurrentLevel.getDefaultInstance())
+				.build().toByteArray());
+		return handleCurrentLevelResponse(pollFromAuthoringMessageQueue());
+	}
+
+	@Override
 	public Map<String, List<String>> getElementBaseConfigurationOptions() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetElementBaseConfig(GetElementBaseConfigurationOptions.getDefaultInstance()).build()
 				.toByteArray());
-		return handleElementBaseConfigurationOptionsResponse(readAuthoringServerResponse());
+		return handleElementBaseConfigurationOptionsResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
@@ -87,27 +121,24 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 												.setValue(entry.getValue()).build())
 										.collect(Collectors.toList())))
 						.build().toByteArray());
-		return handleAuxiliaryElementConfigurationOptions(readAuthoringServerResponse());
+		return handleAuxiliaryElementConfigurationOptions(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public void defineElement(String elementName, Map<String, Object> properties) throws IllegalArgumentException {
-		writeRequestBytes(
-				AuthoringClientMessage.newBuilder()
-						.setDefineElement(DefineElement.newBuilder().setElementName(elementName)
-								.addAllProperties(getPropertiesFromObjectMap(properties)).build())
-						.build().toByteArray());
+		writeRequestBytes(AuthoringClientMessage.newBuilder()
+				.setDefineElement(serverMessageUtils.packageDefinedElement(elementName, properties)).build()
+				.toByteArray());
 	}
 
 	@Override
 	public void defineElementUpgrade(String elementName, int upgradeLevel, Map<String, Object> upgradeProperties)
 			throws IllegalArgumentException {
-		writeRequestBytes(
-				AuthoringClientMessage.newBuilder()
-						.setDefineElementUpgrade(DefineElementUpgrade.newBuilder().setElementName(elementName)
-								.setUpgradeLevel(upgradeLevel)
-								.addAllProperties(getPropertiesFromObjectMap(upgradeProperties)).build())
-						.build().toByteArray());
+		writeRequestBytes(AuthoringClientMessage.newBuilder()
+				.setDefineElementUpgrade(DefineElementUpgrade.newBuilder().setElementName(elementName)
+						.setUpgradeLevel(upgradeLevel)
+						.addAllProperties(serverMessageUtils.getPropertiesFromObjectMap(upgradeProperties)).build())
+				.build().toByteArray());
 	}
 
 	@Override
@@ -115,7 +146,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 			throws IllegalArgumentException {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setUpdateElementDefinition(UpdateElementDefinition.newBuilder().setElementName(elementName)
-						.addAllProperties(getPropertiesFromObjectMap(propertiesToUpdate)).setRetroactive(retroactive)
+						.addAllProperties(serverMessageUtils.getPropertiesFromObjectMap(propertiesToUpdate)).setRetroactive(retroactive)
 						.build())
 				.build().toByteArray());
 	}
@@ -128,24 +159,18 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	@Override
-	public void addElementToInventory(String elementName) {
+	public DefineElement addElementToInventory(String elementName) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setAddElementToInventory(AddElementToInventory.newBuilder().setElementName(elementName).build())
 				.build().toByteArray());
-	}
-
-	@Override
-	public int getCurrentLevel() {
-		writeRequestBytes(AuthoringClientMessage.newBuilder().setGetCurrentLevel(GetCurrentLevel.getDefaultInstance())
-				.build().toByteArray());
-		return handleCurrentLevelResponse(readAuthoringServerResponse());
+		return handleDefineElementResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public void updateElementProperties(int elementId, Map<String, Object> propertiesToUpdate) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setUpdateElementProperties(UpdateElementProperties.newBuilder().setElementId(elementId)
-						.addAllProperties(getPropertiesFromObjectMap(propertiesToUpdate)).build())
+						.addAllProperties(serverMessageUtils.getPropertiesFromObjectMap(propertiesToUpdate)).build())
 				.build().toByteArray());
 	}
 
@@ -154,14 +179,14 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetAllDefinedElementUpgrades(GetAllDefinedElementUpgrades.getDefaultInstance()).build()
 				.toByteArray());
-		return handleAllDefinedElementUpgradesResponse(readAuthoringServerResponse());
+		return handleAllDefinedElementUpgradesResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public Map<String, Double> getResourceEndowments() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetResourceEndowments(GetResourceEndowments.getDefaultInstance()).build().toByteArray());
-		return handleResourceEndowmentsResponse(readAuthoringServerResponse());
+		return handleResourceEndowmentsResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
@@ -228,17 +253,17 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 
 	@Override
 	public int createWaveProperties(Map<String, Object> waveProperties, Collection<String> elementNamesToSpawn,
-			Point2D spawningPoint) throws ReflectiveOperationException {
+			Point2D spawningPoint) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setCreateWaveProperties(
 						makeCreateWavePropertiesMessage(waveProperties, elementNamesToSpawn, spawningPoint))
 				.build().toByteArray());
-		return handleCreateWavePropertiesResponse(readAuthoringServerResponse());
+		return handleCreateWavePropertiesResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public void editWaveProperties(int waveNum, Map<String, Object> updatedProperties,
-			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) throws ReflectiveOperationException {
+			Collection<String> newElementNamesToSpawn, Point2D newSpawningPoint) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setEditWaveProperties(EditWaveProperties.newBuilder().setWaveNum(waveNum).setEditProperties(
 						makeCreateWavePropertiesMessage(updatedProperties, newElementNamesToSpawn, newSpawningPoint))
@@ -251,7 +276,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetWaveProperties(GetWaveProperties.newBuilder().setWaveNum(waveNum).build()).build()
 				.toByteArray());
-		return handleWavePropertiesResponse(readAuthoringServerResponse());
+		return handleWavePropertiesResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
@@ -259,7 +284,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetPossibleVictoryConditions(GetPossibleVictoryConditions.getDefaultInstance()).build()
 				.toByteArray());
-		return handleConditionsResponse(readAuthoringServerResponse());
+		return handleConditionsResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
@@ -267,7 +292,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetPossibleDefeatConditions(GetPossibleDefeatConditions.getDefaultInstance()).build()
 				.toByteArray());
-		return handleConditionsResponse(readAuthoringServerResponse());
+		return handleConditionsResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
@@ -275,38 +300,48 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetCurrentVictoryConditions(GetCurrentVictoryConditions.getDefaultInstance()).build()
 				.toByteArray());
-		return handleCurrentVictoryConditionsResponse(readAuthoringServerResponse());
+		return handleCurrentVictoryConditionsResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public Map<String, Collection<Integer>> getCurrentDefeatConditions() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setGetCurrentDefeatConditions(GetCurrentDefeatConditions.getDefaultInstance()).build().toByteArray());
-		return handleCurrentDefeatConditionsResponse(readAuthoringServerResponse());
+		return handleCurrentDefeatConditionsResponse(pollFromAuthoringMessageQueue());
 	}
-	
+
+	@Override
+	public String getGameName() {
+		// todo (lol)
+		return "TODO LOL";
+	}
+
 	@Override
 	public void setLevelHealth(int health) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void setLevelPointQuota(int points) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setLevelTimeLimit(int timeLimit) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	protected int getPort() {
 		return Constants.COLLABORATIVE_AUTHORING_SERVER_PORT;
+	}
+
+	private AuthoringServerMessage pollFromAuthoringMessageQueue() {
+		AuthoringServerMessage polledMessage = pollFromCustomMessageQueue(messageQueue);
+		return polledMessage == null ? AuthoringServerMessage.getDefaultInstance() : polledMessage;
 	}
 
 	private Map<String, List<String>> handleElementBaseConfigurationOptionsResponse(
@@ -328,13 +363,6 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 			}
 		});
 		return auxiliaryElementConfigOptions;
-	}
-
-	private int handleCurrentLevelResponse(AuthoringServerMessage authoringServerMessage) {
-		if (authoringServerMessage.hasCurrentLevel()) {
-			return authoringServerMessage.getCurrentLevel();
-		}
-		return 0;
 	}
 
 	private Map<String, List<Map<String, Object>>> handleAllDefinedElementUpgradesResponse(
@@ -391,11 +419,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		return defeatConditionsMap;
 	}
 
-	private Collection<Property> getPropertiesFromObjectMap(Map<String, Object> objectMap) {
-		return objectMap.entrySet().stream()
-				.map(entry -> Property.newBuilder().setName(entry.getKey())
-						.setValue(getSerializationUtils().serializeElementProperty(entry.getValue())).build())
-				.collect(Collectors.toList());
+	private DefineElement handleDefineElementResponse(AuthoringServerMessage authoringServerMessage) {
+		return authoringServerMessage.hasElementAddedToInventory() ? authoringServerMessage.getElementAddedToInventory()
+				: DefineElement.getDefaultInstance();
+	}
+
+	private int handleCurrentLevelResponse(AuthoringServerMessage authoringServerMessage) {
+		return authoringServerMessage.getCurrentLevel();
 	}
 
 	private CreateWaveProperties makeCreateWavePropertiesMessage(Map<String, Object> waveProperties,
@@ -408,14 +438,25 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 						.collect(Collectors.toList()))
 				.build();
 	}
-
-	private AuthoringServerMessage readAuthoringServerResponse() {
-		try {
-			return AuthoringServerMessage.parseFrom(readResponseBytes());
-		} catch (InvalidProtocolBufferException e) {
-			return AuthoringServerMessage.getDefaultInstance(); // empty message
+	
+	public static void main(String[] args) {
+		CollaborativeAuthoringClient testClient = new CollaborativeAuthoringClient();
+		testClient.launchNotificationListener();
+		System.out.println("About to query available games for collaborative authoring");
+		Map<String, String> games = testClient.getAvailableGames();
+		System.out.println("Games:");
+		String gameToJoin = "";
+		for (String game : games.keySet()) {
+			System.out.println(game);
+			gameToJoin = game;
 		}
+		System.out.println("Creating game room : " + gameToJoin);
+		String roomCreated = testClient.createGameRoom(gameToJoin, "Adi_Game");
+		System.out.println("Created game room " + roomCreated);
+		testClient.joinGameRoom(roomCreated, "Adi");
+		System.out.println("Joined game room: " + roomCreated);
+		LevelInitialized levelData = testClient.launchGameRoom();
+		System.out.println("Level data: " + levelData.toString());
 	}
-
 
 }

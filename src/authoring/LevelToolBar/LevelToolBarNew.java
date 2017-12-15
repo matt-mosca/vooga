@@ -42,7 +42,7 @@
 //	private static final int WAVE_INDEX = 0;
 //	private static final int USER_OFFSET = 1;
 //
-//	private AuthoringController myController;
+//	private AuthoringModelController myController;
 //	private TabPane myTabPane;
 ////	private List<LevelTab> myLevels;
 ////	private List<GameArea> myGameAreas;
@@ -67,7 +67,7 @@
 //
 //    private ClientMessageUtils clientMessageUtils;
 //
-//	public LevelToolBarNew(EditDisplay created, AuthoringController controller, ScrollableArea area) {
+//	public LevelToolBarNew(EditDisplay created, AuthoringModelController controller, ScrollableArea area) {
 //		levelToData = new TreeMap<Integer, LevelData>();
 //		levelToData.put(0, new LevelData(controller));
 //		myScrollableArea = area;
@@ -349,7 +349,7 @@
 ////	LevelTab myLevelTab;
 ////	AuthoringController myController;
 ////	
-////	LevelData(AuthoringController myController) {
+////	LevelData(AuthoringModelController myController) {
 ////		this.myController = myController;
 ////		waveInfo.put(0, new Data(new ArrayList<>(), null));
 ////		myGameArea = new GameArea(myController);

@@ -90,6 +90,8 @@ public class SerializationUtils {
 		serializedLevelData.put(Integer.toString(level),
 				serializeLevelData(gameDescription, gameConditions, gameBank, status, levelGameElements,
 						levelInventories, levelHealth, levelPointsQuota, levelTimeLimits, level));
+		System.out.println(gameConditions.keySet().toString());
+		System.out.println(gameConditions.values().toString());
 		return gsonBuilder.create().toJson(serializedLevelData);
 	}
 
