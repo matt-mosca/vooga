@@ -11,14 +11,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
+import util.PropertiesGetter;
 
 public class GameHealthSelector extends VBox{
 	private final int HEALTH_DEFAULT = 100;
-	private final String HEALTH_HEADER_TEXT = "Input Not Valid";
-	private final String HEALTH_PROMPT_TEXT = "Health Amount";
-	private final String HEALTH_UPDATE_TEXT = "Update";
-	private final String HEALTH_INVALID_INPUT_WARNING = "Your input was invalid, so a default value has been set. If you want";
-	private final String HEALTH_INVALID_INPUT_CORRECTION = " to change this, type in a number, please.";
+	private final String HEALTH_HEADER_TEXT = "invalidInput";
+	private final String HEALTH_PROMPT_TEXT = "healthAmount";
+	private final String HEALTH_UPDATE_TEXT = "updateButton";
+	private final String HEALTH_INVALID_INPUT_WARNING = "invalidInputInfo";
 	private ArrayList<CheckBox> checkBoxes;
 	private AuthoringModelController myController;
 
@@ -26,9 +26,9 @@ public class GameHealthSelector extends VBox{
 		myController = controller;
 		
 		TextField amount = new TextField();
-		amount.setPromptText(HEALTH_PROMPT_TEXT);
+		amount.setPromptText(PropertiesGetter.getProperty(HEALTH_PROMPT_TEXT));
 		Button update = new Button();
-		update.setText(HEALTH_UPDATE_TEXT);
+		update.setText(PropertiesGetter.getProperty(HEALTH_UPDATE_TEXT));
 		createLevelBoxes();
 		update.setOnAction(e ->{
 			record(amount, checkBoxes);});
@@ -48,8 +48,7 @@ public class GameHealthSelector extends VBox{
 		try {
 		health = Integer.parseInt(amount.getText());		
 		}catch(NumberFormatException nfe) {
-			new AlertFactory(HEALTH_INVALID_INPUT_WARNING
-				+ HEALTH_INVALID_INPUT_CORRECTION,HEALTH_HEADER_TEXT,AlertType.ERROR);
+			new AlertFactory(PropertiesGetter.getProperty(HEALTH_INVALID_INPUT_WARNING),PropertiesGetter.getProperty(HEALTH_HEADER_TEXT),AlertType.ERROR);
 			health = HEALTH_DEFAULT;
 		}
 		int currLv = myController.getCurrentLevel();

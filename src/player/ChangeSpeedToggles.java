@@ -4,16 +4,17 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import util.PropertiesGetter;
 
 public class ChangeSpeedToggles {
 	private static final int BUTTON_WIDTH = 45;
 	private static final int BUTTON_HEIGHT = 40;
-	private static final String PLAY_OFF = "green_play1.png";
-	private static final String PLAY_ON = "green_play2.png";
-	private static final String PAUSE_OFF = "green_pause1.png";
-	private static final String PAUSE_ON = "green_pause2.png";
-	private static final String FAST_OFF = "green_fast1.png";
-	private static final String FAST_ON = "green_fast2.png";
+	private static final String PLAY_OFF = "playOff";
+	private static final String PLAY_ON = "playOn";
+	private static final String PAUSE_OFF = "pauseOff";
+	private static final String PAUSE_ON = "pauseOn";
+	private static final String FAST_OFF = "fastOff";
+	private static final String FAST_ON = "fastOn";
 //	private static final String PLAY_OFF = "gray_play1.png";
 //	private static final String PLAY_ON = "gray_play2.png";
 //	private static final String PAUSE_OFF = "gray_pause1.png";
@@ -42,18 +43,18 @@ public class ChangeSpeedToggles {
 	}
 	
 	private void setPlayImages() {
-		playOffImage = new Image(getClass().getClassLoader().getResourceAsStream(PLAY_OFF));
-		playOnImage = new Image(getClass().getClassLoader().getResourceAsStream(PLAY_ON));
+		playOffImage = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(PLAY_OFF)));
+		playOnImage = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(PLAY_ON)));
 	}
 	
 	private void setPauseImages() {
-		pauseOffImage = new Image(getClass().getClassLoader().getResourceAsStream(PAUSE_OFF));
-		pauseOnImage = new Image(getClass().getClassLoader().getResourceAsStream(PAUSE_ON));
+		pauseOffImage = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(PAUSE_OFF)));
+		pauseOnImage = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(PAUSE_ON)));
 	}
 	
 	private void setFastImages() {
-		fastOffImage = new Image(getClass().getClassLoader().getResourceAsStream(FAST_OFF));
-		fastOnImage = new Image(getClass().getClassLoader().getResourceAsStream(FAST_ON));
+		fastOffImage = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(FAST_OFF)));
+		fastOnImage = new Image(getClass().getClassLoader().getResourceAsStream(PropertiesGetter.getProperty(FAST_ON)));
 	}
 	
 	public void setPlayMouseEvent(EventHandler<? super MouseEvent> playGame) {

@@ -56,7 +56,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		inPlay = true;
 		latestUpdate = Update.getDefaultInstance();
 		maxLevels = getNumLevelsForGame();
-//		System.out.println("Max levels: " + maxLevels);
+		System.out.println("Max levels: " + maxLevels);
+		
 	}
 
 	@Override
@@ -66,7 +67,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		LevelInitialized levelData = super.loadOriginalGameState(saveName, level);
 		updateForLevelChange(saveName, level);
 		maxLevels = getNumLevelsForGame(saveName, true);
-//		System.out.println("Maxlevels: " + maxLevels);
+		System.out.println("Maxlevels: " + maxLevels);
+		System.out.println("Current level: " + this.getCurrentLevel());
 		return levelData;
 	}
 

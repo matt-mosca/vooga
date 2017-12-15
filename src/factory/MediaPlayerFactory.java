@@ -29,7 +29,7 @@ public class MediaPlayerFactory {
 	public MediaPlayerFactory(String mediaName) {
 		mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(mediaName)));
 		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
-		mediaPlayer.setMute(true);
+		//mediaPlayer.setMute(true);
 	}
 	
 	/**
@@ -45,7 +45,9 @@ public class MediaPlayerFactory {
 	 * Changes the MediaPlayer to what new string input is
 	 */
 	public void changeMediaPlayer(String newMediaName) {
-		mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(newMediaName)));
+		if(newMediaName!=null) {
+			mediaPlayer = new MediaPlayer(new Media(composeResourceStringUrl(newMediaName)));
+		}
 	}
 	
 	private String composeResourceStringUrl(String url) {

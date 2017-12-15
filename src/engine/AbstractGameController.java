@@ -614,7 +614,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	}
 
 	private String getDefaultVictoryCondition() {
-		return new ArrayList<>(gameConditionsReader.getPossibleVictoryConditions()).get(0);
+		return new ArrayList<>(gameConditionsReader.getPossibleVictoryConditions()).get(2);
 	}
 
 	private String getDefaultDefeatCondition() {

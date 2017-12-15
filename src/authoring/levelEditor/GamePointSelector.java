@@ -15,12 +15,11 @@ import javafx.scene.layout.VBox;
 
 public class GamePointSelector extends VBox{
 	private final int POINT_DEFAULT = 100;
-	private final String POINT_SELECTOR_PROMPT_TEXT = "Point Amount";
-	private final String UPDATE_TEXT = "Update";
-	private final String DONE_LABEL = "Are you done?";
-	private final String POINT_ALERT_MESSAGE = "Your input was invalid, so a default value has been set. If you want"
-			+ " to change this, type in a number, please.";
-	private final String POINT_ALERT_HEADER = "Input Not Valid";
+	private final String POINT_SELECTOR_PROMPT_TEXT = "pointPrompt";
+	private final String UPDATE_TEXT = "updateButton";
+	private final String DONE_LABEL = "doneLabel";
+	private final String POINT_ALERT_MESSAGE = "invalidInputInfo";
+	private final String POINT_ALERT_HEADER = "invalidInput";
 	
 	private ArrayList<CheckBox> checkBoxes;
 	private AuthoringModelController myController;
@@ -43,7 +42,7 @@ public class GamePointSelector extends VBox{
 	}
 	
 	
-	public void show() {
+	void show() {
 		setVisible(true);
 	}
 	
@@ -77,6 +76,7 @@ public class GamePointSelector extends VBox{
 			myController.setLevelPointQuota(points);
 		}
 		amount.clear();
+		myController.setLevel(currLv);
 	}
 	
 	public void createCheckBoxes(ArrayList<Integer> lvs) {

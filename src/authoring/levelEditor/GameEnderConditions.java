@@ -9,19 +9,22 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import util.PropertiesGetter;
 
 public class GameEnderConditions extends VBox {
+	private static final String VICTORY_TIME_CONDITIONS = "timeLimit";
 	private AuthoringModelController myController;
 	private ComboBox<String> victory;
 	private ComboBox<String> defeat;
 	private ArrayList<CheckBox> checkBoxes;
 	private GameEnderRecorder recorder;
 	private GamePointSelector pointManager;
-	private final String VICTORY_PROMPT_TEXT = "Choose your victory condition!";
-	private final String DEFEAT_PROMPT_TEXT = "Choose how someone loses!";
-	private final String RECORD_CONDITIONS_LABEL = "Record end condtions!";
-	private final String LEVELS_CONDITIONS_PROMPT_TEXT = "Select which levels you want to set these conditions for!";
-	private final String VICTORY_POINTS_CONDITIONS = "points target reached";
+	private GameTimeSelector timeManager;
+	private final String VICTORY_PROMPT_TEXT = "winQuestion";
+	private final String DEFEAT_PROMPT_TEXT = "lossQuestion";
+	private final String RECORD_CONDITIONS_LABEL = "endConditionRecorder";
+	private final String LEVELS_CONDITIONS_PROMPT_TEXT = "endConditionSelector";
+	private final String VICTORY_POINTS_CONDITIONS = "pointsLimit";
 	private final boolean IS_WRAPPED = true;
 	private final boolean IS_ALLOW_INDETERMINATE = false;
 
@@ -32,15 +35,15 @@ public class GameEnderConditions extends VBox {
 	
 	private void addMiscElements() {
 		victory = new ComboBox<>();
-		victory.setPromptText(VICTORY_PROMPT_TEXT);
+		victory.setPromptText(PropertiesGetter.getProperty(VICTORY_PROMPT_TEXT));
 		victory.getItems().addAll(myController.getPossibleVictoryConditions());
 		defeat = new ComboBox<>();
-		defeat.setPromptText(DEFEAT_PROMPT_TEXT);
+		defeat.setPromptText(PropertiesGetter.getProperty(DEFEAT_PROMPT_TEXT));
 		defeat.getItems().addAll(myController.getPossibleDefeatConditions());
 		
-		Button recordConditions = new Button(RECORD_CONDITIONS_LABEL);
+		Button recordConditions = new Button(PropertiesGetter.getProperty(RECORD_CONDITIONS_LABEL));
 		recordConditions.setOnAction(e->record());
-		Label l = new Label(LEVELS_CONDITIONS_PROMPT_TEXT);
+		Label l = new Label(PropertiesGetter.getProperty(LEVELS_CONDITIONS_PROMPT_TEXT));
 		l.setWrapText(IS_WRAPPED);
 		this.getChildren().addAll(victory, defeat, l);
 		createLevelBoxes();
@@ -62,18 +65,24 @@ public class GameEnderConditions extends VBox {
 	private void record() {
 		int currLevel = myController.getCurrentLevel();
 		ArrayList<Integer> selectedPointLevels = new ArrayList<>();
+		ArrayList<Integer> selectedTimeLevels = new ArrayList<>();
 		for(int i = 1; i<=myController.getNumLevelsForGame(); i++) {
 			myController.setLevel(i);
 			if (checkBoxes.get(i-1).isSelected()) {
 				if(victory.getValue()!=null) {
 					myController.setVictoryCondition(victory.getValue());
+					if(victory.getValue().equals(PropertiesGetter.getProperty(VICTORY_POINTS_CONDITIONS))) {
+						selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
+					}
+					if(victory.getValue().equals(PropertiesGetter.getProperty(VICTORY_TIME_CONDITIONS))) {
+						
+						selectedTimeLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
+					}
 				}
 				if(defeat.getValue()!=null) {
 					myController.setDefeatCondition(defeat.getValue());	
 				}
-				if(victory.getValue().equals(VICTORY_POINTS_CONDITIONS)) {
-					selectedPointLevels.add(Integer.parseInt(checkBoxes.get(i-1).getText()));
-				}
+				
 				checkBoxes.get(i-1).fire();
 		}
 	
@@ -81,6 +90,11 @@ public class GameEnderConditions extends VBox {
 		if (selectedPointLevels.size()>0) {
 			pointManager.createCheckBoxes(selectedPointLevels);    
 			pointManager.show();
+		}
+		
+		if (selectedTimeLevels.size()>0) {
+			timeManager.createCheckBoxes(selectedTimeLevels);
+			timeManager.show();
 		}
 		
 		victory.setValue(null);
@@ -103,5 +117,9 @@ public class GameEnderConditions extends VBox {
 
 	public void setPointRecorder(GamePointSelector points) {
 		pointManager = points;
+	}
+	
+	public void setTimeRecorder(GameTimeSelector time) {
+		timeManager = time;
 	}
 }
