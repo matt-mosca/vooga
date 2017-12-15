@@ -3,6 +3,7 @@ package authoring.LevelToolBar;
 import authoring.EditDisplay;
 import authoring.GameArea;
 import authoring.ScrollableArea;
+import authoring.levelEditor.LevelsEditDisplay;
 import display.factory.TabFactory;
 import display.sprites.InteractiveObject;
 import engine.AuthoringModelController;

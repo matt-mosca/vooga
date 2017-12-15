@@ -5,6 +5,7 @@ import display.splashScreen.SplashPlayScreen;
 import display.sprites.StaticObject;
 import display.toolbars.InventoryToolBar;
 import engine.PlayModelController;
+import factory.AlertFactory;
 import factory.MediaPlayerFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -54,6 +55,8 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	private final int UP = -5;
 	private final int RIGHT = 5;
 	private final int LEFT = -5;
+	private final String PLAY_DISPLAY_ALERT_RESOURCE_CONTENT = "You do not have the funds for this item.";
+	private final String PLAY_DISPLAY_ALERT_RESOURCE_TITLE = "Resource Error!";
 
 	private Map<Integer, String> idToTemplate;
 	private InventoryToolBar myInventoryToolBar;
@@ -312,24 +315,25 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		 * if (myController.isReadyForNextLevel()) { hideTransitorySplashScreen();
 		 * initializeLevelSprites(); // animation.play(); myController.resume(); }
 		 */
-//		if (myController.isLevelCleared()) {
-//			level++;
-//			animation.pause();
-//			myController.pause();
-//			// launchTransitorySplashScreen();
-//			hud.initialize(myController.getResourceEndowments());
-//		}
-//		if (myController.isLost()) {
-//			// launch lost screen
-//			this.getStage().close();
-//		}
-//		if (myController.isWon()) {
-//			// launch win screen
-//			animation.pause();
-//			myController.pause();
-//			launchWinScreen();
-//			return;
-//		}
+		if (myController.isLost()) {
+			// launch lost screen
+			this.getStage().close();
+		}
+		if (myController.isWon()) {
+			// launch win screen
+			animation.pause();
+			myController.pause();
+			launchWinScreen();
+			return;
+		}
+		if (myController.isLevelCleared()) {
+			System.out.println("level: " + level);
+			// launchTransitorySplashScreen();
+			changeLevel(level + 1);
+			hud.initialize(myController.getResourceEndowments());
+			
+			return;
+		}
 		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
 		clientMessageUtils.handleSpriteUpdates(latestUpdate);
 		updateSprites();
@@ -347,7 +351,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	private void hideTransitorySplashScreen() {
 		this.getStage().setScene(this.getScene());
 	}
-
+	
 	private void createGameArea() {
 		myPlayArea = new PlayArea(myController, clientMessageUtils);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
@@ -390,7 +394,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		costDialog.setTitle("Purchase Resource");
 		costDialog.setHeaderText(null);
 		costDialog.setContentText("Would you like to purchase this object?");
-
+		//TO-DO check if alertFactory will work
 		Optional<ButtonType> result = costDialog.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			placeable = new StaticObject(1, this, (String) image.getUserData());
@@ -455,11 +459,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	private void launchInvalidResources() {
-		Alert error = new Alert(AlertType.ERROR);
-		error.setTitle("Resource Error!");
-		error.setHeaderText(null);
-		error.setContentText("You do not have the funds for this item.");
-		error.show();
+		new AlertFactory(PLAY_DISPLAY_ALERT_RESOURCE_CONTENT,null,PLAY_DISPLAY_ALERT_RESOURCE_TITLE,AlertType.ERROR);
 	}
 
 	public String getGameState() {
@@ -473,9 +473,10 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	protected void changeLevel(int newLevel) {
-		level = newLevel;
 		try {
 			clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, newLevel));
+			level = newLevel;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

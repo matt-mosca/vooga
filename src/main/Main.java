@@ -11,10 +11,11 @@ import javafx.application.Application;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import util.PropertiesGetter;
 
 public class Main extends Application {
 
-	public static final String TITLE = "Duvall In This Together";
+	public static final String TITLE = "SplashTitle";
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	public static final Paint BACKGROUND = Color.WHITE;
@@ -29,7 +30,8 @@ public class Main extends Application {
 	public void start(Stage s) {
 		ScreenDisplay myScene = new SplashScreen(WIDTH, HEIGHT, BACKGROUND, s);
 		s.setScene(myScene.getScene());
-		s.setTitle(TITLE);
+		String title = PropertiesGetter.getProperty(TITLE);
+		s.setTitle(title);
 		s.setResizable(false);
 		s.show();
 	}

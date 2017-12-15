@@ -1,9 +1,10 @@
-package authoring.LevelToolBar;
+package authoring.levelEditor;
 
 import java.util.ArrayList;
 
 import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
+import factory.AlertFactory;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -17,6 +18,9 @@ public class GamePointSelector extends VBox{
 	private final String POINT_SELECTOR_PROMPT_TEXT = "Point Amount";
 	private final String UPDATE_TEXT = "Update";
 	private final String DONE_LABEL = "Are you done?";
+	private final String POINT_ALERT_MESSAGE = "Your input was invalid, so a default value has been set. If you want"
+			+ " to change this, type in a number, please.";
+	private final String POINT_ALERT_HEADER = "Input Not Valid";
 	
 	private ArrayList<CheckBox> checkBoxes;
 	private AuthoringModelController myController;
@@ -64,11 +68,7 @@ public class GamePointSelector extends VBox{
 		try {
 		points = Integer.parseInt(amount.getText());		
 		}catch(NumberFormatException nfe) {
-			Alert a = new Alert(AlertType.ERROR);
-			a.setHeaderText("Input Not Valid");
-			a.setContentText("Your input was invalid, so a default value has been set. If you want"
-				+ " to change this, type in a number, please.");
-			a.showAndWait();
+			new AlertFactory(POINT_ALERT_MESSAGE,POINT_ALERT_HEADER,AlertType.ERROR);
 			points = POINT_DEFAULT;
 		}
 		

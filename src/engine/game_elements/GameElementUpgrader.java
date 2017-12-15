@@ -1,14 +1,11 @@
 package engine.game_elements;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import engine.behavior.movement.TrackingPoint;
 
 /**
  * Handles the upgrading of game elements, including storage of upgrade properties.
@@ -35,7 +32,7 @@ public class GameElementUpgrader {
      * Define a new upgrade level for a particular.
      *
      * @param spriteTemplateName the name of the sprite template
-     * @param upgradeLevel
+     * @param upgradeLevel       the number level this is in the sequence of levels
      * @param upgradeProperties  a map of properties for sprites using this template
      */
     public void defineUpgrade(String spriteTemplateName, int upgradeLevel, Map<String, Object> upgradeProperties) {
@@ -89,7 +86,6 @@ public class GameElementUpgrader {
         upgradeArguments.putAll(upgradeProperties);
         // todo - key from prop file/getter
         upgradeArguments.put("startPoint", new Point2D(gameElement.getX(), gameElement.getY()));
-        System.out.println("++++++++++++++++++++++++++++++++++UPGRADED++++++++++++++++++++++++++++++");
         return gameElementFactory.constructElement(upgradeTemplateName, upgradeArguments);
     }
 
