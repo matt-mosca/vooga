@@ -169,6 +169,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			}
 			levelWaves.add(translateToOneBasedIndexing(i), waves);
 		}
+		System.out.println("LEVELWAVETEMPLATES:"+levelWaveTemplates);
 	}
 
 	public Inventory packageInventory() {
@@ -624,13 +625,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return new ArrayList<>(gameConditionsReader.getPossibleDefeatConditions()).get(0);
 	}
 
-	public static void main(String[] args) {
-		AuthoringController tester = new AuthoringController();
-		System.out.println(tester.getLevelHealth(1));
-	}
-
 	public int translateToOneBasedIndexing(int index) {
 		return index+1;
 	}
-
 }
