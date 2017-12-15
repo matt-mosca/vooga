@@ -316,13 +316,6 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 		 * if (myController.isReadyForNextLevel()) { hideTransitorySplashScreen();
 		 * initializeLevelSprites(); // animation.play(); myController.resume(); }
 		 */
-		if (myController.isLevelCleared()) {
-			level++;
-			animation.pause();
-			myController.pause();
-			// launchTransitorySplashScreen();
-			hud.initialize(myController.getResourceEndowments());
-		}
 		if (myController.isLost()) {
 			// launch lost screen
 			this.getStage().close();
@@ -332,6 +325,14 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 			animation.pause();
 			myController.pause();
 			launchWinScreen();
+			return;
+		}
+		if (myController.isLevelCleared()) {
+			System.out.println("level: " + level);
+			// launchTransitorySplashScreen();
+			changeLevel(level + 1);
+			hud.initialize(myController.getResourceEndowments());
+			
 			return;
 		}
 		hud.update(myController.getResourceEndowments(), myController.getLevelHealth(level));
@@ -351,7 +352,7 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	private void hideTransitorySplashScreen() {
 		this.getStage().setScene(this.getScene());
 	}
-
+	
 	private void createGameArea() {
 		myPlayArea = new PlayArea(myController, clientMessageUtils);
 		myPlayArea.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> this.dropElement(e));
@@ -473,9 +474,10 @@ public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterfac
 	}
 
 	protected void changeLevel(int newLevel) {
-		level = newLevel;
 		try {
 			clientMessageUtils.initializeLoadedLevel(myController.loadOriginalGameState(gameState, newLevel));
+			level = newLevel;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
