@@ -333,10 +333,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getLevelTimeLimits().get(level);
 	}
 	
-	@Override
-	public int getNumWavesForLevel(int level) {
-		return getLevelWaves().get(getCurrentLevel()).size();
-	}
+	
 	
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)
 			throws ReflectiveOperationException {

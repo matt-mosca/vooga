@@ -188,7 +188,7 @@ public class AuthoringController extends AbstractGameController implements Autho
 		// getLevelWaves().get(getCurrentLevel()).set(waveId, newWave);
 	}
 	
-	@Override
+	
 	public int getNumWavesForLevel(int level) {
 		return getLevelWaves().get(getCurrentLevel()).size();
 	}
