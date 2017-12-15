@@ -4,9 +4,11 @@ import util.io.SerializationUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Generates spite objects for displaying during authoring and gameplay.
@@ -97,6 +99,11 @@ public final class GameElementFactory {
             throws ReflectiveOperationException {
         Class chosenParameterSubclass = Class.forName(chosenSubclassName);
         Object[] constructorParameters = getConstructorArguments(properties, chosenParameterSubclass);
+        System.out.println(Arrays.asList(constructorParameters));
+        System.out.println(Arrays.stream(constructorParameters).map(object -> object.getClass()).collect(Collectors.toList()));
+        System.out.println(Arrays.asList(chosenParameterSubclass.getConstructors()[0].getParameters()));
+        System.out.println(Arrays.stream(chosenParameterSubclass.getConstructors()[0].getParameters())
+                .map(param -> param.getType()).collect(Collectors.toList()));
         return chosenParameterSubclass.getConstructors()[0].newInstance(constructorParameters);
     }
 
