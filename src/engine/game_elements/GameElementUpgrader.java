@@ -1,11 +1,14 @@
 package engine.game_elements;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import engine.behavior.movement.TrackingPoint;
 
 /**
  * Handles the upgrading of game elements, including storage of upgrade properties.
@@ -84,7 +87,7 @@ public class GameElementUpgrader {
         upgradeArguments.putAll(upgradeProperties);
         // todo - key from prop file/getter
         upgradeArguments.put("startPoint", new Point2D(gameElement.getX(), gameElement.getY()));
-        return gameElementFactory.constructElement(upgradeTemplateName, upgradeProperties);
+        return gameElementFactory.constructElement(upgradeArguments, upgradeProperties);
     }
 
     private boolean canUpgrade(String templateName, int currentUpgradeLevel) {

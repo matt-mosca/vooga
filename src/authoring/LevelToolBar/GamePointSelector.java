@@ -13,7 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class GamePointSelector extends VBox{
-	private static final int POINT_DEFAULT = 100;
+	private final int POINT_DEFAULT = 100;
+	private final String POINT_SELECTOR_PROMPT_TEXT = "Point Amount";
+	private final String UPDATE_TEXT = "Update";
+	private final String DONE_LABEL = "Are you done?";
+	
 	private ArrayList<CheckBox> checkBoxes;
 	private AuthoringModelController myController;
 	private TextField amount;
@@ -23,11 +27,11 @@ public class GamePointSelector extends VBox{
 	public GamePointSelector(AuthoringModelController controller) {
 		myController = controller;		
 		amount = new TextField();
-		amount.setPromptText("Point Amount");
+		amount.setPromptText(POINT_SELECTOR_PROMPT_TEXT );
 		update = new Button();
-		update.setText("Update");
+		update.setText(UPDATE_TEXT);
 		update.setOnAction(e ->record(amount));
-		done = new Button("Are you done?");
+		done = new Button(DONE_LABEL);
 		done.setOnAction(e->hide());
 		this.getChildren().add(done);
 		hide();

@@ -52,6 +52,8 @@ public class PlayController extends AbstractGameController implements PlayModelC
 		conditionsReader = new GameConditionsReader();
 		inPlay = true;
 		latestUpdate = Update.getDefaultInstance();
+		maxLevels = getNumLevelsForGame();
+		System.out.println("Max levels: " + maxLevels);
 	}
 
 	@Override
@@ -85,11 +87,13 @@ public class PlayController extends AbstractGameController implements PlayModelC
 			if (checkLevelClearanceCondition()) {
 				if (checkVictoryCondition()) {
 					System.out.println("Victory Condition Fulfilled");
-					// registerVictory();
+					registerVictory();
 				} else {
 					System.out.println("Level Cleared Condition Fulfilled");
+					System.out.println("Max levels: " + maxLevels);
+					System.out.println("current level: " + getCurrentLevel());
 				}
-				// registerLevelCleared();
+				registerLevelCleared();
 			}
 			/*
 			 * } else if (checkDefeatCondition()) { registerDefeat(); } else {
@@ -197,7 +201,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 
 	private void updateForLevelChange(String saveName, int level) {
 		setLevel(level);
-		setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
+		//setMaxLevelsForGame(getNumLevelsForGame(saveName, true));
 		elementManager.setCurrentElements(getLevelSprites().get(level));
 		List<GameElement> levelWaves = getLevelWaves().get(getCurrentLevel());
 		elementManager.setCurrentWaves(levelWaves);
@@ -227,7 +231,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	private boolean checkVictoryCondition() {
-		return levelCleared && getCurrentLevel() == maxLevels;
+		return getCurrentLevel() >= maxLevels;
 	}
 
 	private boolean checkDefeatCondition() {
