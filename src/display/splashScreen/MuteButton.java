@@ -30,13 +30,13 @@ public class MuteButton extends Button {
 //		this.setStyle(  "-fx-border-color: transparent; -fx-border-width: 0;-fx-background-radius: 0;-fx-background-color: red;");
 	}
 	
-	void mute() {
+	private void mute() {
 		mediaPlayer.setMute(true);
 		this.setText(UNMUTE_LABEL);
 		this.setOnAction(e->unmute());
 	}
 	
-	void unmute() {
+	private void unmute() {
 		mediaPlayer.setMute(false);
 		this.setText(MUTE_LABEL);
 		this.setOnAction(e->mute());
