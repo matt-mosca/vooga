@@ -7,10 +7,11 @@ public class ServerMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		MultiPlayerServer multiPlayerServer = new MultiPlayerServer();
-		CollaborativeAuthoringServer collabServer = new CollaborativeAuthoringServer();
-		multiPlayerServer.startServer();
-		collabServer.startServer();
+		bootServer().startServer();
+	}
+	
+	protected AbstractGameServer bootServer() {
+		return new MultiPlayerServer();
 	}
 	
 	public static void main(String[] args) {

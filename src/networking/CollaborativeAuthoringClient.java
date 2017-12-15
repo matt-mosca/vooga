@@ -66,6 +66,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	public void registerNotificationListener(ListChangeListener<? super Message> listener) {
 		super.registerNotificationListener(listener);
 		notificationQueue.addListener(listener);
+		System.out.println("Registered notification listener");
 	}
 	
 	// TODO
@@ -435,6 +436,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	public static void main(String[] args) {
 		CollaborativeAuthoringClient testClient = new CollaborativeAuthoringClient();
 		testClient.launchNotificationListener();
+		System.out.println("About to query available games for collaborative authoring");
 		Map<String, String> games = testClient.getAvailableGames();
 		System.out.println("Games:");
 		String gameToJoin = "";
