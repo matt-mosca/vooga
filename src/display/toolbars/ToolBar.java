@@ -49,6 +49,7 @@ public abstract class ToolBar extends VBox{
 			double height = DEFAULT_HEIGHT;
 			double width = DEFAULT_WIDTH;
 			try {
+				System.out.println("Looking up inventory item " + s);
 				height = Double.parseDouble(controller.getAllDefinedTemplateProperties().get(s).get(HEIGHT).toString());
 				width = Double.parseDouble(controller.getAllDefinedTemplateProperties().get(s).get(WIDTH).toString());
 			}catch(NumberFormatException e) {

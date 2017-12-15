@@ -20,6 +20,7 @@ import authoring.customize.AttackDefenseToggle;
 import authoring.customize.ColorChanger;
 import authoring.customize.ThemeChanger;
 import authoring.spriteTester.SpriteTesterButton;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import engine.AuthoringModelController;
 import engine.PlayModelController;
 import engine.authoring_engine.AuthoringController;
@@ -43,9 +44,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -61,9 +64,11 @@ import javafx.stage.Stage;
 import main.Main;
 import networking.protocol.AuthorClient.DefineElement;
 import networking.protocol.AuthorServer.AuthoringNotification;
+import networking.protocol.AuthorServer.AuthoringServerMessage;
 import networking.protocol.PlayerServer;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
+import networking.protocol.PlayerServer.Notification;
 import player.LiveEditingPlayDisplay;
 import player.PlayDisplay;
 import util.DropdownFactory;
@@ -159,8 +164,10 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 		// rootAdd(myTesterButton);
 		mediaPlayerFactory = new MediaPlayerFactory(backgroundSong);
 		mediaPlayer = mediaPlayerFactory.getMediaPlayer();
-		mediaPlayer.play();
-		mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+		if (mediaPlayer != null) {
+            mediaPlayer.play();
+            mediaPlayer.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+        }
 		volumeSlider.setLayoutY(735);
 		volumeSlider.setLayoutX(950);
 		this.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, e -> addStaticObject(e));
@@ -178,11 +185,35 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 	@Override
 	public void receiveNotification(byte[] messageBytes) {
 		try {
-			AuthoringNotification notification = AuthoringNotification.parseFrom(messageBytes);
+			System.out.println("Receiving notification!");
+			handleCommonNotifications(messageBytes);
+			AuthoringServerMessage message = AuthoringServerMessage.parseFrom(messageBytes);
+			AuthoringNotification notification = message.getNotification();
 			if (notification.hasElementAddedToInventory()) {
+				System.out.println("Someone added to inventory!");
 				receiveElementAddedToInventory(notification.getElementAddedToInventory());
 			}
-			// TODO - Handle place, move, setLevel, deleteLevel notifications
+		} catch (InvalidProtocolBufferException e) {
+		}
+	}
+
+	private void handleCommonNotifications(byte[] messageBytes) {
+		try {
+			Notification commonNotification = Notification.parseFrom(messageBytes);
+			if (commonNotification.hasElementPlaced()) {
+				System.out.println("Placing element!");
+				mountObjectToMap(commonNotification.getElementPlaced());
+			}
+			if (commonNotification.hasElementMoved()) {
+				System.out.println("Moving element!");
+				clientMessageUtils.updateSpriteDisplay(commonNotification.getElementMoved());
+			}
+			if (commonNotification.hasElementDeleted()) {
+				System.out.println("Deleting element!");
+				clientMessageUtils.removeDeadSpriteFromDisplay(commonNotification.getElementDeleted());
+				//
+				// myGameArea.objectRemoved(interactive);
+			}
 		} catch (InvalidProtocolBufferException e) {
 		}
 	}
@@ -354,7 +385,9 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 			rootRemove(objectToPlace);
 			System.out.println(objectToPlace.getElementName());
 			System.out.println(controller.getAuxiliaryElementConfigurationOptions(basePropertyMap).keySet().toString());
-			NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(), new Point2D(0, 0));
+			NewSprite newSprite = controller.placeElement(objectToPlace.getElementName(),
+					new Point2D(e.getX() - objectToPlace.getFitWidth() / 2 - myGameEnvironment.getLayoutX(),
+							e.getY() - objectToPlace.getFitHeight() / 2 - myGameEnvironment.getLayoutY()));
 			objectToPlace.setElementId(clientMessageUtils.addNewSpriteToDisplay(newSprite));
 			objectToPlace.setX(e.getX() - objectToPlace.getFitWidth() / 2 - myGameEnvironment.getLayoutX());
 			objectToPlace.setY(e.getY() - objectToPlace.getFitHeight() / 2 - myGameEnvironment.getLayoutY());
@@ -364,6 +397,30 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 			System.out.println("fixing cursor");
 			this.getScene().setCursor(ImageCursor.DEFAULT);
 		}
+	}
+
+	private void mountObjectToMap(NewSprite newSprite) {
+		System.out.println("Mounting object");
+		System.out.println("X: " + newSprite.getSpawnX());
+		System.out.println("Y: " + newSprite.getSpawnY());
+		if (clientMessageUtils.getCurrentSpriteIds().contains(newSprite.getSpriteId())) {
+			// Discard
+			return;
+		}
+		int placedSpriteId = clientMessageUtils.addNewSpriteToDisplay(newSprite);
+		objectToPlace = new InteractiveObject(this, newSprite.getImageURL());
+		objectToPlace.setElementId(placedSpriteId);
+		objectToPlace.setImageView(clientMessageUtils.getRepresentationFromSpriteId(placedSpriteId));
+		objectToPlace.setX(newSprite.getSpawnX());
+		objectToPlace.setY(newSprite.getSpawnY());
+
+		// StaticObject newStatic = new StaticObject(objectToPlace.getCellSize(), this,
+		// newSprite.getImageURL());
+		myGameArea.addBackObject(objectToPlace);
+		myGameArea.droppedInto(objectToPlace);
+		// myGameArea.addBackObject(objectToPlace);
+		// myGameArea.droppedInto(objectToPlace);
+		addingObject = false;
 	}
 
 	@Override
@@ -393,12 +450,12 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 
 	// I'm adding this to do reflective generation of dropdown menu (I am Ben S)
 	private void export() {
-		/*
-		 * Dialog dialog = new Dialog();
-		 * dialog.setContentText("Wait for the exportation to complete..."); Thread st =
-		 * new Thread(() -> { synchronized (dialog) { dialog.show(); dialog.notify(); }
-		 * }); st.run();
-		 */
+        /*Dialog dialog = new Dialog();
+	    new Thread(() -> {
+
+            dialog.setContentText("Wait for the exportation to complete...");
+            dialog.show();
+        }).start();
 		final String[] DIALOG_MESSAGE = new String[1];
 		Task<String> exportTask = new Task<String>() {
 			@Override
@@ -407,17 +464,30 @@ public class EditDisplay extends ScreenDisplay implements AuthorInterface, Notif
 				return controller.exportGame();
 			}
 		};
-		// exportTask.setOnSucceeded(event -> dialog.close());
+		exportTask.setOnSucceeded(event -> dialog.close());
 		try {
 			Thread run = new Thread(exportTask);
-			run.run();
+			Platform.runLater(run);
 		} catch (Exception e) {
 			DIALOG_MESSAGE[0] = e.getMessage();
-		}
-		Thread response = new Thread(() -> {
-			new AlertFactory(DIALOG_MESSAGE[0], AlertType.INFORMATION);
-		});
-		response.run();
+		}*/
+        String[] DIALOG_MESSAGE = new String[1];
+		    try {
+                DIALOG_MESSAGE[0] = controller.exportGame();
+            } catch (IOException e){
+		        DIALOG_MESSAGE[0] = e.getMessage();
+            } finally {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setContentText("Share your game with this link");
+                alert.setTitle("Export Link");
+                TextArea copyable = new TextArea(DIALOG_MESSAGE[0]);
+                copyable.setEditable(false);
+                DialogPane dialogPane = new DialogPane();
+                dialogPane.setContent(copyable);
+                alert.setGraphic(copyable);
+                alert.showAndWait().filter(press -> press == ButtonType.OK)
+                        .ifPresent(event -> alert.close());
+            }
 	}
 
 	private void rename() {

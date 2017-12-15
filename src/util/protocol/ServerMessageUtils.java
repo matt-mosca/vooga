@@ -183,9 +183,10 @@ public class ServerMessageUtils {
 	}
 	
 	public Collection<Property> getPropertiesFromObjectMap(Map<String, Object> objectMap) {
-		return objectMap.entrySet().stream()
+		Map<String, String> stringMap = serializationUtils.serializeElementTemplate(objectMap);
+		return stringMap.entrySet().stream()
 				.map(entry -> Property.newBuilder().setName(entry.getKey())
-						.setValue(serializationUtils.serializeElementProperty(entry.getValue())).build())
+						.setValue(entry.getValue()).build())
 				.collect(Collectors.toList());
 	}
 
