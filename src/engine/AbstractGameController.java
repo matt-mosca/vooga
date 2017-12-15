@@ -138,10 +138,11 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	@Override
 	public LevelInitialized loadOriginalGameState(String saveName, int level) throws IOException {
 		Collection<GameElement> oldGameElements = getLevelSprites().get(getCurrentLevel());
-		for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
-			loadLevelData(saveName, levelToLoad, true);
-		}
+		//for (int levelToLoad = currentLevel; levelToLoad <= level; levelToLoad++) {
+			loadLevelData(saveName, level, true);
+		//}
 		setGameName(saveName);
+		setLevel(level);
 		gameElementFactory.loadSpriteTemplates(gameElementIoHandler.loadElementTemplates(gameName));
 		gameElementUpgrader.loadSpriteUpgrades(gameElementIoHandler.loadElementUpgrades(gameName));
 		levelWaveTemplates = gameElementIoHandler.loadWaves(saveName);
