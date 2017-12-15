@@ -28,6 +28,9 @@ public class ChangeLanguageDropDown extends VBox {
 		update.setText(PropertiesGetter.getProperty(BUTTON_LABEL));
 		update.setOnAction(e->{PropertiesGetter.setLanguageFiles(myBox.getValue());
 		myScreen.updateLanguage();
+		update.setText(PropertiesGetter.getProperty(BUTTON_LABEL));
+		myBox.setValue(null);
+		myBox.setPromptText(PropertiesGetter.getProperty(LABEL));
 		});
 		this.getChildren().addAll(myBox, update);
 	}
