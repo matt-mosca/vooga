@@ -63,6 +63,7 @@ public class GamePersistence {
 	}
 
 	public void saveGameState(String string, String serializedRepresentation) {
+		System.out.println("Saving to file name: " + string);
 		saveGameState(new File(string), serializedRepresentation);		
 	}
 
