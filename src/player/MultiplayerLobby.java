@@ -6,6 +6,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 
 import display.factory.ButtonFactory;
+import display.splashScreen.NotifiableDisplay;
 import display.splashScreen.ScreenDisplay;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener.Change;
@@ -19,15 +20,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import networking.MultiPlayerClient;
+import networking.AbstractClient;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.Notification;
+import networking.Constants;
 
 public class MultiplayerLobby extends ScreenDisplay {
 	// private static final String BACKGROUND_IMAGE = "grass_large.png";
 	private static final String BACKGROUND_IMAGE = "space_background.jpeg";
 
-	private PlayDisplay playDisplay;
+	private NotifiableDisplay playDisplay;
 	private Label topScreenLabel;
 	private Label lobbyPlayersLabel;
 	private Label lobbiesLabel;
@@ -52,7 +54,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 	private MultiplayerListBox lobbies;
 	private MultiplayerListBox players;
 	private ActivityListBox activityList;
-	private MultiPlayerClient multiClient;
+	private AbstractClient multiClient;
 	private String username;
 	private String gameName;
 	private String currentLobby;
@@ -67,8 +69,8 @@ public class MultiplayerLobby extends ScreenDisplay {
 
 	// TODO need to start the play display at some point when you are ready!
 
-	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, PlayDisplay play,
-			MultiPlayerClient multiPlayerClient) {
+	public MultiplayerLobby(int width, int height, Paint background, Stage currentStage, NotifiableDisplay play,
+			AbstractClient client) {
 		super(width, height, background, currentStage);
 		// multiplayerLayout = new BorderPane();
 		playDisplay = play;
@@ -89,13 +91,15 @@ public class MultiplayerLobby extends ScreenDisplay {
 		lobbies = new MultiplayerListBox();
 		players = new MultiplayerListBox();
 		activityList = new ActivityListBox();
-		multiClient = multiPlayerClient;
+		multiClient = client;
 		System.out.println("Registering notification listener");
 		registerNotificationListener();
 		username = new String();
-		gameName = new String();
 		currentLobby = new String();
-		gameName = playDisplay.getGameState();
+		System.out.println("Retrieving game name");
+		String loadedGameName = playDisplay.getGameState();
+		gameName = loadedGameName == null ? Constants.NEW_GAME_NAME : loadedGameName;
+		System.out.println("Setting multiplayer background");
 		setMultiplayerBackground(width, height);
 		// rootAdd(multiplayerLayout);
 		rootAdd(topScreenLabel);
@@ -251,20 +255,22 @@ public class MultiplayerLobby extends ScreenDisplay {
 
 	private void changeLobbyToHome() {
 		clearLobby();
-		multiClient.exitGameRoom();
+		System.out.println("EXITING LOBBY");
+		//multiClient.exitGameRoom();
 		initializeMultiplayerHomeScreen();
 	}
 
 	private void changeLobbyToLobbiesList() {
 		clearLobby();
-		multiClient.exitGameRoom();
+		System.out.println("EXITING LOBBY");
+		//multiClient.exitGameRoom();
 		initializeLobbiesList();
 	}
 
 	private void createLobby() {
 		promptForLobbyName();
-		multiClient.createGameRoom(gameName, currentLobby);
-		multiClient.joinGameRoom(currentLobby, username);
+		String createdLobbyName = multiClient.createGameRoom(gameName, currentLobby);
+		multiClient.joinGameRoom(createdLobbyName, username);
 		changeHomeToLobby();
 	}
 
@@ -476,7 +482,7 @@ public class MultiplayerLobby extends ScreenDisplay {
 						}
 						if (notification.hasElementPlaced() && launched) {
 							System.out.println("Element placed!");
-							playDisplay.receivePlacedElement(notification.getElementPlaced());
+							playDisplay.receiveNotification(notification.toByteArray());
 						}
 					} catch (InvalidProtocolBufferException e) {
 					}

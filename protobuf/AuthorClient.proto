@@ -37,6 +37,7 @@ message AuthoringClientMessage {
 	optional GetPossibleDefeatConditions getPossibleDefeatConditions = 28;
 	optional GetCurrentVictoryConditions getCurrentVictoryConditions = 29;
 	optional GetCurrentDefeatConditions getCurrentDefeatConditions = 30;
+	optional bool forAuthoring = 31;
 }
 
 message ExportGame {

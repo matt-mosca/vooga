@@ -143,8 +143,7 @@ public class PlayController extends AbstractGameController implements PlayModelC
 	}
 
 	@Override
-	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates)
-			throws ReflectiveOperationException {
+	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates) {
 		if (getLevelBanks().get(getCurrentLevel()).purchase(elementTemplateName, 1)) {
 			// TODO - keep track of the resources that were changed in this cycle, and only
 			// send them to client?

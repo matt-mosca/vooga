@@ -70,7 +70,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	// TODO - move these into own object? Or have them in the sprite factory?
 	private AtomicInteger spriteIdCounter;
 	private Map<Integer, GameElement> spriteIdMap;
-	
+
 	protected Map<Integer, String> audioMap;
 
 	private GameElementFactory gameElementFactory;
@@ -114,15 +114,13 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			serializedLevelsData.put(level,
 					getIoController().getLevelSerialization(level, getLevelDescriptions().get(level),
 							getLevelConditions().get(level), getLevelBanks().get(level), getLevelStatuses().get(level),
-							levelSpritesCache.get(level), levelInventories.get(level),
-							levelHealths.get(level), levelPointQuotas.get(level), levelTimeLimits.get(level)));
+							levelSpritesCache.get(level), levelInventories.get(level), levelHealths.get(level),
+							levelPointQuotas.get(level), levelTimeLimits.get(level)));
 		}
 		// Serialize map of level to per-level serialized data
 		getIoController().saveGameStateForMultipleLevels(saveName, serializedLevelsData, isAuthoring());
-		gameElementIoHandler.exportElementTemplates(saveName,
-				gameElementFactory.getAllDefinedTemplateProperties());
-		gameElementIoHandler.exportElementUpgrades(saveName,
-				gameElementUpgrader.getSpriteUpgradesForEachTemplate());
+		gameElementIoHandler.exportElementTemplates(saveName, gameElementFactory.getAllDefinedTemplateProperties());
+		gameElementIoHandler.exportElementUpgrades(saveName, gameElementUpgrader.getSpriteUpgradesForEachTemplate());
 		gameElementIoHandler.exportWaves(gameName, levelWaveTemplates);
 	}
 
@@ -160,7 +158,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 			for (String waveName : sortedWaveNames) {
 				try {
 					System.out.println(waveName + " " + sortedWaveNames + " " + wavesInLevel);
-				
+
 					waves.add(generatePlacedElement(waveName, wavesInLevel.get(waveName)));
 				} catch (ReflectiveOperationException e) {
 					throw new IOException(e);
@@ -185,11 +183,12 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	@Deprecated
 	@Override
 	public int getNumLevelsForGame(String gameName, boolean forOriginalGame) {
-		return  getNumLevelsForGame();
+		return getNumLevelsForGame();
 	}
-	
+
 	@Override
 	public int getNumLevelsForGame() {
+		System.out.println("Getting number of levels");
 		return getLevelSprites().size() - 1;
 	}
 
@@ -205,11 +204,16 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 
 	@Override
 	public NewSprite placeElement(String elementTemplateName, Point2D startCoordinates)
-			throws ReflectiveOperationException {
-		GameElement gameElement = generatePlacedElement(elementTemplateName, startCoordinates);
-		gameElementUpgrader.registerNewSprite(elementTemplateName, gameElement);
-		int spriteId = cacheAndCreateIdentifier(elementTemplateName, gameElement);
-		return serverMessageUtils.packageNewSprite(gameElement, spriteId);
+			 {
+		try {
+			
+			GameElement gameElement = generatePlacedElement(elementTemplateName, startCoordinates);
+			gameElementUpgrader.registerNewSprite(elementTemplateName, gameElement);
+			int spriteId = cacheAndCreateIdentifier(elementTemplateName, gameElement);
+			return serverMessageUtils.packageNewSprite(gameElement, spriteId);			
+		} catch (ReflectiveOperationException e) {
+			return NewSprite.getDefaultInstance();
+		}
 	}
 
 	@Override
@@ -221,15 +225,15 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		return getServerMessageUtils().packageUpdatedSprite(gameElement, elementId);
 	}
 
-    @Override
-    public SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException {
-        GameElement removedGameElement = getSpriteIdMap().remove(elementId);
-        if (removedGameElement == null) {
-        		throw new IllegalArgumentException();
-        }
-        getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
-        return getServerMessageUtils().packageDeletedSprite(removedGameElement, elementId);
-    }
+	@Override
+	public SpriteDeletion deleteElement(int elementId) throws IllegalArgumentException {
+		GameElement removedGameElement = getSpriteIdMap().remove(elementId);
+		if (removedGameElement == null) {
+			throw new IllegalArgumentException();
+		}
+		getLevelSprites().get(getCurrentLevel()).remove(removedGameElement);
+		return getServerMessageUtils().packageDeletedSprite(removedGameElement, elementId);
+	}
 
 	@Override
 	public int getCurrentLevel() {
@@ -317,17 +321,17 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	public int getLevelHealth(int level) {
 		return getLevelHealths().get(level);
 	}
-	
+
 	@Override
 	public int getLevelPointQuota(int level) {
 		return getLevelPointQuotas().get(level);
 	}
-	
+
 	@Override
 	public int getLevelTimeLimit(int level) {
 		return getLevelTimeLimits().get(level);
 	}
-	
+
 	protected int placeElement(String elementTemplateName, Point2D startCoordinates, Collection<?>... auxiliaryArgs)
 			throws ReflectiveOperationException {
 		Map<String, Object> auxiliarySpriteConstructionObjects = spriteQueryHandler
@@ -394,14 +398,14 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	protected List<Integer> getLevelHealths() {
 		return levelHealths;
 	}
-	
+
 	protected List<Integer> getLevelPointQuotas() {
 		return levelPointQuotas;
 	}
-	
+
 	protected List<Integer> getLevelTimeLimits() {
 		return levelTimeLimits;
-	} 
+	}
 
 	protected List<Map<String, Point2D>> getLevelWaveTemplates() {
 		return levelWaveTemplates;
@@ -481,7 +485,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 				auxiliarySpriteConstructionObjects);
 		return element;
 	}
-	
+
 	private Collection<GameElement> loadGameStateElementsForLevel(String savedGameName, int level, boolean originalGame)
 			throws FileNotFoundException {
 		assertValidLevel(level);
@@ -552,12 +556,12 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 		addOrSetLevelData(levelPointQuotas, ioController.loadGamePointQuotas(savedGameName, level), level);
 
 	}
-	
+
 	private void loadGameTimeLimitsForLevel(String savedGameName, int level) throws FileNotFoundException {
 		assertValidLevel(level);
 		addOrSetLevelData(levelTimeLimits, ioController.loadGameTimeLimits(savedGameName, level), level);
 	}
-	
+
 	private boolean isAuthoring() {
 		// TODO - remove the forAuthoring param from ioController method so we don't
 		// have to do this
@@ -575,7 +579,7 @@ public abstract class AbstractGameController implements AbstractGameModelControl
 	private void initialize() {
 		// To adjust for 1-indexing
 		initializeLevel();
-		
+
 		getLevelWaves().add(new ArrayList<>());
 		getLevelWaveTemplates().add(new HashMap<>());
 		setLevel(1);

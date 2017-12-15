@@ -2,10 +2,7 @@ package player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import networking.MultiPlayerClient;
+import networking.AbstractClient;
 
 public class ActivityListBox extends MultiplayerListBox{
 	public static final String BOT_NAME = "bot";
@@ -19,8 +16,9 @@ public class ActivityListBox extends MultiplayerListBox{
 		activityLog = new ArrayList<String>();
 	}
 	
-	public void setNames(MultiPlayerClient multi) {
+	public void setNames(AbstractClient multi) {
 		activityLog.clear();
+		/*
 		for(String lobby : multi.getGameRooms()) {
 			multi.joinGameRoom(lobby, "bot");
 //			activityLog.put(lobby, multi.getPlayerNames().size());
@@ -29,5 +27,6 @@ public class ActivityListBox extends MultiplayerListBox{
 			multi.exitGameRoom();
 		}
 		setNames(activityLog);
+		*/
 	}
 }

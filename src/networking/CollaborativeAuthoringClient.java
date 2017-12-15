@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 
 import engine.AuthoringModelController;
@@ -68,7 +69,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		notificationQueue.addListener(listener);
 		System.out.println("Registered notification listener");
 	}
-	
+
 	// TODO
 	@Override
 	public void saveGameState(String fileNameToSaveTo) {
@@ -86,49 +87,48 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 
 	@Override
 	public void setLevel(int level) {
-		writeRequestBytes(AuthoringClientMessage.newBuilder().setSetLevel(SetLevel.newBuilder().setLevel(level)).build()
-				.toByteArray());
+		writeRequestBytes(AuthoringClientMessage.newBuilder().setSetLevel(SetLevel.newBuilder().setLevel(level))
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
 	public void deleteLevel(int level) throws IllegalArgumentException {
 		writeRequestBytes(AuthoringClientMessage.newBuilder().setDeleteLevel(DeleteLevel.newBuilder().setLevel(level))
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
 	public int getCurrentLevel() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder().setGetCurrentLevel(GetCurrentLevel.getDefaultInstance())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 		return handleCurrentLevelResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public Map<String, List<String>> getElementBaseConfigurationOptions() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setGetElementBaseConfig(GetElementBaseConfigurationOptions.getDefaultInstance()).build()
-				.toByteArray());
+				.setGetElementBaseConfig(GetElementBaseConfigurationOptions.getDefaultInstance()).setForAuthoring(true)
+				.build().toByteArray());
 		return handleElementBaseConfigurationOptionsResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public Map<String, Class> getAuxiliaryElementConfigurationOptions(Map<String, String> baseConfigurationChoices) {
-		writeRequestBytes(
-				AuthoringClientMessage.newBuilder()
-						.setGetAuxiliaryElementConfig(GetAuxiliaryElementConfigurationOptions.newBuilder()
-								.addAllBaseConfigurationChoices(baseConfigurationChoices.entrySet().stream()
-										.map(entry -> Property.newBuilder().setName(entry.getKey())
-												.setValue(entry.getValue()).build())
-										.collect(Collectors.toList())))
-						.build().toByteArray());
+		writeRequestBytes(AuthoringClientMessage.newBuilder()
+				.setGetAuxiliaryElementConfig(GetAuxiliaryElementConfigurationOptions.newBuilder()
+						.addAllBaseConfigurationChoices(baseConfigurationChoices.entrySet().stream()
+								.map(entry -> Property.newBuilder().setName(entry.getKey()).setValue(entry.getValue())
+										.build())
+								.collect(Collectors.toList())))
+				.setForAuthoring(true).build().toByteArray());
 		return handleAuxiliaryElementConfigurationOptions(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public void defineElement(String elementName, Map<String, Object> properties) throws IllegalArgumentException {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setDefineElement(serverMessageUtils.packageDefinedElement(elementName, properties)).build()
-				.toByteArray());
+				.setDefineElement(serverMessageUtils.packageDefinedElement(elementName, properties))
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 				.setDefineElementUpgrade(DefineElementUpgrade.newBuilder().setElementName(elementName)
 						.setUpgradeLevel(upgradeLevel)
 						.addAllProperties(serverMessageUtils.getPropertiesFromObjectMap(upgradeProperties)).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
@@ -146,23 +146,23 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 			throws IllegalArgumentException {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setUpdateElementDefinition(UpdateElementDefinition.newBuilder().setElementName(elementName)
-						.addAllProperties(serverMessageUtils.getPropertiesFromObjectMap(propertiesToUpdate)).setRetroactive(retroactive)
-						.build())
-				.build().toByteArray());
+						.addAllProperties(serverMessageUtils.getPropertiesFromObjectMap(propertiesToUpdate))
+						.setRetroactive(retroactive).build())
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
 	public void deleteElementDefinition(String elementName) throws IllegalArgumentException {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setDeleteElementDefinition(DeleteElementDefinition.newBuilder().setElementName(elementName).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
 	public DefineElement addElementToInventory(String elementName) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setAddElementToInventory(AddElementToInventory.newBuilder().setElementName(elementName).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 		return handleDefineElementResponse(pollFromAuthoringMessageQueue());
 	}
 
@@ -171,13 +171,13 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setUpdateElementProperties(UpdateElementProperties.newBuilder().setElementId(elementId)
 						.addAllProperties(serverMessageUtils.getPropertiesFromObjectMap(propertiesToUpdate)).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
 	public Map<String, List<Map<String, Object>>> getAllDefinedElementUpgrades() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setGetAllDefinedElementUpgrades(GetAllDefinedElementUpgrades.getDefaultInstance()).build()
+				.setGetAllDefinedElementUpgrades(GetAllDefinedElementUpgrades.getDefaultInstance()).setForAuthoring(true).build()
 				.toByteArray());
 		return handleAllDefinedElementUpgradesResponse(pollFromAuthoringMessageQueue());
 	}
@@ -185,21 +185,21 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	@Override
 	public Map<String, Double> getResourceEndowments() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setGetResourceEndowments(GetResourceEndowments.getDefaultInstance()).build().toByteArray());
+				.setGetResourceEndowments(GetResourceEndowments.getDefaultInstance()).setForAuthoring(true).build().toByteArray());
 		return handleResourceEndowmentsResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public void setGameName(String gameName) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setSetGameName(SetGameName.newBuilder().setGameName(gameName).build()).build().toByteArray());
+				.setSetGameName(SetGameName.newBuilder().setGameName(gameName).build()).setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
 	public void setGameDescription(String gameDescription) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setSetGameDescription(SetGameDescription.newBuilder().setGameDescription(gameDescription).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
@@ -207,7 +207,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setSetVictoryCondition(
 						SetVictoryCondition.newBuilder().setConditionIdentifier(conditionIdentifier).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
@@ -215,7 +215,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setSetDefeatCondition(
 						SetDefeatCondition.newBuilder().setConditionIdentifier(conditionIdentifier).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
@@ -223,7 +223,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setSetStatusProperty(
 						SetStatusProperty.newBuilder().setPropertyName(property).setPropertyValue(value).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
@@ -236,7 +236,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.addSetResourceEndowments(
 						ResourceEndowment.newBuilder().setName(resourceName).setAmount(newResourceEndowment).build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
@@ -248,7 +248,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 										.setAmount(entry.getValue()).build())
 								.collect(Collectors.toList()))
 						.build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
@@ -257,7 +257,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
 				.setCreateWaveProperties(
 						makeCreateWavePropertiesMessage(waveProperties, elementNamesToSpawn, spawningPoint))
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 		return handleCreateWavePropertiesResponse(pollFromAuthoringMessageQueue());
 	}
 
@@ -268,21 +268,22 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 				.setEditWaveProperties(EditWaveProperties.newBuilder().setWaveNum(waveNum).setEditProperties(
 						makeCreateWavePropertiesMessage(updatedProperties, newElementNamesToSpawn, newSpawningPoint))
 						.build())
-				.build().toByteArray());
+				.setForAuthoring(true).build().toByteArray());
 	}
 
 	@Override
 	public Map<String, Object> getWaveProperties(int waveNum) {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setGetWaveProperties(GetWaveProperties.newBuilder().setWaveNum(waveNum).build()).build()
+				.setGetWaveProperties(GetWaveProperties.newBuilder().setWaveNum(waveNum).build()).setForAuthoring(true).build()
 				.toByteArray());
 		return handleWavePropertiesResponse(pollFromAuthoringMessageQueue());
 	}
 
 	@Override
 	public Collection<String> getPossibleVictoryConditions() {
+		System.out.println("Getting possible victory conditions");
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setGetPossibleVictoryConditions(GetPossibleVictoryConditions.getDefaultInstance()).build()
+				.setGetPossibleVictoryConditions(GetPossibleVictoryConditions.getDefaultInstance()).setForAuthoring(true).build()
 				.toByteArray());
 		return handleConditionsResponse(pollFromAuthoringMessageQueue());
 	}
@@ -290,7 +291,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	@Override
 	public Collection<String> getPossibleDefeatConditions() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setGetPossibleDefeatConditions(GetPossibleDefeatConditions.getDefaultInstance()).build()
+				.setGetPossibleDefeatConditions(GetPossibleDefeatConditions.getDefaultInstance()).setForAuthoring(true).build()
 				.toByteArray());
 		return handleConditionsResponse(pollFromAuthoringMessageQueue());
 	}
@@ -298,7 +299,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	@Override
 	public Map<String, Collection<Integer>> getCurrentVictoryConditions() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setGetCurrentVictoryConditions(GetCurrentVictoryConditions.getDefaultInstance()).build()
+				.setGetCurrentVictoryConditions(GetCurrentVictoryConditions.getDefaultInstance()).setForAuthoring(true).build()
 				.toByteArray());
 		return handleCurrentVictoryConditionsResponse(pollFromAuthoringMessageQueue());
 	}
@@ -306,7 +307,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	@Override
 	public Map<String, Collection<Integer>> getCurrentDefeatConditions() {
 		writeRequestBytes(AuthoringClientMessage.newBuilder()
-				.setGetCurrentDefeatConditions(GetCurrentDefeatConditions.getDefaultInstance()).build().toByteArray());
+				.setGetCurrentDefeatConditions(GetCurrentDefeatConditions.getDefaultInstance()).setForAuthoring(true).build().toByteArray());
 		return handleCurrentDefeatConditionsResponse(pollFromAuthoringMessageQueue());
 	}
 
@@ -339,7 +340,33 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 		return Constants.COLLABORATIVE_AUTHORING_SERVER_PORT;
 	}
 
+	@Override
+	protected boolean appendMessageToAppropriateQueue(byte[] requestBytes) {
+		if (!super.appendMessageToAppropriateQueue(requestBytes)) {
+			try {
+				System.out.println("Trying to form and append authoring message");
+				AuthoringServerMessage authoringServerMessage = AuthoringServerMessage.parseFrom(requestBytes);
+				if (authoringServerMessage.hasNotification()) {
+					System.out.println("Appending authoring notification");
+					System.out.println(authoringServerMessage.getNotification().toString());
+					appendNotificationToQueue(authoringServerMessage.getNotification(), notificationQueue);
+				} else {
+					System.out.println("Appending normal authoring message: ");
+					System.out.println(authoringServerMessage.toString());
+					appendMessageToQueue(authoringServerMessage, messageQueue);
+				}
+				return true;
+			} catch (InvalidProtocolBufferException e) {
+				System.out.println("Could not append message to EITHER queue!");
+				return false;
+			}
+		}
+		System.out.println("Message was appended to common queue");
+		return true;
+	}
+
 	private AuthoringServerMessage pollFromAuthoringMessageQueue() {
+		System.out.println("About to poll from authoring message queue");
 		AuthoringServerMessage polledMessage = pollFromCustomMessageQueue(messageQueue);
 		return polledMessage == null ? AuthoringServerMessage.getDefaultInstance() : polledMessage;
 	}
@@ -400,6 +427,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 	}
 
 	private Collection<String> handleConditionsResponse(AuthoringServerMessage authoringServerMessage) {
+		System.out.println("Conditions response: " + authoringServerMessage.toString());
 		return authoringServerMessage.getPossibleVictoryConditionsList();
 	}
 
@@ -438,7 +466,7 @@ public class CollaborativeAuthoringClient extends AbstractClient implements Auth
 						.collect(Collectors.toList()))
 				.build();
 	}
-	
+
 	public static void main(String[] args) {
 		CollaborativeAuthoringClient testClient = new CollaborativeAuthoringClient();
 		testClient.launchNotificationListener();

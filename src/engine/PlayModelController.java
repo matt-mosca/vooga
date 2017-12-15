@@ -93,7 +93,7 @@ public interface PlayModelController extends AbstractGameModelController {
      * @throws ReflectiveOperationException if the element could not be generated due to its template lacking a
      *                                      necessary property
      */
-    NewSprite placeElement(String elementName, Point2D startCoordinates) throws ReflectiveOperationException;
+    NewSprite placeElement(String elementName, Point2D startCoordinates);
 
     /**
      * Upgrade an element that is placed in the game.

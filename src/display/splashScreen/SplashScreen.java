@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import authoring.EditDisplay;
+import engine.authoring_engine.AuthoringController;
 import engine.play_engine.PlayController;
 import factory.MediaPlayerFactory;
 import javafx.geometry.Pos;
@@ -24,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.Main;
+import networking.CollaborativeAuthoringClient;
 import networking.MultiPlayerClient;
 import player.MultiplayerLobby;
 import player.PlayDisplay;
@@ -45,8 +47,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private static final String AUTHOR_CHOICE_DIALOG_STRING = "Authoring options";
 	private static final String AUTHOR_TITLE_STRING = "Authoring Setting";
 	private static final String AUTHOR_HEADER_STRING = "Single author or collaborative editing?";
-	
-	
+
 	private HBox titleBox = new HBox();
 	private Text VoogaTitle;
 	private NewGameButton myNewGameButton;
@@ -171,16 +172,17 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		rootAdd(path);
 		return path;
 	}
-	
-	// TODO - register notification handlers for collaborative editing
+
+	// TODO - REFACTOR
 
 	@Override
 	public void editButtonPressed() {
-		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage(), true);
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
-		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
-		getStage().setScene(myScene.getScene());
+		boolean isMultiplayer = initializeEditingSetting();
+		if (isMultiplayer) {
+			initializeMultiPlayerEditDisplay(true);
+		} else {
+			initializeSinglePlayerEditDisplay(true);
+		}
 		myMediaPlayer.stop();
 	}
 
@@ -191,27 +193,17 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	@Override
 	public void switchScreen() { // called by New
-		
 		boolean isMultiplayer = initializeEditingSetting();
-		EditDisplay myScene;
-		
-		
-		
-		myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage(), false);
-		
-		
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
-		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
-		getStage().setScene(myScene.getScene());
+		if (isMultiplayer) {
+			initializeMultiPlayerEditDisplay(false);
+		} else {
+			initializeSinglePlayerEditDisplay(false);
+		}
 		myMediaPlayer.stop();
 	}
 
 	@Override
 	public void playExisting() {
-		// TODO - Update this method accordingly to determine the isMultiPlayer
-		// param
-		// for PlayDisplay constructor
 		boolean isMultiplayer = initializePlayersSetting();
 		PlayDisplay myScene;
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -219,7 +211,7 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		getStage().setY(primaryScreenBounds.getHeight() / 2 - PLAYHEIGHT / 2);
 		myMediaPlayer.stop();
 		if (!isMultiplayer) {
-			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController()); 
+			myScene = new PlayDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), new PlayController());
 			getStage().setScene(myScene.getScene());
 			myScene.startDisplay();
 		} else {
@@ -236,11 +228,11 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	private boolean initializePlayersSetting() {
 		return initializeSetting(PLAY_CHOICE_DIALOG_STRING, PLAY_TITLE_STRING, PLAY_HEADER_STRING);
 	}
-	
+
 	private boolean initializeEditingSetting() {
 		return initializeSetting(AUTHOR_CHOICE_DIALOG_STRING, AUTHOR_TITLE_STRING, AUTHOR_HEADER_STRING);
 	}
-	
+
 	private boolean initializeSetting(String choiceDialogString, String titleString, String headerString) {
 		List<String> numPlayers = new ArrayList<String>();
 		String settingChoice = new String();
@@ -256,7 +248,6 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 		}
 		return settingChoice.equals(MULTIPLAYER);
 	}
-	
 
 	@Override
 	public void save() {
@@ -268,6 +259,29 @@ public class SplashScreen extends ScreenDisplay implements SplashInterface {
 	public void listItemClicked(MouseEvent e, ImageView object) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private void initializeSinglePlayerEditDisplay(boolean loaded) {
+		EditDisplay myScene = new EditDisplay(MAINWIDTH, MAINHEIGHT, getStage(), loaded, new AuthoringController());
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
+		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
+		myScene.startDisplay();
+		getStage().setScene(myScene.getScene());
+	}
+
+	private void initializeMultiPlayerEditDisplay(boolean loaded) {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		getStage().setX(primaryScreenBounds.getWidth() / 2 - MAINWIDTH / 2);
+		getStage().setY(primaryScreenBounds.getHeight() / 2 - MAINHEIGHT / 2);
+		CollaborativeAuthoringClient collabClient = new CollaborativeAuthoringClient();
+		collabClient.launchNotificationListener();
+		EditDisplay myScene = new EditDisplay(PLAYWIDTH, PLAYHEIGHT, getStage(), loaded, collabClient);
+		System.out.println("Initialized EditDisplay");
+		MultiplayerLobby multi = new MultiplayerLobby(PLAYWIDTH, PLAYHEIGHT, Color.WHITE, getStage(), myScene,
+				collabClient);
+		getStage().setScene(multi.getScene());
+		multi.promptForUsername();
 	}
 
 }

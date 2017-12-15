@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import networking.protocol.PlayerServer.LevelInitialized;
 
 public abstract class ScreenDisplay {
 
@@ -55,7 +56,7 @@ public abstract class ScreenDisplay {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		//animation.getKeyFrames().add(frame);
 	}
-
+	
 	protected void rootAdd(Node object) {
 		root.getChildren().add(object);
 	}

@@ -17,10 +17,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
+import networking.protocol.AuthorClient.AuthoringClientMessage;
 import networking.protocol.PlayerClient.ClientMessage;
 import networking.protocol.PlayerClient.CreateGameRoom;
 import networking.protocol.PlayerClient.DeleteElement;
 import networking.protocol.PlayerClient.JoinRoom;
+import networking.protocol.PlayerClient.LoadLevel;
 import networking.protocol.PlayerClient.MoveElement;
 import networking.protocol.PlayerClient.PlaceElement;
 import networking.protocol.PlayerServer.Game;
@@ -32,6 +34,7 @@ import networking.protocol.PlayerServer.Games;
 import networking.protocol.PlayerServer.LevelInitialized;
 import networking.protocol.PlayerServer.NewSprite;
 import networking.protocol.PlayerServer.Notification;
+import networking.protocol.PlayerServer.NumberOfLevels;
 import networking.protocol.PlayerServer.PlayerExited;
 import networking.protocol.PlayerServer.PlayerJoined;
 import networking.protocol.PlayerServer.PlayerNames;
@@ -47,6 +50,7 @@ public abstract class AbstractServerController {
 	private final String ERROR_NONEXISTENT_ROOM = "This game room does not exist";
 	private final String GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME = "This game does not exist";
 	private final String GAME_ROOM_JOIN_ERROR_USERNAME_TAKEN = "This username has already been taken for this game room";
+	private final String LOAD_LEVEL_ERROR_NOT_READY = "Your peers are not yet ready to load this level";
 
 	private final String ROOM_NAME_DEDUP_DELIMITER = "_";
 
@@ -57,19 +61,29 @@ public abstract class AbstractServerController {
 	private Map<String, Integer> roomNameCollisions = new HashMap<>();
 	private Map<Integer, String> clientIdsToUserNames = new HashMap<>();
 	private Map<String, Integer> waitingInRoom = new HashMap<>();
-	
+
 	private ObservableList<ServerMessage> messageQueue = FXCollections.observableArrayList();
 
 	public byte[] handleRequestAndSerializeResponse(int clientId, byte[] requestBytes) {
 		try {
+			if (isAuthoringSpecificRequest(requestBytes)) {
+				System.out.println("Detected authoring-specific request");
+				return handleSpecificRequestAndSerializeResponse(clientId, requestBytes);
+			}
 			System.out.println("Handling request");
-			byte[] pregameResponseBytes = handlePreGameRequestAndSerializeResponse(clientId, ClientMessage.parseFrom(requestBytes),
-					ServerMessage.newBuilder());	
+			ClientMessage clientMessage = ClientMessage.parseFrom(requestBytes);
+			System.out.println(clientMessage.toString());
+			byte[] pregameResponseBytes = handlePreGameRequestAndSerializeResponse(clientId,
+					clientMessage, ServerMessage.newBuilder());
 			if (pregameResponseBytes.length > 0) {
+				System.out.println("Returning pregame response");
 				return pregameResponseBytes;
 			}
+			System.out.println("Handling specific request");
 			return handleSpecificRequestAndSerializeResponse(clientId, requestBytes);
 		} catch (InvalidProtocolBufferException | ReflectiveOperationException e) {
+			System.out.println("UNABLE TO PARSE INTO CLIENT REQUEST");
+			//return handleSpecificRequestAndSerializeResponse(clientId, requestBytes);
 			return new byte[] {};
 		}
 	}
@@ -78,7 +92,7 @@ public abstract class AbstractServerController {
 		System.out.println("Registering notification listener");
 		messageQueue.addListener(listener);
 	}
-	
+
 	public void disconnectClient(int clientId) {
 		clientIdsToUserNames.remove(clientId);
 		roomMembers.entrySet().forEach(roomEntry -> {
@@ -87,7 +101,7 @@ public abstract class AbstractServerController {
 			}
 		});
 	}
-	
+
 	protected abstract byte[] handleSpecificRequestAndSerializeResponse(int clientId, byte[] requestBytes);
 
 	protected byte[] getAvailableGames(ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
@@ -113,13 +127,19 @@ public abstract class AbstractServerController {
 		createEngineForRoom(roomName);
 		AbstractGameController controllerForGame = getEngineForRoom(roomName);
 		// Verify that gameName is valid
+		System.out.println("Looking for game " + gameName);
 		if (!controllerForGame.getAvailableGames().containsKey(gameName)) {
-			return serverMessageBuilder
-					.setGameRoomCreationStatus(
-							gameRoomCreationStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build())
-					.build().toByteArray();
+			/*
+			 * System.out.println("GAME NOT AVAILABLE"); return serverMessageBuilder
+			 * .setGameRoomCreationStatus( gameRoomCreationStatusBuilder.setError(
+			 * GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build()) .build().toByteArray();
+			 */
+			roomNamesToGameNames.put(roomName, Constants.NEW_GAME_NAME);
+			// return
+			// serverMessageBuilder.setGameRoomCreationStatus(gameRoomCreationStatusBuilder.setRoomId(value))
+		} else {
+			roomNamesToGameNames.put(roomName, gameName);
 		}
-		roomNamesToGameNames.put(roomName, gameName);
 		roomMembers.put(roomName, new ArrayList<>());
 		clearWaitingRoom(roomName);
 		return serverMessageBuilder.setGameRoomCreationStatus(gameRoomCreationStatusBuilder.setRoomId(roomName).build())
@@ -193,9 +213,19 @@ public abstract class AbstractServerController {
 					.setNotification(Notification.newBuilder().setLevelInitialized(levelData).build()).build());
 			return serverMessageBuilder.build().toByteArray();
 		} catch (IOException e) {
+			/*
+			 * return serverMessageBuilder .setGameRoomLaunchStatus(
+			 * gameRoomLaunchStatusBuilder.setError(
+			 * GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build()) .build().toByteArray();
+			 */
+			// Clean slate
+			System.out.println("Clean slate detected, returning empty message");
+			messageQueue.add(ServerMessage.newBuilder().setNotification(
+					Notification.newBuilder().setLevelInitialized(LevelInitialized.getDefaultInstance()).build())
+					.build());
 			return serverMessageBuilder
 					.setGameRoomLaunchStatus(
-							gameRoomLaunchStatusBuilder.setError(GAME_ROOM_CREATION_ERROR_NONEXISTENT_GAME).build())
+							gameRoomLaunchStatusBuilder.setInitialState(LevelInitialized.getDefaultInstance()).build())
 					.build().toByteArray();
 		}
 	}
@@ -211,6 +241,51 @@ public abstract class AbstractServerController {
 		return serverMessageBuilder
 				.setPlayerNames(playerNamesBuilder
 						.addAllUserNames(getUserNamesInGameRoom(getGameRoomNameOfClient(clientId))).build())
+				.build().toByteArray();
+	}
+
+	protected boolean joinAndCheckIfWaitingRoomIsFull(String roomName) {
+		Map<String, Integer> waitingRoom = getWaitingRoom();
+		waitingRoom.put(roomName, waitingRoom.getOrDefault(roomName, 0) + 1);
+		return checkIfWaitingRoomIsFull(roomName);
+	}
+
+	private byte[] loadLevel(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		LevelInitialized.Builder levelInitializationBuilder = LevelInitialized.newBuilder();
+		LoadLevel loadLevelRequest = clientMessage.getLoadLevel();
+		String roomName = getGameRoomNameOfClient(clientId);
+		int levelToLoad = loadLevelRequest.getLevel();
+		if (!checkIfWaitingRoomIsFull(roomName)) {
+			// not ready to load
+			return serverMessageBuilder
+					.setLevelInitialized(levelInitializationBuilder.setError(LOAD_LEVEL_ERROR_NOT_READY).build())
+					.build().toByteArray();
+		}
+		String gameName = retrieveGameNameFromRoomName(roomName);
+		try {
+			return serverMessageBuilder
+					.setLevelInitialized(getEngineForClient(clientId).loadOriginalGameState(gameName, levelToLoad))
+					.build().toByteArray();
+		} catch (IOException e) {
+			return serverMessageBuilder.setLevelInitialized(LevelInitialized.getDefaultInstance()).build()
+					.toByteArray();
+		}
+	}
+
+	private byte[] getLevelElements(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.addAllLevelSprites(
+						getEngineForClient(clientId).getLevelSprites(clientMessage.getGetLevelElements().getLevel()))
+				.build().toByteArray();
+	}
+
+	private byte[] getNumberOfLevels(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		System.out.println("Processing num levels request");
+		return serverMessageBuilder
+				.setNumLevels(NumberOfLevels.newBuilder()
+						.setNumLevels(getEngineForClient(clientId).getNumLevelsForGame()).build())
 				.build().toByteArray();
 	}
 
@@ -237,7 +312,8 @@ public abstract class AbstractServerController {
 		return serverMessageBuilder.setElementMoved(updatedSprite).build().toByteArray();
 	}
 
-	private byte[] deleteElement(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+	private byte[] deleteElement(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
 		AbstractGameController controller = getEngineForRoom(getGameRoomNameOfClient(clientId));
 		DeleteElement deleteElementRequest = clientMessage.getDeleteElement();
 		try {
@@ -249,7 +325,7 @@ public abstract class AbstractServerController {
 			return serverMessageBuilder.setError(e.getMessage()).build().toByteArray();
 		}
 	}
-	
+
 	protected void enqueueMessage(ServerMessage message) {
 		messageQueue.add(message);
 	}
@@ -259,11 +335,11 @@ public abstract class AbstractServerController {
 	}
 
 	protected abstract AbstractGameController getEngineForRoom(String room);
-	
+
 	protected abstract void createEngineForRoom(String room);
-	
+
 	protected abstract AbstractGameController getEngineForClient(int clientId);
-	
+
 	protected String getGameRoomNameOfClient(int clientId) {
 		return roomMembers.keySet().stream().filter(roomName -> roomMembers.get(roomName).contains(clientId)).iterator()
 				.next();
@@ -275,21 +351,51 @@ public abstract class AbstractServerController {
 		}
 		return roomMembers.get(getGameRoomNameOfClient(clientId)).iterator().next().equals(clientId);
 	}
-	
+
 	protected String retrieveGameNameFromRoomName(String roomName) throws IllegalArgumentException {
 		if (!roomNamesToGameNames.containsKey(roomName)) {
 			throw new IllegalArgumentException(ERROR_NONEXISTENT_ROOM);
 		}
 		return roomNamesToGameNames.get(roomName);
 	}
-	
+
 	protected Map<String, Integer> getWaitingRoom() {
 		return waitingInRoom;
 	}
-	
+
+	private boolean checkIfWaitingRoomIsFull(String roomName) {
+		return getWaitingRoom().get(roomName) < getRoomSize(roomName);
+	}
+
 	protected int getRoomSize(String roomName) {
 		return roomMembers.get(roomName).size();
 	}
+	
+	private byte[] getInventory(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.setInventory(getEngineForClient(clientId).packageInventory()).build().toByteArray();
+	}
+
+	private byte[] getTemplateProperties(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.addTemplateProperties(getEngineForClient(clientId)
+						.packageTemplateProperties(clientMessage.getGetTemplateProperties().getElementName()))
+				.build().toByteArray();
+	}
+
+	private byte[] getAllTemplateProperties(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder
+				.addAllTemplateProperties(getEngineForClient(clientId).packageAllTemplateProperties()).build()
+				.toByteArray();
+	}
+
+	private byte[] getElementCosts(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) {
+		return serverMessageBuilder.addAllElementCosts(getEngineForClient(clientId).packageAllElementCosts()).build()
+				.toByteArray();
+	}
+
 
 	private boolean userNameExistsInGameRoom(String userName, String gameRoomName) {
 		return roomMembers.get(gameRoomName).stream().map(clientId -> clientIdsToUserNames.get(clientId))
@@ -308,6 +414,10 @@ public abstract class AbstractServerController {
 			roomName += ROOM_NAME_DEDUP_DELIMITER + Integer.toString(numCollisions);
 		}
 		return roomName;
+	}
+
+	private void clearWaitingRoom(String roomName) {
+		waitingInRoom.put(roomName, 0);
 	}
 
 	private void processUserJoinRoom(int clientId, String roomName, String userName) {
@@ -348,10 +458,21 @@ public abstract class AbstractServerController {
 		if (clientMessage.hasGetPlayerNames()) {
 			return getPlayerNames(clientId, clientMessage, serverMessageBuilder);
 		}
+		System.out.println("No pre-game request, checking for common game request");
 		return handleCommonGameRequestAndSerializeResponse(clientId, clientMessage, serverMessageBuilder);
 	}
-	
-	private byte[] handleCommonGameRequestAndSerializeResponse(int clientId, ClientMessage clientMessage, ServerMessage.Builder serverMessageBuilder) throws ReflectiveOperationException {
+
+	private byte[] handleCommonGameRequestAndSerializeResponse(int clientId, ClientMessage clientMessage,
+			ServerMessage.Builder serverMessageBuilder) throws ReflectiveOperationException {
+		if (clientMessage.hasLoadLevel()) {
+			return loadLevel(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetLevelElements()) {
+			return getLevelElements(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetNumLevels()) {
+			return getNumberOfLevels(clientId, clientMessage, serverMessageBuilder);
+		}
 		if (clientMessage.hasPlaceElement()) {
 			return placeElement(clientId, clientMessage, serverMessageBuilder);
 		}
@@ -361,11 +482,29 @@ public abstract class AbstractServerController {
 		if (clientMessage.hasDeleteElement()) {
 			return deleteElement(clientId, clientMessage, serverMessageBuilder);
 		}
-		return serverMessageBuilder.getDefaultInstanceForType().toByteArray();		
+		if (clientMessage.hasGetInventory()) {
+			return getInventory(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetTemplateProperties()) {
+			return getTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetAllTemplateProperties()) {
+			System.out.println("Returning template properties response");
+			return getAllTemplateProperties(clientId, clientMessage, serverMessageBuilder);
+		}
+		if (clientMessage.hasGetElementCosts()) {
+			return getElementCosts(clientId, clientMessage, serverMessageBuilder);
+		}
+		return serverMessageBuilder.getDefaultInstanceForType().toByteArray();
 	}
-
-	private void clearWaitingRoom(String roomName) {
-		waitingInRoom.put(roomName, 0);
+	
+	private boolean isAuthoringSpecificRequest(byte[] request) {
+		try {
+			AuthoringClientMessage authClientMessage = AuthoringClientMessage.parseFrom(request);
+			return authClientMessage.getForAuthoring();
+		} catch (InvalidProtocolBufferException e) {
+			return false;
+		}
 	}
 
 }

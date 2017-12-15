@@ -24,6 +24,7 @@ message AuthoringServerMessage {
 	repeated ConditionAssignment currentDefeatConditions = 13;
 	optional AuthoringNotification notification = 14;
 	optional string error = 15;
+	optional bool forAuthoring = 16; 
 }
 
 message ElementBaseConfigurationOption {
