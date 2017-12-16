@@ -2,7 +2,7 @@
 
 
 
-
+See [doc/README.md](doc/README.md) for the primary project README.
 
 
 
