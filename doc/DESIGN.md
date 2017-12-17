@@ -22,3 +22,4 @@ Our main design goal for the program was flexibility in the type of game being i
 ### Assumptions 
 
 * A major assumption we made was that the user would always save their data to the same location. This simplified loading for us, but should have been made more clear by simply asking for a save name for the user instead of opening a file chooser when they tried to save.
+* In order to get multiplayer and collaborative editing working without paying for a domain, we assumed that authors and players would be on the same network. (We mostly used localhost for using these features but had a Duke VM server prepared for this, which we didn't end up using because the server code changed so often.)  Changing this to use a server which could host users from arbitrary networks would be a simple matter as well.
