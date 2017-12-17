@@ -21,7 +21,7 @@ The project began in earnest on 9 November, 2017, when we wrote our team contrac
 
 * Adithya Raghunathan:
 * Ben Schwennesen: overall my role was designer and implementer of the backend (game engine), working closesly with Adi. My primary role during the first sprint was engine API design and working on the game actors, specifically their construction, the passing and receiving of the properties that was needed for them in the frontend, coordination of their behavior, and saving to easily edited files; I also worked on controllers (which featured heavily in the API design), serialization, behavior objects, and the game loop with other group members during the first sprint. Finally, I worked on a chat window and server during this sprint. In addition to expanding my work in these during the second sprint, I worked on element upgrading, exporting games to JAR files and pushing them to Google Drive, levels and waves, integrating the paths defined in the frontend into the game engine, some GUI simplification by moving buttons into a dropdown menu (among others), and finally many, many bug fixes.
-* Ben Welton:
+* Ben Welton: My general role was designing the front end interfaces for the game areas of authoring and player where the game was actually built or played. This initially involved building the path structure and the scrollable game area in the authoring environment, but eventually bled into the left toolbars in player and authoring where drag and drop took place, the tab structure used in many of the toolbars, the HUD display in player, and a little bit of coding in the properties tool bar, though this last piece was covered most by Matt O'Boyle. I also worked with adding in integration with the back end controllers in player and authoring, particularly on making sure that sprites loaded properly back into the tool bars and into the game areas.  
 * Matthew Mosca: In general, my role entailed working with the overall design and appearance of the frontend/user interface of the authoring and playing environments. I was involved in designing the initial layout of toolbars and the game area in authoring and implementing the early code to set up their tabs. I designed and added almost all of the images used in the project. I created a system to allow the user to very easily choose one of preset themes I designed for the authoring environment, and generally handled styling of the front end with CSS. In the player environment, I implemented classes to flexibly handle and display value trackers, for components like health, points, and currency. I remodeled the opening splash screen and background, and made its elements flexible to resizing (by simply changing constants), and created the win and lose screens. Finally, I created the multiplayer environment and worked closely with Adi to link it to the networking back end he worked on. 
 * Matthew O'Boyle:
 * Michael Scruggs:
@@ -60,9 +60,23 @@ The program uses a few data files for saving. All of these—excluding exported 
 ### Using the Program
 
 Special key presses: 
-* To move an object in authoring you must select the button in the top-center with the four arrows pointing in the cardinal directions.
-* 
-* 
+* To move an object in authoring you must select the button in the top-center with the four arrows pointing in the cardinal directions. Right clicking on an object while in this control scheme will delete it.
+* Path Controls:
+	* Left Click (Game Area) - Places a new waypoint. This waypoint will connect to the current active point (shown in bright blue) or start a new path if no point is selected
+	* Left Click (Point) - Toggles the selected point between active and inactive. Only one point can be active at a time
+	* Right CLick (Point) - Deletes the current point. All previous points will create connections to all subsequent points.
+	* Ctrl + Click (Point) - Creates a connection between the active point and the selected point, functionally creating a closed loop
+	* Left Click (Line) - Toggles the selected line between active and inactive.
+	* Right Click (Line) - Deletes the current line. Must be active to delete.
+	* Ctrl + Click (Line) - Reverses the direction of this connection
+* Toolbar Controls (Player and Authoring):
+	* Left Click - Selects an object to place. Left click again to place it into the game environment.
+	* Right Click (Inventory Toolbar/Left Side) - Gives option to increment sizes
+	* Right Click (Properties Toolbar/Right Side) - Deletes the object from the inventory that the player would see
+* Additional Player Controls:
+	* Left Click (Sprite) - In some game modes, shifts the active element to be the clicked object
+	* Right Click (Sprite) - Deletes the sprite, only works on user created sprites
+	* Ctrl + Click (Sprite) - Upgrades the sprite, only works on user created sprites
 
 
 ### Assumptions and Simplifications
