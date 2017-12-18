@@ -7,6 +7,7 @@ import engine.game_elements.ElementProperty;
  *
  * @author Ben Schwennesen
  * @author radithya
+ * @author tyler
  */
 public abstract class AbstractPeriodicFiringStrategy implements FiringStrategy {
 
