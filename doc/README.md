@@ -59,6 +59,8 @@ The program uses a few data files for saving. All of these—excluding exported 
 
 ### Using the Program
 
+When adding troops to a wave, the user should input in the format <level>.<wave>, then enter a number of troops they wish to commit. The spawning location should be in the form <xLocation>,<yLocation> and will default to (100,100)
+
 Special key presses: 
 * To move an object in authoring you must select the button in the top-center with the four arrows pointing in the cardinal directions. Right clicking on an object while in this control scheme will delete it.
 * Path Controls:
