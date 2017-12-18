@@ -8,6 +8,11 @@ import java.util.ResourceBundle;
 import authoring.EditDisplay;
 import authoring.PropertiesToolBar.TowerImage;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class NewTowerTab extends NewSpriteTab {
 	
 	private ResourceBundle towerResources;

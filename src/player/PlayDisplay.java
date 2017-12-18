@@ -11,6 +11,7 @@ import networking.protocol.PlayerServer.Notification;
 
 /**
  * Main play display, uses file chooser.
+ * @author adi
  */
 public class PlayDisplay extends AbstractPlayDisplay implements NotifiableDisplay {
 

@@ -49,6 +49,11 @@ import javafx.stage.Stage;
 import display.splashScreen.ScreenDisplay;
 import display.toolbars.ToolBar;
  
+/**
+ * 
+ * @author bwelton, moboyle, mmosca
+ *
+ */
 public class PropertiesToolBar extends ToolBar implements PropertiesInterface {
 	
 	private TabFactory tabMaker;

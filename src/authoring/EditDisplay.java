@@ -84,6 +84,11 @@ import display.sprites.StaticObject;
 import display.tabs.SaveDialog;
 import display.toolbars.StaticObjectToolBar;
 
+/**
+ * 
+ * @author bwelton, mmosca, moboyle
+ *
+ */
 public class EditDisplay extends ScreenDisplay implements AuthorInterface, NotifiableDisplay {
 
 	private static final String TEXT = "-";

@@ -8,6 +8,11 @@ import engine.PlayModelController;
 import javafx.scene.control.TabPane;
 import display.splashScreen.ScreenDisplay;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class InventoryToolBar extends ToolBar{
 	private static final int Y_POSITION = 50;
 	

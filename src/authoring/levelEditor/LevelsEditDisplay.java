@@ -10,6 +10,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author venkat, moboyle
+ *
+ */
 public class LevelsEditDisplay {
 	private static final int SIZE = 800;
 	

@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class BasePropertyMediator {
 	private Map<String, List<String>> allBaseProperties;
 	private List<BasePropertySelector> dropdownSelectors;

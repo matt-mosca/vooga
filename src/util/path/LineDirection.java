@@ -5,6 +5,11 @@ import java.io.Serializable;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class LineDirection extends Polygon implements Serializable{
 	private PathLine line;
 	

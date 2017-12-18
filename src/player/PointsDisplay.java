@@ -2,6 +2,11 @@ package player;
 
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class PointsDisplay extends ValueDisplay {
 	private final String LABEL = "points";
 	private final double XPOS = 850;

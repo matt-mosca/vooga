@@ -7,6 +7,11 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class PathLine extends Line implements Serializable{
 	private final static String WIDTH = "Path_Width";
 	private final static String INACTIVE = "Path_Color";

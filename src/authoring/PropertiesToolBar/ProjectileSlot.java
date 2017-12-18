@@ -4,6 +4,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
+/**
+ * 
+ * @author moboyle
+ *
+ */
 public class ProjectileSlot extends HBox {
 
 	public ProjectileSlot(PropertiesTabWithProjectile tab, ImageView imageView) {

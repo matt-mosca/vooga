@@ -8,6 +8,11 @@ import java.util.ResourceBundle;
 import authoring.EditDisplay;
 import authoring.PropertiesToolBar.ProjectileImage;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class NewProjectileTab extends NewSpriteTab {
 	
 	private ResourceBundle projectileResources;

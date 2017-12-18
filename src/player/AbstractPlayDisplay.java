@@ -58,6 +58,11 @@ import java.util.Properties;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 
+/**
+ * 
+ * @author bwelton, mmosca, moboyle, adi
+ *
+ */
 public class AbstractPlayDisplay extends ScreenDisplay implements PlayerInterface {
     private final String GAME_FILE_KEY = "displayed-game-name";
     private final int DOWN = 5;

@@ -10,6 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public abstract class ToolBar extends VBox{
 	private final double DEFAULT_WIDTH = 60;
 	private final double DEFAULT_HEIGHT = 60;

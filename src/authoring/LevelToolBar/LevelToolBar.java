@@ -27,6 +27,11 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+/**
+ * 
+ * @author venkat, moboyle
+ *
+ */
 public class LevelToolBar extends VBox implements TabInterface, ButtonInterface {
     
     private static final String DEFAULT_WAVE_PROPERTIES = "WavesDefaults";

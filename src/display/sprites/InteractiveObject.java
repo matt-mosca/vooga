@@ -10,6 +10,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import display.splashScreen.ScreenDisplay;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class InteractiveObject extends ImageView implements ClickableInterface{
 	private final String HEIGHT = "Game_Area_Height";
 	private final String ROW_PERCENTAGE = "Grid_Row_Percentage";

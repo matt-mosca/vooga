@@ -2,6 +2,11 @@ package player;
 
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class CoinDisplay extends ValueDisplay {
 	private final String IMAGE = "coinImage";
 	private final double XPOS = 700;

@@ -12,6 +12,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class PathPoint extends Circle implements Serializable {
 	private final static String RADIUS = "Path_Point_Radius";
 	private final static String INACTIVE = "Path_Point_Color";

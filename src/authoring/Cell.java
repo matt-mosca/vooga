@@ -8,6 +8,11 @@ import javafx.scene.layout.StackPane;
 import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
 
+/**
+ * 
+ * @author bwelton, moboyle
+ *
+ */
 public class Cell extends StackPane{
 	private boolean active = false;
 	private List<InteractiveObject> myAssignments;

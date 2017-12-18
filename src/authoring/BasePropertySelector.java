@@ -7,6 +7,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class BasePropertySelector extends ComboBox<String> {
 	private static final int X_POS = 350;
 	private static final int Y_POS = 23;

@@ -14,6 +14,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public abstract class NewSpriteTab extends ScrollPane {
 	
 	public static final double DISPLAY_SIZE = 60;

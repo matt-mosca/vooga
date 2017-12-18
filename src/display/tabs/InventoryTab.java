@@ -7,6 +7,11 @@ import display.interfaces.PropertiesInterface;
 import javafx.scene.image.ImageView;
 import display.splashScreen.ScreenDisplay;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class InventoryTab extends SimpleTab{
 	private PropertiesInterface myProperties;
 	

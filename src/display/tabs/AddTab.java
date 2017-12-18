@@ -12,6 +12,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import display.splashScreen.ScreenDisplay;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public abstract class AddTab extends ScrollPane{
 	private final String PROMPT = "Choose Type";
 	private final String ADD_PROMPT = "Click to add image";

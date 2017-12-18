@@ -2,6 +2,11 @@ package authoring;
 
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * 
+ * @author moboyle
+ *
+ */
 public class ObjectProperties {
 	 
     private final SimpleStringProperty firstCol;

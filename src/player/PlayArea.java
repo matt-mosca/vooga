@@ -15,6 +15,11 @@ import javafx.scene.paint.Color;
 
 import display.sprites.InteractiveObject;
 
+/**
+ * 
+ * @author bwelton, adi, ben s, sgrillo
+ *
+ */
 public class PlayArea extends Pane implements Droppable {
 	private final String WIDTH = "Game_Area_Width";
 	private final String HEIGHT = "Game_Area_Height";

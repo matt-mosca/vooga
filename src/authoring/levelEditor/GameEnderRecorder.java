@@ -13,6 +13,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author venkat
+ *
+ */
 public class GameEnderRecorder extends VBox{
 	private TableView <Conditions> victoryConditions;
 	private TableView<Conditions> defeatConditions;

@@ -9,6 +9,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class MultiplayerListBox extends ScrollPane {
 	private List<String> names;
 	private ObservableList<String> namesObservable;

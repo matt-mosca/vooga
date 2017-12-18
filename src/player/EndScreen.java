@@ -10,6 +10,11 @@ import javafx.stage.Stage;
 import main.Main;
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public abstract class EndScreen extends ScreenDisplay {
 	
 	private final String BACKGROUND_NAME = "endScreenBackground";

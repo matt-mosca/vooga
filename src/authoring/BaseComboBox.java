@@ -8,6 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class BaseComboBox extends ComboBox<String>{
 
 	private static final int Y_POS = 500;

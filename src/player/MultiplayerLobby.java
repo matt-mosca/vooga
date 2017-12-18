@@ -26,7 +26,11 @@ import networking.protocol.PlayerServer.Notification;
 import util.PropertiesGetter;
 import networking.Constants;
 
-
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class MultiplayerLobby extends ScreenDisplay {
 	// private static final String BACKGROUND_IMAGE = "grass_large.png";
 	private final String BACKGROUND_IMAGE = "spaceImage";

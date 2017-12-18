@@ -13,6 +13,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
+/**
+ * 
+ * @author bwelton, moboyle
+ *
+ */
 public class PropertiesTab extends Pane{
 	private PropertiesToolBar myProperties;
 	private PropertiesBox myPropertiesBox;

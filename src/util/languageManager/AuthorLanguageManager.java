@@ -2,6 +2,11 @@ package util.languageManager;
 
 import java.util.ResourceBundle;
 
+/**
+ * 
+ * @author venkat
+ *
+ */
 public class AuthorLanguageManager extends LanguageManager {
 	private static final String PATH = "/authoring/resources/";
 	public AuthorLanguageManager(String language) {

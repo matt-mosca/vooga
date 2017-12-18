@@ -10,6 +10,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import display.splashScreen.ScreenDisplay;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class SimpleTab extends ScrollPane{
 	private ScreenDisplay display;
 	private List<ImageView> myList;

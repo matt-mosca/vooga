@@ -8,6 +8,11 @@ import java.util.ResourceBundle;
 import authoring.EditDisplay;
 import authoring.PropertiesToolBar.TroopImage;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class NewTroopTab extends NewSpriteTab {
 	
 	private ResourceBundle troopResources;

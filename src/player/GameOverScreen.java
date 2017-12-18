@@ -4,6 +4,11 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class GameOverScreen extends EndScreen {
 
 	private final String GAME_OVER = "gameOver";

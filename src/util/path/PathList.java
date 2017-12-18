@@ -17,6 +17,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import javafx.geometry.Point2D;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class PathList extends LinkedList {
 
 	private static final long serialVersionUID = -7588980448693010399L;

@@ -31,6 +31,11 @@ import player.MultiplayerLobby;
 import player.PlayDisplay;
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class SplashScreen extends ScreenDisplay implements SplashInterface {
 
 	private static final int PREFSIZE = 80;

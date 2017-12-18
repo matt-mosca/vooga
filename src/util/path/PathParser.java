@@ -3,6 +3,11 @@ package util.path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class PathParser {
 
 	public List<PathList> parse(Path path){

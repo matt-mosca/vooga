@@ -10,6 +10,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 
+/**
+ * 
+ * @author moboyle, bwelton
+ *
+ */
 public class PropertiesPane extends TabPane {
 	private ScreenDisplay myDisplay;
 	private AuthoringModelController myController;

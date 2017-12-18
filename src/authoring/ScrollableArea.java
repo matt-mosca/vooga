@@ -6,6 +6,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class ScrollableArea extends ScrollPane{
 	private final int X_OFFSET = 260;
 	private final int Y_OFFSET = 50;

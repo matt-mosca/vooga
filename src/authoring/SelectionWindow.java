@@ -15,6 +15,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author moboyle
+ *
+ */
 public class SelectionWindow extends Stage {
 	
 	private static final String BACK = "back";

@@ -11,7 +11,7 @@ import javafx.geometry.Point2D;
 
 /**
  * 
- * @author PLEDGE
+ * @author bwelton
  *
  */
 public class PlacementGrid extends GridPane {

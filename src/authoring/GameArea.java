@@ -23,6 +23,11 @@ import display.sprites.BackgroundObject;
 import display.sprites.InteractiveObject;
 import display.sprites.StaticObject;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class GameArea extends Pane implements CustomizeInterface, Droppable {
 	private static final String DEFAULT_BUNDLE_PATH = "authoring/resources/GameArea";
 	private final String WIDTH = "Game_Area_Width";

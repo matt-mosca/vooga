@@ -8,6 +8,11 @@ import authoring.PropertiesToolBar.SpriteImage;
 import javafx.scene.control.TabPane;
 import display.splashScreen.ScreenDisplay;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class AddSpriteImageTab extends AddTab{
 	private final String PACKAGE = "authoring.rightToolBar.";
 

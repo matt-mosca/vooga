@@ -9,6 +9,11 @@ import javafx.scene.control.TabPane;
 import display.splashScreen.ScreenDisplay;
 import display.sprites.StaticObject;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class AddStaticTab extends AddTab {
 	private final int STARTING_SIZE = 1;
 	private final String PACKAGE = "sprites.";

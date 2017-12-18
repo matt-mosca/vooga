@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 
+ * @author venkat
+ *
+ */
 public class Conditions {
 	private String myCondition;
 	private Collection<Integer> myLevels;

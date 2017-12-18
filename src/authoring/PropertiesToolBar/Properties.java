@@ -2,6 +2,11 @@ package authoring.PropertiesToolBar;
 
 import javafx.geometry.Point2D;
 
+/**
+ * 
+ * @author moboyle, bwelton
+ *
+ */
 public class Properties {
 	private String myProperty;
 	private Object myObject;

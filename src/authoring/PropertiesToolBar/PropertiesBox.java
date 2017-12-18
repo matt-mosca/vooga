@@ -33,6 +33,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * 
+ * @author moboyle, bwelton
+ *
+ */
 public class PropertiesBox extends VBox {
 	private Map<String, Object> propertiesMap;
 	private String[] propertyArr;

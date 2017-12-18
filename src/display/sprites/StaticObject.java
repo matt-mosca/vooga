@@ -3,6 +3,11 @@ package display.sprites;
 import javafx.scene.image.Image;
 import display.splashScreen.ScreenDisplay;
 
+/**
+ * 
+ * @author bwelton, moboyle
+ *
+ */
 public class StaticObject extends InteractiveObject{
 	private int objectSize;
 	private int realSize;

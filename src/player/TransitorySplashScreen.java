@@ -6,6 +6,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class TransitorySplashScreen extends BorderPane{
 	private final String MESSAGE = "transitoryMessage";
 	

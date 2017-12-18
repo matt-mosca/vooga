@@ -6,6 +6,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class ChangeSpeedToggles {
 	private static final int BUTTON_WIDTH = 45;
 	private static final int BUTTON_HEIGHT = 40;

@@ -11,6 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import util.PropertiesGetter;
 
+/**
+ * 
+ * @author venkat
+ *
+ */
 public class GameEnderConditions extends VBox {
 	private static final String VICTORY_TIME_CONDITIONS = "timeLimit";
 	private AuthoringModelController myController;

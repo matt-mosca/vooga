@@ -5,6 +5,11 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class CostButton extends Button {
 
 	public CostButton(PropertiesToolBar toolbar, ImageView currentElement) {

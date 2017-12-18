@@ -17,6 +17,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+/**
+ * 
+ * @author moboyle, bwelton
+ *
+ */
 public class PropertiesTabWithProjectile extends PropertiesTab{
 	private PropertiesToolBar myProperties;
 	private ProjectileSlot projectileSlot;

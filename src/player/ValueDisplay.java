@@ -6,6 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+/**
+ * 
+ * @author mmosca
+ *
+ */
 public class ValueDisplay extends HBox {
 	private final double IMAGE_WIDTH= 40;
 	private final double IMAGE_HEIGHT= 32;

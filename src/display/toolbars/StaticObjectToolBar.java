@@ -19,7 +19,7 @@ import display.sprites.BackgroundObject;
 import display.sprites.StaticObject;
 
 /**
- * @author Matt
+ * @author Matt, bwelton
  */
 public class StaticObjectToolBar extends ToolBar {
 	private static final int Y_POSITION = 50;

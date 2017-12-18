@@ -12,6 +12,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class Path extends Group{
 	private Set<PathPoint> points;
 	private List<PathPoint> headPoints;

@@ -15,6 +15,11 @@ import javafx.scene.control.TextInputDialog;
 import util.PropertiesGetter;
 import display.splashScreen.ScreenDisplay;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class MainMenuBar extends MenuBar{
 	private static final String EXPORT = "exportGame";
 	private static final String EDIT = "editGame";

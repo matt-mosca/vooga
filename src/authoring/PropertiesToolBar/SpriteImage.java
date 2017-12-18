@@ -10,6 +10,11 @@ import javafx.scene.image.Image;
 import display.splashScreen.ScreenDisplay;
 import display.sprites.InteractiveObject;
 
+/**
+ * 
+ * @author mmosca, moboyle
+ *
+ */
 public abstract class SpriteImage extends InteractiveObject {
 	private String myImageName;
 	private AuthoringModelController controller;

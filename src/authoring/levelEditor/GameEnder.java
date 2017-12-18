@@ -4,6 +4,11 @@ import engine.AuthoringModelController;
 import engine.authoring_engine.AuthoringController;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * @author venkat
+ *
+ */
 public class GameEnder extends VBox{
 	private AuthoringModelController myController;
 	private GameEnderConditions conditions;

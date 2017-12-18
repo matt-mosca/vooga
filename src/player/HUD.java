@@ -7,6 +7,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
+/**
+ * 
+ * @author bwelton
+ *
+ */
 public class HUD extends HBox{
 	private Map<String, ValueDisplay> displays;
 	private PointsDisplay myPointsDisplay;
