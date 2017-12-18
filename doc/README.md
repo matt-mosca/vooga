@@ -26,7 +26,7 @@ The project began in earnest on 9 November, 2017, when we wrote our team contrac
 * Matthew O'Boyle: I mostly worked with the Authoring Environment and worked with front end interfaces for this. This involved the creation of levels and waves, placing static and background objects, setting the properties for different sprites and customizing the user interface. I also worked with the link between front and back-end (Play/Edit Display to Player/Authoring Controller) and the link between the different screens for the user (SplashScreen, PlayDisplay, EditDisplay etc.). 
 * Michael Scruggs:
 * Santo Grillo:
-* Tyler Yam:
+* Tyler Yam: I worked on firing strategies as well as handling Media and sound effects. I also worked with Venkat on placing all Strings into a resources properties to aid with translation. I also helped Ben S. create a Main class as well as a splash screen for the packager to run from. I also worked on an alert factory and general refactoring.
 * Venkat Subramaniam:
  
 
