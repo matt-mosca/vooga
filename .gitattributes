@@ -19,3 +19,4 @@
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
 *.obj  diff=astextplain
+data filter=lfs diff=lfs merge=lfs -text
