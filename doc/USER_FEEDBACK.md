@@ -1,5 +1,5 @@
 User Feedback
-=============
+==============
 
 * Visual respresentation of grid?
 * Not clear what to do right away to build game* unclear static vs towers
